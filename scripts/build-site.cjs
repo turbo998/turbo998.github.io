@@ -81,6 +81,14 @@ const harnessFrameworksPages = [
   {path:'workshops/harness-engineering-frameworks/cards.html',role:'report',title:'Mainstream Agent Harness Engineering Frameworks · DSH × Claude Code × HVE Core 7-Card Report (EN)',tracks:['benchmarks'],language:{declared:'en'},supplemental:true},
   {path:'workshops/harness-engineering-frameworks/cards.zh.html',role:'report',title:'主流 Agent Harness Engineering 框架与实现机制深度研究 · DSH × Claude Code × HVE Core 7-Card 报告 (中文)',tracks:['benchmarks'],language:{declared:'zh-CN'},supplemental:true}
 ];
+const harnessCoevolutionPages = [
+  {path:'articles/agent-harness-coevolution.html',role:'article',title:'随模型升级持续演进 Agent Harness：120 个 Skills 审计、上下文悬崖修复与模型协同实战报告',tracks:['benchmarks'],language:{declared:'zh-CN'},supplemental:true},
+  {path:'articles/agent-harness-coevolution.en.html',role:'article',title:'Agent Harness x Frontier Model Co-Evolution: 120-Skill Audit, 12 KB Context Cliff Fix & Multi-Model Routing Report',tracks:['benchmarks'],language:{declared:'en'},supplemental:true},
+  {path:'workshops/agent-harness-coevolution/index.html',role:'demo',title:'Agent Harness × 前沿模型协同演进交互演示工作台 (Gemini 4 Carbon · GPT-6.2 Sol · Grok 4.7)',tracks:['benchmarks'],language:{declared:'zh-CN'},supplemental:true},
+  {path:'workshops/agent-harness-coevolution/index.en.html',role:'demo',title:'Agent Harness x Frontier Model Co-Evolution Interactive Presenter Workbench (Gemini 4 Carbon · GPT-6.2 Sol · Grok 4.7)',tracks:['benchmarks'],language:{declared:'en'},supplemental:true},
+  {path:'workshops/agent-harness-coevolution/cards.zh.html',role:'report',title:'Agent Harness × 前沿模型协同演进 · 120 个 Skills 审计 7-Card 视觉报告 (中文)',tracks:['benchmarks'],language:{declared:'zh-CN'},supplemental:true},
+  {path:'workshops/agent-harness-coevolution/cards.html',role:'report',title:'Agent Harness x Frontier Model Co-Evolution · 120-Skill Audit 7-Card Report (EN)',tracks:['benchmarks'],language:{declared:'en'},supplemental:true}
+];
 const commerceTrendsPages = ['stripe-collison-7-trends.html','stripe-collison-7-trends.en.html'].map(name=>({path:'workshops/agentic-commerce/'+name,role:'article',title:'Stripe / Collison · Seven Agentic Commerce Trends',tracks:['commerce'],language:{declared:name.includes('.en.')?'en':'zh-CN'},supplemental:true}));
 const camera4dPages = ['animation','generative-visual-lab'].flatMap(dir=>[
   {path:`${dir}/demos/camera-4d-director/index.html`,role:'demo',title:'4D Gaussian & Plücker Camera Director Studio',tracks:['animation'],language:{declared:'zh-CN'},supplemental:true},
@@ -114,7 +122,7 @@ const worldMemPages = ['animation','generative-visual-lab'].flatMap(dir=>[
 ]);
 const nightlyVisualRegistry = path.join(root, 'animation/nightly-resources.json');
 const nightlyVisualPages = fs.existsSync(nightlyVisualRegistry) ? JSON.parse(fs.readFileSync(nightlyVisualRegistry, 'utf8')) : [];
-const archivePages = [...inventory.content, ...translations, ...webiqPages, ...radarPages, ...infraPages, ...dataLabPages, ...phase179Pages, ...clioHarnessPages, ...harnessFrameworksPages, ...commerceTrendsPages, ...camera4dPages, ...audiovisualFoleyPages, ...physGaussianPages, ...neuralRelightPages, ...worldMemPages, ...nightlyVisualPages].map(page => ({...page, tracks:[classifyPage(page), ...(page.tracks || []).filter(track => track !== classifyPage(page) && track !== 'infra')]}));
+const archivePages = [...inventory.content, ...translations, ...webiqPages, ...radarPages, ...infraPages, ...dataLabPages, ...phase179Pages, ...clioHarnessPages, ...harnessFrameworksPages, ...harnessCoevolutionPages, ...commerceTrendsPages, ...camera4dPages, ...audiovisualFoleyPages, ...physGaussianPages, ...neuralRelightPages, ...worldMemPages, ...nightlyVisualPages].map(page => ({...page, tracks:[classifyPage(page), ...(page.tracks || []).filter(track => track !== classifyPage(page) && track !== 'infra')]}));
 function archiveNote(page, zh) {
   const t = (en, cn) => zh ? cn : en;
   const record = readingByPath.get(page.path);

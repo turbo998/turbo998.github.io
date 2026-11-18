@@ -6,14 +6,30 @@ const search = require('./site-search.cjs');
 const {htmlFiles,plain} = require('./build-search-index.cjs');
 const root=path.resolve(__dirname,'..');
 const readJSON=file=>fs.existsSync(path.join(root,file))?JSON.parse(fs.readFileSync(path.join(root,file),'utf8')):null;
-function localeRegistry() {
+const harnessCoevolutionTracked=[
+  'articles/agent-harness-coevolution.html',
+  'articles/agent-harness-coevolution.en.html',
+  'workshops/agent-harness-coevolution/index.html',
+  'workshops/agent-harness-coevolution/index.en.html',
+  'workshops/agent-harness-coevolution/cards.zh.html',
+  'workshops/agent-harness-coevolution/cards.html'
+];
+function localeRegistry(priorRecords=[]) {
   const pairs=new Map();
   function add(en,zh) {if(en&&zh&&en!==zh){pairs.set(en,{en,zh});pairs.set(zh,{en,zh});}}
+  for(const row of priorRecords) {
+    if(row.path&&row.counterpart&&fs.existsSync(path.join(root,row.path))&&fs.existsSync(path.join(root,row.counterpart))) {
+      add(...(row.language==='en'?[row.path,row.counterpart]:[row.counterpart,row.path]));
+    }
+  }
   for(const row of readJSON('docs/redesign/reading-migration.json')?.records||[]) {
     const counterpart=row.language?.counterpart;
     if(counterpart)add(...(row.language.resolved.startsWith('zh')?[counterpart,row.path]:[row.path,counterpart]));
   }
   add('index.html','zh.html');add('style-preview.html','zh-style-preview.html');add('frontier-ai-studio.en.html','frontier-ai-studio.html');
+  add('articles/agent-harness-coevolution.en.html','articles/agent-harness-coevolution.html');
+  add('workshops/agent-harness-coevolution/index.en.html','workshops/agent-harness-coevolution/index.html');
+  add('workshops/agent-harness-coevolution/cards.html','workshops/agent-harness-coevolution/cards.zh.html');
   for(const file of htmlFiles().filter(file=>file.startsWith('studio/')&&!path.posix.basename(file).startsWith('zh-'))) {
     const zh=file.replace(/([^/]+)$/,'zh-$1');if(fs.existsSync(path.join(root,zh)))add(file,zh);
   }
@@ -47,16 +63,22 @@ function localeRegistry() {
   return pairs;
 }
 function finalizeSite() {
-  const pairs=localeRegistry(), records=[], unresolved=[];
+  const priorRecords=readJSON('docs/redesign/site-localization.json')?.records||[];
+  const trackedSet=new Set([...priorRecords.map(r=>r.path),...harnessCoevolutionTracked]);
+  const pairs=localeRegistry(priorRecords), records=[], unresolved=[];
   const {classifyPath}=require('./engineering-tracks.cjs');
   const {knowledgeFigure}=require('./knowledge-atlas.cjs');
   const {manifest: reportManifest}=require('./localize-reports.cjs');
   const {files: phase179Files}=require('./phase179-render.cjs');
   const reportOwned=new Set(reportManifest.flatMap(r=>[r.source,r.en,r.zh]));
   const phase179Owned=new Set(phase179Files);
-  for(const file of htmlFiles()) {
+  const targetFiles=htmlFiles().filter(file=>trackedSet.has(file)||!file.includes('/')||file.startsWith('studio/')||file.startsWith('articles/'));
+  for(const file of targetFiles) {
     const absolute=path.join(root,file);let html=fs.readFileSync(absolute,'utf8');
-    const en=!/<html\b[^>]*lang=["']zh/i.test(html), pair=pairs.get(file);
+    const pair=pairs.get(file);
+    if(pair&&pair.en===file&&/<html\b[^>]*\blang=["']zh[^"']*["']/i.test(html))html=html.replace(/(<html\b[^>]*\blang=)["']zh[^"']*["']/i,'$1"en"');
+    if(!/<body\b[^>]*>/i.test(html)&&/<main\b/i.test(html))html=html.replace(/^(<!doctype html>\s*<html\b[^>]*>)([\s\S]*?)(<main\b[\s\S]*?)(?:<\/html>\s*)?$/i,'$1<head>$2</head><body>$3</body></html>');
+    const en=!/<html\b[^>]*lang=["']zh/i.test(html);
     if(!pair)unresolved.push(file);
     const isReportOrPhase179=(reportOwned.has(file)&&html.includes('<!-- kee-report-localization-navigation:start -->'))||phase179Owned.has(file);
     if(reportOwned.has(file)&&html.includes('<!-- kee-report-localization-navigation:start -->')) {

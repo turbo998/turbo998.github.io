@@ -26,7 +26,7 @@ module.exports = function build({root, inventory, readingRecords, archivePages, 
     return ui.card(file,zh,{id:`module-${scene.id}`,scene:scene.sceneId,number:scene.id.toUpperCase(),badge:ui.sections.find(([id])=>id===category(scene)).slice(1),title:sceneNames[scene.id],finding:['Independent source · native page','独立来源 · 原生页面'],description:sourceNote(info,zh),url:target,links:[link(['Open original resource','打开原始资源'],target)]});
   };
   function extensions(file,zh) {
-    return catalog.extensions.map((item,i)=>ui.card(file,zh,{...item,number:String(tracks.length+1+i).padStart(2,'0'),url:item.links[0].url}));
+    return catalog.extensions.map((item,i)=>ui.card(file,zh,{...item,links:item.links.map(l=>({...l,url:edition(l.url,zh)})),number:String(tracks.length+1+i).padStart(2,'0'),url:edition(item.links[0].url,zh)}));
   }
   function trackCards(file,zh) {
     return tracks.map(([track,en,cn],i)=> {
@@ -37,7 +37,8 @@ module.exports = function build({root, inventory, readingRecords, archivePages, 
   function nightlyVisual(zh) {
     const labRoot = path.join(root, 'generative-visual-lab');
     const manifests = fs.readdirSync(labRoot).filter(file=>/^nightly-visual-\d{4}-\d{2}-\d{2}\.json$/.test(file)).sort().reverse();
-    return manifests.flatMap(file=>JSON.parse(fs.readFileSync(path.join(labRoot,file),'utf8')).rounds.map(round=>{
+    const seen = new Set();
+    return manifests.flatMap(file=>JSON.parse(fs.readFileSync(path.join(labRoot,file),'utf8')).rounds.filter(round=>{if(seen.has(round.slug))return false;seen.add(round.slug);return true;}).map(round=>{
       const base = `animation/demos/${round.slug}`;
       const report = JSON.parse(fs.readFileSync(path.join(root,base,'report.json'),'utf8'));
       const passed = report.checks.filter(check=>check.passed).length;
@@ -55,6 +56,7 @@ module.exports = function build({root, inventory, readingRecords, archivePages, 
     const suffix = zh?'':'.en';
     const lang = `?lang=${zh?'zh-CN':'en'}`;
     return [
+      {id:'agent-harness-coevolution',track:'benchmarks',stages:['architecture','evaluation','demos','resources'],badge:['HARNESS / CO-EVOLUTION','HARNESS / 模型协同演进'],title:['Agent Harness x Frontier Model Co-Evolution (Gemini 4 Carbon · GPT-6.2 Sol · Grok 4.7)','随模型升级持续演进 Agent Harness：120 个 Skills 审计、上下文悬崖修复与模型协同实战报告'],finding:['2026-11-18 · 120 skills audited · 38.6 KB -> 8.02 KB (-79.2%) · 1.2% -> 100.0% router visibility · 1,390 -> 84 lines (-94.0%)','2026-11-18 · 120 个 Skills 审计 · 描述预算 -79.2% (38.6 KB → 8.02 KB) · 路由可见率 1.2% → 100.0% · 主文件 -94.0%'],description:['Empirical audit of 120 Copilot and Azure skills (113.5 MB -> 56.5 MB, -50.2%): eliminating the 12 KB <available_skills> truncation cliff, refactoring monolithic SKILL.md via progressive disclosure, stripping legacy model crutches, and routing across Gemini 4 Carbon, GPT-6.2 Sol, Grok 4.7, and Gemini 3.8 Flash.','基于 120 个本地 Skills（113.5 MB → 56.5 MB，-50.2%）的遥测审计与重构实录：消除 <available_skills> 12 KB 截断悬崖、恢复 62/62 语义路由可见性、OpenClaw 渐进式披露瘦身（1,390 → 84 行）、清理旧模型硬编码拐杖，建立 Gemini 4 Carbon · GPT-6.2 Sol · Grok 4.7 · Gemini 3.8 Flash 协同矩阵与五步演进法。'],links:[link(['Interactive presenter workbench','5-Tab 交互演示工作台'],zh?'workshops/agent-harness-coevolution/index.html':'workshops/agent-harness-coevolution/index.en.html'),link(['Illustrated technical report','图文技术报告'],zh?'articles/agent-harness-coevolution.html':'articles/agent-harness-coevolution.en.html'),link(['7-Card 4:5 visual deck','7-Card 4:5 汇报卡组'],zh?'workshops/agent-harness-coevolution/cards.zh.html':'workshops/agent-harness-coevolution/cards.html'),link(['Before/After chart SVG','优化前后实测对比图 SVG'],zh?'workshops/agent-harness-coevolution/assets/01-hero-before-after.zh.svg':'workshops/agent-harness-coevolution/assets/01-hero-before-after.en.svg')]},
       require('./nightly-ai-infra.cjs').resource(zh),
       require('./daytime-ai-infra.cjs').resource(zh),
       ...nightlyVisual(zh),
@@ -152,6 +154,8 @@ module.exports = function build({root, inventory, readingRecords, archivePages, 
     }
     write(file,ui.shell(file,zh,t(zh,'Complete archive','完整档案'),body));
   }
+  require('./nightly-ai-infra.cjs').build(root);
+  require('./daytime-ai-infra.cjs').build(root);
   let legacy = fs.readFileSync(path.join(root,'studio/zh-index.html'),'utf8').replace(/(href|src|action|data-counterpart|data-search-root)="([^"]+)"/g,(all,attr,value)=>/^(?:https?:|data:|#)/.test(value)?all:`${attr}="${path.posix.normalize('studio/'+value)}"`);
   legacy=legacy.replace('<script src="assets/editorial/theme-init.js"></script>','<script src="assets/editorial/legacy-routes.js"></script><script src="assets/editorial/theme-init.js"></script>');
   legacy=legacy.replace('</main>',`<details class="section legacy-scenes"><summary>旧场景直达 / Legacy scenario links</summary>${ui.grid(inventory.scenes.map(scene=>sceneCard(scene,'frontier-ai-studio.html',true)))}</details></main>`);

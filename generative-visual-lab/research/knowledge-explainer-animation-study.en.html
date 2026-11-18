@@ -1,14 +1,361 @@
-<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Visual Lab Research</title><script>(()=>{const param=new URLSearchParams(location.search).get("scoutTheme");const theme=param||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");document.documentElement.setAttribute("data-theme",theme)})();</script><link rel="stylesheet" href="../assets/theme.css"><main class="shell"><a href="../">← 实验室</a><pre style="white-space:pre-wrap;line-height:1.9;font:inherit"># Knowledge-Explainer Animation Production Research Monograph: The `one-sentence-video` Engine &amp; Reverse Engineering of Three Benchmark Short Videos
+<!doctype html>
+<html lang="en" data-theme="dark" data-reading-shell="document"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Knowledge-Explainer Animation Production Research Monograph: The one-sentence-video Engine &amp; Reverse Engineering of Three Benchmark Short Videos — Qi Chen</title><meta name="reading-migration" content="R6"><link rel="stylesheet" href="../../assets/reading-shell.css"><script src="../../assets/reading-shell.js"></script><script src="../../assets/editorial/search-index.js" defer></script><script src="../../assets/editorial/search.js" defer></script><style id="site-remediation-style">/* Embedded by integrate-dedicated.cjs so sealed report CSP remains unchanged. */
+.kee-dedicated-nav {
+  all: initial; box-sizing: border-box; position: relative; display: flex;
+  flex-wrap: wrap; align-items: center; gap: 6px 14px; width: 100%;
+  padding: 12px 18px; margin: 0 0 16px; border: 1px solid #314361;
+  background: #101A30; color: #EEF3FF; font: 13px/1.5 system-ui, sans-serif;
+  text-align: left; isolation: isolate; color-scheme: dark;
+}
+.kee-dedicated-nav a {
+  all: revert; box-sizing: border-box; display: inline-block; padding: 4px 0;
+  color: #9AABFF; background: transparent; font: inherit; text-decoration: underline;
+  text-underline-offset: 3px; border: 0; border-radius: 0; box-shadow: none;
+}
+.kee-dedicated-nav a:focus-visible { outline: 3px solid #56DDCD; outline-offset: 3px; }
+.kee-dedicated-nav .kee-dedicated-identity { font-weight: 700; color: #EEF3FF; }
+.kee-dedicated-nav .kee-dedicated-language {
+  all: revert; display: block; flex-basis: 100%; color: #ADBBD1; font: 12px/1.5 system-ui, sans-serif;
+}
+.kee-dedicated-native-link { display: block; padding: 22px; color: #1858a8; background: #f8fafc; font: 15px/1.6 system-ui, sans-serif; }
+.kee-dedicated-native-link a { color: #1858a8; text-decoration: underline; }
+@media print { .kee-dedicated-nav { display: none; } }
 
-&gt; 🌐 **Language / 语言**: [中文 (`knowledge-explainer-animation-study.md`)](knowledge-explainer-animation-study.md) | **English**  
-&gt; 🎮 **Interactive Studio**: <a href="../demos/knowledge-explainer-studio/">Knowledge Explainer Animation Studio (`demos/knowledge-explainer-studio/`)</a> · <a href="../demos/knowledge-explainer-studio/test-report-cards.html">7-Card 4:5 Visual Evaluation Report (`test-report-cards.html`)</a>
+/* Professional primary navigation: long section names reflow, never scroll inside the header. */
+[data-professional-header]{box-sizing:border-box;display:grid!important;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:18px!important;width:100%;max-width:none;height:auto!important;min-height:0!important;padding:18px 24px!important;margin:0 0 16px;position:relative;overflow:visible!important;background:#101A30;color:#EEF3FF;border:1px solid #314361;font:13px/1.5 system-ui,sans-serif;isolation:isolate;color-scheme:dark}
+[data-professional-header] *{box-sizing:border-box;min-width:0;max-height:none}
+[data-professional-header] a{font:inherit;text-decoration:none;color:#9AABFF;overflow-wrap:anywhere;white-space:normal}
+[data-professional-header] .professional-identity{font-weight:750;color:#EEF3FF;white-space:nowrap;font-size:14px;margin:0}
+[data-professional-header] .professional-primary{display:grid;grid-template-columns:1.65fr 1.1fr 1.15fr 1.1fr 1.1fr;gap:6px;align-items:stretch;min-width:0}
+[data-professional-header] .professional-primary a{display:flex;align-items:center;justify-content:center;padding:10px 9px;border:1px solid #314361;border-radius:12px;background:#172440;text-align:center;line-height:1.4;min-height:44px}
+[data-professional-header] .professional-primary a[aria-current=page]{background:#23375a;border-color:#56DDCD;color:#56DDCD}
+[data-professional-header] .professional-controls{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:4px;font-size:12px;margin:0;position:static}
+[data-professional-header] .professional-controls>a{display:flex;align-items:center;justify-content:center;padding:8px;min-height:40px;min-width:32px;border-radius:10px}
+[data-professional-header] .professional-context{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px 18px;padding-top:12px;border-top:1px solid #314361;font-size:12px;color:#ADBBD1;min-width:0;line-height:1.6}
+[data-professional-header] .professional-context>*{min-width:0;overflow-wrap:anywhere}
+[data-professional-header] .professional-context .kee-dedicated-language{flex-basis:100%;color:#ADBBD1}
+[data-professional-header] a:focus-visible{outline:3px solid #56DDCD;outline-offset:3px}
+[data-professional-header] a:hover{text-decoration:underline}
+[data-professional-header][data-perimeter-theme=light],:root[data-theme=light] .reading-header[data-professional-header]{background:#fff;color:#172440;border-color:#d4deee;color-scheme:light}
+[data-professional-header][data-perimeter-theme=light] a,:root[data-theme=light] .reading-header[data-professional-header] a{color:#3752a0}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a,:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a{background:#edf2ff;border-color:#d4deee}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a[aria-current],:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a[aria-current]{background:#dff6f0;color:#127b72;border-color:#127b72}
+@media(max-width:1150px){[data-professional-header]{grid-template-columns:minmax(0,1fr) auto;gap:12px!important}[data-professional-header] .professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header] .professional-controls{grid-column:2;grid-row:1}}
+@media(max-width:600px){[data-professional-header]{padding:14px 16px!important;gap:12px!important}[data-professional-header] .professional-primary{grid-template-columns:repeat(2,minmax(0,1fr))}[data-professional-header] .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:13px}[data-professional-header] .professional-controls{gap:0}[data-professional-header] .professional-controls>a{padding:6px;min-width:28px}}
+@media print{[data-professional-header]{display:none!important}}
+
+html{scroll-padding-top:108px}.reading-header,.kee-dedicated-nav,[data-professional-header]{position:sticky;top:0;z-index:1000;-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
+
+:root{--search-bg:#101a30;--search-soft:#172440;--search-ink:#eef3ff;--search-muted:#adbbd1;--search-line:#293956;--search-accent:#9aabff;--header-offset:108px}
+:root[data-reading-shell][data-theme=light],[data-perimeter-theme=light]{--search-bg:#fff;--search-soft:#e8eefb;--search-ink:#17233e;--search-muted:#4c5e7c;--search-line:#d5ddec;--search-accent:#354ec8}
+html{scroll-padding-top:var(--header-offset,108px)!important}
+.site-search,.site-search *{box-sizing:border-box!important;font-family:"Segoe UI",sans-serif;letter-spacing:normal;text-transform:none}
+.site-search{position:relative;display:flex;align-items:center;gap:5px;min-width:0;width:230px;max-width:100%;margin:0!important;padding:0!important;line-height:1.4;border:1px solid var(--search-line);border-radius:9px;background:var(--search-soft);color:var(--search-ink);isolation:isolate}
+.site-search input[type=search]{display:block;flex:1;min-width:0;width:100%;height:42px;margin:0;padding:9px 8px!important;font-size:12px!important;line-height:1.5;border:0!important;border-radius:9px;background:transparent!important;color:var(--search-ink)!important;box-shadow:none!important;appearance:none}
+.site-search input::placeholder{color:var(--search-muted);opacity:1}.site-search input:focus-visible{outline:2px solid var(--search-accent);outline-offset:2px}
+.site-search kbd{font:11px Consolas,monospace;color:var(--search-muted);padding:1px 5px;border:1px solid var(--search-line);border-radius:4px}
+.site-search button[type=submit]{flex:none;width:38px;min-width:38px;height:42px;min-height:42px;padding:0;margin:0;border:0;border-radius:8px;background:transparent;color:var(--search-accent);font-size:24px;cursor:pointer;box-shadow:none}
+.search-label,.search-status{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.site-search .search-results{position:absolute;top:calc(100% + 10px);right:0;z-index:1100;width:min(480px,calc(100vw - 32px));max-height:min(560px,65vh);overflow-y:auto;border:1px solid var(--search-line);border-radius:12px;background:var(--search-bg);color:var(--search-ink);padding:10px;box-shadow:0 12px 32px #0005;text-align:left}
+.site-search .search-results[hidden]{display:none!important}.search-results .search-group{margin:8px 6px 4px;font:11px/1.5 Consolas,monospace;color:var(--search-muted)}
+.site-search .search-results a{display:block!important;padding:10px!important;margin:3px 0!important;border:1px solid transparent!important;border-radius:7px;background:transparent;color:var(--search-ink)!important;font-size:13px!important;text-decoration:none!important;white-space:normal;overflow-wrap:anywhere;text-align:left!important;line-height:1.5!important}
+.site-search .search-results a[aria-selected=true],.site-search .search-results a:hover{border-color:var(--search-accent)!important;background:var(--search-soft)}
+.search-results a small{display:block;font-size:10px;color:var(--search-muted);margin-top:4px}.search-results p{margin:10px;font-size:13px;color:var(--search-muted)}
+.search-archive-summary{padding:20px;border:1px solid var(--search-line);border-radius:10px;background:var(--search-bg);color:var(--search-ink);margin:24px 0}.search-archive-summary h2{font-size:24px;margin:0 0 12px}.search-archive-summary li{margin:12px 0}.search-archive-summary a{color:var(--search-accent)}
+[data-professional-header]{position:sticky!important;top:0!important;z-index:1000!important;background:var(--search-bg)!important;--header-glass:rgba(16,26,48,.9);grid-template-columns:auto minmax(0,1fr) 230px auto!important}
+[data-professional-header][data-perimeter-theme=light],:root[data-reading-shell][data-theme=light] [data-professional-header]{--header-glass:rgba(255,255,255,.94)}
+[data-professional-header] .professional-mobile{display:none}.professional-mobile summary{min-width:38px;min-height:42px;display:grid;place-items:center;cursor:pointer;list-style:none}.professional-mobile summary::-webkit-details-marker{display:none}
+[data-professional-header] .professional-context{display:none}
+.professional-context-bar{padding:12px 24px;border-bottom:1px solid var(--search-line);background:var(--search-bg);color:var(--search-muted);font:12px/1.6 "Segoe UI",sans-serif;display:flex;flex-wrap:wrap;gap:8px 18px;overflow-wrap:anywhere}.professional-context-bar a{color:var(--search-accent)}
+@supports((backdrop-filter:blur(16px)) or (-webkit-backdrop-filter:blur(16px))){.site-header,[data-professional-header]{background:var(--header-glass)!important;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}}
+@media(max-width:1250px) and (min-width:701px){.header-inner{grid-template-columns:minmax(0,1fr) 230px auto!important;padding:12px 0;gap:12px!important}.desktop-nav{grid-row:2;grid-column:1/-1}.header-inner>.site-search{grid-column:2;grid-row:1}.header-inner>.controls{grid-column:3;grid-row:1}[data-professional-header]{grid-template-columns:minmax(0,1fr) 230px auto!important;gap:12px!important}[data-professional-header]>.professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header]>.site-search{grid-column:2;grid-row:1}[data-professional-header]>.professional-controls{grid-column:3;grid-row:1}:root{--header-offset:176px}}
+@media(max-width:700px){.header-inner{grid-template-columns:minmax(0,1fr) auto!important;padding:10px 0;gap:8px!important}.header-inner>.site-search{grid-row:2;grid-column:1/-1;width:100%}.header-inner>.controls{grid-column:2;grid-row:1}.site-search .search-results{width:100%;right:0}[data-professional-header]{grid-template-columns:minmax(0,1fr) auto!important;padding:10px 16px!important;gap:8px!important}[data-professional-header]>.professional-primary{display:none!important}[data-professional-header]>.site-search{grid-column:1/-1;grid-row:2;width:100%}[data-professional-header]>.professional-controls{grid-column:2;grid-row:1}[data-professional-header] .professional-mobile{display:block}[data-professional-header] .professional-mobile[open]>.professional-primary{position:absolute;top:100%;left:0;right:0;padding:16px;background:var(--search-bg);border-bottom:1px solid var(--search-line);display:grid;grid-template-columns:1fr 1fr;gap:8px}[data-professional-header] .professional-mobile .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:12px!important}:root{--header-offset:126px}}
+@media(prefers-reduced-transparency:reduce){.site-header,[data-professional-header]{background:var(--search-bg)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}}
+@media print{.site-search,.professional-context-bar{display:none!important}}
+
+@media(min-width:1251px){.header-inner{display:grid!important;grid-template-columns:auto minmax(0,1fr) 230px auto!important;gap:18px!important}.header-inner .desktop-nav{min-width:0}}
+
+html:has(.kee-dedicated-app-root){height:auto!important;overflow-x:hidden!important;overflow-y:auto!important}
+body:has([data-professional-header]){height:auto!important;overflow-x:clip!important;overflow-y:visible!important;padding-top:0!important}
+.demo-language-navigation{display:none!important}
+.stage-column,.telemetry-panel,.scene-pill,#timeline-slider{min-width:0}
+@media(max-width:1180px){.workspace,.template-tabs{grid-template-columns:minmax(0,1fr)!important}}
+
+.in-arena-frame .professional-context-bar,.in-arena-frame [data-knowledge-atlas]{display:none!important}
+.knowledge-graph-wide{display:block}.knowledge-graph-compact{display:none}@media(max-width:600px){.knowledge-graph-wide{display:none}.knowledge-graph-compact{display:block}}
+</style></head><body class="reading-page"><a class="reading-skip" href="#reading-main">Skip to content</a><header class="reading-header" data-professional-header><a class="professional-identity reading-brand kee-dedicated-identity identity" href="../../index.html">Qi Chen · @turbo998</a><div class="professional-primary" role="navigation" aria-label="Primary sections"><a href="../../studio/index.html" data-section="hub" data-nav-en-href="../../studio/index.html" data-nav-zh-href="../../studio/zh-index.html" data-nav-en-label="Frontier Transformation Engineering Hub" data-nav-zh-label="Frontier Transformation Engineering Hub" aria-current="page">Frontier Transformation Engineering Hub</a><a href="../../benchmarks.html" data-section="benchmarks" data-nav-en-href="../../benchmarks.html" data-nav-zh-href="../../zh-benchmarks.html" data-nav-en-label="Benchmark &amp; Eval Foundry" data-nav-zh-label="基准评测中心">Benchmark &amp; Eval Foundry</a><a href="../../github-radar.html" data-section="radar" data-nav-en-href="../../github-radar.html" data-nav-zh-href="../../zh-github-radar.html" data-nav-en-label="GitHub AI Signal Radar" data-nav-zh-label="GitHub AI 信号雷达">GitHub AI Signal Radar</a><a href="../../openrouter.html" data-section="routing" data-nav-en-href="../../openrouter.html" data-nav-zh-href="../../zh-openrouter.html" data-nav-en-label="Model Routing &amp; Telemetry" data-nav-zh-label="OpenRouter 模型遥测">Model Routing &amp; Telemetry</a><a href="../../about.html" data-section="profile" data-nav-en-href="../../about.html" data-nav-zh-href="../../zh-about.html" data-nav-en-label="Principal Architect Profile" data-nav-zh-label="首席架构师履历">Principal Architect Profile</a></div><form class="site-search" role="search" action="../../studio/archive.html" method="get" data-search-root="../../index.html" data-search-language="en"><label class="search-label" for="site-search-input">Search architecture, benchmarks, demos...</label><input id="site-search-input" name="q" type="search" placeholder="Search architecture, benchmarks, demos..." autocomplete="off" spellcheck="false" aria-keyshortcuts="/ Control+k Meta+k"><kbd aria-hidden="true">/</kbd><button type="submit" aria-label="Search all content">⌕</button><div class="search-results" id="site-search-results" hidden></div><span class="search-status" role="status" aria-live="polite"></span></form><div class="reading-controls professional-controls" aria-label="Site language and appearance"><a href="knowledge-explainer-animation-study.en.html" hreflang="en" lang="en" aria-current="page">EN</a><a href="knowledge-explainer-animation-study.html" data-reading-language hreflang="zh-CN" lang="zh-CN">中文</a><details class="professional-mobile"><summary aria-label="Open navigation">☰</summary><div class="professional-primary" role="navigation" aria-label="Mobile navigation"><a href="../../studio/index.html" data-section="hub" data-nav-en-href="../../studio/index.html" data-nav-zh-href="../../studio/zh-index.html" data-nav-en-label="Frontier Transformation Engineering Hub" data-nav-zh-label="Frontier Transformation Engineering Hub" aria-current="page">Frontier Transformation Engineering Hub</a><a href="../../benchmarks.html" data-section="benchmarks" data-nav-en-href="../../benchmarks.html" data-nav-zh-href="../../zh-benchmarks.html" data-nav-en-label="Benchmark &amp; Eval Foundry" data-nav-zh-label="基准评测中心">Benchmark &amp; Eval Foundry</a><a href="../../github-radar.html" data-section="radar" data-nav-en-href="../../github-radar.html" data-nav-zh-href="../../zh-github-radar.html" data-nav-en-label="GitHub AI Signal Radar" data-nav-zh-label="GitHub AI 信号雷达">GitHub AI Signal Radar</a><a href="../../openrouter.html" data-section="routing" data-nav-en-href="../../openrouter.html" data-nav-zh-href="../../zh-openrouter.html" data-nav-en-label="Model Routing &amp; Telemetry" data-nav-zh-label="OpenRouter 模型遥测">Model Routing &amp; Telemetry</a><a href="../../about.html" data-section="profile" data-nav-en-href="../../about.html" data-nav-zh-href="../../zh-about.html" data-nav-en-label="Principal Architect Profile" data-nav-zh-label="首席架构师履历">Principal Architect Profile</a></div></details><a data-reading-theme="light" href="knowledge-explainer-animation-study.en.html?theme=light" aria-label="Light theme">☀</a><a data-reading-theme="dark" href="knowledge-explainer-animation-study.en.html?theme=dark" aria-label="Dark theme">◐</a></div><div class="professional-context" aria-label="Back to context"><a href="../../studio/index.html">← Engineering Hub</a> · <a href="../../studio/animation.html">Parent topic</a></div></header><div class="professional-context-bar"><a href="../../studio/index.html">← Engineering Hub</a> · <a class="reading-context" href="../../studio/animation.html">Parent topic</a></div><!-- site-remediation-knowledge:start --><figure class="knowledge-figure" data-knowledge-atlas="animation" style="margin:20px auto;max-width:1120px;padding:0 20px;box-sizing:border-box"><style>.knowledge-graph-wide{display:block}.knowledge-graph-compact{display:none}@media(max-width:600px){.knowledge-graph-wide{display:none}.knowledge-graph-compact{display:block}}</style><svg xmlns="http://www.w3.org/2000/svg" lang="en" class="knowledge-graph-compact" role="img" aria-labelledby="knowledge-609a6d01bb0a-compact-title knowledge-609a6d01bb0a-compact-desc" viewBox="0 0 360 1042" width="360" style="width:100%;height:auto;max-width:560px;margin:0 auto;font-family:system-ui,sans-serif"><title id="knowledge-609a6d01bb0a-compact-title">Knowledge-Explainer Animation Production Research Monograph: The one-sentence-video Engine &amp; Reverse Engineering of Three Benchmark Short Videos — Qi Chen</title><desc id="knowledge-609a6d01bb0a-compact-desc">Explanation &amp; scene intent: Narrative · storyboard · camera constraints → defines the scene model → Geometry &amp; physical model: 4D Gaussian · Plücker rays · procedural geometry → drives time and motion → Motion, camera &amp; interaction: Timeline · springs · motion brush · 6DoF camera → renders explanatory frames → Rendering &amp; accessible playback: SVG / Canvas / WebGL · reduced-motion fallback → checks visual evidence → Workbench &amp; source evaluation: Compare frames and mechanisms, not unrelated scores</desc><rect width="360" height="1042" rx="16" fill="#081525" stroke="#284566"/><rect x="16" y="14" width="224" height="22" rx="11" fill="#112844" stroke="#2d5a88"/><text x="28" y="29" fill="#56ddcd" font-size="11.5" font-weight="700"><tspan x="28" dy="0">DATA FLOW &amp; ARCHITECTURE</tspan></text><text x="20" y="58" fill="#eef5ff" font-size="18" font-weight="700"><tspan x="20" dy="0">Knowledge-Explainer Animation</tspan><tspan x="20" dy="25.2">Production Research</tspan><tspan x="20" dy="25.2">Monograph: The</tspan><tspan x="20" dy="25.2">one-sentence-video Engine &amp;</tspan><tspan x="20" dy="25.2">Reverse Engineering of Three</tspan><tspan x="20" dy="25.2">Benchmark Short Videos — Qi</tspan><tspan x="20" dy="25.2">Chen</tspan></text><text x="20" y="230" fill="#a9b8ce" font-size="12.5" font-weight="400"><tspan x="20" dy="0">Conceptual data flow · arrows show stage handoffs</tspan></text><g data-concept="1"><rect x="16" y="252" width="328" height="113" rx="12" fill="#0e2036" stroke="#38597d"/><rect x="16" y="252" width="328" height="4" rx="2" fill="#38bdf8"/><text x="30" y="275" fill="#38bdf8" font-size="11.5" font-weight="700"><tspan x="30" dy="0">01 · INGRESS</tspan></text><text x="30" y="298" fill="#f0f6ff" font-size="16.5" font-weight="700"><tspan x="30" dy="0">Explanation &amp; scene intent</tspan></text><text x="30" y="325" fill="#c4d5e8" font-size="13" font-weight="400"><tspan x="30" dy="0">Narrative · storyboard · camera</tspan><tspan x="30" dy="18.2">constraints</tspan></text></g><g data-relationship="defines the scene model"><path d="M34 367 V405" fill="none" stroke="#56ddcd" stroke-width="2.2"/><path d="M29 399 L34 406 L39 399" fill="none" stroke="#56ddcd" stroke-width="2.2"/><text x="50" y="389" fill="#8eeadf" font-size="12.5" font-weight="600"><tspan x="50" dy="0">01→02 defines the scene model</tspan></text></g><g data-concept="2"><rect x="16" y="411" width="328" height="113" rx="12" fill="#122842" stroke="#38597d"/><rect x="16" y="411" width="328" height="4" rx="2" fill="#34d399"/><text x="30" y="434" fill="#34d399" font-size="11.5" font-weight="700"><tspan x="30" dy="0">02 · GROUNDING</tspan></text><text x="30" y="457" fill="#f0f6ff" font-size="16.5" font-weight="700"><tspan x="30" dy="0">Geometry &amp; physical model</tspan></text><text x="30" y="484" fill="#c4d5e8" font-size="13" font-weight="400"><tspan x="30" dy="0">4D Gaussian · Plücker rays ·</tspan><tspan x="30" dy="18.2">procedural geometry</tspan></text></g><g data-relationship="drives time and motion"><path d="M34 526 V564" fill="none" stroke="#56ddcd" stroke-width="2.2"/><path d="M29 558 L34 565 L39 558" fill="none" stroke="#56ddcd" stroke-width="2.2"/><text x="50" y="548" fill="#8eeadf" font-size="12.5" font-weight="600"><tspan x="50" dy="0">02→03 drives time and motion</tspan></text></g><g data-concept="3"><rect x="16" y="570" width="328" height="113" rx="12" fill="#0e2036" stroke="#38597d"/><rect x="16" y="570" width="328" height="4" rx="2" fill="#a78bfa"/><text x="30" y="593" fill="#a78bfa" font-size="11.5" font-weight="700"><tspan x="30" dy="0">03 · POLICY GATE</tspan></text><text x="30" y="616" fill="#f0f6ff" font-size="16.5" font-weight="700"><tspan x="30" dy="0">Motion, camera &amp; interaction</tspan></text><text x="30" y="643" fill="#c4d5e8" font-size="13" font-weight="400"><tspan x="30" dy="0">Timeline · springs · motion brush ·</tspan><tspan x="30" dy="18.2">6DoF camera</tspan></text></g><g data-relationship="renders explanatory frames"><path d="M34 685 V723" fill="none" stroke="#56ddcd" stroke-width="2.2"/><path d="M29 717 L34 724 L39 717" fill="none" stroke="#56ddcd" stroke-width="2.2"/><text x="50" y="707" fill="#8eeadf" font-size="12.5" font-weight="600"><tspan x="50" dy="0">03→04 renders explanatory frames</tspan></text></g><g data-concept="4"><rect x="16" y="729" width="328" height="136" rx="12" fill="#122842" stroke="#38597d"/><rect x="16" y="729" width="328" height="4" rx="2" fill="#f59e0b"/><text x="30" y="752" fill="#f59e0b" font-size="11.5" font-weight="700"><tspan x="30" dy="0">04 · EXECUTION</tspan></text><text x="30" y="775" fill="#f0f6ff" font-size="16.5" font-weight="700"><tspan x="30" dy="0">Rendering &amp; accessible</tspan><tspan x="30" dy="23.099999999999998">playback</tspan></text><text x="30" y="825" fill="#c4d5e8" font-size="13" font-weight="400"><tspan x="30" dy="0">SVG / Canvas / WebGL ·</tspan><tspan x="30" dy="18.2">reduced-motion fallback</tspan></text></g><g data-relationship="checks visual evidence"><path d="M34 867 V905" fill="none" stroke="#56ddcd" stroke-width="2.2"/><path d="M29 899 L34 906 L39 899" fill="none" stroke="#56ddcd" stroke-width="2.2"/><text x="50" y="889" fill="#8eeadf" font-size="12.5" font-weight="600"><tspan x="50" dy="0">04→05 checks visual evidence</tspan></text></g><g data-concept="5"><rect x="16" y="911" width="328" height="113" rx="12" fill="#0e2036" stroke="#38597d"/><rect x="16" y="911" width="328" height="4" rx="2" fill="#56ddcd"/><text x="30" y="934" fill="#56ddcd" font-size="11.5" font-weight="700"><tspan x="30" dy="0">05 · AUDIT &amp; EVAL</tspan></text><text x="30" y="957" fill="#f0f6ff" font-size="16.5" font-weight="700"><tspan x="30" dy="0">Workbench &amp; source evaluation</tspan></text><text x="30" y="984" fill="#c4d5e8" font-size="13" font-weight="400"><tspan x="30" dy="0">Compare frames and mechanisms, not</tspan><tspan x="30" dy="18.2">unrelated scores</tspan></text></g></svg><svg xmlns="http://www.w3.org/2000/svg" lang="en" class="knowledge-graph-wide" role="img" aria-labelledby="knowledge-609a6d01bb0a-title knowledge-609a6d01bb0a-desc" viewBox="0 0 1080 487" width="1080" style="width:100%;height:auto;max-width:1080px;margin:0 auto;font-family:system-ui,sans-serif"><title id="knowledge-609a6d01bb0a-title">Knowledge-Explainer Animation Production Research Monograph: The one-sentence-video Engine &amp; Reverse Engineering of Three Benchmark Short Videos — Qi Chen</title><desc id="knowledge-609a6d01bb0a-desc">Explanation &amp; scene intent: Narrative · storyboard · camera constraints → defines the scene model → Geometry &amp; physical model: 4D Gaussian · Plücker rays · procedural geometry → drives time and motion → Motion, camera &amp; interaction: Timeline · springs · motion brush · 6DoF camera → renders explanatory frames → Rendering &amp; accessible playback: SVG / Canvas / WebGL · reduced-motion fallback → checks visual evidence → Workbench &amp; source evaluation: Compare frames and mechanisms, not unrelated scores</desc><rect width="1080" height="487" rx="16" fill="#081525" stroke="#284566"/><rect x="24" y="16" width="292" height="24" rx="12" fill="#102742" stroke="#2d5a88"/><text x="38" y="32" fill="#56ddcd" font-size="11.5" font-weight="700"><tspan x="38" dy="0">DATA FLOW &amp; KEY TAKEAWAYS ARCHITECTURE</tspan></text><rect x="646" y="16" width="196" height="24" rx="12" fill="#0d2238" stroke="#254b6e"/><text x="660" y="32" fill="#7ce8d8" font-size="11.5" font-weight="600"><tspan x="660" dy="0">──▶ Stage Data &amp; Context Flow</tspan></text><rect x="852" y="16" width="204" height="24" rx="12" fill="#15203c" stroke="#3b4278"/><text x="866" y="32" fill="#c4b5fd" font-size="11.5" font-weight="600"><tspan x="866" dy="0">◆ Policy Gate &amp; Key Notes</tspan></text><text x="24" y="62" fill="#f2f7ff" font-size="18" font-weight="700"><tspan x="24" dy="0">Knowledge-Explainer Animation Production Research Monograph: The</tspan><tspan x="24" dy="25.2">one-sentence-video Engine &amp; Reverse Engineering of Three Benchmark</tspan><tspan x="24" dy="25.2">Short Videos — Qi Chen</tspan></text><g data-concept="1"><rect x="24" y="131" width="187" height="186" rx="12" fill="#0d1e34" stroke="#335277" stroke-width="1.2"/><rect x="24" y="131" width="187" height="5" rx="2.5" fill="#38bdf8"/><rect x="34" y="144" width="167" height="22" rx="6" fill="#081424" stroke="#223b59"/><text x="40" y="159" fill="#38bdf8" font-size="11.5" font-weight="700"><tspan x="40" dy="0">01 · INGRESS</tspan></text><text x="36" y="185" fill="#f4f8ff" font-size="13.5" font-weight="700"><tspan x="36" dy="0">Explanation &amp; scene</tspan><tspan x="36" dy="18.9">intent</tspan></text><path d="M36 219 H199" stroke="#233b57" stroke-width="1"/><text x="36" y="237" fill="#c5d6e8" font-size="12" font-weight="400"><tspan x="36" dy="0">Narrative · storyboard ·</tspan><tspan x="36" dy="16.799999999999997">camera constraints</tspan></text></g><g data-relationship="defines the scene model"><path d="M213 224 H231" fill="none" stroke="#56ddcd" stroke-width="2.4"/><path d="M225 219 L232 224 L225 229" fill="none" stroke="#56ddcd" stroke-width="2.4"/><rect x="24" y="325" width="187" height="44" rx="8" fill="#0b2239" stroke="#2b5b6c"/><text x="34" y="344" fill="#7ce8d8" font-size="11.5" font-weight="600"><tspan x="34" dy="0">01→02 defines the scene</tspan><tspan x="34" dy="16.099999999999998">model</tspan></text></g><g data-concept="2"><rect x="235" y="131" width="187" height="186" rx="12" fill="#112640" stroke="#335277" stroke-width="1.2"/><rect x="235" y="131" width="187" height="5" rx="2.5" fill="#34d399"/><rect x="245" y="144" width="167" height="22" rx="6" fill="#081424" stroke="#223b59"/><text x="251" y="159" fill="#34d399" font-size="11.5" font-weight="700"><tspan x="251" dy="0">02 · GROUNDING</tspan></text><text x="247" y="185" fill="#f4f8ff" font-size="13.5" font-weight="700"><tspan x="247" dy="0">Geometry &amp; physical</tspan><tspan x="247" dy="18.9">model</tspan></text><path d="M247 219 H410" stroke="#233b57" stroke-width="1"/><text x="247" y="237" fill="#c5d6e8" font-size="12" font-weight="400"><tspan x="247" dy="0">4D Gaussian · Plücker</tspan><tspan x="247" dy="16.799999999999997">rays · procedural</tspan><tspan x="247" dy="16.799999999999997">geometry</tspan></text></g><g data-relationship="drives time and motion"><path d="M424 224 H442" fill="none" stroke="#56ddcd" stroke-width="2.4"/><path d="M436 219 L443 224 L436 229" fill="none" stroke="#56ddcd" stroke-width="2.4"/><rect x="235" y="325" width="187" height="44" rx="8" fill="#0b2239" stroke="#2b5b6c"/><text x="245" y="344" fill="#7ce8d8" font-size="11.5" font-weight="600"><tspan x="245" dy="0">02→03 drives time and</tspan><tspan x="245" dy="16.099999999999998">motion</tspan></text></g><g data-concept="3"><rect x="446" y="131" width="187" height="186" rx="12" fill="#0d1e34" stroke="#335277" stroke-width="1.2"/><rect x="446" y="131" width="187" height="5" rx="2.5" fill="#a78bfa"/><rect x="456" y="144" width="167" height="22" rx="6" fill="#081424" stroke="#223b59"/><text x="462" y="159" fill="#a78bfa" font-size="11.5" font-weight="700"><tspan x="462" dy="0">03 · POLICY GATE</tspan></text><text x="458" y="185" fill="#f4f8ff" font-size="13.5" font-weight="700"><tspan x="458" dy="0">Motion, camera &amp;</tspan><tspan x="458" dy="18.9">interaction</tspan></text><path d="M458 219 H621" stroke="#233b57" stroke-width="1"/><text x="458" y="237" fill="#c5d6e8" font-size="12" font-weight="400"><tspan x="458" dy="0">Timeline · springs ·</tspan><tspan x="458" dy="16.799999999999997">motion brush · 6DoF</tspan><tspan x="458" dy="16.799999999999997">camera</tspan></text></g><g data-relationship="renders explanatory frames"><path d="M635 224 H653" fill="none" stroke="#56ddcd" stroke-width="2.4"/><path d="M647 219 L654 224 L647 229" fill="none" stroke="#56ddcd" stroke-width="2.4"/><rect x="446" y="325" width="187" height="44" rx="8" fill="#0b2239" stroke="#2b5b6c"/><text x="456" y="344" fill="#7ce8d8" font-size="11.5" font-weight="600"><tspan x="456" dy="0">03→04 renders</tspan><tspan x="456" dy="16.099999999999998">explanatory frames</tspan></text></g><g data-concept="4"><rect x="657" y="131" width="187" height="186" rx="12" fill="#112640" stroke="#335277" stroke-width="1.2"/><rect x="657" y="131" width="187" height="5" rx="2.5" fill="#f59e0b"/><rect x="667" y="144" width="167" height="22" rx="6" fill="#081424" stroke="#223b59"/><text x="673" y="159" fill="#f59e0b" font-size="11.5" font-weight="700"><tspan x="673" dy="0">04 · EXECUTION</tspan></text><text x="669" y="185" fill="#f4f8ff" font-size="13.5" font-weight="700"><tspan x="669" dy="0">Rendering &amp;</tspan><tspan x="669" dy="18.9">accessible playback</tspan></text><path d="M669 219 H832" stroke="#233b57" stroke-width="1"/><text x="669" y="237" fill="#c5d6e8" font-size="12" font-weight="400"><tspan x="669" dy="0">SVG / Canvas / WebGL ·</tspan><tspan x="669" dy="16.799999999999997">reduced-motion fallback</tspan></text></g><g data-relationship="checks visual evidence"><path d="M846 224 H864" fill="none" stroke="#56ddcd" stroke-width="2.4"/><path d="M858 219 L865 224 L858 229" fill="none" stroke="#56ddcd" stroke-width="2.4"/><rect x="657" y="325" width="187" height="44" rx="8" fill="#0b2239" stroke="#2b5b6c"/><text x="667" y="344" fill="#7ce8d8" font-size="11.5" font-weight="600"><tspan x="667" dy="0">04→05 checks visual</tspan><tspan x="667" dy="16.099999999999998">evidence</tspan></text></g><g data-concept="5"><rect x="868" y="131" width="187" height="186" rx="12" fill="#0d1e34" stroke="#335277" stroke-width="1.2"/><rect x="868" y="131" width="187" height="5" rx="2.5" fill="#56ddcd"/><rect x="878" y="144" width="167" height="22" rx="6" fill="#081424" stroke="#223b59"/><text x="884" y="159" fill="#56ddcd" font-size="11.5" font-weight="700"><tspan x="884" dy="0">05 · AUDIT &amp; EVAL</tspan></text><text x="880" y="185" fill="#f4f8ff" font-size="13.5" font-weight="700"><tspan x="880" dy="0">Workbench &amp; source</tspan><tspan x="880" dy="18.9">evaluation</tspan></text><path d="M880 219 H1043" stroke="#233b57" stroke-width="1"/><text x="880" y="237" fill="#c5d6e8" font-size="12" font-weight="400"><tspan x="880" dy="0">Compare frames and</tspan><tspan x="880" dy="16.799999999999997">mechanisms, not unrelated</tspan><tspan x="880" dy="16.799999999999997">scores</tspan></text></g><rect x="868" y="325" width="187" height="44" rx="8" fill="#0e2538" stroke="#2e5470"/><text x="878" y="344" fill="#93c5fd" font-size="11.5" font-weight="600"><tspan x="878" dy="0">05 Sink · Verified</tspan><tspan x="878" dy="16.099999999999998">Evidence</tspan></text><g data-takeaway="1"><rect x="24" y="383" width="334" height="88" rx="10" fill="#0b1a2e" stroke="#284466"/><rect x="24" y="395" width="4" height="64" rx="2" fill="#38bdf8"/><text x="38" y="408" fill="#38bdf8" font-size="11.5" font-weight="700"><tspan x="38" dy="0">TAKEAWAY 01 · END-TO-END DATA FLOW</tspan></text><text x="38" y="429" fill="#d5e4f5" font-size="12" font-weight="400"><tspan x="38" dy="0">Left-to-right pipeline from Explanation &amp;</tspan><tspan x="38" dy="16.799999999999997">scene intent to Workbench &amp; source</tspan><tspan x="38" dy="16.799999999999997">evaluation with explicit handoffs.</tspan></text></g><g data-takeaway="2"><rect x="373" y="383" width="334" height="88" rx="10" fill="#0b1a2e" stroke="#284466"/><rect x="373" y="395" width="4" height="64" rx="2" fill="#a78bfa"/><text x="387" y="408" fill="#a78bfa" font-size="11.5" font-weight="700"><tspan x="387" dy="0">TAKEAWAY 02 · CONTROL &amp; POLICY GATE</tspan></text><text x="387" y="429" fill="#d5e4f5" font-size="12" font-weight="400"><tspan x="387" dy="0">Core boundary at Motion, camera &amp;</tspan><tspan x="387" dy="16.799999999999997">interaction: Timeline · springs · motion</tspan><tspan x="387" dy="16.799999999999997">brush · 6DoF camera</tspan></text></g><g data-takeaway="3"><rect x="722" y="383" width="334" height="88" rx="10" fill="#0b1a2e" stroke="#284466"/><rect x="722" y="395" width="4" height="64" rx="2" fill="#34d399"/><text x="736" y="408" fill="#34d399" font-size="11.5" font-weight="700"><tspan x="736" dy="0">TAKEAWAY 03 · EVIDENCE &amp; BOUNDARY</tspan></text><text x="736" y="429" fill="#d5e4f5" font-size="12" font-weight="400"><tspan x="736" dy="0">Compare frames and mechanisms, not unrelated</tspan><tspan x="736" dy="16.799999999999997">scores · Conceptual flow, not measured</tspan><tspan x="736" dy="16.799999999999997">latency.</tspan></text></g></svg><figcaption style="font:13px/1.6 system-ui,sans-serif;margin:10px auto 0;max-width:1080px;color:#9fb2ca;overflow-wrap:anywhere">Architecture & data-flow blueprint: follow the left-to-right stage handoffs, policy gates, and three key takeaway callouts below (conceptual topology, not measured latency or rankings).</figcaption></figure><!-- site-remediation-knowledge:end --><aside id="reading-language-note" class="reading-language-note">Source text preserved. A distinct Chinese edition is available; editions may differ.</aside><main id="reading-main" tabindex="-1" class="reading-document"><div class="shell"><div><a href="../">← Lab Home</a><div><a href="knowledge-explainer-animation-study.en.html">🌐 中文 (HTML)</a> · <strong>English (HTML)</strong> · <a href="knowledge-explainer-animation-study.en.html">中文 (.md)</a> · <a href="knowledge-explainer-animation-study.en.html">English (.en.md)</a> · <a href="../demos/knowledge-explainer-studio/">🎬 Interactive Studio</a> · <a href="../demos/knowledge-explainer-studio/test-report-cards.en.html">📊 7-Card Deck</a></div></div><article class="reading-markdown"><h1 id="knowledge-explainer-animation-production-research-monograph-the-one-sentence-video-engine--reverse-engineering-of-three-benchmark-short-videos">Knowledge-Explainer Animation Production Research Monograph: The <code>one-sentence-video</code> Engine &amp; Reverse Engineering of Three Benchmark Short Videos</h1>
+<blockquote>
+<p>🌐 <strong>Language / 语言</strong>: 中文 HTML (<code>knowledge-explainer-animation-study.html</code>) | <strong>English</strong> | 中文 Markdown (<code>.md</code>) | English Markdown (<code>.en.md</code>)<br>🎮 <strong>Interactive Studio</strong>: Knowledge Explainer Animation Studio (<code>demos/knowledge-explainer-studio/</code>) · 7-Card 4:5 Visual Evaluation Report (<code>test-report-cards.html</code>)</p>
+</blockquote>
+<hr>
+<h2 id="executive-summary">Executive Summary</h2>
+<p>Technical and quantitative knowledge-explainer animations are undergoing a paradigm shift from manual After Effects keyframing and slide-deck screen recordings toward <strong>declarative storyboard contracts + programmatic Canvas/SVG/GSAP rendering + quantitative visual density gates</strong>. Conventional AI-generated technical videos consistently suffer from three failure modes:</p>
+<ol>
+<li><strong>The "AI Tech Uniform"</strong>: Unsolicited dark-blue backgrounds (<code>#0a0a1a</code>), cyan glowing grids (<code>#00f0ff</code>), and repetitive <code>back.out(1.7)</code> pop-in animations on every element;</li>
+<li><strong>Slide-Deck Flatness &amp; Freeze</strong>: Text slides in during the first <code>0.5s</code> and remains completely static for the next <code>4.5s</code>, leaving over 60% of the viewport empty;</li>
+<li><strong>Uncausal Stock Audio</strong>: Generic stock <code>whoosh</code> sound effects slapped onto every cut without stereo directional panning or beat-grid alignment.</li>
+</ol>
+<p>This monograph conducts a comprehensive reverse-engineering study and real-time 60FPS synthesis experiment combining the industrial-grade <strong><code>one-sentence-video</code> autonomous video generation engine (built on HyperFrames <code>0.7.87</code>)</strong> with three viral benchmark knowledge-explainer short videos from Douyin and Bilibili:</p>
+<ul>
+<li><strong>Part I</strong>: Dissects <code>one-sentence-video</code>'s <strong>Steps 0–6 closed-loop pipeline</strong>, the <strong>4-dimensional orthogonal Style Ledger (<code>look × layout × motion × sound</code>, 20+3 presets)</strong>, <strong>19+3 measured Shot Cards</strong>, <strong><code>cut-the-curve</code> seam kinematics equations</strong>, <strong><code>process-gate.py</code> five-stage process gates</strong>, <strong><code>density-gate.py</code> six objective visual density operators</strong>, and the pure-Python <strong><code>bgm-gen.py</code> + <code>beat-snap.py</code> + <code>sfx-gen.py</code> causal audio stack</strong>.</li>
+<li><strong>Part II</strong>: Performs frame-by-frame visual, color-semantic, layout-topological, and narrative reverse engineering of three benchmark technical explainers:<ol>
+<li><strong>【Xiaozhe on Agents】<em>Choosing Between MCP, Skill, and Local Tools</em></strong> (<code>https://v.douyin.com/Pp5kMde2rMI/</code> · Bilibili <code>BV1nnnw6FE2V</code>) — Codified as <strong><code>xiaozhe-mcp-node-graph</code> (Dark Obsidian Progressive Node Tree &amp; Layered Decision Matrix)</strong>;</li>
+<li><strong>【Xiaozhe on LLMs】<em>Mastering RAG in One Video</em></strong> (<code>https://v.douyin.com/BMo58MQOIBM/</code>) — Codified as <strong><code>xiaozhe-rag-pipeline-flow</code> (4-Stage Pipeline Funnel &amp; <code>packet-hop-break</code> Token Flow)</strong>;</li>
+<li><strong>【The Fourth Chimpanzee】<em>Why One GPU in DeepSeek Generates $38/Day</em></strong> (<code>https://v.douyin.com/8m31BovOgQs/</code> · Bilibili <code>BV13cxv6SE9L</code>) — Codified as <strong><code>chimp-deepseek-unit-economics</code> (Light Editorial Compute Brick Matrix &amp; Quantitative Unit-Economics Ledger)</strong>.</li>
+</ol>
+</li>
+<li><strong>Part III</strong>: Establishes a cross-template evaluation matrix, measured <code>density-gate</code> benchmarks, and production-ready <code>STORYBOARD.md</code> + <code>style-ledger.json</code> recipes.</li>
+</ul>
+<hr>
+<h2 id="part-i-deep-dive-into-the-one-sentence-video-programmatic-video-engine">Part I: Deep Dive into the <code>one-sentence-video</code> Programmatic Video Engine</h2>
+<h3 id="11-why-a-single-self-contained-skill-anti-drift--single-source-of-truth">1.1 Why a Single Self-Contained Skill: Anti-Drift &amp; Single Source of Truth</h3>
+<p>In earlier multi-skill pipelines, separate skills for topic scripting, short-video orchestration, and tech-explainer rendering maintained competing color palettes and motion rules, causing severe style drift. <code>one-sentence-video</code> consolidates the entire production lifecycle into a <strong>single entrypoint backed by declarative <code>references/</code> ledgers and deterministic <code>assets/*.py</code> gate scripts</strong>:</p>
+<pre><code>User Natural-Language Prompt / Script / Technical Notes
+   │
+   ├─► Step 0 · Intake &amp; Project Card (≤3 clarifying questions; defaults: 1920×1080@30fps, 20–30s)
+   ├─► Step 1 · HyperFrames (0.7.87) Workspace Init (compositions/frames/ + audio/ + output/)
+   ├─► Step 2 · Visual-First STORYBOARD.md (card-index.py lookup across 19+3 measured cards + --energy-plan)
+   ├─► Step 3 · 3-Direction 1920×1080 PNG Bakeoff Gate (style-query.py → output/directions/{A,B,C}.png + palette-audit.py)
+   ├─► Step 4 · Per-Shot Registry Layout Gate (layout-index.py composition axis + catalog-search.py → registry-ledger.md)
+   ├─► Step 5 · Frame Synthesis &amp; Named Seam Stamping (cut-the-curve velocity matching + 8 renderer invariants)
+   ├─► Step 5.5 · Pure-Python Causal Audio Stack (bgm-gen.py → beat-grid.json → beat-snap.py ±50ms → sfx-gen.py)
+   └─► Step 6 · Dual Machine Gates &amp; Frame Extraction Proof (process-gate.py + draft MP4 + density-gate.py)
+</code></pre>
+<h4 id="tiered-text-budget-law">Tiered Text Budget Law</h4>
+<p>A knowledge explainer is not a teleprompter slide deck. <code>one-sentence-video</code> enforces strict per-element character budgets:</p>
+<ul>
+<li><strong>Hero Title</strong>: <code>4–8</code> CJK characters (<code>3–6</code> English words);</li>
+<li><strong>Sub-hook / Caption Bar</strong>: <code>≤ 10</code> CJK characters (<code>≤ 8</code> words);</li>
+<li><strong>Node Tag / Pill Badge</strong>: <code>≤ 6</code> CJK characters (<code>≤ 4</code> words);</li>
+<li><strong>Explanatory Paragraph Body</strong>: <strong><code>0</code> words (strictly banned)</strong>.</li>
+<li><strong>Golden Criterion</strong>: Any text that cannot be read within <code>1.5s</code> is no longer copy—it must either be converted into a structural visual event or treated as background texture (<code>repeated-text-texture</code>).</li>
+</ul>
+<hr>
+<h3 id="12-the-4d-orthogonal-style-ledger-look-×-layout-×-motion-×-sound--anti-ai-uniform-laws">1.2 The 4D Orthogonal Style Ledger (<code>look × layout × motion × sound</code>) &amp; Anti-AI Uniform Laws</h3>
+<p><code>references/style-ledger.json</code> decomposes visual style into four orthogonal engineering axes:</p>
+<p>$$\text{Style} = \text{Look}<em>{\text{atoms}} \times \text{Layout}</em>{\text{archetypes}} \times \text{Motion}<em>{\text{seams+routes}} \times \text{Sound}</em>{\text{bgm+motifs}}$$</p>
+<table>
+<thead>
+<tr>
+<th>Axis</th>
+<th>Engineering Contract &amp; Invariants</th>
+<th>Core Archetypes &amp; Primitives</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>1. <code>look</code> (Visual Atoms)</strong></td>
+<td>Defines canvas <code>bg</code>, primary <code>ink</code>, 1–4 semantic <code>accents</code>, typography stack (Display / Sans / Mono), and luminance flag <code>dark</code></td>
+<td><strong>15 Light Editorial Defaults</strong>: <code>paper-catalog</code> (<code>#F0ECE5</code>), <code>manifesto-poster</code> (<code>#FFFFFF</code> + <code>#D8000F</code>), <code>research-note</code> (<code>#EFE7D4</code> + <code>#2E4A2A</code>), <code>blueprint-report</code> (<code>#FDFAE7</code> + <code>#1E2BFA</code>), <code>code-editorial-tour</code> (<code>#FAF9F5</code> + <code>#CC785C</code>), <code>cobalt-index</code> (<code>#F0EBDE</code> + <code>#1F2BE0</code>), etc.<br><strong>5 Opt-In Dark Presets (<code>dark: true</code>)</strong>: <code>vault-gold</code>, <code>speed-board</code>, <code>cyber-hud</code>, <code>cinema-credits</code>, <code>amber-archive</code><br><strong>3 Benchmark Explainer Presets</strong>: <code>xiaozhe-mcp-node-graph</code>, <code>xiaozhe-rag-pipeline-flow</code>, <code>chimp-deepseek-unit-economics</code></td>
+</tr>
+<tr>
+<td><strong>2. <code>layout</code> (Spatial Grammar)</strong></td>
+<td>Governs viewport partitioning; <strong>adjacent shots may never share the same layout</strong>; <code>centered-hero</code> is restricted to opener/closer shots</td>
+<td>14 archetypes: <code>numbered-sections</code>, <code>two-column-corridor</code> (≥140px central convergence corridor), <code>hero-plus-grid</code>, <code>banded-three</code>, <code>one-shot-world</code> (3600×2200 panning canvas), <code>split-compare</code>, <code>data-dashboard</code>, <code>timeline-rail</code>, <code>card-deck</code>, etc.</td>
+</tr>
+<tr>
+<td><strong>3. <code>motion</code> (Kinematics &amp; Seams)</strong></td>
+<td>Enforces a unified directional current (`LEFT</td>
+<td>UP</td>
+</tr>
+<tr>
+<td><strong>4. <code>sound</code> (Causal Sonic Motifs)</strong></td>
+<td>Pure-code BGM synthesis + beat-grid snapping + 7 causal mechanical SFX motifs</td>
+<td><strong>4 BGM Styles</strong>: <code>dry-tech</code> (96–104 BPM), <code>paper</code> (86–96 BPM), <code>pulse</code> (110–128 BPM), <code>soft</code> (70–84 BPM)<br><strong>7 Causal SFX Motifs</strong>: <code>flap</code>, <code>tick</code>, <code>chime</code>, <code>thud</code>, <code>whoosh</code>, <code>swipe</code>, <code>riser</code></td>
+</tr>
+</tbody></table>
+<h4 id="anti-ai-uniform-law">Anti-AI Uniform Law</h4>
+<p><code>palette-audit.py</code> and <code>process-gate.py --stage direction</code> deterministically block AI-video clichés:</p>
+<ol>
+<li><strong><code>dark_requires_choice</code></strong>: Every preset with background luminance <code>&lt; 0.25</code> is flagged <code>dark: true</code> and <strong>cannot be selected as the default for tech/AI topics</strong>. In Step 3's 3-way bakeoff (<code>A/B/C</code>), at least 2 candidate frames must use light paper/editorial backgrounds, and at least 1 must contain zero grids, glassmorphism, or glowing particles.</li>
+<li><strong>Traceable <code>palette_source</code></strong>: <code>design-spec.md</code> must declare a registered <code>palette_source: &lt;style-id&gt;</code> and record the user's explicit A/B/C selection.</li>
+</ol>
+<hr>
+<h3 id="13-the-193-measured-shot-cards-referencescards">1.3 The 19+3 Measured Shot Cards (<code>references/cards/</code>)</h3>
+<p>Rather than letting an LLM improvise CSS coordinates from scratch, <code>one-sentence-video</code> encodes reverse-engineered reference shots into <strong>22 measured Shot Cards</strong> (<code>10 catalog + 8 motion + 1 sound + 3 knowledge-explainer cards</code>). Every card specifies <strong>Intent, Applicability, Exact <code>1920×1080</code> Coordinates, Millisecond Timetable, Easing Pairs, Parameter Table, HyperFrames Invariants, Causal Sound Binding, and "When NOT to Use" Anti-Patterns</strong>:</p>
+<ul>
+<li><strong>Catalog / Layout Cards (<code>10 + 3</code>)</strong>: <code>numbered-section-open</code>, <code>two-column-corridor</code>, <code>three-way-bakeoff-row</code>, <code>hero-plus-thumbnail-wall</code>, <code>stat-pills-row</code>, <code>orbit-ring-title</code>, <code>cast-list-poster</code>, <code>repeated-text-texture</code>, <code>caption-bar-close</code>, <code>cta-pill-close</code>, plus the three explainer cards <strong><code>progressive-node-tree</code></strong>, <strong><code>funnel-stage-filter</code></strong>, and <strong><code>gpu-matrix-ledger</code></strong>.</li>
+<li><strong>Motion &amp; Camera Cards (<code>8</code>)</strong>: <code>seam-cut-the-curve</code>, <code>packet-hop-break</code>, <code>counter-seek-safe</code>, <code>world-pan-parallax</code>, <code>notch-rail-progress</code>, <code>scene-handoff-overlap</code>, <code>easing-family</code>, <code>section-beat-density</code>.</li>
+<li><strong>Sound Card (<code>1</code>)</strong>: <code>beat-grid-snap</code> ($\pm 50\text{ms}$ tolerance).</li>
+</ul>
+<hr>
+<h3 id="14-cut-the-curve-seam-kinematics--velocity-matching-formulas">1.4 <code>cut-the-curve</code> Seam Kinematics &amp; Velocity Matching Formulas</h3>
+<p>Why do naive programmatic videos feel like disconnected slide decks? Because Shot A decelerates to zero velocity ($v \to 0$) before cutting, or relies on a muddy opacity crossfade.</p>
+<p>The <strong><code>seam-cut-the-curve</code></strong> primitive splits a continuous S-curve camera move right at its <strong>peak velocity inflection point ($t = t_{\text{seam}}$, $dt = 0$)</strong>:</p>
+<ul>
+<li><strong>Outgoing Shot A</strong> accelerates over $T_{\text{out}} = 0.30\text{s}$ using $E_{\text{in}}(u) = u^p$ (<code>power2.in</code>, $p=2$) across partial travel $\Delta x_{\text{out}} = 280\text{px}$:
+$$v_{\text{out}}(T_{\text{out}}) = \frac{p \cdot \Delta x_{\text{out}}}{T_{\text{out}}} = \frac{2 \times 280}{0.30} \approx 1867\text{ px/s}$$</li>
+<li><strong>Incoming Shot B</strong> enters at $t_{\text{seam}}$ and decelerates over $T_{\text{in}} = 0.36\text{s}$ using $E_{\text{out}}(u) = 1 - (1-u)^q$ (<code>power3.out</code>, $q=3$) from offset $\Delta x_{\text{in}} = 200\text{px}$ to $0$:
+$$v_{\text{in}}(0) = \frac{q \cdot \Delta x_{\text{in}}}{T_{\text{in}}} = \frac{3 \times 200}{0.36} \approx 1667\text{ px/s}$$</li>
+<li><strong>Velocity Matching Ratio $\eta$ &amp; Partial Travel $\rho$</strong>:
+$$\eta = \frac{v_{\text{in}}(0)}{v_{\text{out}}(T_{\text{out}})} = \frac{1667}{1867} \approx 0.893 \in [0.70, 1.15], \qquad \rho = \frac{230\text{ px}}{1920\text{ px}} \approx 12.0%$$
+Keeping $\eta \in [0.70, 1.15]$ and $\rho \approx 12%$ preserves visual momentum across the hard cut so the viewer perceives a single physical camera whipping across a unified space.</li>
+</ul>
+<hr>
+<h3 id="15-dual-quantitative-quality-gates-process-gatepy--density-gatepy">1.5 Dual Quantitative Quality Gates: <code>process-gate.py</code> &amp; <code>density-gate.py</code></h3>
+<ol>
+<li><strong><code>process-gate.py</code> (5 Pre-Render Process Gates)</strong>:
+Audits <code>--stage palette|direction|layout|motion|sound|all</code>. Blocks execution if <code>output/directions/</code> lacks 3 valid <code>1920×1080</code> PNGs, if <code>STORYBOARD.md</code> references unverified cards or misses <code>registry:</code> / <code>motion:</code> / <code>sound:</code> lines, if any banned phrase (<code>uniform fade+slide</code>, <code>idle wobble</code>) appears, or if synthesized WAV files are missing.</li>
+<li><strong><code>density-gate.py</code> (6 Post-Render Visual Density Operators)</strong>:
+Samples the rendered video at <code>6 fps</code> into $192 \times 108$ grayscale frames $I_t(y,x)$ and evaluates:<ul>
+<li><strong>Operator 1 — 3×3 Grid Edge Occupancy (<code>DEAD_CELLS = 4</code>, <code>EDGE_MIN = 4.0</code>)</strong>: Computes spatial gradient $G_t = |\nabla_y I_t| + |\nabla_x I_t|$ across a $3 \times 3$ grid (robust to light paper backgrounds where luminance is uniformly high). Fails if $&lt; 4$ cells have mean gradient $\ge 4.0$ for $\ge 2.0\text{s}$ continuously.</li>
+<li><strong>Operator 2 — Structural Peak Interval Median (<code>STRUCTURE_MAX = 4.0s</code>)</strong>: Detects local frame-difference peaks $D(t) &gt; \mu_D + 2\sigma_D$. Fails if median interval between structural peaks exceeds <code>4.0s</code> (reference benchmark: <code>3.0s</code>).</li>
+<li><strong>Operator 3 — Frame Freeze Share (<code>FREEZE_SHARE = 30%</code>)</strong>: Fails if the fraction of frames with mean frame-to-frame difference $D(t) &lt; 0.5$ exceeds <code>30%</code>.</li>
+<li><strong>Operator 4 — Easing Fingerprint (<code>EASE_SHARE = 70%</code>, <code>BACK_OUT_MAX = 2</code>)</strong>: Fails if a single easing function exceeds <code>70%</code> of tweens or <code>back.out</code> appears more than twice.</li>
+<li><strong>Operator 5 — Adjacent Layout Non-Repetition</strong>: Warns/blocks if consecutive shots reuse the same <code>layout</code> archetype.</li>
+<li><strong>Operator 6 — 90% Action-Safe Margin (<code>SAFE_X = 96px</code>, <code>SAFE_Y = 54px</code>)</strong>: Fails under <code>--strict-safe</code> if content bounding boxes intrude into the outer 10% margin on $&gt; 20%$ of frames.</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="16-pure-python-causal-audio-stack-bgm-genpy--beat-snappy--sfx-genpy">1.6 Pure-Python Causal Audio Stack (<code>bgm-gen.py</code> + <code>beat-snap.py</code> + <code>sfx-gen.py</code>)</h3>
+<ul>
+<li><strong><code>bgm-gen.py</code></strong>: Synthesizes 48kHz stereo WAVs in A natural minor (<code>i–VI–III–VII</code> progression <code>[0, 5, 2, 6]</code>) across four arrangements (<code>dry-tech</code>, <code>paper</code>, <code>pulse</code>, <code>soft</code>) using seeded NumPy oscillators (<code>kick</code>, high-pass paper <code>snare</code>, 2nd-order diff <code>hat</code>, fundamental+2nd harmonic <code>bass</code>, detuned <code>pad_chord</code>, and <code>body_stab</code>), automatically applying Spotify <code>pedalboard</code> mastering (or <code>tanh</code> soft-clipping fallback) and exporting <code>audio/beat-grid.json</code>.</li>
+<li><strong><code>beat-snap.py</code></strong>: Aligns and verifies all storyboard cut timestamps against <code>beat-grid.json</code> within a $\pm 50\text{ms}$ (<code>~1.5</code> frame) window.</li>
+<li><strong><code>sfx-gen.py</code></strong>: Synthesizes 7 causal mechanical motifs (<code>flap</code>, <code>tick</code>, <code>chime</code>, <code>thud</code>, <code>whoosh</code>, <code>swipe</code>, <code>riser</code>) with equal-power stereo panning $L = \cos((\text{pan}+1)\pi/4), R = \sin((\text{pan}+1)\pi/4)$ matched to camera motion vectors.</li>
+</ul>
+<hr>
+<h2 id="part-ii-frame-by-frame-visual--narrative-reverse-engineering-of-three-benchmark-videos">Part II: Frame-by-Frame Visual &amp; Narrative Reverse Engineering of Three Benchmark Videos</h2>
+<hr>
+<h3 id="21-benchmark-1-【xiaozhe-on-agents】mcp-skill-and-local-tools-selection-xiaozhe-mcp-node-graph">2.1 Benchmark 1: 【Xiaozhe on Agents】<em>MCP, Skill, and Local Tools Selection</em> (<code>xiaozhe-mcp-node-graph</code>)</h3>
+<ul>
+<li><strong>Source</strong>: Douyin <code>https://v.douyin.com/Pp5kMde2rMI/</code> · Bilibili <code>BV1nnnw6FE2V</code> (<code>116.4s</code>, 6 narrative acts).</li>
+<li><strong>Visual Formula (<code>Look &amp; Layout</code>)</strong>:<ul>
+<li><strong>Canvas</strong>: Deep obsidian-emerald radial background (<code>#050C0A</code> → <code>#0A1916</code>) with subtle <code>0.04</code> dot matrix.</li>
+<li><strong>Semantic Palette</strong>: Protocol <strong>MCP</strong> = Mint Neon Green (<code>#4ADE80</code>); Methodology <strong>Skill</strong> = Lilac Purple (<code>#A78BFA</code>); Execution <strong>Local Tools</strong> = Amber Gold (<code>#FBBF24</code>); Overload / Anti-Pattern = Coral Red (<code>#FB7185</code>).</li>
+<li><strong>Spatial Anchors</strong>: Top-left numbered section pill (<code>[01] 核心问题</code>), central left-to-right cubic Bezier progressive node tree (<code>Agent Core</code> → 3-tier branches), right-side radial gauge (<code>90% 容易混淆</code>), bottom high-contrast caption bar.</li>
+</ul>
+</li>
+<li><strong>6-Act Narrative &amp; Motion Breakdown</strong>:<ol>
+<li><strong>Act 1 (<code>00:00–00:16</code> · <code>90% 容易混淆</code> Ring Gauge Hook)</strong>: <code>orbit-ring-title</code> + <code>counter-seek-safe</code>. Radial gauge sweeps $324^\circ$ to <code>90%</code> while <code>MCP / Skill / Tools</code> badges collide, establishing the confusion hook.</li>
+<li><strong>Act 2 (<code>00:16–00:38</code> · <code>不在一个层级</code> 3-Tier Orthogonal Topology)</strong>: <code>progressive-node-tree</code>. <code>Agent</code> root emits three cubic Bezier curves into <strong>MCP (Protocol / USB-C Port)</strong>, <strong>Skill (Methodology / SOP Recipe)</strong>, and <strong>Local Tools (Execution / In-Process Hands)</strong>. Active tier scales to <code>1.08</code> with glow while non-active tiers dim to <code>opacity: 0.25</code>.</li>
+<li><strong>Act 3 (<code>00:38–00:58</code> · <code>两个极端都会踩坑</code> Extreme Failure Modes)</strong>: <code>split-compare</code>. Left side packs 50+ tangled local tools into a monolithic agent (<code>Coupling Explosion ✕</code>); right side routes trivial local file reads through remote MCP servers (<code>420ms IPC Latency ✕</code>).</li>
+<li><strong>Act 4 (<code>00:58–01:18</code> · <code>耦合开始变重</code> Complexity Crossover Curve)</strong>: <code>data-dashboard</code>. Plots Tool/Team Scale ($N$) vs. Maintenance Cost: raw Local Tools curve surges exponentially past $N=12$ (<code>#FB7185</code>), while MCP-decoupled architecture stays logarithmic (<code>#4ADE80</code>).</li>
+<li><strong>Act 5 (<code>01:18–01:38</code> · <code>同一任务，两种重量</code> Dual-Column Weight Duel)</strong>: <code>two-column-corridor</code>. Compares heavy over-engineered MCP chain (<code>380ms</code>, 4 IPC hops) vs. lightweight <code>Skill + Local Tool</code> execution (<code>18ms</code>, 0 IPC) on a local Git summary task.</li>
+<li><strong>Act 6 (<code>01:38–01:56</code> · <code>真实项目不是三选一</code> Layered Decision Matrix)</strong>: <code>three-way-bakeoff-row</code> + <code>cta-pill-close</code>. Converges all three tiers into a unified production architecture: <strong>Skills orchestrate SOPs → MCP connects external ecosystems → Local Tools execute high-frequency atomic actions</strong>.</li>
+</ol>
+</li>
+</ul>
+<hr>
+<h3 id="22-benchmark-2-【xiaozhe-on-llms】mastering-rag-in-one-video-xiaozhe-rag-pipeline-flow">2.2 Benchmark 2: 【Xiaozhe on LLMs】<em>Mastering RAG in One Video</em> (<code>xiaozhe-rag-pipeline-flow</code>)</h3>
+<ul>
+<li><strong>Source</strong>: Douyin <code>https://v.douyin.com/BMo58MQOIBM/</code> (<code>~95s</code>, 6 narrative acts).</li>
+<li><strong>Visual Formula (<code>Look &amp; Layout</code>)</strong>:<ul>
+<li><strong>Canvas</strong>: High-contrast warm editorial paper (<code>#F7F6F2</code>) with Neo-Brutalist cards (<code>#FFFFFF</code> fill, <code>2px solid #0F172A</code> border, <code>4px 4px 0px #0F172A</code> shadow).</li>
+<li><strong>Semantic Palette</strong>: Chunking = Cobalt Blue (<code>#2563EB</code>); Vector Recall = Cyan (<code>#0891B2</code>); Cross-Encoder Rerank = Amber Orange (<code>#EA580C</code>); Grounded Generation = Emerald Green (<code>#16A34A</code>); Broken Chunk / Hallucination = Crimson (<code>#DC2626</code>).</li>
+</ul>
+</li>
+<li><strong>6-Act Narrative &amp; Motion Breakdown</strong>:<ol>
+<li><strong>Act 1 (<code>00:00–00:15</code> · Raw PDF Shatter Hook)</strong>: <code>packet-hop-break</code>. A massive <code>500-Page PDF</code> block hops along the track, slams into the LLM context boundary at $t=1.92\text{s}$, recoils <code>26px</code>, and shatters into red fragments (<code>Lost in the Middle / Token Overflow</code>) on the exact impact frame (<code>thud</code>).</li>
+<li><strong>Act 2 (<code>00:15–00:31</code> · Semantic Sliding-Window Chunking)</strong>: <code>split-compare</code>. Contrasts naive fixed-character slicing (splitting tables mid-sentence <code>✕</code>) against semantic sliding-window chunking (<code>Chunk=512, Overlap=64</code> highlighted band).</li>
+<li><strong>Act 3 (<code>00:31–00:48</code> · Embedding &amp; Top-K Bi-Encoder Recall)</strong>: <code>hero-plus-thumbnail-wall</code>. Maps user query into a 2D/3D vector constellation; a cyan cosine-similarity radar pulse recalls the <code>Top-20</code> nearest neighbor chunks.</li>
+<li><strong>Act 4 (<code>00:48–01:06</code> · Cross-Encoder Rerank Funnel)</strong>: <code>funnel-stage-filter</code>. 20 coarse chunks enter the amber Rerank funnel; superficial keyword traps (<code>2023 outdated R&amp;D table, score 0.18 ✕</code>) drop out the bottom (<code>power2.in</code>), while the <code>Top-3</code> high-precision chunks (<code>0.96, 0.93, 0.91</code>) float into the elite rail.</li>
+<li><strong>Act 5 (<code>01:06–01:22</code> · Context Slot Assembly &amp; Grounded Citation)</strong>: <code>two-column-corridor</code>. The Top-3 green chunks dock into <code>[System Constraint + Context Slots]</code>, driving an LLM response with live bidirectional citation anchors (<code>[Ref: Report P.42 §3.2]</code>).</li>
+<li><strong>Act 6 (<code>01:22–01:35</code> · Full 4-Stage Pipeline Panorama)</strong>: <code>world-pan-parallax</code> + <code>caption-bar-close</code>. Camera zooms out to show tokens flowing seamlessly across all four stations (<code>Chunk → Recall → Rerank → Grounded Generate</code>).</li>
+</ol>
+</li>
+</ul>
+<hr>
+<h3 id="23-benchmark-3-【the-fourth-chimpanzee】why-one-gpu-in-deepseek-generates-38day-chimp-deepseek-unit-economics">2.3 Benchmark 3: 【The Fourth Chimpanzee】<em>Why One GPU in DeepSeek Generates $38/Day</em> (<code>chimp-deepseek-unit-economics</code>)</h3>
+<ul>
+<li><strong>Source</strong>: Douyin <code>https://v.douyin.com/8m31BovOgQs/</code> · Bilibili <code>BV13cxv6SE9L</code> (<code>252.5s</code>, distilled into 6 high-density acts).</li>
+<li><strong>Visual Formula (<code>Look &amp; Layout</code>)</strong>:<ul>
+<li><strong>Canvas</strong>: Warm paper editorial background (<code>#FAF9F6</code>), heavy sans-serif ink (<code>#0F172A</code>, weight 800–900), slate containers (<code>#F1F5F9</code>), and a persistent bottom-left circular speaker PiP badge.</li>
+<li><strong>Semantic Palette</strong>: Baseline / Idle Bubble = Cool Gray (<code>#94A3B8</code>); DeepSeek Primary Metric = Klein Blue (<code>#2563EB</code>); Straggler / Bandwidth Bottleneck = Vivid Orange (<code>#F97316</code>); KV Cache Hit / Profit = Emerald (<code>#10B981</code>); MoE Expert Routing (<code>EP</code>) = Royal Purple (<code>#8B5CF6</code>).</li>
+</ul>
+</li>
+<li><strong>6-Act Narrative &amp; Quantitative Breakdown</strong>:<ol>
+<li><strong>Act 1 (<code>$38 vs $5.7</code> 6.7× Single-GPU Daily Revenue Hook)</strong>: <code>counter-seek-safe</code> + <code>stat-pills-row</code>. Deterministic counter surges from <code>$0.0</code> to <strong><code>$38.0/GPU/day</code></strong> against the industry baseline of <strong><code>$5.7/GPU/day</code></strong> (<code>6.7×</code> multiplier pill), framing the mystery: how does the lowest-priced API achieve <code>6.7×</code> higher per-GPU revenue?</li>
+<li><strong>Act 2 (Batching Amortizes HBM Memory Bandwidth)</strong>: <code>gpu-matrix-ledger</code>. Contrasts <code>Batch = 1</code> (loading massive MoE weights from HBM for a single token, leaving <code>92%</code> compute idle) vs. <code>Batch = 64</code> (reading weights once to compute 64 tokens concurrently, lighting up the 8×8 GPU matrix in Klein Blue).</li>
+<li><strong>Act 3 (<code>先说 EP 和 DP</code> · <code>"每一步，都得等最慢的那张卡算完"</code> Straggler Effect)</strong>: <code>gpu-matrix-ledger</code> + <code>packet-hop-break</code>. Visualizes 8 GPUs under Expert Parallelism (<code>EP</code>): GPU <code>#3</code> (hot expert) is overloaded with 18 tokens (<code>34ms</code> orange bar), forcing the other 7 GPUs (<code>6ms</code>) to sit idle behind a red synchronization barrier ($\text{StepTime} = \max_i T_i$), solved via EPLB redundant expert load balancing.</li>
+<li><strong>Act 4 (<code>Prefill 的情况正好相反</code> · 1:1 Compute vs. Bandwidth Disaggregation)</strong>: <code>two-column-corridor</code>. Separates <strong>Prefill</strong> (compute-bound, small EP + large DP, <code>94%</code> ALU utilization) from <strong>Decode</strong> (memory-bandwidth-bound, large EP across 32–72 GPUs, <code>91%</code> HBM bandwidth) connected via high-speed RDMA KV transfer at a 1:1 pool ratio.</li>
+<li><strong>Act 5 (<code>60K / 1.5M 省了25倍</code> · 100PB SSD KV Cache <code>80%</code> Hit Rate)</strong>: <code>orbit-ring-title</code> + <code>counter-seek-safe</code>. Emerald ring sweeps to <strong><code>80% KV Cache Hit Rate</code></strong> on 100PB distributed SSD storage, collapsing active prefill compute from <code>1,500,000</code> down to <code>60,000</code> (<strong><code>25× Compute Saved</code></strong> stamp).</li>
+<li><strong>Act 6 (Diurnal Load Shifting <code>96%</code> Cluster Utilization &amp; Final Unit Ledger)</strong>: <code>data-dashboard</code> + <code>cta-pill-close</code>. 24-hour area chart shows daytime inference peaks (<code>09:00–23:00</code>) seamlessly interleaved with nighttime off-peak pricing &amp; R1 RL/training jobs (<code>23:00–08:00</code>) to sustain <strong><code>96%</code> utilization</strong>, multiplying all five engineering factors into the final <strong><code>$38 / GPU / Day</code></strong> ledger.</li>
+</ol>
+</li>
+</ul>
+<hr>
+<h2 id="part-iii-cross-template-comparison-matrix--reusable-storyboardmd-recipe">Part III: Cross-Template Comparison Matrix &amp; Reusable <code>STORYBOARD.md</code> Recipe</h2>
+<table>
+<thead>
+<tr>
+<th>Metric / <code>density-gate.py</code> Operator</th>
+<th>Gate Threshold</th>
+<th>Template 1: <code>xiaozhe-mcp-node-graph</code><br>(MCP vs. Skill vs. Local Tools)</th>
+<th>Template 2: <code>xiaozhe-rag-pipeline-flow</code><br>(Mastering RAG 4-Stage Funnel)</th>
+<th>Template 3: <code>chimp-deepseek-unit-economics</code><br>(DeepSeek $38/GPU Unit Economics)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Style Ledger ID (<code>style-id</code>)</strong></td>
+<td>Registered in <code>style-ledger.json</code></td>
+<td><code>xiaozhe-mcp-node-graph</code> (<code>dark: true</code>, explicit user choice)</td>
+<td><code>xiaozhe-rag-pipeline-flow</code> (<code>dark: false</code>, warm editorial)</td>
+<td><code>chimp-deepseek-unit-economics</code> (<code>dark: false</code>, paper ledger)</td>
+</tr>
+<tr>
+<td><strong>Canvas &amp; Ink Atoms</strong></td>
+<td>Anti-AI-uniform verified</td>
+<td><code>#050C0A</code> Obsidian / <code>#F8FAFC</code> Ink</td>
+<td><code>#F7F6F2</code> Warm Paper / <code>#0F172A</code> Ink</td>
+<td><code>#FAF9F6</code> Ivory Paper / <code>#0F172A</code> Heavy Ink</td>
+</tr>
+<tr>
+<td><strong>1. 3×3 Grid Edge Occupancy</strong></td>
+<td><code>≥ 4.0 / 9</code> (dead zone <code>&lt; 2.0s</code>)</td>
+<td><strong><code>6.8 / 9</code></strong> (<code>0.0s</code> dead zone) ✅ PASS</td>
+<td><strong><code>7.2 / 9</code></strong> (<code>0.0s</code> dead zone) ✅ PASS</td>
+<td><strong><code>7.5 / 9</code></strong> (<code>0.0s</code> dead zone) ✅ PASS</td>
+</tr>
+<tr>
+<td><strong>2. Structural Peak Median Gap</strong></td>
+<td><code>≤ 4.0s</code> (ref benchmark <code>3.0s</code>)</td>
+<td><strong><code>2.8s</code></strong> (18 sub-beat peaks) ✅ PASS</td>
+<td><strong><code>2.6s</code></strong> (packet hops + funnel drops) ✅ PASS</td>
+<td><strong><code>2.9s</code></strong> (counter surges + matrix waves) ✅ PASS</td>
+</tr>
+<tr>
+<td><strong>3. Frame Freeze Share</strong></td>
+<td><code>≤ 30%</code> (diff <code>&lt; 0.5</code>)</td>
+<td><strong><code>8.4%</code></strong> ✅ PASS</td>
+<td><strong><code>6.2%</code></strong> ✅ PASS</td>
+<td><strong><code>9.1%</code></strong> ✅ PASS</td>
+</tr>
+<tr>
+<td><strong>4. Easing Fingerprint</strong></td>
+<td>Single ease <code>≤ 70%</code>, <code>back.out ≤ 2</code></td>
+<td><code>power3.out</code> <code>52%</code> / <code>back.out</code> <code>1</code> ✅ PASS</td>
+<td><code>power2.inOut</code> <code>48%</code> / <code>back.out</code> <code>0</code> ✅ PASS</td>
+<td><code>power3.out</code> <code>50%</code> / <code>back.out</code> <code>1</code> ✅ PASS</td>
+</tr>
+<tr>
+<td><strong>5. 90% Action-Safe Margin</strong></td>
+<td><code>&lt; 20%</code> violation share</td>
+<td><strong><code>0.0%</code></strong> ✅ PASS</td>
+<td><strong><code>0.0%</code></strong> ✅ PASS</td>
+<td><strong><code>0.0%</code></strong> ✅ PASS</td>
+</tr>
+<tr>
+<td><strong>Best-Fit Domain</strong></td>
+<td>Cognitive structure alignment</td>
+<td><strong>Architecture layers, tool selection, taxonomy trees</strong></td>
+<td><strong>Data pipelines, retrieval/rerank funnels, protocol tracing</strong></td>
+<td><strong>Compute unit economics, GPU benchmarks, bottleneck analysis</strong></td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>All three templates, real-time <code>density-gate</code> 3×3 heatmaps, <code>cut-the-curve</code> velocity graphs, WebAudio causal SFX synthesizers, and one-click <code>STORYBOARD.md</code> + <code>style-ledger.json</code> exporters are interactive in Knowledge Explainer Animation Studio (<code>demos/knowledge-explainer-studio/</code>).</p>
+</blockquote>
+</article><details class="reading-source"><summary>Original source text / 原始文档文本</summary><pre># Knowledge-Explainer Animation Production Research Monograph: The `one-sentence-video` Engine &amp; Reverse Engineering of Three Benchmark Short Videos
+
+&gt; 🌐 **Language / 语言**: 中文 HTML (`knowledge-explainer-animation-study.html`) | **English** | 中文 Markdown (`.md`) | English Markdown (`.en.md`)  
+&gt; 🎮 **Interactive Studio**: Knowledge Explainer Animation Studio (`demos/knowledge-explainer-studio/`) · 7-Card 4:5 Visual Evaluation Report (`test-report-cards.html`)
 
 ---
 
 ## Executive Summary
 
 Technical and quantitative knowledge-explainer animations are undergoing a paradigm shift from manual After Effects keyframing and slide-deck screen recordings toward **declarative storyboard contracts + programmatic Canvas/SVG/GSAP rendering + quantitative visual density gates**. Conventional AI-generated technical videos consistently suffer from three failure modes:
-1. **The &quot;AI Tech Uniform&quot;**: Unsolicited dark-blue backgrounds (`#0a0a1a`), cyan glowing grids (`#00f0ff`), and repetitive `back.out(1.7)` pop-in animations on every element;
+1. **The "AI Tech Uniform"**: Unsolicited dark-blue backgrounds (`#0a0a1a`), cyan glowing grids (`#00f0ff`), and repetitive `back.out(1.7)` pop-in animations on every element;
 2. **Slide-Deck Flatness &amp; Freeze**: Text slides in during the first `0.5s` and remains completely static for the next `4.5s`, leaving over 60% of the viewport empty;
 3. **Uncausal Stock Audio**: Generic stock `whoosh` sound effects slapped onto every cut without stereo directional panning or beat-grid alignment.
 
@@ -73,7 +420,7 @@ $$\text{Style} = \text{Look}_{\text{atoms}} \times \text{Layout}_{\text{archetyp
 
 ### 1.3 The 19+3 Measured Shot Cards (`references/cards/`)
 
-Rather than letting an LLM improvise CSS coordinates from scratch, `one-sentence-video` encodes reverse-engineered reference shots into **22 measured Shot Cards** (`10 catalog + 8 motion + 1 sound + 3 knowledge-explainer cards`). Every card specifies **Intent, Applicability, Exact `1920×1080` Coordinates, Millisecond Timetable, Easing Pairs, Parameter Table, HyperFrames Invariants, Causal Sound Binding, and &quot;When NOT to Use&quot; Anti-Patterns**:
+Rather than letting an LLM improvise CSS coordinates from scratch, `one-sentence-video` encodes reverse-engineered reference shots into **22 measured Shot Cards** (`10 catalog + 8 motion + 1 sound + 3 knowledge-explainer cards`). Every card specifies **Intent, Applicability, Exact `1920×1080` Coordinates, Millisecond Timetable, Easing Pairs, Parameter Table, HyperFrames Invariants, Causal Sound Binding, and "When NOT to Use" Anti-Patterns**:
 
 - **Catalog / Layout Cards (`10 + 3`)**: `numbered-section-open`, `two-column-corridor`, `three-way-bakeoff-row`, `hero-plus-thumbnail-wall`, `stat-pills-row`, `orbit-ring-title`, `cast-list-poster`, `repeated-text-texture`, `caption-bar-close`, `cta-pill-close`, plus the three explainer cards **`progressive-node-tree`**, **`funnel-stage-filter`**, and **`gpu-matrix-ledger`**.
 - **Motion &amp; Camera Cards (`8`)**: `seam-cut-the-curve`, `packet-hop-break`, `counter-seek-safe`, `world-pan-parallax`, `notch-rail-progress`, `scene-handoff-overlap`, `easing-family`, `section-beat-density`.
@@ -166,7 +513,7 @@ The **`seam-cut-the-curve`** primitive splits a continuous S-curve camera move r
 - **6-Act Narrative &amp; Quantitative Breakdown**:
   1. **Act 1 (`$38 vs $5.7` 6.7× Single-GPU Daily Revenue Hook)**: `counter-seek-safe` + `stat-pills-row`. Deterministic counter surges from `$0.0` to **`$38.0/GPU/day`** against the industry baseline of **`$5.7/GPU/day`** (`6.7×` multiplier pill), framing the mystery: how does the lowest-priced API achieve `6.7×` higher per-GPU revenue?
   2. **Act 2 (Batching Amortizes HBM Memory Bandwidth)**: `gpu-matrix-ledger`. Contrasts `Batch = 1` (loading massive MoE weights from HBM for a single token, leaving `92%` compute idle) vs. `Batch = 64` (reading weights once to compute 64 tokens concurrently, lighting up the 8×8 GPU matrix in Klein Blue).
-  3. **Act 3 (`先说 EP 和 DP` · `&quot;每一步，都得等最慢的那张卡算完&quot;` Straggler Effect)**: `gpu-matrix-ledger` + `packet-hop-break`. Visualizes 8 GPUs under Expert Parallelism (`EP`): GPU `#3` (hot expert) is overloaded with 18 tokens (`34ms` orange bar), forcing the other 7 GPUs (`6ms`) to sit idle behind a red synchronization barrier ($\text{StepTime} = \max_i T_i$), solved via EPLB redundant expert load balancing.
+  3. **Act 3 (`先说 EP 和 DP` · `"每一步，都得等最慢的那张卡算完"` Straggler Effect)**: `gpu-matrix-ledger` + `packet-hop-break`. Visualizes 8 GPUs under Expert Parallelism (`EP`): GPU `#3` (hot expert) is overloaded with 18 tokens (`34ms` orange bar), forcing the other 7 GPUs (`6ms`) to sit idle behind a red synchronization barrier ($\text{StepTime} = \max_i T_i$), solved via EPLB redundant expert load balancing.
   4. **Act 4 (`Prefill 的情况正好相反` · 1:1 Compute vs. Bandwidth Disaggregation)**: `two-column-corridor`. Separates **Prefill** (compute-bound, small EP + large DP, `94%` ALU utilization) from **Decode** (memory-bandwidth-bound, large EP across 32–72 GPUs, `91%` HBM bandwidth) connected via high-speed RDMA KV transfer at a 1:1 pool ratio.
   5. **Act 5 (`60K / 1.5M 省了25倍` · 100PB SSD KV Cache `80%` Hit Rate)**: `orbit-ring-title` + `counter-seek-safe`. Emerald ring sweeps to **`80% KV Cache Hit Rate`** on 100PB distributed SSD storage, collapsing active prefill compute from `1,500,000` down to `60,000` (**`25× Compute Saved`** stamp).
   6. **Act 6 (Diurnal Load Shifting `96%` Cluster Utilization &amp; Final Unit Ledger)**: `data-dashboard` + `cta-pill-close`. 24-hour area chart shows daytime inference peaks (`09:00–23:00`) seamlessly interleaved with nighttime off-peak pricing &amp; R1 RL/training jobs (`23:00–08:00`) to sustain **`96%` utilization**, multiplying all five engineering factors into the final **`$38 / GPU / Day`** ledger.
@@ -186,5 +533,6 @@ The **`seam-cut-the-curve`** primitive splits a continuous S-curve camera move r
 | **5. 90% Action-Safe Margin** | `&lt; 20%` violation share | **`0.0%`** ✅ PASS | **`0.0%`** ✅ PASS | **`0.0%`** ✅ PASS |
 | **Best-Fit Domain** | Cognitive structure alignment | **Architecture layers, tool selection, taxonomy trees** | **Data pipelines, retrieval/rerank funnels, protocol tracing** | **Compute unit economics, GPU benchmarks, bottleneck analysis** |
 
-&gt; All three templates, real-time `density-gate` 3×3 heatmaps, `cut-the-curve` velocity graphs, WebAudio causal SFX synthesizers, and one-click `STORYBOARD.md` + `style-ledger.json` exporters are interactive in <a href="../demos/knowledge-explainer-studio/">Knowledge Explainer Animation Studio (`demos/knowledge-explainer-studio/`)</a>.
-</pre></main></html>
+&gt; All three templates, real-time `density-gate` 3×3 heatmaps, `cut-the-curve` velocity graphs, WebAudio causal SFX synthesizers, and one-click `STORYBOARD.md` + `style-ledger.json` exporters are interactive in Knowledge Explainer Animation Studio (`demos/knowledge-explainer-studio/`).
+</pre></details></div></main>
+</body></html>

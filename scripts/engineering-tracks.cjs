@@ -26,7 +26,7 @@ function classifyPath(value, fallback = 'general') {
   if (/ai-security/.test(source)) return 'security';
   if (/(?:^|\/)(?:animation|generative-visual-lab|bilibili-explainers)(?:\/|$)|pelican/.test(source)) return 'animation';
   if (/(?:^|\/)game(?:\/|$)/.test(source)) return 'game';
-  if (/benchmarks|benchmark-harness|faf-vs-agent-forge|maf-multi-agent-benchmark|github-radar|github-trending-radar|openrouter/.test(source)) return 'benchmarks';
+  if (/benchmarks|benchmark-harness|agent-harness-coevolution|harness-engineering-frameworks|scientific-and-industry-harness-engineering|articles\/harness-engineering|faf-vs-agent-forge|maf-multi-agent-benchmark|github-radar|github-trending-radar|openrouter/.test(source)) return 'benchmarks';
   return fallback;
 }
 const classifyScene = scene => classifyPath(scene.raw || scene.plannedNativeResources?.en?.url, scene.track || 'general');

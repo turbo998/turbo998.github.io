@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline';" />
+  <title>7-Card 4:5 Visual Report · Agent Harness × Frontier Model Co-Evolution (120-Skill Empirical Audit)</title>
+  <style>
+    :root {
+      --bg-page: #070b12;
+      --card-bg: #ffffff;
+      --card-border: #e2e8f0;
+      --ink: #0f172a;
+      --muted: #475569;
+      --soft: #64748b;
+      --blue: #1d4ed8;
+      --dark: #0d1117;
+      --dark-card: #161b22;
+      --green-bg: #ecfdf5;
+      --green-bd: #10b981;
+      --green-tx: #065f46;
+      --amber-bg: #fffbeb;
+      --amber-bd: #f59e0b;
+      --amber-tx: #92400e;
+      --red-bg: #fef2f2;
+      --red-bd: #ef4444;
+      --red-tx: #991b1b;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg-page);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, sans-serif;
+      line-height: 1.5;
+      overflow-x: clip;
+    }
+    .deck-shell {
+      max-width: 940px;
+      margin: 0 auto;
+      padding: 28px 16px 68px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 32px;
+    }
+    .deck-toolbar {
+      width: 100%;
+      max-width: 900px;
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 12px;
+      padding: 14px 20px;
+      color: #f0f6fc;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .deck-toolbar a {
+      color: #79c0ff;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 700;
+      margin-left: 12px;
+    }
+    .card {
+      width: 100%;
+      max-width: 900px;
+      min-height: 1125px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 36px 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 16px;
+      box-shadow: 0 24px 48px rgba(0, 0, 0, 0.45);
+    }
+    @media (max-width: 940px) {
+      .card { min-height: auto; padding: 24px 20px; }
+    }
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid #f1f5f9;
+      padding-bottom: 12px;
+      gap: 8px;
+    }
+    .kicker {
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      color: var(--blue);
+    }
+    .page-num {
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--soft);
+      background: #f1f5f9;
+      padding: 4px 10px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+    h1, h2 {
+      font-size: 24px;
+      line-height: 1.26;
+      font-weight: 800;
+      color: var(--ink);
+      margin-bottom: 8px;
+    }
+    .sub {
+      font-size: 13.5px;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+    .kpi-row {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+    }
+    @media (max-width: 720px) { .kpi-row { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    .kpi-box {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 12px;
+    }
+    .kpi-box .lbl { font-size: 10.5px; font-weight: 700; color: var(--soft); text-transform: uppercase; }
+    .kpi-box .num { font-size: 20px; font-weight: 800; color: var(--blue); font-family: ui-monospace, Consolas, monospace; margin: 3px 0; }
+    .kpi-box .dtl { font-size: 11.5px; color: var(--muted); }
+    .two-col {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+    @media (max-width: 720px) { .two-col { grid-template-columns: 1fr; } }
+    .sub-box {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 14px 16px;
+    }
+    .sub-box h3 { font-size: 14.5px; font-weight: 800; margin-bottom: 6px; color: var(--ink); }
+    .sub-box p, .sub-box li { font-size: 12.5px; color: var(--muted); line-height: 1.55; }
+    .sub-box ul { padding-left: 16px; }
+    .callout-band {
+      padding: 12px 16px;
+      border-radius: 12px;
+      font-size: 12.5px;
+      line-height: 1.55;
+    }
+    .callout-band.green { background: var(--green-bg); border: 1px solid var(--green-bd); color: var(--green-tx); }
+    .callout-band.amber { background: var(--amber-bg); border: 1px solid var(--amber-bd); color: var(--amber-tx); }
+    .callout-band.red { background: var(--red-bg); border: 1px solid var(--red-bd); color: var(--red-tx); }
+    pre.code-blk {
+      background: var(--dark);
+      color: #e6edf3;
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 11.5px;
+      line-height: 1.5;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .bar-row { margin-bottom: 10px; }
+    .bar-meta { display: flex; justify-content: space-between; font-size: 12px; font-weight: 700; margin-bottom: 4px; gap: 8px; }
+    .bar-track { height: 14px; background: #e2e8f0; border-radius: 999px; overflow: hidden; }
+    .bar-fill { height: 100%; border-radius: 999px; }
+    .card-foot {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      border-top: 1px solid #f1f5f9;
+      padding-top: 10px;
+      font-size: 11.5px;
+      color: var(--soft);
+    }
+    svg.inline-chart { width: 100%; height: auto; display: block; border-radius: 12px; }
+  </style>
+<style id="site-remediation-style">/* Embedded by integrate-dedicated.cjs so sealed report CSP remains unchanged. */
+.kee-dedicated-nav {
+  all: initial; box-sizing: border-box; position: relative; display: flex;
+  flex-wrap: wrap; align-items: center; gap: 6px 14px; width: 100%;
+  padding: 12px 18px; margin: 0 0 16px; border: 1px solid #314361;
+  background: #101A30; color: #EEF3FF; font: 13px/1.5 system-ui, sans-serif;
+  text-align: left; isolation: isolate; color-scheme: dark;
+}
+.kee-dedicated-nav a {
+  all: revert; box-sizing: border-box; display: inline-block; padding: 4px 0;
+  color: #9AABFF; background: transparent; font: inherit; text-decoration: underline;
+  text-underline-offset: 3px; border: 0; border-radius: 0; box-shadow: none;
+}
+.kee-dedicated-nav a:focus-visible { outline: 3px solid #56DDCD; outline-offset: 3px; }
+.kee-dedicated-nav .kee-dedicated-identity { font-weight: 700; color: #EEF3FF; }
+.kee-dedicated-nav .kee-dedicated-language {
+  all: revert; display: block; flex-basis: 100%; color: #ADBBD1; font: 12px/1.5 system-ui, sans-serif;
+}
+.kee-dedicated-native-link { display: block; padding: 22px; color: #1858a8; background: #f8fafc; font: 15px/1.6 system-ui, sans-serif; }
+.kee-dedicated-native-link a { color: #1858a8; text-decoration: underline; }
+@media print { .kee-dedicated-nav { display: none; } }
+
+/* Professional primary navigation: long section names reflow, never scroll inside the header. */
+[data-professional-header]{box-sizing:border-box;display:grid!important;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:18px!important;width:100%;max-width:none;height:auto!important;min-height:0!important;padding:18px 24px!important;margin:0 0 16px;position:relative;overflow:visible!important;background:#101A30;color:#EEF3FF;border:1px solid #314361;font:13px/1.5 system-ui,sans-serif;isolation:isolate;color-scheme:dark}
+[data-professional-header] *{box-sizing:border-box;min-width:0;max-height:none}
+[data-professional-header] a{font:inherit;text-decoration:none;color:#9AABFF;overflow-wrap:anywhere;white-space:normal}
+[data-professional-header] .professional-identity{font-weight:750;color:#EEF3FF;white-space:nowrap;font-size:14px;margin:0}
+[data-professional-header] .professional-primary{display:grid;grid-template-columns:1.65fr 1.1fr 1.15fr 1.1fr 1.1fr;gap:6px;align-items:stretch;min-width:0}
+[data-professional-header] .professional-primary a{display:flex;align-items:center;justify-content:center;padding:10px 9px;border:1px solid #314361;border-radius:12px;background:#172440;text-align:center;line-height:1.4;min-height:44px}
+[data-professional-header] .professional-primary a[aria-current=page]{background:#23375a;border-color:#56DDCD;color:#56DDCD}
+[data-professional-header] .professional-controls{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:4px;font-size:12px;margin:0;position:static}
+[data-professional-header] .professional-controls>a{display:flex;align-items:center;justify-content:center;padding:8px;min-height:40px;min-width:32px;border-radius:10px}
+[data-professional-header] .professional-context{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px 18px;padding-top:12px;border-top:1px solid #314361;font-size:12px;color:#ADBBD1;min-width:0;line-height:1.6}
+[data-professional-header] .professional-context>*{min-width:0;overflow-wrap:anywhere}
+[data-professional-header] .professional-context .kee-dedicated-language{flex-basis:100%;color:#ADBBD1}
+[data-professional-header] a:focus-visible{outline:3px solid #56DDCD;outline-offset:3px}
+[data-professional-header] a:hover{text-decoration:underline}
+[data-professional-header][data-perimeter-theme=light],:root[data-theme=light] .reading-header[data-professional-header]{background:#fff;color:#172440;border-color:#d4deee;color-scheme:light}
+[data-professional-header][data-perimeter-theme=light] a,:root[data-theme=light] .reading-header[data-professional-header] a{color:#3752a0}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a,:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a{background:#edf2ff;border-color:#d4deee}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a[aria-current],:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a[aria-current]{background:#dff6f0;color:#127b72;border-color:#127b72}
+@media(max-width:1150px){[data-professional-header]{grid-template-columns:minmax(0,1fr) auto;gap:12px!important}[data-professional-header] .professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header] .professional-controls{grid-column:2;grid-row:1}}
+@media(max-width:600px){[data-professional-header]{padding:14px 16px!important;gap:12px!important}[data-professional-header] .professional-primary{grid-template-columns:repeat(2,minmax(0,1fr))}[data-professional-header] .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:13px}[data-professional-header] .professional-controls{gap:0}[data-professional-header] .professional-controls>a{padding:6px;min-width:28px}}
+@media print{[data-professional-header]{display:none!important}}
+
+html{scroll-padding-top:108px}.reading-header,.kee-dedicated-nav,[data-professional-header]{position:sticky;top:0;z-index:1000;-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
+
+:root{--search-bg:#101a30;--search-soft:#172440;--search-ink:#eef3ff;--search-muted:#adbbd1;--search-line:#293956;--search-accent:#9aabff;--header-offset:108px}
+:root[data-reading-shell][data-theme=light],[data-perimeter-theme=light]{--search-bg:#fff;--search-soft:#e8eefb;--search-ink:#17233e;--search-muted:#4c5e7c;--search-line:#d5ddec;--search-accent:#354ec8}
+html{scroll-padding-top:var(--header-offset,108px)!important}
+.site-search,.site-search *{box-sizing:border-box!important;font-family:"Segoe UI",sans-serif;letter-spacing:normal;text-transform:none}
+.site-search{position:relative;display:flex;align-items:center;gap:5px;min-width:0;width:230px;max-width:100%;margin:0!important;padding:0!important;line-height:1.4;border:1px solid var(--search-line);border-radius:9px;background:var(--search-soft);color:var(--search-ink);isolation:isolate}
+.site-search input[type=search]{display:block;flex:1;min-width:0;width:100%;height:42px;margin:0;padding:9px 8px!important;font-size:12px!important;line-height:1.5;border:0!important;border-radius:9px;background:transparent!important;color:var(--search-ink)!important;box-shadow:none!important;appearance:none}
+.site-search input::placeholder{color:var(--search-muted);opacity:1}.site-search input:focus-visible{outline:2px solid var(--search-accent);outline-offset:2px}
+.site-search kbd{font:11px Consolas,monospace;color:var(--search-muted);padding:1px 5px;border:1px solid var(--search-line);border-radius:4px}
+.site-search button[type=submit]{flex:none;width:38px;min-width:38px;height:42px;min-height:42px;padding:0;margin:0;border:0;border-radius:8px;background:transparent;color:var(--search-accent);font-size:24px;cursor:pointer;box-shadow:none}
+.search-label,.search-status{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.site-search .search-results{position:absolute;top:calc(100% + 10px);right:0;z-index:1100;width:min(480px,calc(100vw - 32px));max-height:min(560px,65vh);overflow-y:auto;border:1px solid var(--search-line);border-radius:12px;background:var(--search-bg);color:var(--search-ink);padding:10px;box-shadow:0 12px 32px #0005;text-align:left}
+.site-search .search-results[hidden]{display:none!important}.search-results .search-group{margin:8px 6px 4px;font:11px/1.5 Consolas,monospace;color:var(--search-muted)}
+.site-search .search-results a{display:block!important;padding:10px!important;margin:3px 0!important;border:1px solid transparent!important;border-radius:7px;background:transparent;color:var(--search-ink)!important;font-size:13px!important;text-decoration:none!important;white-space:normal;overflow-wrap:anywhere;text-align:left!important;line-height:1.5!important}
+.site-search .search-results a[aria-selected=true],.site-search .search-results a:hover{border-color:var(--search-accent)!important;background:var(--search-soft)}
+.search-results a small{display:block;font-size:10px;color:var(--search-muted);margin-top:4px}.search-results p{margin:10px;font-size:13px;color:var(--search-muted)}
+.search-archive-summary{padding:20px;border:1px solid var(--search-line);border-radius:10px;background:var(--search-bg);color:var(--search-ink);margin:24px 0}.search-archive-summary h2{font-size:24px;margin:0 0 12px}.search-archive-summary li{margin:12px 0}.search-archive-summary a{color:var(--search-accent)}
+[data-professional-header]{position:sticky!important;top:0!important;z-index:1000!important;background:var(--search-bg)!important;--header-glass:rgba(16,26,48,.9);grid-template-columns:auto minmax(0,1fr) 230px auto!important}
+[data-professional-header][data-perimeter-theme=light],:root[data-reading-shell][data-theme=light] [data-professional-header]{--header-glass:rgba(255,255,255,.94)}
+[data-professional-header] .professional-mobile{display:none}.professional-mobile summary{min-width:38px;min-height:42px;display:grid;place-items:center;cursor:pointer;list-style:none}.professional-mobile summary::-webkit-details-marker{display:none}
+[data-professional-header] .professional-context{display:none}
+.professional-context-bar{padding:12px 24px;border-bottom:1px solid var(--search-line);background:var(--search-bg);color:var(--search-muted);font:12px/1.6 "Segoe UI",sans-serif;display:flex;flex-wrap:wrap;gap:8px 18px;overflow-wrap:anywhere}.professional-context-bar a{color:var(--search-accent)}
+@supports((backdrop-filter:blur(16px)) or (-webkit-backdrop-filter:blur(16px))){.site-header,[data-professional-header]{background:var(--header-glass)!important;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}}
+@media(max-width:1250px) and (min-width:701px){.header-inner{grid-template-columns:minmax(0,1fr) 230px auto!important;padding:12px 0;gap:12px!important}.desktop-nav{grid-row:2;grid-column:1/-1}.header-inner>.site-search{grid-column:2;grid-row:1}.header-inner>.controls{grid-column:3;grid-row:1}[data-professional-header]{grid-template-columns:minmax(0,1fr) 230px auto!important;gap:12px!important}[data-professional-header]>.professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header]>.site-search{grid-column:2;grid-row:1}[data-professional-header]>.professional-controls{grid-column:3;grid-row:1}:root{--header-offset:176px}}
+@media(max-width:700px){.header-inner{grid-template-columns:minmax(0,1fr) auto!important;padding:10px 0;gap:8px!important}.header-inner>.site-search{grid-row:2;grid-column:1/-1;width:100%}.header-inner>.controls{grid-column:2;grid-row:1}.site-search .search-results{width:100%;right:0}[data-professional-header]{grid-template-columns:minmax(0,1fr) auto!important;padding:10px 16px!important;gap:8px!important}[data-professional-header]>.professional-primary{display:none!important}[data-professional-header]>.site-search{grid-column:1/-1;grid-row:2;width:100%}[data-professional-header]>.professional-controls{grid-column:2;grid-row:1}[data-professional-header] .professional-mobile{display:block}[data-professional-header] .professional-mobile[open]>.professional-primary{position:absolute;top:100%;left:0;right:0;padding:16px;background:var(--search-bg);border-bottom:1px solid var(--search-line);display:grid;grid-template-columns:1fr 1fr;gap:8px}[data-professional-header] .professional-mobile .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:12px!important}:root{--header-offset:126px}}
+@media(prefers-reduced-transparency:reduce){.site-header,[data-professional-header]{background:var(--search-bg)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}}
+@media print{.site-search,.professional-context-bar{display:none!important}}
+
+@media(min-width:1251px){.header-inner{display:grid!important;grid-template-columns:auto minmax(0,1fr) 230px auto!important;gap:18px!important}.header-inner .desktop-nav{min-width:0}}
+
+html:has(.kee-dedicated-app-root){height:auto!important;overflow-x:hidden!important;overflow-y:auto!important}
+body:has([data-professional-header]){height:auto!important;overflow-x:clip!important;overflow-y:visible!important;padding-top:0!important}
+.demo-language-navigation{display:none!important}
+.stage-column,.telemetry-panel,.scene-pill,#timeline-slider{min-width:0}
+@media(max-width:1180px){.workspace,.template-tabs{grid-template-columns:minmax(0,1fr)!important}}
+
+.in-arena-frame .professional-context-bar,.in-arena-frame [data-knowledge-atlas]{display:none!important}
+.knowledge-graph-wide{display:block}.knowledge-graph-compact{display:none}@media(max-width:600px){.knowledge-graph-wide{display:none}.knowledge-graph-compact{display:block}}
+</style></head>
+<body><nav class="kee-dedicated-nav" data-professional-header><a class="professional-identity reading-brand kee-dedicated-identity identity" href="../../index.html">Qi Chen · @turbo998</a><div class="professional-primary" role="navigation" aria-label="Primary sections"><a href="../../studio/index.html" data-section="hub" data-nav-en-href="../../studio/index.html" data-nav-zh-href="../../studio/zh-index.html" data-nav-en-label="Frontier Transformation Engineering Hub" data-nav-zh-label="Frontier Transformation Engineering Hub">Frontier Transformation Engineering Hub</a><a href="../../benchmarks.html" data-section="benchmarks" data-nav-en-href="../../benchmarks.html" data-nav-zh-href="../../zh-benchmarks.html" data-nav-en-label="Benchmark &amp; Eval Foundry" data-nav-zh-label="基准评测中心" aria-current="page">Benchmark &amp; Eval Foundry</a><a href="../../github-radar.html" data-section="radar" data-nav-en-href="../../github-radar.html" data-nav-zh-href="../../zh-github-radar.html" data-nav-en-label="GitHub AI Signal Radar" data-nav-zh-label="GitHub AI 信号雷达">GitHub AI Signal Radar</a><a href="../../openrouter.html" data-section="routing" data-nav-en-href="../../openrouter.html" data-nav-zh-href="../../zh-openrouter.html" data-nav-en-label="Model Routing &amp; Telemetry" data-nav-zh-label="OpenRouter 模型遥测">Model Routing &amp; Telemetry</a><a href="../../about.html" data-section="profile" data-nav-en-href="../../about.html" data-nav-zh-href="../../zh-about.html" data-nav-en-label="Principal Architect Profile" data-nav-zh-label="首席架构师履历">Principal Architect Profile</a></div><form class="site-search" role="search" action="../../studio/archive.html" method="get" data-search-root="../../index.html" data-search-language="en"><label class="search-label" for="site-search-input">Search architecture, benchmarks, demos...</label><input id="site-search-input" name="q" type="search" placeholder="Search architecture, benchmarks, demos..." autocomplete="off" spellcheck="false" aria-keyshortcuts="/ Control+k Meta+k"><kbd aria-hidden="true">/</kbd><button type="submit" aria-label="Search all content">⌕</button><div class="search-results" id="site-search-results" hidden></div><span class="search-status" role="status" aria-live="polite"></span></form><div class="reading-controls professional-controls" aria-label="Site language and appearance"><a href="cards.html" hreflang="en" lang="en" aria-current="page">EN</a><a href="cards.zh.html" data-reading-language hreflang="zh-CN" lang="zh-CN">中文</a><details class="professional-mobile"><summary aria-label="Open navigation">☰</summary><div class="professional-primary" role="navigation" aria-label="Mobile navigation"><a href="../../studio/index.html" data-section="hub" data-nav-en-href="../../studio/index.html" data-nav-zh-href="../../studio/zh-index.html" data-nav-en-label="Frontier Transformation Engineering Hub" data-nav-zh-label="Frontier Transformation Engineering Hub">Frontier Transformation Engineering Hub</a><a href="../../benchmarks.html" data-section="benchmarks" data-nav-en-href="../../benchmarks.html" data-nav-zh-href="../../zh-benchmarks.html" data-nav-en-label="Benchmark &amp; Eval Foundry" data-nav-zh-label="基准评测中心" aria-current="page">Benchmark &amp; Eval Foundry</a><a href="../../github-radar.html" data-section="radar" data-nav-en-href="../../github-radar.html" data-nav-zh-href="../../zh-github-radar.html" data-nav-en-label="GitHub AI Signal Radar" data-nav-zh-label="GitHub AI 信号雷达">GitHub AI Signal Radar</a><a href="../../openrouter.html" data-section="routing" data-nav-en-href="../../openrouter.html" data-nav-zh-href="../../zh-openrouter.html" data-nav-en-label="Model Routing &amp; Telemetry" data-nav-zh-label="OpenRouter 模型遥测">Model Routing &amp; Telemetry</a><a href="../../about.html" data-section="profile" data-nav-en-href="../../about.html" data-nav-zh-href="../../zh-about.html" data-nav-en-label="Principal Architect Profile" data-nav-zh-label="首席架构师履历">Principal Architect Profile</a></div></details><a data-reading-theme="light" href="cards.html?theme=light" aria-label="Light theme">☀</a><a data-reading-theme="dark" href="cards.html?theme=dark" aria-label="Dark theme">◐</a></div><div class="professional-context" aria-label="Back to context"><a href="../../studio/index.html">← Engineering Hub</a> · <a href="../../studio/benchmarks.html">Parent topic</a></div></nav><div class="professional-context-bar"><a href="../../studio/index.html">← Engineering Hub</a> · <a class="reading-context" href="../../studio/benchmarks.html">Parent topic</a></div><!-- site-remediation-knowledge:start --><figure class="knowledge-figure" data-knowledge-atlas="benchmarks" style="margin:20px auto;max-width:1120px;padding:0 20px;box-sizing:border-box"><style>.knowledge-graph-wide{display:block}.knowledge-graph-compact{display:none}@media(max-width:600px){.knowledge-graph-wide{display:none}.knowledge-graph-compact{display:block}}</style><svg xmlns="http://www.w3.org/2000/svg" lang="en" class="knowledge-graph-compact" role="img" aria-labelledby="knowledge-960c9d685ef7-compact-title knowledge-960c9d685ef7-compact-desc" viewBox="0 0 360 980" width="360" style="width:100%;height:auto;max-width:560px;margin:0 auto;font-family:system-ui,sans-serif"><title id="knowledge-960c9d685ef7-compact-title">7-Card 4:5 Visual Report · Agent Harness × Frontier Model Co-Evolution (120-Skill Empirical Audit)</title><desc id="knowledge-960c9d685ef7-compact-desc">Question &amp; sealed workload: Dataset · cohort · denominator · provenance → defines the contract → Harness &amp; execution contract: Prompt · tool permissions · environment · repeats → produces trace artifacts → Raw outputs &amp; deterministic checks: Task traces · verifier results · missing-value ledger → aggregates with conditions → Scores, robustness &amp; latency: Keep units, conditions and uncertainty attached → supports bounded conclusions → Report &amp; reproducibility: 7-card source deck · limitations · independently reproduced?</desc><rect width="360" height="980" rx="16" fill="#081525" stroke="#284566"/><rect x="16" y="14" width="224" height="22" rx="11" fill="#112844" stroke="#2d5a88"/><text x="28" y="29" fill="#56ddcd" font-size="11.5" font-weight="700"><tspan x="28" dy="0">DATA FLOW &amp; ARCHITECTURE</tspan></text><text x="20" y="58" fill="#eef5ff" font-size="18" font-weight="700"><tspan x="20" dy="0">7-Card 4:5 Visual Report ·</tspan><tspan x="20" dy="25.2">Agent Harness × Frontier</tspan><tspan x="20" dy="25.2">Model Co-Evolution (120-Skill</tspan><tspan x="20" dy="25.2">Empirical Audit)</tspan></text><text x="20" y="158" fill="#a9b8ce" font-size="12.5" font-weight="400"><tspan x="20" dy="0">Conceptual data flow · arrows show stage handoffs</tspan></text><g data-concept="1"><rect x="16" y="180" width="328" height="113" rx="12" fill="#0e2036" stroke="#38597d"/><rect x="16" y="180" width="328" height="4" rx="2" fill="#38bdf8"/><text x="30" y="203" fill="#38bdf8" font-size="11.5" font-weight="700"><tspan x="30" dy="0">01 · INGRESS</tspan></text><text x="30" y="226" fill="#f0f6ff" font-size="16.5" font-weight="700"><tspan x="30" dy="0">Question &amp; sealed workload</tspan></text><text x="30" y="253" fill="#c4d5e8" font-size="13" font-weight="400"><tspan x="30" dy="0">Dataset · cohort · denominator ·</tspan><tspan x="30" dy="18.2">provenance</tspan></text></g><g data-relationship="defines the contract"><path d="M34 295 V333" fill="none" stroke="#56ddcd" stroke-width="2.2"/><path d="M29 327 L34 334 L39 327" fill="none" stroke="#56ddcd" stroke-width="2.2"/><text x="50" y="317" fill="#8eeadf" font-size="12.5" font-weight="600"><tspan x="50" dy="0">01→02 defines the contract</tspan></text></g><g data-concept="2"><rect x="16" y="339" width="328" height="113" rx="12" fill="#122842" stroke="#38597d"/><rect x="16" y="339" width="328" height="4" rx="2" fill="#34d399"/><text x="30" y="362" fill="#34d399" font-size="11.5" font-weight="700"><tspan x="30" dy="0">02 · GROUNDING</tspan></text><text x="30" y="385" fill="#f0f6ff" font-size="16.5" font-weight="700"><tspan x="30" dy="0">Harness &amp; execution contract</tspan></text><text x="30" y="412" fill="#c4d5e8" font-size="13" font-weight="400"><tspan x="30" dy="0">Prompt · tool permissions ·</tspan><tspan x="30" dy="18.2">environment · repeats</tspan></text></g><g data-relationship="produces trace artifacts"><path d="M34 454 V492" fill="none" stroke="#56ddcd" stroke-width="2.2"/><path d="M29 486 L34 493 L39 486" fill="none" stroke="#56ddcd" stroke-width="2.2"/><text x="50" y="476" fill="#8eeadf" font-size="12.5" font-weight="600"><tspan x="50" dy="0">02→03 produces trace artifacts</tspan></text></g><g data-concept="3"><rect x="16" y="498" width="328" height="136" rx="12" fill="#0e2036" stroke="#38597d"/><rect x="16" y="498" width="328" height="4" rx="2" fill="#a78bfa"/><text x="30" y="521" fill="#a78bfa" font-size="11.5" font-weight="700"><tspan x="30" dy="0">03 · POLICY GATE</tspan></text><text x="30" y="544" fill="#f0f6ff" font-size="16.5" font-weight="700"><tspan x="30" dy="0">Raw outputs &amp; deterministic</tspan><tspan x="30" dy="23.099999999999998">checks</tspan></text><text x="30" y="594" fill="#c4d5e8" font-size="13" font-weight="400"><tspan x="30" dy="0">Task traces · verifier results ·</tspan><tspan x="30" dy="18.2">missing-value ledger</tspan></text></g><g data-relationship="aggregates with conditions"><path d="M34 636 V674" fill="none" stroke="#56ddcd" stroke-width="2.2"/><path d="M29 668 L34 675 L39 668" fill="none" stroke="#56ddcd" stroke-width="2.2"/><text x="50" y="658" fill="#8eeadf" font-size="12.5" font-weight="600"><tspan x="50" dy="0">03→04 aggregates with conditions</tspan></text></g><g data-concept="4"><rect x="16" y="680" width="328" height="113" rx="12" fill="#122842" stroke="#38597d"/><rect x="16" y="680" width="328" height="4" rx="2" fill="#f59e0b"/><text x="30" y="703" fill="#f59e0b" font-size="11.5" font-weight="700"><tspan x="30" dy="0">04 · EXECUTION</tspan></text><text x="30" y="726" fill="#f0f6ff" font-size="16.5" font-weight="700"><tspan x="30" dy="0">Scores, robustness &amp; latency</tspan></text><text x="30" y="753" fill="#c4d5e8" font-size="13" font-weight="400"><tspan x="30" dy="0">Keep units, conditions and</tspan><tspan x="30" dy="18.2">uncertainty attached</tspan></text></g><g data-relationship="supports bounded conclusions"><path d="M34 795 V843" fill="none" stroke="#56ddcd" stroke-width="2.2"/><path d="M29 837 L34 844 L39 837" fill="none" stroke="#56ddcd" stroke-width="2.2"/><text x="50" y="817" fill="#8eeadf" font-size="12.5" font-weight="600"><tspan x="50" dy="0">04→05 supports bounded</tspan><tspan x="50" dy="17.5">conclusions</tspan></text></g><g data-concept="5"><rect x="16" y="849" width="328" height="113" rx="12" fill="#0e2036" stroke="#38597d"/><rect x="16" y="849" width="328" height="4" rx="2" fill="#56ddcd"/><text x="30" y="872" fill="#56ddcd" font-size="11.5" font-weight="700"><tspan x="30" dy="0">05 · AUDIT &amp; EVAL</tspan></text><text x="30" y="895" fill="#f0f6ff" font-size="16.5" font-weight="700"><tspan x="30" dy="0">Report &amp; reproducibility</tspan></text><text x="30" y="922" fill="#c4d5e8" font-size="13" font-weight="400"><tspan x="30" dy="0">7-card source deck · limitations ·</tspan><tspan x="30" dy="18.2">independently reproduced?</tspan></text></g></svg><svg xmlns="http://www.w3.org/2000/svg" lang="en" class="knowledge-graph-wide" role="img" aria-labelledby="knowledge-960c9d685ef7-title knowledge-960c9d685ef7-desc" viewBox="0 0 1080 462" width="1080" style="width:100%;height:auto;max-width:1080px;margin:0 auto;font-family:system-ui,sans-serif"><title id="knowledge-960c9d685ef7-title">7-Card 4:5 Visual Report · Agent Harness × Frontier Model Co-Evolution (120-Skill Empirical Audit)</title><desc id="knowledge-960c9d685ef7-desc">Question &amp; sealed workload: Dataset · cohort · denominator · provenance → defines the contract → Harness &amp; execution contract: Prompt · tool permissions · environment · repeats → produces trace artifacts → Raw outputs &amp; deterministic checks: Task traces · verifier results · missing-value ledger → aggregates with conditions → Scores, robustness &amp; latency: Keep units, conditions and uncertainty attached → supports bounded conclusions → Report &amp; reproducibility: 7-card source deck · limitations · independently reproduced?</desc><rect width="1080" height="462" rx="16" fill="#081525" stroke="#284566"/><rect x="24" y="16" width="292" height="24" rx="12" fill="#102742" stroke="#2d5a88"/><text x="38" y="32" fill="#56ddcd" font-size="11.5" font-weight="700"><tspan x="38" dy="0">DATA FLOW &amp; KEY TAKEAWAYS ARCHITECTURE</tspan></text><rect x="646" y="16" width="196" height="24" rx="12" fill="#0d2238" stroke="#254b6e"/><text x="660" y="32" fill="#7ce8d8" font-size="11.5" font-weight="600"><tspan x="660" dy="0">──▶ Stage Data &amp; Context Flow</tspan></text><rect x="852" y="16" width="204" height="24" rx="12" fill="#15203c" stroke="#3b4278"/><text x="866" y="32" fill="#c4b5fd" font-size="11.5" font-weight="600"><tspan x="866" dy="0">◆ Policy Gate &amp; Key Notes</tspan></text><text x="24" y="62" fill="#f2f7ff" font-size="18" font-weight="700"><tspan x="24" dy="0">7-Card 4:5 Visual Report · Agent Harness × Frontier Model</tspan><tspan x="24" dy="25.2">Co-Evolution (120-Skill Empirical Audit)</tspan></text><g data-concept="1"><rect x="24" y="106" width="187" height="186" rx="12" fill="#0d1e34" stroke="#335277" stroke-width="1.2"/><rect x="24" y="106" width="187" height="5" rx="2.5" fill="#38bdf8"/><rect x="34" y="119" width="167" height="22" rx="6" fill="#081424" stroke="#223b59"/><text x="40" y="134" fill="#38bdf8" font-size="11.5" font-weight="700"><tspan x="40" dy="0">01 · INGRESS</tspan></text><text x="36" y="160" fill="#f4f8ff" font-size="13.5" font-weight="700"><tspan x="36" dy="0">Question &amp; sealed</tspan><tspan x="36" dy="18.9">workload</tspan></text><path d="M36 194 H199" stroke="#233b57" stroke-width="1"/><text x="36" y="212" fill="#c5d6e8" font-size="12" font-weight="400"><tspan x="36" dy="0">Dataset · cohort ·</tspan><tspan x="36" dy="16.799999999999997">denominator · provenance</tspan></text></g><g data-relationship="defines the contract"><path d="M213 199 H231" fill="none" stroke="#56ddcd" stroke-width="2.4"/><path d="M225 194 L232 199 L225 204" fill="none" stroke="#56ddcd" stroke-width="2.4"/><rect x="24" y="300" width="187" height="44" rx="8" fill="#0b2239" stroke="#2b5b6c"/><text x="34" y="319" fill="#7ce8d8" font-size="11.5" font-weight="600"><tspan x="34" dy="0">01→02 defines the</tspan><tspan x="34" dy="16.099999999999998">contract</tspan></text></g><g data-concept="2"><rect x="235" y="106" width="187" height="186" rx="12" fill="#112640" stroke="#335277" stroke-width="1.2"/><rect x="235" y="106" width="187" height="5" rx="2.5" fill="#34d399"/><rect x="245" y="119" width="167" height="22" rx="6" fill="#081424" stroke="#223b59"/><text x="251" y="134" fill="#34d399" font-size="11.5" font-weight="700"><tspan x="251" dy="0">02 · GROUNDING</tspan></text><text x="247" y="160" fill="#f4f8ff" font-size="13.5" font-weight="700"><tspan x="247" dy="0">Harness &amp; execution</tspan><tspan x="247" dy="18.9">contract</tspan></text><path d="M247 194 H410" stroke="#233b57" stroke-width="1"/><text x="247" y="212" fill="#c5d6e8" font-size="12" font-weight="400"><tspan x="247" dy="0">Prompt · tool permissions</tspan><tspan x="247" dy="16.799999999999997">· environment · repeats</tspan></text></g><g data-relationship="produces trace artifacts"><path d="M424 199 H442" fill="none" stroke="#56ddcd" stroke-width="2.4"/><path d="M436 194 L443 199 L436 204" fill="none" stroke="#56ddcd" stroke-width="2.4"/><rect x="235" y="300" width="187" height="44" rx="8" fill="#0b2239" stroke="#2b5b6c"/><text x="245" y="319" fill="#7ce8d8" font-size="11.5" font-weight="600"><tspan x="245" dy="0">02→03 produces trace</tspan><tspan x="245" dy="16.099999999999998">artifacts</tspan></text></g><g data-concept="3"><rect x="446" y="106" width="187" height="186" rx="12" fill="#0d1e34" stroke="#335277" stroke-width="1.2"/><rect x="446" y="106" width="187" height="5" rx="2.5" fill="#a78bfa"/><rect x="456" y="119" width="167" height="22" rx="6" fill="#081424" stroke="#223b59"/><text x="462" y="134" fill="#a78bfa" font-size="11.5" font-weight="700"><tspan x="462" dy="0">03 · POLICY GATE</tspan></text><text x="458" y="160" fill="#f4f8ff" font-size="13.5" font-weight="700"><tspan x="458" dy="0">Raw outputs &amp;</tspan><tspan x="458" dy="18.9">deterministic checks</tspan></text><path d="M458 194 H621" stroke="#233b57" stroke-width="1"/><text x="458" y="212" fill="#c5d6e8" font-size="12" font-weight="400"><tspan x="458" dy="0">Task traces · verifier</tspan><tspan x="458" dy="16.799999999999997">results · missing-value</tspan><tspan x="458" dy="16.799999999999997">ledger</tspan></text></g><g data-relationship="aggregates with conditions"><path d="M635 199 H653" fill="none" stroke="#56ddcd" stroke-width="2.4"/><path d="M647 194 L654 199 L647 204" fill="none" stroke="#56ddcd" stroke-width="2.4"/><rect x="446" y="300" width="187" height="44" rx="8" fill="#0b2239" stroke="#2b5b6c"/><text x="456" y="319" fill="#7ce8d8" font-size="11.5" font-weight="600"><tspan x="456" dy="0">03→04 aggregates with</tspan><tspan x="456" dy="16.099999999999998">conditions</tspan></text></g><g data-concept="4"><rect x="657" y="106" width="187" height="186" rx="12" fill="#112640" stroke="#335277" stroke-width="1.2"/><rect x="657" y="106" width="187" height="5" rx="2.5" fill="#f59e0b"/><rect x="667" y="119" width="167" height="22" rx="6" fill="#081424" stroke="#223b59"/><text x="673" y="134" fill="#f59e0b" font-size="11.5" font-weight="700"><tspan x="673" dy="0">04 · EXECUTION</tspan></text><text x="669" y="160" fill="#f4f8ff" font-size="13.5" font-weight="700"><tspan x="669" dy="0">Scores, robustness &amp;</tspan><tspan x="669" dy="18.9">latency</tspan></text><path d="M669 194 H832" stroke="#233b57" stroke-width="1"/><text x="669" y="212" fill="#c5d6e8" font-size="12" font-weight="400"><tspan x="669" dy="0">Keep units, conditions</tspan><tspan x="669" dy="16.799999999999997">and uncertainty attached</tspan></text></g><g data-relationship="supports bounded conclusions"><path d="M846 199 H864" fill="none" stroke="#56ddcd" stroke-width="2.4"/><path d="M858 194 L865 199 L858 204" fill="none" stroke="#56ddcd" stroke-width="2.4"/><rect x="657" y="300" width="187" height="44" rx="8" fill="#0b2239" stroke="#2b5b6c"/><text x="667" y="319" fill="#7ce8d8" font-size="11.5" font-weight="600"><tspan x="667" dy="0">04→05 supports bounded</tspan><tspan x="667" dy="16.099999999999998">conclusions</tspan></text></g><g data-concept="5"><rect x="868" y="106" width="187" height="186" rx="12" fill="#0d1e34" stroke="#335277" stroke-width="1.2"/><rect x="868" y="106" width="187" height="5" rx="2.5" fill="#56ddcd"/><rect x="878" y="119" width="167" height="22" rx="6" fill="#081424" stroke="#223b59"/><text x="884" y="134" fill="#56ddcd" font-size="11.5" font-weight="700"><tspan x="884" dy="0">05 · AUDIT &amp; EVAL</tspan></text><text x="880" y="160" fill="#f4f8ff" font-size="13.5" font-weight="700"><tspan x="880" dy="0">Report &amp;</tspan><tspan x="880" dy="18.9">reproducibility</tspan></text><path d="M880 194 H1043" stroke="#233b57" stroke-width="1"/><text x="880" y="212" fill="#c5d6e8" font-size="12" font-weight="400"><tspan x="880" dy="0">7-card source deck ·</tspan><tspan x="880" dy="16.799999999999997">limitations ·</tspan><tspan x="880" dy="16.799999999999997">independently reproduced?</tspan></text></g><rect x="868" y="300" width="187" height="44" rx="8" fill="#0e2538" stroke="#2e5470"/><text x="878" y="319" fill="#93c5fd" font-size="11.5" font-weight="600"><tspan x="878" dy="0">05 Sink · Verified</tspan><tspan x="878" dy="16.099999999999998">Evidence</tspan></text><g data-takeaway="1"><rect x="24" y="358" width="334" height="88" rx="10" fill="#0b1a2e" stroke="#284466"/><rect x="24" y="370" width="4" height="64" rx="2" fill="#38bdf8"/><text x="38" y="383" fill="#38bdf8" font-size="11.5" font-weight="700"><tspan x="38" dy="0">TAKEAWAY 01 · END-TO-END DATA FLOW</tspan></text><text x="38" y="404" fill="#d5e4f5" font-size="12" font-weight="400"><tspan x="38" dy="0">Left-to-right pipeline from Question &amp;</tspan><tspan x="38" dy="16.799999999999997">sealed workload to Report &amp; reproducibility</tspan><tspan x="38" dy="16.799999999999997">with explicit handoffs.</tspan></text></g><g data-takeaway="2"><rect x="373" y="358" width="334" height="88" rx="10" fill="#0b1a2e" stroke="#284466"/><rect x="373" y="370" width="4" height="64" rx="2" fill="#a78bfa"/><text x="387" y="383" fill="#a78bfa" font-size="11.5" font-weight="700"><tspan x="387" dy="0">TAKEAWAY 02 · CONTROL &amp; POLICY GATE</tspan></text><text x="387" y="404" fill="#d5e4f5" font-size="12" font-weight="400"><tspan x="387" dy="0">Core boundary at Raw outputs &amp; deterministic</tspan><tspan x="387" dy="16.799999999999997">checks: Task traces · verifier results ·</tspan><tspan x="387" dy="16.799999999999997">missing-value ledger</tspan></text></g><g data-takeaway="3"><rect x="722" y="358" width="334" height="88" rx="10" fill="#0b1a2e" stroke="#284466"/><rect x="722" y="370" width="4" height="64" rx="2" fill="#34d399"/><text x="736" y="383" fill="#34d399" font-size="11.5" font-weight="700"><tspan x="736" dy="0">TAKEAWAY 03 · EVIDENCE &amp; BOUNDARY</tspan></text><text x="736" y="404" fill="#d5e4f5" font-size="12" font-weight="400"><tspan x="736" dy="0">7-card source deck · limitations ·</tspan><tspan x="736" dy="16.799999999999997">independently reproduced? · Conceptual flow,</tspan><tspan x="736" dy="16.799999999999997">not measured latency.</tspan></text></g></svg><figcaption style="font:13px/1.6 system-ui,sans-serif;margin:10px auto 0;max-width:1080px;color:#9fb2ca;overflow-wrap:anywhere">Architecture & data-flow blueprint: follow the left-to-right stage handoffs, policy gates, and three key takeaway callouts below (conceptual topology, not measured latency or rankings).</figcaption></figure><!-- site-remediation-knowledge:end --><main class="deck-shell">
+    <div class="deck-toolbar">
+      <div><strong>7-Card 4:5 Visual Report</strong> · Agent Harness × Frontier Model Co-Evolution</div>
+      <div>
+        <a href="index.en.html">← Interactive Workbench</a>
+        <a href="../../articles/agent-harness-coevolution.en.html">Illustrated Article</a>
+        <a href="cards.zh.html" hreflang="zh-CN" lang="zh-CN">ZH Deck</a>
+      </div>
+    </div>
+
+    <!-- CARD 1/7 -->
+    <section class="card" id="card-1">
+      <div>
+        <div class="card-top">
+          <span class="kicker">HANDS-ON · HARNESS CO-EVOLUTION</span>
+          <span class="page-num">1 / 7</span>
+        </div>
+        <h1>Agent Harness × Frontier Model Co-Evolution: 120-Skill Audit &amp; Prompt Budget Recovery</h1>
+        <p class="sub">Upgrading to <strong>Gemini 4 Carbon · GPT-6.2 Sol · Grok 4.7</strong> exposed legacy prompt debt that masked 98.8% of user skills—compaction restored 100% visibility and cut eager load by 94%.</p>
+
+        <svg class="inline-chart" viewBox="0 0 820 430" role="img" aria-label="Skills Compaction and System-Prompt Budget Recovery">
+          <rect width="820" height="430" rx="14" fill="#0d1117"/>
+          <text x="32" y="36" fill="#f0f6fc" font-size="16.5" font-weight="700">Skills Compaction &amp; System-Prompt Budget Recovery (Measured Before vs After)</text>
+          <text x="32" y="58" fill="#8b949e" font-size="12">Eliminating the &lt;available_skills&gt; truncation cliff to restore 100% semantic router visibility</text>
+          <rect x="626" y="18" width="164" height="48" rx="7" fill="#161b22" stroke="#30363d"/>
+          <rect x="638" y="28" width="10" height="10" rx="2" fill="#0d74ff"/>
+          <text x="654" y="37" fill="#e6edf3" font-size="11">Before Optimization</text>
+          <rect x="638" y="45" width="10" height="10" rx="2" fill="#9e5a16" stroke="#d29922"/>
+          <text x="654" y="54" fill="#e6edf3" font-size="11">After Optimization</text>
+
+          <rect x="68" y="76" width="722" height="296" rx="8" fill="#161b22" stroke="#30363d"/>
+          <g stroke="#21262d" stroke-width="1">
+            <line x1="68" y1="372" x2="790" y2="372" stroke="#30363d"/>
+            <line x1="68" y1="298" x2="790" y2="298"/>
+            <line x1="68" y1="224" x2="790" y2="224"/>
+            <line x1="68" y1="150" x2="790" y2="150"/>
+            <line x1="68" y1="76" x2="790" y2="76"/>
+          </g>
+          <g fill="#8b949e" font-family="monospace" font-size="10.5" text-anchor="end">
+            <text x="58" y="376">0</text>
+            <text x="58" y="302">100</text>
+            <text x="58" y="228">200</text>
+            <text x="58" y="154">300</text>
+            <text x="58" y="80">400</text>
+          </g>
+          <rect x="108" y="86.4" width="48" height="285.6" rx="3" fill="#0d74ff"/>
+          <text x="132" y="80" fill="#58a6ff" font-family="monospace" font-size="11.5" font-weight="700" text-anchor="middle">386.0</text>
+          <rect x="162" y="312.7" width="48" height="59.3" rx="3" fill="#9e5a16"/>
+          <text x="186" y="305" fill="#f2cc60" font-family="monospace" font-size="11.5" font-weight="700" text-anchor="middle">80.2</text>
+          <text x="159" y="396" fill="#c9d1d9" font-size="11" font-weight="600" text-anchor="middle">Metadata (×100 chars)</text>
+
+          <rect x="284" y="288" width="48" height="84" rx="3" fill="#0d74ff"/>
+          <text x="308" y="281" fill="#58a6ff" font-family="monospace" font-size="11.5" font-weight="700" text-anchor="middle">113.5</text>
+          <rect x="338" y="330.2" width="48" height="41.8" rx="3" fill="#9e5a16"/>
+          <text x="362" y="323" fill="#f2cc60" font-family="monospace" font-size="11.5" font-weight="700" text-anchor="middle">56.5</text>
+          <text x="335" y="396" fill="#c9d1d9" font-size="11" font-weight="600" text-anchor="middle">Active Footprint (MB)</text>
+
+          <rect x="460" y="370" width="48" height="2" rx="1" fill="#0d74ff"/>
+          <text x="484" y="363" fill="#f85149" font-family="monospace" font-size="11.5" font-weight="700" text-anchor="middle">1.2</text>
+          <rect x="514" y="298" width="48" height="74" rx="3" fill="#9e5a16"/>
+          <text x="538" y="290" fill="#f2cc60" font-family="monospace" font-size="11.5" font-weight="700" text-anchor="middle">100.0</text>
+          <text x="511" y="396" fill="#c9d1d9" font-size="11" font-weight="600" text-anchor="middle">Skill Visibility (%)</text>
+
+          <rect x="636" y="269.1" width="48" height="102.9" rx="3" fill="#0d74ff"/>
+          <text x="660" y="262" fill="#58a6ff" font-family="monospace" font-size="11.5" font-weight="700" text-anchor="middle">139.0</text>
+          <rect x="690" y="365.8" width="48" height="6.2" rx="2" fill="#9e5a16"/>
+          <text x="714" y="358" fill="#f2cc60" font-family="monospace" font-size="11.5" font-weight="700" text-anchor="middle">8.4</text>
+          <text x="687" y="396" fill="#c9d1d9" font-size="11" font-weight="600" text-anchor="middle">OpenClaw (×10 lines)</text>
+        </svg>
+      </div>
+
+      <div class="kpi-row">
+        <div class="kpi-box">
+          <div class="lbl">Metadata Budget</div>
+          <div class="num">-79.2%</div>
+          <div class="dtl">38,600 → 8,019 chars</div>
+        </div>
+        <div class="kpi-box">
+          <div class="lbl">Router Visibility</div>
+          <div class="num">100.0%</div>
+          <div class="dtl">1/81 (1.2%) → 62/62</div>
+        </div>
+        <div class="kpi-box">
+          <div class="lbl">Disk Reclaimed</div>
+          <div class="num">-50.2%</div>
+          <div class="dtl">113.5 → 56.5 MB</div>
+        </div>
+        <div class="kpi-box">
+          <div class="lbl">OpenClaw Eager</div>
+          <div class="num">-94.0%</div>
+          <div class="dtl">1,390 → 84 lines</div>
+        </div>
+      </div>
+
+      <div class="callout-band green">
+        <strong>Empirical Grounding:</strong> Every metric comes directly from the <code>2026-11-18</code> audit of <code>session_store_sql</code> and dual skill directories (zero synthetic benchmarks). Upgrading models without compacting the harness leaves frontier reasoning blind.
+      </div>
+
+      <div class="card-foot">
+        <span>Audit Scope: ~/.copilot/skills (83) + ~/.agents/skills (37) = 120 dirs</span>
+        <span>Qi Chen · @turbo998</span>
+      </div>
+    </section>
+
+    <!-- CARD 2/7 -->
+    <section class="card" id="card-2">
+      <div>
+        <div class="card-top">
+          <span class="kicker">SCENARIO · THE 12KB ROUTER CLIFF</span>
+          <span class="page-num">2 / 7</span>
+        </div>
+        <h2>Root Cause: How 80 out of 81 User Skills Turned Invisible to the Semantic Router</h2>
+        <p class="sub">The agent runtime caps <code>&lt;available_skills&gt;</code> injection at ~<strong>12 KB (12,000 chars)</strong>; overflow entries silently lose their YAML <code>description</code> and degrade to bare names.</p>
+
+        <svg class="inline-chart" viewBox="0 0 820 230" role="img" aria-label="12 KB Truncation Cliff Comparison">
+          <rect width="820" height="230" rx="12" fill="#0d1117"/>
+          <text x="26" y="34" fill="#f0f6fc" font-size="13.5" font-weight="700">Before: 42.6 KB demand vs 12 KB cap → 98.8% (80/81) user skills truncated to bare names</text>
+          <rect x="26" y="46" width="66" height="36" rx="4" fill="#1f6feb"/>
+          <text x="59" y="69" fill="#fff" font-family="monospace" font-size="10.5" text-anchor="middle">4.0KB</text>
+          <rect x="94" y="46" width="22" height="36" rx="3" fill="#388bfd"/>
+          <rect x="118" y="46" width="676" height="36" rx="4" fill="#4c161d" stroke="#f85149"/>
+          <text x="456" y="69" fill="#ffa198" font-size="11.5" font-weight="700" text-anchor="middle">37.5 KB Overflow Zone: 80 / 81 User Skills Stripped of Descriptions</text>
+
+          <text x="26" y="124" fill="#f0f6fc" font-size="13.5" font-weight="700">After: Pruned 21 + compressed 62 descriptions ≤140 chars → 8.02 KB visible + 3.98 KB buffer</text>
+          <rect x="26" y="136" width="66" height="36" rx="4" fill="#1f6feb"/>
+          <text x="59" y="159" fill="#fff" font-family="monospace" font-size="10.5" text-anchor="middle">4.0KB</text>
+          <rect x="94" y="136" width="136" height="36" rx="4" fill="#9e5a16" stroke="#d29922"/>
+          <text x="162" y="159" fill="#f2cc60" font-family="monospace" font-size="11" font-weight="700" text-anchor="middle">8.02 KB (62/62)</text>
+          <rect x="232" y="136" width="68" height="36" rx="4" fill="#122d1f" stroke="#3fb950" stroke-dasharray="4 3"/>
+          <text x="266" y="159" fill="#7ee787" font-family="monospace" font-size="10.5" text-anchor="middle">3.98KB Buf</text>
+
+          <line x1="230" y1="22" x2="230" y2="206" stroke="#f85149" stroke-width="2" stroke-dasharray="5 3"/>
+          <text x="230" y="218" fill="#ffa198" font-family="monospace" font-size="11" font-weight="700" text-anchor="middle">▲ 12 KB Runtime Cliff</text>
+        </svg>
+      </div>
+
+      <div class="two-col">
+        <div class="sub-box">
+          <h3>✕ Before: Multi-Paragraph Essay Frontmatter</h3>
+          <pre class="code-blk">description: &gt;
+  Use this comprehensive skill whenever the user
+  asks to create, polish, restructure, or review
+  executive slide decks, customer workshops...
+  (Avg 476 chars/skill · accessibility = 1.1 KB)</pre>
+        </div>
+        <div class="sub-box">
+          <h3>✓ After: ≤140-Char Dense Routing Trigger</h3>
+          <pre class="code-blk">description: "Build Azure Fluent executive slide decks, architecture review presentations, and HTML/PPTX storyboards with dark/light contrast grids."
+# Avg 129 chars across 62 skills = 8,019 chars</pre>
+        </div>
+      </div>
+
+      <div class="callout-band red">
+        <strong>Failure Mechanism:</strong> With 22 project/plugin skills consuming ~4 KB first and user descriptions averaging 476 chars, ~16 verbose skills exhaust the entire 12 KB window. Truncation throws no error—skills simply stop triggering.
+      </div>
+
+      <div class="card-foot">
+        <span>Case Study 01 · System-Prompt Budget Hygiene</span>
+        <span>Visibility 1.2% → 100.0% (+83×)</span>
+      </div>
+    </section>
+
+    <!-- CARD 3/7 -->
+    <section class="card" id="card-3">
+      <div>
+        <div class="card-top">
+          <span class="kicker">WHAT I TESTED · 120-SKILL TELEMETRY AUDIT</span>
+          <span class="page-num">3 / 7</span>
+        </div>
+        <h2>Telemetry Matrix: Historical Invocations &amp; Five-Bucket Disposition Across 120 Skills</h2>
+        <p class="sub">Querying <code>session_store_sql</code> <code>tool_requests</code> revealed <strong>115 / 120 (95.8%)</strong> had zero invocations; just 5 skills accounted for all 12 historical triggers.</p>
+
+        <div class="two-col">
+          <div class="sub-box">
+            <h3>A · Top 5 Invoked Skills (12 Total Calls)</h3>
+            <div class="bar-row" style="margin-top:10px;">
+              <div class="bar-meta"><span>azure-style-presentation</span><span>5 calls</span></div>
+              <div class="bar-track"><div class="bar-fill" style="width:100%;background:#2563eb;"></div></div>
+            </div>
+            <div class="bar-row">
+              <div class="bar-meta"><span>wechat-article</span><span>3 calls</span></div>
+              <div class="bar-track"><div class="bar-fill" style="width:60%;background:#3b82f6;"></div></div>
+            </div>
+            <div class="bar-row">
+              <div class="bar-meta"><span>powerpoint</span><span>2 calls</span></div>
+              <div class="bar-track"><div class="bar-fill" style="width:40%;background:#60a5fa;"></div></div>
+            </div>
+            <div class="bar-row">
+              <div class="bar-meta"><span>azure-prepare / browser-use</span><span>1 each</span></div>
+              <div class="bar-track"><div class="bar-fill" style="width:20%;background:#93c5fd;"></div></div>
+            </div>
+            <p style="margin-top:8px;font-weight:700;color:#991b1b;">Remaining 115 skills = 0 calls (95.8%)</p>
+          </div>
+
+          <div class="sub-box">
+            <h3>B · Disposition of 120 Skills (83 Active + 37 Pruned)</h3>
+            <div class="bar-row" style="margin-top:10px;">
+              <div class="bar-meta"><span>Retained &amp; Compressed (~/.copilot)</span><span>62 (51.7%)</span></div>
+              <div class="bar-track"><div class="bar-fill" style="width:51.7%;background:#10b981;"></div></div>
+            </div>
+            <div class="bar-row">
+              <div class="bar-meta"><span>Active Azure/Plugin (~/.agents)</span><span>21 (17.5%)</span></div>
+              <div class="bar-track"><div class="bar-fill" style="width:17.5%;background:#2563eb;"></div></div>
+            </div>
+            <div class="bar-row">
+              <div class="bar-meta"><span>Archived Zero-Call / Superseded</span><span>21 (17.5%)</span></div>
+              <div class="bar-track"><div class="bar-fill" style="width:17.5%;background:#d97706;"></div></div>
+            </div>
+            <div class="bar-row">
+              <div class="bar-meta"><span>Cross-Dir Duplicates Removed</span><span>14 (11.7%)</span></div>
+              <div class="bar-track"><div class="bar-fill" style="width:11.7%;background:#7c3aed;"></div></div>
+            </div>
+            <div class="bar-row">
+              <div class="bar-meta"><span>macOS-Only Removed on Windows</span><span>2 (1.7%)</span></div>
+              <div class="bar-track"><div class="bar-fill" style="width:3.5%;background:#ef4444;"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <pre class="code-blk">[21 Archived User Skills] openclaw-hermes-deploy, billing-assistant, fabric-lakehouse-realtime-analytics, meeting-minutes-docx, pdf, theme-factory, brand-guidelines, doc-coauthoring, internal-comms, slack-gif-creator, canvas-design, algorithmic-art, frontend-design, mcp-builder, webapp-testing, skill-creator, agent-governance, ms-foundry, workiq-copilot, copilot-cli-quickstart, github-copilot-starter
+[14 Deduplicated ~/.agents Copies] azure-deploy, azure-diagnostics, azure-prepare, azure-validate, azure-ai, azure-compute, azure-kubernetes, azure-quotas, azure-resource-lookup, azure-storage, appinsights-instrumentation, azure-aigateway, azure-compliance, azure-cost-optimization
+[2 macOS-Only Removed] apple-notes (memo CLI), things-mac (AppleScript/Things3)</pre>
+
+      <div class="callout-band amber">
+        <strong>Pruning Rule:</strong> Archive generic wrappers already absorbed by frontier base models (<code>pdf</code>, <code>frontend-design</code>, <code>doc-coauthoring</code>); retain only skills encoding proprietary workflows, cloud guardrails, or deterministic scripts.
+      </div>
+
+      <div class="card-foot">
+        <span>Active Skills: 120 → 83 · Disk: 113.5 MB → 56.5 MB</span>
+        <span>Reclaimed 56.97 MB (-50.2%)</span>
+      </div>
+    </section>
+
+    <!-- CARD 4/7 -->
+    <section class="card" id="card-4">
+      <div>
+        <div class="card-top">
+          <span class="kicker">UNDER THE HOOD · PROGRESSIVE DISCLOSURE</span>
+          <span class="page-num">4 / 7</span>
+        </div>
+        <h2>Progressive Disclosure: Splitting a 1,390-Line Monolith into an 84-Line Router</h2>
+        <p class="sub">Refactoring <code>openclaw-wechat-deployment</code> cut eager context injection from <strong>54.7 KB</strong> to <strong>3.4 KB (-94.0%)</strong> while preserving deep stage runbooks on demand.</p>
+
+        <svg class="inline-chart" viewBox="0 0 820 220" role="img" aria-label="OpenClaw Progressive Disclosure Before vs After">
+          <rect width="820" height="220" rx="12" fill="#0d1117"/>
+          <text x="24" y="34" fill="#ffa198" font-size="13" font-weight="700">Before: Monolithic SKILL.md · 1,390 lines (54.7 KB) injected eagerly every turn</text>
+          <rect x="24" y="46" width="772" height="30" rx="5" fill="#0d74ff"/>
+          <text x="410" y="66" fill="#fff" font-family="monospace" font-size="11.5" font-weight="700" text-anchor="middle">1,390 lines · Bicep + cloud-init + Docker + WeChat Webhook + Troubleshooting combined</text>
+
+          <text x="24" y="114" fill="#7ee787" font-size="13" font-weight="700">After: 84-line decision-tree router (3.4 KB, -94.0%) + 5 lazy-loaded view modules</text>
+          <rect x="24" y="126" width="88" height="44" rx="5" fill="#9e5a16" stroke="#d29922"/>
+          <text x="68" y="146" fill="#f2cc60" font-family="monospace" font-size="11" font-weight="700" text-anchor="middle">SKILL.md</text>
+          <text x="68" y="162" fill="#e6edf3" font-family="monospace" font-size="10" text-anchor="middle">84 lines</text>
+
+          <rect x="132" y="126" width="130" height="44" rx="5" fill="#161b22" stroke="#388bfd" stroke-dasharray="4 2"/>
+          <text x="197" y="146" fill="#79c0ff" font-family="monospace" font-size="10" font-weight="700" text-anchor="middle">architecture-bicep</text>
+          <text x="197" y="162" fill="#8b949e" font-family="monospace" font-size="10" text-anchor="middle">312 lines (lazy)</text>
+
+          <rect x="270" y="126" width="134" height="44" rx="5" fill="#161b22" stroke="#388bfd" stroke-dasharray="4 2"/>
+          <text x="337" y="146" fill="#79c0ff" font-family="monospace" font-size="10" font-weight="700" text-anchor="middle">vm-bootstrap-docker</text>
+          <text x="337" y="162" fill="#8b949e" font-family="monospace" font-size="10" text-anchor="middle">298 lines (lazy)</text>
+
+          <rect x="412" y="126" width="130" height="44" rx="5" fill="#161b22" stroke="#388bfd" stroke-dasharray="4 2"/>
+          <text x="477" y="146" fill="#79c0ff" font-family="monospace" font-size="10" font-weight="700" text-anchor="middle">wechat-kf-webhook</text>
+          <text x="477" y="162" fill="#8b949e" font-family="monospace" font-size="10" text-anchor="middle">276 lines (lazy)</text>
+
+          <rect x="550" y="126" width="124" height="44" rx="5" fill="#161b22" stroke="#388bfd" stroke-dasharray="4 2"/>
+          <text x="612" y="146" fill="#79c0ff" font-family="monospace" font-size="10" font-weight="700" text-anchor="middle">troubleshooting</text>
+          <text x="612" y="162" fill="#8b949e" font-family="monospace" font-size="10" text-anchor="middle">244 lines (lazy)</text>
+
+          <rect x="682" y="126" width="114" height="44" rx="5" fill="#161b22" stroke="#388bfd" stroke-dasharray="4 2"/>
+          <text x="739" y="146" fill="#79c0ff" font-family="monospace" font-size="10" font-weight="700" text-anchor="middle">security-harden</text>
+          <text x="739" y="162" fill="#8b949e" font-family="monospace" font-size="10" text-anchor="middle">176 lines (lazy)</text>
+
+          <text x="410" y="200" fill="#8b949e" font-size="11.5" text-anchor="middle">Targeted debugging loads only 84 + 244 = 328 lines, eliminating &gt;76% irrelevant context noise</text>
+        </svg>
+      </div>
+
+      <div class="two-col">
+        <div class="sub-box">
+          <h3>What Stays in SKILL.md (≤120 Lines Cap)?</h3>
+          <ul>
+            <li>≤140-char high-signal trigger contract (when / when not to invoke)</li>
+            <li>Hard architectural &amp; security invariants</li>
+            <li>Stage routing table pointing to exact <code>references/*.md</code> files</li>
+          </ul>
+        </div>
+        <div class="sub-box">
+          <h3>What Moves to references/ &amp; scripts/?</h3>
+          <ul>
+            <li>Full Bicep, cloud-init, Docker Compose &amp; Nginx templates</li>
+            <li>Symptom-to-remediation troubleshooting matrices</li>
+            <li>Deterministic verification scripts &amp; cross-OS helpers</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="callout-band green">
+        <strong>Architectural Shift:</strong> Treat <code>SKILL.md</code> as an index router rather than a textbook. Frontier models natively call <code>view</code> on the exact reference file needed for the active deployment stage.
+      </div>
+
+      <div class="card-foot">
+        <span>Case Study 02 · openclaw-wechat-deployment</span>
+        <span>54.7 KB → 3.4 KB Eager Context (-94.0%)</span>
+      </div>
+    </section>
+
+    <!-- CARD 5/7 -->
+    <section class="card" id="card-5">
+      <div>
+        <div class="card-top">
+          <span class="kicker">ROBUSTNESS · FRONTIER MULTI-MODEL MATRIX</span>
+          <span class="page-num">5 / 7</span>
+        </div>
+        <h2>De-Scaffolding Legacy Crutches &amp; Aligning the Frontier Model Matrix</h2>
+        <p class="sub">Eliminating obsolete model overrides, hallucinated tools, and OS-locked fonts to unlock multi-model specialization.</p>
+
+        <div class="two-col" style="margin-bottom:14px;">
+          <div class="sub-box">
+            <h3>Three Legacy Crutches Removed</h3>
+            <ul>
+              <li><strong>Hardcoded Obsolete Models:</strong> Stripped <code>model: gpt-5.4</code> / <code>gpt-4o-mini</code> / <code>claude-haiku-4.5</code> so subagents inherit runtime <code>/subagents</code> frontier routing.</li>
+              <li><strong>Hallucinated Tool Names:</strong> Replaced fake <code>search-the-web</code>, <code>fetch_page</code>, and <code>runSubagent</code> with real <code>web_search</code>, <code>web_fetch</code>, <code>task(...)</code>, and native Canvases.</li>
+              <li><strong>macOS Font Lock-In:</strong> Fixed CJK tofu boxes on Windows/Linux in <code>invoice_edit.py</code> via fallback chain <code>msyh.ttc → NotoSansCJK → PingFang.ttc</code>.</li>
+            </ul>
+          </div>
+          <div class="sub-box">
+            <h3>MODEL-SKILL-MATRIX Specialization</h3>
+            <ul>
+              <li><strong>Gemini 4 Carbon (<code>long_context</code>):</strong> Whole-repo synthesis, SVG diagrams (<code>anatomy</code> / <code>architecture-diagrams</code>), bilingual reports &amp; PPT/Web artifacts.</li>
+              <li><strong>GPT-6.2 Sol (<code>high/xhigh/max</code>):</strong> Complex Bicep/AKS IaC, OWASP/RAI security audits, strict RPI engineering &amp; financial validation.</li>
+              <li><strong>Grok 4.7 (<code>high/xhigh</code>):</strong> Live web signal intelligence (<code>wechat-article</code> / <code>research</code>), adversarial red-teaming &amp; rapid incident triage.</li>
+              <li><strong>Gemini 3.8 Flash:</strong> High-fanout read-only <code>explore</code> / <code>task</code> sweeps.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <pre class="code-blk"># Multi-Model Co-Evolution Workflow Example (Cloud Architecture &amp; Security Audit)
+1. [Explore Sweep]  Gemini 3.8 Flash  -&gt; Parallel read-only codebase boundary scan (task: explore)
+2. [Live Threat]    Grok 4.7 (high)   -&gt; Live CVE intelligence &amp; OWASP Agentic red-team (web_search + owasp-agentic)
+3. [Deep IaC Fix]   GPT-6.2 Sol (max) -&gt; Zero-trust Bicep synthesis &amp; validation (azure-prepare + azure-validate)
+4. [Visual Deck]    Gemini 4 Carbon   -&gt; Bilingual SVG topology &amp; executive deck (azure-style-presentation)</pre>
+
+      <div class="callout-band green">
+        <strong>Design Rule:</strong> Never hardcode ephemeral model version strings inside <code>SKILL.md</code>. Keep skill files model-agnostic and manage model routing centrally via runtime preferences.
+      </div>
+
+      <div class="card-foot">
+        <span>Case Studies 03 &amp; 04 · De-Scaffolding &amp; Model Matrix</span>
+        <span>Gemini 4 Carbon · GPT-6.2 Sol · Grok 4.7</span>
+      </div>
+    </section>
+
+    <!-- CARD 6/7 -->
+    <section class="card" id="card-6">
+      <div>
+        <div class="card-top">
+          <span class="kicker">SCALING · THE INVERSE SCAFFOLDING LAW</span>
+          <span class="page-num">6 / 7</span>
+        </div>
+        <h2>The Inverse Scaffolding Law: Why Stronger Models Require Thinner Procedural Prompts</h2>
+        <p class="sub">Co-evolving harness architecture across three model generations (<code>GPT-4o</code> → <code>GPT-5.4</code> → <code>Gemini 4 Carbon · GPT-6.2 Sol · Grok 4.7</code>).</p>
+
+        <svg class="inline-chart" viewBox="0 0 820 260" role="img" aria-label="The Inverse Scaffolding Law Dual-Curve Diagram">
+          <rect width="820" height="260" rx="12" fill="#0d1117"/>
+          <rect x="44" y="24" width="732" height="184" rx="8" fill="#161b22" stroke="#30363d"/>
+          <line x1="160" y1="36" x2="160" y2="196" stroke="#30363d" stroke-dasharray="4 3"/>
+          <line x1="410" y1="36" x2="410" y2="196" stroke="#30363d" stroke-dasharray="4 3"/>
+          <line x1="660" y1="36" x2="660" y2="196" stroke="#30363d" stroke-dasharray="4 3"/>
+
+          <path d="M 160 60 C 270 68, 330 112, 410 122 C 500 132, 570 176, 660 182" fill="none" stroke="#f85149" stroke-width="3.5"/>
+          <circle cx="160" cy="60" r="6" fill="#f85149"/><circle cx="410" cy="122" r="6" fill="#f85149"/><circle cx="660" cy="182" r="6" fill="#f85149"/>
+          <text x="176" y="56" fill="#ffa198" font-size="11.5" font-weight="700">Falling: Procedural Prompt Crutches (High → Minimal)</text>
+
+          <path d="M 160 180 C 270 172, 330 126, 410 116 C 500 106, 570 62, 660 54" fill="none" stroke="#3fb950" stroke-width="3.5"/>
+          <circle cx="160" cy="180" r="6" fill="#3fb950"/><circle cx="410" cy="116" r="6" fill="#3fb950"/><circle cx="660" cy="54" r="6" fill="#3fb950"/>
+          <text x="424" y="52" fill="#7ee787" font-size="11.5" font-weight="700">Rising: Contracts &amp; Deterministic Verifiers (Low → Strict)</text>
+
+          <text x="160" y="232" fill="#c9d1d9" font-size="11.5" font-weight="700" text-anchor="middle">Gen 1 · GPT-4o / Claude 3.5</text>
+          <text x="410" y="232" fill="#c9d1d9" font-size="11.5" font-weight="700" text-anchor="middle">Gen 2 · GPT-5.4 / Sonnet 4</text>
+          <text x="660" y="232" fill="#f2cc60" font-size="11.5" font-weight="700" text-anchor="middle">Gen 3 · Carbon · Sol · Grok 4.7</text>
+        </svg>
+      </div>
+
+      <div class="sub-box">
+        <h3>Measured Context &amp; Budget Scaling Ratios (Before vs After)</h3>
+        <div class="bar-row" style="margin-top:10px;">
+          <div class="bar-meta"><span>User Skill Metadata vs 12 KB Runtime Ceiling</span><span>321.7% Overflow → 66.8% Safe</span></div>
+          <div class="bar-track"><div class="bar-fill" style="width:66.8%;background:#10b981;"></div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-meta"><span>Average YAML Description Length (Target ≤140 chars)</span><span>476 chars → 129 chars (-72.9%)</span></div>
+          <div class="bar-track"><div class="bar-fill" style="width:27.1%;background:#2563eb;"></div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-meta"><span>Eager Monolith Context Injection (OpenClaw)</span><span>54.7 KB → 3.4 KB (-94.0%)</span></div>
+          <div class="bar-track"><div class="bar-fill" style="width:6.2%;background:#d97706;"></div></div>
+        </div>
+      </div>
+
+      <div class="callout-band amber">
+        <strong>Core Law:</strong> Hand-holding prompts written to compensate for weaker Gen-1 reasoning become context-polluting straitjackets on Gen-3 models—starving the semantic router while suppressing native planning.
+      </div>
+
+      <div class="card-foot">
+        <span>Inverse Scaffolding Law · Context Engineering</span>
+        <span>Shrink Crutches · Sharpen Contracts</span>
+      </div>
+    </section>
+
+    <!-- CARD 7/7 -->
+    <section class="card" id="card-7">
+      <div>
+        <div class="card-top">
+          <span class="kicker">MY TAKE · PLAYBOOK FOR ENGINEERING TEAMS</span>
+          <span class="page-num">7 / 7</span>
+        </div>
+        <h2>Repeatable 5-Step Agent Harness Upgrade Playbook for Every Model Leap</h2>
+        <p class="sub">An actionable engineering checklist to run whenever your organization registers a new frontier model cohort.</p>
+
+        <div class="sub-box" style="margin-bottom:12px;">
+          <h3>1 · Telemetry Audit First</h3>
+          <p>Query <code>session_store_sql</code> <code>tool_requests</code> to expose zero-call zombie skills and cross-directory plugin duplicates using real invocation evidence.</p>
+        </div>
+        <div class="sub-box" style="margin-bottom:12px;">
+          <h3>2 · Enforce a &lt; 9 KB Prompt Budget Guardrail</h3>
+          <p>Cap user-level <code>&lt;available_skills&gt;</code> YAML metadata below <strong>9 KB</strong> with <code>≤140-char</code> trigger descriptions to leave 3–4 KB headroom under the 12 KB cliff.</p>
+        </div>
+        <div class="sub-box" style="margin-bottom:12px;">
+          <h3>3 · Refactor into Progressive Disclosure (≤120 Lines)</h3>
+          <p>Keep <code>SKILL.md ≤ 120 lines</code> focused strictly on triggers, invariants, and stage routing; move Bicep, configs, and runbooks to lazy-loaded <code>references/</code>.</p>
+        </div>
+        <div class="sub-box" style="margin-bottom:12px;">
+          <h3>4 · Re-Bind Model Capabilities &amp; OS Portability</h3>
+          <p>Delete hardcoded legacy model pins and fake tools; align domains across <code>Gemini 4 Carbon</code>, <code>GPT-6.2 Sol</code>, <code>Grok 4.7</code>, and <code>Gemini 3.8 Flash</code> with cross-OS font/path fallbacks.</p>
+        </div>
+        <div class="sub-box">
+          <h3>5 · Wire an Automated CI Regression Gate</h3>
+          <p>Run automated checks on skill count, metadata byte budget, banned legacy tokens, and duplicate folder names on every skill sync or PR.</p>
+        </div>
+      </div>
+
+      <div class="callout-band green">
+        <strong>Companion Artifacts:</strong>
+        Interactive Workbench <code>workshops/agent-harness-coevolution/index.en.html</code> ·
+        Technical Article <code>articles/agent-harness-coevolution.en.html</code> ·
+        Repositories <code>github.com/turbo998/ai-research-public</code> &amp; <code>azure-sa-skills</code>
+      </div>
+
+      <div class="card-foot">
+        <span>Published on turbo998.github.io · Track 05 Benchmarks &amp; Harness</span>
+        <span>Qi Chen · 2026-11-18</span>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline';" />
+  <title>7 卡 4:5 视觉技术报告 · 随模型升级持续演进 Agent Harness（120 Skills 实测治理）</title>
+  <style>
+    :root {
+      --bg-page: #070b12;
+      --card-bg: #ffffff;
+      --card-border: #e2e8f0;
+      --ink: #0f172a;
+      --muted: #475569;
+      --soft: #64748b;
+      --blue: #1d4ed8;
+      --dark: #0d1117;
+      --dark-card: #161b22;
+      --green-bg: #ecfdf5;
+      --green-bd: #10b981;
+      --green-tx: #065f46;
+      --amber-bg: #fffbeb;
+      --amber-bd: #f59e0b;
+      --amber-tx: #92400e;
+      --red-bg: #fef2f2;
+      --red-bd: #ef4444;
+      --red-tx: #991b1b;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg-page);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      line-height: 1.5;
+      overflow-x: clip;
+    }
+    .deck-shell {
+      max-width: 940px;
+      margin: 0 auto;
+      padding: 28px 16px 68px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 32px;
+    }
+    .deck-toolbar {
+      width: 100%;
+      max-width: 900px;
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 12px;
+      padding: 14px 20px;
+      color: #f0f6fc;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .deck-toolbar a {
+      color: #79c0ff;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 700;
+      margin-left: 12px;
+    }
+    .card {
+      width: 100%;
+      max-width: 900px;
+      min-height: 1125px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 36px 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 16px;
+      box-shadow: 0 24px 48px rgba(0, 0, 0, 0.45);
+    }
+    @media (max-width: 940px) {
+      .card { min-height: auto; padding: 24px 20px; }
+    }
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid #f1f5f9;
+      padding-bottom: 12px;
+      gap: 8px;
+    }
+    .kicker {
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      color: var(--blue);
+    }
+    .page-num {
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--soft);
+      background: #f1f5f9;
+      padding: 4px 10px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+    h1, h2 {
+      font-size: 24px;
+      line-height: 1.28;
+      font-weight: 800;
+      color: var(--ink);
+      margin-bottom: 8px;
+    }
+    .sub {
+      font-size: 13.5px;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+    .kpi-row {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+    }
+    @media (max-width: 720px) { .kpi-row { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    .kpi-box {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 12px;
+    }
+    .kpi-box .lbl { font-size: 11px; font-weight: 700; color: var(--soft); }
+    .kpi-box .num { font-size: 20px; font-weight: 800; color: var(--blue); font-family: ui-monospace, Consolas, monospace; margin: 3px 0; }
+    .kpi-box .dtl { font-size: 11.5px; color: var(--muted); }
+    .two-col {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+    @media (max-width: 720px) { .two-col { grid-template-columns: 1fr; } }
+    .sub-box {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 14px 16px;
+    }
+    .sub-box h3 { font-size: 14.5px; font-weight: 800; margin-bottom: 6px; color: var(--ink); }
+    .sub-box p, .sub-box li { font-size: 12.5px; color: var(--muted); line-height: 1.55; }
+    .sub-box ul { padding-left: 16px; }
+    .callout-band {
+      padding: 12px 16px;
+      border-radius: 12px;
+      font-size: 12.5px;
+      line-height: 1.55;
+    }
+    .callout-band.green { background: var(--green-bg); border: 1px solid var(--green-bd); color: var(--green-tx); }
+    .callout-band.amber { background: var(--amber-bg); border: 1px solid var(--amber-bd); color: var(--amber-tx); }
+    .callout-band.red { background: var(--red-bg); border: 1px solid var(--red-bd); color: var(--red-tx); }
+    pre.code-blk {
+      background: var(--dark);
+      color: #e6edf3;
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 11.5px;
+      line-height: 1.5;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .bar-row { margin-bottom: 10px; }
+    .bar-meta { display: flex; justify-content: space-between; font-size: 12px; font-weight: 700; margin-bottom: 4px; gap: 8px; }
+    .bar-track { height: 14px; background: #e2e8f0; border-radius: 999px; overflow: hidden; }
+    .bar-fill { height: 100%; border-radius: 999px; }
+    .card-foot {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      border-top: 1px solid #f1f5f9;
+      padding-top: 10px;
+      font-size: 11.5px;
+      color: var(--soft);
+    }
+    svg.inline-chart { width: 100%; height: auto; display: block; border-radius: 12px; }
+  </style>
+<style id="site-remediation-style">/* Embedded by integrate-dedicated.cjs so sealed report CSP remains unchanged. */
+.kee-dedicated-nav {
+  all: initial; box-sizing: border-box; position: relative; display: flex;
+  flex-wrap: wrap; align-items: center; gap: 6px 14px; width: 100%;
+  padding: 12px 18px; margin: 0 0 16px; border: 1px solid #314361;
+  background: #101A30; color: #EEF3FF; font: 13px/1.5 system-ui, sans-serif;
+  text-align: left; isolation: isolate; color-scheme: dark;
+}
+.kee-dedicated-nav a {
+  all: revert; box-sizing: border-box; display: inline-block; padding: 4px 0;
+  color: #9AABFF; background: transparent; font: inherit; text-decoration: underline;
+  text-underline-offset: 3px; border: 0; border-radius: 0; box-shadow: none;
+}
+.kee-dedicated-nav a:focus-visible { outline: 3px solid #56DDCD; outline-offset: 3px; }
+.kee-dedicated-nav .kee-dedicated-identity { font-weight: 700; color: #EEF3FF; }
+.kee-dedicated-nav .kee-dedicated-language {
+  all: revert; display: block; flex-basis: 100%; color: #ADBBD1; font: 12px/1.5 system-ui, sans-serif;
+}
+.kee-dedicated-native-link { display: block; padding: 22px; color: #1858a8; background: #f8fafc; font: 15px/1.6 system-ui, sans-serif; }
+.kee-dedicated-native-link a { color: #1858a8; text-decoration: underline; }
+@media print { .kee-dedicated-nav { display: none; } }
+
+/* Professional primary navigation: long section names reflow, never scroll inside the header. */
+[data-professional-header]{box-sizing:border-box;display:grid!important;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:18px!important;width:100%;max-width:none;height:auto!important;min-height:0!important;padding:18px 24px!important;margin:0 0 16px;position:relative;overflow:visible!important;background:#101A30;color:#EEF3FF;border:1px solid #314361;font:13px/1.5 system-ui,sans-serif;isolation:isolate;color-scheme:dark}
+[data-professional-header] *{box-sizing:border-box;min-width:0;max-height:none}
+[data-professional-header] a{font:inherit;text-decoration:none;color:#9AABFF;overflow-wrap:anywhere;white-space:normal}
+[data-professional-header] .professional-identity{font-weight:750;color:#EEF3FF;white-space:nowrap;font-size:14px;margin:0}
+[data-professional-header] .professional-primary{display:grid;grid-template-columns:1.65fr 1.1fr 1.15fr 1.1fr 1.1fr;gap:6px;align-items:stretch;min-width:0}
+[data-professional-header] .professional-primary a{display:flex;align-items:center;justify-content:center;padding:10px 9px;border:1px solid #314361;border-radius:12px;background:#172440;text-align:center;line-height:1.4;min-height:44px}
+[data-professional-header] .professional-primary a[aria-current=page]{background:#23375a;border-color:#56DDCD;color:#56DDCD}
+[data-professional-header] .professional-controls{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:4px;font-size:12px;margin:0;position:static}
+[data-professional-header] .professional-controls>a{display:flex;align-items:center;justify-content:center;padding:8px;min-height:40px;min-width:32px;border-radius:10px}
+[data-professional-header] .professional-context{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px 18px;padding-top:12px;border-top:1px solid #314361;font-size:12px;color:#ADBBD1;min-width:0;line-height:1.6}
+[data-professional-header] .professional-context>*{min-width:0;overflow-wrap:anywhere}
+[data-professional-header] .professional-context .kee-dedicated-language{flex-basis:100%;color:#ADBBD1}
+[data-professional-header] a:focus-visible{outline:3px solid #56DDCD;outline-offset:3px}
+[data-professional-header] a:hover{text-decoration:underline}
+[data-professional-header][data-perimeter-theme=light],:root[data-theme=light] .reading-header[data-professional-header]{background:#fff;color:#172440;border-color:#d4deee;color-scheme:light}
+[data-professional-header][data-perimeter-theme=light] a,:root[data-theme=light] .reading-header[data-professional-header] a{color:#3752a0}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a,:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a{background:#edf2ff;border-color:#d4deee}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a[aria-current],:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a[aria-current]{background:#dff6f0;color:#127b72;border-color:#127b72}
+@media(max-width:1150px){[data-professional-header]{grid-template-columns:minmax(0,1fr) auto;gap:12px!important}[data-professional-header] .professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header] .professional-controls{grid-column:2;grid-row:1}}
+@media(max-width:600px){[data-professional-header]{padding:14px 16px!important;gap:12px!important}[data-professional-header] .professional-primary{grid-template-columns:repeat(2,minmax(0,1fr))}[data-professional-header] .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:13px}[data-professional-header] .professional-controls{gap:0}[data-professional-header] .professional-controls>a{padding:6px;min-width:28px}}
+@media print{[data-professional-header]{display:none!important}}
+
+html{scroll-padding-top:108px}.reading-header,.kee-dedicated-nav,[data-professional-header]{position:sticky;top:0;z-index:1000;-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
+
+:root{--search-bg:#101a30;--search-soft:#172440;--search-ink:#eef3ff;--search-muted:#adbbd1;--search-line:#293956;--search-accent:#9aabff;--header-offset:108px}
+:root[data-reading-shell][data-theme=light],[data-perimeter-theme=light]{--search-bg:#fff;--search-soft:#e8eefb;--search-ink:#17233e;--search-muted:#4c5e7c;--search-line:#d5ddec;--search-accent:#354ec8}
+html{scroll-padding-top:var(--header-offset,108px)!important}
+.site-search,.site-search *{box-sizing:border-box!important;font-family:"Segoe UI",sans-serif;letter-spacing:normal;text-transform:none}
+.site-search{position:relative;display:flex;align-items:center;gap:5px;min-width:0;width:230px;max-width:100%;margin:0!important;padding:0!important;line-height:1.4;border:1px solid var(--search-line);border-radius:9px;background:var(--search-soft);color:var(--search-ink);isolation:isolate}
+.site-search input[type=search]{display:block;flex:1;min-width:0;width:100%;height:42px;margin:0;padding:9px 8px!important;font-size:12px!important;line-height:1.5;border:0!important;border-radius:9px;background:transparent!important;color:var(--search-ink)!important;box-shadow:none!important;appearance:none}
+.site-search input::placeholder{color:var(--search-muted);opacity:1}.site-search input:focus-visible{outline:2px solid var(--search-accent);outline-offset:2px}
+.site-search kbd{font:11px Consolas,monospace;color:var(--search-muted);padding:1px 5px;border:1px solid var(--search-line);border-radius:4px}
+.site-search button[type=submit]{flex:none;width:38px;min-width:38px;height:42px;min-height:42px;padding:0;margin:0;border:0;border-radius:8px;background:transparent;color:var(--search-accent);font-size:24px;cursor:pointer;box-shadow:none}
+.search-label,.search-status{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.site-search .search-results{position:absolute;top:calc(100% + 10px);right:0;z-index:1100;width:min(480px,calc(100vw - 32px));max-height:min(560px,65vh);overflow-y:auto;border:1px solid var(--search-line);border-radius:12px;background:var(--search-bg);color:var(--search-ink);padding:10px;box-shadow:0 12px 32px #0005;text-align:left}
+.site-search .search-results[hidden]{display:none!important}.search-results .search-group{margin:8px 6px 4px;font:11px/1.5 Consolas,monospace;color:var(--search-muted)}
+.site-search .search-results a{display:block!important;padding:10px!important;margin:3px 0!important;border:1px solid transparent!important;border-radius:7px;background:transparent;color:var(--search-ink)!important;font-size:13px!important;text-decoration:none!important;white-space:normal;overflow-wrap:anywhere;text-align:left!important;line-height:1.5!important}
+.site-search .search-results a[aria-selected=true],.site-search .search-results a:hover{border-color:var(--search-accent)!important;background:var(--search-soft)}
+.search-results a small{display:block;font-size:10px;color:var(--search-muted);margin-top:4px}.search-results p{margin:10px;font-size:13px;color:var(--search-muted)}
+.search-archive-summary{padding:20px;border:1px solid var(--search-line);border-radius:10px;background:var(--search-bg);color:var(--search-ink);margin:24px 0}.search-archive-summary h2{font-size:24px;margin:0 0 12px}.search-archive-summary li{margin:12px 0}.search-archive-summary a{color:var(--search-accent)}
+[data-professional-header]{position:sticky!important;top:0!important;z-index:1000!important;background:var(--search-bg)!important;--header-glass:rgba(16,26,48,.9);grid-template-columns:auto minmax(0,1fr) 230px auto!important}
+[data-professional-header][data-perimeter-theme=light],:root[data-reading-shell][data-theme=light] [data-professional-header]{--header-glass:rgba(255,255,255,.94)}
+[data-professional-header] .professional-mobile{display:none}.professional-mobile summary{min-width:38px;min-height:42px;display:grid;place-items:center;cursor:pointer;list-style:none}.professional-mobile summary::-webkit-details-marker{display:none}
+[data-professional-header] .professional-context{display:none}
+.professional-context-bar{padding:12px 24px;border-bottom:1px solid var(--search-line);background:var(--search-bg);color:var(--search-muted);font:12px/1.6 "Segoe UI",sans-serif;display:flex;flex-wrap:wrap;gap:8px 18px;overflow-wrap:anywhere}.professional-context-bar a{color:var(--search-accent)}
+@supports((backdrop-filter:blur(16px)) or (-webkit-backdrop-filter:blur(16px))){.site-header,[data-professional-header]{background:var(--header-glass)!important;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}}
+@media(max-width:1250px) and (min-width:701px){.header-inner{grid-template-columns:minmax(0,1fr) 230px auto!important;padding:12px 0;gap:12px!important}.desktop-nav{grid-row:2;grid-column:1/-1}.header-inner>.site-search{grid-column:2;grid-row:1}.header-inner>.controls{grid-column:3;grid-row:1}[data-professional-header]{grid-template-columns:minmax(0,1fr) 230px auto!important;gap:12px!important}[data-professional-header]>.professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header]>.site-search{grid-column:2;grid-row:1}[data-professional-header]>.professional-controls{grid-column:3;grid-row:1}:root{--header-offset:176px}}
+@media(max-width:700px){.header-inner{grid-template-columns:minmax(0,1fr) auto!important;padding:10px 0;gap:8px!important}.header-inner>.site-search{grid-row:2;grid-column:1/-1;width:100%}.header-inner>.controls{grid-column:2;grid-row:1}.site-search .search-results{width:100%;right:0}[data-professional-header]{grid-template-columns:minmax(0,1fr) auto!important;padding:10px 16px!important;gap:8px!important}[data-professional-header]>.professional-primary{display:none!important}[data-professional-header]>.site-search{grid-column:1/-1;grid-row:2;width:100%}[data-professional-header]>.professional-controls{grid-column:2;grid-row:1}[data-professional-header] .professional-mobile{display:block}[data-professional-header] .professional-mobile[open]>.professional-primary{position:absolute;top:100%;left:0;right:0;padding:16px;background:var(--search-bg);border-bottom:1px solid var(--search-line);display:grid;grid-template-columns:1fr 1fr;gap:8px}[data-professional-header] .professional-mobile .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:12px!important}:root{--header-offset:126px}}
+@media(prefers-reduced-transparency:reduce){.site-header,[data-professional-header]{background:var(--search-bg)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}}
+@media print{.site-search,.professional-context-bar{display:none!important}}
+
+@media(min-width:1251px){.header-inner{display:grid!important;grid-template-columns:auto minmax(0,1fr) 230px auto!important;gap:18px!important}.header-inner .desktop-nav{min-width:0}}
+
+html:has(.kee-dedicated-app-root){height:auto!important;overflow-x:hidden!important;overflow-y:auto!important}
+body:has([data-professional-header]){height:auto!important;overflow-x:clip!important;overflow-y:visible!important;padding-top:0!important}
+.demo-language-navigation{display:none!important}
+.stage-column,.telemetry-panel,.scene-pill,#timeline-slider{min-width:0}
+@media(max-width:1180px){.workspace,.template-tabs{grid-template-columns:minmax(0,1fr)!important}}
+
+.in-arena-frame .professional-context-bar,.in-arena-frame [data-knowledge-atlas]{display:none!important}
+.knowledge-graph-wide{display:block}.knowledge-graph-compact{display:none}@media(max-width:600px){.knowledge-graph-wide{display:none}.knowledge-graph-compact{display:block}}
+</style></head>
+<body><nav class="kee-dedicated-nav" data-professional-header><a class="professional-identity reading-brand kee-dedicated-identity identity" href="../../zh.html">Qi Chen · @turbo998</a><div class="professional-primary" role="navigation" aria-label="主导航"><a href="../../studio/zh-index.html" data-section="hub" data-nav-en-href="../../studio/index.html" data-nav-zh-href="../../studio/zh-index.html" data-nav-en-label="Frontier Transformation Engineering Hub" data-nav-zh-label="Frontier Transformation Engineering Hub" aria-current="page">Frontier Transformation Engineering Hub</a><a href="../../zh-benchmarks.html" data-section="benchmarks" data-nav-en-href="../../benchmarks.html" data-nav-zh-href="../../zh-benchmarks.html" data-nav-en-label="Benchmark &amp; Eval Foundry" data-nav-zh-label="基准评测中心">基准评测中心</a><a href="../../zh-github-radar.html" data-section="radar" data-nav-en-href="../../github-radar.html" data-nav-zh-href="../../zh-github-radar.html" data-nav-en-label="GitHub AI Signal Radar" data-nav-zh-label="GitHub AI 信号雷达">GitHub AI 信号雷达</a><a href="../../zh-openrouter.html" data-section="routing" data-nav-en-href="../../openrouter.html" data-nav-zh-href="../../zh-openrouter.html" data-nav-en-label="Model Routing &amp; Telemetry" data-nav-zh-label="OpenRouter 模型遥测">OpenRouter 模型遥测</a><a href="../../zh-about.html" data-section="profile" data-nav-en-href="../../about.html" data-nav-zh-href="../../zh-about.html" data-nav-en-label="Principal Architect Profile" data-nav-zh-label="首席架构师履历">首席架构师履历</a></div><form class="site-search" role="search" action="../../studio/zh-archive.html" method="get" data-search-root="../../index.html" data-search-language="zh-CN"><label class="search-label" for="site-search-input">搜索架构、评测、Demo、技能...</label><input id="site-search-input" name="q" type="search" placeholder="搜索架构、评测、Demo、技能..." autocomplete="off" spellcheck="false" aria-keyshortcuts="/ Control+k Meta+k"><kbd aria-hidden="true">/</kbd><button type="submit" aria-label="搜索全部内容">⌕</button><div class="search-results" id="site-search-results" hidden></div><span class="search-status" role="status" aria-live="polite"></span></form><div class="reading-controls professional-controls" aria-label="网站语言与外观"><a href="cards.html" data-reading-language hreflang="en" lang="en">EN</a><a href="cards.zh.html" hreflang="zh-CN" lang="zh-CN" aria-current="page">中文</a><details class="professional-mobile"><summary aria-label="打开主导航">☰</summary><div class="professional-primary" role="navigation" aria-label="移动主导航"><a href="../../studio/zh-index.html" data-section="hub" data-nav-en-href="../../studio/index.html" data-nav-zh-href="../../studio/zh-index.html" data-nav-en-label="Frontier Transformation Engineering Hub" data-nav-zh-label="Frontier Transformation Engineering Hub" aria-current="page">Frontier Transformation Engineering Hub</a><a href="../../zh-benchmarks.html" data-section="benchmarks" data-nav-en-href="../../benchmarks.html" data-nav-zh-href="../../zh-benchmarks.html" data-nav-en-label="Benchmark &amp; Eval Foundry" data-nav-zh-label="基准评测中心">基准评测中心</a><a href="../../zh-github-radar.html" data-section="radar" data-nav-en-href="../../github-radar.html" data-nav-zh-href="../../zh-github-radar.html" data-nav-en-label="GitHub AI Signal Radar" data-nav-zh-label="GitHub AI 信号雷达">GitHub AI 信号雷达</a><a href="../../zh-openrouter.html" data-section="routing" data-nav-en-href="../../openrouter.html" data-nav-zh-href="../../zh-openrouter.html" data-nav-en-label="Model Routing &amp; Telemetry" data-nav-zh-label="OpenRouter 模型遥测">OpenRouter 模型遥测</a><a href="../../zh-about.html" data-section="profile" data-nav-en-href="../../about.html" data-nav-zh-href="../../zh-about.html" data-nav-en-label="Principal Architect Profile" data-nav-zh-label="首席架构师履历">首席架构师履历</a></div></details><a data-reading-theme="light" href="cards.zh.html?theme=light" aria-label="浅色主题">☀</a><a data-reading-theme="dark" href="cards.zh.html?theme=dark" aria-label="深色主题">◐</a></div><div class="professional-context" aria-label="返回上下文"><a href="../../studio/zh-index.html">← 工程枢纽</a> · <a href="../../studio/zh-benchmarks.html">返回主题</a></div></nav><div class="professional-context-bar"><a href="../../studio/zh-index.html">← 工程枢纽</a> · <a class="reading-context" href="../../studio/zh-benchmarks.html">返回主题</a></div><!-- site-remediation-knowledge:start --><figure class="knowledge-figure" data-knowledge-atlas="benchmarks" style="margin:20px auto;max-width:1120px;padding:0 20px;box-sizing:border-box"><style>.knowledge-graph-wide{display:block}.knowledge-graph-compact{display:none}@media(max-width:600px){.knowledge-graph-wide{display:none}.knowledge-graph-compact{display:block}}</style><svg xmlns="http://www.w3.org/2000/svg" lang="zh-CN" class="knowledge-graph-compact" role="img" aria-labelledby="knowledge-18b800802127-compact-title knowledge-18b800802127-compact-desc" viewBox="0 0 360 828" width="360" style="width:100%;height:auto;max-width:560px;margin:0 auto;font-family:system-ui,sans-serif"><title id="knowledge-18b800802127-compact-title">7 卡 4:5 视觉技术报告 · 随模型升级持续演进 Agent Harness（120 Skills 实测治理）</title><desc id="knowledge-18b800802127-compact-desc">研究问题与封存负载: 数据集 · 模型批次 · 分母 · 来源 → 定义测试契约 → Harness 与执行契约: 提示词 · 工具权限 · 环境 · 重复次数 → 生成追踪产物 → 原始输出与确定性校验: 任务轨迹 · 校验结果 · 缺失值记录 → 带条件汇总 → 得分、稳健性与延迟: 保留单位、条件与不确定性 → 支持有边界的结论 → 报告与可复现性: 7 卡来源报告 · 局限 · 是否独立复现？</desc><rect width="360" height="828" rx="16" fill="#081525" stroke="#284566"/><rect x="16" y="14" width="224" height="22" rx="11" fill="#112844" stroke="#2d5a88"/><text x="28" y="29" fill="#56ddcd" font-size="11.5" font-weight="700"><tspan x="28" dy="0">数据流向与架构要点 · 竖屏视图</tspan></text><text x="20" y="58" fill="#eef5ff" font-size="18" font-weight="700"><tspan x="20" dy="0">7 卡 4:5 视觉技术报告 · 随模</tspan><tspan x="20" dy="25.2">型升级持续演进 Agent Harness</tspan><tspan x="20" dy="25.2">（120 Skills 实测治理）</tspan></text><text x="20" y="134" fill="#a9b8ce" font-size="12.5" font-weight="400"><tspan x="20" dy="0">概念拓扑 · 箭头表示数据/控制流向，非实测指标</tspan></text><g data-concept="1"><rect x="16" y="156" width="328" height="94" rx="12" fill="#0e2036" stroke="#38597d"/><rect x="16" y="156" width="328" height="4" rx="2" fill="#38bdf8"/><text x="30" y="179" fill="#38bdf8" font-size="11.5" font-weight="700"><tspan x="30" dy="0">01 · 输入与意图</tspan></text><text x="30" y="202" fill="#f0f6ff" font-size="16.5" font-weight="700"><tspan x="30" dy="0">研究问题与封存负载</tspan></text><text x="30" y="229" fill="#c4d5e8" font-size="13" font-weight="400"><tspan x="30" dy="0">数据集 · 模型批次 · 分母 · 来源</tspan></text></g><g data-relationship="定义测试契约"><path d="M34 252 V290" fill="none" stroke="#56ddcd" stroke-width="2.2"/><path d="M29 284 L34 291 L39 284" fill="none" stroke="#56ddcd" stroke-width="2.2"/><text x="50" y="274" fill="#8eeadf" font-size="12.5" font-weight="600"><tspan x="50" dy="0">01→02 定义测试契约</tspan></text></g><g data-concept="2"><rect x="16" y="296" width="328" height="94" rx="12" fill="#122842" stroke="#38597d"/><rect x="16" y="296" width="328" height="4" rx="2" fill="#34d399"/><text x="30" y="319" fill="#34d399" font-size="11.5" font-weight="700"><tspan x="30" dy="0">02 · 上下文锚定</tspan></text><text x="30" y="342" fill="#f0f6ff" font-size="16.5" font-weight="700"><tspan x="30" dy="0">Harness 与执行契约</tspan></text><text x="30" y="369" fill="#c4d5e8" font-size="13" font-weight="400"><tspan x="30" dy="0">提示词 · 工具权限 · 环境 · 重复次数</tspan></text></g><g data-relationship="生成追踪产物"><path d="M34 392 V430" fill="none" stroke="#56ddcd" stroke-width="2.2"/><path d="M29 424 L34 431 L39 424" fill="none" stroke="#56ddcd" stroke-width="2.2"/><text x="50" y="414" fill="#8eeadf" font-size="12.5" font-weight="600"><tspan x="50" dy="0">02→03 生成追踪产物</tspan></text></g><g data-concept="3"><rect x="16" y="436" width="328" height="94" rx="12" fill="#0e2036" stroke="#38597d"/><rect x="16" y="436" width="328" height="4" rx="2" fill="#a78bfa"/><text x="30" y="459" fill="#a78bfa" font-size="11.5" font-weight="700"><tspan x="30" dy="0">03 · 策略与门禁</tspan></text><text x="30" y="482" fill="#f0f6ff" font-size="16.5" font-weight="700"><tspan x="30" dy="0">原始输出与确定性校验</tspan></text><text x="30" y="509" fill="#c4d5e8" font-size="13" font-weight="400"><tspan x="30" dy="0">任务轨迹 · 校验结果 · 缺失值记录</tspan></text></g><g data-relationship="带条件汇总"><path d="M34 532 V570" fill="none" stroke="#56ddcd" stroke-width="2.2"/><path d="M29 564 L34 571 L39 564" fill="none" stroke="#56ddcd" stroke-width="2.2"/><text x="50" y="554" fill="#8eeadf" font-size="12.5" font-weight="600"><tspan x="50" dy="0">03→04 带条件汇总</tspan></text></g><g data-concept="4"><rect x="16" y="576" width="328" height="94" rx="12" fill="#122842" stroke="#38597d"/><rect x="16" y="576" width="328" height="4" rx="2" fill="#f59e0b"/><text x="30" y="599" fill="#f59e0b" font-size="11.5" font-weight="700"><tspan x="30" dy="0">04 · 执行与运行</tspan></text><text x="30" y="622" fill="#f0f6ff" font-size="16.5" font-weight="700"><tspan x="30" dy="0">得分、稳健性与延迟</tspan></text><text x="30" y="649" fill="#c4d5e8" font-size="13" font-weight="400"><tspan x="30" dy="0">保留单位、条件与不确定性</tspan></text></g><g data-relationship="支持有边界的结论"><path d="M34 672 V710" fill="none" stroke="#56ddcd" stroke-width="2.2"/><path d="M29 704 L34 711 L39 704" fill="none" stroke="#56ddcd" stroke-width="2.2"/><text x="50" y="694" fill="#8eeadf" font-size="12.5" font-weight="600"><tspan x="50" dy="0">04→05 支持有边界的结论</tspan></text></g><g data-concept="5"><rect x="16" y="716" width="328" height="94" rx="12" fill="#0e2036" stroke="#38597d"/><rect x="16" y="716" width="328" height="4" rx="2" fill="#56ddcd"/><text x="30" y="739" fill="#56ddcd" font-size="11.5" font-weight="700"><tspan x="30" dy="0">05 · 审计与评测</tspan></text><text x="30" y="762" fill="#f0f6ff" font-size="16.5" font-weight="700"><tspan x="30" dy="0">报告与可复现性</tspan></text><text x="30" y="789" fill="#c4d5e8" font-size="13" font-weight="400"><tspan x="30" dy="0">7 卡来源报告 · 局限 · 是否独立复现？</tspan></text></g></svg><svg xmlns="http://www.w3.org/2000/svg" lang="zh-CN" class="knowledge-graph-wide" role="img" aria-labelledby="knowledge-18b800802127-title knowledge-18b800802127-desc" viewBox="0 0 1080 448" width="1080" style="width:100%;height:auto;max-width:1080px;margin:0 auto;font-family:system-ui,sans-serif"><title id="knowledge-18b800802127-title">7 卡 4:5 视觉技术报告 · 随模型升级持续演进 Agent Harness（120 Skills 实测治理）</title><desc id="knowledge-18b800802127-desc">研究问题与封存负载: 数据集 · 模型批次 · 分母 · 来源 → 定义测试契约 → Harness 与执行契约: 提示词 · 工具权限 · 环境 · 重复次数 → 生成追踪产物 → 原始输出与确定性校验: 任务轨迹 · 校验结果 · 缺失值记录 → 带条件汇总 → 得分、稳健性与延迟: 保留单位、条件与不确定性 → 支持有边界的结论 → 报告与可复现性: 7 卡来源报告 · 局限 · 是否独立复现？</desc><rect width="1080" height="448" rx="16" fill="#081525" stroke="#284566"/><rect x="24" y="16" width="292" height="24" rx="12" fill="#102742" stroke="#2d5a88"/><text x="38" y="32" fill="#56ddcd" font-size="11.5" font-weight="700"><tspan x="38" dy="0">数据流向与核心要点架构图 · 横向全景</tspan></text><rect x="646" y="16" width="196" height="24" rx="12" fill="#0d2238" stroke="#254b6e"/><text x="660" y="32" fill="#7ce8d8" font-size="11.5" font-weight="600"><tspan x="660" dy="0">──▶ 阶段数据与上下文流</tspan></text><rect x="852" y="16" width="204" height="24" rx="12" fill="#15203c" stroke="#3b4278"/><text x="866" y="32" fill="#c4b5fd" font-size="11.5" font-weight="600"><tspan x="866" dy="0">◆ 策略门禁与要点说明</tspan></text><text x="24" y="62" fill="#f2f7ff" font-size="18" font-weight="700"><tspan x="24" dy="0">7 卡 4:5 视觉技术报告 · 随模型升级持续演进 Agent Harness（120 Skills</tspan><tspan x="24" dy="25.2">实测治理）</tspan></text><g data-concept="1"><rect x="24" y="106" width="187" height="186" rx="12" fill="#0d1e34" stroke="#335277" stroke-width="1.2"/><rect x="24" y="106" width="187" height="5" rx="2.5" fill="#38bdf8"/><rect x="34" y="119" width="167" height="22" rx="6" fill="#081424" stroke="#223b59"/><text x="40" y="134" fill="#38bdf8" font-size="11.5" font-weight="700"><tspan x="40" dy="0">01 · 输入与意图</tspan></text><text x="36" y="160" fill="#f4f8ff" font-size="13.5" font-weight="700"><tspan x="36" dy="0">研究问题与封存负载</tspan></text><path d="M36 175 H199" stroke="#233b57" stroke-width="1"/><text x="36" y="193" fill="#c5d6e8" font-size="12" font-weight="400"><tspan x="36" dy="0">数据集 · 模型批次 · 分母</tspan><tspan x="36" dy="16.799999999999997">· 来源</tspan></text></g><g data-relationship="定义测试契约"><path d="M213 199 H231" fill="none" stroke="#56ddcd" stroke-width="2.4"/><path d="M225 194 L232 199 L225 204" fill="none" stroke="#56ddcd" stroke-width="2.4"/><rect x="24" y="300" width="187" height="30" rx="8" fill="#0b2239" stroke="#2b5b6c"/><text x="34" y="319" fill="#7ce8d8" font-size="11.5" font-weight="600"><tspan x="34" dy="0">01→02 定义测试契约</tspan></text></g><g data-concept="2"><rect x="235" y="106" width="187" height="186" rx="12" fill="#112640" stroke="#335277" stroke-width="1.2"/><rect x="235" y="106" width="187" height="5" rx="2.5" fill="#34d399"/><rect x="245" y="119" width="167" height="22" rx="6" fill="#081424" stroke="#223b59"/><text x="251" y="134" fill="#34d399" font-size="11.5" font-weight="700"><tspan x="251" dy="0">02 · 上下文锚定</tspan></text><text x="247" y="160" fill="#f4f8ff" font-size="13.5" font-weight="700"><tspan x="247" dy="0">Harness 与执行契约</tspan></text><path d="M247 175 H410" stroke="#233b57" stroke-width="1"/><text x="247" y="193" fill="#c5d6e8" font-size="12" font-weight="400"><tspan x="247" dy="0">提示词 · 工具权限 · 环境</tspan><tspan x="247" dy="16.799999999999997">· 重复次数</tspan></text></g><g data-relationship="生成追踪产物"><path d="M424 199 H442" fill="none" stroke="#56ddcd" stroke-width="2.4"/><path d="M436 194 L443 199 L436 204" fill="none" stroke="#56ddcd" stroke-width="2.4"/><rect x="235" y="300" width="187" height="30" rx="8" fill="#0b2239" stroke="#2b5b6c"/><text x="245" y="319" fill="#7ce8d8" font-size="11.5" font-weight="600"><tspan x="245" dy="0">02→03 生成追踪产物</tspan></text></g><g data-concept="3"><rect x="446" y="106" width="187" height="186" rx="12" fill="#0d1e34" stroke="#335277" stroke-width="1.2"/><rect x="446" y="106" width="187" height="5" rx="2.5" fill="#a78bfa"/><rect x="456" y="119" width="167" height="22" rx="6" fill="#081424" stroke="#223b59"/><text x="462" y="134" fill="#a78bfa" font-size="11.5" font-weight="700"><tspan x="462" dy="0">03 · 策略与门禁</tspan></text><text x="458" y="160" fill="#f4f8ff" font-size="13.5" font-weight="700"><tspan x="458" dy="0">原始输出与确定性校验</tspan></text><path d="M458 175 H621" stroke="#233b57" stroke-width="1"/><text x="458" y="193" fill="#c5d6e8" font-size="12" font-weight="400"><tspan x="458" dy="0">任务轨迹 · 校验结果 · 缺</tspan><tspan x="458" dy="16.799999999999997">失值记录</tspan></text></g><g data-relationship="带条件汇总"><path d="M635 199 H653" fill="none" stroke="#56ddcd" stroke-width="2.4"/><path d="M647 194 L654 199 L647 204" fill="none" stroke="#56ddcd" stroke-width="2.4"/><rect x="446" y="300" width="187" height="30" rx="8" fill="#0b2239" stroke="#2b5b6c"/><text x="456" y="319" fill="#7ce8d8" font-size="11.5" font-weight="600"><tspan x="456" dy="0">03→04 带条件汇总</tspan></text></g><g data-concept="4"><rect x="657" y="106" width="187" height="186" rx="12" fill="#112640" stroke="#335277" stroke-width="1.2"/><rect x="657" y="106" width="187" height="5" rx="2.5" fill="#f59e0b"/><rect x="667" y="119" width="167" height="22" rx="6" fill="#081424" stroke="#223b59"/><text x="673" y="134" fill="#f59e0b" font-size="11.5" font-weight="700"><tspan x="673" dy="0">04 · 执行与运行</tspan></text><text x="669" y="160" fill="#f4f8ff" font-size="13.5" font-weight="700"><tspan x="669" dy="0">得分、稳健性与延迟</tspan></text><path d="M669 175 H832" stroke="#233b57" stroke-width="1"/><text x="669" y="193" fill="#c5d6e8" font-size="12" font-weight="400"><tspan x="669" dy="0">保留单位、条件与不确定性</tspan></text></g><g data-relationship="支持有边界的结论"><path d="M846 199 H864" fill="none" stroke="#56ddcd" stroke-width="2.4"/><path d="M858 194 L865 199 L858 204" fill="none" stroke="#56ddcd" stroke-width="2.4"/><rect x="657" y="300" width="187" height="30" rx="8" fill="#0b2239" stroke="#2b5b6c"/><text x="667" y="319" fill="#7ce8d8" font-size="11.5" font-weight="600"><tspan x="667" dy="0">04→05 支持有边界的结论</tspan></text></g><g data-concept="5"><rect x="868" y="106" width="187" height="186" rx="12" fill="#0d1e34" stroke="#335277" stroke-width="1.2"/><rect x="868" y="106" width="187" height="5" rx="2.5" fill="#56ddcd"/><rect x="878" y="119" width="167" height="22" rx="6" fill="#081424" stroke="#223b59"/><text x="884" y="134" fill="#56ddcd" font-size="11.5" font-weight="700"><tspan x="884" dy="0">05 · 审计与评测</tspan></text><text x="880" y="160" fill="#f4f8ff" font-size="13.5" font-weight="700"><tspan x="880" dy="0">报告与可复现性</tspan></text><path d="M880 175 H1043" stroke="#233b57" stroke-width="1"/><text x="880" y="193" fill="#c5d6e8" font-size="12" font-weight="400"><tspan x="880" dy="0">7 卡来源报告 · 局限 · 是</tspan><tspan x="880" dy="16.799999999999997">否独立复现？</tspan></text></g><rect x="868" y="300" width="187" height="30" rx="8" fill="#0e2538" stroke="#2e5470"/><text x="878" y="319" fill="#93c5fd" font-size="11.5" font-weight="600"><tspan x="878" dy="0">05 闭环 · 审计与证据核验</tspan></text><g data-takeaway="1"><rect x="24" y="344" width="334" height="88" rx="10" fill="#0b1a2e" stroke="#284466"/><rect x="24" y="356" width="4" height="64" rx="2" fill="#38bdf8"/><text x="38" y="369" fill="#38bdf8" font-size="11.5" font-weight="700"><tspan x="38" dy="0">要点 01 · 全链路数据流向</tspan></text><text x="38" y="390" fill="#d5e4f5" font-size="12" font-weight="400"><tspan x="38" dy="0">自左向右从「研究问题与封存负载」递进至「报告</tspan><tspan x="38" dy="16.799999999999997">与可复现性」，明确各阶段输入与输出契约。</tspan></text></g><g data-takeaway="2"><rect x="373" y="344" width="334" height="88" rx="10" fill="#0b1a2e" stroke="#284466"/><rect x="373" y="356" width="4" height="64" rx="2" fill="#a78bfa"/><text x="387" y="369" fill="#a78bfa" font-size="11.5" font-weight="700"><tspan x="387" dy="0">要点 02 · 核心控制与策略门禁</tspan></text><text x="387" y="390" fill="#d5e4f5" font-size="12" font-weight="400"><tspan x="387" dy="0">核心门禁「原始输出与确定性校验」：任务轨迹 ·</tspan><tspan x="387" dy="16.799999999999997">校验结果 · 缺失值记录</tspan></text></g><g data-takeaway="3"><rect x="722" y="344" width="334" height="88" rx="10" fill="#0b1a2e" stroke="#284466"/><rect x="722" y="356" width="4" height="64" rx="2" fill="#34d399"/><text x="736" y="369" fill="#34d399" font-size="11.5" font-weight="700"><tspan x="736" dy="0">要点 03 · 证据核验与适用边界</tspan></text><text x="736" y="390" fill="#d5e4f5" font-size="12" font-weight="400"><tspan x="736" dy="0">7 卡来源报告 · 局限 · 是否独立复现？ · 概念</tspan><tspan x="736" dy="16.799999999999997">拓扑示意，非实测延迟。</tspan></text></g></svg><figcaption style="font:13px/1.6 system-ui,sans-serif;margin:10px auto 0;max-width:1080px;color:#9fb2ca;overflow-wrap:anywhere">整体架构与数据流向图示：自左向右阅读阶段数据流转、策略门禁与底部三项核心要点说明（概念拓扑，不代表实测吞吐或生产排名）。</figcaption></figure><!-- site-remediation-knowledge:end --><main class="deck-shell">
+    <div class="deck-toolbar">
+      <div><strong>7 卡 4:5 视觉技术汇报</strong> · Agent Harness × 前沿模型协同演进实测报告</div>
+      <div>
+        <a href="index.html">← 返回交互式工作台</a>
+        <a href="../../articles/agent-harness-coevolution.html">阅读图文长文</a>
+        <a href="cards.html" hreflang="en" lang="en">English Deck</a>
+      </div>
+    </div>
+
+    <!-- CARD 1/7 -->
+    <section class="card" id="card-1">
+      <div>
+        <div class="card-top">
+          <span class="kicker">HANDS-ON · HARNESS CO-EVOLUTION</span>
+          <span class="page-num">1 / 7</span>
+        </div>
+        <h1>随模型升级持续演进 Agent Harness：120 个 Skills 审计、上下文悬崖修复与模型协同</h1>
+        <p class="sub">当主力模型跃迁至 <strong>Gemini 4 Carbon · GPT-6.2 Sol · Grok 4.7</strong>，清理旧代提示词债务可一次性恢复 100% 语义路由可见性并削减 94% 首轮冗余负载。</p>
+
+        <svg class="inline-chart" viewBox="0 0 820 430" role="img" aria-label="Skills 瘦身与系统提示词预算恢复效果">
+          <rect width="820" height="430" rx="14" fill="#0d1117"/>
+          <text x="32" y="36" fill="#f0f6fc" font-size="17" font-weight="700">Skills 瘦身与系统提示词预算恢复效果（优化前后实测对比）</text>
+          <text x="32" y="58" fill="#8b949e" font-size="12">消除 &lt;available_skills&gt; 截断瓶颈，恢复 100% 语义路由可见性</text>
+          <rect x="634" y="18" width="156" height="48" rx="7" fill="#161b22" stroke="#30363d"/>
+          <rect x="646" y="28" width="10" height="10" rx="2" fill="#0d74ff"/>
+          <text x="662" y="37" fill="#e6edf3" font-size="11">优化前 (Before)</text>
+          <rect x="646" y="45" width="10" height="10" rx="2" fill="#9e5a16" stroke="#d29922"/>
+          <text x="662" y="54" fill="#e6edf3" font-size="11">优化后 (After)</text>
+
+          <rect x="68" y="76" width="722" height="296" rx="8" fill="#161b22" stroke="#30363d"/>
+          <g stroke="#21262d" stroke-width="1">
+            <line x1="68" y1="372" x2="790" y2="372" stroke="#30363d"/>
+            <line x1="68" y1="298" x2="790" y2="298"/>
+            <line x1="68" y1="224" x2="790" y2="224"/>
+            <line x1="68" y1="150" x2="790" y2="150"/>
+            <line x1="68" y1="76" x2="790" y2="76"/>
+          </g>
+          <g fill="#8b949e" font-family="monospace" font-size="10.5" text-anchor="end">
+            <text x="58" y="376">0</text>
+            <text x="58" y="302">100</text>
+            <text x="58" y="228">200</text>
+            <text x="58" y="154">300</text>
+            <text x="58" y="80">400</text>
+          </g>
+          <!-- 0.74px per unit -->
+          <rect x="108" y="86.4" width="48" height="285.6" rx="3" fill="#0d74ff"/>
+          <text x="132" y="80" fill="#58a6ff" font-family="monospace" font-size="11.5" font-weight="700" text-anchor="middle">386.0</text>
+          <rect x="162" y="312.7" width="48" height="59.3" rx="3" fill="#9e5a16"/>
+          <text x="186" y="305" fill="#f2cc60" font-family="monospace" font-size="11.5" font-weight="700" text-anchor="middle">80.2</text>
+          <text x="159" y="396" fill="#c9d1d9" font-size="11.5" font-weight="600" text-anchor="middle">Prompt 预算 (百字符)</text>
+
+          <rect x="284" y="288" width="48" height="84" rx="3" fill="#0d74ff"/>
+          <text x="308" y="281" fill="#58a6ff" font-family="monospace" font-size="11.5" font-weight="700" text-anchor="middle">113.5</text>
+          <rect x="338" y="330.2" width="48" height="41.8" rx="3" fill="#9e5a16"/>
+          <text x="362" y="323" fill="#f2cc60" font-family="monospace" font-size="11.5" font-weight="700" text-anchor="middle">56.5</text>
+          <text x="335" y="396" fill="#c9d1d9" font-size="11.5" font-weight="600" text-anchor="middle">活跃目录体积 (MB)</text>
+
+          <rect x="460" y="370" width="48" height="2" rx="1" fill="#0d74ff"/>
+          <text x="484" y="363" fill="#f85149" font-family="monospace" font-size="11.5" font-weight="700" text-anchor="middle">1.2</text>
+          <rect x="514" y="298" width="48" height="74" rx="3" fill="#9e5a16"/>
+          <text x="538" y="290" fill="#f2cc60" font-family="monospace" font-size="11.5" font-weight="700" text-anchor="middle">100.0</text>
+          <text x="511" y="396" fill="#c9d1d9" font-size="11.5" font-weight="600" text-anchor="middle">Skill 描述可见率 (%)</text>
+
+          <rect x="636" y="269.1" width="48" height="102.9" rx="3" fill="#0d74ff"/>
+          <text x="660" y="262" fill="#58a6ff" font-family="monospace" font-size="11.5" font-weight="700" text-anchor="middle">139.0</text>
+          <rect x="690" y="365.8" width="48" height="6.2" rx="2" fill="#9e5a16"/>
+          <text x="714" y="358" fill="#f2cc60" font-family="monospace" font-size="11.5" font-weight="700" text-anchor="middle">8.4</text>
+          <text x="687" y="396" fill="#c9d1d9" font-size="11.5" font-weight="600" text-anchor="middle">OpenClaw 行数 (十行)</text>
+        </svg>
+      </div>
+
+      <div class="kpi-row">
+        <div class="kpi-box">
+          <div class="lbl">元数据总字节</div>
+          <div class="num">-79.2%</div>
+          <div class="dtl">38,600 → 8,019 chars</div>
+        </div>
+        <div class="kpi-box">
+          <div class="lbl">语义路由可见率</div>
+          <div class="num">100.0%</div>
+          <div class="dtl">1/81 (1.2%) → 62/62</div>
+        </div>
+        <div class="kpi-box">
+          <div class="lbl">磁盘占用净减</div>
+          <div class="num">-50.2%</div>
+          <div class="dtl">113.5 → 56.5 MB</div>
+        </div>
+        <div class="kpi-box">
+          <div class="lbl">OpenClaw 首轮负载</div>
+          <div class="num">-94.0%</div>
+          <div class="dtl">1,390 → 84 lines</div>
+        </div>
+      </div>
+
+      <div class="callout-band green">
+        <strong>核心结论：</strong>所有数据均来自 <code>2026-11-18</code> 本地 <code>session_store_sql</code> 与双技能目录实测审计（零虚构指标）。模型升级不是“只换 Model ID”，更是一次系统性的上下文减法工程。
+      </div>
+
+      <div class="card-foot">
+        <span>Audit Scope: ~/.copilot/skills (83) + ~/.agents/skills (37) = 120 dirs</span>
+        <span>陈琪 Qi Chen · @turbo998</span>
+      </div>
+    </section>
+
+    <!-- CARD 2/7 -->
+    <section class="card" id="card-2">
+      <div>
+        <div class="card-top">
+          <span class="kicker">SCENARIO · THE 12KB ROUTER CLIFF</span>
+          <span class="page-num">2 / 7</span>
+        </div>
+        <h2>故障根因：为什么 80 / 81 个用户技能对语义路由器彻底“隐身”？</h2>
+        <p class="sub">Agent 运行时对系统提示词中的 <code>&lt;available_skills&gt;</code> 块实施约 <strong>12 KB（12,000 chars）</strong>硬上限保护，超限条目被静默剥离 <code>description</code>。</p>
+
+        <svg class="inline-chart" viewBox="0 0 820 230" role="img" aria-label="12 KB 注入预算悬崖对比">
+          <rect width="820" height="230" rx="12" fill="#0d1117"/>
+          <text x="26" y="34" fill="#f0f6fc" font-size="14" font-weight="700">Before: 总需求 42.6 KB vs 12 KB 悬崖 → 98.8% (80/81) 用户技能退化为裸名称</text>
+          <rect x="26" y="46" width="66" height="36" rx="4" fill="#1f6feb"/>
+          <text x="59" y="69" fill="#fff" font-family="monospace" font-size="10.5" text-anchor="middle">4.0KB</text>
+          <rect x="94" y="46" width="22" height="36" rx="3" fill="#388bfd"/>
+          <rect x="118" y="46" width="676" height="36" rx="4" fill="#4c161d" stroke="#f85149"/>
+          <text x="456" y="69" fill="#ffa198" font-size="12" font-weight="700" text-anchor="middle">37.5 KB 溢出截断区：80 / 81 个用户 Skills 丢失语义触发词</text>
+
+          <text x="26" y="124" fill="#f0f6fc" font-size="14" font-weight="700">After: 归档 21 个 + 压缩 62 个描述至 ≤140 chars → 8.02 KB 全量可见 + 3.98 KB 余量</text>
+          <rect x="26" y="136" width="66" height="36" rx="4" fill="#1f6feb"/>
+          <text x="59" y="159" fill="#fff" font-family="monospace" font-size="10.5" text-anchor="middle">4.0KB</text>
+          <rect x="94" y="136" width="136" height="36" rx="4" fill="#9e5a16" stroke="#d29922"/>
+          <text x="162" y="159" fill="#f2cc60" font-family="monospace" font-size="11" font-weight="700" text-anchor="middle">8.02 KB (62/62)</text>
+          <rect x="232" y="136" width="68" height="36" rx="4" fill="#122d1f" stroke="#3fb950" stroke-dasharray="4 3"/>
+          <text x="266" y="159" fill="#7ee787" font-family="monospace" font-size="10.5" text-anchor="middle">3.98KB 余量</text>
+
+          <line x1="230" y1="22" x2="230" y2="206" stroke="#f85149" stroke-width="2" stroke-dasharray="5 3"/>
+          <text x="230" y="218" fill="#ffa198" font-family="monospace" font-size="11" font-weight="700" text-anchor="middle">▲ 12 KB 截断线</text>
+        </svg>
+      </div>
+
+      <div class="two-col">
+        <div class="sub-box">
+          <h3>✕ 优化前：把正文章节塞进 YAML 描述</h3>
+          <pre class="code-blk">description: &gt;
+  Use this comprehensive skill whenever the user
+  asks to create, polish, restructure, or review
+  executive slide decks, customer workshops...
+  (单条平均 476 chars · accessibility 单项达 1.1 KB)</pre>
+        </div>
+        <div class="sub-box">
+          <h3>✓ 优化后：≤140 字符高信噪比触发器</h3>
+          <pre class="code-blk">description: "构建微软 Azure Fluent 风格技术演示稿、架构评审 Deck 与 HTML/PPTX 视觉汇报页（含深浅色规范与版式栅格）。"
+# 62 条均值 129 chars · 总计 8,019 chars (-79.2%)</pre>
+        </div>
+      </div>
+
+      <div class="callout-band red">
+        <strong>工程警示：</strong>当用户技能描述均值达 476 chars 时，叠加项目/插件先行占用的 4 KB，只需约 16 个技能就会填满 12 KB 预算。静默截断不会报错，只会表现为“模型明明安装了技能却从不主动调用”。
+      </div>
+
+      <div class="card-foot">
+        <span>Case Study 01 · System-Prompt Budget Hygiene</span>
+        <span>可见率 1.2% → 100.0% (+83×)</span>
+      </div>
+    </section>
+
+    <!-- CARD 3/7 -->
+    <section class="card" id="card-3">
+      <div>
+        <div class="card-top">
+          <span class="kicker">WHAT I TESTED · 120-SKILL TELEMETRY AUDIT</span>
+          <span class="page-num">3 / 7</span>
+        </div>
+        <h2>遥测审计矩阵：120 个技能目录的历史调用分布与五类精准处置</h2>
+        <p class="sub">查询 <code>session_store_sql</code> 的 <code>tool_requests</code> 真实调用记录，发现 <strong>115 / 120（95.8%）</strong>从未被调用，仅 5 个技能产生全部历史命中。</p>
+
+        <div class="two-col">
+          <div class="sub-box">
+            <h3>A · 历史真实调用 Top 5（总计 12 次触发）</h3>
+            <div class="bar-row" style="margin-top:10px;">
+              <div class="bar-meta"><span>azure-style-presentation</span><span>5 次</span></div>
+              <div class="bar-track"><div class="bar-fill" style="width:100%;background:#2563eb;"></div></div>
+            </div>
+            <div class="bar-row">
+              <div class="bar-meta"><span>wechat-article</span><span>3 次</span></div>
+              <div class="bar-track"><div class="bar-fill" style="width:60%;background:#3b82f6;"></div></div>
+            </div>
+            <div class="bar-row">
+              <div class="bar-meta"><span>powerpoint</span><span>2 次</span></div>
+              <div class="bar-track"><div class="bar-fill" style="width:40%;background:#60a5fa;"></div></div>
+            </div>
+            <div class="bar-row">
+              <div class="bar-meta"><span>azure-prepare / browser-use</span><span>各 1 次</span></div>
+              <div class="bar-track"><div class="bar-fill" style="width:20%;background:#93c5fd;"></div></div>
+            </div>
+            <p style="margin-top:8px;font-weight:700;color:#991b1b;">其余 115 个目录历史调用 = 0 次（95.8%）</p>
+          </div>
+
+          <div class="sub-box">
+            <h3>B · 120 个目录五类去向（83 活跃 + 37 清理）</h3>
+            <div class="bar-row" style="margin-top:10px;">
+              <div class="bar-meta"><span>保留并压缩用户技能 (~/.copilot)</span><span>62 (51.7%)</span></div>
+              <div class="bar-track"><div class="bar-fill" style="width:51.7%;background:#10b981;"></div></div>
+            </div>
+            <div class="bar-row">
+              <div class="bar-meta"><span>保留活跃插件技能 (~/.agents)</span><span>21 (17.5%)</span></div>
+              <div class="bar-track"><div class="bar-fill" style="width:17.5%;background:#2563eb;"></div></div>
+            </div>
+            <div class="bar-row">
+              <div class="bar-meta"><span>归档零调用/被原生替代用户技能</span><span>21 (17.5%)</span></div>
+              <div class="bar-track"><div class="bar-fill" style="width:17.5%;background:#d97706;"></div></div>
+            </div>
+            <div class="bar-row">
+              <div class="bar-meta"><span>移除 ~/.agents 跨目录完全重复项</span><span>14 (11.7%)</span></div>
+              <div class="bar-track"><div class="bar-fill" style="width:11.7%;background:#7c3aed;"></div></div>
+            </div>
+            <div class="bar-row">
+              <div class="bar-meta"><span>移除 Windows 下 macOS 专属技能</span><span>2 (1.7%)</span></div>
+              <div class="bar-track"><div class="bar-fill" style="width:3.5%;background:#ef4444;"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <pre class="code-blk">[归档 21 个用户技能] openclaw-hermes-deploy, billing-assistant, fabric-lakehouse-realtime-analytics, meeting-minutes-docx, pdf, theme-factory, brand-guidelines, doc-coauthoring, internal-comms, slack-gif-creator, canvas-design, algorithmic-art, frontend-design, mcp-builder, webapp-testing, skill-creator, agent-governance, ms-foundry, workiq-copilot, copilot-cli-quickstart, github-copilot-starter
+[去重 14 个重复插件] azure-deploy, azure-diagnostics, azure-prepare, azure-validate, azure-ai, azure-compute, azure-kubernetes, azure-quotas, azure-resource-lookup, azure-storage, appinsights-instrumentation, azure-aigateway, azure-compliance, azure-cost-optimization
+[移除 2 个 macOS 专属] apple-notes (memo CLI), things-mac (AppleScript/Things3)</pre>
+
+      <div class="callout-band amber">
+        <strong>治理准则：</strong>对通用能力已被前沿模型内化的旧技能（如通用 <code>pdf</code>、<code>frontend-design</code>、<code>doc-coauthoring</code>）果断归档；仅保留承载组织私有流程、云架构规范与专有脚本的高增量技能。
+      </div>
+
+      <div class="card-foot">
+        <span>Active Skills: 120 → 83 · Disk: 113.5 MB → 56.5 MB</span>
+        <span>Reclaimed 56.97 MB (-50.2%)</span>
+      </div>
+    </section>
+
+    <!-- CARD 4/7 -->
+    <section class="card" id="card-4">
+      <div>
+        <div class="card-top">
+          <span class="kicker">UNDER THE HOOD · PROGRESSIVE DISCLOSURE</span>
+          <span class="page-num">4 / 7</span>
+        </div>
+        <h2>渐进式披露重构：将 1,390 行单体大文件拆为 84 行路由树 + 按需模块</h2>
+        <p class="sub">以 <code>openclaw-wechat-deployment</code> 为标杆案例，把首轮急切注入体积从 <strong>54.7 KB</strong> 压降至 <strong>3.4 KB（-94.0%）</strong>，保护长链路推理注意力。</p>
+
+        <svg class="inline-chart" viewBox="0 0 820 220" role="img" aria-label="OpenClaw 渐进式披露前后对比">
+          <rect width="820" height="220" rx="12" fill="#0d1117"/>
+          <text x="24" y="34" fill="#ffa198" font-size="13" font-weight="700">Before: Monolithic SKILL.md · 每次触发全量注入 1,390 行 (54.7 KB)</text>
+          <rect x="24" y="46" width="772" height="30" rx="5" fill="#0d74ff"/>
+          <text x="410" y="66" fill="#fff" font-family="monospace" font-size="11.5" font-weight="700" text-anchor="middle">1,390 lines · Bicep + cloud-init + Docker + WeChat Webhook + Troubleshooting 全混杂</text>
+
+          <text x="24" y="114" fill="#7ee787" font-size="13" font-weight="700">After: 84 行决策树入口 (3.4 KB, -94.0%) + 5 个阶段按需 view 模块</text>
+          <rect x="24" y="126" width="88" height="44" rx="5" fill="#9e5a16" stroke="#d29922"/>
+          <text x="68" y="146" fill="#f2cc60" font-family="monospace" font-size="11" font-weight="700" text-anchor="middle">SKILL.md</text>
+          <text x="68" y="162" fill="#e6edf3" font-family="monospace" font-size="10" text-anchor="middle">84 lines</text>
+
+          <rect x="132" y="126" width="130" height="44" rx="5" fill="#161b22" stroke="#388bfd" stroke-dasharray="4 2"/>
+          <text x="197" y="146" fill="#79c0ff" font-family="monospace" font-size="10" font-weight="700" text-anchor="middle">architecture-bicep</text>
+          <text x="197" y="162" fill="#8b949e" font-family="monospace" font-size="10" text-anchor="middle">312 lines (lazy)</text>
+
+          <rect x="270" y="126" width="134" height="44" rx="5" fill="#161b22" stroke="#388bfd" stroke-dasharray="4 2"/>
+          <text x="337" y="146" fill="#79c0ff" font-family="monospace" font-size="10" font-weight="700" text-anchor="middle">vm-bootstrap-docker</text>
+          <text x="337" y="162" fill="#8b949e" font-family="monospace" font-size="10" text-anchor="middle">298 lines (lazy)</text>
+
+          <rect x="412" y="126" width="130" height="44" rx="5" fill="#161b22" stroke="#388bfd" stroke-dasharray="4 2"/>
+          <text x="477" y="146" fill="#79c0ff" font-family="monospace" font-size="10" font-weight="700" text-anchor="middle">wechat-kf-webhook</text>
+          <text x="477" y="162" fill="#8b949e" font-family="monospace" font-size="10" text-anchor="middle">276 lines (lazy)</text>
+
+          <rect x="550" y="126" width="124" height="44" rx="5" fill="#161b22" stroke="#388bfd" stroke-dasharray="4 2"/>
+          <text x="612" y="146" fill="#79c0ff" font-family="monospace" font-size="10" font-weight="700" text-anchor="middle">troubleshooting</text>
+          <text x="612" y="162" fill="#8b949e" font-family="monospace" font-size="10" text-anchor="middle">244 lines (lazy)</text>
+
+          <rect x="682" y="126" width="114" height="44" rx="5" fill="#161b22" stroke="#388bfd" stroke-dasharray="4 2"/>
+          <text x="739" y="146" fill="#79c0ff" font-family="monospace" font-size="10" font-weight="700" text-anchor="middle">security-harden</text>
+          <text x="739" y="162" fill="#8b949e" font-family="monospace" font-size="10" text-anchor="middle">176 lines (lazy)</text>
+
+          <text x="410" y="200" fill="#8b949e" font-size="11.5" text-anchor="middle">单阶段排障仅加载 84 + 244 = 328 行，节省 &gt;76% 无关上下文 Token 干扰</text>
+        </svg>
+      </div>
+
+      <div class="two-col">
+        <div class="sub-box">
+          <h3>主入口 SKILL.md（≤120 行硬上限）只放什么？</h3>
+          <ul>
+            <li>140 字以内的精准触发边界（何时用 / 何时不用）</li>
+            <li>架构不变量与安全红线（如禁止明文硬编码密钥）</li>
+            <li>阶段判定决策树 → 指向具体 <code>references/*.md</code> 路径</li>
+          </ul>
+        </div>
+        <div class="sub-box">
+          <h3>子目录 references/ &amp; scripts/ 放什么？</h3>
+          <ul>
+            <li>完整 Bicep / Docker Compose / Nginx 配置模板</li>
+            <li>错误码与诊断命令对照矩阵（按症状索引）</li>
+            <li>可确定性执行的校验脚本与字体/环境探测工具</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="callout-band green">
+        <strong>设计范式切换：</strong>把 <code>SKILL.md</code> 当作“高内聚路由索引表”而非“百科全书”。<code>Gemini 4 Carbon</code> 与 <code>GPT-6.2 Sol</code> 擅长自主调用 <code>view</code> 读取所需分册。
+      </div>
+
+      <div class="card-foot">
+        <span>Case Study 02 · openclaw-wechat-deployment</span>
+        <span>54.7 KB → 3.4 KB Eager Context (-94.0%)</span>
+      </div>
+    </section>
+
+    <!-- CARD 5/7 -->
+    <section class="card" id="card-5">
+      <div>
+        <div class="card-top">
+          <span class="kicker">ROBUSTNESS · FRONTIER MULTI-MODEL MATRIX</span>
+          <span class="page-num">5 / 7</span>
+        </div>
+        <h2>拆除跨代遗留拐杖 &amp; 建立前沿多模型协同路由矩阵</h2>
+        <p class="sub">彻底清除硬编码旧模型、虚构工具名与平台锁死路径，让当前主力模型阵列按认知比较优势分工。</p>
+
+        <div class="two-col" style="margin-bottom:14px;">
+          <div class="sub-box">
+            <h3>已清除的三类历史遗留拐杖</h3>
+            <ul>
+              <li><strong>硬编码过时模型：</strong>删除 <code>model: gpt-5.4</code> / <code>gpt-4o-mini</code> / <code>claude-haiku-4.5</code>，交由运行时 <code>/subagents</code> 动态路由。</li>
+              <li><strong>幻觉工具名称：</strong>将虚构的 <code>search-the-web</code> / <code>fetch_page</code> / <code>runSubagent</code> 修正为真实 <code>web_search</code>、<code>web_fetch</code>、<code>task(...)</code> 与原生 Canvases。</li>
+              <li><strong>macOS 字体锁死：</strong>修复 <code>invoice_edit.py</code> 写死 <code>PingFang.ttc</code> 导致的 Windows/Linux 中文方框乱码（增加 <code>msyh.ttc → NotoSansCJK → PingFang</code> 回退链）。</li>
+            </ul>
+          </div>
+          <div class="sub-box">
+            <h3>MODEL-SKILL-MATRIX 四模型分工</h3>
+            <ul>
+              <li><strong>Gemini 4 Carbon (<code>long_context</code>)：</strong>长仓综合、SVG 拓扑图解（<code>anatomy</code> / <code>architecture-diagrams</code>）、双语报告与 PPT/Web 产物。</li>
+              <li><strong>GPT-6.2 Sol (<code>high/xhigh/max</code>)：</strong>复杂 Bicep/AKS 工程、OWASP/代码安全审计、严密 RPI 闭环与财务表格校验。</li>
+              <li><strong>Grok 4.7 (<code>high/xhigh</code>)：</strong>实时热点竞品追踪（<code>wechat-article</code> / <code>research</code>）、Agent 红队对抗与线上故障秒级定界。</li>
+              <li><strong>Gemini 3.8 Flash：</strong>高并发只读 <code>explore</code> / <code>task</code> 扫描。</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <pre class="code-blk"># MODEL-SKILL-MATRIX.md 推荐协同流水线示例（架构评审 + 安全加固场景）
+1. [Explore Sweep]  Gemini 3.8 Flash  -&gt; 并行扫描全仓配置与依赖边界 (task: explore)
+2. [Live Threat]    Grok 4.7 (high)   -&gt; 检索最新 CVE 与 OWASP Agentic 攻击面 (web_search + owasp-agentic)
+3. [Deep IaC Fix]   GPT-6.2 Sol (max) -&gt; 编写并校验零信任 Bicep 策略与单测 (azure-prepare + azure-validate)
+4. [Visual Deck]    Gemini 4 Carbon   -&gt; 合成双语 SVG 架构图与管理层汇报 Deck (azure-style-presentation)</pre>
+
+      <div class="callout-band green">
+        <strong>关键经验：</strong>不要在 <code>SKILL.md</code> 里写死某一代模型版本号！模型半年一换，技能文件只声明任务契约与工具边界，模型绑定统一收口在可热更新的路由配置层。
+      </div>
+
+      <div class="card-foot">
+        <span>Case Studies 03 &amp; 04 · De-Scaffolding &amp; Model Matrix</span>
+        <span>Gemini 4 Carbon · GPT-6.2 Sol · Grok 4.7</span>
+      </div>
+    </section>
+
+    <!-- CARD 6/7 -->
+    <section class="card" id="card-6">
+      <div>
+        <div class="card-top">
+          <span class="kicker">SCALING · THE INVERSE SCAFFOLDING LAW</span>
+          <span class="page-num">6 / 7</span>
+        </div>
+        <h2>反向脚手架定律：为什么基座模型越强，过程性提示词必须越薄？</h2>
+        <p class="sub">跨越三代模型演进（GPT-4o → GPT-5.4 → Gemini 4 Carbon / GPT-6.2 Sol / Grok 4.7）的上下文治理定律。</p>
+
+        <svg class="inline-chart" viewBox="0 0 820 260" role="img" aria-label="反向脚手架定律双曲线图">
+          <rect width="820" height="260" rx="12" fill="#0d1117"/>
+          <rect x="44" y="24" width="732" height="184" rx="8" fill="#161b22" stroke="#30363d"/>
+          <line x1="160" y1="36" x2="160" y2="196" stroke="#30363d" stroke-dasharray="4 3"/>
+          <line x1="410" y1="36" x2="410" y2="196" stroke="#30363d" stroke-dasharray="4 3"/>
+          <line x1="660" y1="36" x2="660" y2="196" stroke="#30363d" stroke-dasharray="4 3"/>
+
+          <path d="M 160 60 C 270 68, 330 112, 410 122 C 500 132, 570 176, 660 182" fill="none" stroke="#f85149" stroke-width="3.5"/>
+          <circle cx="160" cy="60" r="6" fill="#f85149"/><circle cx="410" cy="122" r="6" fill="#f85149"/><circle cx="660" cy="182" r="6" fill="#f85149"/>
+          <text x="176" y="56" fill="#ffa198" font-size="11.5" font-weight="700">下降：过程性微操拐杖 (High → Minimal)</text>
+
+          <path d="M 160 180 C 270 172, 330 126, 410 116 C 500 106, 570 62, 660 54" fill="none" stroke="#3fb950" stroke-width="3.5"/>
+          <circle cx="160" cy="180" r="6" fill="#3fb950"/><circle cx="410" cy="116" r="6" fill="#3fb950"/><circle cx="660" cy="54" r="6" fill="#3fb950"/>
+          <text x="436" y="52" fill="#7ee787" font-size="11.5" font-weight="700">上升：边界契约与确定性验证器 (Low → Strict)</text>
+
+          <text x="160" y="232" fill="#c9d1d9" font-size="11.5" font-weight="700" text-anchor="middle">Gen 1 · GPT-4o / Claude 3.5</text>
+          <text x="410" y="232" fill="#c9d1d9" font-size="11.5" font-weight="700" text-anchor="middle">Gen 2 · GPT-5.4 / Sonnet 4</text>
+          <text x="660" y="232" fill="#f2cc60" font-size="11.5" font-weight="700" text-anchor="middle">Gen 3 · Carbon · Sol · Grok 4.7</text>
+        </svg>
+      </div>
+
+      <div class="sub-box">
+        <h3>关键上下文与预算缩放量化对照（Before vs After）</h3>
+        <div class="bar-row" style="margin-top:10px;">
+          <div class="bar-meta"><span>系统提示词用户技能元数据占用（相对 12 KB 预算）</span><span>321.7% 溢出 → 66.8% 健康</span></div>
+          <div class="bar-track"><div class="bar-fill" style="width:66.8%;background:#10b981;"></div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-meta"><span>单技能 YAML 描述平均长度（目标 ≤140 chars）</span><span>476 chars → 129 chars (-72.9%)</span></div>
+          <div class="bar-track"><div class="bar-fill" style="width:27.1%;background:#2563eb;"></div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-meta"><span>复杂部署技能首轮急切加载占比（OpenClaw）</span><span>54.7 KB → 3.4 KB (-94.0%)</span></div>
+          <div class="bar-track"><div class="bar-fill" style="width:6.2%;background:#d97706;"></div></div>
+        </div>
+      </div>
+
+      <div class="callout-band amber">
+        <strong>反向脚手架定律本质：</strong>早期模型推理弱，工程师被迫把“第 1 步做什么、第 2 步怎么想”写满千行提示词；当前沿模型自带深度规划时，过时的步骤脚本反而锁死探索路径并挤爆路由窗口。
+      </div>
+
+      <div class="card-foot">
+        <span>Inverse Scaffolding Law · Context Engineering</span>
+        <span>Shrink Crutches · Sharpen Contracts</span>
+      </div>
+    </section>
+
+    <!-- CARD 7/7 -->
+    <section class="card" id="card-7">
+      <div>
+        <div class="card-top">
+          <span class="kicker">MY TAKE · PLAYBOOK FOR ENGINEERING TEAMS</span>
+          <span class="page-num">7 / 7</span>
+        </div>
+        <h2>团队实战指南：每次基座模型大版本升级必跑的五步 Harness 演进闭环</h2>
+        <p class="sub">可直接复制到研发团队季度技术评审中的标准化 Agent Harness 持续体检清单。</p>
+
+        <div class="sub-box" style="margin-bottom:12px;">
+          <h3>1 · 遥测先行审计（Telemetry Audit）</h3>
+          <p>切勿凭主观印象保留技能：定期查询 <code>session_store_sql</code> 的 <code>tool_requests</code> 调用表，揪出长期 0 调用的僵尸目录与跨目录重复插件。</p>
+        </div>
+        <div class="sub-box" style="margin-bottom:12px;">
+          <h3>2 · 9 KB 路由预算红线（Prompt Budget Guardrail）</h3>
+          <p>将用户级 <code>&lt;available_skills&gt;</code> 总描述严格控制在 <strong>&lt; 9 KB</strong>，单条 YAML <code>description ≤ 140 chars</code>，为动态工作区插件预留至少 3–4 KB 缓冲。</p>
+        </div>
+        <div class="sub-box" style="margin-bottom:12px;">
+          <h3>3 · 渐进式披露硬约束（Progressive Disclosure）</h3>
+          <p>强制 <code>SKILL.md ≤ 120 行</code> 只写触发条件、红线不变量与阶段路由表；大段代码模板、Bicep 与排障手册全部下沉至 <code>references/</code> 按需读取。</p>
+        </div>
+        <div class="sub-box" style="margin-bottom:12px;">
+          <h3>4 · 前沿模型重绑定与跨平台验证（Model Re-Binding）</h3>
+          <p>删除硬编码旧模型名与虚构工具名，按任务特性路由至 <code>Gemini 4 Carbon</code>、<code>GPT-6.2 Sol</code>、<code>Grok 4.7</code> 与 <code>Gemini 3.8 Flash</code>，并验证 Windows/Linux/macOS 跨平台脚本兼容性。</p>
+        </div>
+        <div class="sub-box">
+          <h3>5 · 自动化 CI 预算守门（Automated Regression Gate）</h3>
+          <p>将总字符预算、单文件行数、禁用旧模型词表与重复技能名检测写入 CI 脚本，每次同步技能仓库自动拦截退化。</p>
+        </div>
+      </div>
+
+      <div class="callout-band green">
+        <strong>延伸阅读与配套资产：</strong>
+        交互式工作台 <code>workshops/agent-harness-coevolution/index.html</code> ·
+        图文报告 <code>articles/agent-harness-coevolution.html</code> ·
+        开源研究库 <code>github.com/turbo998/ai-research-public</code> &amp; <code>azure-sa-skills</code>
+      </div>
+
+      <div class="card-foot">
+        <span>Published on turbo998.github.io · Track 05 Benchmarks &amp; Harness</span>
+        <span>陈琪 Qi Chen · 2026-11-18</span>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

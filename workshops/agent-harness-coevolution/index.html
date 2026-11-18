@@ -1,0 +1,1270 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>随模型升级持续演进 Agent Harness · 120 个 Skills 审计、上下文悬崖修复与模型协同工作台</title>
+  <meta name="description" content="面向工程团队的交互式演示工作台：基于 120 个 Skills 真实遥测审计，展示如何修复 12 KB 系统提示词截断悬崖、实施 94% 渐进式披露瘦身，并协同调度 Gemini 4 Carbon、GPT-6.2 Sol 与 Grok 4.7。" />
+  <style>
+    :root {
+      --bg: #070b12;
+      --panel: #0d1117;
+      --card: #161b22;
+      --card-soft: #1c2330;
+      --border: #30363d;
+      --text: #f0f6fc;
+      --muted: #8b949e;
+      --blue: #0d74ff;
+      --sky: #58a6ff;
+      --bronze: #9e5a16;
+      --amber: #d29922;
+      --gold: #f2cc60;
+      --green: #3fb950;
+      --red: #f85149;
+      --purple: #a371f7;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      line-height: 1.62;
+      padding-bottom: 72px;
+      overflow-x: clip;
+    }
+    .hero-banner {
+      background: radial-gradient(circle at 82% 14%, rgba(13, 116, 255, 0.18), transparent 42%),
+                  radial-gradient(circle at 18% 85%, rgba(210, 153, 34, 0.14), transparent 40%),
+                  linear-gradient(180deg, #0b111c 0%, #0d1117 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 28px 0 26px;
+    }
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    .top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .badge-row { display: flex; gap: 8px; flex-wrap: wrap; }
+    .badge {
+      font-size: 11.5px;
+      font-weight: 700;
+      padding: 4px 11px;
+      border-radius: 999px;
+      background: rgba(13, 116, 255, 0.15);
+      color: #79c0ff;
+      border: 1px solid rgba(56, 139, 253, 0.45);
+    }
+    .badge.amber {
+      background: rgba(210, 153, 34, 0.15);
+      color: var(--gold);
+      border-color: rgba(210, 153, 34, 0.45);
+    }
+    .badge.green {
+      background: rgba(63, 185, 80, 0.15);
+      color: #7ee787;
+      border-color: rgba(63, 185, 80, 0.45);
+    }
+    .action-links { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+    .action-links a {
+      color: #79c0ff;
+      text-decoration: none;
+      font-size: 12.5px;
+      font-weight: 700;
+      padding: 6px 12px;
+      border-radius: 8px;
+      background: #161b22;
+      border: 1px solid var(--border);
+      transition: border-color 0.15s ease, color 0.15s ease;
+    }
+    .action-links a:hover { border-color: var(--sky); color: #ffffff; }
+    .action-links a.primary-cta {
+      background: rgba(158, 90, 22, 0.28);
+      border-color: var(--amber);
+      color: var(--gold);
+    }
+    h1 {
+      font-size: clamp(22px, 3vw, 31px);
+      line-height: 1.28;
+      font-weight: 800;
+      margin-bottom: 10px;
+      letter-spacing: -0.01em;
+    }
+    .hero-sub {
+      color: #c9d1d9;
+      font-size: 14.5px;
+      max-width: 1080px;
+    }
+    .kpi-strip {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 20px;
+    }
+    @media (max-width: 900px) { .kpi-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @media (max-width: 520px) { .kpi-strip { grid-template-columns: 1fr; } }
+    .kpi-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 16px;
+    }
+    .kpi-kicker {
+      font-size: 11.5px;
+      color: var(--muted);
+      font-weight: 700;
+      letter-spacing: 0.3px;
+    }
+    .kpi-num {
+      font-size: 24px;
+      font-weight: 800;
+      margin: 4px 0;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      color: var(--gold);
+    }
+    .kpi-num .before-val {
+      font-size: 14px;
+      color: var(--sky);
+      text-decoration: line-through;
+      opacity: 0.85;
+      margin-right: 6px;
+    }
+    .kpi-note { font-size: 12px; color: #c9d1d9; }
+
+    .tabs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin: 22px 0 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+    .tab-btn {
+      background: var(--panel);
+      color: #c9d1d9;
+      border: 1px solid var(--border);
+      padding: 10px 15px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 700;
+      font-family: inherit;
+      transition: all 0.15s ease;
+    }
+    .tab-btn:hover { border-color: var(--sky); color: #ffffff; }
+    .tab-btn.active {
+      background: #172336;
+      color: #79c0ff;
+      border-color: var(--sky);
+      box-shadow: 0 0 0 1px rgba(88, 166, 255, 0.25);
+    }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    .section-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 22px;
+      margin-bottom: 20px;
+    }
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .section-title { font-size: 19px; font-weight: 800; color: var(--text); }
+    .section-desc { font-size: 13.5px; color: var(--muted); margin-top: 3px; }
+
+    /* Hero SVG Interactive Wrapper */
+    .hero-chart-shell {
+      background: #0d1117;
+      border: 1px solid #30363d;
+      border-radius: 14px;
+      padding: 16px;
+    }
+    .chart-filter-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .pill-group { display: flex; gap: 6px; flex-wrap: wrap; }
+    .pill-btn {
+      background: #161b22;
+      color: #c9d1d9;
+      border: 1px solid #30363d;
+      border-radius: 999px;
+      padding: 5px 12px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .pill-btn.active, .pill-btn:hover {
+      border-color: var(--amber);
+      color: var(--gold);
+      background: rgba(158, 90, 22, 0.22);
+    }
+    .chart-svg { width: 100%; height: auto; display: block; border-radius: 12px; }
+    .bar-group { cursor: pointer; transition: opacity 0.18s ease; }
+    .bar-group.dimmed { opacity: 0.26; }
+    .hero-readout {
+      margin-top: 12px;
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-left: 4px solid var(--amber);
+      border-radius: 10px;
+      padding: 12px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      font-size: 13px;
+    }
+
+    /* Simulator */
+    .sim-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.35fr;
+      gap: 18px;
+      align-items: start;
+    }
+    @media (max-width: 960px) { .sim-grid { grid-template-columns: 1fr; } }
+    .control-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+    }
+    .slider-row { margin-bottom: 14px; }
+    .slider-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12.5px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--sky);
+      cursor: pointer;
+    }
+    .sim-bar-track {
+      position: relative;
+      height: 44px;
+      background: #0d1117;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      display: flex;
+      margin: 12px 0 8px;
+    }
+    .sim-seg {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+      font-family: ui-monospace, Consolas, monospace;
+      white-space: nowrap;
+      overflow: hidden;
+      transition: width 0.2s ease;
+    }
+    .sim-cliff-marker {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      border-right: 2px dashed var(--red);
+      pointer-events: none;
+    }
+    .sim-stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+    @media (max-width: 560px) { .sim-stats { grid-template-columns: 1fr; } }
+    .mini-stat {
+      background: #0d1117;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 12px;
+    }
+    .mini-stat .label { font-size: 11px; color: var(--muted); }
+    .mini-stat .val { font-size: 18px; font-weight: 800; font-family: ui-monospace, Consolas, monospace; margin-top: 2px; }
+
+    /* Case Studies */
+    .case-layout {
+      display: grid;
+      grid-template-columns: 300px minmax(0, 1fr);
+      gap: 18px;
+    }
+    @media (max-width: 920px) { .case-layout { grid-template-columns: 1fr; } }
+    .case-nav-btn {
+      width: 100%;
+      text-align: left;
+      background: var(--card);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 14px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .case-nav-btn.active {
+      border-color: var(--sky);
+      background: #172336;
+    }
+    .case-nav-btn .c-tag {
+      font-size: 11px;
+      color: var(--gold);
+      font-family: ui-monospace, Consolas, monospace;
+      font-weight: 700;
+    }
+    .case-nav-btn .c-title { font-size: 13.5px; font-weight: 700; margin-top: 3px; }
+    .diff-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 14px;
+    }
+    @media (max-width: 820px) { .diff-grid { grid-template-columns: 1fr; } }
+    .diff-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px;
+      min-width: 0;
+    }
+    .diff-box.before { border-top: 3px solid var(--red); }
+    .diff-box.after { border-top: 3px solid var(--green); }
+    .diff-title { font-size: 12.5px; font-weight: 800; margin-bottom: 8px; }
+    pre {
+      background: #090d13;
+      border: 1px solid #21262d;
+      border-radius: 8px;
+      padding: 12px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 12px;
+      line-height: 1.55;
+      color: #e6edf3;
+      overflow-x: auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .chip-cloud { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+    .skill-chip {
+      font-family: ui-monospace, Consolas, monospace;
+      font-size: 11.5px;
+      padding: 3px 9px;
+      border-radius: 6px;
+      background: #161b22;
+      border: 1px solid #30363d;
+      color: #c9d1d9;
+    }
+
+    /* Model Matrix Cards */
+    .model-cards {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 16px;
+    }
+    @media (max-width: 860px) { .model-cards { grid-template-columns: 1fr; } }
+    .m-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+    }
+    .m-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+    }
+    .m-name { font-size: 16px; font-weight: 800; }
+    .m-id {
+      font-family: ui-monospace, Consolas, monospace;
+      font-size: 11.5px;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: #0d1117;
+      border: 1px solid var(--border);
+      color: var(--sky);
+    }
+
+    /* Playbook Steps */
+    .step-list {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 16px;
+    }
+    @media (max-width: 1040px) { .step-list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @media (max-width: 580px) { .step-list { grid-template-columns: 1fr; } }
+    .step-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-top: 3px solid var(--sky);
+      border-radius: 12px;
+      padding: 14px;
+    }
+    .step-num {
+      font-family: ui-monospace, Consolas, monospace;
+      font-size: 11.5px;
+      font-weight: 800;
+      color: var(--gold);
+    }
+    .step-title { font-size: 14px; font-weight: 800; margin: 4px 0 6px; }
+    .step-body { font-size: 12.5px; color: #c9d1d9; }
+
+    /* Deck Preview Grid */
+    .deck-preview-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 14px;
+      margin-top: 16px;
+    }
+    .mini-deck-card {
+      background: #ffffff;
+      color: #0f172a;
+      border: 1px solid #cbd5e1;
+      border-radius: 14px;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .mini-deck-top {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      font-weight: 800;
+      color: #2563eb;
+      border-bottom: 1px solid #e2e8f0;
+      padding-bottom: 8px;
+    }
+    .mini-deck-card h3 { font-size: 15px; line-height: 1.35; color: #0f172a; }
+    .mini-deck-card p { font-size: 12.5px; color: #475569; }
+    .mini-metric {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 8px 10px;
+      font-family: ui-monospace, Consolas, monospace;
+      font-size: 11.5px;
+      color: #0f172a;
+      font-weight: 700;
+    }
+    footer.wb-footer {
+      margin-top: 36px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 12.5px;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    footer.wb-footer a { color: #79c0ff; text-decoration: none; }
+  </style>
+<script src="../../assets/editorial/search-index.js" defer></script><script src="../../assets/editorial/search.js" defer></script><style id="site-remediation-style">/* Embedded by integrate-dedicated.cjs so sealed report CSP remains unchanged. */
+.kee-dedicated-nav {
+  all: initial; box-sizing: border-box; position: relative; display: flex;
+  flex-wrap: wrap; align-items: center; gap: 6px 14px; width: 100%;
+  padding: 12px 18px; margin: 0 0 16px; border: 1px solid #314361;
+  background: #101A30; color: #EEF3FF; font: 13px/1.5 system-ui, sans-serif;
+  text-align: left; isolation: isolate; color-scheme: dark;
+}
+.kee-dedicated-nav a {
+  all: revert; box-sizing: border-box; display: inline-block; padding: 4px 0;
+  color: #9AABFF; background: transparent; font: inherit; text-decoration: underline;
+  text-underline-offset: 3px; border: 0; border-radius: 0; box-shadow: none;
+}
+.kee-dedicated-nav a:focus-visible { outline: 3px solid #56DDCD; outline-offset: 3px; }
+.kee-dedicated-nav .kee-dedicated-identity { font-weight: 700; color: #EEF3FF; }
+.kee-dedicated-nav .kee-dedicated-language {
+  all: revert; display: block; flex-basis: 100%; color: #ADBBD1; font: 12px/1.5 system-ui, sans-serif;
+}
+.kee-dedicated-native-link { display: block; padding: 22px; color: #1858a8; background: #f8fafc; font: 15px/1.6 system-ui, sans-serif; }
+.kee-dedicated-native-link a { color: #1858a8; text-decoration: underline; }
+@media print { .kee-dedicated-nav { display: none; } }
+
+/* Professional primary navigation: long section names reflow, never scroll inside the header. */
+[data-professional-header]{box-sizing:border-box;display:grid!important;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:18px!important;width:100%;max-width:none;height:auto!important;min-height:0!important;padding:18px 24px!important;margin:0 0 16px;position:relative;overflow:visible!important;background:#101A30;color:#EEF3FF;border:1px solid #314361;font:13px/1.5 system-ui,sans-serif;isolation:isolate;color-scheme:dark}
+[data-professional-header] *{box-sizing:border-box;min-width:0;max-height:none}
+[data-professional-header] a{font:inherit;text-decoration:none;color:#9AABFF;overflow-wrap:anywhere;white-space:normal}
+[data-professional-header] .professional-identity{font-weight:750;color:#EEF3FF;white-space:nowrap;font-size:14px;margin:0}
+[data-professional-header] .professional-primary{display:grid;grid-template-columns:1.65fr 1.1fr 1.15fr 1.1fr 1.1fr;gap:6px;align-items:stretch;min-width:0}
+[data-professional-header] .professional-primary a{display:flex;align-items:center;justify-content:center;padding:10px 9px;border:1px solid #314361;border-radius:12px;background:#172440;text-align:center;line-height:1.4;min-height:44px}
+[data-professional-header] .professional-primary a[aria-current=page]{background:#23375a;border-color:#56DDCD;color:#56DDCD}
+[data-professional-header] .professional-controls{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:4px;font-size:12px;margin:0;position:static}
+[data-professional-header] .professional-controls>a{display:flex;align-items:center;justify-content:center;padding:8px;min-height:40px;min-width:32px;border-radius:10px}
+[data-professional-header] .professional-context{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px 18px;padding-top:12px;border-top:1px solid #314361;font-size:12px;color:#ADBBD1;min-width:0;line-height:1.6}
+[data-professional-header] .professional-context>*{min-width:0;overflow-wrap:anywhere}
+[data-professional-header] .professional-context .kee-dedicated-language{flex-basis:100%;color:#ADBBD1}
+[data-professional-header] a:focus-visible{outline:3px solid #56DDCD;outline-offset:3px}
+[data-professional-header] a:hover{text-decoration:underline}
+[data-professional-header][data-perimeter-theme=light],:root[data-theme=light] .reading-header[data-professional-header]{background:#fff;color:#172440;border-color:#d4deee;color-scheme:light}
+[data-professional-header][data-perimeter-theme=light] a,:root[data-theme=light] .reading-header[data-professional-header] a{color:#3752a0}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a,:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a{background:#edf2ff;border-color:#d4deee}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a[aria-current],:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a[aria-current]{background:#dff6f0;color:#127b72;border-color:#127b72}
+@media(max-width:1150px){[data-professional-header]{grid-template-columns:minmax(0,1fr) auto;gap:12px!important}[data-professional-header] .professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header] .professional-controls{grid-column:2;grid-row:1}}
+@media(max-width:600px){[data-professional-header]{padding:14px 16px!important;gap:12px!important}[data-professional-header] .professional-primary{grid-template-columns:repeat(2,minmax(0,1fr))}[data-professional-header] .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:13px}[data-professional-header] .professional-controls{gap:0}[data-professional-header] .professional-controls>a{padding:6px;min-width:28px}}
+@media print{[data-professional-header]{display:none!important}}
+
+html{scroll-padding-top:108px}.reading-header,.kee-dedicated-nav,[data-professional-header]{position:sticky;top:0;z-index:1000;-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
+
+:root{--search-bg:#101a30;--search-soft:#172440;--search-ink:#eef3ff;--search-muted:#adbbd1;--search-line:#293956;--search-accent:#9aabff;--header-offset:108px}
+:root[data-reading-shell][data-theme=light],[data-perimeter-theme=light]{--search-bg:#fff;--search-soft:#e8eefb;--search-ink:#17233e;--search-muted:#4c5e7c;--search-line:#d5ddec;--search-accent:#354ec8}
+html{scroll-padding-top:var(--header-offset,108px)!important}
+.site-search,.site-search *{box-sizing:border-box!important;font-family:"Segoe UI",sans-serif;letter-spacing:normal;text-transform:none}
+.site-search{position:relative;display:flex;align-items:center;gap:5px;min-width:0;width:230px;max-width:100%;margin:0!important;padding:0!important;line-height:1.4;border:1px solid var(--search-line);border-radius:9px;background:var(--search-soft);color:var(--search-ink);isolation:isolate}
+.site-search input[type=search]{display:block;flex:1;min-width:0;width:100%;height:42px;margin:0;padding:9px 8px!important;font-size:12px!important;line-height:1.5;border:0!important;border-radius:9px;background:transparent!important;color:var(--search-ink)!important;box-shadow:none!important;appearance:none}
+.site-search input::placeholder{color:var(--search-muted);opacity:1}.site-search input:focus-visible{outline:2px solid var(--search-accent);outline-offset:2px}
+.site-search kbd{font:11px Consolas,monospace;color:var(--search-muted);padding:1px 5px;border:1px solid var(--search-line);border-radius:4px}
+.site-search button[type=submit]{flex:none;width:38px;min-width:38px;height:42px;min-height:42px;padding:0;margin:0;border:0;border-radius:8px;background:transparent;color:var(--search-accent);font-size:24px;cursor:pointer;box-shadow:none}
+.search-label,.search-status{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.site-search .search-results{position:absolute;top:calc(100% + 10px);right:0;z-index:1100;width:min(480px,calc(100vw - 32px));max-height:min(560px,65vh);overflow-y:auto;border:1px solid var(--search-line);border-radius:12px;background:var(--search-bg);color:var(--search-ink);padding:10px;box-shadow:0 12px 32px #0005;text-align:left}
+.site-search .search-results[hidden]{display:none!important}.search-results .search-group{margin:8px 6px 4px;font:11px/1.5 Consolas,monospace;color:var(--search-muted)}
+.site-search .search-results a{display:block!important;padding:10px!important;margin:3px 0!important;border:1px solid transparent!important;border-radius:7px;background:transparent;color:var(--search-ink)!important;font-size:13px!important;text-decoration:none!important;white-space:normal;overflow-wrap:anywhere;text-align:left!important;line-height:1.5!important}
+.site-search .search-results a[aria-selected=true],.site-search .search-results a:hover{border-color:var(--search-accent)!important;background:var(--search-soft)}
+.search-results a small{display:block;font-size:10px;color:var(--search-muted);margin-top:4px}.search-results p{margin:10px;font-size:13px;color:var(--search-muted)}
+.search-archive-summary{padding:20px;border:1px solid var(--search-line);border-radius:10px;background:var(--search-bg);color:var(--search-ink);margin:24px 0}.search-archive-summary h2{font-size:24px;margin:0 0 12px}.search-archive-summary li{margin:12px 0}.search-archive-summary a{color:var(--search-accent)}
+[data-professional-header]{position:sticky!important;top:0!important;z-index:1000!important;background:var(--search-bg)!important;--header-glass:rgba(16,26,48,.9);grid-template-columns:auto minmax(0,1fr) 230px auto!important}
+[data-professional-header][data-perimeter-theme=light],:root[data-reading-shell][data-theme=light] [data-professional-header]{--header-glass:rgba(255,255,255,.94)}
+[data-professional-header] .professional-mobile{display:none}.professional-mobile summary{min-width:38px;min-height:42px;display:grid;place-items:center;cursor:pointer;list-style:none}.professional-mobile summary::-webkit-details-marker{display:none}
+[data-professional-header] .professional-context{display:none}
+.professional-context-bar{padding:12px 24px;border-bottom:1px solid var(--search-line);background:var(--search-bg);color:var(--search-muted);font:12px/1.6 "Segoe UI",sans-serif;display:flex;flex-wrap:wrap;gap:8px 18px;overflow-wrap:anywhere}.professional-context-bar a{color:var(--search-accent)}
+@supports((backdrop-filter:blur(16px)) or (-webkit-backdrop-filter:blur(16px))){.site-header,[data-professional-header]{background:var(--header-glass)!important;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}}
+@media(max-width:1250px) and (min-width:701px){.header-inner{grid-template-columns:minmax(0,1fr) 230px auto!important;padding:12px 0;gap:12px!important}.desktop-nav{grid-row:2;grid-column:1/-1}.header-inner>.site-search{grid-column:2;grid-row:1}.header-inner>.controls{grid-column:3;grid-row:1}[data-professional-header]{grid-template-columns:minmax(0,1fr) 230px auto!important;gap:12px!important}[data-professional-header]>.professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header]>.site-search{grid-column:2;grid-row:1}[data-professional-header]>.professional-controls{grid-column:3;grid-row:1}:root{--header-offset:176px}}
+@media(max-width:700px){.header-inner{grid-template-columns:minmax(0,1fr) auto!important;padding:10px 0;gap:8px!important}.header-inner>.site-search{grid-row:2;grid-column:1/-1;width:100%}.header-inner>.controls{grid-column:2;grid-row:1}.site-search .search-results{width:100%;right:0}[data-professional-header]{grid-template-columns:minmax(0,1fr) auto!important;padding:10px 16px!important;gap:8px!important}[data-professional-header]>.professional-primary{display:none!important}[data-professional-header]>.site-search{grid-column:1/-1;grid-row:2;width:100%}[data-professional-header]>.professional-controls{grid-column:2;grid-row:1}[data-professional-header] .professional-mobile{display:block}[data-professional-header] .professional-mobile[open]>.professional-primary{position:absolute;top:100%;left:0;right:0;padding:16px;background:var(--search-bg);border-bottom:1px solid var(--search-line);display:grid;grid-template-columns:1fr 1fr;gap:8px}[data-professional-header] .professional-mobile .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:12px!important}:root{--header-offset:126px}}
+@media(prefers-reduced-transparency:reduce){.site-header,[data-professional-header]{background:var(--search-bg)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}}
+@media print{.site-search,.professional-context-bar{display:none!important}}
+
+@media(min-width:1251px){.header-inner{display:grid!important;grid-template-columns:auto minmax(0,1fr) 230px auto!important;gap:18px!important}.header-inner .desktop-nav{min-width:0}}
+
+html:has(.kee-dedicated-app-root){height:auto!important;overflow-x:hidden!important;overflow-y:auto!important}
+body:has([data-professional-header]){height:auto!important;overflow-x:clip!important;overflow-y:visible!important;padding-top:0!important}
+.demo-language-navigation{display:none!important}
+.stage-column,.telemetry-panel,.scene-pill,#timeline-slider{min-width:0}
+@media(max-width:1180px){.workspace,.template-tabs{grid-template-columns:minmax(0,1fr)!important}}
+
+.in-arena-frame .professional-context-bar,.in-arena-frame [data-knowledge-atlas]{display:none!important}
+.knowledge-graph-wide{display:block}.knowledge-graph-compact{display:none}@media(max-width:600px){.knowledge-graph-wide{display:none}.knowledge-graph-compact{display:block}}
+</style></head>
+<body><nav class="kee-dedicated-nav" data-professional-header><a class="professional-identity reading-brand kee-dedicated-identity identity" href="../../zh.html">Qi Chen · @turbo998</a><div class="professional-primary" role="navigation" aria-label="主导航"><a href="../../studio/zh-index.html" data-section="hub" data-nav-en-href="../../studio/index.html" data-nav-zh-href="../../studio/zh-index.html" data-nav-en-label="Frontier Transformation Engineering Hub" data-nav-zh-label="Frontier Transformation Engineering Hub" aria-current="page">Frontier Transformation Engineering Hub</a><a href="../../zh-benchmarks.html" data-section="benchmarks" data-nav-en-href="../../benchmarks.html" data-nav-zh-href="../../zh-benchmarks.html" data-nav-en-label="Benchmark &amp; Eval Foundry" data-nav-zh-label="基准评测中心">基准评测中心</a><a href="../../zh-github-radar.html" data-section="radar" data-nav-en-href="../../github-radar.html" data-nav-zh-href="../../zh-github-radar.html" data-nav-en-label="GitHub AI Signal Radar" data-nav-zh-label="GitHub AI 信号雷达">GitHub AI 信号雷达</a><a href="../../zh-openrouter.html" data-section="routing" data-nav-en-href="../../openrouter.html" data-nav-zh-href="../../zh-openrouter.html" data-nav-en-label="Model Routing &amp; Telemetry" data-nav-zh-label="OpenRouter 模型遥测">OpenRouter 模型遥测</a><a href="../../zh-about.html" data-section="profile" data-nav-en-href="../../about.html" data-nav-zh-href="../../zh-about.html" data-nav-en-label="Principal Architect Profile" data-nav-zh-label="首席架构师履历">首席架构师履历</a></div><form class="site-search" role="search" action="../../studio/zh-archive.html" method="get" data-search-root="../../index.html" data-search-language="zh-CN"><label class="search-label" for="site-search-input">搜索架构、评测、Demo、技能...</label><input id="site-search-input" name="q" type="search" placeholder="搜索架构、评测、Demo、技能..." autocomplete="off" spellcheck="false" aria-keyshortcuts="/ Control+k Meta+k"><kbd aria-hidden="true">/</kbd><button type="submit" aria-label="搜索全部内容">⌕</button><div class="search-results" id="site-search-results" hidden></div><span class="search-status" role="status" aria-live="polite"></span></form><div class="reading-controls professional-controls" aria-label="网站语言与外观"><a href="index.en.html" data-reading-language hreflang="en" lang="en">EN</a><a href="index.html" hreflang="zh-CN" lang="zh-CN" aria-current="page">中文</a><details class="professional-mobile"><summary aria-label="打开主导航">☰</summary><div class="professional-primary" role="navigation" aria-label="移动主导航"><a href="../../studio/zh-index.html" data-section="hub" data-nav-en-href="../../studio/index.html" data-nav-zh-href="../../studio/zh-index.html" data-nav-en-label="Frontier Transformation Engineering Hub" data-nav-zh-label="Frontier Transformation Engineering Hub" aria-current="page">Frontier Transformation Engineering Hub</a><a href="../../zh-benchmarks.html" data-section="benchmarks" data-nav-en-href="../../benchmarks.html" data-nav-zh-href="../../zh-benchmarks.html" data-nav-en-label="Benchmark &amp; Eval Foundry" data-nav-zh-label="基准评测中心">基准评测中心</a><a href="../../zh-github-radar.html" data-section="radar" data-nav-en-href="../../github-radar.html" data-nav-zh-href="../../zh-github-radar.html" data-nav-en-label="GitHub AI Signal Radar" data-nav-zh-label="GitHub AI 信号雷达">GitHub AI 信号雷达</a><a href="../../zh-openrouter.html" data-section="routing" data-nav-en-href="../../openrouter.html" data-nav-zh-href="../../zh-openrouter.html" data-nav-en-label="Model Routing &amp; Telemetry" data-nav-zh-label="OpenRouter 模型遥测">OpenRouter 模型遥测</a><a href="../../zh-about.html" data-section="profile" data-nav-en-href="../../about.html" data-nav-zh-href="../../zh-about.html" data-nav-en-label="Principal Architect Profile" data-nav-zh-label="首席架构师履历">首席架构师履历</a></div></details><a data-reading-theme="light" href="index.html?theme=light" aria-label="浅色主题">☀</a><a data-reading-theme="dark" href="index.html?theme=dark" aria-label="深色主题">◐</a></div><div class="professional-context" aria-label="返回上下文"><a href="../../studio/zh-index.html">← 工程枢纽</a> · <a href="../../studio/zh-benchmarks.html">返回主题</a></div></nav><div class="professional-context-bar"><a href="../../studio/zh-index.html">← 工程枢纽</a> · <a class="reading-context" href="../../studio/zh-benchmarks.html">返回主题</a></div><!-- site-remediation-knowledge:start --><figure class="knowledge-figure" data-knowledge-atlas="benchmarks" style="margin:20px auto;max-width:1120px;padding:0 20px;box-sizing:border-box"><style>.knowledge-graph-wide{display:block}.knowledge-graph-compact{display:none}@media(max-width:600px){.knowledge-graph-wide{display:none}.knowledge-graph-compact{display:block}}</style><svg xmlns="http://www.w3.org/2000/svg" lang="zh-CN" class="knowledge-graph-compact" role="img" aria-labelledby="knowledge-06af40c54367-compact-title knowledge-06af40c54367-compact-desc" viewBox="0 0 360 852" width="360" style="width:100%;height:auto;max-width:560px;margin:0 auto;font-family:system-ui,sans-serif"><title id="knowledge-06af40c54367-compact-title">随模型升级持续演进 Agent Harness · 120 个 Skills 审计、上下文悬崖修复与模型协同工作台</title><desc id="knowledge-06af40c54367-compact-desc">研究问题与封存负载: 数据集 · 模型批次 · 分母 · 来源 → 定义测试契约 → Harness 与执行契约: 提示词 · 工具权限 · 环境 · 重复次数 → 生成追踪产物 → 原始输出与确定性校验: 任务轨迹 · 校验结果 · 缺失值记录 → 带条件汇总 → 得分、稳健性与延迟: 保留单位、条件与不确定性 → 支持有边界的结论 → 报告与可复现性: 7 卡来源报告 · 局限 · 是否独立复现？</desc><rect width="360" height="852" rx="16" fill="#081525" stroke="#284566"/><rect x="16" y="14" width="224" height="22" rx="11" fill="#112844" stroke="#2d5a88"/><text x="28" y="29" fill="#56ddcd" font-size="11.5" font-weight="700"><tspan x="28" dy="0">数据流向与架构要点 · 竖屏视图</tspan></text><text x="20" y="58" fill="#eef5ff" font-size="18" font-weight="700"><tspan x="20" dy="0">随模型升级持续演进 Agent</tspan><tspan x="20" dy="25.2">Harness · 120 个 Skills 审计</tspan><tspan x="20" dy="25.2">、上下文悬崖修复与模型协同工</tspan><tspan x="20" dy="25.2">作台</tspan></text><text x="20" y="158" fill="#a9b8ce" font-size="12.5" font-weight="400"><tspan x="20" dy="0">概念拓扑 · 箭头表示数据/控制流向，非实测指标</tspan></text><g data-concept="1"><rect x="16" y="180" width="328" height="94" rx="12" fill="#0e2036" stroke="#38597d"/><rect x="16" y="180" width="328" height="4" rx="2" fill="#38bdf8"/><text x="30" y="203" fill="#38bdf8" font-size="11.5" font-weight="700"><tspan x="30" dy="0">01 · 输入与意图</tspan></text><text x="30" y="226" fill="#f0f6ff" font-size="16.5" font-weight="700"><tspan x="30" dy="0">研究问题与封存负载</tspan></text><text x="30" y="253" fill="#c4d5e8" font-size="13" font-weight="400"><tspan x="30" dy="0">数据集 · 模型批次 · 分母 · 来源</tspan></text></g><g data-relationship="定义测试契约"><path d="M34 276 V314" fill="none" stroke="#56ddcd" stroke-width="2.2"/><path d="M29 308 L34 315 L39 308" fill="none" stroke="#56ddcd" stroke-width="2.2"/><text x="50" y="298" fill="#8eeadf" font-size="12.5" font-weight="600"><tspan x="50" dy="0">01→02 定义测试契约</tspan></text></g><g data-concept="2"><rect x="16" y="320" width="328" height="94" rx="12" fill="#122842" stroke="#38597d"/><rect x="16" y="320" width="328" height="4" rx="2" fill="#34d399"/><text x="30" y="343" fill="#34d399" font-size="11.5" font-weight="700"><tspan x="30" dy="0">02 · 上下文锚定</tspan></text><text x="30" y="366" fill="#f0f6ff" font-size="16.5" font-weight="700"><tspan x="30" dy="0">Harness 与执行契约</tspan></text><text x="30" y="393" fill="#c4d5e8" font-size="13" font-weight="400"><tspan x="30" dy="0">提示词 · 工具权限 · 环境 · 重复次数</tspan></text></g><g data-relationship="生成追踪产物"><path d="M34 416 V454" fill="none" stroke="#56ddcd" stroke-width="2.2"/><path d="M29 448 L34 455 L39 448" fill="none" stroke="#56ddcd" stroke-width="2.2"/><text x="50" y="438" fill="#8eeadf" font-size="12.5" font-weight="600"><tspan x="50" dy="0">02→03 生成追踪产物</tspan></text></g><g data-concept="3"><rect x="16" y="460" width="328" height="94" rx="12" fill="#0e2036" stroke="#38597d"/><rect x="16" y="460" width="328" height="4" rx="2" fill="#a78bfa"/><text x="30" y="483" fill="#a78bfa" font-size="11.5" font-weight="700"><tspan x="30" dy="0">03 · 策略与门禁</tspan></text><text x="30" y="506" fill="#f0f6ff" font-size="16.5" font-weight="700"><tspan x="30" dy="0">原始输出与确定性校验</tspan></text><text x="30" y="533" fill="#c4d5e8" font-size="13" font-weight="400"><tspan x="30" dy="0">任务轨迹 · 校验结果 · 缺失值记录</tspan></text></g><g data-relationship="带条件汇总"><path d="M34 556 V594" fill="none" stroke="#56ddcd" stroke-width="2.2"/><path d="M29 588 L34 595 L39 588" fill="none" stroke="#56ddcd" stroke-width="2.2"/><text x="50" y="578" fill="#8eeadf" font-size="12.5" font-weight="600"><tspan x="50" dy="0">03→04 带条件汇总</tspan></text></g><g data-concept="4"><rect x="16" y="600" width="328" height="94" rx="12" fill="#122842" stroke="#38597d"/><rect x="16" y="600" width="328" height="4" rx="2" fill="#f59e0b"/><text x="30" y="623" fill="#f59e0b" font-size="11.5" font-weight="700"><tspan x="30" dy="0">04 · 执行与运行</tspan></text><text x="30" y="646" fill="#f0f6ff" font-size="16.5" font-weight="700"><tspan x="30" dy="0">得分、稳健性与延迟</tspan></text><text x="30" y="673" fill="#c4d5e8" font-size="13" font-weight="400"><tspan x="30" dy="0">保留单位、条件与不确定性</tspan></text></g><g data-relationship="支持有边界的结论"><path d="M34 696 V734" fill="none" stroke="#56ddcd" stroke-width="2.2"/><path d="M29 728 L34 735 L39 728" fill="none" stroke="#56ddcd" stroke-width="2.2"/><text x="50" y="718" fill="#8eeadf" font-size="12.5" font-weight="600"><tspan x="50" dy="0">04→05 支持有边界的结论</tspan></text></g><g data-concept="5"><rect x="16" y="740" width="328" height="94" rx="12" fill="#0e2036" stroke="#38597d"/><rect x="16" y="740" width="328" height="4" rx="2" fill="#56ddcd"/><text x="30" y="763" fill="#56ddcd" font-size="11.5" font-weight="700"><tspan x="30" dy="0">05 · 审计与评测</tspan></text><text x="30" y="786" fill="#f0f6ff" font-size="16.5" font-weight="700"><tspan x="30" dy="0">报告与可复现性</tspan></text><text x="30" y="813" fill="#c4d5e8" font-size="13" font-weight="400"><tspan x="30" dy="0">7 卡来源报告 · 局限 · 是否独立复现？</tspan></text></g></svg><svg xmlns="http://www.w3.org/2000/svg" lang="zh-CN" class="knowledge-graph-wide" role="img" aria-labelledby="knowledge-06af40c54367-title knowledge-06af40c54367-desc" viewBox="0 0 1080 448" width="1080" style="width:100%;height:auto;max-width:1080px;margin:0 auto;font-family:system-ui,sans-serif"><title id="knowledge-06af40c54367-title">随模型升级持续演进 Agent Harness · 120 个 Skills 审计、上下文悬崖修复与模型协同工作台</title><desc id="knowledge-06af40c54367-desc">研究问题与封存负载: 数据集 · 模型批次 · 分母 · 来源 → 定义测试契约 → Harness 与执行契约: 提示词 · 工具权限 · 环境 · 重复次数 → 生成追踪产物 → 原始输出与确定性校验: 任务轨迹 · 校验结果 · 缺失值记录 → 带条件汇总 → 得分、稳健性与延迟: 保留单位、条件与不确定性 → 支持有边界的结论 → 报告与可复现性: 7 卡来源报告 · 局限 · 是否独立复现？</desc><rect width="1080" height="448" rx="16" fill="#081525" stroke="#284566"/><rect x="24" y="16" width="292" height="24" rx="12" fill="#102742" stroke="#2d5a88"/><text x="38" y="32" fill="#56ddcd" font-size="11.5" font-weight="700"><tspan x="38" dy="0">数据流向与核心要点架构图 · 横向全景</tspan></text><rect x="646" y="16" width="196" height="24" rx="12" fill="#0d2238" stroke="#254b6e"/><text x="660" y="32" fill="#7ce8d8" font-size="11.5" font-weight="600"><tspan x="660" dy="0">──▶ 阶段数据与上下文流</tspan></text><rect x="852" y="16" width="204" height="24" rx="12" fill="#15203c" stroke="#3b4278"/><text x="866" y="32" fill="#c4b5fd" font-size="11.5" font-weight="600"><tspan x="866" dy="0">◆ 策略门禁与要点说明</tspan></text><text x="24" y="62" fill="#f2f7ff" font-size="18" font-weight="700"><tspan x="24" dy="0">随模型升级持续演进 Agent Harness · 120 个 Skills 审计、上下文悬崖修</tspan><tspan x="24" dy="25.2">复与模型协同工作台</tspan></text><g data-concept="1"><rect x="24" y="106" width="187" height="186" rx="12" fill="#0d1e34" stroke="#335277" stroke-width="1.2"/><rect x="24" y="106" width="187" height="5" rx="2.5" fill="#38bdf8"/><rect x="34" y="119" width="167" height="22" rx="6" fill="#081424" stroke="#223b59"/><text x="40" y="134" fill="#38bdf8" font-size="11.5" font-weight="700"><tspan x="40" dy="0">01 · 输入与意图</tspan></text><text x="36" y="160" fill="#f4f8ff" font-size="13.5" font-weight="700"><tspan x="36" dy="0">研究问题与封存负载</tspan></text><path d="M36 175 H199" stroke="#233b57" stroke-width="1"/><text x="36" y="193" fill="#c5d6e8" font-size="12" font-weight="400"><tspan x="36" dy="0">数据集 · 模型批次 · 分母</tspan><tspan x="36" dy="16.799999999999997">· 来源</tspan></text></g><g data-relationship="定义测试契约"><path d="M213 199 H231" fill="none" stroke="#56ddcd" stroke-width="2.4"/><path d="M225 194 L232 199 L225 204" fill="none" stroke="#56ddcd" stroke-width="2.4"/><rect x="24" y="300" width="187" height="30" rx="8" fill="#0b2239" stroke="#2b5b6c"/><text x="34" y="319" fill="#7ce8d8" font-size="11.5" font-weight="600"><tspan x="34" dy="0">01→02 定义测试契约</tspan></text></g><g data-concept="2"><rect x="235" y="106" width="187" height="186" rx="12" fill="#112640" stroke="#335277" stroke-width="1.2"/><rect x="235" y="106" width="187" height="5" rx="2.5" fill="#34d399"/><rect x="245" y="119" width="167" height="22" rx="6" fill="#081424" stroke="#223b59"/><text x="251" y="134" fill="#34d399" font-size="11.5" font-weight="700"><tspan x="251" dy="0">02 · 上下文锚定</tspan></text><text x="247" y="160" fill="#f4f8ff" font-size="13.5" font-weight="700"><tspan x="247" dy="0">Harness 与执行契约</tspan></text><path d="M247 175 H410" stroke="#233b57" stroke-width="1"/><text x="247" y="193" fill="#c5d6e8" font-size="12" font-weight="400"><tspan x="247" dy="0">提示词 · 工具权限 · 环境</tspan><tspan x="247" dy="16.799999999999997">· 重复次数</tspan></text></g><g data-relationship="生成追踪产物"><path d="M424 199 H442" fill="none" stroke="#56ddcd" stroke-width="2.4"/><path d="M436 194 L443 199 L436 204" fill="none" stroke="#56ddcd" stroke-width="2.4"/><rect x="235" y="300" width="187" height="30" rx="8" fill="#0b2239" stroke="#2b5b6c"/><text x="245" y="319" fill="#7ce8d8" font-size="11.5" font-weight="600"><tspan x="245" dy="0">02→03 生成追踪产物</tspan></text></g><g data-concept="3"><rect x="446" y="106" width="187" height="186" rx="12" fill="#0d1e34" stroke="#335277" stroke-width="1.2"/><rect x="446" y="106" width="187" height="5" rx="2.5" fill="#a78bfa"/><rect x="456" y="119" width="167" height="22" rx="6" fill="#081424" stroke="#223b59"/><text x="462" y="134" fill="#a78bfa" font-size="11.5" font-weight="700"><tspan x="462" dy="0">03 · 策略与门禁</tspan></text><text x="458" y="160" fill="#f4f8ff" font-size="13.5" font-weight="700"><tspan x="458" dy="0">原始输出与确定性校验</tspan></text><path d="M458 175 H621" stroke="#233b57" stroke-width="1"/><text x="458" y="193" fill="#c5d6e8" font-size="12" font-weight="400"><tspan x="458" dy="0">任务轨迹 · 校验结果 · 缺</tspan><tspan x="458" dy="16.799999999999997">失值记录</tspan></text></g><g data-relationship="带条件汇总"><path d="M635 199 H653" fill="none" stroke="#56ddcd" stroke-width="2.4"/><path d="M647 194 L654 199 L647 204" fill="none" stroke="#56ddcd" stroke-width="2.4"/><rect x="446" y="300" width="187" height="30" rx="8" fill="#0b2239" stroke="#2b5b6c"/><text x="456" y="319" fill="#7ce8d8" font-size="11.5" font-weight="600"><tspan x="456" dy="0">03→04 带条件汇总</tspan></text></g><g data-concept="4"><rect x="657" y="106" width="187" height="186" rx="12" fill="#112640" stroke="#335277" stroke-width="1.2"/><rect x="657" y="106" width="187" height="5" rx="2.5" fill="#f59e0b"/><rect x="667" y="119" width="167" height="22" rx="6" fill="#081424" stroke="#223b59"/><text x="673" y="134" fill="#f59e0b" font-size="11.5" font-weight="700"><tspan x="673" dy="0">04 · 执行与运行</tspan></text><text x="669" y="160" fill="#f4f8ff" font-size="13.5" font-weight="700"><tspan x="669" dy="0">得分、稳健性与延迟</tspan></text><path d="M669 175 H832" stroke="#233b57" stroke-width="1"/><text x="669" y="193" fill="#c5d6e8" font-size="12" font-weight="400"><tspan x="669" dy="0">保留单位、条件与不确定性</tspan></text></g><g data-relationship="支持有边界的结论"><path d="M846 199 H864" fill="none" stroke="#56ddcd" stroke-width="2.4"/><path d="M858 194 L865 199 L858 204" fill="none" stroke="#56ddcd" stroke-width="2.4"/><rect x="657" y="300" width="187" height="30" rx="8" fill="#0b2239" stroke="#2b5b6c"/><text x="667" y="319" fill="#7ce8d8" font-size="11.5" font-weight="600"><tspan x="667" dy="0">04→05 支持有边界的结论</tspan></text></g><g data-concept="5"><rect x="868" y="106" width="187" height="186" rx="12" fill="#0d1e34" stroke="#335277" stroke-width="1.2"/><rect x="868" y="106" width="187" height="5" rx="2.5" fill="#56ddcd"/><rect x="878" y="119" width="167" height="22" rx="6" fill="#081424" stroke="#223b59"/><text x="884" y="134" fill="#56ddcd" font-size="11.5" font-weight="700"><tspan x="884" dy="0">05 · 审计与评测</tspan></text><text x="880" y="160" fill="#f4f8ff" font-size="13.5" font-weight="700"><tspan x="880" dy="0">报告与可复现性</tspan></text><path d="M880 175 H1043" stroke="#233b57" stroke-width="1"/><text x="880" y="193" fill="#c5d6e8" font-size="12" font-weight="400"><tspan x="880" dy="0">7 卡来源报告 · 局限 · 是</tspan><tspan x="880" dy="16.799999999999997">否独立复现？</tspan></text></g><rect x="868" y="300" width="187" height="30" rx="8" fill="#0e2538" stroke="#2e5470"/><text x="878" y="319" fill="#93c5fd" font-size="11.5" font-weight="600"><tspan x="878" dy="0">05 闭环 · 审计与证据核验</tspan></text><g data-takeaway="1"><rect x="24" y="344" width="334" height="88" rx="10" fill="#0b1a2e" stroke="#284466"/><rect x="24" y="356" width="4" height="64" rx="2" fill="#38bdf8"/><text x="38" y="369" fill="#38bdf8" font-size="11.5" font-weight="700"><tspan x="38" dy="0">要点 01 · 全链路数据流向</tspan></text><text x="38" y="390" fill="#d5e4f5" font-size="12" font-weight="400"><tspan x="38" dy="0">自左向右从「研究问题与封存负载」递进至「报告</tspan><tspan x="38" dy="16.799999999999997">与可复现性」，明确各阶段输入与输出契约。</tspan></text></g><g data-takeaway="2"><rect x="373" y="344" width="334" height="88" rx="10" fill="#0b1a2e" stroke="#284466"/><rect x="373" y="356" width="4" height="64" rx="2" fill="#a78bfa"/><text x="387" y="369" fill="#a78bfa" font-size="11.5" font-weight="700"><tspan x="387" dy="0">要点 02 · 核心控制与策略门禁</tspan></text><text x="387" y="390" fill="#d5e4f5" font-size="12" font-weight="400"><tspan x="387" dy="0">核心门禁「原始输出与确定性校验」：任务轨迹 ·</tspan><tspan x="387" dy="16.799999999999997">校验结果 · 缺失值记录</tspan></text></g><g data-takeaway="3"><rect x="722" y="344" width="334" height="88" rx="10" fill="#0b1a2e" stroke="#284466"/><rect x="722" y="356" width="4" height="64" rx="2" fill="#34d399"/><text x="736" y="369" fill="#34d399" font-size="11.5" font-weight="700"><tspan x="736" dy="0">要点 03 · 证据核验与适用边界</tspan></text><text x="736" y="390" fill="#d5e4f5" font-size="12" font-weight="400"><tspan x="736" dy="0">7 卡来源报告 · 局限 · 是否独立复现？ · 概念</tspan><tspan x="736" dy="16.799999999999997">拓扑示意，非实测延迟。</tspan></text></g></svg><figcaption style="font:13px/1.6 system-ui,sans-serif;margin:10px auto 0;max-width:1080px;color:#9fb2ca;overflow-wrap:anywhere">整体架构与数据流向图示：自左向右阅读阶段数据流转、策略门禁与底部三项核心要点说明（概念拓扑，不代表实测吞吐或生产排名）。</figcaption></figure><!-- site-remediation-knowledge:end --><header class="hero-banner">
+    <div class="container">
+      <div class="top-row">
+        <div class="badge-row">
+          <span class="badge">EMPIRICAL AUDIT · 2026-11-18</span>
+          <span class="badge amber">Gemini 4 Carbon · GPT-6.2 Sol · Grok 4.7</span>
+          <span class="badge green">120 Skills 实测治理 · 零虚构数据</span>
+        </div>
+        <div class="action-links">
+          <a href="../../articles/agent-harness-coevolution.html">图文深度报告</a>
+          <a href="cards.zh.html" class="primary-cta">7 卡 4:5 汇报视图 →</a>
+          <a href="report.json">实测 JSON 数据</a>
+          <a href="index.en.html" hreflang="en" lang="en">English Workbench</a>
+        </div>
+      </div>
+
+      <h1>随模型升级持续演进 Agent Harness：120 个 Skills 审计、上下文悬崖修复与模型协同工作台</h1>
+      <p class="hero-sub">
+        当基座模型跃迁至 <strong>Gemini 4 Carbon</strong>、<strong>GPT-6.2 Sol</strong> 与 <strong>Grok 4.7</strong>，早期为旧模型编写的冗长 YAML 描述、1,390 行单体模板与硬编码模型拐杖反而触发了 <code>&lt;available_skills&gt;</code> 12 KB 系统提示词截断悬崖，导致 <strong>98.8%（80/81）</strong>用户技能对语义路由器隐身。本工作台完整复盘真实遥测审计、四大手术案例与五步持续升级方法论。
+      </p>
+
+      <div class="kpi-strip">
+        <div class="kpi-card">
+          <div class="kpi-kicker">1 · PROMPT 描述预算 (CHARS)</div>
+          <div class="kpi-num"><span class="before-val">38,600</span>8,019</div>
+          <div class="kpi-note">压缩 <strong>-79.2%</strong>，在 12 KB 上限内留出 ~4 KB 安全余量</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-kicker">2 · 用户 SKILL 语义路由可见率</div>
+          <div class="kpi-num"><span class="before-val">1.2%</span>100.0%</div>
+          <div class="kpi-note">从仅 1/81 可见恢复至 <strong>62/62 全量可见 (+83×)</strong></div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-kicker">3 · 活跃目录体积 (120 → 83 SKILLS)</div>
+          <div class="kpi-num"><span class="before-val">113.5 MB</span>56.5 MB</div>
+          <div class="kpi-note">净减 <strong>56.97 MB (-50.2%)</strong>，清理 37 个冗余/僵尸目录</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-kicker">4 · OPENCLAW 首轮注入行数</div>
+          <div class="kpi-num"><span class="before-val">1,390 行</span>84 行</div>
+          <div class="kpi-note">首轮上下文 <strong>-94.0%</strong>（54.7 KB → 3.4 KB + 5 个按需模块）</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <nav class="tabs" aria-label="工作台核心视图切换">
+      <button type="button" class="tab-btn active" onclick="switchTab('tab-overview', this)">1 · 全局总览与实测图表</button>
+      <button type="button" class="tab-btn" onclick="switchTab('tab-cases', this)">2 · 四大实战改造案例</button>
+      <button type="button" class="tab-btn" onclick="switchTab('tab-matrix', this)">3 · 模型能力与路由矩阵</button>
+      <button type="button" class="tab-btn" onclick="switchTab('tab-playbook', this)">4 · 反向脚手架定律与演进方法论</button>
+      <button type="button" class="tab-btn" onclick="switchTab('tab-deck', this)">5 · 7 卡汇报视图预览</button>
+    </nav>
+
+    <!-- TAB 1: OVERVIEW & BEFORE/AFTER CHARTS -->
+    <section id="tab-overview" class="tab-panel active">
+      <div class="section-card">
+        <div class="section-head">
+          <div>
+            <h2 class="section-title">核心实测对比图：Skills 瘦身与系统提示词预算恢复效果</h2>
+            <p class="section-desc">点击上方指标胶囊或悬停柱状图，查看每一组优化前后（Before vs After）的底层采集口径与技术收益。</p>
+          </div>
+          <a href="assets/01-hero-before-after.zh.svg" style="color:#79c0ff;font-size:12.5px;font-weight:700;text-decoration:none;">查看独立高清 SVG ↗</a>
+        </div>
+
+        <div class="hero-chart-shell">
+          <div class="chart-filter-bar">
+            <div class="pill-group" role="group" aria-label="指标高亮筛选">
+              <button type="button" class="pill-btn active" onclick="highlightHeroMetric('all', this)">全部 4 组核心指标</button>
+              <button type="button" class="pill-btn" onclick="highlightHeroMetric('m0', this)">Prompt 预算 (-79.2%)</button>
+              <button type="button" class="pill-btn" onclick="highlightHeroMetric('m1', this)">目录体积 (-50.2%)</button>
+              <button type="button" class="pill-btn" onclick="highlightHeroMetric('m2', this)">路由可见率 (1.2%→100%)</button>
+              <button type="button" class="pill-btn" onclick="highlightHeroMetric('m3', this)">OpenClaw 瘦身 (-94.0%)</button>
+            </div>
+            <span style="font-size:12px;color:#8b949e;font-family:ui-monospace,Consolas,monospace;">Audit Source: session_store_sql · 2026-11-18</span>
+          </div>
+
+          <svg class="chart-svg" viewBox="0 0 980 540" role="img" aria-labelledby="wb-hero-zh-title wb-hero-zh-desc">
+            <title id="wb-hero-zh-title">Skills 瘦身与系统提示词预算恢复效果（优化前后实测对比）</title>
+            <desc id="wb-hero-zh-desc">消除 available_skills 截断瓶颈，恢复 100% 语义路由可见性。Prompt 描述预算 386.0 降至 80.2；活跃目录体积 113.5 降至 56.5；用户 Skill 描述可见率 1.2 升至 100.0；OpenClaw 主文件行数 139.0 降至 8.4。</desc>
+            <rect width="980" height="540" rx="14" fill="#0d1117"/>
+            <text x="48" y="46" fill="#f0f6fc" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC',sans-serif" font-size="21" font-weight="700">Skills 瘦身与系统提示词预算恢复效果（优化前后实测对比）</text>
+            <text x="48" y="72" fill="#8b949e" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC',sans-serif" font-size="13.5">消除 &lt;available_skills&gt; 截断瓶颈，恢复 100% 语义路由可见性</text>
+
+            <g transform="translate(760, 26)">
+              <rect x="0" y="0" width="176" height="58" rx="8" fill="#161b22" stroke="#30363d"/>
+              <text x="14" y="18" fill="#8b949e" font-family="ui-monospace,Consolas,monospace" font-size="10.5" font-weight="600">stage</text>
+              <rect x="14" y="25" width="11" height="11" rx="2.5" fill="#0d74ff"/>
+              <text x="32" y="35" fill="#e6edf3" font-family="-apple-system,'PingFang SC',sans-serif" font-size="11.5">优化前 (Before)</text>
+              <rect x="14" y="41" width="11" height="11" rx="2.5" fill="#9e5a16" stroke="#d29922" stroke-width="0.8"/>
+              <text x="32" y="51" fill="#e6edf3" font-family="-apple-system,'PingFang SC',sans-serif" font-size="11.5">优化后 (After)</text>
+            </g>
+
+            <rect x="86" y="96" width="848" height="360" rx="10" fill="#161b22" stroke="#30363d"/>
+            <g stroke="#21262d" stroke-width="1">
+              <line x1="86" y1="456" x2="934" y2="456" stroke="#30363d" stroke-width="1.2"/>
+              <line x1="86" y1="411" x2="934" y2="411"/>
+              <line x1="86" y1="366" x2="934" y2="366"/>
+              <line x1="86" y1="321" x2="934" y2="321"/>
+              <line x1="86" y1="276" x2="934" y2="276"/>
+              <line x1="86" y1="231" x2="934" y2="231"/>
+              <line x1="86" y1="186" x2="934" y2="186"/>
+              <line x1="86" y1="141" x2="934" y2="141"/>
+              <line x1="86" y1="96" x2="934" y2="96"/>
+            </g>
+            <g fill="#8b949e" font-family="ui-monospace,Consolas,monospace" font-size="11.5" text-anchor="end">
+              <text x="74" y="460">0</text>
+              <text x="74" y="415">50</text>
+              <text x="74" y="370">100</text>
+              <text x="74" y="325">150</text>
+              <text x="74" y="280">200</text>
+              <text x="74" y="235">250</text>
+              <text x="74" y="190">300</text>
+              <text x="74" y="145">350</text>
+              <text x="74" y="100">400</text>
+            </g>
+            <text x="30" y="276" fill="#8b949e" font-family="ui-monospace,Consolas,monospace" font-size="12" text-anchor="middle" transform="rotate(-90 30 276)">value</text>
+
+            <!-- Group 0 -->
+            <g id="hero-m0" class="bar-group" onmouseenter="showHeroReadout('m0')" onclick="showHeroReadout('m0')">
+              <rect x="132" y="108.6" width="58" height="347.4" rx="4" fill="#0d74ff"/>
+              <text x="161" y="101" fill="#58a6ff" font-family="ui-monospace,Consolas,monospace" font-size="13" font-weight="700" text-anchor="middle">386.0</text>
+              <rect x="196" y="383.8" width="58" height="72.2" rx="4" fill="#9e5a16"/>
+              <rect x="196" y="383.8" width="58" height="3" rx="1.5" fill="#d29922"/>
+              <text x="225" y="375" fill="#e3b341" font-family="ui-monospace,Consolas,monospace" font-size="13" font-weight="700" text-anchor="middle">80.2</text>
+              <text x="225" y="358" fill="#3fb950" font-family="ui-monospace,Consolas,monospace" font-size="11" font-weight="700" text-anchor="middle">-79.2%</text>
+              <text x="193" y="484" fill="#c9d1d9" font-family="-apple-system,'PingFang SC',sans-serif" font-size="12.5" font-weight="600" text-anchor="middle">Prompt 描述预算 (百字符)</text>
+              <text x="193" y="503" fill="#8b949e" font-family="ui-monospace,Consolas,monospace" font-size="10.5" text-anchor="middle">38,600 → 8,019 chars</text>
+            </g>
+
+            <!-- Group 1 -->
+            <g id="hero-m1" class="bar-group" onmouseenter="showHeroReadout('m1')" onclick="showHeroReadout('m1')">
+              <rect x="342" y="353.85" width="58" height="102.15" rx="4" fill="#0d74ff"/>
+              <text x="371" y="345" fill="#58a6ff" font-family="ui-monospace,Consolas,monospace" font-size="13" font-weight="700" text-anchor="middle">113.5</text>
+              <rect x="406" y="405.15" width="58" height="50.85" rx="4" fill="#9e5a16"/>
+              <rect x="406" y="405.15" width="58" height="3" rx="1.5" fill="#d29922"/>
+              <text x="435" y="397" fill="#e3b341" font-family="ui-monospace,Consolas,monospace" font-size="13" font-weight="700" text-anchor="middle">56.5</text>
+              <text x="435" y="380" fill="#3fb950" font-family="ui-monospace,Consolas,monospace" font-size="11" font-weight="700" text-anchor="middle">-50.2%</text>
+              <text x="403" y="484" fill="#c9d1d9" font-family="-apple-system,'PingFang SC',sans-serif" font-size="12.5" font-weight="600" text-anchor="middle">活跃目录体积 (MB)</text>
+              <text x="403" y="503" fill="#8b949e" font-family="ui-monospace,Consolas,monospace" font-size="10.5" text-anchor="middle">120 → 83 active skills</text>
+            </g>
+
+            <!-- Group 2 -->
+            <g id="hero-m2" class="bar-group" onmouseenter="showHeroReadout('m2')" onclick="showHeroReadout('m2')">
+              <rect x="552" y="453.5" width="58" height="2.5" rx="1.2" fill="#0d74ff"/>
+              <text x="581" y="445" fill="#f85149" font-family="ui-monospace,Consolas,monospace" font-size="13" font-weight="700" text-anchor="middle">1.2</text>
+              <rect x="616" y="366" width="58" height="90" rx="4" fill="#9e5a16"/>
+              <rect x="616" y="366" width="58" height="3" rx="1.5" fill="#d29922"/>
+              <text x="645" y="357" fill="#e3b341" font-family="ui-monospace,Consolas,monospace" font-size="13" font-weight="700" text-anchor="middle">100.0</text>
+              <text x="645" y="340" fill="#3fb950" font-family="ui-monospace,Consolas,monospace" font-size="11" font-weight="700" text-anchor="middle">+83× (62/62)</text>
+              <text x="613" y="484" fill="#c9d1d9" font-family="-apple-system,'PingFang SC',sans-serif" font-size="12.5" font-weight="600" text-anchor="middle">用户 Skill 描述可见率 (%)</text>
+              <text x="613" y="503" fill="#8b949e" font-family="ui-monospace,Consolas,monospace" font-size="10.5" text-anchor="middle">1/81 → 62/62 visible</text>
+            </g>
+
+            <!-- Group 3 -->
+            <g id="hero-m3" class="bar-group" onmouseenter="showHeroReadout('m3')" onclick="showHeroReadout('m3')">
+              <rect x="762" y="330.9" width="58" height="125.1" rx="4" fill="#0d74ff"/>
+              <text x="791" y="322" fill="#58a6ff" font-family="ui-monospace,Consolas,monospace" font-size="13" font-weight="700" text-anchor="middle">139.0</text>
+              <rect x="826" y="448.4" width="58" height="7.6" rx="2" fill="#9e5a16"/>
+              <rect x="826" y="448.4" width="58" height="2.5" rx="1.2" fill="#d29922"/>
+              <text x="855" y="440" fill="#e3b341" font-family="ui-monospace,Consolas,monospace" font-size="13" font-weight="700" text-anchor="middle">8.4</text>
+              <text x="855" y="423" fill="#3fb950" font-family="ui-monospace,Consolas,monospace" font-size="11" font-weight="700" text-anchor="middle">-94.0%</text>
+              <text x="823" y="484" fill="#c9d1d9" font-family="-apple-system,'PingFang SC',sans-serif" font-size="12.5" font-weight="600" text-anchor="middle">OpenClaw 主文件行数 (十行)</text>
+              <text x="823" y="503" fill="#8b949e" font-family="ui-monospace,Consolas,monospace" font-size="10.5" text-anchor="middle">1,390 → 84 lines</text>
+            </g>
+          </svg>
+
+          <div id="hero-readout" class="hero-readout">
+            <div>
+              <strong style="color:#f2cc60;">实测洞察：</strong>
+              <span id="hero-readout-text">81 个用户技能原本占用 38,600 chars（均值 476 chars/skill），在插件先行占用约 4 KB 后，第 2 个用户技能起即撞上 12 KB 注入悬崖，导致 80/81 个技能退化为“无描述裸名”。压缩至 8,019 chars 后恢复 100% 路由可见。</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Interactive 12 KB Cliff Simulator -->
+      <div class="section-card">
+        <div class="section-head">
+          <div>
+            <h2 class="section-title">&lt;available_skills&gt; 12 KB 注入悬崖交互式模拟器</h2>
+            <p class="section-desc">拖动滑块模拟不同团队的 Skill 数量与 YAML <code>description</code> 平均字符数，直观向研发人员演示“盲目堆砌长描述如何导致路由器失明”。</p>
+          </div>
+          <div class="pill-group">
+            <button type="button" class="pill-btn" onclick="setCliffPreset(81, 476)">还原优化前实测 (81 × 476 chars)</button>
+            <button type="button" class="pill-btn active" onclick="setCliffPreset(62, 129)">还原优化后实测 (62 × 129 chars)</button>
+          </div>
+        </div>
+
+        <div class="sim-grid">
+          <div class="control-box">
+            <div class="slider-row">
+              <div class="slider-label">
+                <span>用户级 Skills 数量 (<code>~/.copilot/skills</code>)</span>
+                <span id="sim-count-val" style="color:#79c0ff;font-family:ui-monospace,Consolas,monospace;">62 个</span>
+              </div>
+              <input id="sim-count" type="range" min="20" max="100" value="62" oninput="updateCliffSim()" />
+            </div>
+            <div class="slider-row">
+              <div class="slider-label">
+                <span>单 Skill YAML 描述平均长度 (<code>chars</code>)</span>
+                <span id="sim-len-val" style="color:#f2cc60;font-family:ui-monospace,Consolas,monospace;">129 chars</span>
+              </div>
+              <input id="sim-len" type="range" min="80" max="500" value="129" oninput="updateCliffSim()" />
+            </div>
+            <p style="font-size:12px;color:#8b949e;margin-top:8px;">
+              注：运行时总上限约 <code>12,000 chars (12 KB)</code>；其中工作区/插件级 22 个技能优先占去约 <code>4,000 chars</code>（在优化前基线中 <code>accessibility</code> 单项另占 <code>1,100 chars</code>）。
+            </p>
+          </div>
+
+          <div class="control-box">
+            <div style="display:flex;justify-content:space-between;font-size:12.5px;font-weight:700;">
+              <span>实时注入预算分布（相对 45 KB 标尺）</span>
+              <span id="sim-status-badge" style="color:#3fb950;">✓ 零截断 · 全部语义可见</span>
+            </div>
+            <div class="sim-bar-track">
+              <div id="sim-seg-plugin" class="sim-seg" style="background:#1f6feb;color:#fff;width:9%;">4.0KB</div>
+              <div id="sim-seg-vis" class="sim-seg" style="background:#9e5a16;color:#f2cc60;width:18%;">可见区</div>
+              <div id="sim-seg-trunc" class="sim-seg" style="background:#5a1921;color:#ffa198;width:0%;">截断溢出</div>
+              <div id="sim-seg-headroom" class="sim-seg" style="background:#122d1f;color:#7ee787;width:9%;">余量</div>
+              <div class="sim-cliff-marker" style="left:35.5%;" title="12 KB 用户预算安全线"></div>
+            </div>
+            <div class="sim-stats">
+              <div class="mini-stat">
+                <div class="label">用户元数据总需求</div>
+                <div id="sim-demand" class="val" style="color:#79c0ff;">8,019 chars</div>
+              </div>
+              <div class="mini-stat">
+                <div class="label">语义可见用户 Skills</div>
+                <div id="sim-visible" class="val" style="color:#3fb950;">62 / 62 (100%)</div>
+              </div>
+              <div class="mini-stat">
+                <div class="label">被剥离描述的盲区技能</div>
+                <div id="sim-blind" class="val" style="color:#8b949e;">0 个</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:18px;">
+          <img src="assets/02-prompt-budget-cliff.zh.svg" alt="12 KB 系统提示词截断悬崖对比图" class="chart-svg" />
+        </div>
+      </div>
+
+      <!-- Chart 3: 120-Skill Telemetry & Disposition -->
+      <div class="section-card">
+        <div class="section-head">
+          <div>
+            <h2 class="section-title">120 个 Skills 真实遥测调用分布与五类去向拆解</h2>
+            <p class="section-desc">通过查询本地会话库 <code>session_store_sql</code> 的 <code>tool_requests</code> 表，95.8%（115/120）的技能从未被触发——数据直接支撑果断瘦身。</p>
+          </div>
+          <a href="assets/03-telemetry-disposition.zh.svg" style="color:#79c0ff;font-size:12.5px;font-weight:700;text-decoration:none;">查看独立高清 SVG ↗</a>
+        </div>
+        <img src="assets/03-telemetry-disposition.zh.svg" alt="120 个 Skills 遥测审计与去重瘦身处置图" class="chart-svg" />
+      </div>
+    </section>
+
+    <!-- TAB 2: 4 REAL CASE STUDIES -->
+    <section id="tab-cases" class="tab-panel">
+      <div class="section-card">
+        <div class="section-head">
+          <div>
+            <h2 class="section-title">四大实战改造案例（Before vs After 代码与目录级对照）</h2>
+            <p class="section-desc">每一项改动均对应真实生产环境中的可复现故障模式：路由盲区、注意力稀释、跨代拐杖冲突与双目录污染。</p>
+          </div>
+        </div>
+
+        <div class="case-layout">
+          <div id="case-nav"></div>
+          <div id="case-detail"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 3: MODEL CAPABILITY & ROUTING MATRIX -->
+    <section id="tab-matrix" class="tab-panel">
+      <div class="section-card">
+        <div class="section-head">
+          <div>
+            <h2 class="section-title">前沿模型能力雷达与 62-Skill 协同路由矩阵</h2>
+            <p class="section-desc">针对当前登记使用的主力模型阵列（<code>Gemini 4 Carbon</code> · <code>GPT-6.2 Sol</code> · <code>Grok 4.7</code> · <code>Gemini 3.8 Flash</code>），解除硬编码绑定，按认知强项精准协同。</p>
+          </div>
+          <a href="assets/06-frontier-model-matrix.zh.svg" style="color:#79c0ff;font-size:12.5px;font-weight:700;text-decoration:none;">查看独立高清 SVG ↗</a>
+        </div>
+
+        <img src="assets/06-frontier-model-matrix.zh.svg" alt="前沿模型能力雷达与 62-Skill 路由矩阵" class="chart-svg" />
+
+        <div style="margin-top:18px;" class="pill-group" role="group" aria-label="按模型筛选路由域">
+          <button type="button" class="pill-btn active" onclick="filterModels('all', this)">全部 4 款模型</button>
+          <button type="button" class="pill-btn" onclick="filterModels('gemini-4-carbon', this)">Gemini 4 Carbon</button>
+          <button type="button" class="pill-btn" onclick="filterModels('gpt-6.2-sol', this)">GPT-6.2 Sol</button>
+          <button type="button" class="pill-btn" onclick="filterModels('grok-4.7', this)">Grok 4.7</button>
+          <button type="button" class="pill-btn" onclick="filterModels('gemini-3.8-flash', this)">Gemini 3.8 Flash</button>
+        </div>
+
+        <div id="model-cards-grid" class="model-cards"></div>
+      </div>
+    </section>
+
+    <!-- TAB 4: INVERSE SCAFFOLDING LAW & 5-STEP PLAYBOOK -->
+    <section id="tab-playbook" class="tab-panel">
+      <div class="section-card">
+        <div class="section-head">
+          <div>
+            <h2 class="section-title">反向脚手架定律（Inverse Scaffolding Law）与五步演进手册</h2>
+            <p class="section-desc">向技术团队传递的核心架构认知：基座模型每升一代，Harness 必须同步“拆掉过程拐杖、收紧契约门禁”。</p>
+          </div>
+          <a href="assets/05-inverse-scaffolding-law.zh.svg" style="color:#79c0ff;font-size:12.5px;font-weight:700;text-decoration:none;">查看独立高清 SVG ↗</a>
+        </div>
+
+        <img src="assets/05-inverse-scaffolding-law.zh.svg" alt="反向脚手架定律三代演进双曲线图" class="chart-svg" />
+
+        <div class="step-list">
+          <div class="step-card">
+            <div class="step-num">STEP 01 · TELEMETRY</div>
+            <div class="step-title">真实调用遥测审计</div>
+            <p class="step-body">查询 <code>session_store_sql</code> 的 <code>tool_requests</code> 记录，用客观调用频次区分高频核心资产与零调用僵尸技能（本次检出 115/120 零调用）。</p>
+          </div>
+          <div class="step-card">
+            <div class="step-num">STEP 02 · BUDGET GATE</div>
+            <div class="step-title">9 KB 提示词预算门禁</div>
+            <p class="step-body">严控用户级 <code>&lt;available_skills&gt;</code> YAML 描述总和 <code>&lt; 9 KB</code>，单条描述 <code>≤140 chars</code>，彻底杜绝 12 KB 静默截断。</p>
+          </div>
+          <div class="step-card">
+            <div class="step-num">STEP 03 · PROGRESSIVE</div>
+            <div class="step-title">渐进式披露拆分</div>
+            <p class="step-body">强制主入口 <code>SKILL.md ≤ 120 行</code> 仅保留阶段路由与硬约束；将 Bicep、配置模板与排障表下沉至 <code>references/</code> 与 <code>scripts/</code>。</p>
+          </div>
+          <div class="step-card">
+            <div class="step-num">STEP 04 · RE-BINDING</div>
+            <div class="step-title">前沿模型能力重绑定</div>
+            <p class="step-body">清除 <code>gpt-5.4</code> 等硬编码与幻觉工具名，对齐 <code>Gemini 4 Carbon</code> / <code>GPT-6.2 Sol</code> / <code>Grok 4.7</code> 原生工具链与双平台字体兜底。</p>
+          </div>
+          <div class="step-card">
+            <div class="step-num">STEP 05 · CI REGRESSION</div>
+            <div class="step-title">自动化回归守门脚本</div>
+            <p class="step-body">在新增或同步外部插件技能时自动运行体积、字符数、重复名与跨平台路径检查，防止劣化反弹。</p>
+          </div>
+        </div>
+
+        <div style="margin-top:18px;" class="control-box">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:8px;">
+            <strong style="font-size:14px;">可直接复用的 CI / 本地 Harness 预算守门脚本 (<code>check_skill_budget.py</code>)</strong>
+            <button type="button" class="pill-btn" onclick="copyGateScript(this)">复制守门脚本</button>
+          </div>
+          <pre id="gate-script-code">#!/usr/bin/env python3
+"""Agent Harness Skill Budget &amp; Hygiene Gate — keeps &lt;available_skills&gt; under 9 KB."""
+import pathlib, re, sys
+
+SKILLS_DIR = pathlib.Path.home() / ".copilot" / "skills"
+MAX_TOTAL_CHARS, MAX_DESC_CHARS, MAX_SKILL_LINES = 9000, 140, 120
+FORBIDDEN = re.compile(r"\b(gpt-5\.4|gpt-4o-mini|claude-haiku-4\.5|search-the-web|fetch_page|runSubagent)\b")
+
+total_chars, errors = 0, []
+for md in sorted(SKILLS_DIR.glob("*/SKILL.md")):
+    text = md.read_text(encoding="utf-8")
+    lines = text.splitlines()
+    m = re.search(r"^description:\s*(.+)$", text, re.MULTILINE)
+    desc = m.group(1).strip().strip('"\'') if m else ""
+    total_chars += len(desc)
+    if len(desc) &gt; MAX_DESC_CHARS:
+        errors.append(f"[DESC &gt; {MAX_DESC_CHARS}] {md.parent.name}: {len(desc)} chars")
+    if len(lines) &gt; MAX_SKILL_LINES:
+        errors.append(f"[LINES &gt; {MAX_SKILL_LINES}] {md.parent.name}: {len(lines)} lines (move details to references/)")
+    for bad in FORBIDDEN.findall(text):
+        errors.append(f"[LEGACY CRUTCH] {md.parent.name}: found '{bad}'")
+
+if total_chars &gt; MAX_TOTAL_CHARS:
+    errors.append(f"[CLIFF RISK] Total description chars {total_chars} exceeds {MAX_TOTAL_CHARS} safe ceiling!")
+
+print(f"Audited {len(list(SKILLS_DIR.glob('*/SKILL.md')))} skills · metadata={total_chars} chars")
+if errors:
+    print("\n".join(errors)); sys.exit(1)
+print("PASS: 100% router visibility &amp; progressive disclosure invariants verified.")</pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 5: 7-CARD DECK PREVIEW -->
+    <section id="tab-deck" class="tab-panel">
+      <div class="section-card">
+        <div class="section-head">
+          <div>
+            <h2 class="section-title">7 卡 4:5 高密度汇报视图速览（Presenter Deck）</h2>
+            <p class="section-desc">专为技术分享投屏与架构评审设计的 900×1125 零外链高密度视觉卡片组（中英双语独立封装）。</p>
+          </div>
+          <div class="action-links">
+            <a href="cards.zh.html" class="primary-cta">打开完整中文 7 卡视图 (cards.zh.html) →</a>
+            <a href="cards.html" hreflang="en" lang="en">Open English 7-Card Deck →</a>
+          </div>
+        </div>
+
+        <div class="deck-preview-grid">
+          <div class="mini-deck-card">
+            <div>
+              <div class="mini-deck-top"><span>HANDS-ON · CO-EVOLUTION</span><span>1 / 7</span></div>
+              <h3>实测总览：120 个 Skills 瘦身与提示词预算恢复</h3>
+              <p>复现四大核心实测柱状对比，直击从 1.2% 路由盲区到 100% 全量可见的关键跃迁。</p>
+            </div>
+            <div class="mini-metric">38,600 → 8,019 chars (-79.2%) · 113.5 → 56.5 MB</div>
+          </div>
+          <div class="mini-deck-card">
+            <div>
+              <div class="mini-deck-top"><span>SCENARIO · 12KB CLIFF</span><span>2 / 7</span></div>
+              <h3>故障现场：为什么 80/81 个用户技能对路由器隐身？</h3>
+              <p>拆解 <code>&lt;available_skills&gt;</code> 12 KB 截断机制：4.0 KB 插件抢占 + 冗长描述引发雪崩截断。</p>
+            </div>
+            <div class="mini-metric">80 / 81 (98.8%) Truncated → 62 / 62 Visible</div>
+          </div>
+          <div class="mini-deck-card">
+            <div>
+              <div class="mini-deck-top"><span>WHAT I TESTED · TELEMETRY</span><span>3 / 7</span></div>
+              <h3>遥测审计矩阵：120 个目录的历史调用与五类处置</h3>
+              <p>基于 <code>session_store_sql</code>：仅 5 个技能有真实调用，精准归档 21 个、去重 14 个、移除 2 个 macOS 专属。</p>
+            </div>
+            <div class="mini-metric">83 Active Retained · 37 Pruned (-56.97 MB)</div>
+          </div>
+          <div class="mini-deck-card">
+            <div>
+              <div class="mini-deck-top"><span>UNDER THE HOOD · DISCLOSURE</span><span>4 / 7</span></div>
+              <h3>渐进式披露：OpenClaw 从 1,390 行降至 84 行</h3>
+              <p>将 54.7 KB 单体文件拆为 3.4 KB 路由树 + 5 个 <code>references/*.md</code> 阶段按需模块。</p>
+            </div>
+            <div class="mini-metric">Eager Load -94.0% (1,390 → 84 lines)</div>
+          </div>
+          <div class="mini-deck-card">
+            <div>
+              <div class="mini-deck-top"><span>ROBUSTNESS · FRONTIER COHORT</span><span>5 / 7</span></div>
+              <h3>拆除旧拐杖 &amp; 前沿三模型能力路由矩阵</h3>
+              <p>清除 <code>gpt-5.4</code> / <code>search-the-web</code> / <code>PingFang.ttc</code>，建立 Gemini 4 Carbon · GPT-6.2 Sol · Grok 4.7 协同矩阵。</p>
+            </div>
+            <div class="mini-metric">Zero Legacy Model Pins · Cross-OS CJK Safe</div>
+          </div>
+          <div class="mini-deck-card">
+            <div>
+              <div class="mini-deck-top"><span>SCALING · INVERSE SCAFFOLDING</span><span>6 / 7</span></div>
+              <h3>反向脚手架定律与上下文注意力缩放规律</h3>
+              <p>从 Gen 1 到 Gen 3：过程性提示词拐杖单调递减，边界契约与确定性验证器单调递增。</p>
+            </div>
+            <div class="mini-metric">Crutches ↓ Minimal · Verifiers ↑ Strict</div>
+          </div>
+          <div class="mini-deck-card">
+            <div>
+              <div class="mini-deck-top"><span>MY TAKE · ENGINEER PLAYBOOK</span><span>7 / 7</span></div>
+              <h3>给研发团队的五步 Harness 持续演进检查单</h3>
+              <p>遥测审计 → 9 KB 门禁 → ≤120 行渐进披露 → 模型能力重绑定 → CI 预算回归守门。</p>
+            </div>
+            <div class="mini-metric">5-Step Repeatable Upgrade Loop</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="wb-footer">
+      <div>
+        <strong>Agent Harness × Frontier Model Co-Evolution Workbench</strong> · 实测基准日期 2026-11-18 · 陈琪 (Qi Chen, @turbo998)
+      </div>
+      <div>
+        <a href="../../articles/agent-harness-coevolution.html">阅读图文长文</a> ·
+        <a href="../harness-engineering-frameworks/index.html">主流 Harness 框架对比工作台</a> ·
+        <a href="https://github.com/turbo998/ai-research-public/tree/main/docs/research/agent-harness-model-coevolution" target="_blank" rel="noopener">ai-research-public 研究档案</a> ·
+        <a href="https://github.com/turbo998/azure-sa-skills/tree/main/docs/harness-coevolution" target="_blank" rel="noopener">azure-sa-skills 实战指南</a>
+      </div>
+    </footer>
+  </main>
+
+  <script>
+    const HERO_NOTES = {
+      m0: "Prompt 描述预算 (百字符)：81 个用户 Skills 原本占用 38,600 chars（均值 476 chars/skill）；归档 21 个零调用技能并将 62 个保留描述压缩至 ≤140 chars（均值 129 chars）后降至 8,019 chars（-79.2%），留出约 4 KB 安全缓冲。",
+      m1: "活跃目录体积 (MB)：双目录（~/.copilot/skills 83 + ~/.agents/skills 37 = 120）从 113.5 MB 瘦身至 56.5 MB（83 个活跃技能），净释放 56.97 MB（-50.2%），消除跨目录同名覆盖隐患。",
+      m2: "用户 Skill 描述可见率 (%)：优化前因 12 KB 注入上限截断，81 个用户技能仅第 1 个（1.2%）保留完整语义描述，其余 80 个退化为裸名称；优化后 62/62（100.0%，+83×）全部具备清晰触发词。",
+      m3: "OpenClaw 主文件行数 (十行)：openclaw-wechat-deployment/SKILL.md 从 1,390 行（54.7 KB）重构为 84 行（3.4 KB）决策树入口 + 5 个按需 references/*.md 模块，首轮注意力负载下降 94.0%。"
+    };
+
+    const CASES = [
+      {
+        tag: "CASE 01 · 12 KB 路由截断悬崖",
+        title: "修复 <available_skills> 98.8% 盲路由危机",
+        summary: "运行时将 <available_skills> 系统提示词块限制在约 12 KB（12,000 chars）。22 个项目与插件技能先行消耗约 4.0 KB，accessibility 单个技能又占去 1.1 KB，导致 ~/.copilot/skills 下 81 个冗长用户技能（总计 38,600 chars，均值 476 chars）中高达 80 个被静默剥离 description，仅剩裸名。",
+        chart: "assets/02-prompt-budget-cliff.zh.svg",
+        beforeTitle: "优化前：多段式冗长 YAML Frontmatter（均值 476 chars/skill）",
+        beforeCode: `---\nname: azure-style-presentation\ndescription: >\n  Use this comprehensive skill whenever the user asks to create,\n  polish, restructure, or review executive slide decks, customer\n  workshop presentations, architecture review boards, or keynote\n  storyboards following Microsoft Azure Fluent visual language,\n  typography hierarchy, dark/light card contrast, speaker notes,\n  agenda transitions, and multi-slide storytelling...(540+ chars)\n---`,
+        afterTitle: "优化后：高信噪比触发器契约（≤140 chars，均值 129 chars/skill）",
+        afterCode: `---\nname: azure-style-presentation\ndescription: "构建微软 Azure Fluent 风格技术演示稿、架构评审 Deck 与 HTML/PPTX 视觉汇报页（含深浅色规范与版式栅格）。"\n---\n# 结果：62 个用户技能总描述 8,019 chars (-79.2%)，100% 装入 12 KB 预算并留出 3.98 KB 余量`
+      },
+      {
+        tag: "CASE 02 · 渐进式披露重构",
+        title: "openclaw-wechat-deployment 从 1,390 行瘦身至 84 行",
+        summary: "原先单体 SKILL.md 达 1,390 行（54.7 KB），无论用户只是排障 Webhook 签名还是微调 Nginx 反代，都会一次性倾倒全套 Bicep、cloud-init 与排障手册，严重稀释前沿模型注意力。拆分为 84 行阶段决策树 + 5 个按需 view 的参考模块后，首轮负载直降 94.0%。",
+        chart: "assets/04-progressive-disclosure-openclaw.zh.svg",
+        beforeTitle: "重构前：54.7 KB 单体全量灌注（1,390 行）",
+        beforeCode: `openclaw-wechat-deployment/\n└── SKILL.md                 # 1,390 lines (54.7 KB) 每次触发全量塞入上下文\n    ├── [Lines 1-290]   Azure VNet / NSG / VM Bicep 全量模板\n    ├── [Lines 291-610] Ubuntu cloud-init & Docker Compose 脚本\n    ├── [Lines 611-920] 微信客服 Webhook 加解密与回调验证\n    ├── [Lines 921-1210] 常见报错排障流水账\n    └── [Lines 1211-1390] TLS / KeyVault 安全加固清单`,
+        afterTitle: "重构后：3.4 KB 路由入口（84 行）+ 5 个按需模块",
+        afterCode: `openclaw-wechat-deployment/\n├── SKILL.md                               # 84 lines (3.4 KB, -94.0% 首轮负载)\n└── references/                            # 仅在对应阶段通过 view 工具按需加载\n    ├── architecture-bicep.md              # 312 lines · IaC 拓扑与参数契约\n    ├── vm-bootstrap-docker.md             # 298 lines · 容器编排与反向代理\n    ├── wechat-kf-webhook.md               # 276 lines · 回调验签与消息路由\n    ├── troubleshooting-matrix.md          # 244 lines · 症状→根因→验证命令矩阵\n    └── security-hardening.md              # 176 lines · 最小权限与密钥轮换`
+      },
+      {
+        tag: "CASE 03 · 拆除旧模型拐杖与跨平台修复",
+        title: "清理 gpt-5.4 硬编码、幻觉工具名与 macOS 字体豆腐块",
+        summary: "早期为 GPT-4o / GPT-5.4 / Claude Haiku 4.5 编写的技能残留了三大技术债：(1) 硬编码旧模型降级了当前会话；(2) 引用不存在的工具名（search-the-web / fetch_page / runSubagent）诱发工具幻觉；(3) invoice_edit.py 写死 macOS PingFang.ttc 导致 Windows/Linux 中文渲染成方框豆腐块。",
+        chart: "assets/05-inverse-scaffolding-law.zh.svg",
+        beforeTitle: "清理前：硬编码旧模型、虚构工具与 macOS 专属路径",
+        beforeCode: `# 1. 旧版 Frontmatter 与正文拐杖\nmodel: gpt-5.4               # 或 gpt-4o-mini / claude-haiku-4.5\nStep 1: Call search-the-web and fetch_page, then runSubagent...\n\n# 2. invoice_edit.py 硬编码字体导致 Windows/Linux 中文乱码\nFONT_PATH = "/System/Library/Fonts/PingFang.ttc"`,
+        afterTitle: "清理后：对齐运行时前沿路由、真实工具 Schema 与跨平台字体链",
+        afterCode: `# 1. 删除 model 硬编码，自动继承 /subagents 前沿路由 (Gemini 4 Carbon / GPT-6.2 Sol / Grok 4.7)\n# 2. 精确绑定真实工具契约：\n#    web_search · web_fetch · task(agent_type="explore"|"research"|"general-purpose"|"code-review")\n#    microsoft-learn-* · azure-* · 原生 powerpoint/excel/word/browser Canvases\n\n# 3. invoice_edit.py 跨平台 CJK 字体回退链\nCANDIDATE_FONTS = [\n    r"C:\\Windows\\Fonts\\msyh.ttc",                      # Windows 微软雅黑\n    "/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc", # Linux Noto CJK\n    "/System/Library/Fonts/PingFang.ttc"                 # macOS 苹方\n]`
+      },
+      {
+        tag: "CASE 04 · 跨目录去重与僵尸技能归档",
+        title: "清理 14 个双目录重复副本、2 个 macOS 专属与 21 个零调用技能",
+        summary: "审计发现 ~/.agents/skills（37 个）与 ~/.copilot/skills（83 个）存在 14 个字节级重复的 Azure 技能，在 Windows 主机上残留了 2 个依赖 AppleScript/memo CLI 的 macOS 专属技能，另有 21 个零调用且已被原生能力覆盖的旧技能。一次性清理 37 个目录，释放 56.97 MB（-50.2%）。",
+        chart: "assets/03-telemetry-disposition.zh.svg",
+        beforeTitle: "清理的 14 个跨目录重复项 + 2 个 macOS 不兼容项",
+        beforeCode: `[14 个 ~/.agents/skills 重复副本已去重]\nazure-deploy, azure-diagnostics, azure-prepare, azure-validate,\nazure-ai, azure-compute, azure-kubernetes, azure-quotas,\nazure-resource-lookup, azure-storage, appinsights-instrumentation,\nazure-aigateway, azure-compliance, azure-cost-optimization\n\n[2 个 Windows 无法运行的 macOS 专属技能已移除]\napple-notes (依赖 macOS memo CLI), things-mac (依赖 AppleScript / Things3)`,
+        afterTitle: "归档的 21 个零调用 / 已被前沿原生能力替代的用户技能",
+        afterCode: `[21 个归档用户技能清单 — 历史 tool_requests 调用均为 0]\nopenclaw-hermes-deploy, billing-assistant, fabric-lakehouse-realtime-analytics,\nmeeting-minutes-docx, pdf, theme-factory, brand-guidelines,\ndoc-coauthoring, internal-comms, slack-gif-creator, canvas-design,\nalgorithmic-art, frontend-design, mcp-builder, webapp-testing,\nskill-creator, agent-governance, ms-foundry, workiq-copilot,\ncopilot-cli-quickstart, github-copilot-starter`
+      }
+    ];
+
+    const MODELS = [
+      {
+        id: "gemini-4-carbon",
+        name: "Gemini 4 Carbon",
+        tier: "long_context · 多模态 + SVG/HTML 视觉综合",
+        color: "#388bfd",
+        strengths: "超大仓库与长文档一次性全局综合、高精度内联 SVG 架构拓扑、中英双语技术长文与交互式 Web/PPT 视觉汇报产物生成。",
+        skills: ["anatomy", "architecture-diagrams", "excalidraw", "azure-style-presentation", "powerpoint", "web-artifacts-builder"]
+      },
+      {
+        id: "gpt-6.2-sol",
+        name: "GPT-6.2 Sol",
+        tier: "high / xhigh / max · 深度多步推理与严密工程",
+        color: "#3fb950",
+        strengths: "复杂多模块 Azure Bicep/Terraform 基础设施代码、OWASP/RAI 安全合规深度审计、严格遵循契约的 RPI（研究→规划→实施）闭环与财务/表格精确核算。",
+        skills: ["azure-prepare", "azure-validate", "azure-kubernetes", "code-review", "owasp-*", "secure-by-design", "rpi-research", "rpi-plan", "rpi-implement", "pmx-*", "xlsx"]
+      },
+      {
+        id: "grok-4.7",
+        name: "Grok 4.7",
+        tier: "high / xhigh · 实时信号研判、红队对抗与快反排障",
+        color: "#f0883e",
+        strengths: "实时技术趋势与竞品情报抓取、Agent 越狱/提示注入红队对抗测试、生产告警与 SSO/云资源故障的秒级收敛定界及高频内容迭代。",
+        skills: ["wechat-article", "research", "owasp-agentic", "owasp-llm", "azure-diagnostics", "sso-watcher", "doctor"]
+      },
+      {
+        id: "gemini-3.8-flash",
+        name: "Gemini 3.8 Flash",
+        tier: "fast parallel · 高扇出只读子代理扫描",
+        color: "#a371f7",
+        strengths: "承担高并发 explore 只读代码树检索与 task 测试/构建命令执行，以极低延迟过滤海量日志，仅向主会话返回高密度结构化结论。",
+        skills: ["task(agent_type='explore')", "task(agent_type='task')"]
+      }
+    ];
+
+    function switchTab(id, btn) {
+      document.querySelectorAll('.tab-panel').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      btn.classList.add('active');
+    }
+
+    function highlightHeroMetric(key, btn) {
+      btn.parentElement.querySelectorAll('.pill-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      ['m0', 'm1', 'm2', 'm3'].forEach(k => {
+        const g = document.getElementById('hero-' + k);
+        if (!g) return;
+        g.classList.toggle('dimmed', key !== 'all' && key !== k);
+      });
+      if (key !== 'all') showHeroReadout(key);
+    }
+
+    function showHeroReadout(key) {
+      const el = document.getElementById('hero-readout-text');
+      if (el && HERO_NOTES[key]) el.textContent = HERO_NOTES[key];
+    }
+
+    function setCliffPreset(count, len) {
+      document.getElementById('sim-count').value = count;
+      document.getElementById('sim-len').value = len;
+      updateCliffSim();
+    }
+
+    function updateCliffSim() {
+      const count = parseInt(document.getElementById('sim-count').value, 10);
+      const len = parseInt(document.getElementById('sim-len').value, 10);
+      document.getElementById('sim-count-val').textContent = count + ' 个';
+      document.getElementById('sim-len-val').textContent = len + ' chars';
+
+      const isBaselineBefore = (count === 81 && len === 476);
+      const demandChars = isBaselineBefore ? 38600 : (count === 62 && len === 129 ? 8019 : count * len);
+      const userCapChars = isBaselineBefore ? 6900 : 12000;
+      const visibleCount = isBaselineBefore ? 1 : Math.min(count, Math.floor(userCapChars / len));
+      const blindCount = Math.max(0, count - visibleCount);
+      const visPct = ((visibleCount / count) * 100).toFixed(1);
+
+      const scaleMax = 45000;
+      const pluginChars = 4000;
+      const visChars = Math.min(demandChars, userCapChars);
+      const truncChars = Math.max(0, demandChars - userCapChars);
+      const headroomChars = Math.max(0, 12000 - demandChars);
+
+      document.getElementById('sim-seg-plugin').style.width = ((pluginChars / scaleMax) * 100).toFixed(1) + '%';
+      document.getElementById('sim-seg-vis').style.width = ((visChars / scaleMax) * 100).toFixed(1) + '%';
+      document.getElementById('sim-seg-trunc').style.width = ((truncChars / scaleMax) * 100).toFixed(1) + '%';
+      document.getElementById('sim-seg-headroom').style.width = ((headroomChars / scaleMax) * 100).toFixed(1) + '%';
+
+      document.getElementById('sim-seg-vis').textContent = (visChars / 1000).toFixed(1) + 'KB 可见';
+      document.getElementById('sim-seg-trunc').textContent = truncChars > 0 ? ((truncChars / 1000).toFixed(1) + 'KB 截断溢出') : '';
+      document.getElementById('sim-seg-headroom').textContent = headroomChars > 800 ? ((headroomChars / 1000).toFixed(1) + 'KB 余量') : '';
+
+      document.getElementById('sim-demand').textContent = demandChars.toLocaleString() + ' chars';
+      document.getElementById('sim-visible').textContent = visibleCount + ' / ' + count + ' (' + visPct + '%)';
+      document.getElementById('sim-visible').style.color = blindCount > 0 ? '#f85149' : '#3fb950';
+      document.getElementById('sim-blind').textContent = blindCount + ' 个';
+      document.getElementById('sim-blind').style.color = blindCount > 0 ? '#f85149' : '#8b949e';
+
+      const badge = document.getElementById('sim-status-badge');
+      if (blindCount > 0) {
+        badge.textContent = '⚠ 触发 12 KB 截断悬崖 · ' + blindCount + ' 个技能描述被剥离';
+        badge.style.color = '#f85149';
+      } else {
+        badge.textContent = '✓ 零截断 · 100% 语义路由可见';
+        badge.style.color = '#3fb950';
+      }
+    }
+
+    function renderCases(idx = 0) {
+      const nav = document.getElementById('case-nav');
+      nav.innerHTML = CASES.map((c, i) => `
+        <button type="button" class="case-nav-btn ${i === idx ? 'active' : ''}" onclick="renderCases(${i})">
+          <div class="c-tag">${c.tag}</div>
+          <div class="c-title">${c.title}</div>
+        </button>
+      `).join('');
+
+      const c = CASES[idx];
+      const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      document.getElementById('case-detail').innerHTML = `
+        <div class="control-box">
+          <div style="font-size:12px;color:#f2cc60;font-family:ui-monospace,Consolas,monospace;font-weight:700;">${esc(c.tag)}</div>
+          <h3 style="font-size:18px;margin:4px 0 8px;">${esc(c.title)}</h3>
+          <p style="font-size:13.5px;color:#c9d1d9;margin-bottom:14px;">${esc(c.summary)}</p>
+          <img src="${c.chart}" alt="${esc(c.title)}" class="chart-svg" />
+          <div class="diff-grid">
+            <div class="diff-box before">
+              <div class="diff-title" style="color:#ffa198;">✕ ${esc(c.beforeTitle)}</div>
+              <pre>${esc(c.beforeCode)}</pre>
+            </div>
+            <div class="diff-box after">
+              <div class="diff-title" style="color:#7ee787;">✓ ${esc(c.afterTitle)}</div>
+              <pre>${esc(c.afterCode)}</pre>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function filterModels(modelId, btn) {
+      if (btn) {
+        btn.parentElement.querySelectorAll('.pill-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+      }
+      const list = modelId === 'all' ? MODELS : MODELS.filter(m => m.id === modelId);
+      document.getElementById('model-cards-grid').innerHTML = list.map(m => `
+        <div class="m-card" style="border-top:3px solid ${m.color};">
+          <div class="m-head">
+            <span class="m-name">${m.name}</span>
+            <span class="m-id">${m.id}</span>
+          </div>
+          <div style="font-size:12px;color:#f2cc60;margin-bottom:8px;font-weight:600;">${m.tier}</div>
+          <p style="font-size:13px;color:#c9d1d9;">${m.strengths}</p>
+          <div class="chip-cloud">
+            ${m.skills.map(s => `<span class="skill-chip">${s}</span>`).join('')}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function copyGateScript(btn) {
+      const text = document.getElementById('gate-script-code').textContent;
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(text).then(() => {
+          btn.textContent = '✓ 已复制到剪贴板';
+          setTimeout(() => { btn.textContent = '复制守门脚本'; }, 2000);
+        });
+      }
+    }
+
+    updateCliffSim();
+    renderCases(0);
+    filterModels('all');
+  </script>
+</body>
+</html>
