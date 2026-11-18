@@ -6447,6 +6447,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r523File),'utf8');
       assert.ok(txt.includes('2,640.00')&&txt.includes('4,100.00')&&txt.includes('6,740.00')&&txt.includes('80.00')&&txt.includes('270.00')&&txt.includes('350.00')&&txt.includes('6,390.00')&&txt.includes('94.81%')&&txt.includes('not_measured'),r523File+': contains exact 11-18 R43 R523 guizangppt+huashudesign+jevultrafast+moli closed-form parameters');
     }
+    // 2026-11-18 Night Round 44 (R524: nocobase/nocobase + slopus/happy + citrolabs/ego-lite + PrimeIntellect-ai/prime-agent) verification
+    const r524PathA=2720.00+41.5*100.00;
+    assert.equal(r524PathA.toFixed(2),'6870.00','11-18 R44 R524 Path A total');
+    const r524PathC=80.00+2.7*100.00;
+    assert.equal(r524PathC.toFixed(2),'350.00','11-18 R44 R524 Path C total');
+    assert.equal((r524PathA-r524PathC).toFixed(2),'6520.00','11-18 R44 R524 savings vs Path A');
+    assert.equal(((r524PathA-r524PathC)/r524PathA*100).toFixed(2),'94.91','11-18 R44 R524 pct savings vs Path A');
+    for(const r524File of ['workshops/github-trending-radar/docs/nocobase-happy-ego-lite-prime-agent-ai-business-governance-e2ee-mobile-multiplayer-harness-parallel-browser-spaces-rlm-continual-harness-selection-faq.md','workshops/github-trending-radar/docs/nocobase-happy-ego-lite-prime-agent-ai-business-governance-e2ee-mobile-multiplayer-harness-parallel-browser-spaces-rlm-continual-harness-selection-faq.en.md','assets/github-ai-radar-2026-11-18-r44-nocobase-happy-egolite-primeagent.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-18-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r524File),'utf8');
+      assert.ok(txt.includes('2,720.00')&&txt.includes('4,150.00')&&txt.includes('6,870.00')&&txt.includes('80.00')&&txt.includes('270.00')&&txt.includes('350.00')&&txt.includes('6,520.00')&&txt.includes('94.91%')&&txt.includes('not_measured'),r524File+': contains exact 11-18 R44 R524 nocobase+happy+egolite+primeagent closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
