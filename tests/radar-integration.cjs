@@ -5983,6 +5983,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r481File),'utf8');
       assert.ok(txt.includes('2,360.00')&&txt.includes('4,100.00')&&txt.includes('6,460.00')&&txt.includes('95.00')&&txt.includes('320.00')&&txt.includes('415.00')&&txt.includes('6,045.00')&&txt.includes('93.58%')&&txt.includes('not_measured'),r481File+': contains exact 11-18 R1 skillevaluator+signet closed-form parameters');
     }
+    // 2026-11-18 Night Round 2 (R482: appwrite/appwrite + fyrr-ai/fyrr + openvinotoolkit/openvino) verification
+    const r482PathA=2480.00+39.0*100.00;
+    assert.equal(r482PathA.toFixed(2),'6380.00','11-18 R2 Path A total');
+    const r482PathC=110.00+3.1*100.00;
+    assert.equal(r482PathC.toFixed(2),'420.00','11-18 R2 Path C total');
+    assert.equal((r482PathA-r482PathC).toFixed(2),'5960.00','11-18 R2 savings vs Path A');
+    assert.equal(((r482PathA-r482PathC)/r482PathA*100).toFixed(2),'93.42','11-18 R2 pct savings vs Path A');
+    for(const r482File of ['workshops/github-trending-radar/docs/appwrite-fyrr-openvino-agent-native-mcp-backend-cloud-serverless-s3-acl-rag-cpu-inference-selection-faq.md','workshops/github-trending-radar/docs/appwrite-fyrr-openvino-agent-native-mcp-backend-cloud-serverless-s3-acl-rag-cpu-inference-selection-faq.en.md','assets/github-ai-radar-2026-11-18-r2-appwrite-fyrr-openvino.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-18-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r482File),'utf8');
+      assert.ok(txt.includes('2,480.00')&&txt.includes('3,900.00')&&txt.includes('6,380.00')&&txt.includes('110.00')&&txt.includes('310.00')&&txt.includes('420.00')&&txt.includes('5,960.00')&&txt.includes('93.42%')&&txt.includes('not_measured'),r482File+': contains exact 11-18 R2 appwrite+fyrr+openvino closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
