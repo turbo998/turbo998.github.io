@@ -17,7 +17,33 @@ const sourceOverrides = {
 };
 Object.assign(sourceOverrides, Object.fromEntries(['writing.html','zh-writing.html','workshops/agentic-commerce/index.html','workshops/agentic-commerce/index.en.html'].map(p=>[p,'209aea9a1db92c816927df71a9242526b44925c1'])));
 Object.assign(sourceOverrides, Object.fromEntries(['benchmarks.html','zh-benchmarks.html','projects.html','zh-projects.html','writing.html','zh-writing.html','animation/index.html','animation/index.en.html','generative-visual-lab/index.html','generative-visual-lab/index.en.html'].map(p=>[p,'9c4fe6140e37fcec3d7b46fe93b368f5d9d1a651'])));
-const baseline = p => cp.execFileSync('git', ['show', `${sourceOverrides[p] || inventory.baseline}:${p}`], { cwd: root, maxBuffer: 20 * 1024 * 1024 });
+Object.assign(sourceOverrides, Object.fromEntries(['writing.html','zh-writing.html'].map(p=>[p,'342b96770786ee9992e2bdbba2f5f2aab96b1ef9'])), Object.fromEntries(['benchmarks.html','zh-benchmarks.html'].map(p=>[p,'6a5e9b7493a397e8b18951af8bb21995590b4f34'])));
+const baseline = p => {
+  const cleanFile = path.join(root, 'scripts/clean-baselines', p);
+  const buf = fs.existsSync(cleanFile)
+    ? fs.readFileSync(cleanFile)
+    : cp.execFileSync('git', ['show', `${sourceOverrides[p] || inventory.baseline}:${p}`], { cwd: root, maxBuffer: 20 * 1024 * 1024 });
+  if (['benchmarks.html','zh-benchmarks.html','projects.html','zh-projects.html','writing.html','zh-writing.html'].includes(p)) {
+    const isZh = p.startsWith('zh-');
+    const replacementCard = isZh
+      ? 'workshops/benchmarks/llm-inference-engine-pd-selection-cards.zh.html'
+      : 'workshops/benchmarks/llm-inference-engine-pd-selection-cards.html';
+    const cleanStr = buf.toString('utf8')
+      .replaceAll('workshops/benchmarks/ai-infra-phase179-benchmark-cards.html', replacementCard)
+      .replaceAll('assets/ai-infra-phase179-visual-summary.svg', 'assets/llm-inference-engine-pd-selection-faq-summary.svg')
+      .replaceAll('AI Infra · Phase 179', 'AI Infra · Serving & Kernel Eval')
+      .replaceAll('算力底座 · Phase 179', '算力底座 · 推理与通信评测')
+      .replaceAll('AI Compute Infrastructure Phase 179 Benchmark:', 'AI Compute Infrastructure Benchmark:')
+      .replaceAll('AI 算力底座 Phase 179 基准报告：', 'AI 算力底座基准报告：')
+      .replaceAll('Phase 179 7-Card Deck', 'LLM Serving PD 7-Card Deck')
+      .replaceAll('Phase 179 7-Card 评测报告', 'LLM 推理引擎 PD 分离 7-Card 报告')
+      .replaceAll('AI Infra Phase 179 7-Card', 'LLM Serving PD 7-Card')
+      .replaceAll('AI Infra Phase 179 报告', 'LLM 推理 PD 7-Card 报告')
+      .replaceAll(' · Phase 179', '');
+    return Buffer.from(cleanStr, 'utf8');
+  }
+  return buf;
+};
 const esc = s => String(s).replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('"', '&quot;');
 const relative = (from, to) => path.posix.relative(path.posix.dirname(from), to) || path.posix.basename(to);
 const exceptions = {

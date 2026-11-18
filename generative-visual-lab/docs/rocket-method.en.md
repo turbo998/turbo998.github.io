@@ -1,0 +1,24 @@
+# Launch: Original External-View White Rocket Launch Complex
+
+> 🌐 **Language / 语言**: [中文 (`rocket-method.md`)](rocket-method.md) | **English**
+
+This demonstration presents an original white launch vehicle, launch pad, lattice tower, umbilical swing arm, cryogenic spheres, flame trench, and coastal mountain range viewed through a large circular observation porthole.
+
+## Geometry, Blender MCP Kit & Color Palette
+
+Segmented cylindrical stages, tangent-ogive nosecone, interstage rings, titanium honeycomb grid fins, aerodynamic tail fins, and five regenerative-cooled De Laval nozzles are true 3D geometries generated deterministically via `scripts/blender/build-rocket-assets.mjs` into `demos/rocket-launch/assets/rocket-kit.glb` and merged by material bucket at load time. Red (`#F25022`), green (`#7FBA00`), blue (`#00A4EF`), and yellow (`#FFB900`) serve as four accent stripes and pad markings without any official Microsoft logo or endorsement.
+
+## Deterministic Launch State Machine
+
+`Standby → Ignition → Thrust Build → Liftoff → Ascent → Completed Hold`.
+The vehicle remains on the pad during the first four seconds of ignition and thrust build-up, followed by a monotonic analytical altitude function $h(t)$. Repeated clicks do not spawn duplicate launches; pausing freezes scene time and particles; replaying clears smoke and restarts ignition.
+
+- **Fixed Porthole Camera**: Holds position while widening FOV and pitching upward smoothly during ascent so both the launch pad and vehicle nose remain framed inside the circular porthole safety bounds.
+- **Follow Camera**: Tracks the ascending vehicle smoothly without unrequested random camera shake.
+- **Reduced Motion**: Freezes high-frequency exhaust plume pulsation and disables autoplay while preserving manual launch inspection.
+
+## Supersonic Exhaust Plume, Smoke Pool & Transonic Optics
+
+- **Analytical Dual-Cone Plume Shader (`flameMaterial`)**: Combines a Planck blackbody core (`kelvinCore`), normal-shock Mach disk (`machDisk`), periodic De Laval shock diamonds (`diamond`), under-expanded barrel shock sheath (`barrelShock`), and multi-mode shear-layer / recirculation vortex harmonics without fluid solver overhead.
+- **Depth-Sorted Smoke Particle Pool**: Single-draw-call batched `THREE.Points` (capped at 640 particles with lifetime recycling), sorted by camera depth with `depthWrite: false`.
+- **Secondary Acoustic & Transonic Phenomena**: Pre-allocated ground acoustic shockwave ring (`shockWave`), transonic Prandtl-Glauert condensation cone (`vaporCone`), and circular porthole anamorphic lens flare driven purely by time envelopes with zero runtime allocations.

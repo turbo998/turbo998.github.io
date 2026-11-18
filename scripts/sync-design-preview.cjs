@@ -3,7 +3,7 @@ const fs=require('node:fs');
 const path=require('node:path');
 const root=path.resolve(__dirname,'..');
 function main(){
- const previews={'index.html':'index.html','zh.html':'zh-index.html','studio/index.html':'studio.html','studio/zh-index.html':'zh-studio.html','studio/data-infra.html':'data-infra.html','studio/zh-data-infra.html':'zh-data-infra.html','studio/infra.html':'infra.html','studio/zh-infra.html':'zh-infra.html'};
+ const previews={'index.html':'index.html','zh.html':'zh-index.html','diamond.html':'diamond.html','zh-diamond.html':'zh-diamond.html','studio/index.html':'studio.html','studio/zh-index.html':'zh-studio.html','studio/data-infra.html':'data-infra.html','studio/zh-data-infra.html':'zh-data-infra.html','studio/infra.html':'infra.html','studio/zh-infra.html':'zh-infra.html'};
  for(const [source,target] of Object.entries(previews)){
   let html=fs.readFileSync(path.join(root,source),'utf8').replace(/(href|src|action|data-counterpart|data-search-root)="([^"]+)"/g,(all,attr,value)=>{
    if(/^(?:[a-z]+:|#|\/\/)/i.test(value))return all;

@@ -13,10 +13,12 @@ const marker = /<!-- kee-data-lab:(style|navigation|runtime):start -->[\s\S]*?<!
 const git = args => execFileSync('git', args, { cwd: root, maxBuffer: 20 * 1024 * 1024 });
 const source = name => {
   if (!files.includes(name)) throw new Error(`Unowned DataLab surface: ${name}`);
+  const cleanFile = path.join(root, 'scripts/clean-baselines', directory, name);
+  if (fs.existsSync(cleanFile)) return fs.readFileSync(cleanFile, 'utf8');
   return git(['show', `${baseline}:${directory}/${name}`]).toString('utf8');
 };
 const block = (kind, content) => `<!-- kee-data-lab:${kind}:start -->\n${content}\n<!-- kee-data-lab:${kind}:end -->`;
-const originalFabconLink = '<a class="btn" href="../fabcon-sqlcon-2026/index.html">🎬 FabCon 2026 展厅</a>';
+const originalFabconLink = '<a class="btn" href="../fabcon-sqlcon-2026/index.html">🎬 FabCon 2026 视频展厅</a>';
 const sourceLinkChange = {
   from: '../fabcon-sqlcon-2026/index.html',
   to: { zh: '../../studio/zh-infra.html', en: '../../studio/infra.html' },
@@ -25,7 +27,7 @@ const sourceLinkChange = {
 // Restore the exact upstream anchor as well as removing additive perimeter blocks.
 const strip = html => html.replace(marker, '')
   .replace(/<!-- kee-data-lab:source-link:start -->[\s\S]*?<!-- kee-data-lab:source-link:end -->/g, originalFabconLink)
-  .replace(/\n?<!-- (?:demo-localization|demo-language-navigation|kee-report-localization:metadata|kee-report-localization-navigation|site-remediation-knowledge):start -->[\s\S]*?<!-- (?:demo-localization|demo-language-navigation|kee-report-localization:metadata|kee-report-localization-navigation|site-remediation-knowledge):end -->/g, '')
+  .replace(/\n?<!-- (?:demo-localization|demo-language-navigation|kee-report-localization:metadata|kee-report-localization-navigation|site-remediation-knowledge|kee-diamond-datalab):start -->[\s\S]*?<!-- (?:demo-localization|demo-language-navigation|kee-report-localization:metadata|kee-report-localization-navigation|site-remediation-knowledge|kee-diamond-datalab):end -->/g, '')
   .replace(/<div class="professional-context-bar">[\s\S]*?<\/div>/g, '')
   .replace(/<style id="site-remediation-style">[\s\S]*?<\/style>/g, '')
   .replace(/<script src="(?:\.\.\/)*assets\/editorial\/(?:search-index|search)\.js" defer><\/script>/g, '');

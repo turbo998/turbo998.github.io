@@ -10,8 +10,8 @@ const reportZh = require('./phase179-report-zh.cjs');
 const root = path.resolve(__dirname,'..');
 const baseline = '941ee62';
 const workbench = 'workshops/benchmarks/ai-infra-architect-workbench.html';
-const report = 'workshops/benchmarks/ai-infra-phase179-benchmark-cards.html';
-const files = [workbench,workbench.replace('.html','.en.html'),report,report.replace('.html','.zh.html')];
+const report = 'workshops/benchmarks/llm-inference-engine-pd-selection-cards.html';
+const files = [workbench,workbench.replace('.html','.en.html')];
 const asset = 'assets/ai-infra-phase179-visual-summary.svg';
 const sourceData = 'assets/phase179-source-data.json';
 const hash = s=>crypto.createHash('sha256').update(s).digest('hex');
@@ -52,10 +52,10 @@ function overview(en,compact=false) {
  const intro=en?'A faster GPU cannot repair a stalled network, invalid KV layout or low useful-work availability. Follow the critical path through six layers, then use the original calculators to change one assumption at a time.':'更快的 GPU 无法修复堵塞的网络、错误的 KV 布局或过低的有效工作可用率。沿六层关键路径定位瓶颈，再用原始计算器一次改变一个假设。';
  return `<section class="${compact?'phase179-knowledge':'panel'}" id="architecture"><h2>${en?'Six layers, one end-to-end critical path':'六层架构，一条端到端关键路径'}</h2><div class="phase179-atlas-layout">${atlas(en)}<div><p class="phase179-controls-note">${intro}</p><ol class="phase179-route"><li>${en?'Classify the limit: compute, HBM capacity, bandwidth or queueing.':'判断限制来自计算、HBM 容量、带宽还是排队。'}</li><li>${en?'Track bytes and ownership across NVLink, fabric and KV handoff.':'沿 NVLink、跨机网络与 KV 交接跟踪字节量和所有权。'}</li><li>${en?'Overlap only independent work; check transient memory and correctness.':'只重叠相互独立的任务，并检查瞬时显存与正确性。'}</li><li>${en?'Evaluate cost per useful token at a fixed quality and tail-latency SLO.':'在固定质量与尾时延 SLO 下评估每个有效词元的成本。'}</li></ol><div class="phase179-source-note">${en?'Evidence boundary: the source reports analytical CPU/offline simulation (synthetic), not fresh accelerator measurements. Its own-offline and independently_reproduced=true labels describe that original CPU verification only. This localization does not rerun upstream experiments.':'证据边界：来源报告是 CPU 离线分析与仿真（synthetic），不是新的加速器实测。原始 own-offline 与 independently_reproduced=true 标签仅描述原报告的 CPU 验证。本次本地化不重跑上游实验。'}</div></div></div>${compact?'':`<div class="phase179-layer-grid">${layers.map(l=>`<article class="phase179-layer" id="${l.id}"><h3>${l.id} · ${esc(l.name[en?0:1])}</h3><code>${esc(l.formula)}</code><p>${en?l.en:l.zh}</p><p>${l.check[en?0:1]}</p><p>${en?'Primary documentation':'一手文档'}: ${references[l.id].map(([label,url])=>`<a href="${url}">${label}</a>`).join(' · ')}</p></article>`).join('')}</div>`}</section>`;
 }
-function navigation(file,en,isReport) {
- const enFile=path.basename(isReport?files[2]:files[1]),zhFile=path.basename(isReport?files[3]:files[0]);
+function navigation(file,en) {
+ const enFile=path.basename(files[1]),zhFile=path.basename(files[0]);
  const languages=`<a href="${enFile}?lang=en" lang="en" hreflang="en"${en?' aria-current="true"':''}>EN</a><a href="${zhFile}?lang=zh-CN" lang="zh-CN" hreflang="zh-CN"${en?'':' aria-current="true"'}>中文</a>`;
- return professional.navigation({file,en,className:'phase179-nav',languages,context:`<a href="../../studio/${en?'infra':'zh-infra'}.html">← ${en?'Infrastructure learning path':'基础设施学习路径'}</a><a href="${path.basename(isReport?(en?files[1]:files[0]):(en?files[2]:files[3]))}">${isReport?(en?'Interactive workbench':'交互工作台'):(en?'Seven-card source report':'七卡来源报告')}</a>`});
+ return professional.navigation({file,en,className:'phase179-nav',languages,context:`<a href="../../studio/${en?'infra':'zh-infra'}.html">← ${en?'Infrastructure learning path':'基础设施学习路径'}</a><a href="${en?'llm-inference-engine-pd-selection-cards.html':'llm-inference-engine-pd-selection-cards.zh.html'}">${en?'Seven-card selection deck':'七卡选型报告'}</a>`});
 }
 function catalog(en,rows) {
  const heads=en?['Phase','Knowledge point','What this experiment teaches','Source identity']:['阶段','知识点','这项实验解释什么','来源标识'];
@@ -100,11 +100,11 @@ function data() {return {baseline,sourceFile:workbench,sourceSha256:hash(sourceF
 function write() {
  for(const f of files)fs.writeFileSync(path.join(root,f),generate(f));
  fs.writeFileSync(path.join(root,sourceData),JSON.stringify(data(),null,2)+'\n');
- fs.writeFileSync(path.join(root,'docs/redesign/phase179-localization.json'),JSON.stringify([{source:workbench,en:files[1],zh:files[0],kind:'workbench'},{source:report,en:files[2],zh:files[3],kind:'sealed-report'}],null,2)+'\n');
+ fs.writeFileSync(path.join(root,'docs/redesign/phase179-localization.json'),JSON.stringify([{source:workbench,en:files[1],zh:files[0],kind:'workbench'}],null,2)+'\n');
  return validate();
 }
 function validate() {
- for(const f of files){assert.equal(hash(fs.readFileSync(path.join(root,f),'utf8').replace(/\r\n/g,'\n')),hash(generate(f)),`${f}: deterministic output (rerun --write after shared navigation changes)`);assert.deepEqual(csp(generate(f)),csp(sourceFor(f===files[2]||f===files[3]?report:workbench)),'Exact source CSP');}
+ for(const f of files){assert.equal(hash(fs.readFileSync(path.join(root,f),'utf8').replace(/\r\n/g,'\n')),hash(generate(f)),`${f}: deterministic output (rerun --write after shared navigation changes)`);assert.deepEqual(csp(generate(f)),csp(sourceFor(workbench)),'Exact source CSP');}
  assert.deepEqual(JSON.parse(fs.readFileSync(path.join(root,sourceData),'utf8')),data());
  return {result:'PASS',baseline,files,sourceRows:originalRows().length,scope:'Bilingual architecture education; original source data and calculator formulas preserved; no upstream experiment rerun',limitations:['Sealed report filename selects language; conflicting ?lang is inert under original script-free CSP.']};
 }

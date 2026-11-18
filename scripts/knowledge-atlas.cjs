@@ -8,18 +8,18 @@ const node = (title, detail, relation) => ({title, detail, relation});
 // Topology and box dimensions are conceptual layout, never performance coordinates.
 const blueprints = {
   'data-infra': [
-    node(['Data sources & change capture','数据源与变更捕获'], ['Operational data · Mirroring · digital twins','业务数据 · Mirroring · 数字孪生'], ['grounds','构成数据基础']),
-    node(['OneLake & Fabric IQ','OneLake 与 Fabric IQ'], ['Shared data, semantic context and governance','共享数据、语义上下文与治理'], ['compare boundaries','比较能力边界']),
-    node(['Cross-cloud decision','跨云平台决策'], ['Databricks · Snowflake · BigQuery · Redshift','Databricks · Snowflake · BigQuery · Redshift'], ['validate deployment needs','验证部署需求']),
-    node(['Isolated agent capacity','隔离式智能体容量'], ['AKSClaw · E2B 100K fixture · D96as_v7','AKSClaw · E2B 100K 夹具 · D96as_v7'], ['inspect recovery and cost','检查恢复与成本']),
-    node(['Cycle #377 & VM FinOps','Cycle #377 与 VM 成本治理'], ['Demo → selector → workbench → source report','演示 → 选型 → 工作台 → 来源报告'], null)
+    node(['Enterprise sources & ingestion','企业源系统与实时摄取'], ['ERP / POS / IoT · Eventhouse KQL · Change feeds','ERP / POS / 航运流 · Eventhouse KQL · 变更捕获'], ['grounds open lakehouse','汇入开放湖仓底座']),
+    node(['OneLake & Databricks Mirroring','OneLake 与 Databricks 零拷贝共生'], ['Shared Delta Parquet · Unity Catalog · 0-DBU Direct Lake','共享 Delta Parquet · Unity Catalog · 0 DBU 秒级 BI'], ['binds business ontology','注入业务语义本体']),
+    node(['Fabric IQ & Cross-Cloud Choice','Fabric IQ 与跨云平台选型'], ['TCL & Zava PoCs · vs Snowflake / BigQuery / Redshift','TCL 与 Zava 实战沙盘 · 对比 Snowflake / BigQuery'], ['isolates agent execution','进入隔离执行层']),
+    node(['Isolated agent sandboxes','企业级智能体隔离沙箱'], ['ACA Dynamic Sessions · AKS MicroVM · E2B VMSS','ACA 动态会话 · AKS MicroVM · E2B 弹性沙箱'], ['governs unit economics','闭环容量与成本治理']),
+    node(['Cloud & Session FinOps','云基础设施与单会话 FinOps'], ['Capacity pooling · VM modernization · TCO verification','F-SKU 容量池化 · VM 跨代升级 · TCO 定量核验'], null)
   ],
   infra: [
-    node(['Workload & six-layer decisions','工作负载与六层决策'], ['Phase 179: requirements, boundaries and trade-offs','Phase 179：需求、边界与取舍'], ['maps to runtime choices','映射运行时选择']),
-    node(['Azure runtime spectrum','Azure 运行时光谱'], ['Hosted agents · Functions · ACA · AKS · E2B','托管智能体 · Functions · ACA · AKS · E2B'], ['depends on compute fabric','依赖计算基础设施']),
-    node(['Compute, memory & interconnect','计算、内存与互连'], ['Tong–Yun–Ge supernodes · GPU / network / state','通–云–哥超节点 · GPU / 网络 / 状态'], ['constrains inference design','约束推理设计']),
-    node(['Inference & cost boundaries','推理与成本边界'], ['DeepInfer: prefill / decode / cache; revenue is not profit','DeepInfer：预填充 / 解码 / 缓存；收入不等于利润'], ['requires resilience evidence','需要韧性证据']),
-    node(['Heartbeat & recovery evidence','心跳与恢复证据'], ['E2B / Nomad: failure detection, retries and source caveats','E2B / Nomad：故障检测、重试与来源限制'], null)
+    node(['Workload SLA & architecture tiers','业务 SLA 与六层架构决策'], ['Latency · throughput · compliance · state boundaries','首字时延 · 吞吐并发 · 合规隔离 · 状态边界'], ['maps to hosting runtime','匹配最佳托管底座']),
+    node(['Azure agent hosting spectrum','Azure 智能体六大托管光谱'], ['Foundry · ACA · AKS · Functions · Sandboxes','Foundry · ACA · AKS · Functions · 隔离沙箱'], ['schedules GPU & memory','调度底层算力与显存']),
+    node(['LLM serving, MoE & KV storage','推理引擎、MoE 并行与 KV 分层'], ['Prefill-Decode split · FP8/NVFP4 · tiered KV cache','PD 分离 · FP8/NVFP4 量化 · 长上下文 KV 卸载'], ['governs token economics','决定单 Token 成本']),
+    node(['Serving unit economics','推理吞吐与单元经济模型'], ['Batching · prefix-cache hit rate · $/1M-token margin','批处理利用率 · 前缀缓存命中 · 百万 Token 毛利'], ['requires failover design','保障生产级高可用']),
+    node(['Control-plane resilience','有状态集群心跳与故障自愈'], ['Lease fencing · split-brain guard · checkpoint recovery','租约隔离防脑裂 · 异步 Checkpoint · 故障恢复'], null)
   ],
   commerce: [
     node(['Buyer intent & grounded discovery','购买意图与可信发现'], ['WebIQ source freshness · product identity','WebIQ 来源时效 · 商品身份'], ['grounds the offer','为报价提供依据']),

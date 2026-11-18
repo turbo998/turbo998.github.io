@@ -1,20 +1,8 @@
-# Azure AI Agent Infrastructure — Step 04 Validate: Customer Workshop & Architecture Design Session Runbook (Bilingual EN / 中文)
+# Azure AI Agent Infrastructure — Step 04 Validate: Customer Workshop & Architecture Design Session Runbook
 
-> 🌐 **Language / 语言导航**: **[📘 Playbook 中文版 (`README.md`)](README.md)** | **[📘 Playbook English (`README.en.md`)](README.en.md)** | **[📊 7-Card Report (ZH)](test-report.md)** | **[📊 7-Card Report (EN)](test-report.en.md)** | **[🧪 Cycle #414 Deck (ZH)](benchmark-cards.html)** | **[🧪 Cycle #414 Deck (EN)](benchmark-cards.en.html)** | **[📘 Cycle #414 Daily Report](daily-report-2026-11-14.md)**
->
-> **Purpose**: Actionable field delivery guide for **Step 04 Validate (1/2-Day or 1-Day Hands-On Workshop + Target Architecture Whiteboard Session)** from the *Agent Infra Playbook* (`Agent_Infra_Playbook.pptx`, Slides 14–18).
-> **定位**：面向架构师与现场交付团队的 **Step 04 Validate（半天/全天动手工作坊 + 目标架构白板共创）** 落地执行手册（覆盖 384 章行业模型、377 套 IaC 蓝图与 376 项定量仿真器，385/385 项单测全绿）。
+> 🌐 **Language / 语言切换**: **English Edition (Current)** | **[🇨🇳 中文版 (`workshop-runbook.zh-CN.md`)](workshop-runbook.zh-CN.md)** | **[📘 Playbook English (`README.en.md`)](README.en.md)** | **[📘 Playbook 中文版 (`README.md`)](README.md)**
 
----
-
-## 0. Cycle #414 publish bundle (2026-11-14)
-
-- **7-card visual deck (4:5)**: [`benchmark-cards.html`](benchmark-cards.html) / [`benchmark-cards.en.html`](benchmark-cards.en.html)
-- **Interactive benchmark workbench**: [`workbench-cycle-414.html`](workbench-cycle-414.html)
-- **Daily breakthroughs one-pager SVG**: [`assets/34-cycle-414-daily-breakthroughs.svg`](assets/34-cycle-414-daily-breakthroughs.svg)
-- **Evidence payload + reproducible CSV/JSON**: [`evidence/cycle-414-benchmark.json`](evidence/cycle-414-benchmark.json)
-- **Monograph addendum**: [`docs/full-monograph-cycle-414.md`](docs/full-monograph-cycle-414.md) / [`docs/full-monograph-cycle-414.en.md`](docs/full-monograph-cycle-414.en.md)
-- **Selection FAQ (ZH/EN)**: [`agent-mcp-a2a-idempotency-key-selection-faq.md`](agent-mcp-a2a-idempotency-key-selection-faq.md) / [`agent-mcp-a2a-idempotency-key-selection-faq.en.md`](agent-mcp-a2a-idempotency-key-selection-faq.en.md)
+> **Purpose**: Actionable field delivery guide for **Step 04 Validate (Half-Day or Full-Day Hands-On Workshop + Target Architecture Whiteboard Session)** in the 5-Step Azure AI Agent Infrastructure Playbook.
 
 ---
 
@@ -31,10 +19,10 @@ In the 5-step Azure Agent Infra Playbook (`Initial Screening → Discovery → D
 | Time Block | Duration | Module | Deliverable |
 |---|---:|---|---|
 | **09:30 – 10:00** | 30 min | **Module 1: 4-Layer Panorama & 6-Tier Runtime Spectrum** | Walk through [SVG 01](assets/01-azure-agent-infra-4layer-panorama.svg) & [SVG 02](assets/02-runtime-spectrum-6tier-matrix.svg); align on why Agent Infra requires sandbox isolation + state checkpointing |
-| **10:00 – 10:45** | 45 min | **Module 2: Two-Stage Decision Tree & Delivery Gate Check** | Run [Interactive Selector (`selector.html`)](selector.html) against customer's actual concurrency, isolation, and dev-team readiness |
+| **10:00 – 10:45** | 45 min | **Module 2: Two-Stage Decision Tree & Delivery Gate Check** | Run [Interactive Selector (`h5/selector.html`)](h5/selector.html) against customer's actual concurrency, isolation, and dev-team readiness |
 | **10:45 – 12:00** | 75 min | **Module 3: Hands-On Lab Track (Select Track A, B, or C below)** | Execute `python demo/run_live_demo.py --self-test` and deploy the corresponding blueprint from [`blueprints/`](blueprints) |
-| **13:30 – 14:30** | 60 min | **Module 4: Zero-Trust Control Plane & 5 Hard Boundaries Stress Test** | Run red-team attack simulations in [`demo.html`](demo.html); verify IMDS block (`169.254.169.254/32`), Egress Lockdown, Keyless Pod, and AI Gateway Token Circuit Breaker |
-| **14:30 – 15:30** | 60 min | **Module 5: State Persistence & Capacity Sizing Whiteboard** | Size VMSS/AKS nodes and `Azure HorizonDB + PgBouncer` WAL retention using Tool 2 & Tool 4 in [`selector.html`](selector.html) |
+| **13:30 – 14:30** | 60 min | **Module 4: Zero-Trust Control Plane & 5 Hard Boundaries Stress Test** | Run red-team attack simulations in [`h5/demo.html`](h5/demo.html); verify IMDS block (`169.254.169.254/32`), Egress Lockdown, Keyless Pod, and AI Gateway Token Circuit Breaker |
+| **14:30 – 15:30** | 60 min | **Module 5: State Persistence & Capacity Sizing Whiteboard** | Size VMSS/AKS nodes and `Azure HorizonDB + PgBouncer` WAL retention using Tool 2 & Tool 4 in [`h5/selector.html`](h5/selector.html) |
 | **15:30 – 16:00** | 30 min | **Module 6: Sign-Off on Target Architecture & Step 05 Milestones** | Agree on PoC exit criteria, CSU/Partner assignment, and target production launch date |
 
 ---
@@ -77,9 +65,3 @@ In the 5-step Azure Agent Infra Playbook (`Initial Screening → Discovery → D
 | **Credential Hygiene** | Zero raw LLM API keys or database connection strings inside sandbox env | `OPENAI_BASE_URL` points to internal AI Gateway (`Keyless Pod`) | `[ ]` |
 | **Token Budget Guard** | Per-Agent / Per-Team TPM & Daily USD hard circuit breaker active at gateway | Automatic `HTTP 429` before runaway loop exhausts subscription quota | `[ ]` |
 | **State & Retention** | Durable checkpointer (`HorizonDB + PgBouncer` or `Cosmos DB`) + 30-day TTL | PgBouncer handoff `~5ms`; 30-day ZSTD hot retention `< 128 TB` | `[ ]` |
-
-
-
-
-
-

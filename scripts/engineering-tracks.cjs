@@ -19,7 +19,7 @@ function classifyPath(value, fallback = 'general') {
   if (/ai-infra-(?:architect-workbench|phase179)|llm-inference-engine-pd|moe-quantization-parallelism|deepinfer|e2b-nomad|alibaba-cloud-ai-infra|ai-infra-research/.test(source)) return 'infra';
   // The playbook is the cross-runtime architectural guide, not a capacity simulator.
   if (/workshops\/azure-agent-infra\/index(?:\.en)?\.html$/.test(source)) return 'infra';
-  if (/azure-infra-lab|workshops\/(?:azure-agent-infra|data-lab|azure-vm-modernization|fabcon-sqlcon-2026)(?:\/|$)|docs\/azure-agent-infra\/assets\/(?:04|05)-/.test(source)) return 'data-infra';
+  if (/azure-infra-lab|(?:^|\/)(?:zh-)?diamond\.html$|workshops\/(?:diamond-demos|azure-agent-infra|data-lab|azure-vm-modernization|fabcon-sqlcon-2026)(?:\/|$)|docs\/azure-agent-infra\/assets\/(?:04|05)-/.test(source)) return 'data-infra';
   if (/ai-infra-lab/.test(source)) return 'infra';
   if (/agentic-commerce|webiq-azure/.test(source)) return 'commerce';
   if (/(?:^|\/)voice(?:\/|$)/.test(source)) return 'voice';

@@ -1,0 +1,53 @@
+# Claude Opus 5.5 Animation & Interactive Visual Landscape Survey: Paradigms, Mathematical Primitives & Repository Mapping
+
+> 🌐 **Language / 语言**: [中文 (`opus-animation-landscape.md`)](opus-animation-landscape.md) | **English**
+
+This document synthesizes the **Claude Opus 5.5 & Frontier Browser Animation Landscape** (spanning 522 curated works from `awesome-claude-opus-5.5` and 24 deep-dive projects from `magiccreator-ai/awesome-claude-opus-5-5-demos`), extracting reusable mathematical, shader, physical, and aesthetic primitives and mapping them directly into the three core demonstrations of **Generative Visual Lab**:
+- **Winds Among the Murals · Dunhuang Feitian (`demos/feitian/`)**
+- **Astra Planet Lab · NASA MOLA Mars Scenery (`demos/astra-planet/`)**
+- **Launch · Circular-Porthole White Rocket Complex (`demos/rocket-launch/`)**
+
+---
+
+## 1. Taxonomy of 522 Curated Frontier Browser Animation Works
+
+| Category | Representative High-Impact Works | Core Rendering Stack & Technical Signatures | Mapping in Generative Visual Lab |
+| --- | --- | --- | --- |
+| **1. Interactive Optics & Physics Labs** (`Interactive Viz & Simulations`) | • *Interactive Camera-Focus Lens Lab* (❤ 16.2k)<br>• *Tokyo Last-Train Dynamic Map* (❤ 4.3k)<br>• *Electromagnetic Field Visualizer* (❤ 2.8k)<br>• *3D Datacenter Thermal Simulation* (❤ 2.1k) | Thin-lens equation, Circle of Confusion ($\text{CoC}$), vector-field streamline integration, real-time parameter coupling | **Rocket Launch** (circular porthole anamorphic lens glow & shock rings), **Astra** (Rayleigh/Mie atmospheric limb & polar frost micro-glint) |
+| **2. Code-Only Motion Graphics & Launch Films** (`Motion Graphics & Launch Films`) | • *Code-only UI Motion Design Template* (❤ 12.1k)<br>• *12-Machine Synchronized Launch Film* (❤ 4.6k)<br>• *900-Frame Rendering Pipeline Explainer* (❤ 2.6k) | Pure time functions $F(t)$, critically damped second-order springs, multi-camera dolly/pan choreography | **Rocket Launch** (Standby → Ignition → Liftoff → Transonic → Ascent camera choreography), **Feitian** (four-act mural narrative state machine) |
+| **3. Eastern Aesthetics & Procedural Dioramas** (`Three.js & Cultural Scenes`) | • *Dunhuang Mogao Feitian* (Canvas 2D mineral mural)<br>• *Sakura River Valley Boat Scene*<br>• *Peach Blossom Spring Three.js Remake* | Multi-layer offscreen Canvas mineral pigment caches, Verlet/PBD constrained ribbons, Tyndall volumetric light beams, floating gold-leaf dust | **Feitian** (Cycles-baked four-niche relief, Tyndall light shafts, gold-leaf dust motes, 2× supersampled Tang figures, dual-layer lotus petals) |
+| **4. Blender MCP + Real-Time 3D Hybrid Scenery** (`Blender & Engine Modeling`) | • *5-Model 3D-Printed Load-Bearing Bridge* (❤ 8.4k)<br>• *5,112-Object Shinkansen Train*<br>• *1906 San Francisco Market Street Reconstruction* | Parametric `bpy`/`bmesh` scripts + Cycles normal/AO/relief baking + modular `.glb` export with frontend per-material static batching | **All 3 Core Demos Integrated with Blender 4.5.10 LTS + `blender-mcp`** (`rocket-kit.glb`, `mars-micro-normal.png`, `grotto-relief-bake.png`) |
+| **5. Space Exploration & Planetary Worlds** (`Space & Planetary Worlds`) | • *Seamless No Man's Sky-Style Galaxy* (❤ 4.0k)<br>• *Explorable Imaginary Solar System* | Spherical heightfield displacement, derivative slope normals, Fresnel atmospheric limb glow, terminator scattering | **Astra Planet Lab** (NASA MOLA measured altimetry + Blender Cycles micro-normals + CRISM/HiRISE mineral stratigraphy + GLB export) |
+| **6. Procedural WebAudio & Demoscene** (`Music, MVs & Demoscene`) | • *CUDA Kernel Music Video* (❤ 2.4k)<br>• *280KB Single-HTML Demoscene*<br>• *Passacaglia Code-Synthesized Short Films* | Zero external audio files; pure WebAudio API harmonic synthesis synchronized with visual phases | **Feitian** (pentatonic guqin/xiao harmonics & reveal chimes) |
+| **7. Holographic Cards & Micro-Interactive UI** (`Web & Holographic UI`) | • *2D/3D Holographic Trading Card* (❤ 1.9k)<br>• *Interactive Live-Recomputed Slides* (❤ 2.3k) | View-dependent thin-film interference gradients, pointer parallax, dual-theme adaptation | **Feitian** (sixteen-ray gilded nimbus & brocade sheen), **GVL Portal** (Clawpilot dark/light theme system) |
+| **8. Knowledge-Explainer Animation Harness** (`Programmatic Explainer Videos`) | • *[Xiaozhe Agent] MCP vs. Skill vs. Local Tools Node Graph*<br>• *[Xiaozhe LLM] Mastering RAG 4-Stage Funnel*<br>• *[Fourth Chimp] DeepSeek $38/GPU Unit Economics* | `one-sentence-video` 4D orthogonal Style Ledger (`look × layout × motion × sound`), `cut-the-curve` seam velocity matching ($\eta \approx 0.89$), 3×3 edge-density gate, causal WebAudio SFX | **05 / Knowledge Explainer Animation Studio (`demos/knowledge-explainer-studio/`)** + [Bilingual Monograph](knowledge-explainer-animation-study.en.md) |
+
+---
+
+## 2. Core Mathematical Primitives & Nightly Evolution Archive (Stages 1–80+)
+
+### 2.1 Thin-Lens Circle of Confusion ($\text{CoC}$) & Porthole Anamorphic Streak
+$$\frac{1}{f} = \frac{1}{d_o} + \frac{1}{d_i}, \qquad \text{CoC}(d) = \left| \frac{d - d_f}{d} \right| \cdot \frac{f^2}{N \cdot (d_f - f)}$$
+Mapped to `demos/rocket-launch/` as the thrust-coupled porthole optical glow and horizontal anamorphic flare streak during ignition and liftoff.
+
+### 2.2 Oren-Nayar Rough Regolith BRDF, Hapke Opposition Surge & Frost Micro-Glint (`Astra Realistic Mode`)
+$$A = 1 - 0.5 \frac{\sigma^2}{\sigma^2 + 0.33}, \quad B = 0.45 \frac{\sigma^2}{\sigma^2 + 0.09}, \quad I_{\text{frost}} = F_{\text{fresnel}}(N, V) \cdot (N \cdot H)^{48} \cdot f_{\text{frost}}(h, |\sin\phi|)$$
+Applied exclusively when `uMode == 0` (`realistic` mode), keeping `gray`, `wireframe`, and `height` scientific inspection modes strictly unperturbed.
+
+### 2.3 De Laval Supersonic Plume Shock Diamonds, Barrel Shock & Transonic Vapor Cone (`Rocket Launch`)
+$$M(u, v, t) = \cos^4\left(k_y v - \omega t\right) \cdot \exp\left(-k_r (u - 0.5)^2\right) \cdot (1 - v)^{0.7}$$
+Combined with Planck blackbody core temperature mapping (`kelvinCore`), normal-shock `machDisk`, and multi-mode shear-layer / vortex-ring harmonics inside `flameMaterial`.
+
+---
+
+## 3. Enterprise Generative Visual & Multimodal Capability Matrix (AI Solution Architect Perspective)
+
+As generative visual systems transition from one-off prompt demos into enterprise production infrastructure, Cloud & AI Solution Architects must make disciplined trade-offs across **real-time programmable rendering, controllable multimodal / 3D world models, and governed AIGC production pipelines**. All legacy classical-mechanics and sensor-parameter formula benches have been purged so the repository focuses cleanly on **41 interactive demonstrations and bilingual SA decision guides**:
+
+| Architectural Layer | Count | Representative Demos & Core Architecture | Enterprise Business Value (SA Perspective) |
+| --- | --- | --- | --- |
+| **Layer 1: Real-Time Procedural Scenery & Blender MCP Hybrid Pipeline** | **3 Demos** | `feitian` (Canvas 2D + Cycles orthogonal relief bake), `astra-planet` (NASA MOLA measured altimetry + Three.js metric GLB export), `rocket-launch` (Blender 4.5 MCP hard-surface kit + per-material static batching) | Proves high-frame-rate browser storytelling with zero runtime LLM/diffusion API cost while strictly separating measured data from artistic shading |
+| **Layer 2: Multimodal Audio-Visual, 4D Camera & 3D World Model Studios** | **7 Studios** | `pelican-bicycle-arena` (FAF vs. AGENT-FORGE vs. HVE-Core 3-way harness benchmark), `knowledge-explainer-studio`, `camera-4d-director` (GEN3C + Diff4Splat + MotionStream), `audiovisual-foley-studio` (LTX-2 + FramePack O(1)), `physgaussian-world-studio`, `neural-relight-director`, `worldmem-action-director` | Gives architects interactive workbenches and 7-Card benchmark decks to evaluate controllable video, native foley, neural relighting, and stateful 3D world models |
+| **Layer 3: Enterprise AIGC Production Pipelines, FinOps & Governance** | **31 Workbenches** | Multi-model tiered router & async token-bucket queue, Serverless ComfyUI warm-pool VRAM scheduler, Brand VI & C2PA gateway, Multimodal DAM search-before-generate, E-commerce PBR relighting / virtual try-on / 3D packaging CAD dieline, 17-locale avatar ROI lip-sync, 10M-user Closed-GOP CRM video muxing, LED ICVFX virtual production, CAD/BIM Tri-ControlNet, and AST->PPTX/SVG executive diagram compilers | Eliminates the five dominant enterprise AIGC failure modes: GPU cost blowups, garbled typography, product geometry drift, missing C2PA provenance, and HTTP 429 rate-limit storms |
+
+See [`asset-taxonomy.en.md`](asset-taxonomy.en.md) and [`validation.en.md`](validation.en.md) for the complete 41-demo inventory and automated quality gates.

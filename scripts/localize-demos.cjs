@@ -10,13 +10,24 @@ const files = dirs.flatMap(dir => [
   ...['astra-planet','feitian','rocket-launch','knowledge-explainer-studio','camera-4d-director'].map(d => `${dir}/${d}/index.html`),
   ...['index','pelican-arena','demo-faf-pelican','demo-agent-forge-pelican','demo-hve-pelican'].map(n => `${dir}/pelican-bicycle-arena/${n}.html`)
 ]).concat(['game/index.html','game/demos/scrap-swarm/index.html','game/demos/wanan-midnight/index.html','voice/deck.html',
-  'workshops/azure-agent-infra/demo.html','workshops/azure-agent-infra/selector.html','workshops/azure-agent-infra/workbench-cycle-377.html',
+  'workshops/azure-agent-infra/demo.html','workshops/azure-agent-infra/selector.html',
   ...['index','pelican-arena','demo-faf-pelican','demo-agent-forge-pelican','demo-hve-pelican'].map(n => `workshops/faf-vs-agent-forge/${n}.html`),
   'workshops/maf-multi-agent-benchmark/index.html','workshops/data-lab/index.html','game/demos/scrap-swarm/design/index.html']);
 const records = files.map(source => ({source, en: source.replace(/\.html$/, '.en.html'), zh: source, kind: 'demo'}));
 const deferred = [];
 const sourceCache = new Map();
 const readSource = (file, commit = BASELINE) => {
+  if (commit === BASELINE) {
+    if (file === 'workshops/azure-agent-infra/demo.html' || file === 'workshops/azure-agent-infra/selector.html') {
+      const ded = require('./integrate-dedicated.cjs');
+      const rec = ded.owned.find(r => r.path === file);
+      return ded.transform(rec, ded.baseline(rec)).html;
+    }
+    if (file === 'workshops/data-lab/index.html') {
+      const dl = require('./integrate-data-lab.cjs');
+      return dl.transform('index.html', dl.source('index.html'));
+    }
+  }
   const key = `${commit}:${file}`;
   if (!sourceCache.has(key)) sourceCache.set(key, cp.execFileSync('git', ['show', key], {cwd: root, encoding: 'utf8', maxBuffer: 30 * 1024 * 1024}));
   return sourceCache.get(key);

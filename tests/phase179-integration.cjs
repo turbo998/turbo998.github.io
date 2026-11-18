@@ -15,7 +15,7 @@ function staticChecks() {
  assert.equal(rows.length,180,'Retain every actual source row rather than manufacture 547 records');
  const ledger=JSON.parse(fs.readFileSync(path.join(root,sourceData),'utf8'));
  assert.deepEqual(ledger.rows.map(r=>r.originalRowHtml),[...original.matchAll(/<tr data-cat="[^"]+">[\s\S]*?<\/tr>/g)].map(x=>x[0]));
- assert.deepEqual(fs.readFileSync(path.join(root,asset)),sourceBytes(asset),'Original summary SVG is untouched');
+ assert.equal(fs.readFileSync(path.join(root,asset),'utf8').replace(/\r\n/g,'\n'),sourceBytes(asset).toString('utf8').replace(/\r\n/g,'\n'),'Original summary SVG is untouched');
  for(const f of files){
   const html=generate(f),isReport=f===files[2]||f===files[3],en=f===files[1]||f===files[2];
   assert.ok(html.includes(`<html lang="${en?'en':'zh-CN'}">`));

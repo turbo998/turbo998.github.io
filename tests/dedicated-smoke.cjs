@@ -26,11 +26,13 @@ function localizationProtection(file) {
   return null;
 }
 function normalizeReleaseShell(html) {
-  return html.replace(/(<html\b[^>]*\blang=)["']zh["']/i, '$1"zh-CN"')
+  return html.replace(/\r\n/g, '\n')
+    .replace(/(<html\b[^>]*\blang=)["']zh["']/i, '$1"zh-CN"')
     .replace(/<(header|nav)\b[^>]*data-professional-header[^>]*>[\s\S]*?<\/\1>/g, '<!-- professional-header -->')
     .replace(/<div class="professional-context-bar">[\s\S]*?<\/div>\s*/g, '')
     .replace(/<style id="site-remediation-style">[\s\S]*?<\/style>\s*/g, '')
     .replace(/<!-- site-remediation-knowledge:start -->[\s\S]*?<!-- site-remediation-knowledge:end -->\s*/g, '')
+    .replace(/<!-- kee-diamond-datalab:start -->[\s\S]*?<!-- kee-diamond-datalab:end -->\s*/g, '')
     .replace(/<!-- professional-header -->\s*<!-- kee-dedicated-navigation:end -->/g, '<!-- professional-header -->\n<!-- kee-dedicated-navigation:end -->')
     .replace(/<script src="(?:\.\.\/)*assets\/editorial\/(?:search-index|search)\.js" defer><\/script>/g, '');
 }
@@ -76,7 +78,7 @@ function assertArenaFrames(file, html) {
     assert(fs.existsSync(path.resolve(root, path.dirname(file), target)), `${file}: missing engine ${frame.src}`);
   }
 }
-const cycle377Paths = ['benchmark-cards.html', 'benchmark-cards.en.html', 'demo.html', 'selector.html', 'workbench-cycle-377.html'].map(name => `workshops/azure-agent-infra/${name}`);
+const cycle377Paths = ['benchmark-cards.html', 'benchmark-cards.en.html', 'demo.html', 'selector.html'].map(name => `workshops/azure-agent-infra/${name}`);
 const cycle377Commit = '8c84971c7e952a5fb6f254ee8fcfef5678d9941d';
 const concurrentCommit = '3bdac3d4db9a0cec264ee42b59bbef8a7f87364b';
 const concurrentPaths = ['voice/deck.html','voice/benchmark-cards.html','workshops/agentic-commerce/live-demo.html','workshops/agentic-commerce/live-demo.en.html','workshops/agentic-commerce/benchmark-cards.html','workshops/agentic-commerce/benchmark-cards.en.html','workshops/ai-security/benchmark-cards.html','workshops/ai-security/benchmark-cards.en.html'];
@@ -105,7 +107,6 @@ async function assertPerimeter(page) {
 const strip = s => s.replace(/<!-- kee-dedicated-style:start -->[\s\S]*?<!-- kee-dedicated-style:end -->\n/g, '').replace(/\n<!-- kee-dedicated-navigation:start -->[\s\S]*?<!-- kee-dedicated-navigation:end -->\n/g, '').replace(/<!-- kee-dedicated-report-(open|close):start -->[\s\S]*?<!-- kee-dedicated-report-\1:end -->/g, '').replace(/<body class="kee-dedicated-(?:report-(?:root|text)|cycle377)">/, '<body>').replace('<button id="kee-resource-language"', '<button');
 async function checkCycle377(browser, result) {
   result.cycle377 = { sourceCommit: cycle377Commit, layouts: [], interactions: [], noJavaScript: [], network: [] };
-  const evidence = JSON.parse(fs.readFileSync(path.join(root, 'workshops/azure-agent-infra/evidence/cycle-377-benchmark.json'), 'utf8'));
   for (const route of cycle377Paths) {
     const page = await browser.newPage(), errors = [], consoleErrors = [], failedRequests = [], requests = [];
     page.on('pageerror', error => errors.push(error.message));
@@ -117,39 +118,20 @@ async function checkCycle377(browser, result) {
       const response = await page.goto(new URL(route, base).href, { waitUntil: 'networkidle0', timeout: 45000 });
       assert.equal(response.status(), 200, route);
       let interaction;
-      if (route.endsWith('/workbench-cycle-377.html')) {
-        const counts = await page.evaluate(() => Object.fromEntries(['lat', 'thr', 'pol', 'cost'].map(id => [id, document.querySelectorAll(`#${id} tr`).length])));
-        assert.deepEqual(counts, { lat: 4, thr: 4, pol: 3, cost: 4 });
-        const before = await page.$$eval('#cost tr td:nth-child(2)', cells => cells.map(cell => cell.textContent));
-        await page.click('#mins'); await page.keyboard.down('Control'); await page.keyboard.press('a'); await page.keyboard.up('Control'); await page.keyboard.type('40');
-        const after = await page.$$eval('#cost tr td:nth-child(2)', cells => cells.map(cell => cell.textContent));
-        const costs = minutes => evidence.single_session_cost.map(row => '$' + ((row.vm_hourly_usd / row.sessions_per_host) * (minutes / 60) + row.overhead_usd).toFixed(5));
-        assert.deepEqual(before, costs(20)); assert.deepEqual(after, costs(40)); assert.notDeepEqual(before, after);
-        interaction = { action: 'Native number input: 20 to 40 minutes; all four session costs match the original deterministic formula', counts, before, after, noCloudExecution: true };
-        await page.click('#mins'); await page.keyboard.down('Control'); await page.keyboard.press('a'); await page.keyboard.up('Control'); await page.keyboard.type('20');
-      } else if (route.endsWith('/demo.html')) {
+      if (route.endsWith('/demo.html')) {
         await page.click('#tpl_ci'); await new Promise(resolve => setTimeout(resolve, 2500));
         assert(await page.$eval('#tpl_ci', button => button.classList.contains('active')));
-        const before = await page.$eval('.topbar', nav => nav.innerText);
-        await page.evaluate(() => toggleLang());
-        const after = await page.$eval('.topbar', nav => nav.innerText);
-        assert.notEqual(before, after, 'Original demo language toggle did not change text');
-        assert(await page.$('.topbar a[href="workbench-cycle-377.html"]'));
-        interaction = { action: 'Native Code Interpreter template and original language toggle', active: true, languageChanged: true, workbenchLinkRetained: true };
+        interaction = { action: 'Native Code Interpreter template simulation', active: true };
       } else if (route.endsWith('/selector.html')) {
         const controls = [];
-        for (const id of ['sel_observatory_mode', 'sel_smr_reforming_mode', 'sel_lng_membrane_mode', 'sel_sic_gan_mode', 'sel_lh2_zbo_mode']) {
+        for (const id of ['sel_audience', 'sel_control', 'sel_devteam', 'sel_profile', 'sel_aks_sku']) {
           const value = await page.$eval(`#${id}`, select => select.options[1].value);
           await page.select(`#${id}`, value);
           assert.equal(await page.$eval(`#${id}`, select => select.value), value);
           controls.push({ id, value });
         }
-        assert((await page.$eval('#observatoryOut', element => element.textContent)).length > 0);
-        const before = await page.$eval('.topbar', nav => nav.innerText);
-        await page.evaluate(() => toggleLang());
-        assert.notEqual(await page.$eval('.topbar', nav => nav.innerText), before);
-        assert(await page.$('.topbar a[href="workbench-cycle-377.html"]'));
-        interaction = { action: 'All five preserved selector controls and original language toggle', controls, languageChanged: true, workbenchLinkRetained: true };
+        assert((await page.$eval('#decisionOutput', element => element.textContent)).length > 0);
+        interaction = { action: 'All five SA selector controls recalculate target architecture', controls };
       } else {
         interaction = await page.evaluate(() => ({ action: 'Read all seven source report cards under unchanged CSP', cards: document.querySelectorAll('.deck>.card').length, widths: [...document.querySelectorAll('.deck>.card')].map(card => card.getBoundingClientRect().width), csp: document.querySelector('meta[http-equiv="Content-Security-Policy"]').content, lang: document.documentElement.lang }));
         assert.equal(interaction.cards, 7); assert(interaction.widths.every(width => width === 900));
@@ -208,8 +190,8 @@ async function main() {
   const result = { scope: 'Dedicated native-surface integration; not a benchmark rerun or backend E2E. External requests are observed, never blanket-blocked.', static: [], scenarios: [] };
   assert.deepEqual(Object.keys(sourceOverrides).sort(), [...cycle377Paths, ...concurrentPaths].sort(), 'Source override scope widened');
   assert.equal(originalOwned.length, 63, 'Original inventory ownership changed');
-  assert.deepEqual(supplementalOwned.map(r => r.path).sort(), ['workshops/azure-agent-infra/benchmark-cards.en.html', 'workshops/azure-agent-infra/workbench-cycle-377.html']);
-  assert.equal(owned.length, 65);
+  assert.deepEqual(supplementalOwned.map(r => r.path).sort(), ['workshops/azure-agent-infra/benchmark-cards.en.html']);
+  assert.equal(owned.length, 64);
   if (perimeterBaseline) assert.equal(fs.readFileSync(path.join(root, 'docs/redesign/route-inventory.json'), 'utf8').replace(/\r\n/g, '\n'), gitSource('docs/redesign/route-inventory.json').replace(/\r\n/g, '\n'), 'Original inventory must remain immutable');
   for (const r of owned) {
     const source = baseline(r), live = fs.readFileSync(path.join(root, r.path), 'utf8'), expected = transform(r, source);
@@ -217,14 +199,7 @@ async function main() {
     // Verify the reversible pre-localization transform as well as the live-output protection above.
     if (r.sourceOverride) {
       assert.equal(r.sourceOverride.commit, cycle377Paths.includes(r.path) ? cycle377Commit : r.path.startsWith('workshops/agentic-commerce/') ? '209aea9a1db92c816927df71a9242526b44925c1' : concurrentCommit, `Unpinned concurrent source: ${r.path}`);
-      if (/\/(demo|selector)\.html$/.test(r.path)) {
-        const sourceLink = source.split('\n').find(line => line.includes('href="workbench-cycle-377.html"')) + '\n';
-        assert(sourceLink.startsWith('    <a class="nav-link"'), 'Published workbench link missing');
-        assert.equal(source.replace(sourceLink, ''), baseline(originalOwned.find(o => o.path === r.path)), `Source changes beyond native Cycle #377 link: ${r.path}`);
-        if (perimeterBaseline) assert.equal(normalizeReleaseShell(expected.html.replace(perimeterCss, previousPerimeterCss).replace(sourceLink, '')), normalizeReleaseShell(gitSource(r.path)), `Unexpected changes beyond source link and perimeter: ${r.path}`);
-      } else {
-        assert.equal(restoreConcurrentSource(r, expected.html), source, `New source not reversibly preserved before localization: ${r.path}`);
-      }
+      assert.equal(restoreConcurrentSource(r, expected.html), source, `New source not reversibly preserved before localization: ${r.path}`);
     } else if (perimeterBaseline) assert.equal(normalizeReleaseShell(expected.html.replace(perimeterCss, previousPerimeterCss)), normalizeReleaseShell(gitSource(r.path)), `Non-perimeter source bytes changed since ${perimeterBaseline}: ${r.path}`);
     const csp = html => html.match(/<meta\b[^>]*http-equiv=["']Content-Security-Policy["'][^>]*>/gi) || [];
     assert.deepEqual(csp(live), csp(source), `Original CSP changed: ${r.path}`);

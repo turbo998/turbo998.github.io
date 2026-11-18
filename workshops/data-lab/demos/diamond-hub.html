@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Diamond 企业级实战演示中心 — TCL × Microsoft Fabric & Zava × Azure Databricks</title>
+<style>
+  :root {
+    --bg:#070b14; --panel:#0f172a; --card:#1e293b; --border:#334155;
+    --text:#f8fafc; --muted:#94a3b8; --blue:#38bdf8; --red:#f43f5e; --green:#10b981; --purple:#a855f7;
+  }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif; background:var(--bg); color:var(--text); line-height:1.62; }
+  .topbar { background:#050810; border-bottom:1px solid var(--border); padding:10px 26px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; font-size:13px; position:sticky; top:0; z-index:50; }
+  .topbar a { color:#93c5fd; text-decoration:none; font-weight:600; padding:5px 11px; border-radius:7px; background:rgba(30,41,59,0.8); border:1px solid rgba(148,163,184,0.22); }
+  .topbar a:hover { background:#2563eb; color:#fff; }
+  .wrap { max-width:1240px; margin:0 auto; padding:34px 24px 68px; }
+  .hero { background:radial-gradient(circle at 85% 15%, rgba(168,85,247,0.22), transparent 45%), linear-gradient(135deg,#0f172a 0%,#1e1b4b 55%,#1b1022 100%); border:1px solid rgba(56,189,248,0.35); border-radius:22px; padding:34px 38px; margin-bottom:28px; }
+  .pill { display:inline-block; padding:4px 12px; border-radius:999px; font-size:11.5px; font-weight:800; letter-spacing:0.06em; background:rgba(56,189,248,0.16); color:#7dd3fc; border:1px solid rgba(56,189,248,0.4); margin-bottom:12px; }
+  h1 { font-size:30px; line-height:1.25; margin-bottom:10px; }
+  .hero p { font-size:15px; color:#cbd5e1; max-width:940px; }
+  .quick-launch { display:flex; gap:12px; flex-wrap:wrap; margin-top:20px; }
+  .btn { display:inline-flex; align-items:center; gap:6px; padding:10px 18px; border-radius:10px; font-size:13.5px; font-weight:700; text-decoration:none; color:#fff; transition:transform 0.12s; }
+  .btn:hover { transform:translateY(-1px); }
+  .btn-tcl { background:linear-gradient(135deg,#e11d48,#be123c); }
+  .btn-dbx { background:linear-gradient(135deg,#ea580c,#dc2626); }
+  .btn-fab { background:linear-gradient(135deg,#0284c7,#2563eb); }
+  .btn-outline { background:rgba(30,41,59,0.9); border:1px solid var(--border); color:#e2e8f0; }
+  .grid-2 { display:grid; grid-template-columns:repeat(auto-fit,minmax(460px,1fr)); gap:22px; margin-bottom:28px; }
+  @media(max-width:600px){ .grid-2 { grid-template-columns:1fr; } }
+  .demo-card { background:var(--panel); border:1px solid var(--border); border-radius:18px; padding:26px 28px; display:flex; flex-direction:column; justify-content:space-between; }
+  .demo-card.tcl { border-top:4px solid #f43f5e; }
+  .demo-card.zava { border-top:4px solid #f97316; }
+  .demo-card h2 { font-size:21px; margin:8px 0 8px; }
+  .kpi-strip { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin:14px 0; }
+  .kpi-mini { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:10px 12px; }
+  .kpi-mini b { display:block; font-size:16px; color:#fff; }
+  .kpi-mini span { font-size:11.5px; color:var(--muted); }
+  ul { padding-left:18px; font-size:13.5px; color:#cbd5e1; margin:10px 0 18px; }
+  li { margin-bottom:6px; }
+  .matrix-card { background:var(--panel); border:1px solid var(--border); border-radius:18px; padding:24px 28px; }
+  table { width:100%; border-collapse:collapse; font-size:13px; margin-top:12px; }
+  th { background:var(--card); color:#93c5fd; text-align:left; padding:10px 12px; border-bottom:1px solid var(--border); }
+  td { padding:10px 12px; border-bottom:1px solid rgba(51,65,85,0.65); color:#e2e8f0; vertical-align:top; }
+</style>
+<script src="../../../assets/editorial/search-index.js" defer></script><script src="../../../assets/editorial/search.js" defer></script><style id="site-remediation-style">/* Embedded by integrate-dedicated.cjs so sealed report CSP remains unchanged. */
+.kee-dedicated-nav {
+  all: initial; box-sizing: border-box; position: relative; display: flex;
+  flex-wrap: wrap; align-items: center; gap: 6px 14px; width: 100%;
+  padding: 12px 18px; margin: 0 0 16px; border: 1px solid #314361;
+  background: #101A30; color: #EEF3FF; font: 13px/1.5 system-ui, sans-serif;
+  text-align: left; isolation: isolate; color-scheme: dark;
+}
+.kee-dedicated-nav a {
+  all: revert; box-sizing: border-box; display: inline-block; padding: 4px 0;
+  color: #9AABFF; background: transparent; font: inherit; text-decoration: underline;
+  text-underline-offset: 3px; border: 0; border-radius: 0; box-shadow: none;
+}
+.kee-dedicated-nav a:focus-visible { outline: 3px solid #56DDCD; outline-offset: 3px; }
+.kee-dedicated-nav .kee-dedicated-identity { font-weight: 700; color: #EEF3FF; }
+.kee-dedicated-nav .kee-dedicated-language {
+  all: revert; display: block; flex-basis: 100%; color: #ADBBD1; font: 12px/1.5 system-ui, sans-serif;
+}
+.kee-dedicated-native-link { display: block; padding: 22px; color: #1858a8; background: #f8fafc; font: 15px/1.6 system-ui, sans-serif; }
+.kee-dedicated-native-link a { color: #1858a8; text-decoration: underline; }
+@media print { .kee-dedicated-nav { display: none; } }
+
+/* Professional primary navigation: long section names reflow, never scroll inside the header. */
+[data-professional-header]{box-sizing:border-box;display:grid!important;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:18px!important;width:100%;max-width:none;height:auto!important;min-height:0!important;padding:18px 24px!important;margin:0 0 16px;position:relative;overflow:visible!important;background:#101A30;color:#EEF3FF;border:1px solid #314361;font:13px/1.5 system-ui,sans-serif;isolation:isolate;color-scheme:dark}
+[data-professional-header] *{box-sizing:border-box;min-width:0;max-height:none}
+[data-professional-header] a{font:inherit;text-decoration:none;color:#9AABFF;overflow-wrap:anywhere;white-space:normal}
+[data-professional-header] .professional-identity{font-weight:750;color:#EEF3FF;white-space:nowrap;font-size:14px;margin:0}
+[data-professional-header] .professional-primary{display:grid;grid-template-columns:1.45fr repeat(5,minmax(0,1fr));gap:6px;align-items:stretch;min-width:0}
+@media(max-width:960px) and (min-width:601px){[data-professional-header] .professional-primary{gap:5px}[data-professional-header] .professional-primary a{padding:8px 6px;font-size:11.5px}}
+[data-professional-header] .professional-primary a{display:flex;align-items:center;justify-content:center;padding:10px 9px;border:1px solid #314361;border-radius:12px;background:#172440;text-align:center;line-height:1.4;min-height:44px}
+[data-professional-header] .professional-primary a[aria-current=page]{background:#23375a;border-color:#56DDCD;color:#56DDCD}
+[data-professional-header] .professional-controls{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:4px;font-size:12px;margin:0;position:static}
+[data-professional-header] .professional-controls>a{display:flex;align-items:center;justify-content:center;padding:8px;min-height:40px;min-width:32px;border-radius:10px}
+[data-professional-header] .professional-context{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px 18px;padding-top:12px;border-top:1px solid #314361;font-size:12px;color:#ADBBD1;min-width:0;line-height:1.6}
+[data-professional-header] .professional-context>*{min-width:0;overflow-wrap:anywhere}
+[data-professional-header] .professional-context .kee-dedicated-language{flex-basis:100%;color:#ADBBD1}
+[data-professional-header] a:focus-visible{outline:3px solid #56DDCD;outline-offset:3px}
+[data-professional-header] a:hover{text-decoration:underline}
+[data-professional-header][data-perimeter-theme=light],:root[data-theme=light] .reading-header[data-professional-header]{background:#fff;color:#172440;border-color:#d4deee;color-scheme:light}
+[data-professional-header][data-perimeter-theme=light] a,:root[data-theme=light] .reading-header[data-professional-header] a{color:#3752a0}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a,:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a{background:#edf2ff;border-color:#d4deee}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a[aria-current],:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a[aria-current]{background:#dff6f0;color:#127b72;border-color:#127b72}
+@media(max-width:1150px){[data-professional-header]{grid-template-columns:minmax(0,1fr) auto;gap:12px!important}[data-professional-header] .professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header] .professional-controls{grid-column:2;grid-row:1}}
+@media(max-width:600px){[data-professional-header]{padding:14px 16px!important;gap:12px!important}[data-professional-header] .professional-primary{grid-template-columns:repeat(2,minmax(0,1fr))}[data-professional-header] .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:13px}[data-professional-header] .professional-controls{gap:0}[data-professional-header] .professional-controls>a{padding:6px;min-width:28px}}
+@media print{[data-professional-header]{display:none!important}}
+
+html{scroll-padding-top:164px}@media(max-width:600px){html{scroll-padding-top:260px}}.reading-header,.kee-dedicated-nav,[data-professional-header]{position:sticky;top:0;z-index:1000;-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
+
+:root{--search-bg:#101a30;--search-soft:#172440;--search-ink:#eef3ff;--search-muted:#adbbd1;--search-line:#293956;--search-accent:#9aabff;--header-offset:144px}
+:root[data-reading-shell][data-theme=light],[data-perimeter-theme=light]{--search-bg:#fff;--search-soft:#e8eefb;--search-ink:#17233e;--search-muted:#4c5e7c;--search-line:#d5ddec;--search-accent:#354ec8}
+html{scroll-padding-top:var(--header-offset,108px)!important}
+.site-search,.site-search *{box-sizing:border-box!important;font-family:"Segoe UI",sans-serif;letter-spacing:normal;text-transform:none}
+.site-search{position:relative;display:flex;align-items:center;gap:5px;min-width:0;width:230px;max-width:100%;margin:0!important;padding:0!important;line-height:1.4;border:1px solid var(--search-line);border-radius:9px;background:var(--search-soft);color:var(--search-ink);isolation:isolate}
+.site-search input[type=search]{display:block;flex:1;min-width:0;width:100%;height:42px;margin:0;padding:9px 8px!important;font-size:12px!important;line-height:1.5;border:0!important;border-radius:9px;background:transparent!important;color:var(--search-ink)!important;box-shadow:none!important;appearance:none}
+.site-search input::placeholder{color:var(--search-muted);opacity:1}.site-search input:focus-visible{outline:2px solid var(--search-accent);outline-offset:2px}
+.site-search kbd{font:11px Consolas,monospace;color:var(--search-muted);padding:1px 5px;border:1px solid var(--search-line);border-radius:4px}
+.site-search button[type=submit]{flex:none;width:38px;min-width:38px;height:42px;min-height:42px;padding:0;margin:0;border:0;border-radius:8px;background:transparent;color:var(--search-accent);font-size:24px;cursor:pointer;box-shadow:none}
+.search-label,.search-status{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.site-search .search-results{position:absolute;top:calc(100% + 10px);right:0;z-index:1100;width:min(480px,calc(100vw - 32px));max-height:min(560px,65vh);overflow-y:auto;border:1px solid var(--search-line);border-radius:12px;background:var(--search-bg);color:var(--search-ink);padding:10px;box-shadow:0 12px 32px #0005;text-align:left}
+.site-search .search-results[hidden]{display:none!important}.search-results .search-group{margin:8px 6px 4px;font:11px/1.5 Consolas,monospace;color:var(--search-muted)}
+.site-search .search-results a{display:block!important;padding:10px!important;margin:3px 0!important;border:1px solid transparent!important;border-radius:7px;background:transparent;color:var(--search-ink)!important;font-size:13px!important;text-decoration:none!important;white-space:normal;overflow-wrap:anywhere;text-align:left!important;line-height:1.5!important}
+.site-search .search-results a[aria-selected=true],.site-search .search-results a:hover{border-color:var(--search-accent)!important;background:var(--search-soft)}
+.search-results a small{display:block;font-size:10px;color:var(--search-muted);margin-top:4px}.search-results p{margin:10px;font-size:13px;color:var(--search-muted)}
+.search-archive-summary{padding:20px;border:1px solid var(--search-line);border-radius:10px;background:var(--search-bg);color:var(--search-ink);margin:24px 0}.search-archive-summary h2{font-size:24px;margin:0 0 12px}.search-archive-summary li{margin:12px 0}.search-archive-summary a{color:var(--search-accent)}
+[data-professional-header]{position:sticky!important;top:0!important;z-index:1000!important;background:var(--search-bg)!important;--header-glass:rgba(16,26,48,.9);grid-template-columns:auto minmax(0,1fr) 230px auto!important}
+[data-professional-header][data-perimeter-theme=light],:root[data-reading-shell][data-theme=light] [data-professional-header]{--header-glass:rgba(255,255,255,.94)}
+[data-professional-header] .professional-mobile{display:none}.professional-mobile summary{min-width:38px;min-height:42px;display:grid;place-items:center;cursor:pointer;list-style:none}.professional-mobile summary::-webkit-details-marker{display:none}
+[data-professional-header] .professional-context{display:none}
+.professional-context-bar{padding:12px 24px;border-bottom:1px solid var(--search-line);background:var(--search-bg);color:var(--search-muted);font:12px/1.6 "Segoe UI",sans-serif;display:flex;flex-wrap:wrap;gap:8px 18px;overflow-wrap:anywhere}.professional-context-bar a{color:var(--search-accent)}
+@supports((backdrop-filter:blur(16px)) or (-webkit-backdrop-filter:blur(16px))){.site-header,[data-professional-header]{background:var(--header-glass)!important;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}}
+@media(max-width:1250px) and (min-width:701px){.header-inner{grid-template-columns:minmax(0,1fr) 230px auto!important;padding:12px 0;gap:12px!important}.desktop-nav{grid-row:2;grid-column:1/-1}.header-inner>.site-search{grid-column:2;grid-row:1}.header-inner>.controls{grid-column:3;grid-row:1}[data-professional-header]{grid-template-columns:minmax(0,1fr) 230px auto!important;gap:12px!important}[data-professional-header]>.professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header]>.site-search{grid-column:2;grid-row:1}[data-professional-header]>.professional-controls{grid-column:3;grid-row:1}:root{--header-offset:184px}}
+@media(max-width:700px){.header-inner{grid-template-columns:minmax(0,1fr) auto!important;padding:10px 0;gap:8px!important}.header-inner>.site-search{grid-row:2;grid-column:1/-1;width:100%}.header-inner>.controls{grid-column:2;grid-row:1}.site-search .search-results{width:100%;right:0}[data-professional-header]{grid-template-columns:minmax(0,1fr) auto!important;padding:10px 16px!important;gap:8px!important}[data-professional-header]>.professional-primary{display:none!important}[data-professional-header]>.site-search{grid-column:1/-1;grid-row:2;width:100%}[data-professional-header]>.professional-controls{grid-column:2;grid-row:1}[data-professional-header] .professional-mobile{display:block}[data-professional-header] .professional-mobile[open]>.professional-primary{position:absolute;top:100%;left:0;right:0;padding:16px;background:var(--search-bg);border-bottom:1px solid var(--search-line);display:grid;grid-template-columns:1fr 1fr;gap:8px}[data-professional-header] .professional-mobile .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:12px!important}:root{--header-offset:136px}}
+@media(prefers-reduced-transparency:reduce){.site-header,[data-professional-header]{background:var(--search-bg)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}}
+@media print{.site-search,.professional-context-bar{display:none!important}}
+
+@media(min-width:1251px){.header-inner{display:grid!important;grid-template-columns:auto minmax(0,1fr) 230px auto!important;gap:18px!important}.header-inner .desktop-nav{min-width:0}}
+
+html:has(.kee-dedicated-app-root){height:auto!important;overflow-x:hidden!important;overflow-y:auto!important}
+body:has([data-professional-header]){height:auto!important;overflow-x:clip!important;overflow-y:visible!important;padding-top:0!important}
+.demo-language-navigation{display:none!important}
+.stage-column,.telemetry-panel,.scene-pill,#timeline-slider{min-width:0}
+@media(max-width:1180px){.workspace,.template-tabs{grid-template-columns:minmax(0,1fr)!important}}
+
+.in-arena-frame .professional-context-bar,.in-arena-frame [data-knowledge-atlas]{display:none!important}
+.knowledge-graph-wide{display:block}.knowledge-graph-compact{display:none}@media(max-width:600px){.knowledge-graph-wide{display:none}.knowledge-graph-compact{display:block}}
+</style></head>
+<body><nav class="kee-dedicated-nav" data-professional-header><a class="professional-identity reading-brand kee-dedicated-identity identity" href="../../../zh.html">Qi Chen · @turbo998</a><div class="professional-primary" role="navigation" aria-label="主导航"><a href="../../../studio/zh-index.html" data-section="hub" data-nav-en-href="../../../studio/index.html" data-nav-zh-href="../../../studio/zh-index.html" data-nav-en-label="Frontier Transformation Engineering Hub" data-nav-zh-label="Frontier Transformation Engineering Hub" aria-current="page">Frontier Transformation Engineering Hub</a><a href="../../../zh-diamond.html" data-section="diamond" data-nav-en-href="../../../diamond.html" data-nav-zh-href="../../../zh-diamond.html" data-nav-en-label="Diamond Live Demos" data-nav-zh-label="Diamond 实战演示">Diamond 实战演示</a><a href="../../../zh-benchmarks.html" data-section="benchmarks" data-nav-en-href="../../../benchmarks.html" data-nav-zh-href="../../../zh-benchmarks.html" data-nav-en-label="Benchmark &amp; Eval Foundry" data-nav-zh-label="基准评测中心">基准评测中心</a><a href="../../../zh-github-radar.html" data-section="radar" data-nav-en-href="../../../github-radar.html" data-nav-zh-href="../../../zh-github-radar.html" data-nav-en-label="GitHub AI Signal Radar" data-nav-zh-label="GitHub AI 信号雷达">GitHub AI 信号雷达</a><a href="../../../zh-openrouter.html" data-section="routing" data-nav-en-href="../../../openrouter.html" data-nav-zh-href="../../../zh-openrouter.html" data-nav-en-label="Model Routing &amp; Telemetry" data-nav-zh-label="OpenRouter 模型遥测">OpenRouter 模型遥测</a><a href="../../../zh-about.html" data-section="profile" data-nav-en-href="../../../about.html" data-nav-zh-href="../../../zh-about.html" data-nav-en-label="Principal Architect Profile" data-nav-zh-label="首席架构师履历">首席架构师履历</a></div><form class="site-search" role="search" action="../../../studio/zh-archive.html" method="get" data-search-root="../../../index.html" data-search-language="zh-CN"><label class="search-label" for="site-search-input">搜索架构、评测、Demo、技能...</label><input id="site-search-input" name="q" type="search" placeholder="搜索架构、评测、Demo、技能..." autocomplete="off" spellcheck="false" aria-keyshortcuts="/ Control+k Meta+k"><kbd aria-hidden="true">/</kbd><button type="submit" aria-label="搜索全部内容">⌕</button><div class="search-results" id="site-search-results" hidden></div><span class="search-status" role="status" aria-live="polite"></span></form><div class="reading-controls professional-controls" aria-label="网站语言与外观"><a href="diamond-hub.en.html" data-reading-language hreflang="en" lang="en">EN</a><a href="diamond-hub.html" hreflang="zh-CN" lang="zh-CN" aria-current="page">中文</a><details class="professional-mobile"><summary aria-label="打开主导航">☰</summary><div class="professional-primary" role="navigation" aria-label="移动主导航"><a href="../../../studio/zh-index.html" data-section="hub" data-nav-en-href="../../../studio/index.html" data-nav-zh-href="../../../studio/zh-index.html" data-nav-en-label="Frontier Transformation Engineering Hub" data-nav-zh-label="Frontier Transformation Engineering Hub" aria-current="page">Frontier Transformation Engineering Hub</a><a href="../../../zh-diamond.html" data-section="diamond" data-nav-en-href="../../../diamond.html" data-nav-zh-href="../../../zh-diamond.html" data-nav-en-label="Diamond Live Demos" data-nav-zh-label="Diamond 实战演示">Diamond 实战演示</a><a href="../../../zh-benchmarks.html" data-section="benchmarks" data-nav-en-href="../../../benchmarks.html" data-nav-zh-href="../../../zh-benchmarks.html" data-nav-en-label="Benchmark &amp; Eval Foundry" data-nav-zh-label="基准评测中心">基准评测中心</a><a href="../../../zh-github-radar.html" data-section="radar" data-nav-en-href="../../../github-radar.html" data-nav-zh-href="../../../zh-github-radar.html" data-nav-en-label="GitHub AI Signal Radar" data-nav-zh-label="GitHub AI 信号雷达">GitHub AI 信号雷达</a><a href="../../../zh-openrouter.html" data-section="routing" data-nav-en-href="../../../openrouter.html" data-nav-zh-href="../../../zh-openrouter.html" data-nav-en-label="Model Routing &amp; Telemetry" data-nav-zh-label="OpenRouter 模型遥测">OpenRouter 模型遥测</a><a href="../../../zh-about.html" data-section="profile" data-nav-en-href="../../../about.html" data-nav-zh-href="../../../zh-about.html" data-nav-en-label="Principal Architect Profile" data-nav-zh-label="首席架构师履历">首席架构师履历</a></div></details><a data-reading-theme="light" href="diamond-hub.html?theme=light" aria-label="浅色主题">☀</a><a data-reading-theme="dark" href="diamond-hub.html?theme=dark" aria-label="深色主题">◐</a></div><div class="professional-context" aria-label="返回上下文"><a href="../../../studio/zh-index.html">← 工程枢纽</a> · <a href="../../../studio/zh-data-infra.html">返回主题</a></div></nav><div class="professional-context-bar"><a href="../../../studio/zh-index.html">← 工程枢纽</a> · <a class="reading-context" href="../../../studio/zh-data-infra.html">返回主题</a></div><!-- site-remediation-knowledge:start --><figure class="knowledge-figure" data-knowledge-atlas="data-infra" style="margin:20px auto;max-width:1120px;padding:0 20px;box-sizing:border-box"><style>.knowledge-graph-wide{display:block}.knowledge-graph-compact{display:none}@media(max-width:600px){.knowledge-graph-wide{display:none}.knowledge-graph-compact{display:block}}</style><svg xmlns="http://www.w3.org/2000/svg" lang="zh-CN" class="knowledge-graph-compact" role="img" aria-labelledby="knowledge-f39104826897-compact-title knowledge-f39104826897-compact-desc" viewBox="0 0 360 946" width="360" style="width:100%;height:auto;max-width:560px;margin:0 auto;font-family:system-ui,sans-serif"><title id="knowledge-f39104826897-compact-title">Diamond 企业级实战演示中心 — TCL × Microsoft Fabric &amp; Zava × Azure Databricks</title><desc id="knowledge-f39104826897-compact-desc">企业源系统与实时摄取: ERP / POS / 航运流 · Eventhouse KQL · 变更捕获 → 汇入开放湖仓底座 → OneLake 与 Databricks 零拷贝共生: 共享 Delta Parquet · Unity Catalog · 0 DBU 秒级 BI → 注入业务语义本体 → Fabric IQ 与跨云平台选型: TCL 与 Zava 实战沙盘 · 对比 Snowflake / BigQuery → 进入隔离执行层 → 企业级智能体隔离沙箱: ACA 动态会话 · AKS MicroVM · E2B 弹性沙箱 → 闭环容量与成本治理 → 云基础设施与单会话 FinOps: F-SKU 容量池化 · VM 跨代升级 · TCO 定量核验</desc><rect width="360" height="946" rx="16" fill="#081525" stroke="#284566"/><rect x="16" y="14" width="224" height="22" rx="11" fill="#112844" stroke="#2d5a88"/><text x="28" y="29" fill="#56ddcd" font-size="11.5" font-weight="700"><tspan x="28" dy="0">数据流向与架构要点 · 竖屏视图</tspan></text><text x="20" y="58" fill="#eef5ff" font-size="18" font-weight="700"><tspan x="20" dy="0">Diamond 企业级实战演示中心 —</tspan><tspan x="20" dy="25.2">TCL × Microsoft Fabric &amp;</tspan><tspan x="20" dy="25.2">Zava × Azure Databricks</tspan></text><text x="20" y="134" fill="#a9b8ce" font-size="12.5" font-weight="400"><tspan x="20" dy="0">概念拓扑 · 箭头表示数据/控制流向，非实测指标</tspan></text><g data-concept="1"><rect x="16" y="156" width="328" height="113" rx="12" fill="#0e2036" stroke="#38597d"/><rect x="16" y="156" width="328" height="4" rx="2" fill="#38bdf8"/><text x="30" y="179" fill="#38bdf8" font-size="11.5" font-weight="700"><tspan x="30" dy="0">01 · 输入与意图</tspan></text><text x="30" y="202" fill="#f0f6ff" font-size="16.5" font-weight="700"><tspan x="30" dy="0">企业源系统与实时摄取</tspan></text><text x="30" y="229" fill="#c4d5e8" font-size="13" font-weight="400"><tspan x="30" dy="0">ERP / POS / 航运流 · Eventhouse KQL</tspan><tspan x="30" dy="18.2">· 变更捕获</tspan></text></g><g data-relationship="汇入开放湖仓底座"><path d="M34 271 V309" fill="none" stroke="#56ddcd" stroke-width="2.2"/><path d="M29 303 L34 310 L39 303" fill="none" stroke="#56ddcd" stroke-width="2.2"/><text x="50" y="293" fill="#8eeadf" font-size="12.5" font-weight="600"><tspan x="50" dy="0">01→02 汇入开放湖仓底座</tspan></text></g><g data-concept="2"><rect x="16" y="315" width="328" height="136" rx="12" fill="#122842" stroke="#38597d"/><rect x="16" y="315" width="328" height="4" rx="2" fill="#34d399"/><text x="30" y="338" fill="#34d399" font-size="11.5" font-weight="700"><tspan x="30" dy="0">02 · 上下文锚定</tspan></text><text x="30" y="361" fill="#f0f6ff" font-size="16.5" font-weight="700"><tspan x="30" dy="0">OneLake 与 Databricks 零拷贝</tspan><tspan x="30" dy="23.099999999999998">共生</tspan></text><text x="30" y="411" fill="#c4d5e8" font-size="13" font-weight="400"><tspan x="30" dy="0">共享 Delta Parquet · Unity Catalog ·</tspan><tspan x="30" dy="18.2">0 DBU 秒级 BI</tspan></text></g><g data-relationship="注入业务语义本体"><path d="M34 453 V491" fill="none" stroke="#56ddcd" stroke-width="2.2"/><path d="M29 485 L34 492 L39 485" fill="none" stroke="#56ddcd" stroke-width="2.2"/><text x="50" y="475" fill="#8eeadf" font-size="12.5" font-weight="600"><tspan x="50" dy="0">02→03 注入业务语义本体</tspan></text></g><g data-concept="3"><rect x="16" y="497" width="328" height="113" rx="12" fill="#0e2036" stroke="#38597d"/><rect x="16" y="497" width="328" height="4" rx="2" fill="#a78bfa"/><text x="30" y="520" fill="#a78bfa" font-size="11.5" font-weight="700"><tspan x="30" dy="0">03 · 策略与门禁</tspan></text><text x="30" y="543" fill="#f0f6ff" font-size="16.5" font-weight="700"><tspan x="30" dy="0">Fabric IQ 与跨云平台选型</tspan></text><text x="30" y="570" fill="#c4d5e8" font-size="13" font-weight="400"><tspan x="30" dy="0">TCL 与 Zava 实战沙盘 · 对比</tspan><tspan x="30" dy="18.2">Snowflake / BigQuery</tspan></text></g><g data-relationship="进入隔离执行层"><path d="M34 612 V650" fill="none" stroke="#56ddcd" stroke-width="2.2"/><path d="M29 644 L34 651 L39 644" fill="none" stroke="#56ddcd" stroke-width="2.2"/><text x="50" y="634" fill="#8eeadf" font-size="12.5" font-weight="600"><tspan x="50" dy="0">03→04 进入隔离执行层</tspan></text></g><g data-concept="4"><rect x="16" y="656" width="328" height="113" rx="12" fill="#122842" stroke="#38597d"/><rect x="16" y="656" width="328" height="4" rx="2" fill="#f59e0b"/><text x="30" y="679" fill="#f59e0b" font-size="11.5" font-weight="700"><tspan x="30" dy="0">04 · 执行与运行</tspan></text><text x="30" y="702" fill="#f0f6ff" font-size="16.5" font-weight="700"><tspan x="30" dy="0">企业级智能体隔离沙箱</tspan></text><text x="30" y="729" fill="#c4d5e8" font-size="13" font-weight="400"><tspan x="30" dy="0">ACA 动态会话 · AKS MicroVM · E2B 弹</tspan><tspan x="30" dy="18.2">性沙箱</tspan></text></g><g data-relationship="闭环容量与成本治理"><path d="M34 771 V809" fill="none" stroke="#56ddcd" stroke-width="2.2"/><path d="M29 803 L34 810 L39 803" fill="none" stroke="#56ddcd" stroke-width="2.2"/><text x="50" y="793" fill="#8eeadf" font-size="12.5" font-weight="600"><tspan x="50" dy="0">04→05 闭环容量与成本治理</tspan></text></g><g data-concept="5"><rect x="16" y="815" width="328" height="113" rx="12" fill="#0e2036" stroke="#38597d"/><rect x="16" y="815" width="328" height="4" rx="2" fill="#56ddcd"/><text x="30" y="838" fill="#56ddcd" font-size="11.5" font-weight="700"><tspan x="30" dy="0">05 · 审计与评测</tspan></text><text x="30" y="861" fill="#f0f6ff" font-size="16.5" font-weight="700"><tspan x="30" dy="0">云基础设施与单会话 FinOps</tspan></text><text x="30" y="888" fill="#c4d5e8" font-size="13" font-weight="400"><tspan x="30" dy="0">F-SKU 容量池化 · VM 跨代升级 · TCO</tspan><tspan x="30" dy="18.2">定量核验</tspan></text></g></svg><svg xmlns="http://www.w3.org/2000/svg" lang="zh-CN" class="knowledge-graph-wide" role="img" aria-labelledby="knowledge-f39104826897-title knowledge-f39104826897-desc" viewBox="0 0 1080 448" width="1080" style="width:100%;height:auto;max-width:1080px;margin:0 auto;font-family:system-ui,sans-serif"><title id="knowledge-f39104826897-title">Diamond 企业级实战演示中心 — TCL × Microsoft Fabric &amp; Zava × Azure Databricks</title><desc id="knowledge-f39104826897-desc">企业源系统与实时摄取: ERP / POS / 航运流 · Eventhouse KQL · 变更捕获 → 汇入开放湖仓底座 → OneLake 与 Databricks 零拷贝共生: 共享 Delta Parquet · Unity Catalog · 0 DBU 秒级 BI → 注入业务语义本体 → Fabric IQ 与跨云平台选型: TCL 与 Zava 实战沙盘 · 对比 Snowflake / BigQuery → 进入隔离执行层 → 企业级智能体隔离沙箱: ACA 动态会话 · AKS MicroVM · E2B 弹性沙箱 → 闭环容量与成本治理 → 云基础设施与单会话 FinOps: F-SKU 容量池化 · VM 跨代升级 · TCO 定量核验</desc><rect width="1080" height="448" rx="16" fill="#081525" stroke="#284566"/><rect x="24" y="16" width="292" height="24" rx="12" fill="#102742" stroke="#2d5a88"/><text x="38" y="32" fill="#56ddcd" font-size="11.5" font-weight="700"><tspan x="38" dy="0">数据流向与核心要点架构图 · 横向全景</tspan></text><rect x="646" y="16" width="196" height="24" rx="12" fill="#0d2238" stroke="#254b6e"/><text x="660" y="32" fill="#7ce8d8" font-size="11.5" font-weight="600"><tspan x="660" dy="0">──▶ 阶段数据与上下文流</tspan></text><rect x="852" y="16" width="204" height="24" rx="12" fill="#15203c" stroke="#3b4278"/><text x="866" y="32" fill="#c4b5fd" font-size="11.5" font-weight="600"><tspan x="866" dy="0">◆ 策略门禁与要点说明</tspan></text><text x="24" y="62" fill="#f2f7ff" font-size="18" font-weight="700"><tspan x="24" dy="0">Diamond 企业级实战演示中心 — TCL × Microsoft Fabric &amp; Zava × Azure</tspan><tspan x="24" dy="25.2">Databricks</tspan></text><g data-concept="1"><rect x="24" y="106" width="187" height="186" rx="12" fill="#0d1e34" stroke="#335277" stroke-width="1.2"/><rect x="24" y="106" width="187" height="5" rx="2.5" fill="#38bdf8"/><rect x="34" y="119" width="167" height="22" rx="6" fill="#081424" stroke="#223b59"/><text x="40" y="134" fill="#38bdf8" font-size="11.5" font-weight="700"><tspan x="40" dy="0">01 · 输入与意图</tspan></text><text x="36" y="160" fill="#f4f8ff" font-size="13.5" font-weight="700"><tspan x="36" dy="0">企业源系统与实时摄取</tspan></text><path d="M36 175 H199" stroke="#233b57" stroke-width="1"/><text x="36" y="193" fill="#c5d6e8" font-size="12" font-weight="400"><tspan x="36" dy="0">ERP / POS / 航运流 ·</tspan><tspan x="36" dy="16.799999999999997">Eventhouse KQL · 变更捕获</tspan></text></g><g data-relationship="汇入开放湖仓底座"><path d="M213 199 H231" fill="none" stroke="#56ddcd" stroke-width="2.4"/><path d="M225 194 L232 199 L225 204" fill="none" stroke="#56ddcd" stroke-width="2.4"/><rect x="24" y="300" width="187" height="30" rx="8" fill="#0b2239" stroke="#2b5b6c"/><text x="34" y="319" fill="#7ce8d8" font-size="11.5" font-weight="600"><tspan x="34" dy="0">01→02 汇入开放湖仓底座</tspan></text></g><g data-concept="2"><rect x="235" y="106" width="187" height="186" rx="12" fill="#112640" stroke="#335277" stroke-width="1.2"/><rect x="235" y="106" width="187" height="5" rx="2.5" fill="#34d399"/><rect x="245" y="119" width="167" height="22" rx="6" fill="#081424" stroke="#223b59"/><text x="251" y="134" fill="#34d399" font-size="11.5" font-weight="700"><tspan x="251" dy="0">02 · 上下文锚定</tspan></text><text x="247" y="160" fill="#f4f8ff" font-size="13.5" font-weight="700"><tspan x="247" dy="0">OneLake 与 Databricks</tspan><tspan x="247" dy="18.9">零拷贝共生</tspan></text><path d="M247 194 H410" stroke="#233b57" stroke-width="1"/><text x="247" y="212" fill="#c5d6e8" font-size="12" font-weight="400"><tspan x="247" dy="0">共享 Delta Parquet ·</tspan><tspan x="247" dy="16.799999999999997">Unity Catalog · 0 DBU 秒</tspan><tspan x="247" dy="16.799999999999997">级 BI</tspan></text></g><g data-relationship="注入业务语义本体"><path d="M424 199 H442" fill="none" stroke="#56ddcd" stroke-width="2.4"/><path d="M436 194 L443 199 L436 204" fill="none" stroke="#56ddcd" stroke-width="2.4"/><rect x="235" y="300" width="187" height="30" rx="8" fill="#0b2239" stroke="#2b5b6c"/><text x="245" y="319" fill="#7ce8d8" font-size="11.5" font-weight="600"><tspan x="245" dy="0">02→03 注入业务语义本体</tspan></text></g><g data-concept="3"><rect x="446" y="106" width="187" height="186" rx="12" fill="#0d1e34" stroke="#335277" stroke-width="1.2"/><rect x="446" y="106" width="187" height="5" rx="2.5" fill="#a78bfa"/><rect x="456" y="119" width="167" height="22" rx="6" fill="#081424" stroke="#223b59"/><text x="462" y="134" fill="#a78bfa" font-size="11.5" font-weight="700"><tspan x="462" dy="0">03 · 策略与门禁</tspan></text><text x="458" y="160" fill="#f4f8ff" font-size="13.5" font-weight="700"><tspan x="458" dy="0">Fabric IQ 与跨云平台</tspan><tspan x="458" dy="18.9">选型</tspan></text><path d="M458 194 H621" stroke="#233b57" stroke-width="1"/><text x="458" y="212" fill="#c5d6e8" font-size="12" font-weight="400"><tspan x="458" dy="0">TCL 与 Zava 实战沙盘 · 对</tspan><tspan x="458" dy="16.799999999999997">比 Snowflake / BigQuery</tspan></text></g><g data-relationship="进入隔离执行层"><path d="M635 199 H653" fill="none" stroke="#56ddcd" stroke-width="2.4"/><path d="M647 194 L654 199 L647 204" fill="none" stroke="#56ddcd" stroke-width="2.4"/><rect x="446" y="300" width="187" height="30" rx="8" fill="#0b2239" stroke="#2b5b6c"/><text x="456" y="319" fill="#7ce8d8" font-size="11.5" font-weight="600"><tspan x="456" dy="0">03→04 进入隔离执行层</tspan></text></g><g data-concept="4"><rect x="657" y="106" width="187" height="186" rx="12" fill="#112640" stroke="#335277" stroke-width="1.2"/><rect x="657" y="106" width="187" height="5" rx="2.5" fill="#f59e0b"/><rect x="667" y="119" width="167" height="22" rx="6" fill="#081424" stroke="#223b59"/><text x="673" y="134" fill="#f59e0b" font-size="11.5" font-weight="700"><tspan x="673" dy="0">04 · 执行与运行</tspan></text><text x="669" y="160" fill="#f4f8ff" font-size="13.5" font-weight="700"><tspan x="669" dy="0">企业级智能体隔离沙箱</tspan></text><path d="M669 175 H832" stroke="#233b57" stroke-width="1"/><text x="669" y="193" fill="#c5d6e8" font-size="12" font-weight="400"><tspan x="669" dy="0">ACA 动态会话 · AKS</tspan><tspan x="669" dy="16.799999999999997">MicroVM · E2B 弹性沙箱</tspan></text></g><g data-relationship="闭环容量与成本治理"><path d="M846 199 H864" fill="none" stroke="#56ddcd" stroke-width="2.4"/><path d="M858 194 L865 199 L858 204" fill="none" stroke="#56ddcd" stroke-width="2.4"/><rect x="657" y="300" width="187" height="30" rx="8" fill="#0b2239" stroke="#2b5b6c"/><text x="667" y="319" fill="#7ce8d8" font-size="11.5" font-weight="600"><tspan x="667" dy="0">04→05 闭环容量与成本治理</tspan></text></g><g data-concept="5"><rect x="868" y="106" width="187" height="186" rx="12" fill="#0d1e34" stroke="#335277" stroke-width="1.2"/><rect x="868" y="106" width="187" height="5" rx="2.5" fill="#56ddcd"/><rect x="878" y="119" width="167" height="22" rx="6" fill="#081424" stroke="#223b59"/><text x="884" y="134" fill="#56ddcd" font-size="11.5" font-weight="700"><tspan x="884" dy="0">05 · 审计与评测</tspan></text><text x="880" y="160" fill="#f4f8ff" font-size="13.5" font-weight="700"><tspan x="880" dy="0">云基础设施与单会话</tspan><tspan x="880" dy="18.9">FinOps</tspan></text><path d="M880 194 H1043" stroke="#233b57" stroke-width="1"/><text x="880" y="212" fill="#c5d6e8" font-size="12" font-weight="400"><tspan x="880" dy="0">F-SKU 容量池化 · VM 跨代</tspan><tspan x="880" dy="16.799999999999997">升级 · TCO 定量核验</tspan></text></g><rect x="868" y="300" width="187" height="30" rx="8" fill="#0e2538" stroke="#2e5470"/><text x="878" y="319" fill="#93c5fd" font-size="11.5" font-weight="600"><tspan x="878" dy="0">05 闭环 · 审计与证据核验</tspan></text><g data-takeaway="1"><rect x="24" y="344" width="334" height="88" rx="10" fill="#0b1a2e" stroke="#284466"/><rect x="24" y="356" width="4" height="64" rx="2" fill="#38bdf8"/><text x="38" y="369" fill="#38bdf8" font-size="11.5" font-weight="700"><tspan x="38" dy="0">要点 01 · 全链路数据流向</tspan></text><text x="38" y="390" fill="#d5e4f5" font-size="12" font-weight="400"><tspan x="38" dy="0">自左向右从「企业源系统与实时摄取」递进至「云</tspan><tspan x="38" dy="16.799999999999997">基础设施与单会话 FinOps」，明确各阶段输入与</tspan><tspan x="38" dy="16.799999999999997">输出契约。</tspan></text></g><g data-takeaway="2"><rect x="373" y="344" width="334" height="88" rx="10" fill="#0b1a2e" stroke="#284466"/><rect x="373" y="356" width="4" height="64" rx="2" fill="#a78bfa"/><text x="387" y="369" fill="#a78bfa" font-size="11.5" font-weight="700"><tspan x="387" dy="0">要点 02 · 核心控制与策略门禁</tspan></text><text x="387" y="390" fill="#d5e4f5" font-size="12" font-weight="400"><tspan x="387" dy="0">核心门禁「Fabric IQ 与跨云平台选型」：TCL 与</tspan><tspan x="387" dy="16.799999999999997">Zava 实战沙盘 · 对比 Snowflake / BigQuery</tspan></text></g><g data-takeaway="3"><rect x="722" y="344" width="334" height="88" rx="10" fill="#0b1a2e" stroke="#284466"/><rect x="722" y="356" width="4" height="64" rx="2" fill="#34d399"/><text x="736" y="369" fill="#34d399" font-size="11.5" font-weight="700"><tspan x="736" dy="0">要点 03 · 证据核验与适用边界</tspan></text><text x="736" y="390" fill="#d5e4f5" font-size="12" font-weight="400"><tspan x="736" dy="0">F-SKU 容量池化 · VM 跨代升级 · TCO 定量核验</tspan><tspan x="736" dy="16.799999999999997">· 概念拓扑示意，非实测延迟。</tspan></text></g></svg><figcaption style="font:13px/1.6 system-ui,sans-serif;margin:10px auto 0;max-width:1080px;color:#9fb2ca;overflow-wrap:anywhere">整体架构与数据流向图示：自左向右阅读阶段数据流转、策略门禁与底部三项核心要点说明（概念拓扑，不代表实测吞吐或生产排名）。</figcaption></figure><!-- site-remediation-knowledge:end --><nav class="topbar">
+    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+      <strong>💎 DIAMOND ENTERPRISE DEMO HUB</strong>
+      <a href="../index.html">← 返回 Data Lab 主页</a>
+      <a href="../index.html">🧭 五云选型与 TCO 仿真台</a>
+      <a href="../benchmark-cards.zh-CN.html">📊 7-Card 基准测试报告</a>
+    </div>
+    <div style="display:flex;gap:8px;">
+      <a href="https://github.com/turbo998/Azure-Infra-Lab">📦 GitHub Repo</a>
+      <a href="diamond-hub.html">🌐 Switch to English</a>
+    </div>
+  </nav>
+
+  <main class="wrap">
+    <section class="hero">
+      <span class="pill">AI SOLUTION ARCHITECT · EXECUTIVE LIVE DEMO SUITE</span>
+      <h1>Diamond 企业级数据与 AI 实战演示中心</h1>
+      <p>面向企业高管汇报与架构深潜的可交互实战样板间：涵盖【TCL 海外销售网络 × Microsoft Fabric 端到端闭环】与【Zava 全渠道生鲜零售 × Azure Databricks & Microsoft Fabric 零拷贝共生】两大旗舰沙盘、逐分钟双屏讲稿及 10 维竞合选型战卡。全部资产已完成 100% 租户脱敏，打开浏览器即可离线/在线流畅演示。</p>
+      <div class="quick-launch">
+        <a class="btn btn-tcl" href="tcl-fabric/index.html">📺 立即启动：TCL × Fabric 6幕指挥舱</a>
+        <a class="btn btn-dbx" href="databricks-fabric/index.html">🛒 立即启动：Zava × Databricks & Fabric 4幕沙盘</a>
+        <a class="btn btn-fab" href="tcl-fabric/playbook.html">📖 TCL 双屏逐字稿剧本</a>
+        <a class="btn btn-outline" href="databricks-fabric/battlecard.html">⚔️ Databricks vs Fabric 10维选型战卡</a>
+      </div>
+    </section>
+
+    <div class="grid-2">
+      <!-- CARD 1: TCL x FABRIC -->
+      <article class="demo-card tcl">
+        <div>
+          <span style="font-size:12px;font-weight:800;color:#fda4af;">FLAGSHIP DEMO 01 · MICROSOFT FABRIC END-TO-END</span>
+          <h2>TCL 海外多级渠道智能 (Global Channel IQ) 6 幕作战指挥舱</h2>
+          <p style="font-size:13.5px;color:var(--muted);">
+            还原出海制造巨头在黑五大促峰值的三大真实经营危机：破除 3.23 周平均库存周转假象，打通 SAP Sell-In、36 家海外国代/KA EDI 852 与门店 POS 脉冲。
+          </p>
+          <div class="kpi-strip">
+            <div class="kpi-mini"><b>$629.7K</b><span>法→德 48h 调拨护航营收</span></div>
+            <div class="kpi-mini"><b>$582.1K</b><span>P745 声霸捆绑净保毛利</span></div>
+            <div class="kpi-mini"><b>$162.5K</b><span>拦截越南压货骗取返利</span></div>
+          </div>
+          <ul>
+            <li><strong>OneLake Shortcuts</strong>: 零字节复制挂载外部代理商隔离区 EDI 852 与零售 POS 表</li>
+            <li><strong>Eventhouse KQL</strong>: 捕捉德国 2.8x 脉冲与鹿特丹港 11 天延误，毫秒级配对法国里昂富余欧规货源</li>
+            <li><strong>Fabric IQ Ontology + Agents</strong>: 10 实体动静态双绑定图谱 + 价保精算滑块 + 一键触发云端调拨 Pipeline</li>
+          </ul>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <a class="btn btn-tcl" href="tcl-fabric/index.html">🚀 进入 6 幕交互指挥舱</a>
+          <a class="btn btn-outline" href="tcl-fabric/playbook.html">📖 双屏演示手册 (15m/40m)</a>
+        </div>
+      </article>
+
+      <!-- CARD 2: ZAVA x DATABRICKS & FABRIC -->
+      <article class="demo-card zava">
+        <div>
+          <span style="font-size:12px;font-weight:800;color:#fdba74;">FLAGSHIP DEMO 02 · AZURE DATABRICKS × FABRIC COEXISTENCE</span>
+          <h2>Zava 全渠道生鲜零售 × Databricks & Fabric 零拷贝共生沙盘</h2>
+          <p style="font-size:13.5px;color:var(--muted);">
+            展示重度数据工程与全员 BI 如何零摩擦协同：从 Lakeflow 脏数据隔离、Unity Catalog 动态脱敏与 AI/BI Genie 五轮归因，直达 OneLake Direct Lake。
+          </p>
+          <div class="kpi-strip">
+            <div class="kpi-mini"><b>-3.1 pp</b><span>Genie 定位华东净毛利异动</span></div>
+            <div class="kpi-mini"><b>17.3 hrs</b><span>锁定昆山冷库分拣延迟拐点</span></div>
+            <div class="kpi-mini"><b>1,460 箱</b><span>嘉兴仓 2h 紧急跨仓补货</span></div>
+          </div>
+          <ul>
+            <li><strong>Unity Catalog Governance</strong>: 现场切换角色实测 mask_cn_phone() 动态手机号掩码与 YAML Metric View 口径锁定</li>
+            <li><strong>AI/BI Genie 5-Turn Drilldown</strong>: 不写一行 SQL 五轮追问穿透大区 → 冷链仓 → Day -7 拐点 → Top 5 受损旗舰店</li>
+            <li><strong>4 Better-Together Patterns</strong>: Mirrored Unity Catalog 零拷贝赋能 500+ M365 用户 Direct Lake 亚秒看数</li>
+          </ul>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <a class="btn btn-dbx" href="databricks-fabric/index.html">🚀 进入 4 幕共生工作台</a>
+          <a class="btn btn-outline" href="databricks-fabric/battlecard.html">⚔️ 10 维选型与反模式战卡</a>
+        </div>
+      </article>
+    </div>
+
+    <section class="matrix-card">
+      <h2 style="font-size:19px;color:#38bdf8;margin-bottom:6px;">🧭 AI Solution Architect 实战选型速查：何时主导 Fabric、何时主导 Databricks、如何共生？</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>客户主导诉求场景</th>
+            <th>推荐主导架构阵型</th>
+            <th>对应演示样板与核心证据</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>M365 / Power BI 全员普及 + 跨云零拷贝联邦 + 毫秒级运营风控闭环</strong></td>
+            <td><strong>Microsoft Fabric End-to-End</strong> (OneLake + Eventhouse KQL + Fabric IQ Ontology + Direct Lake)</td>
+            <td>演示 Demo 01 (TCL)：F8/F64 单一容量承载 16 项组件，从港口延误感知到调拨 Pipeline 回写一气呵成。</td>
+          </tr>
+          <tr>
+            <td><strong>百人级 PySpark/ML 工程团队 + 复杂脏数据治理 + 多云同构研发底座</strong></td>
+            <td><strong>Azure Databricks Lead</strong> (Unity Catalog + Lakeflow + Photon + Mosaic AI / Genie)</td>
+            <td>演示 Demo 02 Act 1–2 (Zava)：Lakeflow 自动隔离脏行 + CLS 掩码 + Genie 5 轮连追冷链损耗根因。</td>
+          </tr>
+          <tr>
+            <td><strong>存量已有 Azure Databricks 湖仓，同时需向全公司高管与门店低成本分发报表与 Copilot</strong></td>
+            <td><strong>Better Together Zero-Copy</strong> (Mirrored Unity Catalog in OneLake → Power BI Direct Lake)</td>
+            <td>演示 Demo 02 Act 3–4 + 10维战卡：物理存储仅存一份 ADLS Delta，杜绝重复搬运 ETL 与双份存储费。</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+</body>
+</html>

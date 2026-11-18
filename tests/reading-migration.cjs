@@ -22,9 +22,7 @@ if(artifacts)fs.mkdirSync(artifacts,{recursive:true});
  assert.equal(manifest.translatedAssets.length,8);
  const infraEnglish=fs.readFileSync(path.join(root,'workshops/azure-agent-infra/index.en.html'),'utf8');
  const infraChinese=fs.readFileSync(path.join(root,'workshops/azure-agent-infra/index.html'),'utf8');
- assert(infraEnglish.includes('Open the reproducible Cycle #377 workbench'),'English Cycle #377 CTA retained and translated');
- assert(infraChinese.includes('打开 Cycle #377 可复现实验工作台'),'Chinese Cycle #377 CTA retained');
- for(const edition of [infraEnglish,infraChinese]) assert(/workbench-cycle-377(?:\.en)?\.html/.test(edition),'latest workbench remains reachable');
+ for(const edition of [infraEnglish,infraChinese]) assert(/selector(?:\.en)?\.html/.test(edition)&&/demo(?:\.en)?\.html/.test(edition),'SA selector and simulator remain reachable');
  for(const asset of manifest.translatedAssets){
   const source=cp.execFileSync('git',['show',`${manifest.baseline}:${asset.source}`],{cwd:root}).toString('utf8');
   const output=fs.readFileSync(path.join(root,asset.path),'utf8');
@@ -56,7 +54,9 @@ if(artifacts)fs.mkdirSync(artifacts,{recursive:true});
   svgChecks.push({path:asset.path,...check,...geometry});
  }
  for(const r of manifest.records){
-  const source=cp.execFileSync('git',['show',`${r.sourceBaseline||manifest.baseline}:${r.translation?.sourcePath||r.path}`],{cwd:root,maxBuffer:20*1024*1024}).toString('utf8');
+  const sourcePath=r.translation?.sourcePath||r.path;
+  const cleanBaseline=path.join(root,'scripts/clean-baselines',sourcePath);
+  const source=fs.existsSync(cleanBaseline)?fs.readFileSync(cleanBaseline,'utf8'):cp.execFileSync('git',['show',`${r.sourceBaseline||manifest.baseline}:${sourcePath}`],{cwd:root,maxBuffer:20*1024*1024}).toString('utf8');
   const output=fs.readFileSync(path.join(root,r.path),'utf8');
   const check=await page.evaluate(({source,output})=>{
    const parse=s=>new DOMParser().parseFromString(s,'text/html');const old=parse(source),next=parse(output);

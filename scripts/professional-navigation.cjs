@@ -6,13 +6,14 @@ const escape = value => String(value).replaceAll('&', '&amp;').replaceAll('"', '
 const relative = (from, to) => path.posix.relative(path.posix.dirname(from), to) || path.posix.basename(to);
 const sections = [
   ['hub', 'studio/index.html', 'studio/zh-index.html', 'Frontier Transformation Engineering Hub', 'Frontier Transformation Engineering Hub'],
+  ['diamond', 'diamond.html', 'zh-diamond.html', 'Diamond Live Demos', 'Diamond 实战演示'],
   ['benchmarks', 'benchmarks.html', 'zh-benchmarks.html', 'Benchmark & Eval Foundry', '基准评测中心'],
   ['radar', 'github-radar.html', 'zh-github-radar.html', 'GitHub AI Signal Radar', 'GitHub AI 信号雷达'],
   ['routing', 'openrouter.html', 'zh-openrouter.html', 'Model Routing & Telemetry', 'OpenRouter 模型遥测'],
   ['profile', 'about.html', 'zh-about.html', 'Principal Architect Profile', '首席架构师履历']
 ];
 function navigation({file, en = true, className = 'reading-header', languages = '', context = '', active}) {
-  active ||= /github-radar/.test(file) ? 'radar' : /openrouter/.test(file) ? 'routing' : /(?:^|\/)(?:zh-)?about\.html$/.test(file) ? 'profile' : /benchmark|(?:^|\/)cards(?:\.en)?\.html$|test-report-cards/.test(file) ? 'benchmarks' : 'hub';
+  active ||= /(?:^|\/)(?:zh-)?diamond\.html$|diamond-demos\//.test(file) ? 'diamond' : /github-radar/.test(file) ? 'radar' : /openrouter/.test(file) ? 'routing' : /(?:^|\/)(?:zh-)?about\.html$/.test(file) ? 'profile' : /benchmark|(?:^|\/)cards(?:\.en)?\.html$|test-report-cards/.test(file) ? 'benchmarks' : 'hub';
   const primary = sections.map(([id, english, chinese, label, zhLabel]) => `<a href="${escape(relative(file, en ? english : chinese))}" data-section="${id}" data-nav-en-href="${escape(relative(file,english))}" data-nav-zh-href="${escape(relative(file,chinese))}" data-nav-en-label="${escape(label)}" data-nav-zh-label="${escape(zhLabel)}"${id === active ? ' aria-current="page"' : ''}>${escape(en ? label : zhLabel)}</a>`).join('');
   const fallback = `<a href="${path.posix.basename(file)}?lang=en" hreflang="en" lang="en">EN</a><a href="${path.posix.basename(file)}?lang=zh-CN" hreflang="zh-CN" lang="zh-CN">中文</a>`;
   if ((languages.match(/hreflang=/g) || []).length === 1) languages += `<a href="${path.posix.basename(file)}" hreflang="${en?'en':'zh-CN'}" lang="${en?'en':'zh-CN'}" aria-label="${en?'Current English edition':'当前中文版本'}">${en?'EN':'中文'}</a>`;

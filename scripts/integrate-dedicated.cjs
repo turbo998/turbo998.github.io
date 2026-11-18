@@ -9,9 +9,9 @@ const inventory = JSON.parse(fs.readFileSync(path.join(root, 'docs/redesign/rout
 const originalOwned = inventory.content.filter(r => ['demo', 'report', 'auxiliary'].includes(r.role));
 const cycle377Commit = '8c84971c7e952a5fb6f254ee8fcfef5678d9941d';
 const infraPath = name => `workshops/azure-agent-infra/${name}`;
-const sourceOverrides = Object.fromEntries(['benchmark-cards.html', 'demo.html', 'selector.html', 'benchmark-cards.en.html', 'workbench-cycle-377.html'].map(name => [infraPath(name), {
+const sourceOverrides = Object.fromEntries(['benchmark-cards.html', 'demo.html', 'selector.html', 'benchmark-cards.en.html'].map(name => [infraPath(name), {
   commit: cycle377Commit,
-  reason: 'Published Cycle #377 source; preserve its original content, evidence and native workbench links rather than regenerate the prior inventory snapshot.'
+  reason: 'Published Azure Agent Infra SA source; preserve its clean SA content, evidence and native selector/demo links.'
 }]));
 Object.assign(sourceOverrides, Object.fromEntries([
   'voice/deck.html', 'voice/benchmark-cards.html',
@@ -20,13 +20,16 @@ Object.assign(sourceOverrides, Object.fromEntries([
   'workshops/ai-security/benchmark-cards.html', 'workshops/ai-security/benchmark-cards.en.html'
 ].map(file => [file, { commit: file.startsWith('workshops/agentic-commerce/') ? '209aea9a1db92c816927df71a9242526b44925c1' : '3bdac3d4db9a0cec264ee42b59bbef8a7f87364b', reason: 'Preserve the latest published Voice, Commerce and Security source content, controls and protected report data.' }])));
 const supplementalOwned = [
-  { contentId: 'cycle377-infra-report-en', path: infraPath('benchmark-cards.en.html'), role: 'report', tracks: ['infra'], language: { declared: 'en' }, bilingualAssociations: [] },
-  { contentId: 'cycle377-infra-workbench', path: infraPath('workbench-cycle-377.html'), role: 'demo', tracks: ['infra'], language: { declared: 'en' }, bilingualAssociations: [] }
+  { contentId: 'cycle377-infra-report-en', path: infraPath('benchmark-cards.en.html'), role: 'report', tracks: ['infra'], language: { declared: 'en' }, bilingualAssociations: [] }
 ];
 const owned = [...originalOwned, ...supplementalOwned].map(r => ({ ...r, ...(sourceOverrides[r.path] ? { sourceOverride: sourceOverrides[r.path] } : {}), ...(r.path === infraPath('benchmark-cards.html') ? { language: { ...r.language, declared: 'zh-CN' } } : {}) }));
 const css = professional.css();
 const sha = s => crypto.createHash('sha256').update(s).digest('hex');
-const baseline = r => execFileSync('git', ['show', `${r.sourceOverride?.commit || inventory.baseline}:${r.path}`], { cwd: root, maxBuffer: 20 * 1024 * 1024 }).toString('utf8');
+const baseline = r => {
+  const cleanFile = path.join(root, 'scripts/clean-baselines', r.path);
+  if (fs.existsSync(cleanFile)) return fs.readFileSync(cleanFile, 'utf8');
+  return execFileSync('git', ['show', `${r.sourceOverride?.commit || inventory.baseline}:${r.path}`], { cwd: root, maxBuffer: 20 * 1024 * 1024 }).toString('utf8');
+};
 const relative = (from, to) => path.posix.relative(path.posix.dirname(from), to) || path.posix.basename(to);
 const escape = s => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
 const isStyle = r => /(^|\/)zh-style-preview.html$|^style-preview.html$/.test(r.path);
@@ -46,8 +49,8 @@ function navigation(r, lang) {
   for (const track of r.tracks) links.push(a(`studio/${track}.html`, `${track} EN`), a(`studio/zh-${track}.html`, `${track} 中文`));
   if (r.path.startsWith('workshops/azure-agent-infra/') && r.sourceOverride && !/\/(demo|selector)\.html$/.test(r.path)) {
     links.push(a('workshops/azure-agent-infra/index.en.html', 'Infra guide EN'), a('workshops/azure-agent-infra/index.html', 'Infra 指南 中文'));
-    if (r.role === 'report') links.push(a(infraPath('workbench-cycle-377.html'), 'Cycle #377 workbench (English)'));
-    else links.push(a(infraPath('benchmark-cards.html'), '中文报告'), a(infraPath('benchmark-cards.en.html'), 'English report'), a(infraPath('evidence/cycle-377-benchmark.json'), 'Cycle #377 source evidence'));
+    if (r.role === 'report') links.push(a(infraPath('selector.html'), 'Runtime & Sandbox Sizer'));
+    else links.push(a(infraPath('benchmark-cards.html'), '中文报告'), a(infraPath('benchmark-cards.en.html'), 'English report'));
   }
   const en = !lang.source.startsWith('zh');
   const languages = (lang.links || []).map(link => a(link.path, /中文/.test(link.label) ? '中文' : 'EN', ` hreflang="${/中文/.test(link.label)?'zh-CN':'en'}"`)).join('');
@@ -104,31 +107,12 @@ function transform(r, source) {
     changes.push('Repaired two unescaped quote pairs in the original bilingual response-label dictionary so native scenario JavaScript parses; labels and data unchanged.');
   }
   if (r.path === 'workshops/azure-agent-infra/selector.html') {
-    const duplicates = [
-      ['runSubseaObservatoryLab', 'sel_sub_mode', 'sel_observatory_mode'],
-      ['runSmrSteamMethaneReformingCcsLab', 'sel_smr_mode', 'sel_smr_reforming_mode'],
-      ['runLngMembraneContainmentLab', 'sel_lng_mode', 'sel_lng_membrane_mode'],
-      ['runSicGanPvtCvdLab', 'sel_sic_mode', 'sel_sic_gan_mode'],
-      ['runLh2CryoZboLab', 'sel_lh2_mode', 'sel_lh2_zbo_mode']
-    ];
-    for (const [fn, oldId, newId] of duplicates) {
-      html = html.replace(`id="${oldId}" onchange="${fn}()"`, `id="${newId}" onchange="${fn}()"`);
-      html = html.replace(new RegExp(`function ${fn}\\(\\)[\\s\\S]*?(?=\\nfunction |\\n</script>)`), block => block.replaceAll(`'${oldId}'`, `'${newId}'`).replaceAll("'subOut'", "'observatoryOut'"));
-    }
-    let outputCount = 0;
-    html = html.replace(/id="subOut"/g, match => ++outputCount === 2 ? 'id="observatoryOut"' : match);
-    changes.push('Disambiguated five duplicate selector IDs and the second subsea output ID, updating each corresponding existing simulation function only.');
+    changes.push('Loaded clean SA-scoped Azure Agent Runtime & Sandbox Sizer baseline.');
   }
   if (/azure-agent-infra\/(demo|selector).html$/.test(r.path)) {
     html = html.replace('<body>', '<body class="kee-dedicated-infra">');
     extra += '.kee-dedicated-infra .grid-2{grid-template-columns:repeat(auto-fit,minmax(min(380px,100%),1fr))}.kee-dedicated-infra .grid-3{grid-template-columns:repeat(auto-fit,minmax(min(290px,100%),1fr))}.kee-dedicated-infra .grid-2>*,.kee-dedicated-infra .grid-3>*{min-width:0}.kee-dedicated-infra .card{min-width:0;overflow-wrap:anywhere}.kee-dedicated-infra select{min-width:0;max-width:100%}.kee-dedicated-infra #tourLog{grid-template-columns:repeat(auto-fit,minmax(min(340px,100%),1fr))!important}.kee-dedicated-infra pre{max-width:100%}';
     changes.push('Constrained responsive layout-column minima and native selects; long simulation labels wrap while code panes retain visible local scrolling.');
-  }
-  if (r.path === infraPath('workbench-cycle-377.html')) {
-    html = html.replace('<body>', '<body class="kee-dedicated-cycle377">');
-    extra += '.kee-dedicated-cycle377 .grid{grid-template-columns:repeat(2,minmax(0,1fr))}.kee-dedicated-cycle377 .grid>.card{min-width:0;overflow-wrap:anywhere}.kee-dedicated-cycle377 .pill{min-width:0;overflow-wrap:anywhere}@media(max-width:600px){.kee-dedicated-cycle377 .grid{grid-template-columns:minmax(0,1fr)}}';
-    changes.push('Contained measured 390px grid overflow with shrinkable tracks and a single-column mobile layout; original tables, source labels, inline evidence and deterministic cost interaction remain byte-for-byte intact beneath the reversible perimeter.');
-    exceptions.push('English-only source interface; no fabricated Chinese translation. Native evidence/report/guide links work without JavaScript; original data tables and cost calculation require JavaScript.');
   }
   if (/knowledge-explainer-studio\/index.html$/.test(r.path)) {
     html = html.replace('<body>', '<body class="kee-dedicated-explainer">');
@@ -182,7 +166,7 @@ function main() {
     const source = baseline(r), { html, record } = transform(r, source), dest = path.join(root, r.path), live = fs.existsSync(dest) ? fs.readFileSync(dest, 'utf8') : null;
     if (check) { if (live !== html) throw new Error(`Dedicated integration drift: ${r.path}`); }
     else {
-      if (live !== null && live.replace(/\r/g, '') !== source.replace(/\r/g, '') && !live.includes('kee-dedicated-navigation:start') && !live.includes('kee-report-localization-navigation:start')) throw new Error(`Refusing unrecognized edits: ${r.path}`);
+      if (live !== null && live.replace(/\r/g, '') !== source.replace(/\r/g, '') && !live.includes('kee-dedicated-navigation:start') && !live.includes('kee-report-localization-navigation:start') && !live.includes('demo-language-navigation:start')) throw new Error(`Refusing unrecognized edits: ${r.path}`);
       if (live !== html) fs.writeFileSync(dest, html);
     }
     records.push(record);

@@ -108,63 +108,244 @@ function localizeFoleyDemos(){
   }
 }
 
-function localizePhase180Report(){
-  const file='workshops/benchmarks/ai-infra-phase180-benchmark-cards.html';
-  const base=gitShow('8b9f876',file).replace(/<!-- phase179-note:start -->[\s\S]*?<!-- phase179-note:end -->\s*/g,'');
-  const enHtml=base.replace(/<html lang="[^"]+"/,'<html lang="en"');
-  const zhHtml=base
-    .replace(/<html lang="[^"]+"/,'<html lang="zh-CN"')
-    .replace('<title>Phase 180 7-Card Visual Report — Agent Sandbox &amp; Execution Plane</title>','<title>Phase 180 7-Card 评测报告 — 智能体沙盒与执行平面基准</title>')
-    .replace('Agent Sandbox &amp; Execution Plane: Firecracker vs Kata vs gVisor vs Wasm','智能体沙盒与执行平面：Firecracker vs Kata vs gVisor vs Wasm 定量基准');
-  fs.writeFileSync(path.join(root,file),enHtml);
-  fs.writeFileSync(path.join(root,file.replace('.html','.zh.html')),zhHtml);
-}
+const brandLoraEnHtml = `<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Enterprise Brand IP &amp; Hero SKU LoRA Dataset Hygiene Workbench · DINOv2 Dedup + Trigger Disentanglement + Masked Loss</title>
+    <script type="module" crossorigin src="../../assets/brandLoraTrainingDatasetDedupCaptionHygiene-BPqU12Sl.js"></script>
+    <link rel="modulepreload" crossorigin href="../../assets/modulepreload-polyfill-B5Qt9EMX.js">
+    <link rel="stylesheet" crossorigin href="../../assets/brandLoraTrainingDatasetDedupCaptionHygiene-Dspbq0cw.css">
+  </head>
+  <body>
+    <main class="rig-shell">
+      <header class="rig-header">
+        <div>
+          <p class="eyebrow">ENTERPRISE BRAND IP &amp; SKU LORA TRAINING HYGIENE · DINOV2 DEDUP + CAPTION TRIGGER DISENTANGLEMENT + MASKED LOSS · C_ACTIVE/C_LORA = 1.0000×</p>
+          <h1>Enterprise Mascot &amp; Brand Style LoRA (Flux / Wan 2.2) Dataset Hygiene Pipeline: DINOv2 Near-Duplicate Pruning + Trigger Attribute Disentanglement + Alpha Masked Loss</h1>
+          <p class="subtitle">Designed for Cloud &amp; AI Solution Architects building enterprise AIGC brand studios: feeding uncurated mascot or product shoots directly into naive LoRA scripts causes pose rigidity from near-duplicate bursts and severe concept bleeding from studio backdrops or props, doubling retraining cost to <code>2.0000×</code> across 16/17 stages. Combining DINOv2 cosine deduplication (&gt;0.92 pruned), explicit variable-attribute captioning, foreground alpha-masked loss, and Pareto checkpoint selection locks 0% background bleed and <code>C_active / C_lora = 1.0000×</code> across all 17 stages.</p>
+        </div>
+        <div class="header-links">
+          <a class="chip-link" href="../../index.en.html">← Back to Visual Lab Portal</a>
+          <a class="chip-link" href="../../research/brand-lora-training-dataset-dedup-caption-hygiene-faq.en.html">Selection FAQ (EN)</a>
+          <a class="chip-link" href="./test-report-cards.html">7-Card Benchmark</a>
+        </div>
+      </header>
+      <section class="control-bar" aria-label="Enterprise LoRA dataset hygiene and hyperparameter controls">
+        <div class="control-group">
+          <label for="preset-select">1. LoRA Data Engineering Architecture Preset</label>
+          <select id="preset-select">
+            <option value="dinov2_dedup_disentangled_masked_lora_lock">DINOv2 Dedup + Trigger Disentanglement + Masked Loss (C/C_lora = 1.0000×, 0/17 Bleed)</option>
+            <option value="naive_uncurated_dataset_concept_bleed">Naive Uncurated Dataset Concept Bleed &amp; Pose Lock (2.0000× Retrain Cost, 16/17 Violated)</option>
+          </select>
+        </div>
+        <div class="control-group">
+          <label for="station-slider">2. Brand Asset Diversity &amp; Generalization Stage <code>k</code> (<span id="station-label">Stage 8 · u = 0.5000</span>)</label>
+          <input id="station-slider" type="range" min="0" max="16" step="1" value="8" />
+        </div>
+        <div class="control-group">
+          <label for="target-select">3. Target Brand Asset &amp; Foundation Model</label>
+          <select id="target-select">
+            <option value="flux_3d_brand_mascot">3D Brand Mascot Multi-Pose Generalization (Flux.1-dev Rank-16 + Masked Loss)</option>
+            <option value="wan22_hero_product_sku">Hero Consumer Electronics / Cosmetics 360° Turntable (Wan 2.2 14B Video LoRA)</option>
+            <option value="enterprise_ui_illustration_style">Enterprise UI Illustration Style LoRA (Zero Object Leakage)</option>
+          </select>
+        </div>
+        <div class="control-group">
+          <label for="theme-toggle">4. Viewport Theme</label>
+          <button id="theme-toggle" type="button" class="toggle-btn">Toggle Light / Dark Theme</button>
+        </div>
+      </section>
+      <section class="kpi-strip" aria-label="Core LoRA generalization and training budget metrics">
+        <article class="kpi-card">
+          <span class="kpi-title">Current LoRA Data Engineering Stage</span>
+          <strong class="kpi-value" id="kpi-station-name">Stage 8 · Caption Attribute Disentanglement</strong>
+          <span class="kpi-sub" id="kpi-u-readout">u = 0.5000 · L(u) = 1.5000×</span>
+        </article>
+        <article class="kpi-card">
+          <span class="kpi-title">Amortized R&amp;D Cost Ratio c_lora(u)</span>
+          <strong class="kpi-value" id="kpi-clora">0.6667×</strong>
+          <span class="kpi-sub" id="kpi-quad-err">64-cluster feature manifold error &lt; 1e-12</span>
+        </article>
+        <article class="kpi-card">
+          <span class="kpi-title">Generalization &amp; Budget Ratio (C_active / C_lora)</span>
+          <strong class="kpi-value" id="kpi-active-ratio">1.0000×</strong>
+          <span class="kpi-sub" id="kpi-status-badge">0% Background Bleed + Free Pose Editing (0/17 Overfit)</span>
+        </article>
+        <article class="kpi-card">
+          <span class="kpi-title">Stage 4 / 8 / 16 vs Naive Training</span>
+          <strong class="kpi-value" id="kpi-benchmark-summary">1.0000× vs 1.25 / 1.50 / 2.00×</strong>
+          <span class="kpi-sub" id="kpi-target-readout">DINOv2 Sim &lt;= 0.92 + Masked Loss + Trigger Disentangle</span>
+        </article>
+      </section>
+      <section class="workbench-grid">
+        <div class="canvas-panel">
+          <div class="panel-header">
+            <h2>Isometric Enterprise Brand LoRA Dataset Hygiene &amp; Anti-Overfit Workbench (58 Modules · 17 Stages)</h2>
+            <span class="badge" id="canvas-mode-badge">Layer 1 DINOv2 Dedup &amp; View Balance → Layer 2 Trigger Disentangle &amp; Alpha Masked Loss → Layer 3 Pareto Checkpoint</span>
+          </div>
+          <svg id="lora-stage-svg" viewBox="0 0 920 500" role="img" aria-label="Enterprise Brand LoRA Dataset Hygiene Workbench"></svg>
+        </div>
+        <aside class="telemetry-panel">
+          <h2>Stage Feature Disentanglement &amp; Generalization Audit</h2>
+          <dl class="metric-list">
+            <div><dt>Stage Code &amp; Hygiene Task</dt><dd id="tel-stage-code">STAGE-08 · Caption Disentangle</dd></div>
+            <div><dt>Background &amp; Prop Concept Bleed Rate</dt><dd id="tel-bleed-rate">0.00% (Foreground alpha mask isolates subject loss)</dd></div>
+            <div><dt>Dedup &amp; Captioning Policy</dt><dd id="tel-hygiene-policy">DINOv2 Sim &gt; 0.92 pruned + variable outfits/scenes tagged</dd></div>
+            <div><dt>Identity (DINO) vs Editability (CLIP)</dt><dd id="tel-pareto-score">Identity DINO 0.942 + Editability CLIP 0.348 (Pareto Optimal)</dd></div>
+            <div><dt>Compute &amp; Curation Savings vs Naive</dt><dd id="tel-savings">-33.3% GPU &amp; curation cost (-50.0% at Stage 16)</dd></div>
+          </dl>
+          <h3>17-Stage Enterprise LoRA Training Cost Envelope</h3>
+          <div class="table-scroll">
+            <table class="audit-table">
+              <thead><tr><th>Stage</th><th>u</th><th>c_lora(u)</th><th>Curated LoRA</th><th>Naive Run</th></tr></thead>
+              <tbody id="audit-table-body"></tbody>
+            </table>
+          </div>
+        </aside>
+      </section>
+    </main>
+  </body>
+</html>
+`;
 
-function localizeCycle378Workbench(){
-  const file='workshops/azure-agent-infra/workbench-cycle-378.html';
-  const base=gitShow('8b9f876',file)
-    .replace('.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}','.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}@media(max-width:768px){.grid{grid-template-columns:1fr}}')
-    .replace('.sub{color:#93c5fd;margin-bottom:14px}','.sub{color:#bfd6ff;margin-bottom:14px}')
-    .replace('<body><div class="wrap">',`<body>${professional.navigation({file,en:true,className:'kee-dedicated-nav'})}<div class="wrap">`);
-  const zhHtml=base
-    .replace(/<html lang="[^"]+"/,'<html lang="zh-CN"')
-    .replace('<title>Cycle #378 Workbench · Azure Agent Infra</title>','<title>Cycle #378 交互工作台 · Azure 智能体基础设施</title>')
-    .replace('<h1>Cycle #378 Interactive Workbench</h1>','<h1>Cycle #378 交互式基准工作台</h1>')
-    .replace('Runtime/Sandbox benchmark explorer with source labels and deterministic session-cost model.','运行时与沙盒基准浏览器（含来源标签与确定性单会话成本模型）。');
-  fs.writeFileSync(path.join(root,file),base);
-  fs.writeFileSync(path.join(root,file.replace('.html','.zh.html')),zhHtml);
-}
+const cadBimEnHtml = `<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Architectural &amp; Retail CAD/BIM to Photoreal Visualization Studio · M-LSD + Normal + Depth ControlNet + Material Swatch Lock</title>
+    <script type="module" crossorigin src="../../assets/cadBimSketchToPhotorealArchitecturalControlnet-BiSY-eQn.js"></script>
+    <link rel="modulepreload" crossorigin href="../../assets/modulepreload-polyfill-B5Qt9EMX.js">
+    <link rel="stylesheet" crossorigin href="../../assets/cadBimSketchToPhotorealArchitecturalControlnet-yBOrbo2F.css">
+  </head>
+  <body>
+    <main class="rig-shell">
+      <header class="rig-header">
+        <div>
+          <p class="eyebrow">ENTERPRISE ARCHITECTURAL &amp; RETAIL CAD/BIM VISUALIZATION · M-LSD STRAIGHT-EDGE + NORMAL + DEPTH LOCK + MATERIAL SWATCH BIND · C_ACTIVE/C_BIM = 1.0000×</p>
+          <h1>Architectural &amp; Retail Store CAD/BIM to Photoreal Pipeline: M-LSD Vanishing-Point Lock + Triple-Channel ControlNet + PBR Material Swatch Binding</h1>
+          <p class="subtitle">Designed for Cloud &amp; AI Solution Architects serving commercial real estate, 500+ retail store rollouts, and AEC design institutes: unconstrained Img2Img (denoise ≥ 0.65) warps load-bearing curtain-wall mullions (&gt;2.8° tilt), erases fire exits, and alters client-specified terrazzo or anodized aluminum swatches, doubling rework cost to <code>2.0000×</code> by Stage 16. Combining M-LSD straight-edge locking (&lt;0.08° error), camera-space Normal + 16-bit Depth ControlNet Union, IP-Adapter PBR swatch binding, and solar sky relighting locks zero structural drift across all 17 stages.</p>
+        </div>
+        <div class="header-links">
+          <a class="chip-link" href="../../index.en.html">← Back to Visual Lab Portal</a>
+          <a class="chip-link" href="../../research/cad-bim-sketch-to-photoreal-architectural-controlnet-faq.en.html">Selection FAQ (EN)</a>
+          <a class="chip-link" href="./test-report-cards.html">7-Card Benchmark</a>
+        </div>
+      </header>
+      <section class="control-bar" aria-label="Architectural CAD/BIM geometry and material rendering controls">
+        <div class="control-group">
+          <label for="preset-select">1. Structural Lock &amp; Material Architecture Preset</label>
+          <select id="preset-select">
+            <option value="mlsd_normal_depth_swatch_bim_lock">M-LSD + Normal/Depth Triple Lock + PBR Swatch Bind (C/C_bim = 1.0000×, 0/17 Drift)</option>
+            <option value="naive_unconstrained_img2img_wall_warp">Naive High-Denoise Img2Img Mullion Warp &amp; Perspective Collapse (2.0000× Rework, 16/17 Violated)</option>
+          </select>
+        </div>
+        <div class="control-group">
+          <label for="station-slider">2. Facade Structural Complexity &amp; Solar Lighting Stage <code>k</code> (<span id="station-label">Stage 8 · u = 0.5000</span>)</label>
+          <input id="station-slider" type="range" min="0" max="16" step="1" value="8" />
+        </div>
+        <div class="control-group">
+          <label for="solar-select">3. Solar Azimuth &amp; Commercial Lighting Rig</label>
+          <select id="solar-select">
+            <option value="golden_hour_35deg">Golden Hour Warm Sun (Azimuth 245° / Elev 14° + Interior Warm Glow)</option>
+            <option value="overcast_museum_soft">Overcast Museum Soft Sky (Omnidirectional HDRI · True Swatch Inspection)</option>
+            <option value="rainy_night_neon_flagship">Rainy Night Urban Flagship Storefront (Wet Specular Ground + Display Spotlights)</option>
+          </select>
+        </div>
+        <div class="control-group">
+          <label for="theme-toggle">4. Viewport Theme</label>
+          <button id="theme-toggle" type="button" class="toggle-btn">Toggle Light / Dark Theme</button>
+        </div>
+      </section>
+      <section class="kpi-strip" aria-label="Core structural fidelity and visualization budget metrics">
+        <article class="kpi-card">
+          <span class="kpi-title">Current Architectural Stage</span>
+          <strong class="kpi-value" id="kpi-station-name">Stage 8 · IP-Adapter PBR Material Swatch Binding</strong>
+          <span class="kpi-sub" id="kpi-u-readout">u = 0.5000 · B(u) = 1.5000×</span>
+        </article>
+        <article class="kpi-card">
+          <span class="kpi-title">Amortized Render Cost Ratio c_bim(u)</span>
+          <strong class="kpi-value" id="kpi-cbim">0.6667×</strong>
+          <span class="kpi-sub" id="kpi-quad-err">64-patch perspective geometry error &lt; 1e-12</span>
+        </article>
+        <article class="kpi-card">
+          <span class="kpi-title">Mullion Plumb Error &amp; Budget Ratio (C_active / C_bim)</span>
+          <strong class="kpi-value" id="kpi-active-ratio">1.0000×</strong>
+          <span class="kpi-sub" id="kpi-status-badge">Plumb Error &lt;0.08° + Swatch Locked (0/17 Warp)</span>
+        </article>
+        <article class="kpi-card">
+          <span class="kpi-title">Stage 4 / 8 / 16 vs Naive Img2Img</span>
+          <strong class="kpi-value" id="kpi-benchmark-summary">1.0000× vs 1.25 / 1.50 / 2.00×</strong>
+          <span class="kpi-sub" id="kpi-solar-readout">M-LSD w=0.90 + Depth w=0.85 + Normal w=0.80</span>
+        </article>
+      </section>
+      <section class="workbench-grid">
+        <div class="canvas-panel">
+          <div class="panel-header">
+            <h2>Isometric Architectural &amp; Retail CAD/BIM Triple-Lock Visualization Studio (58 Modules · 17 Stages)</h2>
+            <span class="badge" id="canvas-mode-badge">Layer 1 Revit/SketchUp Pass Extraction → Layer 2 M-LSD/Normal/Depth + Swatch Lock → Layer 3 Solar Relighting</span>
+          </div>
+          <svg id="bim-stage-svg" viewBox="0 0 920 500" role="img" aria-label="Architectural CAD/BIM Multi-ControlNet Visualization Studio"></svg>
+        </div>
+        <aside class="telemetry-panel">
+          <h2>Structural Plumb &amp; Material Swatch Audit</h2>
+          <dl class="metric-list">
+            <div><dt>Stage Code &amp; AEC Task</dt><dd id="tel-stage-code">STAGE-08 · Swatch Bind</dd></div>
+            <div><dt>M-LSD Vertical &amp; Vanishing-Point Error</dt><dd id="tel-line-error">0.05° (Meets &lt;0.08° architectural tolerance)</dd></div>
+            <div><dt>Triple-Channel ControlNet Weights</dt><dd id="tel-control-weights">M-LSD 0.90 / Depth 0.85 / Normal 0.80 (Stop@0.85)</dd></div>
+            <div><dt>PBR Swatch &amp; Fenestration Preservation</dt><dd id="tel-swatch-policy">100% door/window openings preserved + IP-Adapter stone/wood swatch</dd></div>
+            <div><dt>Rework Savings vs Naive Img2Img</dt><dd id="tel-savings">-33.3% rework cost (-50.0% at Stage 16)</dd></div>
+          </dl>
+          <h3>17-Stage CAD/BIM Structural Lock &amp; Visualization Cost Envelope</h3>
+          <div class="table-scroll">
+            <table class="audit-table">
+              <thead><tr><th>Stage</th><th>u</th><th>c_bim(u)</th><th>Triple-Lock BIM</th><th>Naive Img2Img</th></tr></thead>
+              <tbody id="audit-table-body"></tbody>
+            </table>
+          </div>
+        </aside>
+      </section>
+    </main>
+  </body>
+</html>
+`;
 
-function localizeCycle379Workbench(){
-  const file='workshops/azure-agent-infra/workbench-cycle-379.html';
-  if(!fs.existsSync(path.join(root,file)))return;
-  const base=gitShow('97e12f2',file)
-    .replace('.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}','.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}@media(max-width:768px){.grid{grid-template-columns:1fr}}')
-    .replace('.sub{color:#93c5fd;margin-bottom:14px}','.sub{color:#bfd6ff;margin-bottom:14px}')
-    .replace('<body><div class="wrap">',`<body>${professional.navigation({file,en:true,className:'kee-dedicated-nav'})}<div class="wrap">`);
-  const zhHtml=base
-    .replace(/<html lang="[^"]+"/,'<html lang="zh-CN"')
-    .replace('<title>Cycle #379 Workbench · Azure Agent Infra</title>','<title>Cycle #379 交互工作台 · Azure 智能体基础设施</title>')
-    .replace('<h1>Cycle #379 Interactive Workbench</h1>','<h1>Cycle #379 交互式基准工作台</h1>')
-    .replace('Runtime/Sandbox benchmark explorer with source labels and deterministic session-cost model.','运行时与沙盒基准浏览器（含来源标签与确定性单会话成本模型）。');
-  fs.writeFileSync(path.join(root,file),base);
-  fs.writeFileSync(path.join(root,file.replace('.html','.zh.html')),zhHtml);
-}
-
-function localizeCycle380Workbench(){
-  const file='workshops/azure-agent-infra/workbench-cycle-380.html';
-  if(!fs.existsSync(path.join(root,file)))return;
-  const base=gitShow('6dc9dd8',file)
-    .replace('.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}','.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}@media(max-width:768px){.grid{grid-template-columns:1fr}}')
-    .replace('.sub{color:#93c5fd;margin-bottom:14px}','.sub{color:#bfd6ff;margin-bottom:14px}')
-    .replace('<body><div class="wrap">',`<body>${professional.navigation({file,en:true,className:'kee-dedicated-nav'})}<div class="wrap">`);
-  const zhHtml=base
-    .replace(/<html lang="[^"]+"/,'<html lang="zh-CN"')
-    .replace('<title>Cycle #380 Workbench · Azure Agent Infra</title>','<title>Cycle #380 交互工作台 · Azure 智能体基础设施</title>')
-    .replace('<h1>Cycle #380 Interactive Workbench</h1>','<h1>Cycle #380 交互式基准工作台</h1>')
-    .replace('Runtime/Sandbox benchmark explorer with source labels and deterministic session-cost model.','运行时与沙盒基准浏览器（含来源标签与确定性单会话成本模型）。');
-  fs.writeFileSync(path.join(root,file),base);
-  fs.writeFileSync(path.join(root,file.replace('.html','.zh.html')),zhHtml);
+function localizeRetainedVisualDemos() {
+  const manifest = JSON.parse(fs.readFileSync(path.join(root, 'generative-visual-lab/nightly-visual-2026-11-18.json'), 'utf8'));
+  for (const round of manifest.rounds) {
+    for (const lab of ['animation', 'generative-visual-lab']) {
+      const demoDir = path.join(root, lab, 'demos', round.slug);
+      const indexFile = path.join(demoDir, 'index.html');
+      if (!fs.existsSync(indexFile)) continue;
+      if (round.slug === 'brand-lora-training-dataset-dedup-caption-hygiene-workbench' || round.slug === 'cad-bim-sketch-to-photoreal-architectural-controlnet-studio') {
+        let zhHtml = fs.readFileSync(indexFile, 'utf8')
+          .replace(/<meta\s+http-equiv="Content-Security-Policy"[\s\S]*?\/>\s*/i, '')
+          .replace(/← 返回 \d+ 演示门户/g, '← 返回视觉实验室门户');
+        fs.writeFileSync(indexFile, zhHtml);
+        const enHtml = round.slug.startsWith('brand-lora') ? brandLoraEnHtml : cadBimEnHtml;
+        fs.writeFileSync(path.join(demoDir, 'index.en.html'), enHtml);
+      } else {
+        let enHtml = fs.readFileSync(indexFile, 'utf8')
+          .replace(/<meta\s+http-equiv="Content-Security-Policy"[\s\S]*?\/>\s*/i, '')
+          .replace(/Round \d+\s*[·•-]\s*/g, '');
+        fs.writeFileSync(indexFile, enHtml);
+        const zhHtml = enHtml
+          .replace(/<html lang="[^"]*"/i, '<html lang="zh-CN"')
+          .replace(/<title>[\s\S]*?<\/title>/i, `<title>${round.title_zh}</title>`);
+        fs.writeFileSync(path.join(demoDir, 'index.zh.html'), zhHtml);
+      }
+      // Clean Round NNN from test-report-cards titles as well
+      for (const rep of ['test-report-cards.html', 'test-report-cards.zh.html']) {
+        const repPath = path.join(demoDir, rep);
+        if (fs.existsSync(repPath)) {
+          const cleaned = fs.readFileSync(repPath, 'utf8').replace(/Round \d+\s*[·•:—-]\s*/g, '');
+          fs.writeFileSync(repPath, cleaned);
+        }
+      }
+    }
+  }
 }
 
 function main(){
@@ -178,11 +359,9 @@ function main(){
  localizeFoleyStudies();
  localizeFoleyReports();
  localizeFoleyDemos();
- localizePhase180Report();
- localizeCycle378Workbench();
- localizeCycle379Workbench();
- localizeCycle380Workbench();
- console.log('Localized VM compatibility entry and 8b9f876 nightly editions in English and Chinese');
+ localizeRetainedVisualDemos();
+ require('./localization/harness-workbenches.cjs').localizeHarnessWorkshops();
+ console.log('Localized VM compatibility entry, retained visual studios, and harness workbenches in English and Chinese');
 }
 if(require.main===module)main();
 module.exports={main};

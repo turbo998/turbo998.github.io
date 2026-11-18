@@ -12,6 +12,7 @@ const {tracks} = require('./engineering-tracks.cjs');
 const search = require('./site-search.cjs');
 const primary = [
   [BRAND,BRAND,'studio/index.html','studio/zh-index.html'],
+  ['Diamond Live Demos','Diamond 实战演示','diamond.html','zh-diamond.html'],
   ['Benchmark & Eval Foundry','基准评测中心','benchmarks.html','zh-benchmarks.html'],
   ['GitHub AI Signal Radar','GitHub AI 信号雷达','github-radar.html','zh-github-radar.html'],
   ['Model Routing & Telemetry','OpenRouter 模型遥测','openrouter.html','zh-openrouter.html'],
@@ -19,7 +20,9 @@ const primary = [
 ];
 function context(file, zh, active) {
   const items = [...tracks, ['sa-skills','SA Skill & HVE Library','SA Skill 与 HVE 技能库']];
-  return `<div class="context-bar"><p class="context-label">${zh?'工程赛道 / 快速导航':'ENGINEERING TRACKS / QUICK ACCESS'}</p><nav class="context-nav" aria-label="${zh?'Hub 工程赛道':'Hub engineering tracks'}">${items.map(([id,en,cn],i)=>`<a href="${href(file,id==='sa-skills'?`studio/${zh?'zh-':''}index.html#sa-skills`:`studio/${zh?'zh-':''}${id}.html`)}"${active===id?' aria-current="page"':''}><span>${String(i+1).padStart(2,'0')}</span>${esc(zh?cn:en)}</a>`).join('')}</nav></div>`;
+  const diamondHref = href(file, zh ? 'zh-diamond.html' : 'diamond.html');
+  const diamondItem = `<a class="context-diamond" href="${diamondHref}"${active==='diamond'?' aria-current="page"':''}><span>💎</span>${esc(zh?'Diamond 演示 (TCL · Fabric · Databricks)':'Diamond Demos (TCL · Fabric · Databricks)')}</a>`;
+  return `<div class="context-bar"><p class="context-label">${zh?'工程赛道 / 快速导航':'ENGINEERING TRACKS / QUICK ACCESS'}</p><nav class="context-nav" aria-label="${zh?'Hub 工程赛道':'Hub engineering tracks'}">${diamondItem}${items.map(([id,en,cn],i)=>`<a href="${href(file,id==='sa-skills'?`studio/${zh?'zh-':''}index.html#sa-skills`:`studio/${zh?'zh-':''}${id}.html`)}"${active===id?' aria-current="page"':''}><span>${String(i+1).padStart(2,'0')}</span>${esc(zh?cn:en)}</a>`).join('')}</nav></div>`;
 }
 function crumb(file, zh, label) {
   return `<nav class="breadcrumb" aria-label="${zh?'层级导航':'Breadcrumb'}"><a href="${href(file,zh?'zh.html':'index.html')}">${zh?'首页':'Home'}</a><span aria-hidden="true">/</span><a href="${href(file,`studio/${zh?'zh-':''}index.html`)}">Engineering Hub</a>${label?`<span aria-hidden="true">/</span><span aria-current="page">${esc(label)}</span>`:''}</nav>`;
