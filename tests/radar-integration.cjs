@@ -6049,6 +6049,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r487File),'utf8');
       assert.ok(txt.includes('2,250.00')&&txt.includes('3,900.00')&&txt.includes('6,150.00')&&txt.includes('80.00')&&txt.includes('290.00')&&txt.includes('370.00')&&txt.includes('5,780.00')&&txt.includes('93.98%')&&txt.includes('not_measured'),r487File+': contains exact 11-18 R7 acompany+agentcrop+agybridge closed-form parameters');
     }
+    // 2026-11-18 Night Round 8 (R488: Cherobin/speclok + archinario/archinario-agent + AgriciDaniel/dataforseo-agent + gordonbrander/zim-mcp) verification
+    const r488PathA=2140.00+38.0*100.00;
+    assert.equal(r488PathA.toFixed(2),'5940.00','11-18 R8 Path A total');
+    const r488PathC=75.00+2.8*100.00;
+    assert.equal(r488PathC.toFixed(2),'355.00','11-18 R8 Path C total');
+    assert.equal((r488PathA-r488PathC).toFixed(2),'5585.00','11-18 R8 savings vs Path A');
+    assert.equal(((r488PathA-r488PathC)/r488PathA*100).toFixed(2),'94.02','11-18 R8 pct savings vs Path A');
+    for(const r488File of ['workshops/github-trending-radar/docs/speclok-archinario-dataforseo-zim-mcp-java-compiler-spec-annotations-visual-architecture-board-prepriced-seo-offline-kiwix-selection-faq.md','workshops/github-trending-radar/docs/speclok-archinario-dataforseo-zim-mcp-java-compiler-spec-annotations-visual-architecture-board-prepriced-seo-offline-kiwix-selection-faq.en.md','assets/github-ai-radar-2026-11-18-r8-speclok-archinario-dataforseo-zim.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-18-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r488File),'utf8');
+      assert.ok(txt.includes('2,140.00')&&txt.includes('3,800.00')&&txt.includes('5,940.00')&&txt.includes('75.00')&&txt.includes('280.00')&&txt.includes('355.00')&&txt.includes('5,585.00')&&txt.includes('94.02%')&&txt.includes('not_measured'),r488File+': contains exact 11-18 R8 speclok+archinario+dataforseo+zim closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
