@@ -6038,6 +6038,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r486File),'utf8');
       assert.ok(txt.includes('2,180.00')&&txt.includes('3,700.00')&&txt.includes('5,880.00')&&txt.includes('115.00')&&txt.includes('280.00')&&txt.includes('395.00')&&txt.includes('5,485.00')&&txt.includes('93.28%')&&txt.includes('not_measured'),r486File+': contains exact 11-18 R6 readanydoc+mcpmock+mersad closed-form parameters');
     }
+    // 2026-11-18 Night Round 7 (R487: phuocka/a-company + oriliz/agent-crop + codewith-aditya/agy-bridge) verification
+    const r487PathA=2250.00+39.0*100.00;
+    assert.equal(r487PathA.toFixed(2),'6150.00','11-18 R7 Path A total');
+    const r487PathC=80.00+2.9*100.00;
+    assert.equal(r487PathC.toFixed(2),'370.00','11-18 R7 Path C total');
+    assert.equal((r487PathA-r487PathC).toFixed(2),'5780.00','11-18 R7 savings vs Path A');
+    assert.equal(((r487PathA-r487PathC)/r487PathA*100).toFixed(2),'93.98','11-18 R7 pct savings vs Path A');
+    for(const r487File of ['workshops/github-trending-radar/docs/a-company-agent-crop-agy-bridge-zero-docker-pglite-ai-teammates-trace-self-evolving-skills-antigravity-openai-bridge-selection-faq.md','workshops/github-trending-radar/docs/a-company-agent-crop-agy-bridge-zero-docker-pglite-ai-teammates-trace-self-evolving-skills-antigravity-openai-bridge-selection-faq.en.md','assets/github-ai-radar-2026-11-18-r7-acompany-agentcrop-agybridge.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-18-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r487File),'utf8');
+      assert.ok(txt.includes('2,250.00')&&txt.includes('3,900.00')&&txt.includes('6,150.00')&&txt.includes('80.00')&&txt.includes('290.00')&&txt.includes('370.00')&&txt.includes('5,780.00')&&txt.includes('93.98%')&&txt.includes('not_measured'),r487File+': contains exact 11-18 R7 acompany+agentcrop+agybridge closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
