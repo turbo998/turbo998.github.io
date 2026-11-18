@@ -6249,6 +6249,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r505File),'utf8');
       assert.ok(txt.includes('2,540.00')&&txt.includes('3,900.00')&&txt.includes('6,440.00')&&txt.includes('80.00')&&txt.includes('270.00')&&txt.includes('350.00')&&txt.includes('6,090.00')&&txt.includes('94.57%')&&txt.includes('not_measured'),r505File+': contains exact 11-18 R25 R505 grandet+dshwinmcp+openui+affectui closed-form parameters');
     }
+    // 2026-11-18 Night Round 26 (R506: pullboard-dev/pullboard + Aryanutkarsh/SeeCode + kitlangton/scrawl + franzenzenhofer/big-arrow-on-the-screen) verification
+    const r506PathA=2360.00+39.5*100.00;
+    assert.equal(r506PathA.toFixed(2),'6310.00','11-18 R26 R506 Path A total');
+    const r506PathC=75.00+2.7*100.00;
+    assert.equal(r506PathC.toFixed(2),'345.00','11-18 R26 R506 Path C total');
+    assert.equal((r506PathA-r506PathC).toFixed(2),'5965.00','11-18 R26 R506 savings vs Path A');
+    assert.equal(((r506PathA-r506PathC)/r506PathA*100).toFixed(2),'94.53','11-18 R26 R506 pct savings vs Path A');
+    for(const r506File of ['workshops/github-trending-radar/docs/pullboard-seecode-scrawl-big-arrow-on-the-screen-32-agent-queue-42-diagram-spec-keyframe-zoom-clickthrough-overlay-selection-faq.md','workshops/github-trending-radar/docs/pullboard-seecode-scrawl-big-arrow-on-the-screen-32-agent-queue-42-diagram-spec-keyframe-zoom-clickthrough-overlay-selection-faq.en.md','assets/github-ai-radar-2026-11-18-r26-pullboard-seecode-scrawl-bigarrow.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-18-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r506File),'utf8');
+      assert.ok(txt.includes('2,360.00')&&txt.includes('3,950.00')&&txt.includes('6,310.00')&&txt.includes('75.00')&&txt.includes('270.00')&&txt.includes('345.00')&&txt.includes('5,965.00')&&txt.includes('94.53%')&&txt.includes('not_measured'),r506File+': contains exact 11-18 R26 R506 pullboard+seecode+scrawl+bigarrow closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
