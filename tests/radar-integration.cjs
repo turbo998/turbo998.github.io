@@ -6227,6 +6227,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r503File),'utf8');
       assert.ok(txt.includes('2,340.00')&&txt.includes('3,950.00')&&txt.includes('6,290.00')&&txt.includes('75.00')&&txt.includes('270.00')&&txt.includes('345.00')&&txt.includes('5,945.00')&&txt.includes('94.52%')&&txt.includes('not_measured'),r503File+': contains exact 11-18 R23 R503 awesomecua+x18n+gongwen+franco closed-form parameters');
     }
+    // 2026-11-18 Night Round 24 (R504: jwuthri-cloud/Tracely-ai + openqodex/openqodex + HelixDB/helix-foundry + feder-cr/git-ai) verification
+    const r504PathA=2460.00+40.5*100.00;
+    assert.equal(r504PathA.toFixed(2),'6510.00','11-18 R24 R504 Path A total');
+    const r504PathC=80.00+2.8*100.00;
+    assert.equal(r504PathC.toFixed(2),'360.00','11-18 R24 R504 Path C total');
+    assert.equal((r504PathA-r504PathC).toFixed(2),'6150.00','11-18 R24 R504 savings vs Path A');
+    assert.equal(((r504PathA-r504PathC)/r504PathA*100).toFixed(2),'94.47','11-18 R24 R504 pct savings vs Path A');
+    for(const r504File of ['workshops/github-trending-radar/docs/tracely-ai-openqodex-helix-foundry-git-ai-zero-cost-trace-replay-finder-verifier-gate-ontology-graph-scion-cas-selection-faq.md','workshops/github-trending-radar/docs/tracely-ai-openqodex-helix-foundry-git-ai-zero-cost-trace-replay-finder-verifier-gate-ontology-graph-scion-cas-selection-faq.en.md','assets/github-ai-radar-2026-11-18-r24-tracely-openqodex-helixfoundry-gitai.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-18-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r504File),'utf8');
+      assert.ok(txt.includes('2,460.00')&&txt.includes('4,050.00')&&txt.includes('6,510.00')&&txt.includes('80.00')&&txt.includes('280.00')&&txt.includes('360.00')&&txt.includes('6,150.00')&&txt.includes('94.47%')&&txt.includes('not_measured'),r504File+': contains exact 11-18 R24 R504 tracely+openqodex+helixfoundry+gitai closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
