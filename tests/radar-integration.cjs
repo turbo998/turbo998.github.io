@@ -6348,6 +6348,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r514File),'utf8');
       assert.ok(txt.includes('2,560.00')&&txt.includes('4,050.00')&&txt.includes('6,610.00')&&txt.includes('80.00')&&txt.includes('280.00')&&txt.includes('360.00')&&txt.includes('6,250.00')&&txt.includes('94.55%')&&txt.includes('not_measured'),r514File+': contains exact 11-18 R34 R514 logodesign+linkedinskill+anything2explainer+yomiyasu closed-form parameters');
     }
+    // 2026-11-18 Night Round 35 (R515 Milestone: bangtutorial/bang-motion + achimala/dream-loop + viettranx/3dviz-pro-max + juliobsz/skills) verification
+    const r515PathA=2640.00+41.0*100.00;
+    assert.equal(r515PathA.toFixed(2),'6740.00','11-18 R35 R515 Path A total');
+    const r515PathC=80.00+2.8*100.00;
+    assert.equal(r515PathC.toFixed(2),'360.00','11-18 R35 R515 Path C total');
+    assert.equal((r515PathA-r515PathC).toFixed(2),'6380.00','11-18 R35 R515 savings vs Path A');
+    assert.equal(((r515PathA-r515PathC)/r515PathA*100).toFixed(2),'94.66','11-18 R35 R515 pct savings vs Path A');
+    for(const r515File of ['workshops/github-trending-radar/docs/bang-motion-dream-loop-3dviz-pro-max-awwwards-skills-continuous-camera-html-dream-critic-loop-223-threejs-recipes-jury-selection-faq.md','workshops/github-trending-radar/docs/bang-motion-dream-loop-3dviz-pro-max-awwwards-skills-continuous-camera-html-dream-critic-loop-223-threejs-recipes-jury-selection-faq.en.md','assets/github-ai-radar-2026-11-18-r35-r515-bangmotion-dreamloop-3dviz-awwwards.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-18-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r515File),'utf8');
+      assert.ok(txt.includes('2,640.00')&&txt.includes('4,100.00')&&txt.includes('6,740.00')&&txt.includes('80.00')&&txt.includes('280.00')&&txt.includes('360.00')&&txt.includes('6,380.00')&&txt.includes('94.66%')&&txt.includes('not_measured'),r515File+': contains exact 11-18 R35 R515 bangmotion+dreamloop+3dviz+awwwards closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
