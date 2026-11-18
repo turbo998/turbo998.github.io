@@ -6159,6 +6159,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r497File),'utf8');
       assert.ok(txt.includes('2,160.00')&&txt.includes('3,800.00')&&txt.includes('5,960.00')&&txt.includes('75.00')&&txt.includes('270.00')&&txt.includes('345.00')&&txt.includes('5,615.00')&&txt.includes('94.21%')&&txt.includes('not_measured'),r497File+': contains exact 11-18 R17 pmprd+uhharness+haven+herdrcc closed-form parameters');
     }
+    // 2026-11-18 Night Round 18 (R498: zjshen14/agy-hq + lukeinx/dsh-workboard + JL-GUO/skill-siphon + yibie/claude-best-practices-zh) verification
+    const r498PathA=2140.00+37.0*100.00;
+    assert.equal(r498PathA.toFixed(2),'5840.00','11-18 R18 Path A total');
+    const r498PathC=70.00+2.6*100.00;
+    assert.equal(r498PathC.toFixed(2),'330.00','11-18 R18 Path C total');
+    assert.equal((r498PathA-r498PathC).toFixed(2),'5510.00','11-18 R18 savings vs Path A');
+    assert.equal(((r498PathA-r498PathC)/r498PathA*100).toFixed(2),'94.35','11-18 R18 pct savings vs Path A');
+    for(const r498File of ['workshops/github-trending-radar/docs/agy-hq-dsh-workboard-skill-siphon-claude-best-practices-zh-zero-token-gatekeeper-sandboxed-widgets-skill-distillation-llm-wiki-selection-faq.md','workshops/github-trending-radar/docs/agy-hq-dsh-workboard-skill-siphon-claude-best-practices-zh-zero-token-gatekeeper-sandboxed-widgets-skill-distillation-llm-wiki-selection-faq.en.md','assets/github-ai-radar-2026-11-18-r18-agyhq-dshworkboard-skillsiphon-claudewiki.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-18-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r498File),'utf8');
+      assert.ok(txt.includes('2,140.00')&&txt.includes('3,700.00')&&txt.includes('5,840.00')&&txt.includes('70.00')&&txt.includes('260.00')&&txt.includes('330.00')&&txt.includes('5,510.00')&&txt.includes('94.35%')&&txt.includes('not_measured'),r498File+': contains exact 11-18 R18 agyhq+dshworkboard+skillsiphon+claudewiki closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
