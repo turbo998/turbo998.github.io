@@ -6337,6 +6337,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r513File),'utf8');
       assert.ok(txt.includes('2,420.00')&&txt.includes('3,950.00')&&txt.includes('6,370.00')&&txt.includes('75.00')&&txt.includes('270.00')&&txt.includes('345.00')&&txt.includes('6,025.00')&&txt.includes('94.58%')&&txt.includes('not_measured'),r513File+': contains exact 11-18 R33 R513 opendesignkit+explainroo+videoskills+solidglass closed-form parameters');
     }
+    // 2026-11-18 Night Round 34 (R514: kaankiziltug/logo-design-skill + Jakeschincariol/linkedin-agent-skill + Vincentwei1021/anything2explainer + nanaism/yomiyasu) verification
+    const r514PathA=2560.00+40.5*100.00;
+    assert.equal(r514PathA.toFixed(2),'6610.00','11-18 R34 R514 Path A total');
+    const r514PathC=80.00+2.8*100.00;
+    assert.equal(r514PathC.toFixed(2),'360.00','11-18 R34 R514 Path C total');
+    assert.equal((r514PathA-r514PathC).toFixed(2),'6250.00','11-18 R34 R514 savings vs Path A');
+    assert.equal(((r514PathA-r514PathC)/r514PathA*100).toFixed(2),'94.55','11-18 R34 R514 pct savings vs Path A');
+    for(const r514File of ['workshops/github-trending-radar/docs/logo-design-skill-linkedin-agent-skill-anything2explainer-yomiyasu-1400-svg-16px-test-5check-humanizer-44shot-remotion-selection-faq.md','workshops/github-trending-radar/docs/logo-design-skill-linkedin-agent-skill-anything2explainer-yomiyasu-1400-svg-16px-test-5check-humanizer-44shot-remotion-selection-faq.en.md','assets/github-ai-radar-2026-11-18-r34-logodesign-linkedinskill-anything2explainer-yomiyasu.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-18-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r514File),'utf8');
+      assert.ok(txt.includes('2,560.00')&&txt.includes('4,050.00')&&txt.includes('6,610.00')&&txt.includes('80.00')&&txt.includes('280.00')&&txt.includes('360.00')&&txt.includes('6,250.00')&&txt.includes('94.55%')&&txt.includes('not_measured'),r514File+': contains exact 11-18 R34 R514 logodesign+linkedinskill+anything2explainer+yomiyasu closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
