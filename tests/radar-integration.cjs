@@ -6392,6 +6392,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r518File),'utf8');
       assert.ok(txt.includes('2,680.00')&&txt.includes('4,100.00')&&txt.includes('6,780.00')&&txt.includes('85.00')&&txt.includes('270.00')&&txt.includes('355.00')&&txt.includes('6,425.00')&&txt.includes('94.76%')&&txt.includes('not_measured'),r518File+': contains exact 11-18 R38 R518 openwiki+artemis+aimemory+ycqm closed-form parameters');
     }
+    // 2026-11-18 Night Round 39 (R519: genspark-ai/genoffice + tw93/Kami + yetone/magpie + t8y2/dbx) verification
+    const r519PathA=2620.00+40.5*100.00;
+    assert.equal(r519PathA.toFixed(2),'6670.00','11-18 R39 R519 Path A total');
+    const r519PathC=80.00+2.7*100.00;
+    assert.equal(r519PathC.toFixed(2),'350.00','11-18 R39 R519 Path C total');
+    assert.equal((r519PathA-r519PathC).toFixed(2),'6320.00','11-18 R39 R519 savings vs Path A');
+    assert.equal(((r519PathA-r519PathC)/r519PathA*100).toFixed(2),'94.75','11-18 R39 R519 pct savings vs Path A');
+    for(const r519File of ['workshops/github-trending-radar/docs/genoffice-kami-magpie-dbx-byte-preserving-ooxml-office-9template-pdf-pptx-quota-failover-gateway-25mb-100db-mcp-selection-faq.md','workshops/github-trending-radar/docs/genoffice-kami-magpie-dbx-byte-preserving-ooxml-office-9template-pdf-pptx-quota-failover-gateway-25mb-100db-mcp-selection-faq.en.md','assets/github-ai-radar-2026-11-18-r39-genoffice-kami-magpie-dbx.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-18-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r519File),'utf8');
+      assert.ok(txt.includes('2,620.00')&&txt.includes('4,050.00')&&txt.includes('6,670.00')&&txt.includes('80.00')&&txt.includes('270.00')&&txt.includes('350.00')&&txt.includes('6,320.00')&&txt.includes('94.75%')&&txt.includes('not_measured'),r519File+': contains exact 11-18 R39 R519 genoffice+kami+magpie+dbx closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
