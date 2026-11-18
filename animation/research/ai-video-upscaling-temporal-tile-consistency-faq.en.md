@@ -1,6 +1,6 @@
 # Enterprise 4K 60fps AI Video Upscaling & Temporal Tile Consistency Pipeline FAQ: Bidirectional Optical-Flow SR + Hann Overlapped Tiling + 10-Bit Mastering vs Naive Per-Frame 2D Upscaling
 
-> **Standalone Track Positioning (Tonight Round 14 / Repo Round 236 · 246th Standalone Interactive Demo: `demos/ai-video-upscaling-temporal-tile-consistency-studio/`)**  
+> **Standalone Track Positioning (Interactive Architecture Workbench: `demos/ai-video-upscaling-temporal-tile-consistency-studio/`)**  
 > Written for **Cloud & AI Solution Architects** designing **enterprise 4K/8K keynote LED wall video pipelines, broadcast TVC mastering workflows, and high-resolution game cutscene post-processing**, this guide follows the six-section decision structure of `ib-vs-ethernet-roce-selection-faq.md`: explaining why upscaling native 720p/1080p AI videos frame-by-frame with 2D image super-resolution causes violent texture boiling and checkerboard tile seams, and how a **Bidirectional Optical-Flow Recurrent SR + 25% Raised-Cosine (Hann) Overlapped-Tile + Scene-Cut Reset + 10-Bit ProRes/HEVC Pipeline** locks temporal stability and mastering budget at `1.0000×`.
 
 ![Enterprise 4K AI Video Upscaling & Temporal Tile Consistency Summary](./evidence/ai-video-upscaling-temporal-tile-consistency-studio-summary.svg)

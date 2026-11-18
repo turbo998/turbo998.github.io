@@ -1,6 +1,6 @@
 # Enterprise AIGC Visual Production Pipeline & Model Selection FAQ: Sora 2 vs Veo 3 vs Kling 2.1 vs Wan 2.2 vs Flux/ComfyUI Multi-Model Routing & Async FinOps Queue Workbench
 
-> **Standalone Track Positioning (Tonight Round 2 / Repo Round 224 · 234th Standalone Interactive Demo: `demos/multi-model-aigc-routing-finops-workbench/`)**  
+> **Standalone Track Positioning (Interactive Architecture Workbench: `demos/multi-model-aigc-routing-finops-workbench/`)**  
 > Written for **Cloud & AI Solution Architects** designing **enterprise AIGC visual platforms, high-concurrency batch image/video task queues, and FinOps cost governance**, this guide follows the six-section decision structure of `ib-vs-ethernet-roce-selection-faq.md`: explaining how to compare leading video and image foundation models (OpenAI Sora 2 / GPT-Image-1 vs Google Veo 3 / Imagen 4 vs Runway Gen-4 / Kling 2.1 vs self-hosted Alibaba Wan 2.2 / Flux ComfyUI), how to architect resilient async task queues, and how to eliminate the $2.0000\times$ FinOps cost overrun and HTTP 429 rate-limit storms caused by naive single-flagship API routing.
 
 ![Tiered Multi-Model AIGC Router & Async FinOps Queue Summary](./evidence/multi-model-aigc-routing-finops-workbench-summary.svg)

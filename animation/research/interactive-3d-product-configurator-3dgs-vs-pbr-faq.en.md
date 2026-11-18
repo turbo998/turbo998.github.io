@@ -1,6 +1,6 @@
 # Enterprise 3D Product Configurator & Digital Twin Stack Selection FAQ: Hybrid 3D Gaussian Splatting (3DGS) + Draco/KTX2 GLTF PBR vs Naive Uncompressed Mesh/PLY Loading
 
-> **Standalone Track Positioning (Tonight Round 9 / Repo Round 231 · 241st Standalone Interactive Demo: `demos/interactive-3d-product-configurator-gaussian-webgpu-studio/`)**  
+> **Standalone Track Positioning (Interactive Architecture Workbench: `demos/interactive-3d-product-configurator-gaussian-webgpu-studio/`)**  
 > Written for **Cloud & AI Solution Architects** designing **automotive online 3D car configurators, luxury watch/furniture interactive showrooms, and industrial digital twins**, this guide follows the six-section decision structure of `ib-vs-ethernet-roce-selection-faq.md`: explaining when to use **3D Gaussian Splatting (3DGS)** vs **Traditional GLTF PBR Polygon Meshes**, why uncompressed 3D assets crash mobile browsers, and how a **Hybrid SPZ-Quantized 3DGS Environment + Draco/KTX2 GLTF PBR CAD Hero Pipeline** locks 60fps and halves GPU VRAM bandwidth.
 
 ![Enterprise 3D Product Configurator: Hybrid 3DGS + Draco PBR Pipeline Summary](./evidence/interactive-3d-product-configurator-gaussian-webgpu-studio-summary.svg)

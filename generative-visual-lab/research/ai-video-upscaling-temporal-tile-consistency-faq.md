@@ -1,6 +1,6 @@
 # 企业级 AI 视频 4K 60fps 超分与抗闪烁母带管线 FAQ：双向光流时序对齐 + 汉宁窗重叠分块融合 + 10-Bit 防断层 vs 朴素单帧独立 2D 超分
 
-> **独立专题定位（Tonight Round 14 / Repo Round 236 · 第 246 个独立可交互 Demo：`demos/ai-video-upscaling-temporal-tile-consistency-studio/`）**  
+> **独立专题定位（交互式架构工作台：`demos/ai-video-upscaling-temporal-tile-consistency-studio/`）**  
 > 本指南面向为 **品牌年度发布会（4K/8K 巨幕 LED 背景视频）、电视与 OTT 大屏商业广告（TVC）、游戏高画质 CG 过场动画** 设计工业级 4K 60fps 母带后处理管线的 **Cloud & AI Solution Architect**，严格对标 `ib-vs-ethernet-roce-selection-faq.md` 的**六段式架构师决策结构**：先用通俗业务与视频工程语言讲清楚“为什么原生 720p/1080p AI 视频绝不能拆成单张图片用普通 2D 超分放大、如何通过 **双向光流（RAFT/GMFlow）时序特征传播 + 25% 重叠率二维汉宁窗（Hann Window）无缝分块 + 转场切镜重置 + 10-bit 防断层编码** 彻底消灭蚂蚁爬闪烁与九宫格拼缝”，再给出选型矩阵与核验 Checklist。
 
 ![企业级 4K AI 视频时序超分与汉宁重叠分块母带管线对比总结图](./evidence/ai-video-upscaling-temporal-tile-consistency-studio-summary.svg)

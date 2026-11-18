@@ -1,6 +1,6 @@
-# Omnichannel Multi-Aspect-Ratio Ad Production Pipeline FAQ: Saliency Safe-Zone Lock + Directional Outpainting + Platform UI Reflow vs Naive Center-Crop Truncation (245th Demo Milestone!)
+# Omnichannel Multi-Aspect-Ratio Ad Production Pipeline FAQ: Saliency Safe-Zone Lock + Directional Outpainting + Platform UI Reflow vs Naive Center-Crop Truncation
 
-> **Standalone Track Positioning (Tonight Round 13 / Repo Round 235 · 245th Standalone Interactive Milestone Demo: `demos/multi-aspect-ratio-outpainting-safezone-compositor/`)**  
+> **Standalone Track Positioning (Interactive Architecture Workbench: `demos/multi-aspect-ratio-outpainting-safezone-compositor/`)**  
 > Written for **Cloud & AI Solution Architects** designing **omnichannel global ad adaptation engines (`16:9 YouTube` $\leftrightarrow$ `9:16 TikTok/Reels/Shorts` $\leftrightarrow$ `3:4 Xiaohongshu` $\leftrightarrow$ `4:5 Instagram` $\leftrightarrow$ `21:9 Ultrawide`)**, this guide follows the six-section decision structure of `ib-vs-ethernet-roce-selection-faq.md`: explaining why naive center-cropping chops off 68% of widescreen hero shots and buries subtitles underneath TikTok/Reels UI buttons, and how a **Three-Layer SAM-2 Saliency BBox Lock + Flux/Wan Directional Outpainting + Remotion Platform Dead-Zone Reflow Pipeline** locks omnichannel compliance at `1.0000×`.
 
 ![Omnichannel Multi-Aspect-Ratio Outpainting & Safe-Zone Compositor Summary](./evidence/multi-aspect-ratio-outpainting-safezone-compositor-summary.svg)

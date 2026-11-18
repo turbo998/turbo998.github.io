@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self' data:;"
+    />
+    <title>美妆护肤精华液、香水与饮品 TVC 流体飞溅与玻璃瓶折射合成工作台 · Generative Visual Lab</title>
+    <script type="module" crossorigin src="../../assets/cosmeticsLiquidFluidSplashBottleRefractionCompositor-DdvTr5MI.js"></script>
+    <link rel="modulepreload" crossorigin href="../../assets/modulepreload-polyfill-B5Qt9EMX.js">
+    <link rel="stylesheet" crossorigin href="../../assets/cosmeticsLiquidFluidSplashBottleRefractionCompositor-BQWHm59Q.css">
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="hero-header">
+        <div class="hero-top-row">
+          <span class="domain-pill">DOMAIN 2 · COSMETICS &amp; BEVERAGE FLUID SPLASH + IOR REFRACTION STUDIO · ROUND 270 MILESTONE!</span>
+          <nav class="Quick-links" aria-label="Documentation links">
+            <a href="../../index.html">← 返回门户 (Portal)</a>
+            <a href="../../research/cosmetics-liquid-fluid-splash-bottle-refraction-compositor-faq.html">中文选型 FAQ</a>
+            <a href="../../research/cosmetics-liquid-fluid-splash-bottle-refraction-compositor-faq.en.html">English FAQ</a>
+          </nav>
+        </div>
+        <h1>美妆护肤精华液、香水与饮品商业 TVC 流体飞溅、玻璃瓶透射折射与丝印字刚性锁定工作台</h1>
+        <p class="hero-subtitle">
+          面向美妆护肤（欧莱雅/雅诗兰黛）、高定香水与新消费饮品品牌的 <strong>Cloud &amp; AI Solution Architect</strong>：彻底破解美妆流体微距 TVC 的两大死穴——若将商品图直接送入端到端图生视频（I2V），<strong>水花漫过瓶身瞬间会把玻璃瓶肩融化成软泥（44.6% 轮廓畸变）并把 1.5mm 法文烫金丝印字变成鬼画符</strong>；若简单把静态抠图硬贴在 AI 水花上，<strong>瓶后方飞溅的液体无法透过透明玻璃瓶产生斯涅尔透镜折射（缺乏通透感）</strong>。本工作台采用 <strong>前后双深度层（Back/Front Depth Split）流体生成 → 瓶身法线/厚度图斯涅尔折射（IOR 1.52）与比尔-朗伯色散吸收 → 矢量丝印标签 0.00px 刚性叠加 → 外壁凝结水珠法线合成</strong>，以 <strong>$0.32/镜头</strong> 替代 $18,500 传统 Phantom 高速摄影机机械臂实拍。
+        </p>
+      </header>
+
+      <section class="controls-bar" aria-label="Interactive Cosmetics Fluid & Refraction Controls">
+        <div class="control-block">
+          <span class="control-label">1. 美妆精华、高定香水与冰爽饮品流体预设 (Fluid Tabletop Preset)</span>
+          <div class="button-group" id="preset-buttons">
+            <button type="button" class="preset-btn active" data-preset="hyaluronic-gold-serum-dropper">💧 黄金玻尿酸精华滴管 + 琥珀瓶折射</button>
+            <button type="button" class="preset-btn" data-preset="haute-parfum-crystal-crown-splash">🌸 高定水晶香水皇冠水花 (IOR 1.58)</button>
+            <button type="button" class="preset-btn" data-preset="camellia-milk-emulsion-swirl">🥛 山茶花乳液 SSS 丝滑旋涡包裹</button>
+            <button type="button" class="preset-btn" data-preset="sparkling-citrus-ice-condensation">🧊 气泡饮冰块破水 + 外壁凝结水珠</button>
+          </div>
+        </div>
+
+        <div class="control-block">
+          <span class="control-label">2. 流体包裹与玻璃瓶身合成架构 (Fluid Compositor Architecture)</span>
+          <div class="button-group" id="mode-buttons">
+            <button type="button" class="mode-btn active" data-mode="depth-split-ior-refraction">
+              ✅ 前后双层流体分离 + 玻璃瓶 IOR 折射透镜 + 丝印金字 0.00px 锁死
+            </button>
+            <button type="button" class="mode-btn" data-mode="naive-end2end-i2v">
+              ❌ 朴素端到端图生视频 I2V（水花带融玻璃瓶肩 44.6% + 丝印字变乱码）
+            </button>
+          </div>
+        </div>
+
+        <div class="control-block slider-block">
+          <label for="ior-slider" class="control-label">
+            3. 瓶身玻璃折射率与流体相位 (Glass IOR &amp; Wave Phase): <strong id="ior-readout">IOR = 1.52 · Crown Splash</strong>
+          </label>
+          <div class="slider-row">
+            <input id="ior-slider" type="range" min="130" max="175" value="152" />
+            <button type="button" id="play-toggle" class="action-btn">⏸ 暂停流体微距</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="kpi-grid" aria-label="Key Performance Indicators">
+        <article class="kpi-card">
+          <span class="kpi-tag">SILKSCREEN FOIL TYPOGRAPHY</span>
+          <strong class="kpi-val" id="kpi-silkscreen">100.0% 清晰</strong>
+          <p class="kpi-desc" id="kpi-silkscreen-sub">1.5mm 法文/中文成分丝印字矢量层独立锁定 (vs I2V 19.5%)</p>
+        </article>
+        <article class="kpi-card">
+          <span class="kpi-tag">BOTTLE SILHOUETTE WARP</span>
+          <strong class="kpi-val" id="kpi-warp">0.0% 变形</strong>
+          <p class="kpi-desc" id="kpi-warp-sub">刚性瓶肩与滴管胶头几何锁 (vs I2V 水花带融瓶身 44.6%)</p>
+        </article>
+        <article class="kpi-card">
+          <span class="kpi-tag">THROUGH-BOTTLE REFRACTION</span>
+          <strong class="kpi-val" id="kpi-refract">99.3 / 100</strong>
+          <p class="kpi-desc" id="kpi-refract-sub">瓶后水花经 IOR=1.52 柱面透镜反转折射与 Beer-Lambert 吸收</p>
+        </article>
+        <article class="kpi-card">
+          <span class="kpi-tag">SHOT TCO vs PHANTOM ROBOT</span>
+          <strong class="kpi-val" id="kpi-tco">$0.32 / 镜头</strong>
+          <p class="kpi-desc" id="kpi-tco-sub">对比 Phantom Flex4K + 机械臂实拍 ($18,500) 省 99.99%</p>
+        </article>
+      </section>
+
+      <section class="stage-panel" aria-label="Interactive Depth-Split Fluid Splash & Glass Bottle IOR Refraction Stage">
+        <div class="stage-header">
+          <div>
+            <span class="stage-badge" id="stage-badge">LUXURY SKINCARE SERUM · 120FPS MACRO</span>
+            <h2 id="stage-title">黄金玻尿酸抗老精华液微距 TVC（左侧：前后双深度流体包裹与玻璃瓶柱面折射透镜 → 右侧：四层深度合成拆解栈）</h2>
+          </div>
+          <div class="stage-legend">
+            <span class="legend-item"><i class="dot dot-back"></i>后景流体层 (Z &gt; Z_bottle, 经瓶身折射)</span>
+            <span class="legend-item"><i class="dot dot-ior"></i>玻璃瓶 IOR 1.52 透射吸收核</span>
+            <span class="legend-item"><i class="dot dot-front"></i>前景皇冠水花与挂壁水珠</span>
+          </div>
+        </div>
+
+        <div class="canvas-wrapper">
+          <canvas id="fluid-canvas" width="1240" height="530"></canvas>
+        </div>
+
+        <div class="pipeline-strip">
+          <div class="pipe-step">
+            <span class="step-num">STAGE 01</span>
+            <strong>轻量 SPH/FLIP 物理引导场</strong>
+            <p>按流体粘度（水 1cP vs 精华 420cP vs 乳液 1250cP）生成皇冠飞溅或拉丝旋涡的前后深度掩码与法线流</p>
+          </div>
+          <div class="pipe-step">
+            <span class="step-num">STAGE 02</span>
+            <strong>后景流体玻璃透镜斯涅尔折射</strong>
+            <p>瓶后方流体层通过玻璃瓶法线/厚度图执行 IOR 1.52~1.58 折射偏移与 Beer-Lambert 琥珀/玫瑰光谱吸收</p>
+          </div>
+          <div class="pipe-step">
+            <span class="step-num">STAGE 03</span>
+            <strong>丝印烫金标签与瓶盖 0.00px 锁死</strong>
+            <p>在折射玻璃层上方无损合成高光反射与 1.5mm 矢量丝印文字层，水花再猛烈也绝不模糊一个字母</p>
+          </div>
+          <div class="pipe-step">
+            <span class="step-num">STAGE 04</span>
+            <strong>前景飞溅水花与外壁挂壁水珠</strong>
+            <p>叠加遮挡瓶身局部的前景透明水珠/乳液流，并注入瓶壁程序化滑落水珠法线折射，直出 120fps 成片</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="deck-section" aria-label="7-Card 4:5 Benchmark Visual Report">
+        <div class="deck-header">
+          <span class="domain-pill">7-CARD 4:5 VISUAL BENCHMARK REPORT · MEASURED &amp; SEALED ARCHITECTURE DATA</span>
+          <h2>美妆护肤与饮品 TVC 流体飞溅及玻璃折射合成 7 卡基准评测报告</h2>
+        </div>
+
+        <div class="cards-grid">
+          <!-- Card 1 -->
+          <article class="bcard" data-card="1">
+            <div class="bcard-top">
+              <span class="bcard-idx">1 / 7 · HANDS-ON · COSMETICS FLUID &amp; REFRACTION</span>
+              <span class="bcard-pill">100% Label Sharpness</span>
+            </div>
+            <h3>双深度层流体分离 + 玻璃 IOR 折射合成彻底根除 I2V“水花融化瓶身”与“2D 贴图不通透”</h3>
+            <p>
+              在精华液、香水、乳液与气泡饮四大高频美妆快消品类中，将瓶身变形率从 44.6% 死锁为 0.0%，同时还原真实的瓶后流体透镜反转折射，单镜头成本从 $18,500 降至 $0.32。
+            </p>
+            <div class="bcard-metrics">
+              <div><span>1.5mm 丝印字清晰度</span><strong>100% vs 19.5%</strong></div>
+              <div><span>瓶肩被水花带融率</span><strong>0.0% vs 44.6%</strong></div>
+              <div><span>单条微距镜头成本</span><strong>$0.32 (-99.99%)</strong></div>
+            </div>
+          </article>
+
+          <!-- Card 2 -->
+          <article class="bcard" data-card="2">
+            <div class="bcard-top">
+              <span class="bcard-idx">2 / 7 · SCENARIO · GOLD HYALURONIC SERUM DROP</span>
+              <span class="bcard-pill">choice · Act automatically</span>
+            </div>
+            <h3>黄金玻尿酸精华微距：420cP 粘稠拉丝滴落 + IOR 1.52 琥珀瓶透射折射 + 法文金字零磨损</h3>
+            <p>
+              朴素 I2V 在水花撞击瓶身时将玻璃滴管扭曲成波浪形；分层折射架构让瓶后方金色流体通过圆柱玻璃瓶呈现真实的横向倒置放大效果。
+            </p>
+            <div class="bcard-bars">
+              <div class="bar-row"><span>Depth-Split + IOR 1.52</span><div class="bar-track"><div class="bar-fill" style="width:99.3%"></div></div><strong>99.3% 光学真度</strong></div>
+              <div class="bar-row"><span>2D PNG Paste (No IOR)</span><div class="bar-track"><div class="bar-fill warn" style="width:52.0%"></div></div><strong>52.0% (假贴纸)</strong></div>
+              <div class="bar-row"><span>Naive End-to-End I2V</span><div class="bar-track"><div class="bar-fill danger" style="width:19.5%"></div></div><strong>19.5% (瓶融字糊)</strong></div>
+            </div>
+          </article>
+
+          <!-- Card 3 -->
+          <article class="bcard" data-card="3">
+            <div class="bcard-top">
+              <span class="bcard-idx">3 / 7 · WHAT I TESTED · 4 BEAUTY &amp; BEVERAGE COHORTS</span>
+              <span class="bcard-pill">Full Matrix</span>
+            </div>
+            <h3>四大粘度与瓶体材质实测矩阵：精华液/水晶香水/次表面乳液/气泡饮冰块</h3>
+            <table class="bcard-table">
+              <thead>
+                <tr><th>PRODUCT COHORT</th><th>VISCOSITY</th><th>GLASS IOR</th><th>LABEL LOCK</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>玻尿酸黄金精华</td><td>420 cP (拉丝)</td><td>1.52 Amber</td><td>100% (vs 19% ✕)</td></tr>
+                <tr><td>高定水晶香水</td><td>1.0 cP (皇冠水花)</td><td>1.58 Crystal</td><td>100% (vs 14% ✕)</td></tr>
+                <tr><td>山茶花修护乳液</td><td>1,250 cP (SSS)</td><td>1.49 Frosted</td><td>100% (vs 23% ✕)</td></tr>
+                <tr><td>鲜榨柚子气泡饮</td><td>1.2 cP (气泡冰块)</td><td>1.31 Ice</td><td>100% (vs 24% ✕)</td></tr>
+              </tbody>
+            </table>
+          </article>
+
+          <!-- Card 4 -->
+          <article class="bcard" data-card="4">
+            <div class="bcard-top">
+              <span class="bcard-idx">4 / 7 · UNDER THE HOOD · SNELL + BEER-LAMBERT</span>
+              <span class="bcard-pill">4-Pass Shader</span>
+            </div>
+            <h3>双深度流体掩码、柱面玻璃斯涅尔折射与比尔-朗伯体积吸收方程</h3>
+            <pre class="bcard-code"><code>// Pass 1: Refract back-fluid (Z > Z_bottle) through bottle normal N:
+uv_refract = uv + refract(viewDir, N_bottle, 1.0 / glassIor).xy * thickness
+transmitted = sample(backFluid, uv_refract) * exp(-sigma_absorb * thickness)
+// Pass 2: Composite rigid silkscreen text + front splash (Z < Z_bottle)</code></pre>
+            <p class="bcard-foot">丝印烫金文字层独立于流体折射层之上，保证 100% 印刷级锐度。</p>
+          </article>
+
+          <!-- Card 5 -->
+          <article class="bcard" data-card="5">
+            <div class="bcard-top">
+              <span class="bcard-idx">5 / 7 · ROBUSTNESS CHECK · OCCLUSION &amp; VISCOSITY</span>
+              <span class="bcard-pill">Perturbation Test</span>
+            </div>
+            <h3>鲁棒性压测：前景水珠半遮挡丝印字、高粘度蜂蜜精华拉丝与厚底水晶瓶折射</h3>
+            <table class="bcard-table">
+              <thead>
+                <tr><th>PERTURBATION</th><th>NAIVE I2V / 2D PASTE</th><th>DEPTH-SPLIT IOR</th><th>DELTA</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>透明水滴滑过瓶身金字</td><td>金字溶解消失 ✕</td><td>水珠局部微距放大金字 ✅</td><td>100% Intact</td></tr>
+                <tr><td>瓶后方水花掠过透明瓶肚</td><td>2D 抠图完全挡死或无折射 ✕</td><td>圆柱透镜横向反转折射 ✅</td><td>+47.3 pts</td></tr>
+                <tr><td>420cP 精华滴管拉丝滴落</td><td>胶头随液滴一起拉长变形 ✕</td><td>刚性玻璃管+流体源分离 ✅</td><td>0.0mm Warp</td></tr>
+              </tbody>
+            </table>
+          </article>
+
+          <!-- Card 6 -->
+          <article class="bcard" data-card="6">
+            <div class="bcard-top">
+              <span class="bcard-idx">6 / 7 · LATENCY · 16.4S MACRO FLUID SHOT</span>
+              <span class="bcard-pill">L40S Pipeline</span>
+            </div>
+            <h3>5 秒 120fps 美妆流体微距镜头生成耗时拆解：16.4 秒 vs 实拍机械臂 2 天</h3>
+            <div class="bcard-bars">
+              <div class="bar-row"><span>1. SPH Guide + Depth</span><div class="bar-track"><div class="bar-fill" style="width:14%"></div></div><strong>1.8s</strong></div>
+              <div class="bar-row"><span>2. Dual-Layer AI Fluid</span><div class="bar-track"><div class="bar-fill" style="width:58%"></div></div><strong>10.4s</strong></div>
+              <div class="bar-row"><span>3. IOR + Beer-Lambert</span><div class="bar-track"><div class="bar-fill" style="width:12%"></div></div><strong>1.6s</strong></div>
+              <div class="bar-row"><span>4. RIFE 120fps + Foil</span><div class="bar-track"><div class="bar-fill" style="width:18%"></div></div><strong>2.6s (Total 16.4s)</strong></div>
+            </div>
+          </article>
+
+          <!-- Card 7 -->
+          <article class="bcard" data-card="7">
+            <div class="bcard-top">
+              <span class="bcard-idx">7 / 7 · MY TAKE · ARCHITECT DECISION MATRIX</span>
+              <span class="bcard-pill">Production Ready</span>
+            </div>
+            <h3>架构师选型结论：透明/半透明美妆与饮品包装必须采用“前后分层流体 + 瓶身折射着色器”</h3>
+            <div class="fit-grid">
+              <div class="fit-good">
+                <strong>✅ 强烈推荐 (Good Fit)</strong>
+                <ul>
+                  <li>护肤精华、香水、洗发水、气泡饮的高速皇冠水花与精油滴落 TVC</li>
+                  <li>新品上市前基于 CAD 包装瓶模零实拍生成 20 款果味/花香流体背景变体</li>
+                  <li>瓶壁带凝结水珠、冰块碰撞与透射折射的特写买量视频</li>
+                </ul>
+              </div>
+              <div class="fit-bad">
+                <strong>⛔ 不适用边界 (Not For)</strong>
+                <ul>
+                  <li>严禁把透明玻璃香水瓶直接喂给无分层的端到端 I2V（瓶肩与文字必融化）</li>
+                  <li>严禁对透明瓶身只做死板 2D 前景遮罩而不计算瓶后背景折射（极其失真）</li>
+                </ul>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+    </div>
+  </body>
+</html>

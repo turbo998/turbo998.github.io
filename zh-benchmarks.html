@@ -605,6 +605,7 @@ body:has([data-professional-header]){height:auto!important;overflow-x:clip!impor
         <a class="pub-arrow" href="workshops/faf-vs-agent-forge/test-report-cards.zh-CN.html" aria-label="打开三方竞技场 7-Card 报告">→</a>
       </article>
 
+<<<<<<< Updated upstream
       <!-- INFRA ROUNDS 3-12: OPTICAL & COPPER INTERCONNECT, RLHF/GRPO POST-TRAINING, DATACENTER COOLING & POWER, GPU SHARING & ISOLATION, SPECULATIVE DECODING, LONG-CONTEXT, FAULT RECOVERY, ROCEV2 LOAD BALANCING, CHECKPOINT & KV OFFLOAD -->
       <article class="pub" data-category="harness-infra">
         <div>
@@ -752,14 +753,40 @@ body:has([data-professional-header]){height:auto!important;overflow-x:clip!impor
       </article>
 
       <!-- INFRA: MOE QUANTIZATION & PARALLELISM + LLM ENGINE & PD DISAGGREGATION -->
+=======
+      <!-- INFRA: CHECKPOINT & KV TIERING + MOE QUANTIZATION & PARALLELISM + LLM ENGINE & PD DISAGGREGATION -->
+>>>>>>> Stashed changes
       <article class="pub" data-category="harness-infra">
         <div>
           <span class="pub-tag report">算力底座 · 架构选型 FAQ</span>
-          <div class="pub-date">2026-11-08 · Round 2 MoE 量化与 EP</div>
+          <div class="pub-date">2026-11-08 · Round 3 &amp; 4 存储与 KV</div>
         </div>
         <div class="pub-main">
+<<<<<<< Updated upstream
           <h3><a href="workshops/benchmarks/moe-quantization-parallelism-selection-cards.zh.html" target="_blank" rel="noopener">超大模型与 MoE 推理量化（`BF16`/`W4A16`/`FP8`/`NVFP4`）与并行策略（`Pure TP` vs `DP+EP+DeepEP+EPLB`）基准报告</a></h3>
           <p>对标 `ib-vs-ethernet-roce-selection-faq.md` 标准六段式架构师实战指南与 7-Card 4:5 视觉报告（<code>synthetic</code> 确定性分析模型 + <code>anonymized_reported</code> 硬件规格，<code>independently_reproduced=false</code>）：在 64 卡 671B/37B MoE 集群上，<strong>FP8 细粒度块缩放 + Attention DP=8 / MoE EP=8 + DeepEP + EPLB</strong> 实现 <code>92,200 tok/s</code>（较 BF16 TP=16 提速 <code>2.65x</code>），Decode P99 TPOT 降至 <code>15.8 ms</code>，单百万 Token 成本降至 <code>$0.35</code>（<code>-62.0%</code>）；Blackwell <strong>NVFP4 + DP16/EP16</strong> 达 <code>151,200 tok/s</code>（较 BF16 提速 <code>4.34x</code>，较 FP8 提速 <code>1.64x</code>），成本降至 <code>$0.21/1M</code>（<code>-77.2%</code>），<strong>EPLB</strong> 消除 Zipf 热门专家排队倾斜（P99 TPOT <code>25.1 -&gt; 15.8 ms</code>，<code>-37.1%</code>）。</p>
+=======
+          <h3><a href="workshops/benchmarks/ai-storage-checkpoint-kv-offload-selection-cards.zh.html" target="_blank" rel="noopener">分布式训练 Checkpoint（`同步 POSIX` vs `同步 GDS` vs `两阶段异步 DCP`）与 64K 长上下文 KV 分层卸载基准报告</a></h3>
+          <p>遵循“一篇一决策”原则拆分为两篇独立六段式架构师实战指南与 7-Card 4:5 视觉报告（<code>synthetic</code> 确定性分析模型 + <code>anonymized_reported</code> 硬件规格，<code>independently_reproduced=false</code>）：（1）<strong>Round 3 训练 Checkpoint 架构</strong>：在 512×H100（64 节点）每 30 分钟保存 <code>9,000 GB</code> 场景下，<strong>两阶段异步 PyTorch DCP</strong>（Stage 1 以 <code>45.0 GB/s/节点</code> 聚合 <code>2,880.0 GB/s</code> 写入本机 Pinned DRAM + Stage 2 后台 <code>50.0 s</code> 刷盘）将 GPU 冻结时间压缩 <code>72.0x</code>（<code>225.0 -> 3.125 s</code>），有效算力率从 <code>87.50%</code> 提升至 <code>99.83%</code>（<code>+12.33 pts</code>），每月挽回 <code>$181,813.25</code> 算力损耗；（2）<strong>Round 4 长上下文 KV 卸载</strong>：64K 多轮会话（<code>2.048 GB</code> FP8 KV）卸载至 <strong>本机锁页内存 Host Pinned DRAM（51.2 GB/s）</strong> 或 <strong>跨机 RDMA NVMe + GDS 池（40.96 GB/s）</strong>，可将恢复 TTFT 从全量重算的 <code>780.0 ms</code> 压至 <code>52.0 ms</code>（<code>15.0x</code>，<code>$0.44/1M</code>，<code>-54.2%</code>）与 <code>62.0 ms</code>（<code>12.58x</code>，<code>$0.48/1M</code>，<code>-50.0%</code>），而云端 TCP POSIX NFS（<code>3.2 GB/s</code>，<code>652.0 ms</code>）仅提速 <code>1.20x</code>。</p>
+          <div class="pub-meta">
+            <span><a href="workshops/benchmarks/ai-storage-checkpoint-kv-offload-selection-cards.zh.html" target="_blank" rel="noopener"><b>🃏 7-Card 4:5 视觉报告 (中文)</b></a></span>
+            <span><a href="workshops/benchmarks/ai-storage-checkpoint-kv-offload-selection-cards.html" target="_blank" rel="noopener"><b>🃏 EN 7-Card Deck</b></a></span>
+            <span><a href="workshops/benchmarks/llm-inference-engine-pd-sizer.html" target="_blank" rel="noopener"><b>🧭 交互式 Checkpoint 与 KV 计算器</b></a></span>
+            <span><a href="assets/ai-storage-checkpoint-kv-offload-selection-faq-summary.svg" target="_blank" rel="noopener"><b>🖼️ 一图流总结 SVG</b></a></span>
+          </div>
+        </div>
+        <a class="pub-arrow" href="workshops/benchmarks/ai-storage-checkpoint-kv-offload-selection-cards.zh.html" target="_blank" rel="noopener" aria-label="打开训练 Checkpoint 与 KV 卸载 7-Card 报告">→</a>
+      </article>
+
+      <article class="pub" data-category="harness-infra">
+        <div>
+          <span class="pub-tag report">算力底座 · 架构选型 FAQ</span>
+          <div class="pub-date">2026-11-08 · Round 2A/2B 量化与 EP</div>
+        </div>
+        <div class="pub-main">
+          <h3><a href="workshops/benchmarks/moe-quantization-parallelism-selection-cards.zh.html" target="_blank" rel="noopener">大模型推理量化（`BF16`/`W4A16`/`FP8`/`NVFP4`）与超大 MoE 并行策略（`Pure TP` vs `DP+EP+DeepEP+EPLB`）独立双专题基准报告</a></h3>
+          <p>按单专题门禁拆分为两篇独立六段式 FAQ（<code>llm-quantization-selection-faq</code> 与 <code>moe-parallelism-selection-faq</code>）及 7-Card 4:5 视觉报告（<code>synthetic</code> 确定性分析模型 + <code>anonymized_reported</code> 硬件规格，<code>independently_reproduced=false</code>）：在 64 卡 671B/37B MoE 集群上，<strong>FP8 细粒度块缩放（99.6% 精度保持）+ Attention DP=8 / MoE EP=8 + DeepEP + EPLB</strong> 实现 <code>92,200 tok/s</code>（较 BF16 TP=16 `34.8 ms` 提速 <code>2.65x</code>），Decode P99 TPOT 降至 <code>15.8 ms</code>，单百万 Token 成本降至 <code>$0.35</code>（<code>-62.0%</code>）；Blackwell <strong>NVFP4（98.9% 精度保持）+ DP16/EP16</strong> 达 <code>151,200 tok/s</code>（较 BF16 提速 <code>4.34x</code>），成本降至 <code>$0.21/1M</code>（<code>-77.2%</code>），<strong>EPLB</strong> 将 Zipf 热门专家负载偏斜从 <code>2.45x</code> 压平至 <code>1.12x</code>（吞吐 <code>60,220 -> 92,200 tok/s</code>，<code>+53.1%</code>；P99 TPOT <code>25.1 -> 15.8 ms</code>，<code>-37.1%</code>）。</p>
+>>>>>>> Stashed changes
           <div class="pub-meta">
             <span><a href="workshops/benchmarks/moe-quantization-parallelism-selection-cards.zh.html" target="_blank" rel="noopener"><b>🃏 7-Card 4:5 视觉报告 (中文)</b></a></span>
             <span><a href="workshops/benchmarks/moe-quantization-parallelism-selection-cards.zh.html" target="_blank" rel="noopener"><b>🃏 EN 7-Card Deck</b></a></span>

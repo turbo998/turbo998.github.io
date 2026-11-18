@@ -1,4 +1,4 @@
-# Why Raw T2I Textures Show Grid Seams & Wrong-Way Shadows in UE5/Unity—and How Toroidal Circular-Conv2D 5-Map PBR + Cyclic VFX Flipbooks Lock Quality at 1.0000× (FAQ)
+# Why Raw T2I Textures Show Grid Seams & Wrong-Way Shadows in UE5/Unity—and How Toroidal Circular-Conv2D 5-Map PBR + Cyclic VFX Flipbooks Lock Quality (FAQ)
 
 > **Audience**: **Cloud & AI Solution Architects** and Technical Art (TA) Directors building industrial AIGC asset pipelines for **Unreal Engine 5, Unity 6, 3D Digital Twins, and LED-Volume Virtual Production**.
 > **Core Value**: Eliminates the three classic technical-art failures when importing raw AIGC images into 3D engines—**visible $10\times 10$ UV tiling grid seams, baked directional shadows in BaseColor that fight dynamic engine lighting, and non-looping 64-frame VFX flipbooks with black/white alpha halos**. Explains how **Toroidal Circular-Padding Conv2D + Intrinsic De-Lighted 5-Map PBR Decomposition (Albedo / Normal / ORM / Height) + Cyclic Latent Ring ($z_{64} \equiv z_0$) Premultiplied-Alpha VFX Atlases** locks engine-ready quality and TA budget at **`1.0000×`** across all 17 stages.

@@ -1,6 +1,6 @@
 # 企业 24×7 智能直播间与实时互动视觉管线 FAQ：StreamDiffusion 对角线批处理 + TensorRT + 相似帧潜空间缓存 vs 朴素逐帧 50 步扩散推理
 
-> **独立专题定位（Tonight Round 12 / Repo Round 234 · 第 244 个独立可交互 Demo：`demos/live-commerce-realtime-stream-diffusion-workbench/`）**  
+> **独立专题定位（交互式架构工作台：`demos/live-commerce-realtime-stream-diffusion-workbench/`）**  
 > 本指南面向为 **电商 24×7 品牌自播间（实时智能换景/弹幕触发背景互动）、线下旗舰店 AI 互动魔镜大屏、虚拟主播（VTuber）实时舞台** 设计毫秒级流式生成管线的 **Cloud & AI Solution Architect**，严格对标 `ib-vs-ethernet-roce-selection-faq.md` 的**六段式架构师决策结构**：先用通俗业务与推理加速工程语言讲清楚“为什么离线文生图的 50 步去噪循环不能直接接直播摄像头、如何通过 **StreamDiffusion 跨帧对角线批处理 + 4 步 LCM/ADD 蒸馏 + 残差 R-CFG + TAESD 极速编解码 + 相似帧潜空间过滤** 将单帧延迟压进 `<25ms`（30fps+）并彻底消除背景沸腾闪烁”，再给出选型矩阵与核验 Checklist。
 
 ![企业智能直播间 StreamDiffusion + TensorRT 实时流管线对比总结图](./evidence/live-commerce-realtime-stream-diffusion-workbench-summary.svg)

@@ -1,6 +1,6 @@
-# Enterprise Brand VI Guardrail, Prompt AST Compiler & C2PA Copyright Compliance Gateway FAQ (240th Demo Historic Milestone!)
+# Enterprise Brand VI Guardrail, Prompt AST Compiler & C2PA Copyright Compliance Gateway FAQ
 
-> **Standalone Track Positioning (Tonight Round 8 / Repo Round 230 · 240th Standalone Interactive Historic Milestone Demo: `demos/brand-guardrail-prompt-compiler-c2pa-gateway/`)**  
+> **Standalone Track Positioning (Interactive Architecture Workbench: `demos/brand-guardrail-prompt-compiler-c2pa-gateway/`)**  
 > Written for **Cloud & AI Solution Architects** designing **enterprise AIGC governance gateways for global marketing teams and external advertising agencies**, this guide follows the six-section decision structure of `ib-vs-ethernet-roce-selection-faq.md`: explaining why enterprises must never expose raw foundation model prompts directly to end users, how to architect a **Three-Stage Pre-Flight Prompt AST Compiler + In-Flight Brand VI LUT Lock ($\Delta E_{00} \le 1.50$) + Post-Flight CLIP Trademark Scanner & C2PA v2.1 Indemnity Gateway**, and how to preserve cloud provider IP Indemnity coverage.
 
 ![Enterprise Brand VI Guardrail, Prompt AST Compiler & C2PA Gateway Summary](./evidence/brand-guardrail-prompt-compiler-c2pa-gateway-summary.svg)

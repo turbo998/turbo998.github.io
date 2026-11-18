@@ -1,6 +1,6 @@
 # Enterprise Financial Report & Data Storytelling Programmable Video Pipeline FAQ: Structured BI AST + Motion Canvas / Remotion vs Naive Diffusion Chart Hallucination
 
-> **Standalone Track Positioning (Tonight Round 7 / Repo Round 229 · 239th Standalone Interactive Demo: `demos/enterprise-annual-report-motion-canvas-studio/`)**  
+> **Standalone Track Positioning (Interactive Architecture Workbench: `demos/enterprise-annual-report-motion-canvas-studio/`)**  
 > Written for **Cloud & AI Solution Architects** designing **quarterly earnings video pipelines, SaaS customer "Year in Review / Wrapped" personalized video factories, and automated BI executive briefings**, this guide follows the six-section decision structure of `ib-vs-ethernet-roce-selection-faq.md`: defining the architectural boundary between **AI Generative Video** and **Code-Driven Programmable Video (Motion Canvas / Remotion)**, explaining why financial charts must never be rendered inside pixel diffusion latents, and demonstrating how a **Structured BI JSON AST + Motion Canvas / Remotion Scene-Graph Pipeline** locks numerical audit accuracy at `1.0000×`.
 
 ![Enterprise Financial Report & Motion Canvas Data Video Pipeline Summary](./evidence/enterprise-annual-report-motion-canvas-studio-summary.svg)

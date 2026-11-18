@@ -1,6 +1,6 @@
 # 企业 AIGC 视觉与视频管线架构及选型 FAQ：AI 视频大模型（Sora / Veo / Kling / Wan）+ Remotion 可编程代码合成混合管线 vs 朴素纯 AI 端到端全量重生成（为什么电商千款 SKU 营销视频不能靠大模型“硬画价格与包装小字”？）
 
-> **独立专题定位（Tonight Round 1 / Repo Round 223 · 第 233 个独立可交互 Demo：`demos/hybrid-remotion-aigc-storyboard-studio/`）**  
+> **独立专题定位（交互式架构工作台：`demos/hybrid-remotion-aigc-storyboard-studio/`）**  
 > 本指南面向为企业设计 **AIGC 电商商品营销短视频管线、千人千面个性化视频广告、品牌发布会视觉工作流** 的 **Cloud & AI Solution Architect**，严格对标 `ib-vs-ethernet-roce-selection-faq.md` 的**六段式架构师决策结构**：先用通俗业务与架构语言讲清楚“什么时候用 AI 视频大模型（Sora 2 / Veo 3 / 可灵 Kling 2.1 / 万相 Wan 2.2 / Runway Gen-4），什么时候用可编程代码视频（Remotion / Motion Canvas），为什么企业生产环境必须采用 **‘AI 生成写实镜头缓存 + Remotion 确定性代码合成’混合管线**”，再给出完整生产架构图、横向选型决策矩阵与落地核验 Checklist。
 
 ![Hybrid AI B-Roll + Remotion 可编程代码合成混合管线对比总结图](./evidence/hybrid-remotion-aigc-storyboard-studio-summary.svg)

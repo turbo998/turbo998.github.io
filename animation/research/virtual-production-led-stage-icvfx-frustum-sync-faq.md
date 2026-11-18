@@ -1,7 +1,7 @@
-# 企业与影视 LED 虚拟制片（ICVFX）为什么直接在巨幕上放 2D AI 视频一动镜头就穿帮：6DoF 追踪内视锥（3DGS/UE5）+ 外视锥 AIGC 全景天幕照明 + Genlock 锁相选型指南（FAQ · 第 255 个里程碑 Demo）
+# 企业与影视 LED 虚拟制片（ICVFX）为什么直接在巨幕上放 2D AI 视频一动镜头就穿帮：6DoF 追踪内视锥（3DGS/UE5）+ 外视锥 AIGC 全景天幕照明 + Genlock 锁相选型指南（架构师选型 FAQ）
 
 > **阅读对象**：为企业 CEO 年度 xR 发布会、汽车商业大片 LED 虚拟影棚（LED Volume）、广电演播室与短剧虚拟制片基地设计 **“AIGC + 3DGS/UE5 机内直出虚拟制片（In-Camera VFX, ICVFX）管线”** 的 **Cloud & AI Solution Architect（云与 AI 解决方案架构师）** 与虚拟制片技术总监（VP Supervisor）。
-> **核心价值**（**Round 245 · 第 255 个独立能力里程碑 Demo！**）：彻底厘清为什么“租一块弧形 LED 巨幕，把 Sora/Veo/Wan 生成的 2D 视频直接全屏播放并在前面推轨道车拍人和车”会引发灾难性的透视穿帮与扫描黑带——用通俗业务与工程语言讲透 **6DoF 摄影机追踪离轴内视锥（Off-Axis Inner Frustum 3DGS/UE5）+ 外视锥 360° 16-bit AIGC HDRI 环境反射照明 + PTPv2/Genlock 快门相位锁死** 架构，实现零绿幕抠像的 **“机内直出（Final Pixel）”**，将全 17 个阶段的制作与后期返工预算比恒定锁死在 **`1.0000×`**。
+> **核心价值**：彻底厘清为什么“租一块弧形 LED 巨幕，把 Sora/Veo/Wan 生成的 2D 视频直接全屏播放并在前面推轨道车拍人和车”会引发灾难性的透视穿帮与扫描黑带——用通俗业务与工程语言讲透 **6DoF 摄影机追踪离轴内视锥（Off-Axis Inner Frustum 3DGS/UE5）+ 外视锥 360° 16-bit AIGC HDRI 环境反射照明 + PTPv2/Genlock 快门相位锁死** 架构，实现零绿幕抠像的 **“机内直出（Final Pixel）”**，将全 17 个阶段的制作与后期返工预算比恒定锁死在 **`1.0000×`**。
 
 ![企业 LED 虚拟制片 ICVFX 内视锥 3DGS 与 Genlock 同步管线图解](./evidence/virtual-production-led-stage-icvfx-frustum-sync-studio-summary.svg)
 
@@ -118,7 +118,7 @@ sequenceDiagram
 
 ---
 
-## 🧪 5. 交互式应用工作台 Demo 与 7-Card 报告（255th Demo Milestone!）
+## 🧪 5. 交互式应用工作台 Demo 与 7-Card 报告
 
 - **交互式工作台入口**：[`demos/virtual-production-led-stage-icvfx-frustum-sync-studio/`](../demos/virtual-production-led-stage-icvfx-frustum-sync-studio/index.html)
 - **7-Card 4:5 评测报告（英文版）**：[`demos/virtual-production-led-stage-icvfx-frustum-sync-studio/test-report-cards.html`](../demos/virtual-production-led-stage-icvfx-frustum-sync-studio/test-report-cards.html)

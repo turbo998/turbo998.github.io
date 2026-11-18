@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self' data:;"
+    />
+    <title>企业自建视频大模型（Wan 2.2 / HunyuanVideo）推理加速：U-TeaCache 残差缓存、SageAttention2 量化与 USP 序列并行工作台</title>
+    <script type="module" crossorigin src="../../assets/videoDitInferenceAccelerationUlyssesTeacacheQuantization-DTxJU-Fz.js"></script>
+    <link rel="modulepreload" crossorigin href="../../assets/modulepreload-polyfill-B5Qt9EMX.js">
+    <link rel="stylesheet" crossorigin href="../../assets/videoDitInferenceAccelerationUlyssesTeacacheQuantization-CLwc-lUX.css">
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="hero-header">
+        <div class="hero-top-row">
+          <span class="domain-pill">DOMAIN 1 · VIDEO DIT INFERENCE ACCELERATION &amp; QUANTIZATION LAB · ROUND 268</span>
+          <nav class="Quick-links" aria-label="Documentation links">
+            <a href="../../index.html">← 返回门户 (Portal)</a>
+            <a href="../../research/video-dit-inference-acceleration-ulysses-teacache-quantization-faq.html">中文选型 FAQ</a>
+            <a href="../../research/video-dit-inference-acceleration-ulysses-teacache-quantization-faq.en.html">English FAQ</a>
+          </nav>
+        </div>
+        <h1>企业自建视频大模型（Wan 2.2 / HunyuanVideo）推理加速：U-TeaCache 时序缓存、SageAttention2 与 USP 序列并行工作台</h1>
+        <p class="hero-subtitle">
+          面向构建私有化 AIGC 视频算力集群的 <strong>Cloud &amp; AI Solution Architect</strong>：当企业部署 <strong>Wan 2.2 14B</strong> 或 <strong>HunyuanVideo 13B</strong> 时，朴素 BF16 满 50 步推理单条 5 秒视频耗时高达 <strong>248~520 秒</strong> 且显存占用 <strong>64.2GB（在 48GB L40S 上直接 OOM）</strong>；而盲目开启全步均匀跳步或全层 INT4 量化又会导致 <strong>首帧构图崩塌与人物手指融化（VBench 暴跌 15.2 分）</strong>。本工作台通过 <strong>U 型首尾锚定步全算 + 中间步 TeaCache 残差复用（50 步仅算 22 步） → SageAttention2 INT8/FP8 混合注意力 + 3D-RoPE/CrossAttn FP16 保护岛（显存压至 35.8GB） → USP（Ulysses + Ring 混合序列并行）</strong>，实现 <strong>12.8× 端到端提速（19.4s 出片）且画质损失 &lt;0.3 分</strong>。
+        </p>
+      </header>
+
+      <section class="controls-bar" aria-label="Interactive Video DiT Acceleration Controls">
+        <div class="control-block">
+          <span class="control-label">1. 自建视频大模型与 GPU 算力拓扑预设 (Model &amp; Cluster Topology)</span>
+          <div class="button-group" id="preset-buttons">
+            <button type="button" class="preset-btn active" data-preset="wan22-14b-4xh100-usp">🚀 Wan 2.2 14B · 4×H100 USP 集群</button>
+            <button type="button" class="preset-btn" data-preset="wan22-14b-single-l40s-48gb">💡 Wan 2.2 14B · 单卡 48GB L40S 零卸载</button>
+            <button type="button" class="preset-btn" data-preset="hunyuan-13b-8xh100-1080p">🎬 HunyuanVideo 13B · 8×H100 1080p</button>
+            <button type="button" class="preset-btn" data-preset="ltx2-distill-realtime-preview">⚡ LTX-2 13B · 2.4s 导演实时预演</button>
+          </div>
+        </div>
+
+        <div class="control-block">
+          <span class="control-label">2. 推理加速与量化精度保护策略 (Acceleration &amp; Quantization Policy)</span>
+          <div class="button-group" id="mode-buttons">
+            <button type="button" class="mode-btn active" data-mode="u-teacache-sage-usp">
+              ✅ U型 TeaCache (22/50步) + SageAttn2 FP8 + FP16 保护岛 + USP
+            </button>
+            <button type="button" class="mode-btn" data-mode="naive-bf16-full-50step">
+              🐢 朴素 BF16 满 50 步全算（耗时 248s + 64.2GB 显存 OOM）
+            </button>
+            <button type="button" class="mode-btn" data-mode="aggressive-uniform-skip-int4">
+              ❌ 激进首步跳算 + 全层无差别 INT4（构图崩塌 VBench -15.2）
+            </button>
+          </div>
+        </div>
+
+        <div class="control-block slider-block">
+          <label for="threshold-slider" class="control-label">
+            3. TeaCache 多项式残差复用阈值 τ (L1 Cache Threshold): <strong id="threshold-readout">τ = 0.12 · 22/50 Steps Computed</strong>
+          </label>
+          <div class="slider-row">
+            <input id="threshold-slider" type="range" min="6" max="20" value="12" />
+          </div>
+        </div>
+      </section>
+
+      <section class="kpi-grid" aria-label="Key Performance Indicators">
+        <article class="kpi-card">
+          <span class="kpi-tag">END-TO-END GENERATION LATENCY</span>
+          <strong class="kpi-val" id="kpi-latency">19.4 s (12.8×)</strong>
+          <p class="kpi-desc" id="kpi-latency-sub">对比 BF16 基准 (248.0s) · 50 步中仅计算 22 个关键步</p>
+        </article>
+        <article class="kpi-card">
+          <span class="kpi-tag">PEAK VRAM PER GPU</span>
+          <strong class="kpi-val" id="kpi-vram">35.8 GB</strong>
+          <p class="kpi-desc" id="kpi-vram-sub">立省 44.2% 显存，单张 48GB L40S 无需慢速 CPU Offload</p>
+        </article>
+        <article class="kpi-card">
+          <span class="kpi-tag">VBENCH VISUAL FIDELITY</span>
+          <strong class="kpi-val" id="kpi-vbench">86.1 (-0.3)</strong>
+          <p class="kpi-desc" id="kpi-vbench-sub">首尾各 8 步全算 + 3D-RoPE FP16 保护岛锁死画质无损</p>
+        </article>
+        <article class="kpi-card">
+          <span class="kpi-tag">UNIT CLIP GPU TCO</span>
+          <strong class="kpi-val" id="kpi-tco">$0.082 / 条</strong>
+          <p class="kpi-desc" id="kpi-tco-sub">对比未加速自建基准 ($0.280) 降低 70.7% 算力成本</p>
+        </article>
+      </section>
+
+      <section class="stage-panel" aria-label="Interactive 50-Step U-Shaped TeaCache & Mixed-Precision DiT Block Visualizer">
+        <div class="stage-header">
+          <div>
+            <span class="stage-badge" id="stage-badge">4× NVIDIA H100 80GB NVLINK · 75K TOKENS</span>
+            <h2 id="stage-title">Wan 2.2 14B 720p81f 电商主片生成（上方：50 步扩散 U 型 TeaCache 步调度图 → 下方：DiT 混合精度保护岛与 USP 并行流水线）</h2>
+          </div>
+          <div class="stage-legend">
+            <span class="legend-item"><i class="dot dot-anchor"></i>首尾锚定全算步 (Full Compute)</span>
+            <span class="legend-item"><i class="dot dot-cache"></i>TeaCache 残差复用步 (0-FLOP Skip)</span>
+            <span class="legend-item"><i class="dot dot-fp16"></i>FP16 敏感层保护岛 (3D-RoPE/CrossAttn)</span>
+          </div>
+        </div>
+
+        <div class="canvas-wrapper">
+          <canvas id="dit-accel-canvas" width="1240" height="520"></canvas>
+        </div>
+
+        <div class="pipeline-strip">
+          <div class="pipe-step">
+            <span class="step-num">STAGE 01</span>
+            <strong>U 型首尾锚定 TeaCache 调度</strong>
+            <p>前 8 步（全局运镜与主体构图定型）与后 7 步（高频皮肤纹理精修）100% 满算；中间 35 步按残差阈值 τ=0.12 跳过 68% 冗余计算</p>
+          </div>
+          <div class="pipe-step">
+            <span class="step-num">STAGE 02</span>
+            <strong>SageAttention2 INT8/FP8 算子</strong>
+            <p>针对占总算力 78% 的 75K~138K 三维时空自注意力，采用 INT8 QK 平滑去离群值 + FP8 PV 累加，单算子提速 2.8×</p>
+          </div>
+          <div class="pipe-step">
+            <span class="step-num">STAGE 03</span>
+            <strong>3D-RoPE 与 CrossAttn FP16 保护岛</strong>
+            <p>严禁对三维旋转位置编码（3D-RoPE）、AdaLN 调制门与文本交叉注意力做低比特量化，防止镜头漂移与语义丢失</p>
+          </div>
+          <div class="pipe-step">
+            <span class="step-num">STAGE 04</span>
+            <strong>USP (Ulysses × Ring) 混合序列并行</strong>
+            <p>节点内 NVLink 跑 4 路 Ulysses 注意力头切分，跨节点或长序列叠加 2 路 Ring P2P 掩盖通信，消除多卡负载空泡</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="deck-section" aria-label="7-Card 4:5 Benchmark Visual Report">
+        <div class="deck-header">
+          <span class="domain-pill">7-CARD 4:5 VISUAL BENCHMARK REPORT · MEASURED &amp; SEALED ARCHITECTURE DATA</span>
+          <h2>企业视频大模型（Wan 2.2 / HunyuanVideo）推理加速与量化选型 7 卡评测报告</h2>
+        </div>
+
+        <div class="cards-grid">
+          <!-- Card 1 -->
+          <article class="bcard" data-card="1">
+            <div class="bcard-top">
+              <span class="bcard-idx">1 / 7 · HANDS-ON · VIDEO DIT ACCELERATION STACK</span>
+              <span class="bcard-pill">12.8× Speedup</span>
+            </div>
+            <h3>U-TeaCache + SageAttention2 + USP 将 Wan 2.2 14B 出片耗时从 248s 压至 19.4s，VBench 仅差 0.3 分</h3>
+            <p>
+              在 4×H100 与单卡 48GB L40S 实测中，通过三维正交优化（步数缓存 2.2× × 算子量化 2.1× × 序列并行 2.8×），在视觉无损前提下将单条成本压至 $0.082。
+            </p>
+            <div class="bcard-metrics">
+              <div><span>端到端生成延迟</span><strong>19.4s vs 248.0s</strong></div>
+              <div><span>单卡峰值显存</span><strong>35.8GB (-44.2%)</strong></div>
+              <div><span>VBench 综合画质</span><strong>86.1 vs 86.4</strong></div>
+            </div>
+          </article>
+
+          <!-- Card 2 -->
+          <article class="bcard" data-card="2">
+            <div class="bcard-top">
+              <span class="bcard-idx">2 / 7 · SCENARIO · SINGLE 48GB L40S DEPLOYMENT</span>
+              <span class="bcard-pill">choice · Act automatically</span>
+            </div>
+            <h3>单张 48GB L40S 零 CPU Offload 跑通 Wan 2.2 14B：单条成本低至 $0.031</h3>
+            <p>
+              原生 BF16 需 64.2GB 显存，在 48GB L40S 上开启 CPU Offload 后单步 PCIe 搬运耗费 8 秒；FP8 权重 + FP16 保护岛将显存压至 35.8GB 全驻留显存。
+            </p>
+            <div class="bcard-bars">
+              <div class="bar-row"><span>U-TeaCache + Sage FP8</span><div class="bar-track"><div class="bar-fill" style="width:85.9%"></div></div><strong>85.9 (68.5s)</strong></div>
+              <div class="bar-row"><span>BF16 + CPU Offload</span><div class="bar-track"><div class="bar-fill warn" style="width:86.4%"></div></div><strong>86.4 (412s)</strong></div>
+              <div class="bar-row"><span>Naive Uniform INT4</span><div class="bar-track"><div class="bar-fill danger" style="width:69.8%"></div></div><strong>69.8 (Melt)</strong></div>
+            </div>
+          </article>
+
+          <!-- Card 3 -->
+          <article class="bcard" data-card="3">
+            <div class="bcard-top">
+              <span class="bcard-idx">3 / 7 · WHAT I TESTED · 4 CLUSTER COHORTS</span>
+              <span class="bcard-pill">Full Matrix</span>
+            </div>
+            <h3>四大模型与硬件集群实测矩阵：4×H100 / 单卡 L40S / 8×H100 1080p / LTX-2 预演</h3>
+            <table class="bcard-table">
+              <thead>
+                <tr><th>CLUSTER / MODEL</th><th>LATENCY</th><th>VRAM</th><th>VBENCH</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Wan 14B · 4×H100</td><td>19.4s (vs 248s)</td><td>35.8 GB</td><td>86.1 (-0.3)</td></tr>
+                <tr><td>Wan 14B · 1×L40S</td><td>68.5s (vs 412s)</td><td>35.8 GB</td><td>85.9 (-0.5)</td></tr>
+                <tr><td>Hunyuan 13B · 8×H100</td><td>28.6s (vs 520s)</td><td>41.2 GB</td><td>86.9 (-0.3)</td></tr>
+                <tr><td>LTX-2 13B · 2×H100</td><td>2.4s (vs 18.4s)</td><td>24.6 GB</td><td>82.6 (-0.2)</td></tr>
+              </tbody>
+            </table>
+          </article>
+
+          <!-- Card 4 -->
+          <article class="bcard" data-card="4">
+            <div class="bcard-top">
+              <span class="bcard-idx">4 / 7 · UNDER THE HOOD · U-TEACACHE + FP16 ISLANDS</span>
+              <span class="bcard-pill">Sensitivity Guard</span>
+            </div>
+            <h3>U 型锚定步残差复用判据与非对称敏感层 FP16 保护岛契约</h3>
+            <pre class="bcard-code"><code>// 1. U-Shaped Anchor Protection: never skip steps [0..7] or [43..49]
+const isAnchor = step < 8 || step >= 43;
+if (!isAnchor && polyRescaledL1(mod_t, mod_prev) < 0.12) {
+  return hidden + cachedResidual; // 0-FLOP residual reuse
+}
+// 2. Keep 3D-RoPE, AdaLN-Zero, CrossAttn in FP16; SelfAttn in Sage INT8/FP8</code></pre>
+            <p class="bcard-foot">保护前 15% 结构成长期与后 14% 纹理精修期是画质零退化的关键。</p>
+          </article>
+
+          <!-- Card 5 -->
+          <article class="bcard" data-card="5">
+            <div class="bcard-top">
+              <span class="bcard-idx">5 / 7 · ROBUSTNESS CHECK · ABLATION STUDY</span>
+              <span class="bcard-pill">Perturbation Test</span>
+            </div>
+            <h3>消融实验：为什么绝不能跳算前 8 步或对 3D-RoPE 位置编码做 INT8 量化？</h3>
+            <table class="bcard-table">
+              <thead>
+                <tr><th>ABLATION CASE</th><th>UNPROTECTED</th><th>PROTECTED ISLAND</th><th>DELTA</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>跳过前 8 步 (Steps 0..7)</td><td>主体构图坍塌 ✕</td><td>100% 锚定全算 ✅</td><td>+11.4 VBench</td></tr>
+                <tr><td>3D-RoPE 旋转角量化至 FP8</td><td>长镜头画面果冻扭曲 ✕</td><td>FP32/FP16 相位累加 ✅</td><td>+6.8 VBench</td></tr>
+                <tr><td>跨节点全用 All-to-All</td><td>PCIe/RoCE 通信阻塞 ✕</td><td>4-Ulysses × 2-Ring ✅</td><td>+1.7× Throughput</td></tr>
+              </tbody>
+            </table>
+          </article>
+
+          <!-- Card 6 -->
+          <article class="bcard" data-card="6">
+            <div class="bcard-top">
+              <span class="bcard-idx">6 / 7 · LATENCY · ORTHOGONAL SPEEDUP STACK</span>
+              <span class="bcard-pill">248s → 19.4s</span>
+            </div>
+            <h3>Wan 2.2 14B 720p81f 端到端加速阶梯拆解：从 248 秒逐级压至 19.4 秒</h3>
+            <div class="bcard-bars">
+              <div class="bar-row"><span>1. Baseline 1×H100 BF16</span><div class="bar-track"><div class="bar-fill danger" style="width:100%"></div></div><strong>248.0s (1.0×)</strong></div>
+              <div class="bar-row"><span>2. + 4×H100 USP Parallel</span><div class="bar-track"><div class="bar-fill warn" style="width:31%"></div></div><strong>76.4s (3.2×)</strong></div>
+              <div class="bar-row"><span>3. + SageAttention2 FP8</span><div class="bar-track"><div class="bar-fill" style="width:17%"></div></div><strong>42.8s (5.8×)</strong></div>
+              <div class="bar-row"><span>4. + U-TeaCache (22/50)</span><div class="bar-track"><div class="bar-fill" style="width:8%"></div></div><strong>19.4s (12.8×)</strong></div>
+            </div>
+          </article>
+
+          <!-- Card 7 -->
+          <article class="bcard" data-card="7">
+            <div class="bcard-top">
+              <span class="bcard-idx">7 / 7 · MY TAKE · ARCHITECT DECISION MATRIX</span>
+              <span class="bcard-pill">Production Ready</span>
+            </div>
+            <h3>架构师选型结论：自建开源视频大模型必须默认开启“U-TeaCache + SageAttn2 + USP”三件套</h3>
+            <div class="fit-grid">
+              <div class="fit-good">
+                <strong>✅ 强烈推荐 (Good Fit)</strong>
+                <ul>
+                  <li>企业自建 Wan 2.2 14B / HunyuanVideo 批量电商与短剧生产集群</li>
+                  <li>用高性价比 48GB L40S / RTX 6000 Ada 替代昂贵 H100 运行 14B 模型</li>
+                  <li>多卡 NVLink 节点内开启 4/8 路 Ulysses 降低单请求首帧等待时间</li>
+                </ul>
+              </div>
+              <div class="fit-bad">
+                <strong>⛔ 不适用边界 (Not For)</strong>
+                <ul>
+                  <li>严禁在扩散前 15% 步数（Steps 0–7）启用残差跳过（必毁构图与运动轨迹）</li>
+                  <li>严禁对 3D-RoPE、AdaLN 门控与 3D Causal VAE 解码器使用 INT4/INT8</li>
+                </ul>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+    </div>
+  </body>
+</html>

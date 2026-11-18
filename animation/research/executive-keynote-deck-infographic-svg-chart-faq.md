@@ -1,7 +1,7 @@
-# 给 CTO 做技术汇报 PPT 与系统架构图为什么绝不能让图像大模型整页直接画：LLM 拓扑 AST + ELK.js 正交布线 + 原生可编辑 PPTX/SVG/Draw.io 编译器选型指南（FAQ · 第 260 个里程碑 Demo）
+# 给 CTO 做技术汇报 PPT 与系统架构图为什么绝不能让图像大模型整页直接画：LLM 拓扑 AST + ELK.js 正交布线 + 原生可编辑 PPTX/SVG/Draw.io 编译器选型指南（架构师选型 FAQ）
 
 > **阅读对象**：日常高频产出客户高管汇报 PPT、云与 AI 架构方案图（Azure / AWS / Fabric / K8s）、选型决策矩阵与技术白皮书配图的 **Cloud & AI Solution Architect（云与 AI 解决方案架构师）**。
-> **核心价值**（**Round 250 · 第 260 个独立能力历史里程碑 Demo！**）：彻底回答架构师最关心的效率问题——**“怎么用 AI 10 分钟生成一套既有苹果/Linear 级高颜值视觉质感、同时每一个架构框、每一根正交连线、每一个官方云图标和 KPI 数字在 PowerPoint / Draw.io 里都能 100% 鼠标拖拽修改的技术汇报 Deck？”**。讲透为什么让生图扩散大模型直接画架构图会产出“连线指空气、术语拼写乱码且改不了一个字的死图（导致 `2.0000×` 推倒重画）”，以及如何用 **LLM 结构化拓扑 AST + ELK.js 分层正交布线 + PptxGenJS/SVG/Draw.io 原生矢量编译 + 局部无文字 AIGC 视觉配图** 将全 17 个档位的效率比恒定锁死在 **`1.0000×`**。
+> **核心价值**：彻底回答架构师最关心的效率问题——**“怎么用 AI 10 分钟生成一套既有苹果/Linear 级高颜值视觉质感、同时每一个架构框、每一根正交连线、每一个官方云图标和 KPI 数字在 PowerPoint / Draw.io 里都能 100% 鼠标拖拽修改的技术汇报 Deck？”**。讲透为什么让生图扩散大模型直接画架构图会产出“连线指空气、术语拼写乱码且改不了一个字的死图（导致 `2.0000×` 推倒重画）”，以及如何用 **LLM 结构化拓扑 AST + ELK.js 分层正交布线 + PptxGenJS/SVG/Draw.io 原生矢量编译 + 局部无文字 AIGC 视觉配图** 将全 17 个档位的效率比恒定锁死在 **`1.0000×`**。
 
 ![企业高管汇报 Deck 与技术架构图确定性编译管线图解](./evidence/executive-keynote-deck-infographic-svg-chart-compiler-summary.svg)
 
@@ -113,7 +113,7 @@ sequenceDiagram
 
 ---
 
-## 🧪 5. 交互式应用工作台 Demo 与 7-Card 报告（260th Demo Milestone!）
+## 🧪 5. 交互式应用工作台 Demo 与 7-Card 报告
 
 - **交互式工作台入口**：[`demos/executive-keynote-deck-infographic-svg-chart-compiler/`](../demos/executive-keynote-deck-infographic-svg-chart-compiler/index.html)
 - **7-Card 4:5 评测报告（英文版）**：[`demos/executive-keynote-deck-infographic-svg-chart-compiler/test-report-cards.html`](../demos/executive-keynote-deck-infographic-svg-chart-compiler/test-report-cards.html)

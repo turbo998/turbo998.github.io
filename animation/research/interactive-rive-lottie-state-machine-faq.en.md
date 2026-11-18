@@ -1,4 +1,4 @@
-# Why Interactive AI Mascots & Brand Websites Jump-Cut and Bloat to 14.8 MB—and How Rive Vector Bone State Machines Lock 60fps Efficiency at 1.0000× vs Lottie & WebM Alpha (FAQ)
+# Why Interactive AI Mascots & Brand Websites Jump-Cut and Bloat to 14.8 MB—and How Rive Vector Bone State Machines Lock 60fps Efficiency vs Lottie & WebM Alpha (FAQ)
 
 > **Audience**: **Cloud & AI Solution Architects** and Frontend Engineering Leads designing interactive AI Copilot mascots, automotive HMI digital clusters, gamified onboarding flows, and high-craft marketing websites.
 > **Core Value**: Establishes the architectural selection boundary between **Rive (`.riv` 2D vector bone state machines & blend trees)**, **Lottie (After Effects `.json`/`.lottie` linear timelines)**, and **Dual-Codec Transparent Video (WebM VP9 Alpha + HEVC Alpha)**—showing why multi-clip video switching causes jarring interruption jump-cuts and **`2.0000×`** payload bloat, and how a single **`48 KB`** Rive state machine locks smoothness and bundle efficiency at **`1.0000×`** across all 17 interactive UI tiers.

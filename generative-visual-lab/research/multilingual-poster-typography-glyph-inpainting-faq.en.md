@@ -1,4 +1,4 @@
-# Why Diffusion Models Hallucinate CJK Strokes & Blur Small Copy—and How FreeType/Glyph-ByT5 3D Masks + HarfBuzz Vector Overlays Lock 0.00% CER at 1.0000× (FAQ)
+# Why Diffusion Models Hallucinate CJK Strokes & Blur Small Copy—and How FreeType/Glyph-ByT5 3D Masks + HarfBuzz Vector Overlays Lock 0.00% CER (FAQ)
 
 > **Audience**: **Cloud & AI Solution Architects** designing global e-commerce poster factories, 24-language localization pipelines, and CJK/Arabic/Latin marketing automation platforms.
 > **Core Value**: Solves the notorious "AI Gibberish Text" bottleneck in enterprise marketing visuals—explaining why raw diffusion prompts hallucinate strokes on complex Chinese/Japanese characters and blur `<14px` legal/price copy into unreadable artifacts (causing **`2.0000×`** manual Photoshop re-typesetting), and how a **Dual-Track Hybrid Typography Architecture (FreeType Binary Glyph Masks + Glyph-ByT5/ControlNet for 3D Diegetic Headlines + HarfBuzz SVG/Canvas Vector Overlays for Crisp Multi-Script Copy)** locks Character Error Rate (CER) at **`0.00%`** and budget efficiency at **`1.0000×`** across all 17 tiers.

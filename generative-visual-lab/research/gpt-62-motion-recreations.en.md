@@ -1,0 +1,42 @@
+# Motion Studies: making and recapture
+
+[简体中文](./gpt-62-motion-recreations.md) · [Exhibit on the personal site](https://turbo998.github.io/animation/demos/gpt-62-motion/index.en.html)
+
+Three 3D scenes with orbit or follow cameras, and one animated pixel street. Each live scene, cover and film comes from the same scene code. The exhibit neither embeds the original footage nor uses native text-to-video.
+
+## Two models, two productions
+
+- The concepts come from [APPSO’s GPT-6.2 article](https://mp.weixin.qq.com/s/8rmD4qqEQ-_loyETNIYzxA). APPSO used GPT-6.2 Astra. We took inspiration from the interactions, not the original media, compositions, textures or code.
+- The new scenes were coded with **GPT-6.2 Sol (`gpt-6.2-sol`)** in GitHub Copilot. The primary session made the exhibit and peacock; three subagents using the same model drafted the paper atlas, pelican and pixel street. Their first outputs were runnable, editable scenes, not generated images or footage.
+- People selected the four studies, revised the brief to require original interactive pages and films from the same scenes, and approved the release plan. The implementation then took several passes on framing, camera moves, controls and encoding. We have no record of direct human source edits and make no claim of single-prompt generation.
+
+## Creative prompts
+
+| Study | Prompt | Scene code |
+|---|---|---|
+| The Emerald Fan | Stage a blue-necked peacock on a dark green plinth. Give it three rows of hinged quills with curved vanes, painted eyespots and fine gold barbs. Let the train open and close, let the camera travel off-axis, and give viewers orbit and direct spread controls. | [Peacock](../demos/gpt-62-motion/src/scenes/peacock.ts) |
+| A Road in the Fold | Create a hand-cut paper atlas on a visible open book. A tiny lantern bearer follows an ink path from a grove across a blue creek and an original red bridge into a terracotta hamlet. Anchor each rising hill, bridge, and facade to page hinges so the landscape folds down behind the traveler and unfolds ahead. Make a deterministic dolly shot and let a backwards scrub reconstruct every fold. | [Atlas](../demos/gpt-62-motion/src/scenes/atlas.ts) |
+| Saltwind Rider | Build a sculptural white pelican cycling beside a sunlit salt lagoon. Give it a long orange bill with a distinct hanging throat pouch, folded layered feathers, and a real tubular bicycle with spokes. Lock the feet to opposing cranks, derive wheel phase from ground travel, and frame a low side-to-three-quarter dolly shot while a visitor can orbit freely. | [Pelican](../demos/gpt-62-motion/src/scenes/pelican.ts) |
+| Lantern Rain | Paint an original Japanese-inspired fantasy market in crisp pixels, under violet rain. Drift past dark tiled roofs, little amber lanterns, shop awnings, and a wet stone lane; reflect the lights in broken bands below. Move foreground, storefronts, and distant ridges at different speeds, with deterministic cycling rain so the eighth second joins the first without a cut. | [Pixel street](../demos/gpt-62-motion/src/scenes/pixel-city.ts) |
+
+## Browse, recapture and package
+
+The exhibit initially loads a still, not a video or rendering engine. Launch a live study to use its keyboard, button or touch controls. With reduced motion enabled, play controls start the live timeline or film. Without WebGL, the film remains available; without JavaScript, the show page links directly to the silent MP4. The animated GIF is a download, not an autoplaying image.
+
+```sh
+npm ci
+npm --prefix demos/astra-planet ci
+npm run build
+```
+
+Serve the complete `dist/demos/gpt-62-motion/` directory over HTTP. Its Chinese and English entries are `index.html` and `index.en.html`. Append `#peacock`, `#atlas`, `#pelican` or `#pixel-city` to select a study, and optionally set `?scoutTheme=light` or `?scoutTheme=dark`. `manifest.json` records gzip sizes for the entry JS/CSS and SHA-256 digests for every file except itself. The project and Three.js licenses travel with the directory.
+
+Builds package checked-in media without running the recorder. To recapture, install Chrome and put `ffmpeg` with `libx264` and `ffprobe` on PATH:
+
+```sh
+npm run render:gpt-62-motion
+# Optionally name one or more studies:
+npm run render:gpt-62-motion -- peacock
+```
+
+Playwright reads the scene at 24 fixed time samples per second. FFmpeg encodes 1280×720 H.264 films (no audio tracks, up to 4 MiB each) and converts the pixel film with a two-pass palette into a looping GIF (up to 2 MiB). The timeline reproduces the same poses; output bytes can vary across browsers, GPUs or encoders. Three.js is only requested upon opening a live 3D study.

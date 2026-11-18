@@ -1,4 +1,4 @@
-# Why Frame-by-Frame 2D Video Inpainting Creates "Predator-Cloak" Jelly Shimmer—and How SAM-2 + ProPainter Optical-Flow Propagation + Wan-VACE Latent Tubes Lock Coherence at 1.0000× (FAQ)
+# Why Frame-by-Frame 2D Video Inpainting Creates "Predator-Cloak" Jelly Shimmer—and How SAM-2 + ProPainter Optical-Flow Propagation + Wan-VACE Latent Tubes Lock Coherence (FAQ)
 
 > **Audience**: **Cloud & AI Solution Architects** and Post-Production Supervisors building automated video object removal (erasing passersby, wires, competitor logos) and dynamic brand prop replacement (swapping 2024 bottles/phones for 2026 SKUs in archive TVCs) pipelines.
 > **Core Value**: Eliminates the "Water-Ripple Jelly Shimmer & Ghost Shadow" failure mode of running 2D image inpainting frame-by-frame on video—explaining how **SAM-2 Cross-Frame Object+Shadow Tracking + ProPainter Bidirectional Optical-Flow Pixel Propagation (85% real background pixel reuse) + DiffuEraser / Wan-VACE 3D Spatiotemporal Latent Tubes + Foreground Hand-Grip Matting Restore** locks temporal warp error ($E_{\text{warp}} \le 0.0012$) and production budget at **`1.0000×`** across all 17 stages.

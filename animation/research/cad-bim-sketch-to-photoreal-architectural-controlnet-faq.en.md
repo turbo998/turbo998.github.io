@@ -1,4 +1,4 @@
-# Why Unconstrained Img2Img Warps Load-Bearing Columns on CAD/BIM Models—and How M-LSD + Surface Normal + Metric Depth + Material Swatch Binding Lock 1.0000× Architectural Fidelity (FAQ)
+# Why Unconstrained Img2Img Warps Load-Bearing Columns on CAD/BIM Models—and How M-LSD + Surface Normal + Metric Depth + Material Swatch Binding Lock Architectural Fidelity (FAQ)
 
 > **Audience**: **Cloud & AI Solution Architects** and Design Technology Leads building rapid architectural visualization and 500-store retail spatial rollout pipelines from Revit, Rhino, and SketchUp massing models.
 > **Core Value**: Solves the #1 failure mode in architectural AIGC—**bent curtain-wall mullions (`> 2.8°` angular drift), hallucinated walls blocking fire exits, and mutated client material swatches**—by combining **M-LSD Vanishing-Point Straight-Line Locks (`< 0.08°`) + Camera-Space Surface Normals + 16-Bit Metric Z-Depth + Regional BIM Material-ID IP-Adapter Swatch Binding + 360° Physical Solar Relighting** to lock structural accuracy and visualization budget at **`1.0000×`** across all 17 stages.

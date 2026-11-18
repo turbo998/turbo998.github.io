@@ -3,7 +3,7 @@
   "demo": "virtual-tryon-garment-warp-mask-studio",
   "slug": "virtual-tryon-garment-warp-mask-studio",
   "topic": "Enterprise Fashion Virtual Try-On: DensePose UV Garment Warp (IDM-VTON / CatVTON) + Face/Hand Lock (c_vton = c_0/(1+u), 1.0000x Lock) vs Naive Generic T2I Overrun",
-  "topic_zh": "企业时尚服饰电商虚拟试衣管线：DensePose UV 服装经纬形变 (IDM-VTON / CatVTON) + 面部/手部锁死（c_0/(1+u), 1.0000× 锁死）对比朴素通用文生图 2.0000× 格纹变形返工",
+  "topic_zh": "企业时尚服饰电商虚拟试衣管线：DensePose UV 服装经纬形变 (IDM-VTON / CatVTON) + 面部/手部锁死对比朴素通用文生图 2.0000× 格纹变形返工",
   "title": "Enterprise Fashion Virtual Try-On: DensePose Garment Warp & Identity Lock Studio (1.0000× Lock vs 2.0000× T2I Overrun)",
   "timestamp": "2026-11-17T17:56:16.678Z",
   "recorded_at": "2026-11-17T17:56:16.678Z",
@@ -223,7 +223,7 @@
     "Restoring pixel-locked foreground hand/finger and face/hair alpha masks over the warped garment to eliminate 6-finger diffusion artifacts"
   ],
   "not_for": [
-    "Rigid boxed electronics background replacement (use Round 228 Alpha-Lock + IC-Light instead)",
+    "Rigid boxed electronics background replacement (use Alpha-Lock + IC-Light instead)",
     "Plain text document OCR",
     "Audio-only podcast mastering"
   ],
@@ -254,7 +254,7 @@
     "subtitle": "为什么服装电商做“平铺衣服一键穿到模特身上（Virtual Try-On）”绝不能直接用通用文生图或普通 Inpainting（会导致条纹格纹数量错乱、胸标变形、交叉手臂手指畸变），而必须采用“DensePose 24 分区人体 UV 映射 + 服装双分支空间注意力 + 手部/面部前景掩码回贴”架构？",
     "plain_intro": "在电商视觉 AIGC 中，**柔性服装虚拟试衣（Virtual Try-On, VTON）** 的技术难度远高于刚性标品（香水瓶/手机）换背景！因为刚性标品只需要锁死原图像素改背景，而一件平铺拍摄的苏格兰格纹衬衫、带刺绣 Logo 的卫衣或蕾丝连衣裙穿到不同姿势（叉腰、抱臂、走秀迈步）和不同尺码（XS 到 3XL）的模特身上时，衣服本身必须顺应胸腔、肩膀与肘部关节发生复杂的**三维非刚性褶皱与透视形变**！如果采用**朴素通用文生图或无 UV 约束的局部重绘（Naive Generic T2I / Loose Inpainting）**，模型不仅会把“5 道黑白条纹”乱画成“8 道弯曲条纹”、把品牌胸标溶成乱码，而且一旦模特手臂交叉在胸前，重绘区域还会把模特原本正常的手指洗成畸形六指——导致返工成本按 `W(u) = 1 + u` 在第 16 档五千款春装批量上身时翻倍恶化至 **`2.0000×`**（污染 `16/17` 个档位）！本工作台展示的 **“SCHP 人体语义分割与去衣无关掩码（Clothing-Agnostic Mask）+ DensePose 24 分区三维人体表面 UV 坐标对齐 + IDM-VTON/CatVTON 高清平铺服装空间交叉注意力 + 手部/发丝前景 Alpha 硬回贴”** 工业级管线，在真实模拟布料垂坠褶皱的同时 100% 锁死服装经纬花纹与模特手部面部原图，在全 17 个姿态档位恒定锁死保真度与成本比 `1.0000×`（`0/17` 站变形返工）！",
     "finding": "实测跨越 17 个时尚模特姿态与面料花纹复杂度参数 u ∈ [0.000, 1.000]（通用文生图返工放大比 W(u) = 1 + u ∈ [1.000, 2.000]）：DensePose UV 虚拟试衣 + 面部/手部锁死管线在全部 17 档恒定锁死服装保真与成本比 C_active/C_vton = 1.0000×（0/17 变形），而朴素通用文生图重绘在第 4 档超支至 1.2500×、第 8 档冲至 1.5000×、第 16 档翻倍超支至 2.0000×（污染 16/17 个档位）。",
-    "workbench_title": "58 构件 17 档位企业时尚虚拟试衣：DensePose UV 形变与手部/面部锁死工作台（第 243 个独立能力 Demo）",
+    "workbench_title": "58 构件 17 档位企业时尚虚拟试衣：DensePose UV 形变与手部/面部锁死工作台",
     "scenario_quote": "刚性标品 vs 柔性服饰的架构分水岭：刚性标品（美妆/3C）锁死商品改背景；柔性服装（VTON）锁死模特脸和手，用 DensePose 24 分区人体 UV 网格把平铺衣服的每一根经纬线精准贴合到三维躯干褶皱上！",
     "protocol_note": "顶块展示第 4 档（胸口刺绣 Logo 锁定）、第 8 档（重工羽绒服廓形扩展）与第 16 档（5,000 款春装批量上身）；底块对比 DensePose VTON 恒锁 1.0000× 与通用文生图返工 2.0000×。",
     "robustness_name": "17 个时尚模特姿态与复杂面料档位在 DensePose UV 与前景手部掩码锁死下 100% 保持精确织物保真与成本比 1.0000×",
@@ -268,7 +268,7 @@
       "单独提取模特手掌、手臂交叉遮挡与披肩发丝前景掩码并在合成后段无损回贴，彻底杜绝手部重绘畸变"
     ],
     "not_for": [
-      "无需任何非刚性形变的硬壳包装盒换背景（适用 Round 228 管线）",
+      "无需任何非刚性形变的硬壳包装盒换背景（适用 管线）",
       "纯文本合同审查",
       "离线音频降噪处理"
     ]

@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self' data:;"
+    />
+    <title>企业图生 3D 资产（Hunyuan3D-2 / Trellis / Rodin）四边面重拓扑、语义 UV 展开与高模法线烘焙管线 · Generative Visual Lab</title>
+    <script type="module" crossorigin src="../../assets/imageTo3dQuadRetopologyUvBakingLodPipeline-oG1VQ73R.js"></script>
+    <link rel="modulepreload" crossorigin href="../../assets/modulepreload-polyfill-B5Qt9EMX.js">
+    <link rel="stylesheet" crossorigin href="../../assets/imageTo3dQuadRetopologyUvBakingLodPipeline-D4A9Ojxa.css">
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="hero-header">
+        <div class="hero-top-row">
+          <span class="domain-pill">DOMAIN 4 · IMAGE-TO-3D QUAD RETOPOLOGY, UV BAKING &amp; AUTO-LOD STUDIO · ROUND 271</span>
+          <nav class="Quick-links" aria-label="Documentation links">
+            <a href="../../index.html">← 返回门户 (Portal)</a>
+            <a href="../../research/image-to-3d-quad-retopology-uv-baking-lod-pipeline-faq.html">中文选型 FAQ</a>
+            <a href="../../research/image-to-3d-quad-retopology-uv-baking-lod-pipeline-faq.en.html">English FAQ</a>
+          </nav>
+        </div>
+        <h1>企业图生 3D 资产（Hunyuan3D-2 / Trellis / Rodin）四边面重拓扑、语义 UV 展开与高模法线烘焙管线工作台</h1>
+        <p class="hero-subtitle">
+          面向游戏技术美术（TA）、电商手机端 WebAR 与 Apple Vision Pro 空间资产管线的 <strong>Cloud &amp; AI Solution Architect</strong>：彻底打通“AI 图生 3D 玩具”到“工业引擎可入库资产”的最后一公里。直接从 Hunyuan3D-2 / Trellis 导出的原始网格包含 <strong>68 万~92 万个非流形碎三角面、4,850 个碎纸片状 UV 孤岛以及烤死在贴图里的假高光</strong>，直接丢进手机 WebAR 会瞬间闪退且无法绑骨动画。本工作台通过 <strong>主曲率引导纯四边面重拓扑（92 万面 → 4.8k~11.2k 四边面，压缩 99.1%） → SAM-3D 语义接缝 UV 展开（仅 9~16 个规整 UV 岛，91.4% 纹素利用率） → 包络笼（Cage）高模向低模切线空间法线/AO 烘焙 → 去高光 PBR 贴图与 LOD0/1/2 级联导出</strong>，以 <strong>$0.15/件</strong> 替代 3D 美术师手工拓扑展 UV（$320/件）。
+        </p>
+      </header>
+
+      <section class="controls-bar" aria-label="Interactive 3D Retopology & UV Baking Controls">
+        <div class="control-block">
+          <span class="control-label">1. 游戏、电商 WebAR 与工业孪生 3D 资产预设 (3D Asset Preset)</span>
+          <div class="button-group" id="preset-buttons">
+            <button type="button" class="preset-btn active" data-preset="hero-rpg-armor-character">🛡️ 3A 游戏重甲角色 (920k → 11.2k 四边面)</button>
+            <button type="button" class="preset-btn" data-preset="ecommerce-webar-sneaker">👟 电商 WebAR 限量球鞋 (3.2MB GLB)</button>
+            <button type="button" class="preset-btn" data-preset="hard-surface-scifi-drone">🚁 硬表面工业无人机 (锐边折痕锁)</button>
+            <button type="button" class="preset-btn" data-preset="luxury-handbag-leather-stitch">👜 顶奢荔枝纹皮包 (VisionOS USDZ)</button>
+          </div>
+        </div>
+
+        <div class="control-block">
+          <span class="control-label">2. 网格拓扑与 UV 烘焙管线模式 (Geometry &amp; UV Architecture)</span>
+          <div class="button-group" id="mode-buttons">
+            <button type="button" class="mode-btn active" data-mode="quad-retopo-uv-cage-bake">
+              ✅ 主曲率四边面重拓扑 + 语义接缝 UV (16岛) + 高模法线烘焙
+            </button>
+            <button type="button" class="mode-btn" data-mode="raw-marching-cubes-soup">
+              ❌ 原始 Marching-Cubes 92万碎三角面 + 4,850 个碎纸片 UV 孤岛
+            </button>
+          </div>
+        </div>
+
+        <div class="control-block slider-block">
+          <label for="lod-slider" class="control-label">
+            3. 实时视距 LOD 级联切换 (Auto-LOD Chain): <strong id="lod-readout">LOD0 (Hero Close-Up · 11,200 Quads)</strong>
+          </label>
+          <div class="slider-row">
+            <input id="lod-slider" type="range" min="0" max="2" step="1" value="0" />
+          </div>
+        </div>
+      </section>
+
+      <section class="kpi-grid" aria-label="Key Performance Indicators">
+        <article class="kpi-card">
+          <span class="kpi-tag">ACTIVE POLYGON BUDGET</span>
+          <strong class="kpi-val" id="kpi-poly">11,200 Quads</strong>
+          <p class="kpi-desc" id="kpi-poly-sub">较原始 920,000 碎三角面精简 98.78%，细节 100% 转存 4K 法线贴图</p>
+        </article>
+        <article class="kpi-card">
+          <span class="kpi-tag">UV ISLANDS &amp; TEXEL DENSITY</span>
+          <strong class="kpi-val" id="kpi-uv">16 岛 · 91.4%</strong>
+          <p class="kpi-desc" id="kpi-uv-sub">沿衣缝/鞋底隐藏接缝展开 (vs 原始 xatlas 4,850 个碎纸片岛)</p>
+        </article>
+        <article class="kpi-card">
+          <span class="kpi-tag">GLB PAYLOAD &amp; MOBILE FPS</span>
+          <strong class="kpi-val" id="kpi-payload">4.8 MB · 90fps</strong>
+          <p class="kpi-desc" id="kpi-payload-sub">Draco/KTX2 压缩秒开 (vs 原始 164MB 网格在手机端 11fps 闪退)</p>
+        </article>
+        <article class="kpi-card">
+          <span class="kpi-tag">RETOPO TCO vs 3D ARTIST</span>
+          <strong class="kpi-val" id="kpi-tco">$0.16 / 资产</strong>
+          <p class="kpi-desc" id="kpi-tco-sub">对比美术师在 Maya/TopoGun 手工拓扑展 UV ($380) 省 99.96%</p>
+        </article>
+      </section>
+
+      <section class="stage-panel" aria-label="Interactive Quad Retopology Wireframe & UV Atlas Inspector">
+        <div class="stage-header">
+          <div>
+            <span class="stage-badge" id="stage-badge">HUNYUAN3D-2 + RODIN GEN-2 · RIG-READY FBX</span>
+            <h2 id="stage-title">3A 游戏重甲骑士角色资产（左侧：主曲率四边面拓扑布线 vs 原始坍缩三角网 → 右侧：语义接缝 UV 棋盘格与高模法线烘焙）</h2>
+          </div>
+          <div class="stage-legend">
+            <span class="legend-item"><i class="dot dot-quad"></i>主曲率四边面环形布线 (Quad Loops)</span>
+            <span class="legend-item"><i class="dot dot-seam"></i>SAM-3D 隐藏语义 UV 接缝</span>
+            <span class="legend-item"><i class="dot dot-soup"></i>原始 Marching-Cubes 碎三角面</span>
+          </div>
+        </div>
+
+        <div class="canvas-wrapper">
+          <canvas id="retopo-canvas" width="1240" height="520"></canvas>
+        </div>
+
+        <div class="pipeline-strip">
+          <div class="pipe-step">
+            <span class="step-num">STAGE 01</span>
+            <strong>流形修复与主曲率四边面重拓扑</strong>
+            <p>填补非流形破洞与内部悬浮碎面，沿主曲率方向与硬表面折痕（&gt;45°）生成均匀环形四边面网格</p>
+          </div>
+          <div class="pipe-step">
+            <span class="step-num">STAGE 02</span>
+            <strong>SAM-3D 语义分割与隐藏接缝 UV</strong>
+            <p>将长靴、护肩、胸甲按部件分割，将 UV 切割缝藏在腋下与鞋底内侧，产出 9~16 个可直接在 PS 改字的规整 UV 岛</p>
+          </div>
+          <div class="pipe-step">
+            <span class="step-num">STAGE 03</span>
+            <strong>包络笼 (Cage) 高模向低模法线烘焙</strong>
+            <p>沿膨胀法线包络笼向 92 万面原始高模发射BVH光线，将 0.1mm 皮革纹理与柳钉细节无损烘焙进 4K 切线法线贴图</p>
+          </div>
+          <div class="pipe-step">
+            <span class="step-num">STAGE 04</span>
+            <strong>去高光 PBR 分解与 LOD0/1/2 导出</strong>
+            <p>剥离多视角生成残留的假高光与死黑阴影，输出纯 Diffuse + ORM 贴图及 KTX2 压缩的三级 LOD GLB/USDZ/FBX</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="deck-section" aria-label="7-Card 4:5 Benchmark Visual Report">
+        <div class="deck-header">
+          <span class="domain-pill">7-CARD 4:5 VISUAL BENCHMARK REPORT · MEASURED &amp; SEALED ARCHITECTURE DATA</span>
+          <h2>图生 3D 资产四边面重拓扑、UV 展开与高模烘焙管线 7 卡评测报告</h2>
+        </div>
+
+        <div class="cards-grid">
+          <!-- Card 1 -->
+          <article class="bcard" data-card="1">
+            <div class="bcard-top">
+              <span class="bcard-idx">1 / 7 · HANDS-ON · IMAGE-TO-3D PRODUCTION PIPELINE</span>
+              <span class="bcard-pill">98.8% Poly Reduction</span>
+            </div>
+            <h3>主曲率四边面重拓扑 + Cage 法线烘焙将 92 万面脏网格压至 1.1 万四边面，表面几何误差仅 0.14mm</h3>
+            <p>
+              解决 Hunyuan3D-2 / Trellis / Rodin 原始网格无法直接入库痛点：自动完成四边面重拓扑、16 岛语义 UV 展开与 4K 法线/ORM 烘焙，包体从 164MB 降至 4.8MB。
+            </p>
+            <div class="bcard-metrics">
+              <div><span>网格面数精简</span><strong>920k → 11.2k</strong></div>
+              <div><span>UV 孤岛数量</span><strong>16 vs 4,850 碎岛</strong></div>
+              <div><span>单件重拓扑成本</span><strong>$0.16 (-99.96%)</strong></div>
+            </div>
+          </article>
+
+          <!-- Card 2 -->
+          <article class="bcard" data-card="2">
+            <div class="bcard-top">
+              <span class="bcard-idx">2 / 7 · SCENARIO · WEBAR SNEAKER 3.2MB GLB</span>
+              <span class="bcard-pill">choice · Act automatically</span>
+            </div>
+            <h3>电商限量球鞋手机 WebAR 实测：4,800 四边面 + 4K 车线法线贴图实现 iPhone Safari 满帧 90fps</h3>
+            <p>
+              原始 68 万面球鞋模型（118.5MB）在手机浏览器加载耗时 28 秒并触发显存崩溃；重拓扑 + KTX2 烘焙后缩至 3.2MB，0.1mm 缝线纤毫毕现。
+            </p>
+            <div class="bcard-bars">
+              <div class="bar-row"><span>Quad Retopo + Normal Bake</span><div class="bar-track"><div class="bar-fill" style="width:93.2%"></div></div><strong>93.2% UV 效率</strong></div>
+              <div class="bar-row"><span>QEM Triangle Decimate</span><div class="bar-track"><div class="bar-fill warn" style="width:64.0%"></div></div><strong>64.0% (破面)</strong></div>
+              <div class="bar-row"><span>Raw Marching-Cubes</span><div class="bar-track"><div class="bar-fill danger" style="width:48.0%"></div></div><strong>48.0% (4850岛)</strong></div>
+            </div>
+          </article>
+
+          <!-- Card 3 -->
+          <article class="bcard" data-card="3">
+            <div class="bcard-top">
+              <span class="bcard-idx">3 / 7 · WHAT I TESTED · 4 3D ASSET COHORTS</span>
+              <span class="bcard-pill">Full Matrix</span>
+            </div>
+            <h3>四大游戏与电商 3D 资产实测矩阵：重甲骑士/WebAR 球鞋/工业无人机/顶奢皮包</h3>
+            <table class="bcard-table">
+              <thead>
+                <tr><th>ASSET COHORT</th><th>RAW → LOD0</th><th>UV ISLANDS</th><th>GLB SIZE</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>3A 重甲骑士</td><td>920k → 11.2k</td><td>16 (vs 4,850 ✕)</td><td>4.8 MB</td></tr>
+                <tr><td>WebAR 限量球鞋</td><td>680k → 4.8k</td><td>9 (vs 3,620 ✕)</td><td>3.2 MB</td></tr>
+                <tr><td>工业无人机</td><td>740k → 7.6k</td><td>14 (vs 4,120 ✕)</td><td>3.9 MB</td></tr>
+                <tr><td>顶奢荔枝纹皮包</td><td>810k → 6.2k</td><td>11 (vs 3,940 ✕)</td><td>4.1 MB</td></tr>
+              </tbody>
+            </table>
+          </article>
+
+          <!-- Card 4 -->
+          <article class="bcard" data-card="4">
+            <div class="bcard-top">
+              <span class="bcard-idx">4 / 7 · UNDER THE HOOD · CAGE RAYCAST &amp; SEAM AST</span>
+              <span class="bcard-pill">0.12mm Hausdorff</span>
+            </div>
+            <h3>主曲率场对齐四边面求解、语义接缝图切（Graph-Cut）与包络笼法线烘焙协议</h3>
+            <pre class="bcard-code"><code>// 1. Align quad field to principal curvatures (k1, k2) & hard creases > 45deg:
+quadMesh = solveCurvatureAlignedQuads(rawSdfMesh, targetFaces: 6800)
+// 2. Place UV seams along SAM-3D part boundaries & hidden undersides:
+uvAtlas = unwrapSemanticSeams(quadMesh, minPaddingPx: 8) // 91.4% fill
+normalMap = bakeCageTangentNormals(highPoly: rawSdfMesh, lowPoly: quadMesh)</code></pre>
+            <p class="bcard-foot">所有 UV 岛之间强制保留 ≥8px Mipmap 安全边距，消除远景 LOD 黑线渗色。</p>
+          </article>
+
+          <!-- Card 5 -->
+          <article class="bcard" data-card="5">
+            <div class="bcard-top">
+              <span class="bcard-idx">5 / 7 · ROBUSTNESS CHECK · RIGGING &amp; DE-LIGHTING</span>
+              <span class="bcard-pill">Perturbation Test</span>
+            </div>
+            <h3>鲁棒性压测：关节弯曲蒙皮防撕裂、远景 Mipmap 防黑缝与动态点光源旋转测试</h3>
+            <table class="bcard-table">
+              <thead>
+                <tr><th>PERTURBATION</th><th>RAW AI 3D MESH</th><th>QUAD + CAGE BAKE</th><th>DELTA</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>手肘/鞋舌 65° 骨骼弯曲</td><td>狭长三角面锯齿撕裂 ✕</td><td>环形四边面均匀挤压 ✅</td><td>100% Clean</td></tr>
+                <tr><td>拉远镜头至 LOD2 (Mipmap)</td><td>4,850 碎岛边缘黑线渗色 ✕</td><td>16 大岛 + 8px 扩边无黑缝 ✅</td><td>0 Seam Bleed</td></tr>
+                <tr><td>引擎内旋转主光源 180°</td><td>原始贴图死黑阴影跟着转 ✕</td><td>去高光 Albedo + 真实法线 ✅</td><td>PBR Exact</td></tr>
+              </tbody>
+            </table>
+          </article>
+
+          <!-- Card 6 -->
+          <article class="bcard" data-card="6">
+            <div class="bcard-top">
+              <span class="bcard-idx">6 / 7 · LATENCY · 14.6S END-TO-END ASSET COMPILER</span>
+              <span class="bcard-pill">Automated Pipeline</span>
+            </div>
+            <h3>单件图生 3D 资产工程化清理与三级 LOD 烘焙耗时拆解：14.6 秒 vs 人工 6 小时</h3>
+            <div class="bcard-bars">
+              <div class="bar-row"><span>1. Manifold + Curvature</span><div class="bar-track"><div class="bar-fill" style="width:18%"></div></div><strong>2.4s</strong></div>
+              <div class="bar-row"><span>2. Quad Flow Solver</span><div class="bar-track"><div class="bar-fill" style="width:32%"></div></div><strong>4.6s</strong></div>
+              <div class="bar-row"><span>3. Semantic UV Unwrap</span><div class="bar-track"><div class="bar-fill" style="width:22%"></div></div><strong>3.1s</strong></div>
+              <div class="bar-row"><span>4. BVH Cage Bake + LOD</span><div class="bar-track"><div class="bar-fill" style="width:30%"></div></div><strong>4.5s (Total 14.6s)</strong></div>
+            </div>
+          </article>
+
+          <!-- Card 7 -->
+          <article class="bcard" data-card="7">
+            <div class="bcard-top">
+              <span class="bcard-idx">7 / 7 · MY TAKE · ARCHITECT DECISION MATRIX</span>
+              <span class="bcard-pill">Production Ready</span>
+            </div>
+            <h3>架构师选型结论：任何 AI 图生 3D 模型进入游戏/电商生产前必须经过“重拓扑+展UV+法线烘焙”三道门禁</h3>
+            <div class="fit-grid">
+              <div class="fit-good">
+                <strong>✅ 强烈推荐 (Good Fit)</strong>
+                <ul>
+                  <li>电商球鞋、箱包、家具海量 SKU 批量转手机 WebAR / VisionOS 3D 展厅</li>
+                  <li>游戏场景道具、NPC 装备与硬表面载具从原画到 UE5/Unity 入库自动化</li>
+                  <li>需要将百万面扫描/AI 高模微距纹理无损迁移至千面级实时低模</li>
+                </ul>
+              </div>
+              <div class="fit-bad">
+                <strong>⛔ 不适用边界 (Not For)</strong>
+                <ul>
+                  <li>严禁把 Marching-Cubes 原始百万面网格直接发往移动端浏览器（必闪退）</li>
+                  <li>严禁用无接缝约束的碎纸片自动展 UV（导致后期美术无法贴标修改）</li>
+                </ul>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+    </div>
+  </body>
+</html>

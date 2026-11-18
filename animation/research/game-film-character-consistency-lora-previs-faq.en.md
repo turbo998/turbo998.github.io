@@ -1,6 +1,6 @@
 # Game & Film Art Asset Production Pipeline FAQ: 3D Camera Pre-Viz (Depth/OpenPose) + Character LoRA / Multi-Reference Consistency Lock vs Naive Per-Shot Text Prompting
 
-> **Standalone Track Positioning (Tonight Round 5 / Repo Round 227 · 237th Standalone Interactive Demo: `demos/game-film-character-consistency-lora-previs-workbench/`)**  
+> **Standalone Track Positioning (Interactive Architecture Workbench: `demos/game-film-character-consistency-lora-previs-workbench/`)**  
 > Written for **Cloud & AI Solution Architects and Technical Artists** designing **game cutscene pre-visualization (Pre-viz) pipelines, serialized animation storyboards, and virtual brand IP video workflows**, this guide follows the six-section decision structure of `ib-vs-ethernet-roce-selection-faq.md`: explaining how to lock multi-shot character and costume consistency across 180-degree camera arcs, how to choose between Character LoRAs, IP-Adapter FaceID, and Kling 2.1 Elements / Runway Gen-4 multi-reference locks, and why coupling lightweight 3D mannequin blocking (OpenPose + Z-Depth) with first/last-keyframe I2V eliminates the $2.0000\times$ retake overrun of raw text prompting.
 
 ![Game & Film Character Consistency LoRA + 3D Pre-Viz Workbench Summary](./evidence/game-film-character-consistency-lora-previs-workbench-summary.svg)

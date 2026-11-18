@@ -1,4 +1,4 @@
-# Why Audio-Threshold Multi-Cam Switchers Create 0.2s Whip-Saw Jitter—and How TalkNet Audio-Visual Lip-VAD + 1.8s Hysteresis Hold Lock Broadcast Pacing at 1.0000× (FAQ)
+# Why Audio-Threshold Multi-Cam Switchers Create 0.2s Whip-Saw Jitter—and How TalkNet Audio-Visual Lip-VAD + 1.8s Hysteresis Hold Lock Broadcast Pacing (FAQ)
 
 > **Audience**: **Cloud & AI Solution Architects** and Media Engineering Leads building automated multi-camera editing pipelines for enterprise executive roundtables, customer interviews, and video podcasts.
 > **Core Value**: Eliminates the dizzying `0.2s` whip-saw camera cuts triggered whenever a listener coughs, laughs, or says *"Uh-huh"*—explaining how **TalkNet Audio-Visual Active Speaker Detection (Lip-VAD) + a `1.8s` Minimum Shot-Hold Hysteresis Gate + `<1.2s` Backchannel Suppression + Scheduled Nodding Reaction Cutaways + FCPXML/Remotion Export** locks broadcast pacing and post-production budget at **`1.0000×`** across all 17 stages.

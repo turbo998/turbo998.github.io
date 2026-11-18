@@ -1,6 +1,6 @@
 # 企业 3D 产品交互展厅与数字孪生选型 FAQ：3D Gaussian Splatting (3DGS) 实景捕捉 + Draco/KTX2 GLTF PBR 混合管线 vs 朴素未压缩全网格/点云加载
 
-> **独立专题定位（Tonight Round 9 / Repo Round 231 · 第 241 个独立可交互 Demo：`demos/interactive-3d-product-configurator-gaussian-webgpu-studio/`）**  
+> **独立专题定位（交互式架构工作台：`demos/interactive-3d-product-configurator-gaussian-webgpu-studio/`）**  
 > 本指南面向为 **汽车主机厂（在线 3D 选车配置器）、奢品与高端家居品牌（交互式 3D 数字展厅）、智能制造企业（工业园区与产线数字孪生）** 设计 Web 3D/WebGPU 渲染管线的 **Cloud & AI Solution Architect**，严格对标 `ib-vs-ethernet-roce-selection-faq.md` 的**六段式架构师决策结构**：先用通俗业务与图形工程语言讲清楚“3D Gaussian Splatting (3DGS) 神经辐射场与传统 GLTF PBR 多边形网格各自适合什么、为什么企业级 3D 选配器必须采用 **‘SPZ 量化压缩 3DGS 实景背景 + Draco/KTX2 压缩 PBR CAD 商品主体’混合架构**”，再给出完整选型矩阵与落地核验 Checklist。
 
 ![企业 3D 产品选配器：混合 3DGS + Draco/KTX2 PBR 管线对比总结图](./evidence/interactive-3d-product-configurator-gaussian-webgpu-studio-summary.svg)

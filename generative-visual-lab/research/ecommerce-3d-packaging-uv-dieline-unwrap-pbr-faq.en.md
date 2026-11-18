@@ -1,4 +1,4 @@
-# Why Perspective T2I Packaging Images Are Rejected by Printing Factories—and How 2D CAD Dieline UV-First + Spot Foil/Emboss PBR Folding Lock Prepress & 3D Hero Renders at 1.0000× (FAQ)
+# Why Perspective T2I Packaging Images Are Rejected by Printing Factories—and How 2D CAD Dieline UV-First + Spot Foil/Emboss PBR Folding Lock Prepress & 3D Hero Renders (FAQ)
 
 > **Audience**: **Cloud & AI Solution Architects** and Packaging Engineering Leads building automated packaging design, prepress, and 3D e-commerce hero-render pipelines for FMCG, cosmetics, luxury gift boxes, and consumer electronics.
 > **Core Value**: Bridges the gap between "pretty AI concept art" and industrial offset printing—explaining why generating a perspective 3D box photo via standard T2I diffusion produces an unprintable bitmap that must be redrawn from scratch in Adobe Illustrator (`2.0000×` cost overrun), and how a **2D Parametric CAD Dieline UV-First Pipeline + Vector Spot-Foil/Emboss Twin Compiler + Automated 3D Hinge-Rig Folding** delivers both **300-DPI CMYK+Spot PDF/X-4 prepress plates** and **interactive 3D PBR turntable renders** at **`1.0000×` budget lock** across all 17 stages.

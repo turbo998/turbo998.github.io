@@ -1,6 +1,6 @@
 # 游戏与影视美术资产生产管线架构与选型 FAQ：3D 白模相机预演 (Depth/OpenPose) + 角色 LoRA / 多参考图一致性锁死 vs 朴素纯文本逐镜头抽卡
 
-> **独立专题定位（Tonight Round 5 / Repo Round 227 · 第 237 个独立可交互 Demo：`demos/game-film-character-consistency-lora-previs-workbench/`）**  
+> **独立专题定位（交互式架构工作台：`demos/game-film-character-consistency-lora-previs-workbench/`）**  
 > 本指南面向为 **游戏研发工作室、影视与漫剧分镜预演（Pre-visualization）团队、品牌虚拟 IP 系列短片管线** 设计工业化 AIGC 生产流水的 **Cloud & AI Solution Architect / Technical Artist**，严格对标 `ib-vs-ethernet-roce-selection-faq.md` 的**六段式架构师决策结构**：先用通俗美术工业化与架构语言讲清楚“跨镜头角色与服装一致性怎么锁死、角色 LoRA vs IP-Adapter FaceID vs 可灵 Kling 2.1 Elements / Runway Gen-4 多主体参考怎么选、为什么必须引入轻量 3D 白模导出 OpenPose/Depth 控制网”，再给出完整管线图、选型矩阵与落地核验 Checklist。
 
 ![游戏与影视角色一致性 LoRA + 3D 相机预演工作台对比总结图](./evidence/game-film-character-consistency-lora-previs-workbench-summary.svg)

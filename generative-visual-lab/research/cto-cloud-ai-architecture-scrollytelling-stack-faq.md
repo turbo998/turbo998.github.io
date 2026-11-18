@@ -1,6 +1,6 @@
-# 面向 CTO 汇报与品牌发布会的云与 AI 动态架构沙盘选型 FAQ：SVG 矢量状态机 vs Canvas 2D vs Rive/Lottie vs Three.js 轻量 3D（第 235 个 Demo 里程碑！）
+# 面向 CTO 汇报与品牌发布会的云与 AI 动态架构沙盘选型 FAQ：SVG 矢量状态机 vs Canvas 2D vs Rive/Lottie vs Three.js 轻量 3D（架构师选型 FAQ）
 
-> **独立专题定位（Tonight Round 3 / Repo Round 225 · 第 235 个独立可交互里程碑 Demo：`demos/cto-cloud-ai-architecture-scrollytelling-sandbox/`）**  
+> **独立专题定位（交互式架构工作台：`demos/cto-cloud-ai-architecture-scrollytelling-sandbox/`）**  
 > 本指南面向需要为 **CTO 技术战略汇报、云与 AI 复杂系统架构动态演示沙盘、产品发布会一镜到底交互长图（Scrollytelling）** 设计高颜值交互可视化方案的 **Cloud & AI Solution Architect**，严格对标 `ib-vs-ethernet-roce-selection-faq.md` 的**六段式架构师决策结构**：先用通俗业务与前端工程语言讲清楚“SVG 矢量动态架构图、HTML5 Canvas 2D、Rive / Lottie 状态机动效、Three.js / React Three Fiber 轻量 3D 展示各自适合什么场景、为什么混合分层架构能锁死 60fps 并避免未裁剪 DOM 重排导致的 $2.0000\times$ 掉帧”，再给出完整选型矩阵与落地核验 Checklist。
 
 ![面向 CTO 汇报的云与 AI 动态架构沙盘与 Web 可视化技术栈对比总结图](./evidence/cto-cloud-ai-architecture-scrollytelling-sandbox-summary.svg)

@@ -1,4 +1,4 @@
-# Why 90% of Enterprise Video Archives Become Unsearchable "Dark Data"—and How Shot-Level Multimodal DAM + Search-Before-Generate Gates Cut AIGC Spend to 1.0000× (FAQ)
+# Why 90% of Enterprise Video Archives Become Unsearchable "Dark Data"—and How Shot-Level Multimodal DAM + Search-Before-Generate Gates Cut AIGC Spend (FAQ)
 
 > **Audience**: **Cloud & AI Solution Architects** designing enterprise Digital Asset Management (DAM) platforms, marketing content hubs, and FinOps-governed AIGC video pipelines.
 > **Core Value**: Solves the "Dark Video Archive & Duplicate AIGC Spend" problem—explaining why indexing 60-second master videos by filename (`final_v3_export.mp4`) or whole-video average embeddings hides 90% of reusable sub-clip shots and forces teams to repeatedly pay Sora/Veo/Kling APIs to regenerate existing B-roll (`2.0000×` FinOps overrun). Shows how **PySceneDetect Atomic Shot Slicing (`[t_start, t_end]`) + 4-Track Multimodal HNSW Indexing (SigLIP-2/Marengo + Camera Motion + CIE Palette + C2PA Rights) + a `<25ms` Search-Before-Generate FinOps Gate** locks asset reuse and budget efficiency at **`1.0000×`** across all 17 scale tiers.

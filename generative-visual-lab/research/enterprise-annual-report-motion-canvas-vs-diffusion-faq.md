@@ -1,6 +1,6 @@
 # 企业财报发布与数据故事可编程视频管线选型 FAQ：结构化 BI 数据 AST + Motion Canvas / Remotion 确定性图表动画 vs 朴素视频大模型端到端渲染图表
 
-> **独立专题定位（Tonight Round 7 / Repo Round 229 · 第 239 个独立可交互 Demo：`demos/enterprise-annual-report-motion-canvas-studio/`）**  
+> **独立专题定位（交互式架构工作台：`demos/enterprise-annual-report-motion-canvas-studio/`）**  
 > 本指南面向为 **金融机构、上市公司投资者关系（IR）部门、SaaS 云厂商（客户年度回顾 Wrapped 账单视频）与企业 BI 分析团队** 设计自动化数据视频管线的 **Cloud & AI Solution Architect**，严格对标 `ib-vs-ethernet-roce-selection-faq.md` 的**六段式架构师决策结构**：先用通俗业务与架构语言讲清楚“AI 生成视频与代码驱动可编程视频（Motion Canvas / Remotion）的黄金边界在哪里、为什么财务与经营数据视频绝不能让视频扩散模型画图表、如何用 LLM 编译结构化 BI AST 驱动 100% 审计级精度的千人千面数据视频”，再给出完整管线图、选型矩阵与落地核验 Checklist。
 
 ![企业财报与数据故事可编程视频管线对比总结图](./evidence/enterprise-annual-report-motion-canvas-studio-summary.svg)

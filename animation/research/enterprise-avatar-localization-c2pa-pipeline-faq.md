@@ -1,6 +1,6 @@
 # 企业全球化培训与多语种数字人口播自动成片管线 FAQ：音画唇形 ROI 局部合成 + 矢量课件分轨 + C2PA 溯源签名 vs 朴素全画幅视频重渲染
 
-> **独立专题定位（Tonight Round 4 / Repo Round 226 · 第 236 个独立可交互 Demo：`demos/enterprise-avatar-localization-c2pa-pipeline-studio/`）**  
+> **独立专题定位（交互式架构工作台：`demos/enterprise-avatar-localization-c2pa-pipeline-studio/`）**  
 > 本指南面向为跨国企业设计 **全球多语种员工培训视频、客户成功（Customer Onboarding）实操教程、高管全球致辞数字人播报与内容合规防伪（C2PA）管线** 的 **Cloud & AI Solution Architect**，严格对标 `ib-vs-ethernet-roce-selection-faq.md` 的**六段式架构师决策结构**：先用通俗业务与架构语言讲清楚“企业多语种数字人成片管线怎么搭、HeyGen / Synthesia 商用 SaaS 与自托管 LivePortrait / MuseTalk / Hallo + Remotion 分轨架构怎么选、如何嵌入 C2PA 数字水印与高管肖像授权密钥”，再给出完整架构图与落地核验 Checklist。
 
 ![企业多语种数字人口播分轨合成与 C2PA 溯源管线对比总结图](./evidence/enterprise-avatar-localization-c2pa-pipeline-studio-summary.svg)

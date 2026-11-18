@@ -1,6 +1,6 @@
-# 全渠道广告多画幅自适应生产管线 FAQ：显著性主体安全框锁死 + 方向性智能扩图 (Outpainting) + 平台 UI 遮挡避让 vs 朴素中心暴力裁剪（第 245 个 Demo 里程碑！）
+# 全渠道广告多画幅自适应生产管线 FAQ：显著性主体安全框锁死 + 方向性智能扩图 (Outpainting) + 平台 UI 遮挡避让 vs 朴素中心暴力裁剪（架构师选型 FAQ）
 
-> **独立专题定位（Tonight Round 13 / Repo Round 235 · 第 245 个独立可交互里程碑 Demo：`demos/multi-aspect-ratio-outpainting-safezone-compositor/`）**  
+> **独立专题定位（交互式架构工作台：`demos/multi-aspect-ratio-outpainting-safezone-compositor/`）**  
 > 本指南面向为 **全球品牌全渠道营销中心、跨境电商广告投流团队、程序化广告（Programmatic Advertising）平台** 设计“一稿多投（16:9 $\leftrightarrow$ 9:16 $\leftrightarrow$ 3:4 $\leftrightarrow$ 4:5 $\leftrightarrow$ 21:9）”自动化视觉管线的 **Cloud & AI Solution Architect**，严格对标 `ib-vs-ethernet-roce-selection-faq.md` 的**六段式架构师决策结构**：先用通俗业务与排版工程语言讲清楚“为什么将 16:9 横屏直接中心裁剪成 9:16 竖屏会砍掉商品并让字幕被抖音/TikTok 点赞按钮挡住、如何搭建 **SAM-2 显著性主体安全框 + Flux/Wan 方向性扩图（Outpainting）+ Remotion 平台 UI 死区响应式重排** 管线”，再给出完整选型矩阵与核验 Checklist。
 
 ![全渠道多画幅智能扩图与平台安全区重排管线对比总结图](./evidence/multi-aspect-ratio-outpainting-safezone-compositor-summary.svg)

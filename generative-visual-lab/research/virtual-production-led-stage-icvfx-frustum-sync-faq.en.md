@@ -1,7 +1,7 @@
-# Why Playing Untracked 2D AI Video on LED Walls Ruins Moving Camera Shots—and How ICVFX Off-Axis Inner-Frustum 3DGS + AIGC HDRI Domes + Genlock Lock Final Pixels at 1.0000× (FAQ · 255th Demo Milestone!)
+# Why Playing Untracked 2D AI Video on LED Walls Ruins Moving Camera Shots—and How ICVFX Off-Axis Inner-Frustum 3DGS + AIGC HDRI Domes + Genlock Lock Final Pixels
 
 > **Audience**: **Cloud & AI Solution Architects** and Virtual Production (VP) Supervisors designing enterprise xR keynotes, automotive LED-volume commercials, and broadcast virtual studios.
-> **Core Value** (**Round 245 · 255th Demo Milestone!**): Explains why displaying a flat 2D AI video on an LED wall during moving camera shots immediately collapses 3D motion parallax and triggers rolling-shutter scanline banding—and how **6DoF Camera-Tracked Off-Axis Inner-Frustum Rendering (3DGS/UE5) + Outer-Dome 360° 16-Bit AIGC HDRI Reflections + PTPv2/Tri-Level Genlock Phase Locking** achieves **In-Camera Final Pixels (`1.0000×` budget lock)** with zero green-screen rotoscoping across all 17 stages.
+> **Core Value**: Explains why displaying a flat 2D AI video on an LED wall during moving camera shots immediately collapses 3D motion parallax and triggers rolling-shutter scanline banding—and how **6DoF Camera-Tracked Off-Axis Inner-Frustum Rendering (3DGS/UE5) + Outer-Dome 360° 16-Bit AIGC HDRI Reflections + PTPv2/Tri-Level Genlock Phase Locking** achieves **In-Camera Final Pixels (`1.0000×` budget lock)** with zero green-screen rotoscoping across all 17 stages.
 
 ![Enterprise LED-Volume Virtual Production ICVFX Frustum Sync Studio Summary](./evidence/virtual-production-led-stage-icvfx-frustum-sync-studio-summary.svg)
 
@@ -116,7 +116,7 @@ sequenceDiagram
 
 ---
 
-## 🧪 5. Interactive Workbench & 7-Card Report (255th Demo Milestone!)
+## 🧪 5. Interactive Workbench & 7-Card Report
 
 - **Interactive Workbench**: [`demos/virtual-production-led-stage-icvfx-frustum-sync-studio/`](../demos/virtual-production-led-stage-icvfx-frustum-sync-studio/index.html)
 - **7-Card 4:5 Visual Report (EN)**: [`demos/virtual-production-led-stage-icvfx-frustum-sync-studio/test-report-cards.html`](../demos/virtual-production-led-stage-icvfx-frustum-sync-studio/test-report-cards.html)

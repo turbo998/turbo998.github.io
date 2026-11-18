@@ -1,6 +1,6 @@
 # AIGC Short-Drama & Commercial Audiovisual Post-Production Pipeline FAQ: Optical-Flow V2A Contact Foley + Sidechain Auto-Ducking + EBU R128 vs Naive Unaligned Mix
 
-> **Standalone Track Positioning (Tonight Round 10 / Repo Round 232 · 242nd Standalone Interactive Demo: `demos/short-drama-multimodal-audio-foley-sync-workbench/`)**  
+> **Standalone Track Positioning (Interactive Architecture Workbench: `demos/short-drama-multimodal-audio-foley-sync-workbench/`)**  
 > Written for **Cloud & AI Solution Architects** designing **100-episode AIGC short-drama post-production factories, e-commerce commercial video pipelines, and game trailer mastering workflows**, this guide follows the six-section decision structure of `ib-vs-ethernet-roce-selection-faq.md`: explaining why raw AI video clips with flat overlaid BGM sound amateurish, why multi-shot localization requires isolated audio stems (`Dialogue / V2A Foley / BGM`), and how an **Optical-Flow Contact V2A Foley + $-12\text{ dB}$ Sidechain Auto-Ducking + EBU R128 ($-14.0\text{ LUFS}$) Mastering Pipeline** locks audiovisual sync and broadcast compliance at `1.0000×`.
 
 ![AIGC Short-Drama V2A Foley, Sidechain Auto-Ducking & EBU R128 Pipeline Summary](./evidence/short-drama-multimodal-audio-foley-sync-workbench-summary.svg)

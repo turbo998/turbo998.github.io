@@ -1,6 +1,6 @@
-# CTO Cloud & AI Dynamic Architecture Scrollytelling Sandbox & Web Visualization Stack Selection FAQ: Isometric SVG vs Canvas 2D vs Rive/Lottie vs Three.js (235th Demo Milestone!)
+# CTO Cloud & AI Dynamic Architecture Scrollytelling Sandbox & Web Visualization Stack Selection FAQ: Isometric SVG vs Canvas 2D vs Rive/Lottie vs Three.js
 
-> **Standalone Track Positioning (Tonight Round 3 / Repo Round 225 · 235th Standalone Interactive Milestone Demo: `demos/cto-cloud-ai-architecture-scrollytelling-sandbox/`)**  
+> **Standalone Track Positioning (Interactive Architecture Workbench: `demos/cto-cloud-ai-architecture-scrollytelling-sandbox/`)**  
 > Written for **Cloud & AI Solution Architects** designing **interactive executive architecture sandboxes for CTO briefings, RAG/Agentic system explainers, and product keynote scrollytelling pages**, this guide follows the six-section decision structure of `ib-vs-ethernet-roce-selection-faq.md`: explaining when to choose Isometric SVG, HTML5 Canvas 2D, Rive / Lottie state machines, or Three.js / React Three Fiber 3D, and how a layered **SVG Topology + Viewport-Culled Canvas/Rive Hybrid Sandbox** locks 60fps performance while eliminating the $2.0000\times$ frame-budget overrun of naive unculled DOM/3D scenes.
 
 ![CTO Cloud & AI Architecture Scrollytelling Sandbox & Web Visualization Stack Summary](./evidence/cto-cloud-ai-architecture-scrollytelling-sandbox-summary.svg)

@@ -1,6 +1,6 @@
 # AIGC 短剧与商业广告后期视听合成管线 FAQ：光流接触事件 V2A 拟音 + 对白侧链自动闪避 (Sidechain Ducking) + EBU R128 响度对齐 vs 朴素盲贴混音
 
-> **独立专题定位（Tonight Round 10 / Repo Round 232 · 第 242 个独立可交互 Demo：`demos/short-drama-multimodal-audio-foley-sync-workbench/`）**  
+> **独立专题定位（交互式架构工作台：`demos/short-drama-multimodal-audio-foley-sync-workbench/`）**  
 > 本指南面向为 **AI 漫剧/微短剧出海工厂、电商商品展示短视频、游戏 CG 宣传片** 设计自动化视听后期合成管线的 **Cloud & AI Solution Architect**，严格对标 `ib-vs-ethernet-roce-selection-faq.md` 的**六段式架构师决策结构**：先用通俗业务与音频母带工程语言讲清楚“为什么 AI 生成的视频直接配固定 BGM 会导致严重塑料感与台词听不清、如何搭建 **光流峰值触发 V2A 物理拟音（MMAudio / FoleyCrafter）+ 对白优先侧链自动闪避（$-12\text{ dB}$ Ducking）+ 广播级 EBU R128（$-14.0\text{ LUFS}$）** 三干路母带管线”，再给出完整选型矩阵与落地核验 Checklist。
 
 ![AIGC 短剧与商业广告 V2A 拟音、侧链闪避与 EBU R128 母带管线对比总结图](./evidence/short-drama-multimodal-audio-foley-sync-workbench-summary.svg)

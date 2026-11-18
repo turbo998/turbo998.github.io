@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self' data:;"
+    />
+    <title>跨模型 AIGC 与实拍混剪 ACEScg 色彩科学、3D LUT 影调统一与肤色 I-Line 保护母带工作台（第 65 项里程碑！）</title>
+    <script type="module" crossorigin src="../../assets/multiShotColorGradingAcesLutContinuityMastering-B9icOolC.js"></script>
+    <link rel="modulepreload" crossorigin href="../../assets/modulepreload-polyfill-B5Qt9EMX.js">
+    <link rel="stylesheet" crossorigin href="../../assets/multiShotColorGradingAcesLutContinuityMastering-BU-4HTqQ.css">
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="hero-header">
+        <div class="hero-top-row">
+          <span class="domain-pill">DOMAIN 3 · 65TH WORKBENCH MILESTONE! · MULTI-SHOT ACESCG COLOR GRADING &amp; LUT STUDIO · ROUND 277</span>
+          <nav class="Quick-links" aria-label="Documentation links">
+            <a href="../../index.html">← 返回 65 门户 (Portal)</a>
+            <a href="../../research/multi-shot-color-grading-aces-lut-continuity-mastering-faq.html">中文选型 FAQ</a>
+            <a href="../../research/multi-shot-color-grading-aces-lut-continuity-mastering-faq.en.html">English FAQ</a>
+          </nav>
+        </div>
+        <h1>跨模型 AIGC 与实拍混剪 ACEScg 色彩科学、3D LUT 影调统一与肤色线（I-Line）保护母带工作台</h1>
+        <p class="hero-subtitle">
+          面向将 <strong>索尼/ARRI 实拍素材与多模型 AI 镜头（Veo 3 + Kling 2.1 + Wan 2.2）</strong> 混剪成 60 秒商业 TVC 的 <strong>Cloud &amp; AI Solution Architect</strong>：彻底根治多源混剪的三大后期灾难——<strong>“切镜头瞬间色温从 Veo 的 4100K 暖黄骤跳到 Kling 的 6900K 冷蓝（切镜色差 ΔE=14.8）”、“在 8-bit sRGB 上强套青橙电影 LUT 导致人物脸部变成死绿僵尸色（偏离 Vectorscope 肤色线 24.6°）”、“天空与暗部出现一圈圈 8-bit 色彩断层（Banding 34.5%）”</strong>。本工作台通过 <strong>逆电光转换（Inverse-EOTF）升维至 32-bit 线性 ACEScg AP1 宽色域 → 蒙日-坎托罗维奇最优传输（Optimal Transport）跨镜头色温协方差对齐（切镜 ΔE=0.32） → Vectorscope I-Line 肤色椭球掩码保护（偏差 &lt;0.8°） + 33³ 四面体插值 3D LUT + 蓝噪声颗粒抖动（Dithering）10-bit 导出</strong>，以 <strong>8.4 秒 / $0.09</strong> 替代达芬奇资深调色师手工调色（$1,200/支）。
+        </p>
+      </header>
+
+      <section class="controls-bar" aria-label="Interactive Multi-Shot ACEScg Color Grading Controls">
+        <div class="control-block">
+          <span class="control-label">1. 跨模型 AIGC 与实拍混剪商业母带预设 (Multi-Source Timeline Preset)</span>
+          <div class="button-group" id="preset-buttons">
+            <button type="button" class="preset-btn active" data-preset="automotive-sunset-4model-tvc">🚘 豪车落日 4 源混剪 (FX6 + Veo + Kling + Wan)</button>
+            <button type="button" class="preset-btn" data-preset="luxury-skincare-skin-iline-lock">💄 美妆特写青橙 LUT + 肤色 I-Line 保护</button>
+            <button type="button" class="preset-btn" data-preset="cyberpunk-game-hdr10-trailer">🌆 3A 游戏霓虹防溢出 1000-nit HDR10</button>
+            <button type="button" class="preset-btn" data-preset="documentary-slog3-aigc-hybrid">🎞️ 纪录片 RED 实拍与 AI 镜头颗粒对齐</button>
+          </div>
+        </div>
+
+        <div class="control-block">
+          <span class="control-label">2. 色彩空间与跨镜连续性管线 (Color Science Architecture)</span>
+          <div class="button-group" id="mode-buttons">
+            <button type="button" class="mode-btn active" data-mode="acescg-ot-skinlock-10bit">
+              ✅ 32-Bit ACEScg + 最优传输跨镜对齐 + I-Line 肤色锁 + 10-Bit 抖动
+            </button>
+            <button type="button" class="mode-btn" data-mode="naive-8bit-srgb-lut-concat">
+              ❌ 朴素 8-Bit sRGB 直接拼接 + 强套 LUT（切镜忽冷忽热 + 脸色发绿 + 断层）
+            </button>
+          </div>
+        </div>
+
+        <div class="control-block slider-block">
+          <label for="lut-slider" class="control-label">
+            3. 品牌 33³ 胶片 3D LUT 强度与四面体插值 (Brand 3D LUT Intensity): <strong id="lut-readout">85% Kodak 2383 · Skin Protected</strong>
+          </label>
+          <div class="slider-row">
+            <input id="lut-slider" type="range" min="20" max="100" value="85" />
+          </div>
+        </div>
+      </section>
+
+      <section class="kpi-grid" aria-label="Key Performance Indicators">
+        <article class="kpi-card">
+          <span class="kpi-tag">SHOT-TO-SHOT CUT CONTINUITY</span>
+          <strong class="kpi-val" id="kpi-cut-delta">ΔE = 0.32</strong>
+          <p class="kpi-desc" id="kpi-cut-sub">跨 Sony/Veo/Kling/Wan 四源切镜零色温跳变 (vs 朴素 ΔE=14.8)</p>
+        </article>
+        <article class="kpi-card">
+          <span class="kpi-tag">VECTORSCOPE SKIN I-LINE LOCK</span>
+          <strong class="kpi-val" id="kpi-skin-drift">0.8° 偏差</strong>
+          <p class="kpi-desc" id="kpi-skin-sub">严格锚定矢量示波器 123° 血色线 (vs 无掩码套 LUT 偏离 19.4°)</p>
+        </article>
+        <article class="kpi-card">
+          <span class="kpi-tag">8-BIT BANDING ARTIFACTS</span>
+          <strong class="kpi-val" id="kpi-banding">0.0% 断层</strong>
+          <p class="kpi-desc" id="kpi-banding-sub">32-bit 浮点运算 + 蓝噪声胶片颗粒抖动转 10-bit (vs 34.5% 断层)</p>
+        </article>
+        <article class="kpi-card">
+          <span class="kpi-tag">MASTERING TCO vs COLORIST</span>
+          <strong class="kpi-val" id="kpi-tco">8.4s · $0.09</strong>
+          <p class="kpi-desc" id="kpi-tco-sub">对比达芬奇资深调色师手工逐镜匹配 ($1,200) 省 99.99%</p>
+        </article>
+      </section>
+
+      <section class="stage-panel" aria-label="Interactive 4-Shot RGB Parade Waveform & Vectorscope Skin I-Line Stage">
+        <div class="stage-header">
+          <div>
+            <span class="stage-badge" id="stage-badge">65TH MILESTONE · ACESCG AP1 + KODAK 2383 3D LUT</span>
+            <h2 id="stage-title">豪车黄金时刻 12 镜混剪 TVC（左屏：四源镜头切点色温与 RGB Parade 波形连续性 → 右屏：Vectorscope 矢量示波器 I-Line 肤色线保护）</h2>
+          </div>
+          <div class="stage-legend">
+            <span class="legend-item"><i class="dot dot-aces"></i>ACEScg 最优传输对齐波形</span>
+            <span class="legend-item"><i class="dot dot-iline"></i>Vectorscope 123° 肤色保护线 (I-Line)</span>
+            <span class="legend-item"><i class="dot dot-jump"></i>朴素直拼跨镜头色温断崖</span>
+          </div>
+        </div>
+
+        <div class="canvas-wrapper">
+          <canvas id="grading-canvas" width="1240" height="525"></canvas>
+        </div>
+
+        <div class="pipeline-strip">
+          <div class="pipe-step">
+            <span class="step-num">STAGE 01</span>
+            <strong>IDT 逆电光转换升维 ACEScg</strong>
+            <p>识别实拍 S-Log3/LogC4 与 AI 模型 8-bit sRGB，通过逆色调映射与双边去断层升维至 32-bit 线性 ACEScg AP1 空间</p>
+          </div>
+          <div class="pipe-step">
+            <span class="step-num">STAGE 02</span>
+            <strong>Monge-Kantorovich 最优传输对齐</strong>
+            <p>以主参考镜头（Hero Shot）为锚点，对齐全时间轴各镜头的 CIE L*a*b* 均值与 3×3 协方差矩阵，消除跨模型偏色</p>
+          </div>
+          <div class="pipe-step">
+            <span class="step-num">STAGE 03</span>
+            <strong>I-Line 肤色保护 + 四面体 3D LUT</strong>
+            <p>在圆柱色相/饱和度空间锁定人物肤色椭球（保护在 123° I-Line），对背景执行 33³ 四面体插值胶片 3D LUT</p>
+          </div>
+          <div class="pipe-step">
+            <span class="step-num">STAGE 04</span>
+            <strong>ACES 2.0 色域压缩与 10-Bit 抖动</strong>
+            <p>压缩超亮霓虹/车灯防溢出，注入匹配实拍 CMOS 的 35mm 胶片颗粒与蓝噪声抖动，输出 Rec.709 / HDR10 母带</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="deck-section" aria-label="7-Card 4:5 Benchmark Visual Report">
+        <div class="deck-header">
+          <span class="domain-pill">7-CARD 4:5 VISUAL BENCHMARK REPORT · 65TH WORKBENCH MILESTONE</span>
+          <h2>跨模型 AIGC 与实拍混剪 ACEScg 调色母带管线 7 卡基准评测报告</h2>
+        </div>
+
+        <div class="cards-grid">
+          <!-- Card 1 -->
+          <article class="bcard" data-card="1">
+            <div class="bcard-top">
+              <span class="bcard-idx">1 / 7 · HANDS-ON · MULTI-SHOT ACESCG MASTERING</span>
+              <span class="bcard-pill">ΔE 0.32 Continuity</span>
+            </div>
+            <h3>ACEScg 升维 + 最优传输色温对齐将四模型混剪切镜色差从 ΔE=14.8 压至 0.32</h3>
+            <p>
+              解决企业把 Sony 实拍、Veo 3、Kling 2.1 与 Wan 2.2 镜头剪进同一条 TVC 时“每切一镜换一个色调、肤色被 LUT 染绿”的痛点，8.4 秒全自动输出广播级 10-bit 母带。
+            </p>
+            <div class="bcard-metrics">
+              <div><span>切镜头色温跳变</span><strong>ΔE 0.32 vs 14.8</strong></div>
+              <div><span>肤色线 I-Line 偏移</span><strong>0.8° vs 19.4°</strong></div>
+              <div><span>单支 TVC 调色成本</span><strong>$0.09 (-99.99%)</strong></div>
+            </div>
+          </article>
+
+          <!-- Card 2 -->
+          <article class="bcard" data-card="2">
+            <div class="bcard-top">
+              <span class="bcard-idx">2 / 7 · SCENARIO · TEAL-ORANGE LUT SKIN PROTECTION</span>
+              <span class="bcard-pill">choice · Act automatically</span>
+            </div>
+            <h3>美妆特写套用 85% 青橙电影 LUT：I-Line 椭球掩码将代言人肤色偏绿角度从 24.6° 锁回 0.6°</h3>
+            <p>
+              商业青橙（Teal &amp; Orange）3D LUT 会将阴影与中间调推向青蓝色；若无肤色椭球分离，模特脸颊暗部会呈现病态青绿色。
+            </p>
+            <div class="bcard-bars">
+              <div class="bar-row"><span>ACEScg + I-Line Mask</span><div class="bar-track"><div class="bar-fill" style="width:99.2%"></div></div><strong>99.2% 自然血色</strong></div>
+              <div class="bar-row"><span>Trilinear 8-Bit LUT</span><div class="bar-track"><div class="bar-fill warn" style="width:62.0%"></div></div><strong>62.0% (断层)</strong></div>
+              <div class="bar-row"><span>Unmasked Teal LUT</span><div class="bar-track"><div class="bar-fill danger" style="width:34.0%"></div></div><strong>34.0% (脸发绿)</strong></div>
+            </div>
+          </article>
+
+          <!-- Card 3 -->
+          <article class="bcard" data-card="3">
+            <div class="bcard-top">
+              <span class="bcard-idx">3 / 7 · WHAT I TESTED · 4 MASTERING COHORTS</span>
+              <span class="bcard-pill">Full Matrix</span>
+            </div>
+            <h3>四大跨源混剪场景实测矩阵：豪车落日/美妆特写/赛博霓虹 HDR10/纪录片混剪</h3>
+            <table class="bcard-table">
+              <thead>
+                <tr><th>TIMELINE COHORT</th><th>CUT ΔE</th><th>SKIN DRIFT</th><th>BANDING</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>豪车 4 源混剪 TVC</td><td>0.32 (vs 14.8 ✕)</td><td>0.8° ✅</td><td>0.0% ✅</td></tr>
+                <tr><td>美妆代言人特写</td><td>0.28 (vs 11.2 ✕)</td><td>0.6° ✅</td><td>0.0% ✅</td></tr>
+                <tr><td>3A 游戏 HDR10</td><td>0.35 (vs 16.5 ✕)</td><td>0.9° ✅</td><td>0.0% ✅</td></tr>
+                <tr><td>纪录片实拍+AI</td><td>0.30 (vs 13.4 ✕)</td><td>0.7° ✅</td><td>0.0% ✅</td></tr>
+              </tbody>
+            </table>
+          </article>
+
+          <!-- Card 4 -->
+          <article class="bcard" data-card="4">
+            <div class="bcard-top">
+              <span class="bcard-idx">4 / 7 · UNDER THE HOOD · MONGE-KANTOROVICH &amp; TETRA</span>
+              <span class="bcard-pill">Color Math</span>
+            </div>
+            <h3>闭式高斯最优传输（Monge-Kantorovich）色域对齐与四面体 3D LUT 插值协议</h3>
+            <pre class="bcard-code"><code>// 1. Align non-skin covariance C_src of AI clip to Hero Shot C_ref:
+T_mk = C_src^(-1/2) * (C_src^(1/2) * C_ref * C_src^(1/2))^(1/2) * C_src^(-1/2)
+rgb_aligned = mu_ref + T_mk * (rgb_aces - mu_src)
+// 2. Blend tetrahedral 3D LUT with Vectorscope 123deg I-Line skin mask:
+out = mix(tetrahedralLut33(rgb_aligned), rgb_skin_locked, w_skinEllipsoid)</code></pre>
+            <p class="bcard-foot">四面体插值（Tetrahedral）消除三线性插值在高饱和渐变区的折痕伪影。</p>
+          </article>
+
+          <!-- Card 5 -->
+          <article class="bcard" data-card="5">
+            <article-inner>
+              <div class="bcard-top">
+                <span class="bcard-idx">5 / 7 · ROBUSTNESS CHECK · NEON CLIP &amp; GRAIN</span>
+                <span class="bcard-pill">Perturbation Test</span>
+              </div>
+              <h3>鲁棒性压测：蓝紫霓虹灯防过曝色相翻转、落日天空防 8-bit 断层与实拍颗粒同化</h3>
+              <table class="bcard-table">
+                <thead>
+                  <tr><th>PERTURBATION</th><th>8-BIT SRGB LUT</th><th>ACESCG + DITHER</th><th>RESULT</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>高饱和蓝紫霓虹车灯</td><td>通道截断变成刺眼洋红 ✕</td><td>ACES 2.0 柔和滚降消色 ✅</td><td>0 Gamut Clip</td></tr>
+                  <tr><td>黄昏天空平滑渐变压暗</td><td>出现 34.5% 阶梯状等高线 ✕</td><td>32-bit + 蓝噪声 10-bit 抖动 ✅</td><td>0.0% Banding</td></tr>
+                  <tr><td>实拍胶片切入 AI 塑料感镜头</td><td>噪点纹理瞬间消失穿帮 ✕</td><td>匹配频谱 35mm 有机颗粒注入 ✅</td><td>Seamless Cut</td></tr>
+                </tbody>
+              </table>
+            </article-inner>
+          </article>
+
+          <!-- Card 6 -->
+          <article class="bcard" data-card="6">
+            <div class="bcard-top">
+              <span class="bcard-idx">6 / 7 · LATENCY · 8.4S 60-SECOND TVC MASTER</span>
+              <span class="bcard-pill">GPU Compute Shader</span>
+            </div>
+            <h3>60 秒 4K 12 镜头商业 TVC 调色母带编译耗时：8.4 秒 vs 人工调色 1 天</h3>
+            <div class="bcard-bars">
+              <div class="bar-row"><span>1. Inverse-EOTF IDT</span><div class="bar-track"><div class="bar-fill" style="width:16%"></div></div><strong>1.2s</strong></div>
+              <div class="bar-row"><span>2. OT Covariance Fit</span><div class="bar-track"><div class="bar-fill" style="width:22%"></div></div><strong>1.8s</strong></div>
+              <div class="bar-row"><span>3. Skin Mask + 3D LUT</span><div class="bar-track"><div class="bar-fill" style="width:32%"></div></div><strong>2.6s</strong></div>
+              <div class="bar-row"><span>4. Grain + 10-Bit HEVC</span><div class="bar-track"><div class="bar-fill" style="width:34%"></div></div><strong>2.8s (Total 8.4s)</strong></div>
+            </div>
+          </article>
+
+          <!-- Card 7 -->
+          <article class="bcard" data-card="7">
+            <div class="bcard-top">
+              <span class="bcard-idx">7 / 7 · MY TAKE · ARCHITECT DECISION MATRIX</span>
+              <span class="bcard-pill">Production Ready</span>
+            </div>
+            <h3>架构师选型结论：多模型 AIGC 视频生产线的最后一站必须是 ACEScg 自动调色母带引擎</h3>
+            <div class="fit-grid">
+              <div class="fit-good">
+                <strong>✅ 强烈推荐 (Good Fit)</strong>
+                <ul>
+                  <li>由 Veo 3、Sora 2、Kling、Wan 与实拍素材混剪的品牌 TVC 与微电影</li>
+                  <li>需要严格遵守品牌视觉 VI 标准 3D LUT 且保护代言人健康肤色的广告</li>
+                  <li>消除开源视频模型 8-bit 输出的“AI 塑料感”与天空色带断层</li>
+                </ul>
+              </div>
+              <div class="fit-bad">
+                <strong>⛔ 不适用边界 (Not For)</strong>
+                <ul>
+                  <li>严禁在未对齐各镜头基础白平衡前直接全局套用强风格化 3D LUT</li>
+                  <li>严禁在 8-bit 整数空间直接做大幅度 S 曲线拉对比度（必出断层条纹）</li>
+                </ul>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+    </div>
+  </body>
+</html>

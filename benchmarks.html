@@ -605,6 +605,7 @@ body:has([data-professional-header]){height:auto!important;overflow-x:clip!impor
         <a class="pub-arrow" href="workshops/faf-vs-agent-forge/test-report-cards.en.html" aria-label="Open 3-Way Arena 7-Card Deck">→</a>
       </article>
 
+<<<<<<< Updated upstream
       <!-- INFRA ROUNDS 3-12: OPTICAL & COPPER INTERCONNECT, RLHF/GRPO POST-TRAINING, DATACENTER COOLING & POWER, GPU SHARING & ISOLATION, SPECULATIVE DECODING, LONG-CONTEXT, FAULT RECOVERY, ROCEV2 LOAD BALANCING, CHECKPOINT & KV OFFLOAD -->
       <article class="pub" data-category="harness-infra">
         <div>
@@ -752,14 +753,40 @@ body:has([data-professional-header]){height:auto!important;overflow-x:clip!impor
       </article>
 
       <!-- INFRA: MOE QUANTIZATION & PARALLELISM + LLM ENGINE & PD DISAGGREGATION -->
+=======
+      <!-- INFRA: CHECKPOINT & KV TIERING + MOE QUANTIZATION & PARALLELISM + LLM ENGINE & PD DISAGGREGATION -->
+>>>>>>> Stashed changes
       <article class="pub" data-category="harness-infra">
         <div>
           <span class="pub-tag report">AI Infra · Architect FAQ</span>
-          <div class="pub-date">2026-11-08 · Round 2 MoE Quant &amp; EP</div>
+          <div class="pub-date">2026-11-08 · Rounds 3 &amp; 4 Storage/KV</div>
         </div>
         <div class="pub-main">
+<<<<<<< Updated upstream
           <h3><a href="workshops/benchmarks/moe-quantization-parallelism-selection-cards.html" target="_blank" rel="noopener">Large Model &amp; MoE Inference Quantization (`BF16`/`W4A16`/`FP8`/`NVFP4`) &amp; Parallelism (`Pure TP` vs `DP+EP+DeepEP+EPLB`)</a></h3>
           <p>First-principles 6-part Architect Selection FAQ guide and 7-Card 4:5 benchmark report (<code>synthetic</code> analytical model + <code>anonymized_reported</code> specs, <code>independently_reproduced=false</code>): on a 64-GPU cluster serving a 671B/37B MoE model, <strong>FP8 Block-Scaled + Attention DP=8 / MoE EP=8 + DeepEP + EPLB</strong> achieves <code>92,200 tok/s</code> (<code>2.65x</code> over BF16 TP=16), cuts Decode P99 TPOT to <code>15.8 ms</code>, and lowers token cost to <code>$0.35 / 1M</code> (<code>-62.0%</code>); Blackwell <strong>NVFP4 + DP16/EP16</strong> reaches <code>151,200 tok/s</code> (<code>4.34x</code> vs BF16, <code>1.64x</code> vs FP8) at <code>$0.21 / 1M</code> (<code>-77.2%</code>), while <strong>EPLB</strong> eliminates Zipf hot-expert stragglers (<code>25.1 -&gt; 15.8 ms</code> P99 TPOT, <code>-37.1%</code>).</p>
+=======
+          <h3><a href="workshops/benchmarks/ai-storage-checkpoint-kv-offload-selection-cards.html" target="_blank" rel="noopener">Training Checkpoint Architecture (`Sync POSIX` vs `Sync GDS` vs `2-Phase Async DCP`) &amp; 64K Long-Context KV Cache Tiered Offload</a></h3>
+          <p>Two single-decision 6-part Architect Selection FAQs and 7-Card 4:5 benchmark report (<code>synthetic</code> analytical model + <code>anonymized_reported</code> specs, <code>independently_reproduced=false</code>): (1) <strong>Round 3 Training Checkpoint</strong>: on a 512×H100 (64-node) cluster saving <code>9,000 GB</code> every 30 min, <strong>Two-Phase Async PyTorch DCP</strong> (<code>45.0 GB/s/node</code> Pinned DRAM Stage 1 = <code>2,880.0 GB/s</code> aggregate + <code>50.0 s</code> Stage 2 flush) slashes GPU stall time <code>72.0x</code> (<code>225.0 -> 3.125 s</code>), lifts goodput from <code>87.50%</code> to <code>99.83%</code> (<code>+12.33 pts</code>), and recovers <code>$181,813.25/mo</code>; (2) <strong>Round 4 Long-Context KV Offload</strong>: for 64K multi-turn sessions (<code>2.048 GB</code> FP8 KV), offloading to <strong>Host Pinned DRAM (51.2 GB/s)</strong> or <strong>Shared RDMA NVMe + GDS (40.96 GB/s)</strong> cuts resume TTFT from <code>780.0 ms</code> to <code>52.0 ms</code> (<code>15.0x</code>, <code>$0.44/1M</code>, <code>-54.2%</code>) and <code>62.0 ms</code> (<code>12.58x</code>, <code>$0.48/1M</code>, <code>-50.0%</code>), whereas cloud TCP POSIX NFS (<code>3.2 GB/s</code>, <code>652.0 ms</code>) yields only <code>1.20x</code>.</p>
+          <div class="pub-meta">
+            <span><a href="workshops/benchmarks/ai-storage-checkpoint-kv-offload-selection-cards.html" target="_blank" rel="noopener"><b>🃏 7-Card 4:5 Visual Deck (EN)</b></a></span>
+            <span><a href="workshops/benchmarks/ai-storage-checkpoint-kv-offload-selection-cards.zh.html" target="_blank" rel="noopener"><b>🃏 中文 7-Card 报告</b></a></span>
+            <span><a href="workshops/benchmarks/llm-inference-engine-pd-sizer.en.html" target="_blank" rel="noopener"><b>🧭 Interactive Checkpoint &amp; KV Sizer</b></a></span>
+            <span><a href="assets/ai-storage-checkpoint-kv-offload-selection-faq-summary.svg" target="_blank" rel="noopener"><b>🖼️ Visual Summary SVG</b></a></span>
+          </div>
+        </div>
+        <a class="pub-arrow" href="workshops/benchmarks/ai-storage-checkpoint-kv-offload-selection-cards.html" target="_blank" rel="noopener" aria-label="Open Training Checkpoint & KV Offload 7-Card Deck">→</a>
+      </article>
+
+      <article class="pub" data-category="harness-infra">
+        <div>
+          <span class="pub-tag report">AI Infra · Architect FAQ</span>
+          <div class="pub-date">2026-11-08 · Round 2A/2B MoE Quant &amp; EP</div>
+        </div>
+        <div class="pub-main">
+          <h3><a href="workshops/benchmarks/moe-quantization-parallelism-selection-cards.html" target="_blank" rel="noopener">Large Model Quantization (`BF16`/`W4A16`/`FP8`/`NVFP4`) &amp; MoE Parallelism (`Pure TP` vs `DP+EP+DeepEP+EPLB`) — Dual Single-Decision FAQs</a></h3>
+          <p>Split into two single-decision 6-part Architect Selection FAQs (<code>llm-quantization-selection-faq</code> &amp; <code>moe-parallelism-selection-faq</code>) and 7-Card 4:5 benchmark report (<code>synthetic</code> analytical model + <code>anonymized_reported</code> specs, <code>independently_reproduced=false</code>): on a 64-GPU 671B/37B MoE cluster, <strong>FP8 Block-Scaled (99.6% retention) + Attention DP=8 / MoE EP=8 + DeepEP + EPLB</strong> achieves <code>92,200 tok/s</code> (<code>2.65x</code> over BF16 TP=16 at <code>34.8 ms</code> TPOT), cuts Decode P99 TPOT to <code>15.8 ms</code>, and lowers token cost to <code>$0.35 / 1M</code> (<code>-62.0%</code>); Blackwell <strong>NVFP4 (98.9% retention) + DP16/EP16</strong> reaches <code>151,200 tok/s</code> (<code>4.34x</code> vs BF16) at <code>$0.21 / 1M</code> (<code>-77.2%</code>), while <strong>EPLB</strong> flattens Zipf hot-expert skew from <code>2.45x</code> to <code>1.12x</code> (<code>60,220 -> 92,200 tok/s</code>, <code>+53.1%</code>; P99 TPOT <code>25.1 -> 15.8 ms</code>, <code>-37.1%</code>).</p>
+>>>>>>> Stashed changes
           <div class="pub-meta">
             <span><a href="workshops/benchmarks/moe-quantization-parallelism-selection-cards.html" target="_blank" rel="noopener"><b>🃏 7-Card 4:5 Visual Deck (EN)</b></a></span>
             <span><a href="workshops/benchmarks/moe-quantization-parallelism-selection-cards.html" target="_blank" rel="noopener"><b>🃏 中文 7-Card 报告</b></a></span>

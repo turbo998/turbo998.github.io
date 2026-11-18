@@ -1,4 +1,4 @@
-# Why Single-Frame I2V Never Hits Target Keyframes in Long-Take Commercials—and How Bidirectional First-Last-Frame (FLF2V) + 6D Plücker Camera Bridges Lock Continuity at 1.0000× (FAQ)
+# Why Single-Frame I2V Never Hits Target Keyframes in Long-Take Commercials—and How Bidirectional First-Last-Frame (FLF2V) + 6D Plücker Camera Bridges Lock Continuity (FAQ)
 
 > **Audience**: **Cloud & AI Solution Architects** and Creative Technologists designing brand keynote product-evolution morphs, architectural room reveals, and multi-shot uncut long-take video pipelines.
 > **Core Value**: Eliminates the "Open-Loop Endpoint Drift & Autoregressive Quality Collapse" in multi-shot AIGC video production—explaining how **Bidirectional Start-End Latent Clamping ($z_0 = E(I_{\text{start}}), z_T = E(I_{\text{end}})$ via Wan 2.2 FLF2V / Kling 2.1 / Veo 3) + 6D Plücker Ray Camera Trajectories + Daisy-Chained Keyframe Sharing** locks match-cut seam error at **`0.00 px`** and production budget at **`1.0000×`** across all 17 transition stages.

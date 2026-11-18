@@ -1,6 +1,6 @@
 # E-Commerce SKU Background Replacement & Studio Relighting Pipeline FAQ: Alpha-Matte Pixel Lock + IC-Light PBR Relighting vs Naive Unmasked Global Img2Img
 
-> **Standalone Track Positioning (Tonight Round 6 / Repo Round 228 · 238th Standalone Interactive Demo: `demos/ecommerce-pbr-relighting-inpainting-studio/`)**  
+> **Standalone Track Positioning (Interactive Architecture Workbench: `demos/ecommerce-pbr-relighting-inpainting-studio/`)**  
 > Written for **Cloud & AI Solution Architects** designing **enterprise e-commerce product photography pipelines, 10,000-SKU seasonal background replacement factories, and automated social ad asset generators**, this guide follows the six-section decision structure of `ib-vs-ethernet-roce-selection-faq.md`: explaining why e-commerce pipelines must never allow diffusion models to alter interior product pixels (preventing counterfeit/misleading-listing takedowns) nor paste raw cutouts without illumination harmonization, and how the **BiRefNet Eroded Alpha Core Lock + Depth Podium + IC-Light Rim & Contact Shadow Pipeline** locks SKU fidelity at `1.0000×`.
 
 ![E-Commerce Alpha-Lock + IC-Light PBR Relighting Pipeline Summary](./evidence/ecommerce-pbr-relighting-inpainting-studio-summary.svg)

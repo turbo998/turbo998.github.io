@@ -1,7 +1,7 @@
-# Why Image Diffusion Models Fail at Technical Architecture Slides—and How Deterministic ELK.js Orthogonal AST Compilers + Native PPTX/SVG/Draw.io Lock SA Productivity at 1.0000× (FAQ · 260th Demo Milestone!)
+# Why Image Diffusion Models Fail at Technical Architecture Slides—and How Deterministic ELK.js Orthogonal AST Compilers + Native PPTX/SVG/Draw.io Lock SA Productivity
 
 > **Audience**: **Cloud & AI Solution Architects** authoring executive pitch decks, cloud/AI reference architecture diagrams (Azure / AWS / Fabric / Kubernetes), and technical decision infographics for CTOs.
-> **Core Value** (**Round 250 · 260th Demo Historic Milestone!**): Explains why prompting image diffusion models (Midjourney / Flux / GPT-Image) to rasterize an entire technical architecture slide produces unusable bitmaps with dangling arrows, misspelled cloud services, and `0%` PowerPoint editability (`2.0000×` manual redraw waste)—and how a **Deterministic Architecture & Slide Compiler (LLM JSON AST → ELK.js Orthogonal Sugiyama Layout → Native Editable PptxGenJS `.pptx` / `.drawio` / `SVG` + Scoped Text-Free AIGC Hero Art)** locks vector editability and authoring efficiency at **`1.0000×`** across all 17 tiers.
+> **Core Value**: Explains why prompting image diffusion models (Midjourney / Flux / GPT-Image) to rasterize an entire technical architecture slide produces unusable bitmaps with dangling arrows, misspelled cloud services, and `0%` PowerPoint editability (`2.0000×` manual redraw waste)—and how a **Deterministic Architecture & Slide Compiler (LLM JSON AST → ELK.js Orthogonal Sugiyama Layout → Native Editable PptxGenJS `.pptx` / `.drawio` / `SVG` + Scoped Text-Free AIGC Hero Art)** locks vector editability and authoring efficiency at **`1.0000×`** across all 17 tiers.
 
 ![Enterprise Executive Keynote Deck & Architecture Diagram Compiler Summary](./evidence/executive-keynote-deck-infographic-svg-chart-compiler-summary.svg)
 
@@ -108,7 +108,7 @@ sequenceDiagram
 
 ---
 
-## 🧪 5. Interactive Workbench & 7-Card Report (260th Demo Historic Milestone!)
+## 🧪 5. Interactive Workbench & 7-Card Report
 
 - **Interactive Workbench**: [`demos/executive-keynote-deck-infographic-svg-chart-compiler/`](../demos/executive-keynote-deck-infographic-svg-chart-compiler/index.html)
 - **7-Card 4:5 Visual Report (EN)**: [`demos/executive-keynote-deck-infographic-svg-chart-compiler/test-report-cards.html`](../demos/executive-keynote-deck-infographic-svg-chart-compiler/test-report-cards.html)

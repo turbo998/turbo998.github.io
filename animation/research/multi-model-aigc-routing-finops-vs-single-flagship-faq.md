@@ -1,6 +1,6 @@
 # 企业级 AIGC 视觉生产管线架构与选型 FAQ：Sora 2 vs Veo 3 vs 可灵 Kling 2.1 vs 万相 Wan 2.2 vs Flux/ComfyUI 多模型分级智能路由与 FinOps 异步队列工作台
 
-> **独立专题定位（Tonight Round 2 / Repo Round 224 · 第 234 个独立可交互 Demo：`demos/multi-model-aigc-routing-finops-workbench/`）**  
+> **独立专题定位（交互式架构工作台：`demos/multi-model-aigc-routing-finops-workbench/`）**  
 > 本指南面向负责规划 **企业级 AIGC 视觉内容中台、高并发营销出图/出视频任务队列、多模型 FinOps 成本治理** 的 **Cloud & AI Solution Architect**，严格对标 `ib-vs-ethernet-roce-selection-faq.md` 的**六段式架构师决策结构**：先用通俗业务与架构语言讲透“主流视频与图像生成大模型（OpenAI Sora 2 / GPT-Image-1 vs Google Veo 3 / Imagen 4 vs Runway Gen-4 / 可灵 Kling 2.1 vs 通义万相 Wan 2.2 / Flux 自托管）怎么选、高并发异步生产管线怎么搭、如何避免单旗舰 API 导致 $2.0000\times$ 算力超支与 HTTP 429 限流雪崩”，再给出完整架构图、选型矩阵与落地核验 Checklist。
 
 ![企业级多模型分级智能路由与 FinOps 异步队列对比总结图](./evidence/multi-model-aigc-routing-finops-workbench-summary.svg)

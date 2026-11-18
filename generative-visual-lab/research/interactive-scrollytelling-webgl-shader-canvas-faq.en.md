@@ -1,4 +1,4 @@
-# Why Multi-Section 3D Product Scrollytelling Pages Crash with `WEBGL_lose_context`—and How a Single Shared WebGL2 Scissor Canvas Locks 60fps at 1.0000× (FAQ)
+# Why Multi-Section 3D Product Scrollytelling Pages Crash with `WEBGL_lose_context`—and How a Single Shared WebGL2 Scissor Canvas Locks 60fps (FAQ)
 
 > **Audience**: **Cloud & AI Solution Architects** and Principal Frontend Engineers building Apple/Linear/Stripe-style flagship product launch scrollytelling pages with 15+ interactive 3D, shader, and sequence-frame chapters.
 > **Core Value**: Eliminates the notorious `WARNING: Too many active WebGL contexts. Oldest context will be lost` crash (triggered at **8 contexts on iOS Safari** and **16 contexts on desktop Chrome**)—explaining how a **Single Fixed Full-Viewport WebGL2 Canvas (`position: fixed`) + `gl.scissor / gl.viewport` DOM Bounding-Rect Virtualization + `IntersectionObserver` Offscreen Sleep & ±2-Screen LRU Texture Disposal** locks 60fps frame budgets and VRAM efficiency at **`1.0000×`** across all 17 chapters.

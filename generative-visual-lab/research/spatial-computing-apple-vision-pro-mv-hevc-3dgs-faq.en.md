@@ -1,4 +1,4 @@
-# Why Naive 2D-to-3D Spatial Videos Cause Immediate Nausea & Edge Tears on Apple Vision Pro—and How Comfort Disparity Clamping + LDI Inpainting Lock MV-HEVC Quality at 1.0000× (FAQ)
+# Why Naive 2D-to-3D Spatial Videos Cause Immediate Nausea & Edge Tears on Apple Vision Pro—and How Comfort Disparity Clamping + LDI Inpainting Lock MV-HEVC Quality (FAQ)
 
 > **Audience**: **Cloud & AI Solution Architects** designing immersive product launches, VIP automotive/real-estate showrooms, and medical training pipelines for **Apple Vision Pro (visionOS)** and **Meta Quest 3 (WebXR)**.
 > **Core Value**: Prevents the three fatal defects of converting 2D 4K commercials or AIGC videos into spatial stereoscopic media—**Vergence-Accommodation Conflict (VAC) motion sickness, single-frame Z-depth pumping, and foreground disocclusion "rubber-sheet" stretching**. Explains how **Video-Depth-Anything 120-Frame Temporal Depth + `[-1.8%, +2.2%]` Comfort-Zone Parallax Clamping + Layered Depth Image (LDI) Occlusion Inpainting + Apple MV-HEVC / RealityKit USDZ Packaging** locks binocular comfort and mastering budget at **`1.0000×`** across all 17 stages.

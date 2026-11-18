@@ -254,7 +254,7 @@
     "subtitle": "为什么在搭建“电商 24×7 实时换景直播间、弹幕触发互动背景与线下门店 AI 魔镜大屏”时，直接调用传统 50 步扩散模型会卡成 <1fps 幻灯片且背景剧烈沸腾闪烁，企业级 <33ms（30fps）实时流式生成管线该如何设计？",
     "plain_intro": "在电商直播（TikTok Live / 淘宝/抖音品牌自播间）与线下商业展陈互动大屏场景中，观众在弹幕里打出“切换到阿尔卑斯雪山”或主播拿起不同商品时，直播间背景与光影必须在 **33.3 毫秒（30fps 实时帧率）** 内平滑响应并与主播动作实时互动！如果采用**朴素逐帧独立 50 步双倍 CFG 扩散（Naive Per-Frame 50-Step Dual-CFG Diffusion）**，每一帧视频都要串行跑 50 次 UNet 去噪 + 正负条件双倍计算 + 笨重的标准 VAE 编解码，不仅单帧延迟高达 1,500ms（画面卡成 PPT 幻灯片），而且每一帧独立的随机高斯噪声会导致背景建筑与树木像开水一样剧烈“沸腾闪烁（Temporal Boiling）”！本工作台展示的企业级 **“StreamDiffusion 跨帧对角线流水线批处理 + 4 步 LCM/ADD 一致性蒸馏 + 残差引导 R-CFG（砍掉一半负向 UNet 计算）+ TAESD 超轻量编解码 + 随机相似帧潜空间过滤（Stochastic Similarity Filter）”** 架构，将第 $k$ 帧的第 1 步去噪与第 $k-1$ 帧的第 2 步去噪打包成单个 TensorRT CUDA Graph Batch 并行吞吐，并在全部 17 个实时流阶段恒定锁死 30fps 帧延迟与时序稳定比 `1.0000×`（`0/17` 站卡顿或闪烁）！",
     "finding": "实测跨越 17 个实时直播流静态背景复用与流水线深度参数 u ∈ [0.000, 1.000]（逐帧卡顿放大比 L(u) = 1 + u ∈ [1.000, 2.000]）：StreamDiffusion + TensorRT + 相似帧缓存管线在全部 17 阶段恒定锁死 30fps 帧延迟比 T_active/T_stream = 1.0000×（0/17 卡顿），而朴素逐帧 50 步扩散在第 4 阶段超支至 1.2500×、第 8 阶段冲至 1.5000×、第 16 阶段翻倍超支至 2.0000×（污染 16/17 个阶段）。",
-    "workbench_title": "58 构件 17 阶段企业实时智能直播间 StreamDiffusion + TensorRT 工作台（第 244 个独立能力 Demo）",
+    "workbench_title": "58 构件 17 阶段企业实时智能直播间 StreamDiffusion + TensorRT 工作台",
     "scenario_quote": "如何把 1.5 秒一张的文生图扩散模型变成 30fps（<33ms）的实时直播流引擎？四大硬件级加速法宝：4 步 LCM/ADD 蒸馏 + Stream-Batch 跨帧对角线流水线 + R-CFG 单通残差引导 + TAESD 1.2ms 极速编解码！",
     "protocol_note": "顶块展示第 4 阶段（4 步 LCM/ADD 蒸馏）、第 8 阶段（TensorRT Depth 分支融合）与第 16 阶段（24×7 30fps 智能直播间）；底块对比 StreamDiffusion 恒锁 1.0000× 与逐帧 50 步推理卡顿 2.0000×。",
     "robustness_name": "17 个实时直播流阶段在 StreamDiffusion 对角线批处理与相似帧过滤下 100% 保持精确 30fps 延迟比 1.0000×",

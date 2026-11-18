@@ -1,6 +1,6 @@
 # 电商商品换背景与智能影棚打光批量生产管线 FAQ：商品 Alpha 掩码像素级锁死 + IC-Light PBR 环境光反射融合 vs 朴素无掩码全局图生图
 
-> **独立专题定位（Tonight Round 6 / Repo Round 228 · 第 238 个独立可交互 Demo：`demos/ecommerce-pbr-relighting-inpainting-studio/`）**  
+> **独立专题定位（交互式架构工作台：`demos/ecommerce-pbr-relighting-inpainting-studio/`）**  
 > 本指南面向为 **电商平台、快消美妆与 3C 品牌视觉中台、跨境营销素材工厂** 设计日均十万级商品主图/短视频自动化生成管线的 **Cloud & AI Solution Architect**，严格对标 `ib-vs-ethernet-roce-selection-faq.md` 的**六段式架构师决策结构**：先用通俗业务与图像处理语言讲清楚“为什么电商商品换背景既不能让大模型改商品本体像素（假货投诉），也不能直接硬贴白底抠图（悬浮贴纸感），企业级 **BiRefNet 亚像素掩码内缩锁死 + Depth 台面生成 + IC-Light 边缘重打光与接触阴影** 管线怎么搭”，再给出横向选型矩阵与落地核验 Checklist。
 
 ![电商商品 Alpha 掩码锁死 + IC-Light PBR 重打光管线对比总结图](./evidence/ecommerce-pbr-relighting-inpainting-studio-summary.svg)

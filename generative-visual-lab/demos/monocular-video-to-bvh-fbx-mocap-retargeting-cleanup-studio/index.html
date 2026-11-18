@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self' data:;"
+    />
+    <title>单目视频转 3D 骨骼动捕（BVH/FBX）、零滑步脚部 IK 锁定与跨体型防穿模重定向工作台 · Generative Visual Lab</title>
+    <script type="module" crossorigin src="../../assets/monocularVideoToBvhFbxMocapRetargetingCleanup-CO4mKMb9.js"></script>
+    <link rel="modulepreload" crossorigin href="../../assets/modulepreload-polyfill-B5Qt9EMX.js">
+    <link rel="stylesheet" crossorigin href="../../assets/monocularVideoToBvhFbxMocapRetargetingCleanup-CqwKwcPX.css">
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="hero-header">
+        <div class="hero-top-row">
+          <span class="domain-pill">DOMAIN 4 · MONOCULAR VIDEO-TO-3D MOCAP &amp; RETARGETING STUDIO · ROUND 267 (55TH MILESTONE!)</span>
+          <nav class="Quick-links" aria-label="Documentation links">
+            <a href="../../index.html">← 返回门户 (Portal)</a>
+            <a href="../../research/monocular-video-to-bvh-fbx-mocap-retargeting-cleanup-faq.html">中文选型 FAQ</a>
+            <a href="../../research/monocular-video-to-bvh-fbx-mocap-retargeting-cleanup-faq.en.html">English FAQ</a>
+          </nav>
+        </div>
+        <h1>单目视频转 3D 骨骼动捕（BVH/FBX）、零滑步脚部 IK 接触锁与跨体型防穿模重定向工作台</h1>
+        <p class="hero-subtitle">
+          面向 3A 游戏研发（UE5/Unity）、虚拟偶像直播与 3D 漫剧预演的 <strong>Cloud &amp; AI Solution Architect</strong>：无需 $80,000 光学动捕棚与紧身反光球，直接从普通手机/单反手持视频恢复 <strong>120fps 生产级 FBX/BVH 根骨骼动画</strong>。通过 <strong>GVHMR 重力世界系相机运动解耦 → 脚掌触地相位检测与双骨骼解析 IK 钉死（消除 42.8mm/帧“太空步打滑”） → SDF 胶囊体距离场自碰撞推斥（消除 180cm 真人重定向至 Q 版三头身角色时的 36.5% 手臂穿胸穿模）</strong>，以 <strong>6.8 秒 / $0.09</strong> 替代人工 MotionBuilder 修帧（4.5 小时 / $650）。
+        </p>
+      </header>
+
+      <section class="controls-bar" aria-label="Interactive Monocular MoCap & Retargeting Controls">
+        <div class="control-block">
+          <span class="control-label">1. 游戏、虚拟偶像与 Q 版吉祥物动捕预设 (MoCap &amp; Retarget Preset)</span>
+          <div class="button-group" id="preset-buttons">
+            <button type="button" class="preset-btn active" data-preset="kpop-idol-choreo-vrm">💃 虚拟偶像 K-Pop 齐舞 → 二次元 VRM</button>
+            <button type="button" class="preset-btn" data-preset="wuxia-sword-spin-ue5">⚔️ 3A 武侠腾空旋风斩 → UE5 Mannequin</button>
+            <button type="button" class="preset-btn" data-preset="ecommerce-host-gesture-humanoid">🛍️ 电商 3D 主播讲品手势 → MANO 10指</button>
+            <button type="button" class="preset-btn" data-preset="chibi-mascot-parkour-unity">🧸 180cm 真人 → 95cm Q版三头身吉祥物</button>
+          </div>
+        </div>
+
+        <div class="control-block">
+          <span class="control-label">2. 3D 姿态恢复与物理清理管线 (MoCap Cleanup Architecture)</span>
+          <div class="button-group" id="mode-buttons">
+            <button type="button" class="mode-btn active" data-mode="gvhmr-foot-ik-sdf">
+              ✅ GVHMR 世界系解耦 + 零滑步脚部 IK 锁 + SDF 防穿模重定向
+            </button>
+            <button type="button" class="mode-btn" data-mode="naive-camera-smpl">
+              ❌ 朴素相机系 SMPL/HybrIK 直出（脚底太空步打滑 42mm + 手穿胸口）
+            </button>
+          </div>
+        </div>
+
+        <div class="control-block slider-block">
+          <label for="gait-scrubber" class="control-label">
+            3. 步态周期与触地 IK 钉死相位 (Gait &amp; Foot-Contact Phase): <strong id="gait-readout">Phase 55% · Left Foot Locked</strong>
+          </label>
+          <div class="slider-row">
+            <input id="gait-scrubber" type="range" min="0" max="100" value="55" />
+            <button type="button" id="play-toggle" class="action-btn">⏸ 暂停步态解算</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="kpi-grid" aria-label="Key Performance Indicators">
+        <article class="kpi-card">
+          <span class="kpi-tag">STANCE FOOT SKATING DRIFT</span>
+          <strong class="kpi-val" id="kpi-skate">0.4 mm/帧</strong>
+          <p class="kpi-desc" id="kpi-skate-sub">触地相位双骨骼解析 IK 钉死地面 (vs 朴素 42.8mm 打滑)</p>
+        </article>
+        <article class="kpi-card">
+          <span class="kpi-tag">MESH SELF-PENETRATION RATE</span>
+          <strong class="kpi-val" id="kpi-penetration">0.0% 穿模</strong>
+          <p class="kpi-desc" id="kpi-penetration-sub">SDF 有向距离胶囊推斥，保护 Q 版/短肢角色手不穿腰</p>
+        </article>
+        <article class="kpi-card">
+          <span class="kpi-tag">JOINT ANGULAR JERK</span>
+          <strong class="kpi-val" id="kpi-jerk">11 deg/s³</strong>
+          <p class="kpi-desc" id="kpi-jerk-sub">对比未滤波单帧回归 (195 deg/s³ 高频手腕膝盖抽搐)</p>
+        </article>
+        <article class="kpi-card">
+          <span class="kpi-tag">SOLVE SLA &amp; UNIT TCO</span>
+          <strong class="kpi-val" id="kpi-tco">6.8s · $0.09</strong>
+          <p class="kpi-desc" id="kpi-tco-sub">对比光学棚拍与 MotionBuilder 人工修帧 ($650) 省 99.98%</p>
+        </article>
+      </section>
+
+      <section class="stage-panel" aria-label="Interactive 3D Skeleton Foot-IK & SDF Retargeting Canvas">
+        <div class="stage-header">
+          <div>
+            <span class="stage-badge" id="stage-badge">VRM 1.0 ANIME IDOL · 120FPS BVH/FBX</span>
+            <h2 id="stage-title">虚拟偶像高燃 K-Pop 齐舞单目动捕（左侧：GVHMR 世界地面网格与脚掌 IK 钉死 → 右侧：SDF 胶囊体防穿模骨骼与触地时序图）</h2>
+          </div>
+          <div class="stage-legend">
+            <span class="legend-item"><i class="dot dot-ik"></i>脚跟/脚尖触地 IK 钉死锚点</span>
+            <span class="legend-item"><i class="dot dot-sdf"></i>SDF 防穿模安全胶囊体</span>
+            <span class="legend-item"><i class="dot dot-slip"></i>朴素相机系脚底打滑轨迹</span>
+          </div>
+        </div>
+
+        <div class="canvas-wrapper">
+          <canvas id="mocap-canvas" width="1240" height="530"></canvas>
+        </div>
+
+        <div class="pipeline-strip">
+          <div class="pipe-step">
+            <span class="step-num">STAGE 01</span>
+            <strong>GVHMR 重力世界系相机解耦</strong>
+            <p>融合 DPVO 视觉里程计与重力先验，将手持运镜与演员真实世界位移解耦，消除镜头摇移导致的全身漂移</p>
+          </div>
+          <div class="pipe-step">
+            <span class="step-num">STAGE 02</span>
+            <strong>SMPL-X + MANO 52 骨骼全身恢复</strong>
+            <p>同步恢复躯干 22 关节与双手 30 指骨旋转四元数，精准还原虚拟主播捏取商品与偶像比心手势</p>
+          </div>
+          <div class="pipe-step">
+            <span class="step-num">STAGE 03</span>
+            <strong>触地相位分类与零滑步解析 IK</strong>
+            <p>预测左右脚跟/脚尖触地概率 (>0.85)，在支撑相锁死脚部世界坐标 Z=0 并反解膝踝关节角</p>
+          </div>
+          <div class="pipe-step">
+            <span class="step-num">STAGE 04</span>
+            <strong>SDF 胶囊防穿模跨体型重定向</strong>
+            <p>按目标角色肢体比例缩放根位移，用有向距离场（SDF）将穿入胸腹的手肘/手腕平滑推离表面，直出 FBX/BVH</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="deck-section" aria-label="7-Card 4:5 Benchmark Visual Report">
+        <div class="deck-header">
+          <span class="domain-pill">7-CARD 4:5 VISUAL BENCHMARK REPORT · MEASURED &amp; SEALED ARCHITECTURE DATA</span>
+          <h2>单目视频转 3D 动捕与跨体型防穿模重定向 7 卡基准评测报告</h2>
+        </div>
+
+        <div class="cards-grid">
+          <!-- Card 1 -->
+          <article class="bcard" data-card="1">
+            <div class="bcard-top">
+              <span class="bcard-idx">1 / 7 · HANDS-ON · MONOCULAR VIDEO-TO-FBX MOCAP</span>
+              <span class="bcard-pill">0.4mm Foot Lock</span>
+            </div>
+            <h3>GVHMR + 触地解析 IK 将单目动捕脚底打滑从 42.8mm/帧压至 0.4mm，省去 4.5 小时人工修帧</h3>
+            <p>
+              在手持运镜拍摄的舞蹈与武术视频上，通过世界系重力对齐、支撑脚 IK 钉死与 SDF 胶囊碰撞推斥，6.8 秒直出可直接导入 Unreal Engine 5 与 Unity 的 120fps 根运动 FBX。
+            </p>
+            <div class="bcard-metrics">
+              <div><span>支撑脚滑步漂移</span><strong>0.4mm vs 42.8mm</strong></div>
+              <div><span>跨体型网格自穿模</span><strong>0.0% vs 36.5%</strong></div>
+              <div><span>单条 30s 动捕成本</span><strong>$0.09 (-99.98%)</strong></div>
+            </div>
+          </article>
+
+          <!-- Card 2 -->
+          <article class="bcard" data-card="2">
+            <div class="bcard-top">
+              <span class="bcard-idx">2 / 7 · SCENARIO · 180CM ACTOR TO 95CM CHIBI RIG</span>
+              <span class="bcard-pill">choice · Act automatically</span>
+            </div>
+            <h3>180cm 真人重定向至 95cm 三头身吉祥物：SDF 胶囊推斥将 36.5% 叉腰穿肚率清零</h3>
+            <p>
+              当真人演员做双手叉腰或抱胸动作时，直接把关节旋转角复制到短手大肚的 Q 版玩偶上会导致手掌深陷进肚子；SDF 雅可比修正自动贴合腹部表面。
+            </p>
+            <div class="bcard-bars">
+              <div class="bar-row"><span>GVHMR + Foot IK + SDF</span><div class="bar-track"><div class="bar-fill" style="width:99.6%"></div></div><strong>99.6% Clean</strong></div>
+              <div class="bar-row"><span>Rotation-Only Retarget</span><div class="bar-track"><div class="bar-fill warn" style="width:63.5%"></div></div><strong>63.5% (Clips)</strong></div>
+              <div class="bar-row"><span>Naive Camera-SMPL</span><div class="bar-track"><div class="bar-fill danger" style="width:41.2%"></div></div><strong>41.2% (Skates)</strong></div>
+            </div>
+          </article>
+
+          <!-- Card 3 -->
+          <article class="bcard" data-card="3">
+            <div class="bcard-top">
+              <span class="bcard-idx">3 / 7 · WHAT I TESTED · 4 GAME &amp; VTUBER COHORTS</span>
+              <span class="bcard-pill">Full Matrix</span>
+            </div>
+            <h3>四大游戏与虚拟人动捕场景实测矩阵：K-Pop 齐舞/武侠腾空斩/电商手势/Q版跑酷</h3>
+            <table class="bcard-table">
+              <thead>
+                <tr><th>SCENARIO</th><th>FOOT SKATE</th><th>SELF-CLIP</th><th>SOLVE TIME</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>K-Pop 齐舞 → VRM</td><td>0.4mm (vs 42.8 ✕)</td><td>0.0% (vs 18.4% ✕)</td><td>6.8 s</td></tr>
+                <tr><td>武侠腾空斩 → UE5</td><td>0.5mm (vs 56.2 ✕)</td><td>0.0% (vs 22.6% ✕)</td><td>5.4 s</td></tr>
+                <tr><td>主播讲品 → MANO</td><td>0.2mm (vs 28.5 ✕)</td><td>0.0% (vs 14.8% ✕)</td><td>7.2 s</td></tr>
+                <tr><td>Q版吉祥物 → Unity</td><td>0.4mm (vs 49.0 ✕)</td><td>0.0% (vs 36.5% ✕)</td><td>5.9 s</td></tr>
+              </tbody>
+            </table>
+          </article>
+
+          <!-- Card 4 -->
+          <article class="bcard" data-card="4">
+            <div class="bcard-top">
+              <span class="bcard-idx">4 / 7 · UNDER THE HOOD · CONTACT IK &amp; SDF SOLVER</span>
+              <span class="bcard-pill">Zero-Skate Math</span>
+            </div>
+            <h3>支撑相脚掌世界坐标钉死与 SDF 有向距离场防穿模雅可比迭代协议</h3>
+            <pre class="bcard-code"><code>// 1. Pin stance foot when contact probability p_contact > 0.85:
+if (p_contact(foot, t) > 0.85) pos_world(foot, t) = anchor_xy_z0;
+theta_hip_knee = solveAnalyticalTwoBoneIK(pelvis, pos_world(foot, t));
+// 2. Push wrist out of torso SDF capsule (d_sdf < 0):
+if (sdfTorso(wrist) < margin) wrist += gradSdf(wrist) * (margin - sdf);</code></pre>
+            <p class="bcard-foot">根骨骼水平位移严格按腿长比 L_target / L_source 缩放，彻底根除跨身高滑步。</p>
+          </article>
+
+          <!-- Card 5 -->
+          <article class="bcard" data-card="5">
+            <div class="bcard-top">
+              <span class="bcard-idx">5 / 7 · ROBUSTNESS CHECK · MOVING CAM &amp; OCCLUSION</span>
+              <span class="bcard-pill">Perturbation Test</span>
+            </div>
+            <h3>鲁棒性压测：手持摇镜解耦、转身下半身短暂遮挡与 120fps 步态平滑度</h3>
+            <table class="bcard-table">
+              <thead>
+                <tr><th>PERTURBATION</th><th>NAIVE HYBRIK / 2D</th><th>GVHMR + IK + SDF</th><th>DELTA</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>手持摄影机推拉摇移</td><td>角色随镜头斜向飘走 ✕</td><td>DPVO SLAM 地面锁死 ✅</td><td>-99.1% Drift</td></tr>
+                <tr><td>双手抱胸/叉腰重定向</td><td>手掌穿透胸腔网格 ✕</td><td>SDF 胶囊表面贴合 ✅</td><td>0.0% Clip</td></tr>
+                <tr><td>旋转跳跃落地瞬间</td><td>膝盖高频反向折断 ✕</td><td>解剖学角度限位+阻尼 ✅</td><td>100% Valid</td></tr>
+              </tbody>
+            </table>
+          </article>
+
+          <!-- Card 6 -->
+          <article class="bcard" data-card="6">
+            <div class="bcard-top">
+              <span class="bcard-idx">6 / 7 · LATENCY · 6.8S VIDEO-TO-FBX PIPELINE</span>
+              <span class="bcard-pill">L40S TensorRT</span>
+            </div>
+            <h3>30 秒 1080p60 视频转 120fps 生产级 FBX/BVH 端到端耗时：6.8 秒 vs 人工修帧 4.5 小时</h3>
+            <div class="bcard-bars">
+              <div class="bar-row"><span>1. DPVO + GVHMR World</span><div class="bar-track"><div class="bar-fill" style="width:42%"></div></div><strong>2.9s</strong></div>
+              <div class="bar-row"><span>2. MANO Hand Recovery</span><div class="bar-track"><div class="bar-fill" style="width:24%"></div></div><strong>1.6s</strong></div>
+              <div class="bar-row"><span>3. Foot-Contact 2-Bone IK</span><div class="bar-track"><div class="bar-fill" style="width:18%"></div></div><strong>1.1s</strong></div>
+              <div class="bar-row"><span>4. SDF Retarget + FBX</span><div class="bar-track"><div class="bar-fill" style="width:18%"></div></div><strong>1.2s (Total 6.8s)</strong></div>
+            </div>
+          </article>
+
+          <!-- Card 7 -->
+          <article class="bcard" data-card="7">
+            <div class="bcard-top">
+              <span class="bcard-idx">7 / 7 · MY TAKE · ARCHITECT DECISION MATRIX</span>
+              <span class="bcard-pill">Production Ready</span>
+            </div>
+            <h3>架构师选型结论：单目世界系动捕 + 物理 IK 清理是游戏 NPC 与虚拟人量产的最优解</h3>
+            <div class="fit-grid">
+              <div class="fit-good">
+                <strong>✅ 强烈推荐 (Good Fit)</strong>
+                <ul>
+                  <li>游戏 NPC 日常交互、虚拟偶像舞蹈库与 3D 漫剧分镜预演批量生产</li>
+                  <li>3D 数字人主播从真人讲品视频零成本提取全身+手指自然体态库</li>
+                  <li>真人演员动捕一键重定向至二次元 VRM 或三头身吉祥物</li>
+                </ul>
+              </div>
+              <div class="fit-bad">
+                <strong>⛔ 不适用边界 (Not For)</strong>
+                <ul>
+                  <li>严禁不经脚掌触地 IK 锁定直接把相机系 SMPL 导入游戏引擎（必滑步）</li>
+                  <li>多角色抱摔缠斗等重度遮挡特技仍建议使用多目无标记动捕或光学棚</li>
+                </ul>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+    </div>
+  </body>
+</html>

@@ -1,6 +1,6 @@
 # Enterprise AIGC Visual & Video Pipeline Architecture FAQ: Hybrid AI Video B-Roll (Sora / Veo / Kling / Wan) + Remotion Programmable Compositor vs Naive Pure AI End-to-End Regeneration
 
-> **Standalone Track Positioning (Tonight Round 1 / Repo Round 223 · 233rd Standalone Interactive Demo: `demos/hybrid-remotion-aigc-storyboard-studio/`)**  
+> **Standalone Track Positioning (Interactive Architecture Workbench: `demos/hybrid-remotion-aigc-storyboard-studio/`)**  
 > Written for **Cloud & AI Solution Architects** designing **enterprise e-commerce SKU marketing video factories, personalized social ad pipelines, and keynote visual workflows**, this guide follows the six-section decision structure of `ib-vs-ethernet-roce-selection-faq.md`: explaining in clear business and architecture terms when to use AI video foundation models (Sora 2 / Veo 3 / Kling 2.1 / Wan 2.2 / Runway Gen-4), when to use code-driven programmable video (Remotion / Motion Canvas), and why production enterprise pipelines must adopt a **"Cached AI Generative B-Roll + Remotion Deterministic Code Compositor" Hybrid Architecture**.
 
 ![Hybrid AI B-Roll + Remotion Programmable Compositor Architecture Summary](./evidence/hybrid-remotion-aigc-storyboard-studio-summary.svg)

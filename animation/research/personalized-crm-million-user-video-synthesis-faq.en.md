@@ -1,4 +1,4 @@
-# Why Rendering 10,000,000 Personalized CRM Videos Full-Frame Costs $800k—and How 95% Closed-GOP AI Byte-Muxing + 5% Dynamic Slots Lock FinOps at 1.0000× (FAQ)
+# Why Rendering 10,000,000 Personalized CRM Videos Full-Frame Costs $800k—and How 95% Closed-GOP AI Byte-Muxing + 5% Dynamic Slots Lock FinOps (FAQ)
 
 > **Audience**: **Cloud & AI Solution Architects** designing 1M-to-10M-member "Year-in-Review / Wrapped" personalized video campaigns for airlines, retail banks, telecoms, gaming publishers, and super-apps.
 > **Core Value**: Eliminates the million-dollar compute trap of re-encoding all 1,800 frames of a 60-second video for every user just to personalize 3 seconds of user KPIs—explaining how **95% Pre-Baked Closed-GOP AI Persona Segments + 5% (90-Frame) Dynamic Variable Slot NVENC Micro-Rendering (`<180ms`) + `<12ms` Zero-Transcode `fMP4/HLS` Byte-Stream Concatenation + Just-in-Time (JIT) Open-Triggered Synthesis** locks FinOps budget and P99 streaming SLA at **`1.0000×`** across all 17 campaign scale tiers.

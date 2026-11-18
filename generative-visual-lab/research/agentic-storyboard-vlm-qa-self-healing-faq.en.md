@@ -1,4 +1,4 @@
-# Why Unmanned AIGC Factories Ruin Approved Shots When Fixing a 6th Finger—and How Agentic VLM Critics + SAM-2 Localized Self-Healing Lock Yield at 1.0000× (FAQ)
+# Why Unmanned AIGC Factories Ruin Approved Shots When Fixing a 6th Finger—and How Agentic VLM Critics + SAM-2 Localized Self-Healing Lock Yield (FAQ)
 
 > **Audience**: **Cloud & AI Solution Architects** designing unmanned overnight AIGC visual production lines, e-commerce creative factories, and automated short-drama pipelines with **Agentic Visual QA Gates and Localized Self-Healing Inpainting**.
 > **Core Value**: Eliminates the "Stochastic Reroll Roulette" where a 94%-perfect generation is discarded and re-rolled from scratch with a new random seed just to fix a 6th finger or an extra coffee mug handle—explaining how a **Multimodal VLM Critic Agent (GPT-5.4 Vision / Qwen-2.5-VL) + GroundingDINO/SAM-2 `<6%` Defect Mask + Pose/Depth-Guided Localized Inpainting** locks first-time-right yield and compute budget at **`1.0000×`** across all 17 QA gates.

@@ -1,4 +1,4 @@
-# Why Enterprise Brand LoRAs Suffer From Background Concept Bleeding & Pose Overfitting—and How DINOv2 Deduplication + Trigger Disentanglement + Masked Loss Lock 1.0000× Generalization (FAQ)
+# Why Enterprise Brand LoRAs Suffer From Background Concept Bleeding & Pose Overfitting—and How DINOv2 Deduplication + Trigger Disentanglement + Masked Loss Lock Generalization (FAQ)
 
 > **Audience**: **Cloud & AI Solution Architects** and ML Platform Engineers building standardized Flux.1-dev, SDXL, and Wan 2.2 LoRA training pipelines for corporate 3D mascots, flagship product SKUs, and brand illustration styles.
 > **Core Value**: Solves the three classic failure modes of enterprise custom LoRAs—**studio tables or promo badges bleeding into every generated scene, characters refusing to change outfits, and frozen front-facing poses**—by combining **DINOv2 Near-Duplicate Pruning (`sim > 0.92`) + Inverse Trigger-Attribute Caption Disentanglement + BiRefNet Alpha-Masked Diffusion Loss + Dual-Axis DINO/CLIP Pareto Checkpoint Selection** to lock R&D efficiency at **`1.0000×`** across all 17 stages.

@@ -1,6 +1,6 @@
 # Enterprise 24×7 Live-Commerce & Real-Time Interactive Visual Pipeline FAQ: StreamDiffusion Batch Pipelining + TensorRT + Latent Cache vs Naive 50-Step Per-Frame Diffusion
 
-> **Standalone Track Positioning (Tonight Round 12 / Repo Round 234 · 244th Standalone Interactive Demo: `demos/live-commerce-realtime-stream-diffusion-workbench/`)**  
+> **Standalone Track Positioning (Interactive Architecture Workbench: `demos/live-commerce-realtime-stream-diffusion-workbench/`)**  
 > Written for **Cloud & AI Solution Architects** designing **24×7 e-commerce livestreaming studios (TikTok Live / Taobao Live), interactive flagship store magic-mirror walls, and real-time VTuber broadcast stages**, this guide follows the six-section decision structure of `ib-vs-ethernet-roce-selection-faq.md`: explaining why offline 50-step diffusion stalls at `<1fps` and boils background textures on live video feeds, and how a **StreamDiffusion Diagonal Batch Pipeline + 4-Step LCM/ADD Distillation + Residual CFG (R-CFG) + TAESD + Stochastic Similarity Filter Architecture** locks sub-33ms 30fps streaming at `1.0000×`.
 
 ![Enterprise Live-Commerce StreamDiffusion & TensorRT Pipeline Summary](./evidence/live-commerce-realtime-stream-diffusion-workbench-summary.svg)

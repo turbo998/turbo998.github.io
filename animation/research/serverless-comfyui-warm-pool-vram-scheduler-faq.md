@@ -1,7 +1,7 @@
-# 企业自建 ComfyUI 算力集群为什么一上高并发就陷入“28GB 显存反复卸载乒乓抖动”与 120s 冷启动超时：DAG 底模亲和路由 + 零拷贝 mmap 温池调度指南（FAQ · 第 250 个里程碑 Demo）
+# 企业自建 ComfyUI 算力集群为什么一上高并发就陷入“28GB 显存反复卸载乒乓抖动”与 120s 冷启动超时：DAG 底模亲和路由 + 零拷贝 mmap 温池调度指南（架构师选型 FAQ）
 
 > **阅读对象**：为企业设计私有化 AIGC 视觉生产中台、Serverless ComfyUI / Diffusers Kubernetes 算力集群（H100 / L40S / A100）与多租户高并发推理底座的 **Cloud & AI Solution Architect（云与 AI 解决方案架构师）**。
-> **核心价值**（**Round 240 · 第 250 个独立能力历史里程碑 Demo！**）：彻底破解企业将 ComfyUI 从单机工作站搬上 Kubernetes 集群时的头号性能黑洞——**“无状态轮询导致 24GB/28GB 底模在显存里反复卸载加载（VRAM Eviction Ping-Pong），且容器扩容拉取模型耗时 115 秒”**。用通俗业务与架构语言讲透 **“Layer 1：工作流 DAG 底模哈希一致性亲和路由 + Layer 2：本地 NVMe RAID-0 / `/dev/shm` 零拷贝 `mmap` Safetensors 与 CRIU `<1.8s` 快照唤醒 + Layer 3：24GB 底模常驻 HBM + `<180ms` 租户 LoRA 指针级热插拔”** 架构，将全 17 个高并发档位的 GPU 有效利用率与 SLA 预算比恒定锁死在 **`1.0000×`**。
+> **核心价值**：彻底破解企业将 ComfyUI 从单机工作站搬上 Kubernetes 集群时的头号性能黑洞——**“无状态轮询导致 24GB/28GB 底模在显存里反复卸载加载（VRAM Eviction Ping-Pong），且容器扩容拉取模型耗时 115 秒”**。用通俗业务与架构语言讲透 **“Layer 1：工作流 DAG 底模哈希一致性亲和路由 + Layer 2：本地 NVMe RAID-0 / `/dev/shm` 零拷贝 `mmap` Safetensors 与 CRIU `<1.8s` 快照唤醒 + Layer 3：24GB 底模常驻 HBM + `<180ms` 租户 LoRA 指针级热插拔”** 架构，将全 17 个高并发档位的 GPU 有效利用率与 SLA 预算比恒定锁死在 **`1.0000×`**。
 
 ![企业自建 Serverless ComfyUI 温池与显存亲和调度架构图解](./evidence/serverless-comfyui-warm-pool-vram-scheduler-workbench-summary.svg)
 

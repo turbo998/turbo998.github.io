@@ -1,6 +1,6 @@
 # 企业时尚服饰电商虚拟试衣（Virtual Try-On）管线选型 FAQ：DensePose 24 分区人体 UV 服装经纬形变 (IDM-VTON / CatVTON) + 面部/手部锁死 vs 朴素通用文生图重绘
 
-> **独立专题定位（Tonight Round 11 / Repo Round 233 · 第 243 个独立可交互 Demo：`demos/virtual-tryon-garment-warp-mask-studio/`）**  
+> **独立专题定位（交互式架构工作台：`demos/virtual-tryon-garment-warp-mask-studio/`）**  
 > 本指南面向为 **时尚服装电商、快时尚跨境独立站（SHEIN / Zara 类万款上新管线）、品牌数字 Lookbook 与走秀短视频工厂** 设计自动化虚拟试衣（VTON）管线的 **Cloud & AI Solution Architect**，严格对标 `ib-vs-ethernet-roce-selection-faq.md` 的**六段式架构师决策结构**：先用通俗业务与计算机视觉语言讲清楚“为什么柔性服装虚拟试衣不能套用刚性标品换背景方案、为什么通用文生图会把格纹衬衫和胸口刺绣 Logo 画错、企业级 **SCHP 去衣掩码 + DensePose 三维人体 UV + IDM-VTON/CatVTON 空间注意力 + 手部前景回贴** 管线怎么搭”，再给出横向选型矩阵与落地核验 Checklist。
 
 ![企业时尚服饰电商虚拟试衣 DensePose UV 形变与身份锁死对比总结图](./evidence/virtual-tryon-garment-warp-mask-studio-summary.svg)
@@ -23,7 +23,7 @@
 
 ## 二、🎯 业务方与架构师灵魂拷问 Q&A（Selection & Architecture Deep-Dive）
 
-### Q1：服装品牌电商总监问“我们已经在用 Round 228 的商品换背景管线拍化妆品瓶子了，为什么同一套管线不能直接用来做衣服上身？反过来，为什么用普通 Inpainting 给模特换衣服总是被退货？”
+### Q1：服装品牌电商总监问“我们已经在用 的商品换背景管线拍化妆品瓶子了，为什么同一套管线不能直接用来做衣服上身？反过来，为什么用普通 Inpainting 给模特换衣服总是被退货？”
 
 因为 **“刚性标品（Rigid SKU）”与“非刚性柔性服饰（Deformable Apparel）”在物理几何上完全相反**：
 1. **刚性标品（美妆瓶/手机）是“商品像素 100% 不动，让背景去迁就商品”**；
@@ -45,7 +45,7 @@
 ```mermaid
 flowchart TD
     A["时尚电商需要生成服装展示主图与走秀短视频"] --> B{"输入资产形态是什么？"}
-    B -- "真人模特已穿好新衣的影棚白底实拍图\n(仅需更换街拍背景与阳光光影)" --> C["刚性前景锁死 + IC-Light 换背景管线\n(复用 Round 228 方案)"]
+    B -- "真人模特已穿好新衣的影棚白底实拍图\n(仅需更换街拍背景与阳光光影)" --> C["刚性前景锁死 + IC-Light 换背景管线\n(复用 方案)"]
     B -- "仅有衣服平铺图/挂拍图 (Flat-Lay Garment)\n需批量穿到多国模特身上" --> D{"采用何种虚拟试衣架构？"}
     D -- "❌ 朴素通用文生图 / CLIP 单图重绘" --> E["❌ 严重退货事故：格纹条数错乱 + 胸标乱码\n交叉手臂手指畸变 + 第 16 档返工超支 2.0000×"]
     D -- "✅ DensePose UV + IDM-VTON/CatVTON + 手部回贴" --> F["✅ 企业级时尚虚拟试衣标准架构\n平铺图空间注意力锁死花纹 + DensePose 驱动真实褶皱\n全 17 档恒锁 1.0000×，手部与面部 0 畸变"]

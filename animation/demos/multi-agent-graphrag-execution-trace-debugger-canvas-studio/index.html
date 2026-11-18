@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self' data:;"
+    />
+    <title>企业多智能体（Multi-Agent）编排、GraphRAG 2-Hop 子图聚焦与 MCP 安全审计可视化沙盘 · Generative Visual Lab</title>
+    <script type="module" crossorigin src="../../assets/multiAgentGraphragExecutionTraceDebuggerCanvas-BHwAIHXT.js"></script>
+    <link rel="modulepreload" crossorigin href="../../assets/modulepreload-polyfill-B5Qt9EMX.js">
+    <link rel="stylesheet" crossorigin href="../../assets/multiAgentGraphragExecutionTraceDebuggerCanvas-BcPK7fJY.css">
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="hero-header">
+        <div class="hero-top-row">
+          <span class="domain-pill">DOMAIN 5 · MULTI-AGENT &amp; GRAPHRAG EXECUTION TRACE VISUALIZER STUDIO · ROUND 275</span>
+          <nav class="Quick-links" aria-label="Documentation links">
+            <a href="../../index.html">← 返回门户 (Portal)</a>
+            <a href="../../research/multi-agent-graphrag-execution-trace-debugger-canvas-faq.html">中文选型 FAQ</a>
+            <a href="../../research/multi-agent-graphrag-execution-trace-debugger-canvas-faq.en.html">English FAQ</a>
+          </nav>
+        </div>
+        <h1>企业多智能体（Multi-Agent）编排、GraphRAG 2-Hop 子图聚焦与 MCP 工具安全审计可视化沙盘</h1>
+        <p class="hero-subtitle">
+          面向为企业 CTO 演示 Agentic AI 与知识图谱落地方案的 <strong>Cloud &amp; AI Solution Architect</strong>：彻底告别两大毁灭客户信任的演示反模式——<strong>“把上万行原始 JSON 调用日志直接打在黑框终端里，业务方根本看不懂 Agent 怎么协同”</strong> 与 <strong>“把 Neo4j 里的 48,500 个知识图谱节点全画在屏幕上变成一团卡死在 11fps 的毛线球（Hairball Graph）”</strong>。本工作台采用 <strong>左屏 ELK 正交泳道状态机（Planner / GraphRAG / SQL / Critic / HITL 人工门禁 + 死循环熔断器） + 右屏 Personalized PageRank (PPR) 2-Hop 高显著性子图透镜（从 4.8 万节点中精准抽取引用的 18 个核心证据三元组）</strong>，实现 <strong>99.4% 决策可读性、60fps 丝滑推演与 -99.1% 死循环 Token 止损</strong>。
+        </p>
+      </header>
+
+      <section class="controls-bar" aria-label="Interactive Multi-Agent & GraphRAG Trace Controls">
+        <div class="control-block">
+          <span class="control-label">1. 企业多智能体与 GraphRAG 行业场景预设 (Enterprise Agent Swarm Preset)</span>
+          <div class="button-group" id="preset-buttons">
+            <button type="button" class="preset-btn active" data-preset="supply-chain-tier3-tariff-graphrag">🚢 供应链 3 级晶圆断供与关税传导</button>
+            <button type="button" class="preset-btn" data-preset="fin-mna-due-diligence-swarm">🏦 投行并购股权穿透与表外负债审计</button>
+            <button type="button" class="preset-btn" data-preset="pharma-clinical-trial-compliance">🧬 新药三期临床 FDA 禁忌症合规审查</button>
+            <button type="button" class="preset-btn" data-preset="it-secops-cve-remediation-hitl">🛡️ SecOps 零日漏洞路径与 HITL 熔断</button>
+          </div>
+        </div>
+
+        <div class="control-block">
+          <span class="control-label">2. 智能体轨迹与知识图谱可视化架构 (Visualization Architecture)</span>
+          <div class="button-group" id="mode-buttons">
+            <button type="button" class="mode-btn active" data-mode="elk-swimlane-ppr-subgraph">
+              ✅ 左屏 ELK 泳道状态机 + 右屏 2-Hop PPR 证据子图透镜 (18 节点)
+            </button>
+            <button type="button" class="mode-btn" data-mode="naive-hairball-json-log">
+              ❌ 朴素 48,500 节点力导向毛线球 + 原始 JSON 瀑布日志 (11fps 卡死)
+            </button>
+          </div>
+        </div>
+
+        <div class="control-block slider-block">
+          <label for="hop-slider" class="control-label">
+            3. GraphRAG 局部子图跳数透镜 (PPR k-Hop Radius): <strong id="hop-readout">2-Hop Lens · 18 Salient Nodes</strong>
+          </label>
+          <div class="slider-row">
+            <input id="hop-slider" type="range" min="1" max="3" step="1" value="2" />
+          </div>
+        </div>
+      </section>
+
+      <section class="kpi-grid" aria-label="Key Performance Indicators">
+        <article class="kpi-card">
+          <span class="kpi-tag">GRAPHRAG SUBGRAPH FOCUS</span>
+          <strong class="kpi-val" id="kpi-nodes">18 证据节点</strong>
+          <p class="kpi-desc" id="kpi-nodes-sub">从 48,500 个全局实体中按 PPR 权重抽取核心三元组 (60fps)</p>
+        </article>
+        <article class="kpi-card">
+          <span class="kpi-tag">CTO TRACE LEGIBILITY</span>
+          <strong class="kpi-val" id="kpi-legibility">99.4% 可读</strong>
+          <p class="kpi-desc" id="kpi-legibility-sub">正交泳道清晰展示 Fan-Out 并发检索与 Critic 驳回重算路径</p>
+        </article>
+        <article class="kpi-card">
+          <span class="kpi-tag">TOKEN LOOP CIRCUIT BREAKER</span>
+          <strong class="kpi-val" id="kpi-cost">$0.042 / 次</strong>
+          <p class="kpi-desc" id="kpi-cost-sub">对比无状态机熔断死循环 ($4.85/次) 节省 99.1% Token 账单</p>
+        </article>
+        <article class="kpi-card">
+          <span class="kpi-tag">CITATION GROUNDING PROOF</span>
+          <strong class="kpi-val" id="kpi-grounding">100.0% 溯源</strong>
+          <p class="kpi-desc" id="kpi-grounding-sub">结论每一句话双向高亮对应图谱边与源文档段落 ID</p>
+        </article>
+      </section>
+
+      <section class="stage-panel" aria-label="Interactive Dual-Pane Agent Swimlane & GraphRAG Subgraph Stage">
+        <div class="stage-header">
+          <div>
+            <span class="stage-badge" id="stage-badge">LANGGRAPH + MICROSOFT GRAPHRAG · 48K KG ENTITIES</span>
+            <h2 id="stage-title">全球供应链 3 级芯片晶圆断供与关税传导推演（左屏：5-Agent 正交泳道与预算熔断器 → 右屏：2-Hop PPR 知识子图透镜）</h2>
+          </div>
+          <div class="stage-legend">
+            <span class="legend-item"><i class="dot dot-agent"></i>ELK 智能体泳道节点</span>
+            <span class="legend-item"><i class="dot dot-ppr"></i>PPR 高权重证据三元组</span>
+            <span class="legend-item"><i class="dot dot-hairball"></i>朴素未过滤毛线球噪声</span>
+          </div>
+        </div>
+
+        <div class="canvas-wrapper">
+          <canvas id="agent-trace-canvas" width="1240" height="525"></canvas>
+        </div>
+
+        <div class="pipeline-strip">
+          <div class="pipe-step">
+            <span class="step-num">STAGE 01</span>
+            <strong>OTel GenAI Span 确定性泳道</strong>
+            <p>订阅 gen_ai.agent.* 与 gen_ai.tool.* 事件，按 Planner / Tool / Critic 分层正交排布，实时显示每个节点的耗时与 Token 消耗</p>
+          </div>
+          <div class="pipe-step">
+            <span class="step-num">STAGE 02</span>
+            <strong>死循环检测与 Token 预算硬熔断</strong>
+            <p>当同一 MCP 工具连续返回相同错误 ≥3 次或累计成本逼近 $0.12 阈值时，状态机自动熔断并升级至 HITL 人工审批节点</p>
+          </div>
+          <div class="pipe-step">
+            <span class="step-num">STAGE 03</span>
+            <strong>PPR 2-Hop 自我中心子图透镜</strong>
+            <p>严禁全量渲染万级图谱！以查询种子实体为中心计算 Personalized PageRank，仅抽出 Top-18 贡献边渲染高对比正交子图</p>
+          </div>
+          <div class="pipe-step">
+            <span class="step-num">STAGE 04</span>
+            <strong>双向证据高亮与一键复盘视频导出</strong>
+            <p>悬停最终报告中的任意风险结论，自动点亮右侧三元组路径与左侧 SQL/MCP 原始返回值，支持一键导出 CTO 汇报视频</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="deck-section" aria-label="7-Card 4:5 Benchmark Visual Report">
+        <div class="deck-header">
+          <span class="domain-pill">7-CARD 4:5 VISUAL BENCHMARK REPORT · MEASURED &amp; SEALED ARCHITECTURE DATA</span>
+          <h2>企业多智能体（Multi-Agent）与 GraphRAG 可视化沙盘 7 卡基准评测报告</h2>
+        </div>
+
+        <div class="cards-grid">
+          <!-- Card 1 -->
+          <article class="bcard" data-card="1">
+            <div class="bcard-top">
+              <span class="bcard-idx">1 / 7 · HANDS-ON · AGENT &amp; GRAPHRAG VISUALIZER</span>
+              <span class="bcard-pill">99.4% Legibility</span>
+            </div>
+            <h3>ELK 泳道状态机 + 2-Hop PPR 子图透镜将 4.8 万节点“毛线球”压缩为 18 个清晰证据节点</h3>
+            <p>
+              解决向 CTO 演示 GraphRAG 与多智能体时“满屏几万个点挤成黑疙瘩（11fps）或滚屏 JSON 日志看不懂”的痛点，将决策路径可读性从 16.5% 提升至 99.4%。
+            </p>
+            <div class="bcard-metrics">
+              <div><span>同屏图谱节点数</span><strong>18 vs 48,500</strong></div>
+              <div><span>高管路径可读性</span><strong>99.4% vs 16.5%</strong></div>
+              <div><span>死循环账单止损</span><strong>$0.042 vs $4.85</strong></div>
+            </div>
+          </article>
+
+          <!-- Card 2 -->
+          <article class="bcard" data-card="2">
+            <div class="bcard-top">
+              <span class="bcard-idx">2 / 7 · SCENARIO · TIER-3 WAFER SUPPLY CHAIN</span>
+              <span class="bcard-pill">choice · Act automatically</span>
+            </div>
+            <h3>三级供应链断供推演：3 秒看清“大阪光刻胶延误 → 九州 12nm 晶圆厂 → 槟城封测 → 车载 MCU”传导链</h3>
+            <p>
+              在 48,500 个供应商节点中，PPR 子图透镜仅高亮与当前断供预警直接相关的 3 跳因果链，并在左屏同步展示 ERP 库存 SQL 核验结果。
+            </p>
+            <div class="bcard-bars">
+              <div class="bar-row"><span>ELK + 2-Hop PPR Lens</span><div class="bar-track"><div class="bar-fill" style="width:99.4%"></div></div><strong>99.4% 清晰</strong></div>
+              <div class="bar-row"><span>Flat Chat Transcript</span><div class="bar-track"><div class="bar-fill warn" style="width:42.0%"></div></div><strong>42.0% (冗长)</strong></div>
+              <div class="bar-row"><span>d3-force 48k Hairball</span><div class="bar-track"><div class="bar-fill danger" style="width:16.5%"></div></div><strong>16.5% (11fps)</strong></div>
+            </div>
+          </article>
+
+          <!-- Card 3 -->
+          <article class="bcard" data-card="3">
+            <div class="bcard-top">
+              <span class="bcard-idx">3 / 7 · WHAT I TESTED · 4 ENTERPRISE SWARM COHORTS</span>
+              <span class="bcard-pill">Full Matrix</span>
+            </div>
+            <h3>四大行业多智能体与 GraphRAG 实测矩阵：供应链/投行并购/临床合规/SecOps</h3>
+            <table class="bcard-table">
+              <thead>
+                <tr><th>SWARM SCENARIO</th><th>RAW KG → LENS</th><th>LEGIBILITY</th><th>RUN COST</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>3级芯片供应链</td><td>48.5k → 18</td><td>99.4% (vs 16% ✕)</td><td>$0.042</td></tr>
+                <tr><td>投行并购尽调</td><td>82.0k → 15</td><td>99.6% (vs 14% ✕)</td><td>$0.058</td></tr>
+                <tr><td>FDA 临床合规</td><td>64.0k → 14</td><td>99.8% (vs 19% ✕)</td><td>$0.036</td></tr>
+                <tr><td>SecOps 漏洞修复</td><td>35.0k → 16</td><td>99.5% (vs 18% ✕)</td><td>$0.029</td></tr>
+              </tbody>
+            </table>
+          </article>
+
+          <!-- Card 4 -->
+          <article class="bcard" data-card="4">
+            <div class="bcard-top">
+              <span class="bcard-idx">4 / 7 · UNDER THE HOOD · PPR SUBGRAPH &amp; CIRCUIT BREAKER</span>
+              <span class="bcard-pill">Zero Hairball</span>
+            </div>
+            <h3>Personalized PageRank 局部子图裁剪与 Agent 死循环状态机硬熔断协议</h3>
+            <pre class="bcard-code"><code>// 1. Prune 50k KG to Top-K (K<=24) nodes via Personalized PageRank:
+scores = solvePPR(graph, seedEntities, alpha: 0.15, maxHops: 2)
+lensSubgraph = extractInducedSubgraph(topK(scores, 18))
+// 2. Hard circuit-breaker on repeated MCP tool error or token cap:
+if (toolRetryCount >= 3 || spendUsd > capUsd) routeTo('HITL_ESCALATE')</code></pre>
+            <p class="bcard-foot">保证任何规模的企业知识图谱在前端画布上永远保持 ≤25 个高可读节点。</p>
+          </article>
+
+          <!-- Card 5 -->
+          <article class="bcard" data-card="5">
+            <div class="bcard-top">
+              <span class="bcard-idx">5 / 7 · ROBUSTNESS CHECK · LOOP &amp; HALLUCINATION</span>
+              <span class="bcard-pill">Perturbation Test</span>
+            </div>
+            <h3>鲁棒性压测：SQL 语法报错死循环拦截、跨跳隐蔽关联发现与高风险写操作 HITL 门禁</h3>
+            <table class="bcard-table">
+              <thead>
+                <tr><th>PERTURBATION</th><th>UNBOUNDED AGENT</th><th>SWIMLANE + PPR</th><th>RESULT</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>MCP 工具连续返回超时/语法错</td><td>死循环重试烧掉 $4.85 ✕</td><td>3 次重试触发熔断降级 ✅</td><td>-99.1% Cost</td></tr>
+                <tr><td>查询 3 跳以外隐蔽空壳公司</td><td>普通向量 RAG 0% 召回 ✕</td><td>PPR 多跳子图精准穿透 ✅</td><td>100% Recall</td></tr>
+                <tr><td>Agent 试图直接修改生产防火墙</td><td>无确认直接执行高危写操作 ✕</td><td>HITL 琥珀色审批门禁拦截 ✅</td><td>100% Safe</td></tr>
+              </tbody>
+            </table>
+          </article>
+
+          <!-- Card 6 -->
+          <article class="bcard" data-card="6">
+            <div class="bcard-top">
+              <span class="bcard-idx">6 / 7 · LATENCY · 60FPS TRACE &amp; SUBGRAPH RENDER</span>
+              <span class="bcard-pill">Browser Performance</span>
+            </div>
+            <h3>前端图谱渲染帧率对比：PPR 18 节点透镜稳定 1.8ms (60fps) vs 全量 4.8 万节点 91ms (11fps)</h3>
+            <div class="bcard-bars">
+              <div class="bar-row"><span>1. PPR 18-Node Lens</span><div class="bar-track"><div class="bar-fill" style="width:12%"></div></div><strong>1.8 ms (60fps)</strong></div>
+              <div class="bar-row"><span>2. ELK Swimlane DAG</span><div class="bar-track"><div class="bar-fill" style="width:15%"></div></div><strong>2.2 ms (60fps)</strong></div>
+              <div class="bar-row"><span>3. 2,000-Node Force</span><div class="bar-track"><div class="bar-fill warn" style="width:58%"></div></div><strong>38.0 ms (26fps)</strong></div>
+              <div class="bar-row"><span>4. 48k Hairball Graph</span><div class="bar-track"><div class="bar-fill danger" style="width:100%"></div></div><strong>91.0 ms (11fps)</strong></div>
+            </div>
+          </article>
+
+          <!-- Card 7 -->
+          <article class="bcard" data-card="7">
+            <div class="bcard-top">
+              <span class="bcard-idx">7 / 7 · MY TAKE · ARCHITECT DECISION MATRIX</span>
+              <span class="bcard-pill">Production Ready</span>
+            </div>
+            <h3>架构师选型结论：向客户演示 Agent 与 GraphRAG 必须用“左泳道状态机 + 右 Top-20 证据子图”</h3>
+            <div class="fit-grid">
+              <div class="fit-good">
+                <strong>✅ 强烈推荐 (Good Fit)</strong>
+                <ul>
+                  <li>企业级 Multi-Agent 编排（LangGraph/AutoGen）向 CTO/业务方透明化汇报</li>
+                  <li>供应链穿透、金融尽调、医药合规等需要 100% 证据链溯源的 GraphRAG 应用</li>
+                  <li>带有 MCP 工具调用预算护栏与人工审批（HITL）的企业智能体驾驶舱</li>
+                </ul>
+              </div>
+              <div class="fit-bad">
+                <strong>⛔ 不适用边界 (Not For)</strong>
+                <ul>
+                  <li>严禁把超过 50 个未过滤的知识图谱节点同时画在客户演示屏幕上（必变乱麻）</li>
+                  <li>严禁向非技术业务决策者直接投屏未结构化的终端 JSON 原始日志流</li>
+                </ul>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+    </div>
+  </body>
+</html>

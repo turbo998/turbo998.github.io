@@ -1,6 +1,6 @@
 # Enterprise Fashion Virtual Try-On (VTON) Pipeline FAQ: DensePose 3D Body UV Garment Warp (IDM-VTON / CatVTON) + Face/Hand Lock vs Naive Generic Text-to-Image Redrawing
 
-> **Standalone Track Positioning (Tonight Round 11 / Repo Round 233 · 243rd Standalone Interactive Demo: `demos/virtual-tryon-garment-warp-mask-studio/`)**  
+> **Standalone Track Positioning (Interactive Architecture Workbench: `demos/virtual-tryon-garment-warp-mask-studio/`)**  
 > Written for **Cloud & AI Solution Architects** designing **fashion e-commerce 5,000-SKU seasonal lookbook factories, multi-size/multi-ethnicity virtual model try-on pipelines, and catwalk video generators**, this guide follows the six-section decision structure of `ib-vs-ethernet-roce-selection-faq.md`: explaining why deformable apparel try-on requires a fundamentally different architecture from rigid packaged-product relighting, why generic text-to-image inpainting scrambles plaid/stripe counts and chest logos, and how a **DensePose 24-Part Body UV + IDM-VTON/CatVTON Spatial Attention + Foreground Hand/Face Restore Pipeline** locks garment fidelity at `1.0000×`.
 
 ![Enterprise Fashion Virtual Try-On: DensePose UV Warp & Identity Lock Summary](./evidence/virtual-tryon-garment-warp-mask-studio-summary.svg)
@@ -23,7 +23,7 @@
 
 ## 2. 🎯 Stakeholder & Architect Q&A (Selection & Architecture Deep-Dive)
 
-### Q1: Fashion e-commerce directors ask: "Why can't we use our rigid product background replacement pipeline (Round 228) for apparel—and why does standard inpainting cause high customer return rates on patterned shirts?"
+### Q1: Fashion e-commerce directors ask: "Why can't we use our rigid product background replacement pipeline for apparel—and why does standard inpainting cause high customer return rates on patterned shirts?"
 
 Because **rigid packaged goods and deformable garments are geometric opposites**:
 1. **Rigid Packaged SKUs (Cosmetics / Electronics)**: Freeze 100% of product pixels and synthesize the surrounding background;
@@ -44,7 +44,7 @@ Via **SCHP Foreground Hand & Hair Alpha Restoration**:
 ```mermaid
 flowchart TD
     A["Fashion Brand Needs Model Lookbook Photos / Catwalk Videos"] --> B{"Source Product Asset Type?"}
-    B -- "Studio Photo of Model Already Wearing Garment\n(Only needs outdoor background replacement)" --> C["Rigid Alpha-Lock + IC-Light Pipeline\n(Reuse Round 228 Architecture)"]
+    B -- "Studio Photo of Model Already Wearing Garment\n(Only needs outdoor background replacement)" --> C["Rigid Alpha-Lock + IC-Light Pipeline\n(Reuse Architecture)"]
     B -- "Flat-Lay / Ghost-Mannequin Garment Photo\n(Needs Virtual Try-On across diverse models)" --> D{"Which VTON Architecture?"}
     D -- "❌ Naive Generic T2I / CLIP-Only Inpainting" --> E["❌ Severe Return Rate: Scrambled Plaid & Mutated Hands\nLoses stripe count & chest logo typography\n2.0000× retake cost overrun at Tier 16 (16/17 violated)"]
     D -- "✅ DensePose 3D UV + IDM-VTON/CatVTON + Hand Lock" --> F["✅ Enterprise Fashion VTON Gold Standard\nSpatial garment attention + DensePose UV drape + hand restore\n1.0000× lock across all 17 pose tiers, zero finger defects"]

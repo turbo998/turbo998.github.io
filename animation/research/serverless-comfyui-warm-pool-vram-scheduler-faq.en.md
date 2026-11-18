@@ -1,7 +1,7 @@
-# Why Self-Hosted ComfyUI Clusters Suffer 28GB VRAM Eviction Thrashing & 120s Cold Starts—and How DAG Affinity Routing + Zero-Copy mmap Warm Pools Lock GPU Efficiency at 1.0000× (FAQ · 250th Demo Milestone!)
+# Why Self-Hosted ComfyUI Clusters Suffer 28GB VRAM Eviction Thrashing & 120s Cold Starts—and How DAG Affinity Routing + Zero-Copy mmap Warm Pools Lock GPU Efficiency
 
 > **Audience**: **Cloud & AI Solution Architects** and Infrastructure Leads designing enterprise self-hosted ComfyUI / Diffusers Kubernetes clusters (H100 / L40S / A100) and multi-tenant serverless AIGC platforms.
-> **Core Value** (**Round 240 · 250th Demo Historic Milestone!**): Solves the #1 infrastructure failure when scaling ComfyUI from a single workstation to a multi-tenant Kubernetes cluster—**VRAM Eviction Ping-Pong and 115-second container cold starts**. Explains how **Layer 1: DAG Base-Checkpoint Consistent-Hash Affinity Routing + Layer 2: Host NVMe/shm Zero-Copy `mmap` Safetensors & CRIU `<1.8s` Snapshot Restore + Layer 3: Pinned 24GB Base DiT + `<180ms` Dual-Buffered LoRA Hot-Swapping** locks cluster GPU efficiency and SLA budget at **`1.0000×`** across all 17 concurrency tiers.
+> **Core Value**: Solves the #1 infrastructure failure when scaling ComfyUI from a single workstation to a multi-tenant Kubernetes cluster—**VRAM Eviction Ping-Pong and 115-second container cold starts**. Explains how **Layer 1: DAG Base-Checkpoint Consistent-Hash Affinity Routing + Layer 2: Host NVMe/shm Zero-Copy `mmap` Safetensors & CRIU `<1.8s` Snapshot Restore + Layer 3: Pinned 24GB Base DiT + `<180ms` Dual-Buffered LoRA Hot-Swapping** locks cluster GPU efficiency and SLA budget at **`1.0000×`** across all 17 concurrency tiers.
 
 ![Enterprise Serverless ComfyUI Warm-Pool & VRAM Affinity Scheduler Summary](./evidence/serverless-comfyui-warm-pool-vram-scheduler-workbench-summary.svg)
 
@@ -119,7 +119,7 @@ sequenceDiagram
 
 ---
 
-## 🧪 5. Interactive Workbench & 7-Card Report (250th Demo Milestone!)
+## 🧪 5. Interactive Workbench & 7-Card Report
 
 - **Interactive Workbench**: [`demos/serverless-comfyui-warm-pool-vram-scheduler-workbench/`](../demos/serverless-comfyui-warm-pool-vram-scheduler-workbench/index.html)
 - **7-Card 4:5 Visual Report (EN)**: [`demos/serverless-comfyui-warm-pool-vram-scheduler-workbench/test-report-cards.html`](../demos/serverless-comfyui-warm-pool-vram-scheduler-workbench/test-report-cards.html)

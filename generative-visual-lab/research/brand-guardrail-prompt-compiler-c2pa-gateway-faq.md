@@ -1,6 +1,6 @@
-# 企业级 AIGC 提示词 AST 编译器、品牌 VI 色板护栏与 C2PA 版权合规网关 FAQ（第 240 个 Demo 历史里程碑！）
+# 企业级 AIGC 提示词 AST 编译器、品牌 VI 色板护栏与 C2PA 版权合规网关 FAQ
 
-> **独立专题定位（Tonight Round 8 / Repo Round 230 · 第 240 个独立可交互历史里程碑 Demo：`demos/brand-guardrail-prompt-compiler-c2pa-gateway/`）**  
+> **独立专题定位（交互式架构工作台：`demos/brand-guardrail-prompt-compiler-c2pa-gateway/`）**  
 > 本指南面向为 **跨国消费品（FMCG）、金融机构、车企与零售集团** 设计企业级 AIGC 视觉治理网关（服务内部数百名市场人员与外部广告代理商 Agencies）的 **Cloud & AI Solution Architect**，严格对标 `ib-vs-ethernet-roce-selection-faq.md` 的**六段式架构师决策结构**：先用通俗业务与法务工程语言讲清楚“为什么企业开放 AIGC 绝不能用裸 Prompt 直通车、如何搭建 **前置提示词 AST 编译器 + 中置品牌 VI 色板/LUT 锁死（$\Delta E_{00} \le 1.5$）+ 后置 CLIP 商标侵权拦截与 C2PA v2.1 不可篡改审计存证** 三道防线”，再给出完整架构图与落地核验 Checklist。
 
 ![企业级品牌 VI 护栏、提示词 AST 编译器与 C2PA 版权合规网关对比总结图](./evidence/brand-guardrail-prompt-compiler-c2pa-gateway-summary.svg)

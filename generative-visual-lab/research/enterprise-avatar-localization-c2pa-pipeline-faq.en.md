@@ -1,6 +1,6 @@
 # Enterprise Multilingual Digital Avatar Localization & C2PA Provenance Pipeline FAQ: Decoupled Viseme ROI + Vector Slide Track vs Naive Full-Frame Video Redubbing
 
-> **Standalone Track Positioning (Tonight Round 4 / Repo Round 226 · 236th Standalone Interactive Demo: `demos/enterprise-avatar-localization-c2pa-pipeline-studio/`)**  
+> **Standalone Track Positioning (Interactive Architecture Workbench: `demos/enterprise-avatar-localization-c2pa-pipeline-studio/`)**  
 > Written for **Cloud & AI Solution Architects** designing **global L&D training video pipelines, multilingual customer onboarding tutorials, executive town-hall digital avatars, and C2PA cryptographic provenance workflows**, this guide follows the six-section decision structure of `ib-vs-ethernet-roce-selection-faq.md`: explaining how to architect a decoupled avatar localization pipeline, when to choose SaaS platforms (HeyGen / Synthesia) vs self-hosted neural lip-sync (MuseTalk / LivePortrait / Wan-Avatar) + Remotion vector slide tracks, and how to enforce biometric consent and C2PA v2.1 anti-deepfake provenance.
 
 ![Enterprise Multilingual Avatar Lip-Sync, Vector Slide Track & C2PA Pipeline Summary](./evidence/enterprise-avatar-localization-c2pa-pipeline-studio-summary.svg)
