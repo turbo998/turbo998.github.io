@@ -6238,6 +6238,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r504File),'utf8');
       assert.ok(txt.includes('2,460.00')&&txt.includes('4,050.00')&&txt.includes('6,510.00')&&txt.includes('80.00')&&txt.includes('280.00')&&txt.includes('360.00')&&txt.includes('6,150.00')&&txt.includes('94.47%')&&txt.includes('not_measured'),r504File+': contains exact 11-18 R24 R504 tracely+openqodex+helixfoundry+gitai closed-form parameters');
     }
+    // 2026-11-18 Night Round 25 (R505 Milestone: hanzohanzhe/Grandet + helloHub1212/dsh-windows-mcp + thesysdev/open-intelligent-ui + flohoeller/affectui) verification
+    const r505PathA=2540.00+39.0*100.00;
+    assert.equal(r505PathA.toFixed(2),'6440.00','11-18 R25 R505 Path A total');
+    const r505PathC=80.00+2.7*100.00;
+    assert.equal(r505PathC.toFixed(2),'350.00','11-18 R25 R505 Path C total');
+    assert.equal((r505PathA-r505PathC).toFixed(2),'6090.00','11-18 R25 R505 savings vs Path A');
+    assert.equal(((r505PathA-r505PathC)/r505PathA*100).toFixed(2),'94.57','11-18 R25 R505 pct savings vs Path A');
+    for(const r505File of ['workshops/github-trending-radar/docs/grandet-dsh-windows-mcp-open-intelligent-ui-affectui-api-price-arbitrage-carrier-bundle-openui-lang-single-tsx-agent-ui-selection-faq.md','workshops/github-trending-radar/docs/grandet-dsh-windows-mcp-open-intelligent-ui-affectui-api-price-arbitrage-carrier-bundle-openui-lang-single-tsx-agent-ui-selection-faq.en.md','assets/github-ai-radar-2026-11-18-r25-r505-grandet-dshwinmcp-openui-affectui.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-18-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r505File),'utf8');
+      assert.ok(txt.includes('2,540.00')&&txt.includes('3,900.00')&&txt.includes('6,440.00')&&txt.includes('80.00')&&txt.includes('270.00')&&txt.includes('350.00')&&txt.includes('6,090.00')&&txt.includes('94.57%')&&txt.includes('not_measured'),r505File+': contains exact 11-18 R25 R505 grandet+dshwinmcp+openui+affectui closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
