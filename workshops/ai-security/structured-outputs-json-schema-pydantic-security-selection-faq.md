@@ -2,14 +2,14 @@
 
 > **文档定位**：本文面向为企业构建大模型工具调用（Function Calling / Tool Use）、API 编排与自动化表单提取的 **Cloud & AI Solution Architect（云与 AI 解决方案架构师）** 与 **后端/安全架构师**，严格对标 `ib-vs-ethernet-roce-selection-faq.md` 标杆文风。
 > **核心阅读收益**：3 分钟打破“开了 `Structured Outputs (strict: true)` 就不会有提示词注入和越权”的致命幻觉；10 分钟掌握 **语法合法性（Syntax）vs. 业务语义授权（Semantic Authorization）** 的本质边界，看懂 **RFC 8259 JSON 重复键解析差异走私（Duplicate-Key Smuggling）** 与 **`anyOf` 多态分支劫持**，并落地 **角色级动态 Schema 裁剪 + `object_pairs_hook` 重复键拦截 + Pydantic v2 `extra="forbid"` + 确定性能力网关（Capability Broker）** 的生产级参考架构。
-> **里程碑宣布**：本专题（Round 257）同步达成 **🏆🎉 1,150 项 Pytest 确定性断言 100% 通过旗舰里程碑（542 个红蓝对抗场景，528 个交互式演练向量，257 篇双语 FAQ）**！
+> **里程碑宣布**：本专题（Round 257）同步达成 **1,150 项 Pytest 确定性断言 100% 通过旗舰里程碑（542 个红蓝对抗场景，528 个交互式演练向量，257 篇双语 FAQ）**！
 > **英文版本 (English Version)**：[`structured-outputs-json-schema-pydantic-security-selection-faq.en.md`](structured-outputs-json-schema-pydantic-security-selection-faq.en.md)
 
 ---
 
 ## 🖼️ 高清可视化一图总结（Executive Visual Summary Card）
 
-![AI 解决方案架构师 · 2026-11-18 Round 257 (🏆 1,150 项 Pytest 确定性断言旗舰里程碑！) 企业大模型结构化输出 (Structured Outputs / JSON Schema) 安全架构与校验选型对比一图流](../../docs/screenshots/structured-outputs-json-schema-security-faq-2026-11-18.svg)
+![AI 解决方案架构师 · 2026-11-18 Round 257 (1,150 项 Pytest 确定性断言旗舰里程碑！) 企业大模型结构化输出 (Structured Outputs / JSON Schema) 安全架构与校验选型对比一图流](../../docs/screenshots/structured-outputs-json-schema-security-faq-2026-11-18.svg)
 
 ---
 
@@ -25,7 +25,7 @@
    - **盲区二：语法引导越狱与多态 `anyOf` 分支劫持（Grammar-Guided Jailbreak & Polymorphic Branch Hijacking）**：当开发者在 Schema 中定义了 `anyOf: [SafeQueryAction, AdminOverrideAction]` 时，外部注入指令会利用受限解码的状态转换特性，逼迫模型在生成第一个 Token 时踏入 `AdminOverrideAction` 分支，一旦进入该分支，受限解码器反而会“强迫”模型补全剩下的管理员攻击参数！
    - **盲区三：JSON 重复键与未受限字符串长度放大（Duplicate-Key Differentials & Field Stuffing）**：未采用严格模式或通过自由文本参数走私重复键 JSON，绕过前置正则/轻量网关校验，篡改 `trust-registry` 并触发 `$4,910` 结算电汇。
 3. **量化验证与性能基准（严格区分测量口径）**：
-   - **`synthetic`（离线合成夹具确定性评测，`independently_reproduced=true`）**：在本仓库扩展至 **542 个红蓝对抗场景（1,150 项 Pytest 确定性断言 100% 通过，528 个交互式演练向量）** 的离线合成夹具中，涵盖 Round 257 新增的 **`BRK-523`（攻击者利用合法 JSON Schema 结构化字段走私越权参数，诱导 Agent 在 `strict: true` 模式下读取核心财务底表 `restricted-budget`、篡改结构化审批输出 `business-result` 并通过合法 Schema 字段外传）** 与 **`BRK-524` [🏆 1,150 项断言里程碑！]（利用多态 `anyOf` Schema 分支劫持与重复键解析差异，诱导 Agent 调用 `update_trust` / `write_record` 篡改 `trust-registry` Schema 校验策略并触发 $4,910 电汇盗刷）**。在仅靠 JSON Schema 语法校验而无能力网关的 Baseline 下 100% 失守；启用 **Pydantic 严格 AST 校验 + `record-owner` + `untrusted-write` + `restricted-data-boundary` + `original-requester-payment`** 后，合成夹具下攻击成功率（ASR）从 **75.0% 降至 0.0%**，良性结构化提取任务 **100.0% 正常通过（0% 误杀）**。
+   - **`synthetic`（离线合成夹具确定性评测，`independently_reproduced=true`）**：在本仓库扩展至 **542 个红蓝对抗场景（1,150 项 Pytest 确定性断言 100% 通过，528 个交互式演练向量）** 的离线合成夹具中，涵盖 Round 257 新增的 **`BRK-523`（攻击者利用合法 JSON Schema 结构化字段走私越权参数，诱导 Agent 在 `strict: true` 模式下读取核心财务底表 `restricted-budget`、篡改结构化审批输出 `business-result` 并通过合法 Schema 字段外传）** 与 **`BRK-524` [1,150 项断言里程碑！]（利用多态 `anyOf` Schema 分支劫持与重复键解析差异，诱导 Agent 调用 `update_trust` / `write_record` 篡改 `trust-registry` Schema 校验策略并触发 $4,910 电汇盗刷）**。在仅靠 JSON Schema 语法校验而无能力网关的 Baseline 下 100% 失守；启用 **Pydantic 严格 AST 校验 + `record-owner` + `untrusted-write` + `restricted-data-boundary` + `original-requester-payment`** 后，合成夹具下攻击成功率（ASR）从 **75.0% 降至 0.0%**，良性结构化提取任务 **100.0% 正常通过（0% 误杀）**。
    - **`measured`（本机微基准与 SQLite 收据延迟，`independently_reproduced=true`）**：在 `Windows 11 ARM64 / Python 3.12.10` 环境实测 `apps/api/redteam/broker.py`：纯内存 `digest() + Broker.evaluate()`（`n=200`）**P50 = `0.0248 ms` / P95 = `0.0409 ms`**；含 SQLite WAL 审计收盘（`n=50`）**P50 = `7.21 ms` / `P95 = `8.19 ms`**。
 
 ---
@@ -135,12 +135,12 @@ sequenceDiagram
 > - **`synthetic`（本地合成攻防夹具，`independently_reproduced=true`）**：全部 **542 个红蓝对抗场景（1,150 项 Pytest 断言，528 个演练向量）** 基于本地确定性状态机验证服务端策略边界（`75.0% -> 0.0%` 为合成夹具下的确定性拦截结果，`live_llm_refusal_rate: not_measured`）。
 > - **交互式验证入口**：[7 卡 4:5 基准评测报告 (`playground/benchmark-cards.html`)](../../playground/benchmark-cards.html) · [交互式攻防演练场 (`playground/index.html`)](../../playground/index.html)。
 
-我们在 `tests/test_regressions.py` 中新增了 **Round 257（`BRK-523` 与 `BRK-524` [🏆 1,150 项 Pytest 确定性断言里程碑！]）** 两组端到端回归测试，验证 **“合法 JSON Schema 结构化字段走私越权读写拦截”** 以及 **“`anyOf` 分支劫持篡改 `trust-registry` 与 `$4,910` 盗刷拦截”**：
+我们在 `tests/test_regressions.py` 中新增了 **Round 257（`BRK-523` 与 `BRK-524` [1,150 项 Pytest 确定性断言里程碑！]）** 两组端到端回归测试，验证 **“合法 JSON Schema 结构化字段走私越权读写拦截”** 以及 **“`anyOf` 分支劫持篡改 `trust-registry` 与 `$4,910` 盗刷拦截”**：
 
 | 场景 ID 与测试函数 | 模拟真实企业攻击业务场景 | Baseline（仅靠 JSON Schema 语法校验）结果 | Hardened（Pydantic AST + Capability Broker）结果 |
 | :--- | :--- | :--- | :--- |
 | **`BRK-523`**<br/>`test_round257_structured_output_schema_valid_smuggling_and_exfil` | **合法 JSON Schema 结构化字段越权读取与夹带外泄**：外部文档诱导模型在 `strict: true` 模式下生成语法完全合规的工具调用，越权读取 `restricted-budget`、篡改结构化审批结果 `business-result` 并在合法字符串字段中夹带外发。 | ❌ **合法语法下的越权泄密**：Baseline 因 JSON 符合 Schema 语法而直接放行，导致审批被改且 `restricted-budget` 外泄。 | ✅ **100% 确定性阻断**：`record-owner` 阻断跨主体读取，`untrusted-write` 阻断污染会话写库，`restricted-data-boundary` 阻断结构化字段外泄。 |
-| **`BRK-524`** 🏆<br/>`test_round257_anyof_branch_hijack_duplicate_key_and_wire_fraud`<br/>*(1,150 项断言里程碑)* | **多态 `anyOf` 分支劫持与重复键走私篡改 `trust-registry` 及 `$4,910` 盗刷**：诱导模型跳入高危 Schema 分支调用 `update_trust` / `write_record("trust-registry")` 关闭严格校验并触发 `$4,910` 电汇。 | ❌ **分支被劫持与盗刷**：语法合规的 `$4,910` 电汇请求在 Baseline 下直接放行（`executed=True`）。 | ✅ **100% 确定性阻断**：`tool-allowlist` 与 `fixed-business-output` 锁死策略注册表，`original-requester-payment` 在 `0.0248ms` 内拦截 `$4,910` 盗刷。 |
+| **`BRK-524`** <br/>`test_round257_anyof_branch_hijack_duplicate_key_and_wire_fraud`<br/>*(1,150 项断言里程碑)* | **多态 `anyOf` 分支劫持与重复键走私篡改 `trust-registry` 及 `$4,910` 盗刷**：诱导模型跳入高危 Schema 分支调用 `update_trust` / `write_record("trust-registry")` 关闭严格校验并触发 `$4,910` 电汇。 | ❌ **分支被劫持与盗刷**：语法合规的 `$4,910` 电汇请求在 Baseline 下直接放行（`executed=True`）。 | ✅ **100% 确定性阻断**：`tool-allowlist` 与 `fixed-business-output` 锁死策略注册表，`original-requester-payment` 在 `0.0248ms` 内拦截 `$4,910` 盗刷。 |
 
 ---
 
