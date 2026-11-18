@@ -6370,6 +6370,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r516File),'utf8');
       assert.ok(txt.includes('2,480.00')&&txt.includes('4,000.00')&&txt.includes('6,480.00')&&txt.includes('75.00')&&txt.includes('270.00')&&txt.includes('345.00')&&txt.includes('6,135.00')&&txt.includes('94.68%')&&txt.includes('not_measured'),r516File+': contains exact 11-18 R36 R516 reelmimic+papermorph+motionmaxxing+screenwriting closed-form parameters');
     }
+    // 2026-11-18 Night Round 37 (R517: microsoft/SkillOpt + xerj-org/xerj + browser-use/browser-harness + lidge-jun/opencodex) verification
+    const r517PathA=2760.00+42.0*100.00;
+    assert.equal(r517PathA.toFixed(2),'6960.00','11-18 R37 R517 Path A total');
+    const r517PathC=85.00+2.8*100.00;
+    assert.equal(r517PathC.toFixed(2),'365.00','11-18 R37 R517 Path C total');
+    assert.equal((r517PathA-r517PathC).toFixed(2),'6595.00','11-18 R37 R517 savings vs Path A');
+    assert.equal(((r517PathA-r517PathC)/r517PathA*100).toFixed(2),'94.76','11-18 R37 R517 pct savings vs Path A');
+    for(const r517File of ['workshops/github-trending-radar/docs/skillopt-xerj-browser-harness-opencodex-heldout-skill-sleep-trainer-rust-bm25-knn-search-self-writing-browser-helpers-tri-protocol-gateway-selection-faq.md','workshops/github-trending-radar/docs/skillopt-xerj-browser-harness-opencodex-heldout-skill-sleep-trainer-rust-bm25-knn-search-self-writing-browser-helpers-tri-protocol-gateway-selection-faq.en.md','assets/github-ai-radar-2026-11-18-r37-skillopt-xerj-browserharness-opencodex.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-18-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r517File),'utf8');
+      assert.ok(txt.includes('2,760.00')&&txt.includes('4,200.00')&&txt.includes('6,960.00')&&txt.includes('85.00')&&txt.includes('280.00')&&txt.includes('365.00')&&txt.includes('6,595.00')&&txt.includes('94.76%')&&txt.includes('not_measured'),r517File+': contains exact 11-18 R37 R517 skillopt+xerj+browserharness+opencodex closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
