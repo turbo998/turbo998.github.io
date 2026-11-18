@@ -6414,6 +6414,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r520File),'utf8');
       assert.ok(txt.includes('2,840.00')&&txt.includes('4,300.00')&&txt.includes('7,140.00')&&txt.includes('85.00')&&txt.includes('280.00')&&txt.includes('365.00')&&txt.includes('6,775.00')&&txt.includes('94.89%')&&txt.includes('not_measured'),r520File+': contains exact 11-18 R40 R520 rea+deepseekharness+ponytail5+opendesign closed-form parameters');
     }
+    // 2026-11-18 Night Round 41 (R521: tt-a1i/archify + cathrynlavery/diagram-design + ayghri/i-have-adhd + ifixai-ai/iFixAi) verification
+    const r521PathA=2660.00+41.0*100.00;
+    assert.equal(r521PathA.toFixed(2),'6760.00','11-18 R41 R521 Path A total');
+    const r521PathC=80.00+2.7*100.00;
+    assert.equal(r521PathC.toFixed(2),'350.00','11-18 R41 R521 Path C total');
+    assert.equal((r521PathA-r521PathC).toFixed(2),'6410.00','11-18 R41 R521 savings vs Path A');
+    assert.equal(((r521PathA-r521PathC)/r521PathA*100).toFixed(2),'94.82','11-18 R41 R521 pct savings vs Path A');
+    for(const r521File of ['workshops/github-trending-radar/docs/archify-diagram-design-i-have-adhd-ifixai-interactive-source-diagrams-50type-editorial-svg-10rule-action-first-independent-agent-audit-selection-faq.md','workshops/github-trending-radar/docs/archify-diagram-design-i-have-adhd-ifixai-interactive-source-diagrams-50type-editorial-svg-10rule-action-first-independent-agent-audit-selection-faq.en.md','assets/github-ai-radar-2026-11-18-r41-archify-diagramdesign-ihaveadhd-ifixai.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-18-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r521File),'utf8');
+      assert.ok(txt.includes('2,660.00')&&txt.includes('4,100.00')&&txt.includes('6,760.00')&&txt.includes('80.00')&&txt.includes('270.00')&&txt.includes('350.00')&&txt.includes('6,410.00')&&txt.includes('94.82%')&&txt.includes('not_measured'),r521File+': contains exact 11-18 R41 R521 archify+diagramdesign+ihaveadhd+ifixai closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
