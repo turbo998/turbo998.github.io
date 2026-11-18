@@ -6181,6 +6181,19 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r499File),'utf8');
       assert.ok(txt.includes('2,080.00')&&txt.includes('3,650.00')&&txt.includes('5,730.00')&&txt.includes('65.00')&&txt.includes('250.00')&&txt.includes('315.00')&&txt.includes('5,415.00')&&txt.includes('94.50%')&&txt.includes('not_measured'),r499File+': contains exact 11-18 R19 clauds+claudelink+abridge+remotemcp closed-form parameters');
     }
+    // 2026-11-18 Night Round 20 (R500 Milestone: peacefulj/SSCI-SCI-skills + intincrab/blueprint + xaviigna/openfactura + sktjgudals/fable-5-2-prompting) verification
+    const r500PathA=2420.00+41.0*100.00;
+    assert.equal(r500PathA.toFixed(2),'6520.00','11-18 R20 R500 Path A total');
+    const r500PathC=85.00+2.9*100.00;
+    assert.equal(r500PathC.toFixed(2),'375.00','11-18 R20 R500 Path C total');
+    assert.equal((r500PathA-r500PathC).toFixed(2),'6145.00','11-18 R20 R500 savings vs Path A');
+    assert.equal(((r500PathA-r500PathC)/r500PathA*100).toFixed(2),'94.25','11-18 R20 R500 pct savings vs Path A');
+    for(const r500File of ['workshops/github-trending-radar/docs/ssci-sci-skills-blueprint-openfactura-fable-prompting-298-rule-audit-patent-explainer-dte-mcp-prompt-cost-audit-selection-faq.md','workshops/github-trending-radar/docs/ssci-sci-skills-blueprint-openfactura-fable-prompting-298-rule-audit-patent-explainer-dte-mcp-prompt-cost-audit-selection-faq.en.md','assets/github-ai-radar-2026-11-18-r20-r500-papermate-blueprint-openfactura-fableprompt.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-18-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r500File),'utf8');
+      assert.ok(txt.includes('2,420.00')&&txt.includes('4,100.00')&&txt.includes('6,520.00')&&txt.includes('85.00')&&txt.includes('290.00')&&txt.includes('375.00')&&txt.includes('6,145.00')&&txt.includes('94.25%')&&txt.includes('not_measured'),r500File+': contains exact 11-18 R20 R500 papermate+blueprint+openfactura+fableprompt closed-form parameters');
+    }
+    const r500Wb=fs.readFileSync(path.join(__dirname,'..','workshops/github-trending-radar/r500-enterprise-agent-finops-workbench.html'),'utf8');
+    assert.ok(r500Wb.includes('CLAIM-20261118-R20-R500-PAPERMATE-BLUEPRINT-OPENFACTURA-FABLEPROMPT')&&r500Wb.includes("default-src 'none'"),'R500 interactive workbench exists and is CSP self-contained');
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
