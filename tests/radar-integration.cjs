@@ -6381,6 +6381,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r517File),'utf8');
       assert.ok(txt.includes('2,760.00')&&txt.includes('4,200.00')&&txt.includes('6,960.00')&&txt.includes('85.00')&&txt.includes('280.00')&&txt.includes('365.00')&&txt.includes('6,595.00')&&txt.includes('94.76%')&&txt.includes('not_measured'),r517File+': contains exact 11-18 R37 R517 skillopt+xerj+browserharness+opencodex closed-form parameters');
     }
+    // 2026-11-18 Night Round 38 (R518: langchain-ai/openwiki + google/artemis + akitaonrails/ai-memory + yc-software/qm) verification
+    const r518PathA=2680.00+41.0*100.00;
+    assert.equal(r518PathA.toFixed(2),'6780.00','11-18 R38 R518 Path A total');
+    const r518PathC=85.00+2.7*100.00;
+    assert.equal(r518PathC.toFixed(2),'355.00','11-18 R38 R518 Path C total');
+    assert.equal((r518PathA-r518PathC).toFixed(2),'6425.00','11-18 R38 R518 savings vs Path A');
+    assert.equal(((r518PathA-r518PathC)/r518PathA*100).toFixed(2),'94.76','11-18 R38 R518 pct savings vs Path A');
+    for(const r518File of ['workshops/github-trending-radar/docs/openwiki-artemis-ai-memory-yc-qm-claim-grounded-multi-repo-wiki-99pct-androidworld-mcp-20harness-handoff-multiplayer-slack-harness-selection-faq.md','workshops/github-trending-radar/docs/openwiki-artemis-ai-memory-yc-qm-claim-grounded-multi-repo-wiki-99pct-androidworld-mcp-20harness-handoff-multiplayer-slack-harness-selection-faq.en.md','assets/github-ai-radar-2026-11-18-r38-openwiki-artemis-aimemory-ycqm.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-18-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r518File),'utf8');
+      assert.ok(txt.includes('2,680.00')&&txt.includes('4,100.00')&&txt.includes('6,780.00')&&txt.includes('85.00')&&txt.includes('270.00')&&txt.includes('355.00')&&txt.includes('6,425.00')&&txt.includes('94.76%')&&txt.includes('not_measured'),r518File+': contains exact 11-18 R38 R518 openwiki+artemis+aimemory+ycqm closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
