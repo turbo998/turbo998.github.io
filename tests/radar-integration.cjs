@@ -6359,6 +6359,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r515File),'utf8');
       assert.ok(txt.includes('2,640.00')&&txt.includes('4,100.00')&&txt.includes('6,740.00')&&txt.includes('80.00')&&txt.includes('280.00')&&txt.includes('360.00')&&txt.includes('6,380.00')&&txt.includes('94.66%')&&txt.includes('not_measured'),r515File+': contains exact 11-18 R35 R515 bangmotion+dreamloop+3dviz+awwwards closed-form parameters');
     }
+    // 2026-11-18 Night Round 36 (R516: edenfunf/reelmimic + DozenTwelve/Papermorph + Tejashmakwana/motionmaxxing + jtydhr88/screenwriting-skills) verification
+    const r516PathA=2480.00+40.0*100.00;
+    assert.equal(r516PathA.toFixed(2),'6480.00','11-18 R36 R516 Path A total');
+    const r516PathC=75.00+2.7*100.00;
+    assert.equal(r516PathC.toFixed(2),'345.00','11-18 R36 R516 Path C total');
+    assert.equal((r516PathA-r516PathC).toFixed(2),'6135.00','11-18 R36 R516 savings vs Path A');
+    assert.equal(((r516PathA-r516PathC)/r516PathA*100).toFixed(2),'94.68','11-18 R36 R516 pct savings vs Path A');
+    for(const r516File of ['workshops/github-trending-radar/docs/reelmimic-papermorph-motionmaxxing-screenwriting-skills-reference-rhythm-static-math-lessons-g0g5-motion-gates-26-narrative-skills-selection-faq.md','workshops/github-trending-radar/docs/reelmimic-papermorph-motionmaxxing-screenwriting-skills-reference-rhythm-static-math-lessons-g0g5-motion-gates-26-narrative-skills-selection-faq.en.md','assets/github-ai-radar-2026-11-18-r36-reelmimic-papermorph-motionmaxxing-screenwriting.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-18-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r516File),'utf8');
+      assert.ok(txt.includes('2,480.00')&&txt.includes('4,000.00')&&txt.includes('6,480.00')&&txt.includes('75.00')&&txt.includes('270.00')&&txt.includes('345.00')&&txt.includes('6,135.00')&&txt.includes('94.68%')&&txt.includes('not_measured'),r516File+': contains exact 11-18 R36 R516 reelmimic+papermorph+motionmaxxing+screenwriting closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
