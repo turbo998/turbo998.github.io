@@ -6126,6 +6126,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r494File),'utf8');
       assert.ok(txt.includes('2,040.00')&&txt.includes('3,700.00')&&txt.includes('5,740.00')&&txt.includes('70.00')&&txt.includes('260.00')&&txt.includes('330.00')&&txt.includes('5,410.00')&&txt.includes('94.25%')&&txt.includes('not_measured'),r494File+': contains exact 11-18 R14 crafthub+guanlan+teach+tauscout closed-form parameters');
     }
+    // 2026-11-18 Night Round 15 (R495 Milestone: AnnenkovLabs/flecten + T-Crypt/replicator + voyager67/JaneStreet-Agentic-Skills + Replyze/ai-chatbot-for-website) verification
+    const r495PathA=2380.00+40.0*100.00;
+    assert.equal(r495PathA.toFixed(2),'6380.00','11-18 R15 Path A total');
+    const r495PathC=90.00+2.9*100.00;
+    assert.equal(r495PathC.toFixed(2),'380.00','11-18 R15 Path C total');
+    assert.equal((r495PathA-r495PathC).toFixed(2),'6000.00','11-18 R15 savings vs Path A');
+    assert.equal(((r495PathA-r495PathC)/r495PathA*100).toFixed(2),'94.04','11-18 R15 pct savings vs Path A');
+    for(const r495File of ['workshops/github-trending-radar/docs/flecten-replicator-janestreet-skills-website-chatbot-talker-worker-ide-manifold3d-cad-mcp-quant-risk-docs-selection-faq.md','workshops/github-trending-radar/docs/flecten-replicator-janestreet-skills-website-chatbot-talker-worker-ide-manifold3d-cad-mcp-quant-risk-docs-selection-faq.en.md','assets/github-ai-radar-2026-11-18-r15-flecten-replicator-janestreet-docsbot.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-18-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r495File),'utf8');
+      assert.ok(txt.includes('2,380.00')&&txt.includes('4,000.00')&&txt.includes('6,380.00')&&txt.includes('90.00')&&txt.includes('290.00')&&txt.includes('380.00')&&txt.includes('6,000.00')&&txt.includes('94.04%')&&txt.includes('not_measured'),r495File+': contains exact 11-18 R15 flecten+replicator+janestreet+docsbot closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
