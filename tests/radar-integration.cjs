@@ -6641,6 +6641,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r539File),'utf8');
       assert.ok(txt.includes('2,640.00')&&txt.includes('3,950.00')&&txt.includes('6,590.00')&&txt.includes('70.00')&&txt.includes('250.00')&&txt.includes('320.00')&&txt.includes('6,270.00')&&txt.includes('95.14%')&&txt.includes('not_measured'),r539File+': contains exact 11-19 R15 R539 modernjava+microbrains+openfabriq+pmprd closed-form parameters');
     }
+    // 2026-11-19 Night Round 16 (R540 Milestone: Tencent/WeVisForensics + lgarbayo/product-walkthrough-video + Kianuni/AppleLens + abrantess/vps-cybersec-orchestrator) verification
+    const r540PathA=2820.00+41.5*100.00;
+    assert.equal(r540PathA.toFixed(2),'6970.00','11-19 R16 R540 Path A total');
+    const r540PathC=75.00+2.6*100.00;
+    assert.equal(r540PathC.toFixed(2),'335.00','11-19 R16 R540 Path C total');
+    assert.equal((r540PathA-r540PathC).toFixed(2),'6635.00','11-19 R16 R540 savings vs Path A');
+    assert.equal(((r540PathA-r540PathC)/r540PathA*100).toFixed(2),'95.19','11-19 R16 R540 pct savings vs Path A');
+    for(const r540File of ['workshops/github-trending-radar/docs/wevisforensics-product-walkthrough-video-applelens-vps-cybersec-orchestrator-omni-video-forensics-code-grounded-walkthrough-zero-mitm-apple-radar-cis-hardening-selection-faq.md','workshops/github-trending-radar/docs/wevisforensics-product-walkthrough-video-applelens-vps-cybersec-orchestrator-omni-video-forensics-code-grounded-walkthrough-zero-mitm-apple-radar-cis-hardening-selection-faq.en.md','assets/github-ai-radar-2026-11-19-r16-r540-wevisforensics-walkthrough-applelens-vpscybersec.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-19-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r540File),'utf8');
+      assert.ok(txt.includes('2,820.00')&&txt.includes('4,150.00')&&txt.includes('6,970.00')&&txt.includes('75.00')&&txt.includes('260.00')&&txt.includes('335.00')&&txt.includes('6,635.00')&&txt.includes('95.19%')&&txt.includes('not_measured'),r540File+': contains exact 11-19 R16 R540 wevisforensics+walkthrough+applelens+vpscybersec closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
