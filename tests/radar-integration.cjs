@@ -6685,6 +6685,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r543File),'utf8');
       assert.ok(txt.includes('2,740.00')&&txt.includes('4,050.00')&&txt.includes('6,790.00')&&txt.includes('75.00')&&txt.includes('250.00')&&txt.includes('325.00')&&txt.includes('6,465.00')&&txt.includes('95.21%')&&txt.includes('not_measured'),r543File+': contains exact 11-19 R19 R543 acompany+dataforseo+orbaudio+amazonstudio closed-form parameters');
     }
+    // 2026-11-19 Night Round 20 (R544: AndrianLeah/craft-mcp-hub + codewith-aditya/agy-bridge + dqIndieGames/remote-pc-mcp-gateway + JsonLee12138/Ruum) verification
+    const r544PathA=2610.00+39.5*100.00;
+    assert.equal(r544PathA.toFixed(2),'6560.00','11-19 R20 R544 Path A total');
+    const r544PathC=65.00+2.5*100.00;
+    assert.equal(r544PathC.toFixed(2),'315.00','11-19 R20 R544 Path C total');
+    assert.equal((r544PathA-r544PathC).toFixed(2),'6245.00','11-19 R20 R544 savings vs Path A');
+    assert.equal(((r544PathA-r544PathC)/r544PathA*100).toFixed(2),'95.20','11-19 R20 R544 pct savings vs Path A');
+    for(const r544File of ['workshops/github-trending-radar/docs/craft-mcp-hub-agy-bridge-remote-pc-mcp-gateway-ruum-windowless-shared-mcp-antigravity-openai-bridge-oauth21-remote-pc-gpui-ssh-disk-watchdog-selection-faq.md','workshops/github-trending-radar/docs/craft-mcp-hub-agy-bridge-remote-pc-mcp-gateway-ruum-windowless-shared-mcp-antigravity-openai-bridge-oauth21-remote-pc-gpui-ssh-disk-watchdog-selection-faq.en.md','assets/github-ai-radar-2026-11-19-r20-craftmcphub-agybridge-remotepcmcp-ruum.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-19-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r544File),'utf8');
+      assert.ok(txt.includes('2,610.00')&&txt.includes('3,950.00')&&txt.includes('6,560.00')&&txt.includes('65.00')&&txt.includes('250.00')&&txt.includes('315.00')&&txt.includes('6,245.00')&&txt.includes('95.20%')&&txt.includes('not_measured'),r544File+': contains exact 11-19 R20 R544 craftmcphub+agybridge+remotepcmcp+ruum closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
