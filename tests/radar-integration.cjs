@@ -6630,6 +6630,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r538File),'utf8');
       assert.ok(txt.includes('2,680.00')&&txt.includes('4,050.00')&&txt.includes('6,730.00')&&txt.includes('75.00')&&txt.includes('260.00')&&txt.includes('335.00')&&txt.includes('6,395.00')&&txt.includes('95.02%')&&txt.includes('not_measured'),r538File+': contains exact 11-19 R14 R538 wingbox+readanydoc+mcpattest+runelay closed-form parameters');
     }
+    // 2026-11-19 Night Round 15 (R539: wkd09/modern-java-guidance + drtikov/microbrainsforagents + openfabriq/openfabriq + xinyuefangfang/pmprd) verification
+    const r539PathA=2640.00+39.5*100.00;
+    assert.equal(r539PathA.toFixed(2),'6590.00','11-19 R15 R539 Path A total');
+    const r539PathC=70.00+2.5*100.00;
+    assert.equal(r539PathC.toFixed(2),'320.00','11-19 R15 R539 Path C total');
+    assert.equal((r539PathA-r539PathC).toFixed(2),'6270.00','11-19 R15 R539 savings vs Path A');
+    assert.equal(((r539PathA-r539PathC)/r539PathA*100).toFixed(2),'95.14','11-19 R15 R539 pct savings vs Path A');
+    for(const r539File of ['workshops/github-trending-radar/docs/modern-java-guidance-microbrainsforagents-openfabriq-pmprd-java21-boot3-postedit-hook-2ms-cpu-safety-shield-software-factory-as-code-anchored-prd-prototype-selection-faq.md','workshops/github-trending-radar/docs/modern-java-guidance-microbrainsforagents-openfabriq-pmprd-java21-boot3-postedit-hook-2ms-cpu-safety-shield-software-factory-as-code-anchored-prd-prototype-selection-faq.en.md','assets/github-ai-radar-2026-11-19-r15-modernjava-microbrains-openfabriq-pmprd.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-19-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r539File),'utf8');
+      assert.ok(txt.includes('2,640.00')&&txt.includes('3,950.00')&&txt.includes('6,590.00')&&txt.includes('70.00')&&txt.includes('250.00')&&txt.includes('320.00')&&txt.includes('6,270.00')&&txt.includes('95.14%')&&txt.includes('not_measured'),r539File+': contains exact 11-19 R15 R539 modernjava+microbrains+openfabriq+pmprd closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
