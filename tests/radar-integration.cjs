@@ -6487,6 +6487,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r525File),'utf8');
       assert.ok(txt.includes('2,860.00')&&txt.includes('4,200.00')&&txt.includes('7,060.00')&&txt.includes('85.00')&&txt.includes('280.00')&&txt.includes('365.00')&&txt.includes('6,695.00')&&txt.includes('94.83%')&&txt.includes('not_measured'),r525File+': contains exact 11-19 R1 R525 firecrawl+opensre+datacat+appstorecompliance closed-form parameters');
     }
+    // 2026-11-19 Night Round 2 (R526: HKUDS/CLI-Anything + toeverything/AFFiNE + comp-work/gke-sandboxes + parallel-web/parallel-search-evals) verification
+    const r526PathA=2740.00+40.5*100.00;
+    assert.equal(r526PathA.toFixed(2),'6790.00','11-19 R2 R526 Path A total');
+    const r526PathC=80.00+2.7*100.00;
+    assert.equal(r526PathC.toFixed(2),'350.00','11-19 R2 R526 Path C total');
+    assert.equal((r526PathA-r526PathC).toFixed(2),'6440.00','11-19 R2 R526 savings vs Path A');
+    assert.equal(((r526PathA-r526PathC)/r526PathA*100).toFixed(2),'94.85','11-19 R2 R526 pct savings vs Path A');
+    for(const r526File of ['workshops/github-trending-radar/docs/cli-anything-affine-gke-sandboxes-parallel-search-evals-agent-native-software-cli-local-first-canvas-19cent-gvisor-sandbox-dsqa-hle-eval-selection-faq.md','workshops/github-trending-radar/docs/cli-anything-affine-gke-sandboxes-parallel-search-evals-agent-native-software-cli-local-first-canvas-19cent-gvisor-sandbox-dsqa-hle-eval-selection-faq.en.md','assets/github-ai-radar-2026-11-19-r2-clianything-affine-gkesandboxes-searchevals.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-19-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r526File),'utf8');
+      assert.ok(txt.includes('2,740.00')&&txt.includes('4,050.00')&&txt.includes('6,790.00')&&txt.includes('80.00')&&txt.includes('270.00')&&txt.includes('350.00')&&txt.includes('6,440.00')&&txt.includes('94.85%')&&txt.includes('not_measured'),r526File+': contains exact 11-19 R2 R526 clianything+affine+gkesandboxes+searchevals closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
