@@ -6850,6 +6850,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r558File),'utf8');
       assert.ok(txt.includes('3,560.00')&&txt.includes('4,200.00')&&txt.includes('7,760.00')&&txt.includes('95.00')&&txt.includes('250.00')&&txt.includes('345.00')&&txt.includes('7,415.00')&&txt.includes('95.55%')&&txt.includes('not_measured'),r558File+': contains exact 11-19 R34 R558 intern+codecheck+archgrower+salkarsaui closed-form parameters');
     }
+    // 2026-11-19 Night Round 35 (R559: nimcap/nimcap-screenshot + myballast/ballast + Mayhopar/Starquix + alokbaraii/streamclipper) verification
+    const r559PathA=2920.00+37.0*100.00;
+    assert.equal(r559PathA.toFixed(2),'6620.00','11-19 R35 R559 Path A total');
+    const r559PathC=60.00+2.3*100.00;
+    assert.equal(r559PathC.toFixed(2),'290.00','11-19 R35 R559 Path C total');
+    assert.equal((r559PathA-r559PathC).toFixed(2),'6330.00','11-19 R35 R559 savings vs Path A');
+    assert.equal(((r559PathA-r559PathC)/r559PathA*100).toFixed(2),'95.62','11-19 R35 R559 pct savings vs Path A');
+    for(const r559File of ['workshops/github-trending-radar/docs/nimcap-screenshot-ballast-starquix-streamclipper-offline-ocr-table-suite-visual-k6-loadtest-astro-visual-editor-capcut-live-clipper-selection-faq.md','workshops/github-trending-radar/docs/nimcap-screenshot-ballast-starquix-streamclipper-offline-ocr-table-suite-visual-k6-loadtest-astro-visual-editor-capcut-live-clipper-selection-faq.en.md','assets/github-ai-radar-2026-11-19-r35-nimcap-ballast-starquix-streamclipper.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-19-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r559File),'utf8');
+      assert.ok(txt.includes('2,920.00')&&txt.includes('3,700.00')&&txt.includes('6,620.00')&&txt.includes('60.00')&&txt.includes('230.00')&&txt.includes('290.00')&&txt.includes('6,330.00')&&txt.includes('95.62%')&&txt.includes('not_measured'),r559File+': contains exact 11-19 R35 R559 nimcap+ballast+starquix+streamclipper closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
