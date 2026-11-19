@@ -6817,6 +6817,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r555File),'utf8');
       assert.ok(txt.includes('2,840.00')&&txt.includes('4,150.00')&&txt.includes('6,990.00')&&txt.includes('70.00')&&txt.includes('250.00')&&txt.includes('320.00')&&txt.includes('6,670.00')&&txt.includes('95.42%')&&txt.includes('not_measured'),r555File+': contains exact 11-19 R31 R555 nsgoagio+avatarvoice+anyubrowser+jobfit closed-form parameters');
     }
+    // 2026-11-19 Night Round 32 (R556: chhuax/Kanso + techgptoffical/thrones + nishkarsh-shah/prompt-master + mamajiaa/open-pm) verification
+    const r556PathA=2420.00+38.0*100.00;
+    assert.equal(r556PathA.toFixed(2),'6220.00','11-19 R32 R556 Path A total');
+    const r556PathC=55.00+2.2*100.00;
+    assert.equal(r556PathC.toFixed(2),'275.00','11-19 R32 R556 Path C total');
+    assert.equal((r556PathA-r556PathC).toFixed(2),'5945.00','11-19 R32 R556 savings vs Path A');
+    assert.equal(((r556PathA-r556PathC)/r556PathA*100).toFixed(2),'95.58','11-19 R32 R556 pct savings vs Path A');
+    for(const r556File of ['workshops/github-trending-radar/docs/kanso-thrones-prompt-master-open-pm-native-agent-terminal-calc-verified-local-9b-prompt-spec-router-cross-machine-pm-kanban-selection-faq.md','workshops/github-trending-radar/docs/kanso-thrones-prompt-master-open-pm-native-agent-terminal-calc-verified-local-9b-prompt-spec-router-cross-machine-pm-kanban-selection-faq.en.md','assets/github-ai-radar-2026-11-19-r32-kanso-thrones-promptmaster-openpm.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-19-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r556File),'utf8');
+      assert.ok(txt.includes('2,420.00')&&txt.includes('3,800.00')&&txt.includes('6,220.00')&&txt.includes('55.00')&&txt.includes('220.00')&&txt.includes('275.00')&&txt.includes('5,945.00')&&txt.includes('95.58%')&&txt.includes('not_measured'),r556File+': contains exact 11-19 R32 R556 kanso+thrones+promptmaster+openpm closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
