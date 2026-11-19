@@ -6674,6 +6674,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r542File),'utf8');
       assert.ok(txt.includes('2,660.00')&&txt.includes('4,000.00')&&txt.includes('6,660.00')&&txt.includes('70.00')&&txt.includes('250.00')&&txt.includes('320.00')&&txt.includes('6,340.00')&&txt.includes('95.20%')&&txt.includes('not_measured'),r542File+': contains exact 11-19 R18 R542 haven+octosift+videoshortanim+tailorcv closed-form parameters');
     }
+    // 2026-11-19 Night Round 19 (R543: phuocka/a-company + AgriciDaniel/dataforseo-agent + stdevMac/orb-audio + liangdabiao/dsh-amazon-image-studio) verification
+    const r543PathA=2740.00+40.5*100.00;
+    assert.equal(r543PathA.toFixed(2),'6790.00','11-19 R19 R543 Path A total');
+    const r543PathC=75.00+2.5*100.00;
+    assert.equal(r543PathC.toFixed(2),'325.00','11-19 R19 R543 Path C total');
+    assert.equal((r543PathA-r543PathC).toFixed(2),'6465.00','11-19 R19 R543 savings vs Path A');
+    assert.equal(((r543PathA-r543PathC)/r543PathA*100).toFixed(2),'95.21','11-19 R19 R543 pct savings vs Path A');
+    for(const r543File of ['workshops/github-trending-radar/docs/a-company-dataforseo-agent-orb-audio-dsh-amazon-image-studio-selfhosted-pglite-teammates-prepriced-seo-agent-5m-numpy-dsp-audio-amazon-listing-xmp-selection-faq.md','workshops/github-trending-radar/docs/a-company-dataforseo-agent-orb-audio-dsh-amazon-image-studio-selfhosted-pglite-teammates-prepriced-seo-agent-5m-numpy-dsp-audio-amazon-listing-xmp-selection-faq.en.md','assets/github-ai-radar-2026-11-19-r19-acompany-dataforseo-orbaudio-amazonstudio.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-19-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r543File),'utf8');
+      assert.ok(txt.includes('2,740.00')&&txt.includes('4,050.00')&&txt.includes('6,790.00')&&txt.includes('75.00')&&txt.includes('250.00')&&txt.includes('325.00')&&txt.includes('6,465.00')&&txt.includes('95.21%')&&txt.includes('not_measured'),r543File+': contains exact 11-19 R19 R543 acompany+dataforseo+orbaudio+amazonstudio closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
