@@ -6784,6 +6784,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r552File),'utf8');
       assert.ok(txt.includes('2,750.00')&&txt.includes('4,100.00')&&txt.includes('6,850.00')&&txt.includes('70.00')&&txt.includes('250.00')&&txt.includes('320.00')&&txt.includes('6,530.00')&&txt.includes('95.33%')&&txt.includes('not_measured'),r552File+': contains exact 11-19 R28 R552 jiutouniao+opinionlens+agybot+selfevolving closed-form parameters');
     }
+    // 2026-11-19 Night Round 29 (R553: playground-systems/playground-serve + wrencanfly/openRocode + Rexoplanets/layout-studio-moss-image + fxzer/agy-kit) verification
+    const r553PathA=2790.00+41.0*100.00;
+    assert.equal(r553PathA.toFixed(2),'6890.00','11-19 R29 R553 Path A total');
+    const r553PathC=75.00+2.5*100.00;
+    assert.equal(r553PathC.toFixed(2),'325.00','11-19 R29 R553 Path C total');
+    assert.equal((r553PathA-r553PathC).toFixed(2),'6565.00','11-19 R29 R553 savings vs Path A');
+    assert.equal(((r553PathA-r553PathC)/r553PathA*100).toFixed(2),'95.28','11-19 R29 R553 pct savings vs Path A');
+    for(const r553File of ['workshops/github-trending-radar/docs/playground-serve-openrocode-layout-studio-moss-image-agy-kit-scale-to-zero-vla-gpu-code-as-policy-robotics-visual-bbox-studio-antigravity-hud-selection-faq.md','workshops/github-trending-radar/docs/playground-serve-openrocode-layout-studio-moss-image-agy-kit-scale-to-zero-vla-gpu-code-as-policy-robotics-visual-bbox-studio-antigravity-hud-selection-faq.en.md','assets/github-ai-radar-2026-11-19-r29-playgroundserve-openrocode-layoutstudio-agykit.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-19-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r553File),'utf8');
+      assert.ok(txt.includes('2,790.00')&&txt.includes('4,100.00')&&txt.includes('6,890.00')&&txt.includes('75.00')&&txt.includes('250.00')&&txt.includes('325.00')&&txt.includes('6,565.00')&&txt.includes('95.28%')&&txt.includes('not_measured'),r553File+': contains exact 11-19 R29 R553 playgroundserve+openrocode+layoutstudio+agykit closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
