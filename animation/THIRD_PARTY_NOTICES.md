@@ -25,3 +25,14 @@ That license does not relicense the third-party material below.
   none of these applications calls a model API at runtime.
 - **Microsoft-inspired colors:** visual color references only. This is an
   independent experiment, not a Microsoft product or an officially endorsed demo.
+- **Commercial Image Editing Benchmark (`demos/commercial-image-edit-benchmark-studio/`):**
+  evaluation methodology and three-axis commercial scoring rubric (`BRF`, `VEQ`, `CNS`)
+  are grounded in **ServImage / Editable** (`arXiv:2604.24023v2`, *ServImage: Benchmarking
+  Commercial Image Editing Models on Real-World Creative Service Briefs*); all 12
+  `1024x1024` commercial reference inputs and 129 edited model outputs in this repository
+  were originally generated and evaluated from scratch for this benchmark (`provenance=measured`),
+  with zero third-party copyrighted brand logos or customer images redistributed.
+  External blind human-preference Elo standings (`MAI-Image-2.7` `1215 Elo` `#1` on
+  Artificial Analysis Image Editing Arena v2.1; `1387 Elo` on LMArena) are cited as
+  publicly reported context (`provenance=reported`) from Microsoft AI public release notes
+  and Artificial Analysis. No live model API is called when viewing the browser studio.

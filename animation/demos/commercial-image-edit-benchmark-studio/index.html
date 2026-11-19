@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="data:,">
+  <title>MAI-Image-2.7 与 2.7-Flash 商业图像编辑基准评测工作台 · Generative Visual Lab</title>
+  <script>
+    (() => {
+      const q = new URLSearchParams(window.location.search).get('scoutTheme');
+      let saved = null;
+      try { saved = localStorage.getItem('gvl-mai-studio-theme'); } catch (_) {}
+      const theme = q || saved || 'light';
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
+  <link rel="stylesheet" href="./studio.css">
+</head>
+<body>
+  <div class="top-accent"></div>
+  <main class="shell">
+    <nav class="topbar" aria-label="工作台导航">
+      <div class="topbar-left">
+        <a class="link-pill" href="../../index.html">← 返回视觉架构实验室</a>
+        <span class="brand-tag">SERVIMAGE / EDITABLE 复现与扩展 · 121 轮实测密封数据</span>
+      </div>
+      <div class="topbar-right">
+        <button id="theme-toggle" class="pill-btn" type="button">☾ 切换暗色控制台 (#0d1117)</button>
+        <a class="link-pill" href="./index.en.html">English Studio</a>
+        <a class="link-pill" href="../../research/mai-image-2-7-commercial-editing-faq.html">架构师选型 FAQ</a>
+        <a class="link-pill primary" href="./test-report-cards.zh.html">7-Card 标准评测卡组 →</a>
+      </div>
+    </nav>
+
+    <header class="hero">
+      <div class="eyebrow">SEALED MICROSOFT FOUNDRY BENCHMARK · GROUNDED IN SERVIMAGE (ARXIV:2604.24023V2)</div>
+      <h1>MAI-Image-2.7 商业图像编辑实测工作台：<span class="grad-span">BRF 4.17 领跑指令执行，Flash 成本效率达竞品 3.8×–8.7×</span></h1>
+      <p class="hero-lead">
+        基于 Microsoft Foundry 实跑封存的 <strong>121 次生产级 API 调用（总花费 $6.041，SHA-256 全链路锁死）</strong>，横向对比 <strong>8 款主流商业图像编辑模型 × 12 类 1024×1024 真实商业修图场景</strong>（人像祛痘/证件照/追色、商品换底/包装改色/换季、SaaS 横幅/金融 App UI/吉祥物/Logo 去噪、S11 原生 4 通道 RGBA 透明抠图、S12 双层路由与中英双语指令扰动）。全程零外部 CDN 依赖。
+      </p>
+
+      <div class="kpi-grid" aria-label="核心实测指标">
+        <div class="kpi-card">
+          <div class="kpi-label">BRF 商业指令执行度 (#1 并列)</div>
+          <div class="kpi-value" id="kpi-brf">4.17 / 5.00</div>
+          <div class="kpi-sub">MAI-Image-2.7 与 2.7-Flash 均超越 Sunburst (4.08) 与 FLUX.2-pro (3.75)</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">每 $1 零返工合格商业图产出</div>
+          <div class="kpi-value" id="kpi-edits-dollar">41.67 张/$1</div>
+          <div class="kpi-sub">MAI-2.7-Flash ($0.010 固定单价) 为 Sunburst 3.8×、FLUX.2-flex 8.7×</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">S11 原生 4 通道 RGBA 透明纯度</div>
+          <div class="kpi-value" id="kpi-rgba">100.0% Alpha</div>
+          <div class="kpi-sub">单次 API 直出干净透底；FLUX.2 仅画假棋盘格，前代 MAI-2.6 报 HTTP 400</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">S12 Flash→2.7 双层精修管线</div>
+          <div class="kpi-value" id="kpi-twotier">$0.045 / 两轮</div>
+          <div class="kpi-sub">Flash 探索 ($0.010) + 2.7 暖光定稿 ($0.035)，较双轮 Sunburst ($0.1226) 省 63.3%</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">中文商业 Brief 扰动稳健性</div>
+          <div class="kpi-value" id="kpi-zh-parity">100% (4/4)</div>
+          <div class="kpi-sub">MAI 双模型零跌落通过；FLUX.2-pro 中文人像祛痘漏修暴跌 -66.6 pts (BRF 5→1)</div>
+        </div>
+      </div>
+    </header>
+
+    <nav class="tab-bar" role="tablist" aria-label="评测模块切换">
+      <button class="tab-btn active" type="button" data-tab="arena">1. Before/After 分屏对比 + 2.5× 放大镜 (8×12)</button>
+      <button class="tab-btn" type="button" data-tab="rgba">2. S11 原生 RGBA 透明抠图检验台</button>
+      <button class="tab-btn" type="button" data-tab="turn2">3. S12 双层 Flash→2.7 路由 ($0.045)</button>
+      <button class="tab-btn" type="button" data-tab="perturb">4. 中英双语指令抗扰动实测 (16 组)</button>
+      <button class="tab-btn" type="button" data-tab="charts">5. Pareto 成本质量散点图与复现资产</button>
+    </nav>
+
+    <!-- TAB 1: ARENA -->
+    <section class="tab-panel active" id="tab-arena">
+      <div class="panel-card">
+        <div class="filter-row">
+          <div>
+            <h2 class="section-title">12 大商业修图场景 × 8 模型像素级分屏对比</h2>
+            <p class="section-sub">拖拽画面中央分割线对比 1024×1024 原图与模型输出；移动鼠标实时联动下方 2.5× 局部放大镜核验微字号、条形码与皮肤毛孔。</p>
+          </div>
+          <div class="cat-pills" id="cat-pills"></div>
+        </div>
+
+        <div class="scene-grid" id="scene-grid"></div>
+
+        <div class="arena-layout">
+          <div class="stage-wrap">
+            <div class="stage-toolbar">
+              <label>
+                左侧基准：
+                <select id="baseline-select" class="pill-btn" style="padding:4px 10px"></select>
+              </label>
+              <button id="mag-toggle" type="button" class="chip active">🔍 2.5× 细节同步放大镜</button>
+            </div>
+
+            <div class="split-viewport surface-checker" id="split-viewport">
+              <img id="img-after" src="./outputs/primary/packaging-label/mai-image-2-7-flash.webp" alt="编辑后输出图像">
+              <div class="split-before-layer" id="split-before-layer">
+                <img id="img-before" src="./references/packaging-label.webp" alt="1024x1024 原始输入图像">
+              </div>
+              <div class="split-divider" id="split-divider">
+                <div class="split-handle">⇄</div>
+              </div>
+              <span class="corner-badge left" id="badge-before">原图 Input (1024×1024)</span>
+              <span class="corner-badge right" id="badge-after">MAI-Image-2.7-Flash ($0.01)</span>
+            </div>
+
+            <div class="slider-control-row">
+              <span>Before / After 分割位置</span>
+              <input id="split-range" type="range" min="2" max="98" value="50" aria-label="分割比例滑块">
+              <strong id="split-readout">50%</strong>
+            </div>
+
+            <div class="magnifier-box" id="magnifier-box">
+              <div class="mag-header">
+                <span>🔬 2.5× 像素级同步放大对比（在上方画布移动指针定位微距区域）</span>
+                <span id="mag-coords">2.5× @ (512px, 512px)</span>
+              </div>
+              <div class="mag-pair">
+                <div class="mag-pane surface-checker" id="mag-before">
+                  <span class="mag-pane-label" id="mag-before-label">原图 Input</span>
+                </div>
+                <div class="mag-pane surface-checker" id="mag-after">
+                  <span class="mag-pane-label" id="mag-after-label">MAI-Image-2.7-Flash</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="brief-box" id="arena-brief"></div>
+            <div style="margin-bottom:8px;font-size:12.5px;font-weight:700;color:var(--text-muted)">切换右侧评测模型（点击胶囊或下方 8 模型缩略图）：</div>
+            <div class="model-pills" id="model-pills"></div>
+            <div class="telemetry-card" id="arena-telemetry"></div>
+            <div class="callout" style="margin-top:14px">
+              <strong>架构师读图提示：</strong>在 <strong>S05 咖啡包装换色 (SSIM 0.997)</strong>、<strong>S07 SaaS 横幅渐变 (SSIM 0.985)</strong> 与 <strong>S08 金融 App 换色 (SSIM 0.998)</strong> 中，<code>MAI-Image-2.7</code> 与 <code>2.7-Flash</code> 精准锁定非编辑区像素与微字号，而单张固定成本仅 <strong>$0.035 / $0.010</strong>。在整图换底（S04/S06）中，若对瓶身折射有零漂移要求，建议前置一层原生 RGBA Alpha 蒙版锁死主体。
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel-card">
+        <h3 class="section-title">当前场景 8 模型同屏横评画廊（点击任意卡片载入主分屏器）</h3>
+        <p class="section-sub">全部 8 款模型在同一 SHA-256 锁定 1024×1024 输入与相同英文商业 Brief 下的真实输出与盲评打分。</p>
+        <div class="strip-grid" id="eight-model-strip"></div>
+      </div>
+    </section>
+
+    <!-- TAB 2: S11 RGBA INSPECTOR -->
+    <section class="tab-panel" id="tab-rgba">
+      <div class="panel-card">
+        <div class="filter-row">
+          <div>
+            <h2 class="section-title">S11 原生 4 通道 RGBA 透明抠图检验台（真 Alpha 透底 vs 假 RGB 棋盘格）</h2>
+            <p class="section-sub">切换下方实时 CSS 背景底板：真正具备 4 通道 Alpha 的图像（MAI-Image-2.7 / Flash / OpenAI GPT Image）会无缝透出翡翠绿或赤陶底色；而 FLUX.2-pro / flex 将灰白棋盘格画死在不透明 RGB 像素中（Alpha=0%），前代 MAI-Image-2.6 请求 <code>background="transparent"</code> 直接返回 HTTP 400。</p>
+          </div>
+          <div class="backdrop-pills" id="backdrop-pills"></div>
+        </div>
+        <div class="rgba-grid" id="rgba-grid"></div>
+      </div>
+    </section>
+
+    <!-- TAB 3: S12 TWO-TIER WORKFLOW -->
+    <section class="tab-panel" id="tab-turn2">
+      <div class="panel-card">
+        <h2 class="section-title">S12 双层路由工作流：MAI-Flash ($0.010) 探索 → MAI-2.7 ($0.035) 暖光精修 = $0.045</h2>
+        <p class="section-sub">模拟电商与品牌内容中心真实的多轮对话改稿：Turn 1 将摄影棚黑金咖啡罐摆上极简咖啡馆木吧台，Turn 2 在保持构图的同时切换为黄昏钨丝暖光。</p>
+        <div style="margin-bottom:12px">
+          <div style="font-size:12px;font-weight:700;color:var(--text-muted);margin-bottom:6px">选择双轮流水线进行对比：</div>
+          <div class="model-pills" id="turn2-pills"></div>
+        </div>
+        <div class="triptych-grid" id="turn2-stage"></div>
+
+        <div class="callout warn">
+          <strong>关键工程发现（为什么生产级多轮修图必须加 Alpha/SVG 标签锁）：</strong>实测全部 9 条无掩码纯扩散双轮链路在 Turn 2 全局重打光时均出现了细微文字重绘（<code>CNS ≤ 3</code>，无人拿到无掩码零返工直通）。因此企业最佳实践是：<strong>用 <code>MAI-2.7-Flash ($0.010) → MAI-Image-2.7 ($0.035)</code> 承担场景探索与光影定稿（较双轮 Sunburst $0.1226 降本 63.3%、提速 42.1%），并在合成层回贴 Turn 0 原生 RGBA 产品/文字蒙版，实现 100% 商标零篡改！</strong>
+        </div>
+
+        <div class="table-scroll" style="margin-top:14px">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>双轮工作流 (Turn 1 → Turn 2)</th>
+                <th>两轮总成本</th>
+                <th>较双轮 Sunburst 节省</th>
+                <th>两轮总耗时</th>
+                <th>Turn 2 得分 (BRF/VEQ/CNS)</th>
+                <th>Turn 1→2 场景结构 SSIM</th>
+                <th>Turn 0→2 罐体区域 SSIM</th>
+              </tr>
+            </thead>
+            <tbody id="turn2-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 4: ZH-CN PERTURBATION -->
+    <section class="tab-panel" id="tab-perturb">
+      <div class="panel-card">
+        <h2 class="section-title">中英双语商业 Brief 等价扰动实测（4 场景 × 4 代表模型 = 16 组对照）</h2>
+        <p class="section-sub">检验亚太设计团队直接用简体中文下发修图指令时的性能保持率：MAI-Image-2.7 与 2.7-Flash 实现 4/4 (100%) 稳定通过，而 FLUX.2-pro 在中文 S01 人像祛痘任务中漏修瑕疵（总分从 100.0 暴跌至 33.4，-66.6 pts；BRF 从 5 跌至 1，约 -60+ 分级断崖）。</p>
+
+        <div class="filter-row">
+          <div class="cat-pills" id="perturb-scene-pills"></div>
+          <div class="model-pills" id="perturb-model-pills"></div>
+        </div>
+
+        <div class="perturb-trio" id="perturb-trio"></div>
+
+        <div class="table-scroll" style="margin-top:14px">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>测试场景</th>
+                <th>模型</th>
+                <th>英文原版百分制</th>
+                <th>中文 Brief 百分制</th>
+                <th>分差波动 (PTS)</th>
+                <th>非编辑区 SSIM (EN → ZH)</th>
+                <th>中文商用判定</th>
+              </tr>
+            </thead>
+            <tbody id="perturb-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 5: PARETO CHARTS & REPRODUCIBILITY -->
+    <section class="tab-panel" id="tab-charts">
+      <div class="charts-two-col">
+        <div class="panel-card" style="margin-bottom:0">
+          <h2 class="section-title">Pareto 成本—质量前沿散点图（Summary JSON 实时驱动）</h2>
+          <p class="section-sub">横轴为单张 1024×1024 实测均价（越靠左越省钱），纵轴为 ServImage 三维均分；虚线外环代表支持原生 4 通道 RGBA 透明输出。</p>
+          <div class="svg-chart-wrap" id="svg-pareto-scatter"></div>
+        </div>
+        <div class="panel-card" style="margin-bottom:0">
+          <h2 class="section-title">每 $1 预算产出的零返工合格商业图（Accepted Edits / $1）</h2>
+          <p class="section-sub"><code>MAI-Image-2.7-Flash</code> ($0.010 固定按张计费) 高达 <strong>41.67 张/$1</strong>，消除 Token 浮动计费波动。</p>
+          <div class="svg-chart-wrap" id="svg-edits-per-dollar"></div>
+        </div>
+      </div>
+
+      <div class="panel-card">
+        <h2 class="section-title">8 模型密封评测总榜（96 主矩阵 + 9 双轮 + 16 中文扰动 = 121 次实跑）</h2>
+        <div class="table-scroll">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>模型</th>
+                <th>提供商</th>
+                <th>BRF / VEQ / CNS</th>
+                <th>三维均分</th>
+                <th>12 场景直通率</th>
+                <th>平均非编辑 SSIM</th>
+                <th>中位延迟</th>
+                <th>单张均价</th>
+                <th>每 $1 合格张数</th>
+                <th>原生 RGBA</th>
+              </tr>
+            </thead>
+            <tbody id="leaderboard-tbody"></tbody>
+          </table>
+        </div>
+        <div class="callout" style="margin-top:14px">
+          <strong>外部公开盲测排行榜参考（<code>provenance=reported</code>）：</strong>在 Artificial Analysis Image Editing Arena v2.1 盲测榜（5,478 票人类偏好评测）中，<code>MAI-Image-2.7</code> 以 <strong>1215 Elo 位列全球 #1</strong>（领先 GPT Image 2.6 Sunburst max 1211 Elo，单张成本约为其 1/5）；在 LMArena 图像综合榜位列全球实验室 <strong>#2 (1387 Elo)</strong>。
+        </div>
+      </div>
+
+      <div class="panel-card">
+        <h2 class="section-title">一图速览总结海报 &amp; 可复现评测套件目录</h2>
+        <p class="section-sub">本目录已完整归档脱敏后的生成、压测与双轨盲评 Python 脚本及密封 JSON 数据集，供架构师独立审计与二次复现。</p>
+        <img class="overview-img" src="./summary-overview.zh-CN.webp" alt="MAI-Image-2.7 商业图像编辑基准评测一图速览 (中文版)" loading="lazy">
+        <pre class="code-block" style="margin-top:14px"># 复现目录结构 (demos/commercial-image-edit-benchmark-studio/)
+├── data/
+│   ├── summary.json             # 8 模型聚合指标、Turn-2 一致性与中英扰动汇总
+│   ├── results_enriched.json    # 全部 121 次调用逐笔延迟、成本、SHA-256、SSIM 与盲评打分
+│   ├── catalog.json             # 12 大商业场景中英 Prompt 与商业约束定义
+│   └── freeze_manifest.json     # 12 张 1024x1024 原始参考图事前冻结 SHA-256 清单
+├── scripts/
+│   ├── generate_references.py   # 生成并 SHA-256 锁定 12 张商业输入底图 (Entra ID DefaultAzureCredential)
+│   ├── run_benchmark.py         # 统一调用 MAI / OpenAI / FLUX.2 三类异构图像编辑端点
+│   └── evaluate_benchmark.py    # 计算非编辑区 SSIM + RGBA Alpha 纯度 + 匿名盲测 VLM 裁判
+└── references/ &amp; outputs/       # 141 张 1024x1024 实测对比样张 (.webp)</pre>
+      </div>
+    </section>
+
+    <footer class="footer-note">
+      <span>Provenance: <code>measured</code> (121 live Microsoft Foundry runs, SHA-256 sealed) + <code>reported</code> (Artificial Analysis v2.1 / LMArena) · 方法学参考 ServImage (arXiv:2604.24023v2)</span>
+      <span>
+        <a href="../../research/mai-image-2-7-commercial-editing-faq.html">中文 FAQ</a> ·
+        <a href="../../research/mai-image-2-7-commercial-editing-faq.en.html">English FAQ</a> ·
+        <a href="https://turbo998.github.io/workshops/benchmarks/mai-image-2-7-commercial-edit-bench.html">线上专题页 ↗</a>
+      </span>
+    </footer>
+  </main>
+
+  <script src="./data/studio-data.js"></script>
+  <script src="./studio.js"></script>
+</body>
+</html>

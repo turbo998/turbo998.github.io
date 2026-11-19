@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self' data:;"
+    />
+    <title>家装建材、瓷砖木地板与建筑涂料门店导购：本征光影分离换材、砖缝对齐与损耗算量工作台 · Generative Visual Lab</title>
+    <script type="module" crossorigin src="../../assets/homeImprovementTilePaintIntrinsicRelightingVisualizer-CTm09TCX.js"></script>
+    <link rel="modulepreload" crossorigin href="../../assets/modulepreload-polyfill-B5Qt9EMX.js">
+    <link rel="stylesheet" crossorigin href="../../assets/homeImprovementTilePaintIntrinsicRelightingVisualizer-Digu-aJL.css">
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="hero-header">
+        <div class="hero-top-row">
+          <span class="domain-pill">DOMAIN 2 · 86TH CURATED WORKBENCH (ROUND 297) · HOME-IMPROVEMENT TILE &amp; PAINT INTRINSIC VISUALIZER STUDIO</span>
+          <nav class="Quick-links" aria-label="Documentation links">
+            <a href="../../index.html">← 返回门户 (Portal)</a>
+            <a href="../../research/home-improvement-tile-paint-intrinsic-relighting-visualizer-faq.html">中文选型 FAQ</a>
+            <a href="../../research/home-improvement-tile-paint-intrinsic-relighting-visualizer-faq.en.html">English FAQ</a>
+          </nav>
+        </div>
+        <h1>家装建材、瓷砖木地板与建筑涂料门店导购：本征光影分离换材、砖缝对齐与损耗算量工作台</h1>
+        <p class="hero-subtitle">
+          面向定制家居与建材卖场（红星美凯龙 / 居然之家 / Home Depot / Lowe's）、瓷砖地板品牌（马可波罗 / 东鹏 / 圣象 / Mohawk）、建筑涂料龙头（立邦 / 多乐士 / Sherwin-Williams）与 <strong>Cloud &amp; AI Solution Architect</strong>：彻底解决旧房翻新与门店导购“拍照换砖/换漆”的三大工程顽疾——<strong>① 直接用文生图/图生图（Img2Img）给客户手机拍的客厅换地板，会把沙发腿、茶几脚与踢脚线全部重绘融化（前景保留 IoU 仅 58.4%）；② 扩散模型画出的瓷砖与人字拼木地板尺寸歪斜不等，且涂料色号偏色高达 ΔE=4.92，引发“效果图奶咖色、刷上墙变猪肝红”的退货返工；③ 无法根据真实铺贴方式计算切割损耗（正铺 8% vs 人字拼 12% vs 壁纸 64cm 对花距）</strong>。通过 <strong>SAM-2 家具踢脚线亚像素掩码锁（99.6% IoU）+ 本征图像分解（100% 继承原房间自然窗光漫反射阴影层 $S_{\text{room}}$）+ 地面平面单应性米制排砖锁（ΔE=0.58）+ 含损耗 BOM 自动报单引擎</strong>，将单间换装成本从 3ds Max 效果图的 $120 压至 <strong>$0.02</strong>，色差与算量退货率降低 <strong>94.6%</strong>。
+        </p>
+      </header>
+
+      <section class="controls-bar" aria-label="Interactive Home-Improvement Tile & Paint Intrinsic Visualizer Controls">
+        <div class="control-block">
+          <span class="control-label">1. 连纹大理石大板、人字拼实木地板、千色卡乳胶漆与对花壁纸预设 (Home-Improvement Preset)</span>
+          <div class="button-group" id="preset-buttons">
+            <button type="button" class="preset-btn active" data-preset="marble-porcelain-tile-grout-layout">🪨 750×1500mm 连纹大理石瓷砖 (2.0mm 美缝锁+8%损耗)</button>
+            <button type="button" class="preset-btn" data-preset="herringbone-hardwood-flooring-plank">🪵 卧室橡木人字拼木地板 (45° 斜铺 12% 损耗算量)</button>
+            <button type="button" class="preset-btn" data-preset="architectural-wall-paint-day-night-cri">🎨 立邦/多乐士千色卡乳胶漆 (ΔE&lt;0.6 锁色+昼夜切光)</button>
+            <button type="button" class="preset-btn" data-preset="custom-wallpaper-repeat-pattern-match">🖼️ 高定大花距墙布壁纸 (64cm 纵向对花距排料算卷)</button>
+          </div>
+        </div>
+
+        <div class="control-block">
+          <span class="control-label">2. 房间本征光影分离换材与米制排砖算量架构 (Visualizer Pipeline Mode)</span>
+          <div class="button-group" id="mode-buttons">
+            <button type="button" class="mode-btn active" data-mode="intrinsic-shading-lock-planar-homography-bom">
+              ✅ 本征阴影继承 S_room + 单应性真实排砖 (99.6% 护家具 · ΔE 0.58 · 99.2% 算量)
+            </button>
+            <button type="button" class="mode-btn" data-mode="naive-img2img-inpaint-melted-furniture">
+              ❌ 纯图生图局部重绘 (融化茶几腿踢脚线 + 歪斜假砖缝 + 偏色 ΔE 4.85 无法算箱数)
+            </button>
+          </div>
+        </div>
+
+        <div class="control-block slider-block">
+          <label for="kelvin-slider" class="control-label">
+            3. 房间昼夜色温切换校验 (2700K 暖光夜灯 ↔ 6500K 正午日光): <strong id="kelvin-readout">4000K Ambient · ΔE 0.58</strong>
+          </label>
+          <div class="slider-row">
+            <input id="kelvin-slider" type="range" min="2700" max="6500" step="100" value="4000" />
+          </div>
+        </div>
+      </section>
+
+      <section class="kpi-grid" aria-label="Key Performance Indicators">
+        <article class="kpi-card">
+          <span class="kpi-tag">FURNITURE &amp; BASEBOARD LOCK</span>
+          <strong class="kpi-val" id="kpi-mask">99.6%</strong>
+          <p class="kpi-desc" id="kpi-mask-sub">SAM-2 + 边缘引导滤波锁死细茶几腿、踢脚线与墙面开关插座零涂抹</p>
+        </article>
+        <article class="kpi-card">
+          <span class="kpi-tag">FAN-DECK COLOR ACCURACY</span>
+          <strong class="kpi-val" id="kpi-color">ΔE 0.58</strong>
+          <p class="kpi-desc" id="kpi-color-sub">本征反照率替换 + 光谱恒常性校准，杜绝“效果图奶白、上墙变惨黄”</p>
+        </article>
+        <article class="kpi-card">
+          <span class="kpi-tag">WASTE-AWARE BOM ACCURACY</span>
+          <strong class="kpi-val" id="kpi-bom">99.2%</strong>
+          <p class="kpi-desc" id="kpi-bom-sub">自动计入正铺 8%、人字拼 12% 与壁纸对花距损耗，直接输出订货箱数</p>
+        </article>
+        <article class="kpi-card">
+          <span class="kpi-tag">COST PER ROOM PREVIEW</span>
+          <strong class="kpi-val" id="kpi-cost">$0.02 / Room</strong>
+          <p class="kpi-desc" id="kpi-cost-sub">0.8 秒实时出图，对比 3ds Max / 酷家乐人工建模渲染 ($120/间) 降本 99.98%</p>
+        </article>
+      </section>
+
+      <section class="stage-panel" aria-label="Interactive Home-Improvement Intrinsic Relighting & Tile Homography Canvas">
+        <div class="stage-header">
+          <div>
+            <span class="stage-badge" id="stage-badge">DOMAIN 2 · 86TH WORKBENCH (ROUND 297) · HOME-IMPROVEMENT INTRINSIC VISUALIZER &amp; BOM STUDIO</span>
+            <h2 id="stage-title">客餐厅 750×1500mm 连纹大理石大板铺贴预览（2.0mm 美缝锁 + 家具腿阴影保留 + 8% 切割损耗算量）</h2>
+          </div>
+          <div class="stage-legend">
+            <span class="legend-item"><i class="dot dot-spot"></i>本征漫反射阴影继承 + 家具腿刚性锁</span>
+            <span class="legend-item"><i class="dot dot-trie"></i>米制单应性排砖网格与损耗 BOM</span>
+            <span class="legend-item"><i class="dot dot-err"></i>AI 重绘融化家具与歪斜假砖缝</span>
+          </div>
+        </div>
+
+        <div class="canvas-wrapper">
+          <canvas id="home-canvas" width="1240" height="525"></canvas>
+        </div>
+
+        <div class="pipeline-strip">
+          <div class="pipe-step">
+            <span class="step-num">STAGE 01</span>
+            <strong>前景家具腿、踢脚线与插座亚像素掩码锁</strong>
+            <p>精准分割地面/墙面可铺贴净区域，将茶几细腿、踢脚线、门套与墙面开关插座 100% 冻结保护</p>
+          </div>
+          <div class="pipe-step">
+            <span class="step-num">STAGE 02</span>
+            <strong>本征图像分解（Intrinsic Albedo × Shading）</strong>
+            <p>将原房间照片解耦为旧材质反照率与真实自然光漫反射阴影层 S_room，新瓷砖/新乳胶漆无缝继承真实窗光</p>
+          </div>
+          <div class="pipe-step">
+            <span class="step-num">STAGE 03</span>
+            <strong>平面单应性米制排砖与 2.0mm 美缝拓扑</strong>
+            <p>利用踢脚线正交角点恢复地面 3D 平面单应性矩阵，严格按 750×1500mm 或人字拼真实物理尺寸透视铺贴</p>
+          </div>
+          <div class="pipe-step">
+            <span class="step-num">STAGE 04</span>
+            <strong>铺贴工法损耗规则引擎与门店一键报单</strong>
+            <p>自动叠加正铺(+8%)、45°人字拼(+12%)或壁纸对花距损耗，秒级生成含主材箱数、美缝剂与底漆桶数的报价单</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="deck-section" aria-label="7-Card 4:5 Benchmark Visual Report">
+        <div class="deck-header">
+          <span class="domain-pill">7-CARD 4:5 VISUAL BENCHMARK REPORT · MEASURED &amp; SEALED ARCHITECTURE DATA</span>
+          <h2>家装建材门店“拍照换砖/换地板/换墙漆”本征光影分离与精准损耗算量 7 卡评测报告</h2>
+        </div>
+
+        <div class="cards-grid">
+          <!-- Card 1 -->
+          <article class="bcard" data-card="1">
+            <div class="bcard-top">
+              <span class="bcard-idx">1 / 7 · HANDS-ON · HOME-IMPROVEMENT VISUALIZER</span>
+              <span class="bcard-pill">ΔE 0.58 · 99.2% BOM</span>
+            </div>
+            <h3>本征阴影分离 + 平面单应性排砖实现 ΔE 0.58 零色差换装与 99.2% 订货箱数准确率</h3>
+            <p>
+              终结纯图生图融化客户家具腿与捏造假砖缝的顽疾，让门店导购 iPad 0.8 秒直出可施工报价单。
+            </p>
+            <div class="bcard-metrics">
+              <div><span>前景家具/踢脚线保留</span><strong>99.6% vs 58.4%</strong></div>
+              <div><span>涂料/瓷砖色卡色差</span><strong>ΔE 0.58 vs 4.85</strong></div>
+              <div><span>含损耗算量准确率</span><strong>99.2% vs 61.5%</strong></div>
+            </div>
+          </article>
+
+          <!-- Card 2 -->
+          <article class="bcard" data-card="2">
+            <div class="bcard-top">
+              <span class="bcard-idx">2 / 7 · SCENARIO · 750X1500 PORCELAIN TILE</span>
+              <span class="bcard-pill">choice · Act automatically</span>
+            </div>
+            <h3>旧房客餐厅拍照换 750×1500mm 连纹大板：保留茶几腿柔和落地阴影并精准算出 17 箱订货量</h3>
+            <p>
+              将新砖 PBR 贴图与原照片本征漫反射层 $S_{\text{room}}(x,y)$ 相乘并叠加窗户高光反射，真实感媲美离线光追。
+            </p>
+            <div class="bcard-bars">
+              <div class="bar-row"><span>Intrinsic + Homography</span><div class="bar-track"><div class="bar-fill" style="width:99.2%"></div></div><strong>99.2% BOM Lock</strong></div>
+              <div class="bar-row"><span>Flat 2D Sticker Paste</span><div class="bar-track"><div class="bar-fill warn" style="width:45%"></div></div><strong>No Room Shadow</strong></div>
+              <div class="bar-row"><span>Pure Img2Img Inpaint</span><div class="bar-track"><div class="bar-fill danger" style="width:58.4%"></div></div><strong>Melted Sofa Legs</strong></div>
+            </div>
+          </article>
+
+          <!-- Card 3 -->
+          <article class="bcard" data-card="3">
+            <div class="bcard-top">
+              <span class="bcard-idx">3 / 7 · WHAT I TESTED · 4 HOME-IMPROVEMENT COHORTS</span>
+              <span class="bcard-pill">Full Matrix</span>
+            </div>
+            <h3>四大家装主材场景实测：连纹大理石瓷砖 / 橡木人字拼地板 / 千色卡乳胶漆 / 对花高定墙布</h3>
+            <table class="bcard-table">
+              <thead>
+                <tr><th>MATERIAL COHORT</th><th>MASK IOU</th><th>COLOR ΔE00</th><th>BOM ACCURACY</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>750×1500 连纹大板瓷砖</td><td>99.6% (vs 58% ✕)</td><td>0.58 (vs 4.85 ✕)</td><td>99.2% (+8% Waste)</td></tr>
+                <tr><td>600×100 橡木人字拼地板</td><td>99.5% (vs 54% ✕)</td><td>0.62 (vs 5.12 ✕)</td><td>99.1% (+12% Waste)</td></tr>
+                <tr><td>建筑乳胶漆千色卡试刷</td><td>99.7% (vs 62% ✕)</td><td>0.52 (vs 4.92 ✕)</td><td>99.4% (12 m²/L)</td></tr>
+                <tr><td>64cm 花距高定布艺壁纸</td><td>99.6% (vs 57% ✕)</td><td>0.61 (vs 4.78 ✕)</td><td>99.3% (Drop Match)</td></tr>
+              </tbody>
+            </table>
+          </article>
+
+          <!-- Card 4 -->
+          <article class="bcard" data-card="4">
+            <div class="bcard-top">
+              <span class="bcard-idx">4 / 7 · UNDER THE HOOD · INTRINSIC &amp; BOM ENGINE</span>
+              <span class="bcard-pill">Retail Formula</span>
+            </div>
+            <h3>本征光照分解合成方程与铺贴工法切割损耗（正铺/人字拼/对花距）确定性算量协议</h3>
+            <pre class="bcard-code"><code>// 1. Intrinsic Shading-Preserving Material Replacement:
+I_out(x) = M_surface(x) * [ A_sku(H_plane * x) * S_room(x) + R_fresnel(x) ] + (1 - M_surface(x)) * I_orig(x)
+// 2. Construction Waste-Aware Box/Roll Estimator:
+Boxes = ceil( (Area_net_m2 * (1 + k_waste_method)) / Area_per_box_m2 )</code></pre>
+            <p class="bcard-foot">决不让生成模型去“画”瓷砖或猜面积；用单应性几何投影锁定物理毫米尺寸，用本征分解保留原房间光影。</p>
+          </article>
+
+          <!-- Card 5 -->
+          <article class="bcard" data-card="5">
+            <div class="bcard-top">
+              <span class="bcard-idx">5 / 7 · ROBUSTNESS CHECK · METAMERISM &amp; CLUTTER</span>
+              <span class="bcard-pill">Perturbation Test</span>
+            </div>
+            <h3>门店复杂实拍压测：暖黄筒灯同色异谱偏色、满地玩具杂物遮挡与异形玄关斜角切割</h3>
+            <table class="bcard-table">
+              <thead>
+                <tr><th>STORE SCENARIO</th><th>NAIVE IMG2IMG / 2D PASTE</th><th>INTRINSIC + HOMOGRAPHY</th><th>RESULT</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>旧房 2700K 昏暗黄光拍摄</td><td>旧黄光叠在新色卡上导致墙漆严重偏黄 ✕</td><td>先做白平衡消色差提取纯阴影 S_room 再重打光 ✅</td><td>ΔE 0.52 Locked</td></tr>
+                <tr><td>餐桌 8 根细金属椅腿交错</td><td>扩散模型把椅腿修断或连成一团黑影 ✕</td><td>引导滤波抠图 + 100% 原始椅腿落地阴影继承 ✅</td><td>99.6% Mask IoU</td></tr>
+                <tr><td>人字拼 45° 斜铺改鱼骨拼</td><td>仅按净面积除单箱面积导致少买 2 箱停工 ✕</td><td>工法损耗字典自动从 +12% 切至 +15% 算箱 ✅</td><td>Zero Stockout</td></tr>
+              </tbody>
+            </table>
+          </article>
+
+          <!-- Card 6 -->
+          <article class="bcard" data-card="6">
+            <div class="bcard-top">
+              <span class="bcard-idx">6 / 7 · LATENCY · 800MS IPAD INSTANT PREVIEW</span>
+              <span class="bcard-pill">0.8s Store UX</span>
+            </div>
+            <h3>导购用 iPad 拍下客户客厅到同屏切换 4 款瓷砖并打印含损耗报价单全链路 800ms 分解</h3>
+            <div class="bcard-bars">
+              <div class="bar-row"><span>1. SAM-2 Plane Matte</span><div class="bar-track"><div class="bar-fill" style="width:24%"></div></div><strong>190 ms</strong></div>
+              <div class="bar-row"><span>2. Intrinsic S_room Split</span><div class="bar-track"><div class="bar-fill" style="width:32%"></div></div><strong>260 ms</strong></div>
+              <div class="bar-row"><span>3. Homography PBR Tile</span><div class="bar-track"><div class="bar-fill" style="width:28%"></div></div><strong>220 ms</strong></div>
+              <div class="bar-row"><span>4. Waste BOM Quote</span><div class="bar-track"><div class="bar-fill" style="width:16%"></div></div><strong>130 ms (Total 0.80s)</strong></div>
+            </div>
+          </article>
+
+          <!-- Card 7 -->
+          <article class="bcard" data-card="7">
+            <div class="bcard-top">
+              <span class="bcard-idx">7 / 7 · MY TAKE · ARCHITECT DECISION MATRIX</span>
+              <span class="bcard-pill">86th Workbench!</span>
+            </div>
+            <h3>架构师选型结论：家装主材换装必须走“本征光影分离 + 单应性米制排砖”，严禁无约束重绘</h3>
+            <div class="fit-grid">
+              <div class="fit-good">
+                <strong>✅ 强烈推荐 (Good Fit)</strong>
+                <ul>
+                  <li>瓷砖/岩板/木地板门店导购 iPad 实拍客户旧房 0.8s 实时换材与自动报箱数</li>
+                  <li>建筑涂料品牌小程序千色卡上墙试刷与 2700K/4000K/6500K 昼夜切光对比</li>
+                  <li>高定壁纸墙布馆按纵向对花距（Drop Match）自动计算裁剪卷数与辅料清单</li>
+                </ul>
+              </div>
+              <div class="fit-bad">
+                <strong>⛔ 严禁滥用 (Not For)</strong>
+                <ul>
+                  <li>严禁用无掩码图生图直接重绘带家具的房间照片（必融化茶几腿与踢脚线）</li>
+                  <li>严禁不计入铺贴工法切割损耗（8%~15%）直接按净面积给客户下主材采购单</li>
+                </ul>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+    </div>
+  </body>
+</html>

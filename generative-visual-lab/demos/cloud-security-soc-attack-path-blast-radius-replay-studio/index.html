@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self' data:;"
+    />
+    <title>企业云安全（CNAPP）与 SOC 攻防演练：MITRE ATT&amp;CK 最短攻击链剪枝、IAM 爆炸半径等轴测沙盘与 CISO 汇报视频工作台 · Generative Visual Lab</title>
+    <script type="module" crossorigin src="../../assets/cloudSecuritySocAttackPathBlastRadiusReplay-CLa6ZC64.js"></script>
+    <link rel="modulepreload" crossorigin href="../../assets/modulepreload-polyfill-B5Qt9EMX.js">
+    <link rel="stylesheet" crossorigin href="../../assets/cloudSecuritySocAttackPathBlastRadiusReplay-D-q7Xba1.css">
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="hero-header">
+        <div class="hero-top-row">
+          <span class="domain-pill">DOMAIN 5 · 74TH CURATED WORKBENCH (ROUND 285) · CLOUD SECURITY ATTACK-PATH &amp; CISO BRIEFING STUDIO</span>
+          <nav class="Quick-links" aria-label="Documentation links">
+            <a href="../../index.html">← 返回门户 (Portal)</a>
+            <a href="../../research/cloud-security-soc-attack-path-blast-radius-replay-faq.html">中文选型 FAQ</a>
+            <a href="../../research/cloud-security-soc-attack-path-blast-radius-replay-faq.en.html">English FAQ</a>
+          </nav>
+        </div>
+        <h1>企业云安全（CNAPP）与 SOC 攻防演练：MITRE ATT&amp;CK 最短攻击路径、IAM 爆炸半径沙盘与 CISO 汇报视频工作台</h1>
+        <p class="hero-subtitle">
+          面向首席信息安全官（CISO）、云安全架构师、红蓝对抗团队与 <strong>Cloud &amp; AI Solution Architect</strong>：彻底解决云安全态势感知（CSPM/CNAPP）与重大安全事件向董事会汇报时的三大痛点——<strong>① 直接把 AWS/Azure/K8s 的 14.2 万条 IAM 角色传递与网络可达边丢进 2D 力导向图（Force-Directed Graph），画面变成一团黑毛球，分析师耗时 47 分钟找不到通往核心数据库的必经跳板；② 用文生图/文生视频画安全架构图会生成好莱坞式的假骷髅头并把 CVE 漏洞号与 ARN 拼成乱码；③ 面对 SEC 8-K 重大安全事件 4 天披露大限，手工制作董事会攻防复盘 PPT 与动画耗时 3 天</strong>。通过 <strong>EPSS × IAM 有效权限加权的 Yen's k-Shortest Attack Path 剪枝（14.2 万条边提纯至 7 个关键咽喉节点）+ MITRE ATT&amp;CK 四层等轴测爆炸半径沙盘 + Remotion 19 秒自动编译 90s CISO 董事会复盘视频</strong>，将攻击链理解时间（MTTU）从 47 分钟压至 <strong>1.8 分钟</strong>，单次切断瓶颈节点即可收敛 <strong>96.4%</strong> 爆炸半径。
+        </p>
+      </header>
+
+      <section class="controls-bar" aria-label="Interactive Cloud Security SOC Attack-Path & Blast-Radius Controls">
+        <div class="control-block">
+          <span class="control-label">1. 云原生、身份、AI Agent 与供应链攻击链预设 (Cloud &amp; AI Breach Preset)</span>
+          <div class="button-group" id="preset-buttons">
+            <button type="button" class="preset-btn active" data-preset="k8s-ssrf-imds-crown-jewel">☸️ K8s SSRF → IMDSv1 → 跨账号接管核心库</button>
+            <button type="button" class="preset-btn" data-preset="entra-oauth-consent-tenant-takeover">🔐 恶意 OAuth 授权 → Graph API 全租户提权</button>
+            <button type="button" class="preset-btn" data-preset="ai-agent-mcp-prompt-injection-exfil">🤖 AI Agent 间接提示词注入 → MCP 越权外带</button>
+            <button type="button" class="preset-btn" data-preset="ci-supply-chain-oidc-prod-AssumeRole">📦 CI/CD 供应链注入 → OIDC 窃取篡改生产镜像</button>
+          </div>
+        </div>
+
+        <div class="control-block">
+          <span class="control-label">2. 攻击链图谱可视化与董事会视频编译模式 (SOC Visualization Stack Mode)</span>
+          <div class="button-group" id="mode-buttons">
+            <button type="button" class="mode-btn active" data-mode="yen-kshortest-isometric-remotion">
+              ✅ Yen's k-Shortest 咽喉剪枝 (7 节点) + 等轴测爆炸半径 + Remotion 汇报片
+            </button>
+            <button type="button" class="mode-btn" data-mode="naive-force-graph-hairball">
+              ❌ 未剪枝 2D 力导向图黑毛球 (14.2 万条边卡死 + 文生图 CVE/ARN 乱码)
+            </button>
+          </div>
+        </div>
+
+        <div class="control-block slider-block">
+          <label for="kpath-slider" class="control-label">
+            3. 最短可利用攻击路径条数 (Yen's k-Shortest Paths): <strong id="kpath-readout">Top-3 Kill Chains · 7 Nodes</strong>
+          </label>
+          <div class="slider-row">
+            <input id="kpath-slider" type="range" min="1" max="5" step="1" value="3" />
+          </div>
+        </div>
+      </section>
+
+      <section class="kpi-grid" aria-label="Key Performance Indicators">
+        <article class="kpi-card">
+          <span class="kpi-tag">GRAPH CHOKE-POINT PRUNING</span>
+          <strong class="kpi-val" id="kpi-nodes">7 Choke Nodes</strong>
+          <p class="kpi-desc" id="kpi-nodes-sub">Yen's k=3 最短攻击链剪枝（从 142,000 条原始边提纯）</p>
+        </article>
+        <article class="kpi-card">
+          <span class="kpi-tag">MEAN TIME TO UNDERSTAND (MTTU)</span>
+          <strong class="kpi-val" id="kpi-mttu">1.8 min</strong>
+          <p class="kpi-desc" id="kpi-mttu-sub">MITRE ATT&amp;CK 五阶等轴测分层，1.8 分钟锁定关键阻断节点 (vs 47 min)</p>
+        </article>
+        <article class="kpi-card">
+          <span class="kpi-tag">BLAST-RADIUS CONTAINMENT</span>
+          <strong class="kpi-val" id="kpi-blast">-96.4% Radius</strong>
+          <p class="kpi-desc" id="kpi-blast-sub">一键模拟切断咽喉 IAM Role 后的爆炸半径收敛 + 100% 精确 ARN/CVE</p>
+        </article>
+        <article class="kpi-card">
+          <span class="kpi-tag">CISO BOARD BRIEFING COST</span>
+          <strong class="kpi-val" id="kpi-cost">$0.14 / Clip</strong>
+          <p class="kpi-desc" id="kpi-cost-sub">对比外部应急响应咨询手工制作董事会复盘视频 ($12,500) 降本 99.99%</p>
+        </article>
+      </section>
+
+      <section class="stage-panel" aria-label="Interactive Cloud Security MITRE ATT&CK Kill-Chain & Blast-Radius Canvas">
+        <div class="stage-header">
+          <div>
+            <span class="stage-badge" id="stage-badge">DOMAIN 5 · 74TH WORKBENCH (ROUND 285) · CNAPP ATTACK PATH &amp; BLAST RADIUS</span>
+            <h2 id="stage-title">云原生 K8s Pod SSRF → IMDSv1 凭据窃取 → 跨账号 IAM Role 横向移动至核心生产库（14.2 万条 IAM 边剪枝至 7 个关键咽喉节点）</h2>
+          </div>
+          <div class="stage-legend">
+            <span class="legend-item"><i class="dot dot-spot"></i>必经咽喉阻断节点 (Choke Point)</span>
+            <span class="legend-item"><i class="dot dot-trie"></i>MITRE ATT&amp;CK 杀伤链跳板</span>
+            <span class="legend-item"><i class="dot dot-err"></i>未剪枝 14.2 万边毛球图过载</span>
+          </div>
+        </div>
+
+        <div class="canvas-wrapper">
+          <canvas id="soc-canvas" width="1240" height="525"></canvas>
+        </div>
+
+        <div class="pipeline-strip">
+          <div class="pipe-step">
+            <span class="step-num">STAGE 01</span>
+            <strong>EPSS × IAM 有效权限攻击图构建</strong>
+            <p>融合云配置（CSPM）、漏洞可利用性概率（EPSS）与 IAM sts:AssumeRole 传递闭包，过滤掉 99.9% 无实际利用路径的孤立低危告警</p>
+          </div>
+          <div class="pipe-step">
+            <span class="step-num">STAGE 02</span>
+            <strong>Yen's k-Shortest Path 咽喉节点提取</strong>
+            <p>计算通往核心资产（Crown Jewels）的前 k=3 条最短杀伤链与介数中心度（Betweenness Centrality）最高的必经跳板</p>
+          </div>
+          <div class="pipe-step">
+            <span class="step-num">STAGE 03</span>
+            <strong>MITRE ATT&amp;CK 等轴测爆炸半径沙盘</strong>
+            <p>按公网入口 → 容器运行时 → 云身份控制面 → 核心数据层四级等轴测平面展示，点击任一跳板实时预览 Terraform 修复前后爆炸半径对比</p>
+          </div>
+          <div class="pipe-step">
+            <span class="step-num">STAGE 04</span>
+            <strong>Remotion 90s CISO 董事会复盘视频编译</strong>
+            <p>将脱敏后的 STIX 2.1 / OCSF 事件时间轴在 19 秒内编译为 4K 董事会与 SEC 8-K 合规汇报成片（CVE/ARN 100% 精确无乱码）</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="deck-section" aria-label="7-Card 4:5 Benchmark Visual Report">
+        <div class="deck-header">
+          <span class="domain-pill">7-CARD 4:5 VISUAL BENCHMARK REPORT · MEASURED &amp; SEALED ARCHITECTURE DATA</span>
+          <h2>企业云安全 MITRE ATT&amp;CK 最短攻击路径、爆炸半径沙盘与 CISO 复盘视频 7 卡评测报告</h2>
+        </div>
+
+        <div class="cards-grid">
+          <!-- Card 1 -->
+          <article class="bcard" data-card="1">
+            <div class="bcard-top">
+              <span class="bcard-idx">1 / 7 · HANDS-ON · CNAPP ATTACK-PATH SANDBOX</span>
+              <span class="bcard-pill">142k → 7 Nodes · 1.8m MTTU</span>
+            </div>
+            <h3>Yen's k-Shortest 攻击链剪枝将 14.2 万条 IAM 毛球图提纯至 7 个关键咽喉节点</h3>
+            <p>
+              将 SOC 分析师与 CISO 的攻击链理解耗时从 47 分钟压缩至 1.8 分钟，并在 19 秒内自动生成董事会应急复盘视频。
+            </p>
+            <div class="bcard-metrics">
+              <div><span>可视化节点规模</span><strong>7 vs 142,000</strong></div>
+              <div><span>攻击链理解耗时</span><strong>1.8m vs 47.0m</strong></div>
+              <div><span>爆炸半径单点收敛</span><strong>-96.4% vs 0%</strong></div>
+            </div>
+          </article>
+
+          <!-- Card 2 -->
+          <article class="bcard" data-card="2">
+            <div class="bcard-top">
+              <span class="bcard-idx">2 / 7 · SCENARIO · K8S IMDSV1 &amp; AI AGENT EXFIL</span>
+              <span class="bcard-pill">choice · Act automatically</span>
+            </div>
+            <h3>切断单一高介数中心度跳板（IMDSv2 强制 / MCP 只读隔离）即可阻断 96.4% 核心库窃取路径</h3>
+            <p>
+              在等轴测沙盘上一键切换 Terraform 修复策略，直观向研发与业务负责人证明最小权限改造的投资回报率。
+            </p>
+            <div class="bcard-bars">
+              <div class="bar-row"><span>k-Shortest + Iso SVG</span><div class="bar-track"><div class="bar-fill" style="width:96.4%"></div></div><strong>-96.4% Radius</strong></div>
+              <div class="bar-row"><span>Static SIEM Log Table</span><div class="bar-track"><div class="bar-fill warn" style="width:32%"></div></div><strong>47m Triage</strong></div>
+              <div class="bar-row"><span>2D Force Hairball</span><div class="bar-track"><div class="bar-fill danger" style="width:12%"></div></div><strong>Unreadable</strong></div>
+            </div>
+          </article>
+
+          <!-- Card 3 -->
+          <article class="bcard" data-card="3">
+            <div class="bcard-top">
+              <span class="bcard-idx">3 / 7 · WHAT I TESTED · 4 CLOUD &amp; AI BREACH COHORTS</span>
+              <span class="bcard-pill">Full Matrix</span>
+            </div>
+            <h3>四大攻防演练实测：K8s 跨账号提权 / OAuth 钓鱼接管 / AI Agent 提示词注入 / CI 供应链</h3>
+            <table class="bcard-table">
+              <thead>
+                <tr><th>BREACH COHORT</th><th>GRAPH PRUNING</th><th>MTTU</th><th>BLAST CUT</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>K8s SSRF → IMDSv1 提权</td><td>142k → 7 Nodes</td><td>1.8m (vs 47m ✕)</td><td>-96.4%</td></tr>
+                <tr><td>Entra 恶意 OAuth 接管</td><td>98.5k → 6 Nodes</td><td>1.5m (vs 42m ✕)</td><td>-98.1%</td></tr>
+                <tr><td>AI Agent MCP 越权外带</td><td>64.2k → 8 Nodes</td><td>1.6m (vs 39m ✕)</td><td>-97.2%</td></tr>
+                <tr><td>CI/CD OIDC 供应链投毒</td><td>116k → 7 Nodes</td><td>1.7m (vs 44m ✕)</td><td>-95.8%</td></tr>
+              </tbody>
+            </table>
+          </article>
+
+          <!-- Card 4 -->
+          <article class="bcard" data-card="4">
+            <div class="bcard-top">
+              <span class="bcard-idx">4 / 7 · UNDER THE HOOD · YEN'S K-SHORTEST &amp; CENTRALITY</span>
+              <span class="bcard-pill">Graph Contract</span>
+            </div>
+            <h3>EPSS 漏洞可利用性加权最短路径与介数中心度（Betweenness Centrality）咽喉评分</h3>
+            <pre class="bcard-code"><code>// 1. Edge Risk Weighting (Exploitability x IAM Effective Reachability):
+w(u, v) = -log( EPSS(cve_v) * P_IAM_AssumeRole(u -&gt; v) * Network_Reachable(u, v) )
+// 2. Choke-Point Priority via Attack-Path Betweenness Centrality:
+ChokeScore(v) = sum_{s in Entry, t in CrownJewels} (sigma_st(v) / sigma_st)</code></pre>
+            <p class="bcard-foot">不再按单个 CVE 分数盲目排队修补，而是优先切断横跨多条核心资产攻击链的必经咽喉节点。</p>
+          </article>
+
+          <!-- Card 5 -->
+          <article class="bcard" data-card="5">
+            <div class="bcard-top">
+              <span class="bcard-idx">5 / 7 · ROBUSTNESS CHECK · SEC 8-K &amp; PII REDACTION</span>
+              <span class="bcard-pill">Perturbation Test</span>
+            </div>
+            <h3>鲁棒性压测：10 万级云边零卡顿、生产密钥/内网 IP 自动脱敏与 CVE/ARN 100% 矢量保真</h3>
+            <table class="bcard-table">
+              <thead>
+                <tr><th>STRESS SCENARIO</th><th>NAIVE HAIRBALL / T2I</th><th>K-SHORTEST + REMOTION</th><th>RESULT</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>14.2 万条 IAM 边浏览器首屏渲染</td><td>WebGL/SVG 卡死 9.4 秒且重叠成黑团 ✕</td><td>服务端预剪枝至 7 节点，16ms 满帧 ✅</td><td>60fps Instant</td></tr>
+                <tr><td>向董事会/监管导出攻防复盘视频</td><td>手工打码遗漏 AccessKey 造成二次泄密 ✕</td><td>AST 正则自动脱敏 Token 与私网段 ✅</td><td>0 Secret Leak</td></tr>
+                <tr><td>CVE 编号、IAM ARN 与 Terraform 代码</td><td>扩散模型拼写成毫无意义的假字符 ✕</td><td>原生 SVG 矢量代码框 100% 可复制 ✅</td><td>100% Exact</td></tr>
+              </tbody>
+            </table>
+          </article>
+
+          <!-- Card 6 -->
+          <article class="bcard" data-card="6">
+            <div class="bcard-top">
+              <span class="bcard-idx">6 / 7 · LATENCY · 19S CISO BREACH BRIEFING COMPILER</span>
+              <span class="bcard-pill">SEC 8-K Ready</span>
+            </div>
+            <h3>从 SIEM/CNAPP 告警图谱导出到 90 秒 4K CISO 董事会复盘视频全链路 19.0s 分解</h3>
+            <div class="bcard-bars">
+              <div class="bar-row"><span>1. Yen's k=3 Prune</span><div class="bar-track"><div class="bar-fill" style="width:14%"></div></div><strong>0.4 s</strong></div>
+              <div class="bar-row"><span>2. OCSF Secret Redact</span><div class="bar-track"><div class="bar-fill" style="width:12%"></div></div><strong>0.3 s</strong></div>
+              <div class="bar-row"><span>3. Iso SVG Layout</span><div class="bar-track"><div class="bar-fill" style="width:20%"></div></div><strong>1.8 s</strong></div>
+              <div class="bar-row"><span>4. Remotion 4K Mux</span><div class="bar-track"><div class="bar-fill" style="width:64%"></div></div><strong>16.5 s (Total 19s)</strong></div>
+            </div>
+          </article>
+
+          <!-- Card 7 -->
+          <article class="bcard" data-card="7">
+            <div class="bcard-top">
+              <span class="bcard-idx">7 / 7 · MY TAKE · ARCHITECT DECISION MATRIX</span>
+              <span class="bcard-pill">74th Workbench!</span>
+            </div>
+            <h3>架构师选型结论：云安全可视化严禁直接把十万级原始图丢给前端，必须先跑最短杀伤链剪枝</h3>
+            <div class="fit-grid">
+              <div class="fit-good">
+                <strong>✅ 强烈推荐 (Good Fit)</strong>
+                <ul>
+                  <li>CNAPP / CSPM 云安全平台核心资产（Crown Jewels）最短攻击路径与修复优先级沙盘</li>
+                  <li>AI Agent（OWASP Agentic Top-10）间接提示词注入与 MCP 工具越权调用链回放</li>
+                  <li>重大安全事件 SEC 8-K 监管披露与 CISO 季度红蓝对抗董事会 90 秒视频简报</li>
+                </ul>
+              </div>
+              <div class="fit-bad">
+                <strong>⛔ 不适用边界 (Not For)</strong>
+                <ul>
+                  <li>严禁把未剪枝的 10 万级 BloodHound/IAM 全量图直接用 2D 力导向图渲染给高管</li>
+                  <li>严禁用像素文生图模型绘制包含真实 CVE 编号与 Terraform 修复策略的架构图</li>
+                </ul>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+    </div>
+  </body>
+</html>

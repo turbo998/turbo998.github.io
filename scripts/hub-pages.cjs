@@ -55,11 +55,16 @@ module.exports = function build({root, inventory, readingRecords, archivePages, 
         ? [`${passed}/${report.checks.length} verified pipeline checks · SA studio`,`${passed}/${report.checks.length} 项管线校验通过 · 架构推演工作台`]
         : ['Interactive SA pipeline studio','交互式架构推演工作台'];
       const links = [link(['Interactive studio','交互式工作台'],edition(`${base}/index.html`,zh))];
-      const faqRel = `animation/research/${round.topic}-faq${zh?'':'.en'}.html`;
+      const faqDoc = round[zh ? 'faq_zh' : 'faq_en'];
+      const faqRel = faqDoc && fs.existsSync(path.join(root, `animation/research/${path.basename(faqDoc).replace(/\.md$/, '.html')}`))
+        ? `animation/research/${path.basename(faqDoc).replace(/\.md$/, '.html')}`
+        : `animation/research/${round.topic}-faq${zh?'':'.en'}.html`;
       if (fs.existsSync(path.join(root,faqRel))) links.push(link(['SA Selection FAQ','架构选型 FAQ'],faqRel));
       const cardsRel = edition(`${base}/test-report-cards.html`,zh);
       if (fs.existsSync(path.join(root,cardsRel))) links.push(link(['7-Card benchmark','7-Card 评测报告'],cardsRel));
-      const svgRel = `animation/research/evidence/${round.slug}-summary.svg`;
+      const svgRel = round.summary && fs.existsSync(path.join(root, `animation/research/${round.summary.replace(/^docs\//, '')}`))
+        ? `animation/research/${round.summary.replace(/^docs\//, '')}`
+        : `animation/research/evidence/${round.slug}-summary.svg`;
       if (fs.existsSync(path.join(root,svgRel))) links.push(link(['Architecture SVG','一图流架构总结'],svgRel));
       return {id:`nightly-visual-${round.slug}`,track:'animation',stages:['architecture','evaluation','demos','resources'],
         badge:['VISUAL / ENTERPRISE AIGC PIPELINE','视觉 / 企业级可控视觉管线'],title:[round.title_en,round.title_zh],
@@ -69,6 +74,7 @@ module.exports = function build({root, inventory, readingRecords, archivePages, 
     }));
   }
   const homepageVisualAllow = new Set([
+    'nightly-visual-enterprise-aigc-2026-reference-architecture-maturity-radar-studio',
     'nightly-visual-agentic-storyboard-vlm-qa-self-healing-pipeline',
     'nightly-visual-brand-guardrail-prompt-compiler-c2pa-gateway',
     'nightly-visual-hybrid-remotion-aigc-storyboard-studio',

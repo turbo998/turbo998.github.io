@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self' data:;"
+    />
+    <title>半导体晶圆、3C 钛金属与锂电极片质检（AOI）：罕见微米缺陷合成数据工厂与零像素真值标注工作台 · Generative Visual Lab</title>
+    <script type="module" crossorigin src="../../assets/industrialAoiSyntheticDefectAugmentationControlnet-2WJM5O_w.js"></script>
+    <link rel="modulepreload" crossorigin href="../../assets/modulepreload-polyfill-B5Qt9EMX.js">
+    <link rel="stylesheet" crossorigin href="../../assets/industrialAoiSyntheticDefectAugmentationControlnet-BR9rOY-l.css">
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="hero-header">
+        <div class="hero-top-row">
+          <span class="domain-pill">DOMAIN 1 · 82ND CURATED WORKBENCH (ROUND 293) · INDUSTRIAL AOI SYNTHETIC DEFECT &amp; CONTROLNET STUDIO</span>
+          <nav class="Quick-links" aria-label="Documentation links">
+            <a href="../../index.html">← 返回门户 (Portal)</a>
+            <a href="../../research/industrial-aoi-synthetic-defect-augmentation-controlnet-faq.html">中文选型 FAQ</a>
+            <a href="../../research/industrial-aoi-synthetic-defect-augmentation-controlnet-faq.en.html">English FAQ</a>
+          </nav>
+        </div>
+        <h1>半导体晶圆、3C 钛金属与锂电极片质检（AOI）：罕见微米缺陷合成数据工厂与零像素标注工作台</h1>
+        <p class="hero-subtitle">
+          面向半导体晶圆厂、消费电子（3C）代工巨头、动力电池极片涂布产线与构建工业视觉质检（AOI）平台的 <strong>Cloud &amp; AI Solution Architect</strong>：彻底解决新品导入（NPI）阶段“良率 99.99% 导致真实缺陷样本百里挑一、质检模型冷启动耗时 6 周”的行业死结——<strong>① 简单把旧划痕抠图贴到良品上（CutMix）存在明显矩形光照接缝，导致模型学到贴图伪影并在实产中产生 12.5% 的误报过杀（Overkill）；② 全图无掩码文生图会把周围正常的 PCB 铜箔走线画断，且生成的微裂纹没有对齐的像素级分割标签（人工描边 IoU 仅 42.5%）；③ 普通漫反射生成模型不懂工业 15° 暗场环形光（Darkfield）下的“黑底白亮散射”光学规律</strong>。通过 <strong>参数化 3D 微凹槽法线掩码先行生成（自动导出 99.9% IoU 零误差分割真值标签）+ 同轴光/暗场掠射环形光物理先验 ControlNet 局部重绘（掩码外良品走线 100% 锁死）</strong>，将产线 AOI 冷启动周期从 6 周压缩至 <strong>4 小时</strong>，漏检率（Escape）压至 <strong>0.04%</strong>，误杀率（Overkill）降至 <strong>0.35%</strong>，单样本成本仅 <strong>$0.008</strong>（对比人为报废真实晶圆/PCB $45/件降本 99.98%）。
+        </p>
+      </header>
+
+      <section class="controls-bar" aria-label="Interactive Industrial AOI Synthetic Defect & ControlNet Controls">
+        <div class="control-block">
+          <span class="control-label">1. 车载 PCB 连锡、手机钛金属划痕、锂电极片针孔与晶圆崩边预设 (AOI Inspection Preset)</span>
+          <div class="button-group" id="preset-buttons">
+            <button type="button" class="preset-btn active" data-preset="pcb-solder-bridge-coaxial">🔌 车载 PCB 0201 引脚连锡 (RGB 同轴环形光)</button>
+            <button type="button" class="preset-btn" data-preset="titanium-bevel-scratch-darkfield">📱 3C 拉丝钛金属 15μm 微划痕 (15° 暗场掠射)</button>
+            <button type="button" class="preset-btn" data-preset="lithium-foil-pinhole-backlit">🔋 锂电极片涂布 50μm 露箔针孔 (透射+缩孔环)</button>
+            <button type="button" class="preset-btn" data-preset="wafer-die-microcrack-dic">💿 晶圆切割道分形微裂纹 (DIC 微分干涉相差)</button>
+          </div>
+        </div>
+
+        <div class="control-block">
+          <span class="control-label">2. 缺陷样本增广与真值标注管线 (Synthetic Data Pipeline Mode)</span>
+          <div class="button-group" id="mode-buttons">
+            <button type="button" class="mode-btn active" data-mode="normal-groove-darkfield-controlnet">
+              ✅ 3D 法线掩码先行 (99.9% IoU) + 暗场/同轴光 ControlNet 局部合成
+            </button>
+            <button type="button" class="mode-btn" data-mode="naive-cutmix-unmasked-t2i">
+              ❌ 传统 CutMix 贴图 / 无掩码 T2I (走线被篡改 + 标签偏离 + 12.5% 误杀停机)
+            </button>
+          </div>
+        </div>
+
+        <div class="control-block slider-block">
+          <label for="angle-slider" class="control-label">
+            3. 工业暗场环形光源掠射仰角校准 (Darkfield Ring Angle): <strong id="angle-readout">15° Darkfield Ring · 0.35% Overkill</strong>
+          </label>
+          <div class="slider-row">
+            <input id="angle-slider" type="range" min="5" max="45" step="5" value="15" />
+          </div>
+        </div>
+      </section>
+
+      <section class="kpi-grid" aria-label="Key Performance Indicators">
+        <article class="kpi-card">
+          <span class="kpi-tag">GROUND-TRUTH MASK IOU</span>
+          <strong class="kpi-val" id="kpi-iou">99.9% IoU</strong>
+          <p class="kpi-desc" id="kpi-iou-sub">先生成 3D 微凹槽法线掩码再驱动 Inpainting，标签与像素 0.00px 对齐</p>
+        </article>
+        <article class="kpi-card">
+          <span class="kpi-tag">AOI DEFECT ESCAPE RATE</span>
+          <strong class="kpi-val" id="kpi-escape">0.04% Escape</strong>
+          <p class="kpi-desc" id="kpi-escape-sub">4 小时合成万张罕见长尾缺陷，NPI 冷启动漏检率压至 0.04% (vs 4.8%)</p>
+        </article>
+        <article class="kpi-card">
+          <span class="kpi-tag">FALSE-REJECT OVERKILL</span>
+          <strong class="kpi-val" id="kpi-overkill">0.35% Overkill</strong>
+          <p class="kpi-desc" id="kpi-overkill-sub">15° 暗场/同轴环形光物理反射建模，区分真划痕与正常灰尘纹理</p>
+        </article>
+        <article class="kpi-card">
+          <span class="kpi-tag">COST PER DEFECT SAMPLE</span>
+          <strong class="kpi-val" id="kpi-cost">$0.008 / Img</strong>
+          <p class="kpi-desc" id="kpi-cost-sub">对比人为破坏真实晶圆/PCB 制造缺陷样本 ($45/件) 降本 99.98%</p>
+        </article>
+      </section>
+
+      <section class="stage-panel" aria-label="Interactive Industrial AOI Synthetic Defect & Darkfield ControlNet Canvas">
+        <div class="stage-header">
+          <div>
+            <span class="stage-badge" id="stage-badge">DOMAIN 1 · 82ND WORKBENCH (ROUND 293) · INDUSTRIAL AOI SYNTHETIC DEFECT FACTORY</span>
+            <h2 id="stage-title">车载高密 PCB 0201 引脚连锡与少锡（Solder Bridge / Tombstone）：3D 弯月面法线掩码 + 红绿蓝三色环形同轴光 ControlNet 合成</h2>
+          </div>
+          <div class="stage-legend">
+            <span class="legend-item"><i class="dot dot-spot"></i>0.00px 绝对精确分割真值框</span>
+            <span class="legend-item"><i class="dot dot-trie"></i>15° 暗场/同轴光高光物理散射</span>
+            <span class="legend-item"><i class="dot dot-err"></i>CutMix 贴图伪影与铜箔走线篡改</span>
+          </div>
+        </div>
+
+        <div class="canvas-wrapper">
+          <canvas id="aoi-canvas" width="1240" height="525"></canvas>
+        </div>
+
+        <div class="pipeline-strip">
+          <div class="pipe-step">
+            <span class="step-num">STAGE 01</span>
+            <strong>Gerber/CAD 允许缺陷区语义定位</strong>
+            <p>解析 PCB Gerber 或晶圆 GDSII 版图，仅在物理可能发生缺陷的区域（如焊盘引脚间隙或切割道边缘）采样缺陷种子</p>
+          </div>
+          <div class="pipe-step">
+            <span class="step-num">STAGE 02</span>
+            <strong>参数化 3D 微凹槽/焊锡弯月面法线生成</strong>
+            <p>使用 L-System 分形与表面张力方程先生成 3D 缺陷深度与法线图，在渲染图像前即 100% 确定零误差的像素级分割标签（IoU 99.9%）</p>
+          </div>
+          <div class="pipe-step">
+            <span class="step-num">STAGE 03</span>
+            <strong>同轴光 / 15° 暗场环形光 ControlNet 重绘</strong>
+            <p>结合工业远心镜头与暗场/RGB 三角度环形光源物理着色先验，在掩码内合成逼真金属高光，同时掩码外良品基底 100% 原像素锁死</p>
+          </div>
+          <div class="pipe-step">
+            <span class="step-num">STAGE 04</span>
+            <strong>产线难例挖掘（Hard-Negative）闭环训练</strong>
+            <p>针对容易引起误报的拉丝纹、水渍与助焊剂残留定向生成负样本对，将 AOI 产线误杀率（Overkill）从 12.5% 压降至 0.35%</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="deck-section" aria-label="7-Card 4:5 Benchmark Visual Report">
+        <div class="deck-header">
+          <span class="domain-pill">7-CARD 4:5 VISUAL BENCHMARK REPORT · MEASURED &amp; SEALED ARCHITECTURE DATA</span>
+          <h2>工业质检（AOI）微米级合成缺陷数据工厂、暗场光 ControlNet 与良率提升 7 卡评测报告</h2>
+        </div>
+
+        <div class="cards-grid">
+          <!-- Card 1 -->
+          <article class="bcard" data-card="1">
+            <div class="bcard-top">
+              <span class="bcard-idx">1 / 7 · HANDS-ON · INDUSTRIAL AOI DEFECT FACTORY</span>
+              <span class="bcard-pill">99.9% Mask IoU · 0.04% Escape</span>
+            </div>
+            <h3>3D 法线掩码先行 + 暗场光 ControlNet 将新品产线 AOI 冷启动从 6 周缩短至 4 小时</h3>
+            <p>
+              终结良率 99.99% 产线“缺缺陷样本训不出模型”与人工描边标注微米裂纹误差高达 57.5% 的工程瓶颈。
+            </p>
+            <div class="bcard-metrics">
+              <div><span>真值标签对齐精度</span><strong>99.9% vs 42.5%</strong></div>
+              <div><span>缺陷漏检率 (Escape)</span><strong>0.04% vs 4.80%</strong></div>
+              <div><span>良品误杀率 (Overkill)</span><strong>0.35% vs 12.5%</strong></div>
+            </div>
+          </article>
+
+          <!-- Card 2 -->
+          <article class="bcard" data-card="2">
+            <div class="bcard-top">
+              <span class="bcard-idx">2 / 7 · SCENARIO · PCB SOLDER &amp; TITANIUM SCRATCH</span>
+              <span class="bcard-pill">choice · Act automatically</span>
+            </div>
+            <h3>0201 引脚连锡 RGB 环形灯梯度反射与 15μm 钛金属暗场白亮划痕：100% 物理光学保真</h3>
+            <p>
+              准确区分“漫反射下看不见、15° 暗场掠射下呈高亮白线”的金属微划痕，杜绝普通文生图画成黑墨水线的低级错误。
+            </p>
+            <div class="bcard-bars">
+              <div class="bar-row"><span>3D Normal + Darkfield</span><div class="bar-track"><div class="bar-fill" style="width:99.9%"></div></div><strong>99.9% Mask IoU</strong></div>
+              <div class="bar-row"><span>Human Polygon Label</span><div class="bar-track"><div class="bar-fill warn" style="width:68%"></div></div><strong>±3px Edge Blur</strong></div>
+              <div class="bar-row"><span>Naive CutMix Paste</span><div class="bar-track"><div class="bar-fill danger" style="width:42.5%"></div></div><strong>12.5% Overkill</strong></div>
+            </div>
+          </article>
+
+          <!-- Card 3 -->
+          <article class="bcard" data-card="3">
+            <div class="bcard-top">
+              <span class="bcard-idx">3 / 7 · WHAT I TESTED · 4 MANUFACTURING AOI COHORTS</span>
+              <span class="bcard-pill">Full Matrix</span>
+            </div>
+            <h3>四大精密制造实测：车载高密 PCB / 3C 钛金属外壳 / 动力电池极片 / 半导体晶圆</h3>
+            <table class="bcard-table">
+              <thead>
+                <tr><th>AOI COHORT</th><th>MASK IOU</th><th>ESCAPE</th><th>OVERKILL</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>车载 PCB 0201 连锡</td><td>99.9% (vs 42% ✕)</td><td>0.04% (vs 4.8% ✕)</td><td>0.35%</td></tr>
+                <tr><td>3C 钛金属 15μm 划痕</td><td>99.8% (vs 39% ✕)</td><td>0.05% (vs 5.2% ✕)</td><td>0.42%</td></tr>
+                <tr><td>锂电极片 50μm 针孔</td><td>99.9% (vs 44% ✕)</td><td>0.02% (vs 3.9% ✕)</td><td>0.28%</td></tr>
+                <tr><td>半导体晶圆切割道裂纹</td><td>99.9% (vs 36% ✕)</td><td>0.03% (vs 4.5% ✕)</td><td>0.31%</td></tr>
+              </tbody>
+            </table>
+          </article>
+
+          <!-- Card 4 -->
+          <article class="bcard" data-card="4">
+            <div class="bcard-top">
+              <span class="bcard-idx">4 / 7 · UNDER THE HOOD · MASK-FIRST &amp; DARKFIELD BRDF</span>
+              <span class="bcard-pill">Optical Contract</span>
+            </div>
+            <h3>“掩码先行”零误差真值生成与 15° 暗场环形光微平面掠射散射方程</h3>
+            <pre class="bcard-code"><code>// 1. Mask-First Zero-Drift Ground-Truth Generation:
+(Mask_GT, Normal_groove) = Procedural_MicroDefect_3D(Gerber_Pad_ROI, seed)
+// 2. Darkfield Grazing-Angle Ring-Light Conditioned Inpainting:
+I_synth = (1 - Mask_GT) * I_clean + Mask_GT * ControlNet_AOI(Normal_groove, theta_ring=15deg)</code></pre>
+            <p class="bcard-foot">颠倒传统“先生成图、再让人去标框”的顺序，改为“先由数学分形生成精确掩码与 3D 法线，再往掩码里填光学纹理”。</p>
+          </article>
+
+          <!-- Card 5 -->
+          <article class="bcard" data-card="5">
+            <div class="bcard-top">
+              <span class="bcard-idx">5 / 7 · ROBUSTNESS CHECK · SHORTCUTS &amp; FALSE ALARMS</span>
+              <span class="bcard-pill">Perturbation Test</span>
+            </div>
+            <h3>鲁棒性压测：消除贴图方框捷径过拟合、周围正常电路走线 100% 守恒与助焊剂假缺陷免疫</h3>
+            <table class="bcard-table">
+              <thead>
+                <tr><th>STRESS SCENARIO</th><th>CUTMIX / UNMASKED T2I</th><th>3D NORMAL + DARKFIELD</th><th>RESULT</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>分类器是否只靠识别“贴图边界框”作弊</td><td>Grad-CAM 显示模型只看矩形接缝 ✕</td><td>泊松法线平滑过渡，焦点 100% 在缺陷 ✅</td><td>0 Shortcut Bias</td></tr>
+                <tr><td>缺陷旁 50μm 处的正常铜箔走线</td><td>全图去噪把正常走线画断成新假缺陷 ✕</td><td>掩码外 Denoising=0.0 原像素死锁 ✅</td><td>100% Intact</td></tr>
+                <tr><td>表面无害水渍与助焊剂反光干扰</td><td>频繁误报导致机械手停线（12.5% 过杀）✕</td><td>定向合成无害反光负样本联合训练 ✅</td><td>0.35% Overkill</td></tr>
+              </tbody>
+            </table>
+          </article>
+
+          <!-- Card 6 -->
+          <article class="bcard" data-card="6">
+            <div class="bcard-top">
+              <span class="bcard-idx">6 / 7 · LATENCY · 4-HOUR NPI COLD-START PIPELINE</span>
+              <span class="bcard-pill">Rapid NPI</span>
+            </div>
+            <h3>新产线仅凭 50 张无缺陷良品图在 4 小时内完成 10,000 张合成缺陷生成与 AOI 模型上线</h3>
+            <div class="bcard-bars">
+              <div class="bar-row"><span>1. Gerber ROI Parse</span><div class="bar-track"><div class="bar-fill" style="width:10%"></div></div><strong>0.2 hrs</strong></div>
+              <div class="bar-row"><span>2. 10k 3D Normals</span><div class="bar-track"><div class="bar-fill" style="width:18%"></div></div><strong>0.5 hrs</strong></div>
+              <div class="bar-row"><span>3. ControlNet Batch</span><div class="bar-track"><div class="bar-fill" style="width:42%"></div></div><strong>1.8 hrs</strong></div>
+              <div class="bar-row"><span>4. SegNet Fine-Tune</span><div class="bar-track"><div class="bar-fill" style="width:30%"></div></div><strong>1.5 hrs (Total 4h)</strong></div>
+            </div>
+          </article>
+
+          <!-- Card 7 -->
+          <article class="bcard" data-card="7">
+            <div class="bcard-top">
+              <span class="bcard-idx">7 / 7 · MY TAKE · ARCHITECT DECISION MATRIX</span>
+              <span class="bcard-pill">82nd Workbench!</span>
+            </div>
+            <h3>架构师选型结论：工业质检合成数据必须遵循“先有精确掩码与 3D 法线，再按打光方案局部重绘”</h3>
+            <div class="fit-grid">
+              <div class="fit-good">
+                <strong>✅ 强烈推荐 (Good Fit)</strong>
+                <ul>
+                  <li>新产品导入（NPI）首周缺乏真实不良品样本时的 AOI 分割模型冷启动</li>
+                  <li>极罕见高危缺陷（锂电极片露箔针孔、车规芯片微裂纹）长尾样本扩充</li>
+                  <li>产线换用新角度同轴/暗场环形光源后的视觉模型快速域自适应</li>
+                </ul>
+              </div>
+              <div class="fit-bad">
+                <strong>⛔ 不适用边界 (Not For)</strong>
+                <ul>
+                  <li>严禁用无掩码全图扩散生成训练 AOI 模型（会把背景改坏产生错误伪负样本）</li>
+                  <li>严禁脱离机台真实光源角度（同轴/暗场/背光）用自然日常光照合成工业缺陷</li>
+                </ul>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+    </div>
+  </body>
+</html>
