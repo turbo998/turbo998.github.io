@@ -6751,6 +6751,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r549File),'utf8');
       assert.ok(txt.includes('2,610.00')&&txt.includes('3,950.00')&&txt.includes('6,560.00')&&txt.includes('65.00')&&txt.includes('250.00')&&txt.includes('315.00')&&txt.includes('6,245.00')&&txt.includes('95.20%')&&txt.includes('not_measured'),r549File+': contains exact 11-19 R25 R549 reversebusiness+teachtolearn+skillset+projectpulse closed-form parameters');
     }
+    // 2026-11-19 Night Round 26 (R550 Milestone: portalcrew/morty + promptadvisers/unlock + thenextnewthing/Video-Feedback + guuguo/agent-control) verification
+    const r550PathA=2760.00+41.0*100.00;
+    assert.equal(r550PathA.toFixed(2),'6860.00','11-19 R26 R550 Path A total');
+    const r550PathC=70.00+2.5*100.00;
+    assert.equal(r550PathC.toFixed(2),'320.00','11-19 R26 R550 Path C total');
+    assert.equal((r550PathA-r550PathC).toFixed(2),'6540.00','11-19 R26 R550 savings vs Path A');
+    assert.equal(((r550PathA-r550PathC)/r550PathA*100).toFixed(2),'95.34','11-19 R26 R550 pct savings vs Path A');
+    for(const r550File of ['workshops/github-trending-radar/docs/morty-unlock-video-feedback-agent-control-browser-continuation-73s-heretic-model-edit-timestamped-video-lock-5s-qr-voice-console-selection-faq.md','workshops/github-trending-radar/docs/morty-unlock-video-feedback-agent-control-browser-continuation-73s-heretic-model-edit-timestamped-video-lock-5s-qr-voice-console-selection-faq.en.md','assets/github-ai-radar-2026-11-19-r26-r550-morty-unlock-videofeedback-agentcontrol.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-19-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r550File),'utf8');
+      assert.ok(txt.includes('2,760.00')&&txt.includes('4,100.00')&&txt.includes('6,860.00')&&txt.includes('70.00')&&txt.includes('250.00')&&txt.includes('320.00')&&txt.includes('6,540.00')&&txt.includes('95.34%')&&txt.includes('not_measured'),r550File+': contains exact 11-19 R26 R550 morty+unlock+videofeedback+agentcontrol closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
