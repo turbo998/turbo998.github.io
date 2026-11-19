@@ -6663,6 +6663,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r541File),'utf8');
       assert.ok(txt.includes('2,710.00')&&txt.includes('4,050.00')&&txt.includes('6,760.00')&&txt.includes('70.00')&&txt.includes('250.00')&&txt.includes('320.00')&&txt.includes('6,440.00')&&txt.includes('95.27%')&&txt.includes('not_measured'),r541File+': contains exact 11-19 R17 R541 devkb+shopifysync+returnrp+replicator closed-form parameters');
     }
+    // 2026-11-19 Night Round 18 (R542: Bluezip231/Haven-Public + Octosift/OctoSift + DuongVuIT/video-short-animation + ThiagoLelis/TailorCV) verification
+    const r542PathA=2660.00+40.0*100.00;
+    assert.equal(r542PathA.toFixed(2),'6660.00','11-19 R18 R542 Path A total');
+    const r542PathC=70.00+2.5*100.00;
+    assert.equal(r542PathC.toFixed(2),'320.00','11-19 R18 R542 Path C total');
+    assert.equal((r542PathA-r542PathC).toFixed(2),'6340.00','11-19 R18 R542 savings vs Path A');
+    assert.equal(((r542PathA-r542PathC)/r542PathA*100).toFixed(2),'95.20','11-19 R18 R542 pct savings vs Path A');
+    for(const r542File of ['workshops/github-trending-radar/docs/haven-public-octosift-video-short-animation-tailorcv-shared-browser-failover-selfhosted-reddit-leads-2d3d-dual-aspect-remotion-ats-verified-cv-kanban-selection-faq.md','workshops/github-trending-radar/docs/haven-public-octosift-video-short-animation-tailorcv-shared-browser-failover-selfhosted-reddit-leads-2d3d-dual-aspect-remotion-ats-verified-cv-kanban-selection-faq.en.md','assets/github-ai-radar-2026-11-19-r18-haven-octosift-videoshortanim-tailorcv.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-19-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r542File),'utf8');
+      assert.ok(txt.includes('2,660.00')&&txt.includes('4,000.00')&&txt.includes('6,660.00')&&txt.includes('70.00')&&txt.includes('250.00')&&txt.includes('320.00')&&txt.includes('6,340.00')&&txt.includes('95.20%')&&txt.includes('not_measured'),r542File+': contains exact 11-19 R18 R542 haven+octosift+videoshortanim+tailorcv closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
