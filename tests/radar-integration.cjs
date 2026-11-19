@@ -6575,6 +6575,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r533File),'utf8');
       assert.ok(txt.includes('2,540.00')&&txt.includes('3,900.00')&&txt.includes('6,440.00')&&txt.includes('65.00')&&txt.includes('250.00')&&txt.includes('315.00')&&txt.includes('6,125.00')&&txt.includes('95.11%')&&txt.includes('not_measured'),r533File+': contains exact 11-19 R9 R533 deslop+devskills+applereview+redcrab closed-form parameters');
     }
+    // 2026-11-19 Night Round 10 (R534: keli-wen/cospan + stokaro/codex-claude-peer + BaiKe-Zhang/dsh-mindmark + kadaliao/dsh-bots) verification
+    const r534PathA=2580.00+39.5*100.00;
+    assert.equal(r534PathA.toFixed(2),'6530.00','11-19 R10 R534 Path A total');
+    const r534PathC=70.00+2.5*100.00;
+    assert.equal(r534PathC.toFixed(2),'320.00','11-19 R10 R534 Path C total');
+    assert.equal((r534PathA-r534PathC).toFixed(2),'6210.00','11-19 R10 R534 savings vs Path A');
+    assert.equal(((r534PathA-r534PathC)/r534PathA*100).toFixed(2),'95.10','11-19 R10 R534 pct savings vs Path A');
+    for(const r534File of ['workshops/github-trending-radar/docs/cospan-codex-claude-peer-dsh-mindmark-dsh-bots-model-harness-delegation-unix-socket-relay-7op-inline-markup-dispatcher-bot-teams-selection-faq.md','workshops/github-trending-radar/docs/cospan-codex-claude-peer-dsh-mindmark-dsh-bots-model-harness-delegation-unix-socket-relay-7op-inline-markup-dispatcher-bot-teams-selection-faq.en.md','assets/github-ai-radar-2026-11-19-r10-cospan-peer-mindmark-dshbots.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-19-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r534File),'utf8');
+      assert.ok(txt.includes('2,580.00')&&txt.includes('3,950.00')&&txt.includes('6,530.00')&&txt.includes('70.00')&&txt.includes('250.00')&&txt.includes('320.00')&&txt.includes('6,210.00')&&txt.includes('95.10%')&&txt.includes('not_measured'),r534File+': contains exact 11-19 R10 R534 cospan+peer+mindmark+dshbots closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
