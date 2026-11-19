@@ -1,0 +1,1653 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<script>
+  (() => {
+    const param = new URLSearchParams(window.location.search).get("scoutTheme");
+    const theme =
+      param || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    document.documentElement.setAttribute("data-theme", theme);
+  })();
+</script>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Terminal-Bench 4.1 深度解析与架构师洞察工作台 — 排行榜 · 帕累托散点图 · 66 项智能体任务</title>
+<meta name="description" content="基于 Terminal-Bench 4.1 官方 65 组运行（52 组唯一模型×脚手架、66 项任务、21,450 次试验）的交互式排行榜、帕累托成本散点图、任务解剖与 AI 解决方案架构师选型手册。" />
+<style>
+:root {
+  color-scheme: light;
+  --cp-bg: #f7f4ef;
+  --cp-bg-elevated: #fcfbf8;
+  --cp-surface: #ffffff;
+  --cp-surface-soft: #f5f5f5;
+  --cp-border: #dedede;
+  --cp-border-strong: #919191;
+  --cp-text: #242424;
+  --cp-text-muted: #5c5c5c;
+  --cp-text-soft: #6f6f6f;
+  --cp-accent: #b11f4b;
+  --cp-accent-hover: #9a1a41;
+  --cp-accent-soft: rgba(177, 31, 75, 0.08);
+  --cp-accent-fg: #ffffff;
+  --cp-success: #16a34a;
+  --cp-danger: #dc2626;
+  --cp-warning: #f59e0b;
+  --cp-link: #0078d4;
+  --cp-shadow: 0 18px 48px rgba(0, 0, 0, 0.12);
+  --cp-overlay: rgba(255, 255, 255, 0.8);
+  --cp-panel: rgba(255, 255, 255, 0.86);
+  --cp-panel-strong: rgba(255, 255, 255, 0.96);
+  --cp-sheen: rgba(255, 255, 255, 0.55);
+  --cp-highlight: rgba(177, 31, 75, 0.12);
+}
+html[data-theme="dark"] {
+  color-scheme: dark;
+  --cp-bg: #3d3b3a;
+  --cp-bg-elevated: #343231;
+  --cp-surface: #292929;
+  --cp-surface-soft: #2e2e2e;
+  --cp-border: #474747;
+  --cp-border-strong: #5f5f5f;
+  --cp-text: #dedede;
+  --cp-text-muted: #919191;
+  --cp-text-soft: #b0b0b0;
+  --cp-accent: #fd8ea1;
+  --cp-accent-hover: #fb7b91;
+  --cp-accent-soft: rgba(253, 142, 161, 0.14);
+  --cp-accent-fg: #1a1a1a;
+  --cp-success: #4ade80;
+  --cp-danger: #f87171;
+  --cp-warning: #fbbf24;
+  --cp-link: #4da6ff;
+  --cp-shadow: 0 18px 48px rgba(0, 0, 0, 0.32);
+  --cp-overlay: rgba(41, 41, 41, 0.88);
+  --cp-panel: rgba(41, 41, 41, 0.72);
+  --cp-panel-strong: rgba(41, 41, 41, 0.96);
+  --cp-sheen: rgba(255, 255, 255, 0.04);
+  --cp-highlight: rgba(253, 142, 161, 0.12);
+}
+*, *::before, *::after { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--cp-bg);
+  color: var(--cp-text);
+  font-family: "Segoe UI", Aptos, Calibri, -apple-system, BlinkMacSystemFont, sans-serif;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+code, pre, .mono {
+  font-family: Consolas, "Courier New", Courier, monospace;
+}
+a { color: var(--cp-link); text-decoration: none; }
+a:hover { text-decoration: underline; }
+.tb-shell {
+  max-width: 1360px;
+  margin: 0 auto;
+  padding: 24px 20px 64px;
+}
+.tb-hero {
+  background: var(--cp-surface);
+  border: 1px solid var(--cp-border);
+  border-radius: 16px;
+  padding: 28px;
+  margin-bottom: 20px;
+}
+.tb-hero-top {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.tb-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 12px;
+  border-radius: 0.625rem;
+  background: var(--cp-accent-soft);
+  color: var(--cp-accent);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.tb-toolbar-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+.tb-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 0.625rem;
+  border: 1px solid var(--cp-border);
+  background: var(--cp-bg-elevated);
+  color: var(--cp-text);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+}
+.tb-btn:hover {
+  border-color: var(--cp-accent);
+  color: var(--cp-accent);
+  text-decoration: none;
+}
+.tb-btn-primary {
+  background: var(--cp-accent);
+  border-color: var(--cp-accent);
+  color: var(--cp-accent-fg);
+}
+.tb-btn-primary:hover {
+  background: var(--cp-accent-hover);
+  border-color: var(--cp-accent-hover);
+  color: var(--cp-accent-fg);
+}
+.tb-hero h1 {
+  margin: 0 0 12px;
+  font-size: clamp(24px, 3vw, 34px);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+.tb-lead {
+  margin: 0 0 20px;
+  color: var(--cp-text-muted);
+  font-size: 15.5px;
+  max-width: 1080px;
+}
+.tb-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(195px, 1fr));
+  gap: 12px;
+}
+.tb-kpi {
+  background: var(--cp-bg-elevated);
+  border: 1px solid var(--cp-border);
+  border-radius: 12px;
+  padding: 14px 16px;
+}
+.tb-kpi-label {
+  font-size: 11.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--cp-text-muted);
+  margin-bottom: 4px;
+}
+.tb-kpi-val {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--cp-text);
+  letter-spacing: -0.02em;
+}
+.tb-kpi-val.accent { color: var(--cp-accent); }
+.tb-kpi-val.success { color: var(--cp-success); }
+.tb-kpi-sub {
+  font-size: 12px;
+  color: var(--cp-text-soft);
+  margin-top: 4px;
+}
+.tb-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  background: var(--cp-surface);
+  border: 1px solid var(--cp-border);
+  border-radius: 16px;
+  padding: 8px;
+  margin-bottom: 20px;
+  position: relative;
+  z-index: 2;
+  scroll-margin-top: 96px;
+}
+.tb-tab, .tb-panel, .tb-shell [id] {
+  scroll-margin-top: 96px;
+}
+.tb-tab {
+  flex: 1 1 auto;
+  padding: 10px 16px;
+  border-radius: 0.625rem;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--cp-text-muted);
+  font-family: inherit;
+  font-size: 13.5px;
+  font-weight: 700;
+  cursor: pointer;
+  text-align: center;
+}
+.tb-tab:hover {
+  color: var(--cp-text);
+  background: var(--cp-surface-soft);
+}
+.tb-tab[aria-selected="true"] {
+  background: var(--cp-accent);
+  color: var(--cp-accent-fg);
+}
+.tb-panel { display: none; }
+.tb-panel.active { display: block; }
+.tb-card {
+  background: var(--cp-surface);
+  border: 1px solid var(--cp-border);
+  border-radius: 16px;
+  padding: 22px;
+  margin-bottom: 20px;
+}
+.tb-card h2 {
+  margin: 0 0 6px;
+  font-size: 20px;
+  letter-spacing: -0.01em;
+}
+.tb-card-sub {
+  margin: 0 0 16px;
+  font-size: 14px;
+  color: var(--cp-text-muted);
+}
+.tb-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  padding: 14px;
+  background: var(--cp-bg-elevated);
+  border: 1px solid var(--cp-border);
+  border-radius: 12px;
+  margin-bottom: 16px;
+}
+.tb-input, .tb-select {
+  padding: 8px 12px;
+  border-radius: 0.625rem;
+  border: 1px solid var(--cp-border);
+  background: var(--cp-surface);
+  color: var(--cp-text);
+  font-family: inherit;
+  font-size: 13px;
+}
+.tb-input { min-width: 210px; }
+.tb-chip-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.tb-chip {
+  padding: 6px 11px;
+  border-radius: 0.625rem;
+  border: 1px solid var(--cp-border);
+  background: var(--cp-surface);
+  color: var(--cp-text-muted);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.tb-chip.active {
+  border-color: var(--cp-accent);
+  background: var(--cp-accent-soft);
+  color: var(--cp-accent);
+}
+.tb-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--cp-text);
+  cursor: pointer;
+}
+.tb-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--cp-border);
+  border-radius: 12px;
+}
+.tb-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.tb-table th, .tb-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--cp-border);
+  text-align: left;
+  vertical-align: middle;
+}
+.tb-table th {
+  background: var(--cp-surface-soft);
+  color: var(--cp-text-muted);
+  font-size: 11.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+.tb-table th:hover { color: var(--cp-accent); }
+.tb-table tbody tr { cursor: pointer; }
+.tb-table tbody tr:hover { background: var(--cp-surface-soft); }
+.tb-table tbody tr.selected { background: var(--cp-accent-soft); }
+.tb-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 0.625rem;
+  font-size: 11px;
+  font-weight: 700;
+  border: 1px solid var(--cp-border);
+  background: var(--cp-bg-elevated);
+  color: var(--cp-text-muted);
+}
+.tb-badge.pareto {
+  border-color: var(--cp-accent);
+  background: var(--cp-accent-soft);
+  color: var(--cp-accent);
+}
+.tb-badge.good {
+  border-color: var(--cp-success);
+  color: var(--cp-success);
+}
+.tb-badge.warn {
+  border-color: var(--cp-warning);
+  color: var(--cp-warning);
+}
+.tb-badge.bad {
+  border-color: var(--cp-danger);
+  color: var(--cp-danger);
+}
+.tb-bar-track {
+  position: relative;
+  width: 150px;
+  height: 10px;
+  background: var(--cp-surface-soft);
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid var(--cp-border);
+}
+.tb-bar-fill {
+  height: 100%;
+  background: var(--cp-accent);
+  border-radius: 6px;
+}
+.tb-bar-p5 {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--cp-link);
+}
+.tb-inspector {
+  background: var(--cp-bg-elevated);
+  border: 1px solid var(--cp-border-strong);
+  border-radius: 12px;
+  padding: 16px;
+  margin-top: 16px;
+}
+.tb-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 16px;
+}
+.tb-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+  gap: 16px;
+}
+.tb-insight-box {
+  background: var(--cp-bg-elevated);
+  border: 1px solid var(--cp-border);
+  border-left: 4px solid var(--cp-accent);
+  border-radius: 12px;
+  padding: 16px 18px;
+}
+.tb-insight-box h3 {
+  margin: 0 0 8px;
+  font-size: 15.5px;
+}
+.tb-insight-box p {
+  margin: 0;
+  font-size: 13.5px;
+  color: var(--cp-text-muted);
+}
+.tb-pareto-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 2.2fr) minmax(300px, 1fr);
+  gap: 16px;
+  align-items: start;
+}
+@media (max-width: 980px) {
+  .tb-pareto-layout { grid-template-columns: 1fr; }
+}
+.tb-svg-wrap {
+  background: var(--cp-bg-elevated);
+  border: 1px solid var(--cp-border);
+  border-radius: 12px;
+  padding: 12px;
+}
+.tb-svg-wrap svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.tb-domain-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
+  margin-bottom: 18px;
+}
+.tb-domain-card {
+  background: var(--cp-bg-elevated);
+  border: 1px solid var(--cp-border);
+  border-radius: 12px;
+  padding: 12px 14px;
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+}
+.tb-domain-card.active, .tb-domain-card:hover {
+  border-color: var(--cp-accent);
+  background: var(--cp-accent-soft);
+}
+.tb-heat-cell {
+  text-align: center;
+  font-weight: 700;
+  border-radius: 6px;
+  padding: 6px 8px;
+}
+.tb-heat-high { background: var(--cp-highlight); color: var(--cp-accent); }
+.tb-heat-mid { background: var(--cp-surface-soft); color: var(--cp-text); }
+.tb-heat-low { background: var(--cp-bg-elevated); color: var(--cp-danger); }
+.tb-arch-flow {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+  margin: 14px 0;
+}
+.tb-arch-step {
+  background: var(--cp-bg-elevated);
+  border: 1px solid var(--cp-border);
+  border-radius: 12px;
+  padding: 14px;
+}
+.tb-arch-step strong {
+  display: block;
+  color: var(--cp-accent);
+  font-size: 12px;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.tb-footer {
+  margin-top: 32px;
+  padding-top: 18px;
+  border-top: 1px solid var(--cp-border);
+  color: var(--cp-text-muted);
+  font-size: 12.5px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 12px;
+}
+@media (max-width: 720px) {
+  .tb-shell { padding: 14px 12px 44px; }
+  .tb-hero, .tb-card { padding: 16px; }
+  .tb-tabs { position: static; }
+  .tb-input, .tb-select { min-width: 0; max-width: 100%; width: 100%; }
+}
+</style>
+<style id="site-remediation-style">/* Embedded by integrate-dedicated.cjs so sealed report CSP remains unchanged. */
+.kee-dedicated-nav {
+  all: initial; box-sizing: border-box; position: relative; display: flex;
+  flex-wrap: wrap; align-items: center; gap: 6px 14px; width: 100%;
+  padding: 12px 18px; margin: 0 0 16px; border: 1px solid #314361;
+  background: #101A30; color: #EEF3FF; font: 13px/1.5 system-ui, sans-serif;
+  text-align: left; isolation: isolate; color-scheme: dark;
+}
+.kee-dedicated-nav a {
+  all: revert; box-sizing: border-box; display: inline-block; padding: 4px 0;
+  color: #9AABFF; background: transparent; font: inherit; text-decoration: underline;
+  text-underline-offset: 3px; border: 0; border-radius: 0; box-shadow: none;
+}
+.kee-dedicated-nav a:focus-visible { outline: 3px solid #56DDCD; outline-offset: 3px; }
+.kee-dedicated-nav .kee-dedicated-identity { font-weight: 700; color: #EEF3FF; }
+.kee-dedicated-nav .kee-dedicated-language {
+  all: revert; display: block; flex-basis: 100%; color: #ADBBD1; font: 12px/1.5 system-ui, sans-serif;
+}
+.kee-dedicated-native-link { display: block; padding: 22px; color: #1858a8; background: #f8fafc; font: 15px/1.6 system-ui, sans-serif; }
+.kee-dedicated-native-link a { color: #1858a8; text-decoration: underline; }
+@media print { .kee-dedicated-nav { display: none; } }
+
+/* Professional primary navigation: long section names reflow, never scroll inside the header. */
+[data-professional-header]{box-sizing:border-box;display:grid!important;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:18px!important;width:100%;max-width:none;height:auto!important;min-height:0!important;padding:18px 24px!important;margin:0 0 16px;position:relative;overflow:visible!important;background:#101A30;color:#EEF3FF;border:1px solid #314361;font:13px/1.5 system-ui,sans-serif;isolation:isolate;color-scheme:dark}
+[data-professional-header] *{box-sizing:border-box;min-width:0;max-height:none}
+[data-professional-header] a{font:inherit;text-decoration:none;color:#9AABFF;overflow-wrap:anywhere;white-space:normal}
+[data-professional-header] .professional-identity{font-weight:750;color:#EEF3FF;white-space:nowrap;font-size:14px;margin:0}
+[data-professional-header] .professional-primary{display:grid;grid-template-columns:1.45fr repeat(5,minmax(0,1fr));gap:6px;align-items:stretch;min-width:0}
+@media(max-width:960px) and (min-width:601px){[data-professional-header] .professional-primary{gap:5px}[data-professional-header] .professional-primary a{padding:8px 6px;font-size:11.5px}}
+[data-professional-header] .professional-primary a{display:flex;align-items:center;justify-content:center;padding:10px 9px;border:1px solid #314361;border-radius:12px;background:#172440;text-align:center;line-height:1.4;min-height:44px}
+[data-professional-header] .professional-primary a[aria-current=page]{background:#23375a;border-color:#56DDCD;color:#56DDCD}
+[data-professional-header] .professional-controls{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:4px;font-size:12px;margin:0;position:static}
+[data-professional-header] .professional-controls>a{display:flex;align-items:center;justify-content:center;padding:8px;min-height:40px;min-width:32px;border-radius:10px}
+[data-professional-header] .professional-context{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px 18px;padding-top:12px;border-top:1px solid #314361;font-size:12px;color:#ADBBD1;min-width:0;line-height:1.6}
+[data-professional-header] .professional-context>*{min-width:0;overflow-wrap:anywhere}
+[data-professional-header] .professional-context .kee-dedicated-language{flex-basis:100%;color:#ADBBD1}
+[data-professional-header] a:focus-visible{outline:3px solid #56DDCD;outline-offset:3px}
+[data-professional-header] a:hover{text-decoration:underline}
+[data-professional-header][data-perimeter-theme=light],:root[data-theme=light] .reading-header[data-professional-header]{background:#fff;color:#172440;border-color:#d4deee;color-scheme:light}
+[data-professional-header][data-perimeter-theme=light] a,:root[data-theme=light] .reading-header[data-professional-header] a{color:#3752a0}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a,:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a{background:#edf2ff;border-color:#d4deee}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a[aria-current],:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a[aria-current]{background:#dff6f0;color:#127b72;border-color:#127b72}
+@media(max-width:1150px){[data-professional-header]{grid-template-columns:minmax(0,1fr) auto;gap:12px!important}[data-professional-header] .professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header] .professional-controls{grid-column:2;grid-row:1}}
+@media(max-width:600px){[data-professional-header]{padding:14px 16px!important;gap:12px!important}[data-professional-header] .professional-primary{grid-template-columns:repeat(2,minmax(0,1fr))}[data-professional-header] .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:13px}[data-professional-header] .professional-controls{gap:0}[data-professional-header] .professional-controls>a{padding:6px;min-width:28px}}
+@media print{[data-professional-header]{display:none!important}}
+
+html{scroll-padding-top:164px}@media(max-width:600px){html{scroll-padding-top:260px}}.reading-header,.kee-dedicated-nav,[data-professional-header]{position:sticky;top:0;z-index:1000;-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
+
+:root{--search-bg:#101a30;--search-soft:#172440;--search-ink:#eef3ff;--search-muted:#adbbd1;--search-line:#293956;--search-accent:#9aabff;--header-offset:144px}
+:root[data-reading-shell][data-theme=light],[data-perimeter-theme=light]{--search-bg:#fff;--search-soft:#e8eefb;--search-ink:#17233e;--search-muted:#4c5e7c;--search-line:#d5ddec;--search-accent:#354ec8}
+html{scroll-padding-top:var(--header-offset,108px)!important}
+.site-search,.site-search *{box-sizing:border-box!important;font-family:"Segoe UI",sans-serif;letter-spacing:normal;text-transform:none}
+.site-search{position:relative;display:flex;align-items:center;gap:5px;min-width:0;width:230px;max-width:100%;margin:0!important;padding:0!important;line-height:1.4;border:1px solid var(--search-line);border-radius:9px;background:var(--search-soft);color:var(--search-ink);isolation:isolate}
+.site-search input[type=search]{display:block;flex:1;min-width:0;width:100%;height:42px;margin:0;padding:9px 8px!important;font-size:12px!important;line-height:1.5;border:0!important;border-radius:9px;background:transparent!important;color:var(--search-ink)!important;box-shadow:none!important;appearance:none}
+.site-search input::placeholder{color:var(--search-muted);opacity:1}.site-search input:focus-visible{outline:2px solid var(--search-accent);outline-offset:2px}
+.site-search kbd{font:11px Consolas,monospace;color:var(--search-muted);padding:1px 5px;border:1px solid var(--search-line);border-radius:4px}
+.site-search button[type=submit]{flex:none;width:38px;min-width:38px;height:42px;min-height:42px;padding:0;margin:0;border:0;border-radius:8px;background:transparent;color:var(--search-accent);font-size:24px;cursor:pointer;box-shadow:none}
+.search-label,.search-status{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.site-search .search-results{position:absolute;top:calc(100% + 10px);right:0;z-index:1100;width:min(480px,calc(100vw - 32px));max-height:min(560px,65vh);overflow-y:auto;border:1px solid var(--search-line);border-radius:12px;background:var(--search-bg);color:var(--search-ink);padding:10px;box-shadow:0 12px 32px #0005;text-align:left}
+.site-search .search-results[hidden]{display:none!important}.search-results .search-group{margin:8px 6px 4px;font:11px/1.5 Consolas,monospace;color:var(--search-muted)}
+.site-search .search-results a{display:block!important;padding:10px!important;margin:3px 0!important;border:1px solid transparent!important;border-radius:7px;background:transparent;color:var(--search-ink)!important;font-size:13px!important;text-decoration:none!important;white-space:normal;overflow-wrap:anywhere;text-align:left!important;line-height:1.5!important}
+.site-search .search-results a[aria-selected=true],.site-search .search-results a:hover{border-color:var(--search-accent)!important;background:var(--search-soft)}
+.search-results a small{display:block;font-size:10px;color:var(--search-muted);margin-top:4px}.search-results p{margin:10px;font-size:13px;color:var(--search-muted)}
+.search-archive-summary{padding:20px;border:1px solid var(--search-line);border-radius:10px;background:var(--search-bg);color:var(--search-ink);margin:24px 0}.search-archive-summary h2{font-size:24px;margin:0 0 12px}.search-archive-summary li{margin:12px 0}.search-archive-summary a{color:var(--search-accent)}
+[data-professional-header]{position:sticky!important;top:0!important;z-index:1000!important;background:var(--search-bg)!important;--header-glass:rgba(16,26,48,.9);grid-template-columns:auto minmax(0,1fr) 230px auto!important}
+[data-professional-header][data-perimeter-theme=light],:root[data-reading-shell][data-theme=light] [data-professional-header]{--header-glass:rgba(255,255,255,.94)}
+[data-professional-header] .professional-mobile{display:none}.professional-mobile summary{min-width:38px;min-height:42px;display:grid;place-items:center;cursor:pointer;list-style:none}.professional-mobile summary::-webkit-details-marker{display:none}
+[data-professional-header] .professional-context{display:none}
+.professional-context-bar{padding:12px 24px;border-bottom:1px solid var(--search-line);background:var(--search-bg);color:var(--search-muted);font:12px/1.6 "Segoe UI",sans-serif;display:flex;flex-wrap:wrap;gap:8px 18px;overflow-wrap:anywhere}.professional-context-bar a{color:var(--search-accent)}
+@supports((backdrop-filter:blur(16px)) or (-webkit-backdrop-filter:blur(16px))){.site-header,[data-professional-header]{background:var(--header-glass)!important;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}}
+@media(max-width:1250px) and (min-width:701px){.header-inner{grid-template-columns:minmax(0,1fr) 230px auto!important;padding:12px 0;gap:12px!important}.desktop-nav{grid-row:2;grid-column:1/-1}.header-inner>.site-search{grid-column:2;grid-row:1}.header-inner>.controls{grid-column:3;grid-row:1}[data-professional-header]{grid-template-columns:minmax(0,1fr) 230px auto!important;gap:12px!important}[data-professional-header]>.professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header]>.site-search{grid-column:2;grid-row:1}[data-professional-header]>.professional-controls{grid-column:3;grid-row:1}:root{--header-offset:184px}}
+@media(max-width:700px){.header-inner{grid-template-columns:minmax(0,1fr) auto!important;padding:10px 0;gap:8px!important}.header-inner>.site-search{grid-row:2;grid-column:1/-1;width:100%}.header-inner>.controls{grid-column:2;grid-row:1}.site-search .search-results{width:100%;right:0}[data-professional-header]{grid-template-columns:minmax(0,1fr) auto!important;padding:10px 16px!important;gap:8px!important}[data-professional-header]>.professional-primary{display:none!important}[data-professional-header]>.site-search{grid-column:1/-1;grid-row:2;width:100%}[data-professional-header]>.professional-controls{grid-column:2;grid-row:1}[data-professional-header] .professional-mobile{display:block}[data-professional-header] .professional-mobile[open]>.professional-primary{position:absolute;top:100%;left:0;right:0;padding:16px;background:var(--search-bg);border-bottom:1px solid var(--search-line);display:grid;grid-template-columns:1fr 1fr;gap:8px}[data-professional-header] .professional-mobile .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:12px!important}:root{--header-offset:136px}}
+@media(prefers-reduced-transparency:reduce){.site-header,[data-professional-header]{background:var(--search-bg)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}}
+@media print{.site-search,.professional-context-bar{display:none!important}}
+
+@media(min-width:1251px){.header-inner{display:grid!important;grid-template-columns:auto minmax(0,1fr) 230px auto!important;gap:18px!important}.header-inner .desktop-nav{min-width:0}}
+
+html:has(.kee-dedicated-app-root){height:auto!important;overflow-x:hidden!important;overflow-y:auto!important}
+body:has([data-professional-header]){height:auto!important;overflow-x:clip!important;overflow-y:visible!important;padding-top:0!important}
+.demo-language-navigation{display:none!important}
+.stage-column,.telemetry-panel,.scene-pill,#timeline-slider{min-width:0}
+@media(max-width:1180px){.workspace,.template-tabs{grid-template-columns:minmax(0,1fr)!important}}
+
+.in-arena-frame .professional-context-bar,.in-arena-frame [data-knowledge-atlas]{display:none!important}
+.knowledge-graph-wide{display:block}.knowledge-graph-compact{display:none}@media(max-width:600px){.knowledge-graph-wide{display:none}.knowledge-graph-compact{display:block}}
+</style><script src="../../assets/editorial/search-index.js" defer></script><script src="../../assets/editorial/search.js" defer></script></head>
+<body><nav class="kee-dedicated-nav" data-professional-header><a class="professional-identity reading-brand kee-dedicated-identity identity" href="../../zh.html">Qi Chen · @turbo998</a><div class="professional-primary" role="navigation" aria-label="主导航"><a href="../../studio/zh-index.html" data-section="hub" data-nav-en-href="../../studio/index.html" data-nav-zh-href="../../studio/zh-index.html" data-nav-en-label="Frontier Transformation Engineering Hub" data-nav-zh-label="Frontier Transformation Engineering Hub" aria-current="page">Frontier Transformation Engineering Hub</a><a href="../../zh-diamond.html" data-section="diamond" data-nav-en-href="../../diamond.html" data-nav-zh-href="../../zh-diamond.html" data-nav-en-label="Diamond Live Demos" data-nav-zh-label="Diamond 实战演示">Diamond 实战演示</a><a href="../../zh-benchmarks.html" data-section="benchmarks" data-nav-en-href="../../benchmarks.html" data-nav-zh-href="../../zh-benchmarks.html" data-nav-en-label="Benchmark &amp; Eval Foundry" data-nav-zh-label="基准评测中心">基准评测中心</a><a href="../../zh-github-radar.html" data-section="radar" data-nav-en-href="../../github-radar.html" data-nav-zh-href="../../zh-github-radar.html" data-nav-en-label="GitHub AI Signal Radar" data-nav-zh-label="GitHub AI 信号雷达">GitHub AI 信号雷达</a><a href="../../zh-openrouter.html" data-section="routing" data-nav-en-href="../../openrouter.html" data-nav-zh-href="../../zh-openrouter.html" data-nav-en-label="Model Routing &amp; Telemetry" data-nav-zh-label="OpenRouter 模型遥测">OpenRouter 模型遥测</a><a href="../../zh-about.html" data-section="profile" data-nav-en-href="../../about.html" data-nav-zh-href="../../zh-about.html" data-nav-en-label="Principal Architect Profile" data-nav-zh-label="首席架构师履历">首席架构师履历</a></div><form class="site-search" role="search" action="../../studio/zh-archive.html" method="get" data-search-root="../../index.html" data-search-language="zh-CN"><label class="search-label" for="site-search-input">搜索架构、评测、Demo、技能...</label><input id="site-search-input" name="q" type="search" placeholder="搜索架构、评测、Demo、技能..." autocomplete="off" spellcheck="false" aria-keyshortcuts="/ Control+k Meta+k"><kbd aria-hidden="true">/</kbd><button type="submit" aria-label="搜索全部内容">⌕</button><div class="search-results" id="site-search-results" hidden></div><span class="search-status" role="status" aria-live="polite"></span></form><div class="reading-controls professional-controls" aria-label="网站语言与外观"><a href="index.en.html" data-reading-language hreflang="en" lang="en">EN</a><a href="index.html" hreflang="zh-CN" lang="zh-CN" aria-current="page">中文</a><details class="professional-mobile"><summary aria-label="打开主导航">☰</summary><div class="professional-primary" role="navigation" aria-label="移动主导航"><a href="../../studio/zh-index.html" data-section="hub" data-nav-en-href="../../studio/index.html" data-nav-zh-href="../../studio/zh-index.html" data-nav-en-label="Frontier Transformation Engineering Hub" data-nav-zh-label="Frontier Transformation Engineering Hub" aria-current="page">Frontier Transformation Engineering Hub</a><a href="../../zh-diamond.html" data-section="diamond" data-nav-en-href="../../diamond.html" data-nav-zh-href="../../zh-diamond.html" data-nav-en-label="Diamond Live Demos" data-nav-zh-label="Diamond 实战演示">Diamond 实战演示</a><a href="../../zh-benchmarks.html" data-section="benchmarks" data-nav-en-href="../../benchmarks.html" data-nav-zh-href="../../zh-benchmarks.html" data-nav-en-label="Benchmark &amp; Eval Foundry" data-nav-zh-label="基准评测中心">基准评测中心</a><a href="../../zh-github-radar.html" data-section="radar" data-nav-en-href="../../github-radar.html" data-nav-zh-href="../../zh-github-radar.html" data-nav-en-label="GitHub AI Signal Radar" data-nav-zh-label="GitHub AI 信号雷达">GitHub AI 信号雷达</a><a href="../../zh-openrouter.html" data-section="routing" data-nav-en-href="../../openrouter.html" data-nav-zh-href="../../zh-openrouter.html" data-nav-en-label="Model Routing &amp; Telemetry" data-nav-zh-label="OpenRouter 模型遥测">OpenRouter 模型遥测</a><a href="../../zh-about.html" data-section="profile" data-nav-en-href="../../about.html" data-nav-zh-href="../../zh-about.html" data-nav-en-label="Principal Architect Profile" data-nav-zh-label="首席架构师履历">首席架构师履历</a></div></details><a data-reading-theme="light" href="index.html?theme=light" aria-label="浅色主题">☀</a><a data-reading-theme="dark" href="index.html?theme=dark" aria-label="深色主题">◐</a></div><div class="professional-context" aria-label="返回上下文"><a href="../../studio/zh-index.html">← 工程枢纽</a> · <a href="../../studio/zh-benchmarks.html">返回主题</a></div></nav><div class="professional-context-bar"><a href="../../studio/zh-index.html">← 工程枢纽</a> · <a class="reading-context" href="../../studio/zh-benchmarks.html">返回主题</a></div><!-- site-remediation-knowledge:start --><figure class="knowledge-figure" data-knowledge-atlas="benchmarks" style="margin:20px auto;max-width:1120px;padding:0 20px;box-sizing:border-box"><style>.knowledge-graph-wide{display:block}.knowledge-graph-compact{display:none}@media(max-width:600px){.knowledge-graph-wide{display:none}.knowledge-graph-compact{display:block}}</style><svg xmlns="http://www.w3.org/2000/svg" lang="zh-CN" class="knowledge-graph-compact" role="img" aria-labelledby="knowledge-d45d0474f54b-compact-title knowledge-d45d0474f54b-compact-desc" viewBox="0 0 360 852" width="360" style="width:100%;height:auto;max-width:560px;margin:0 auto;font-family:system-ui,sans-serif"><title id="knowledge-d45d0474f54b-compact-title">Terminal-Bench 4.1 深度解析与架构师洞察工作台 — 排行榜 · 帕累托散点图 · 66 项智能体任务</title><desc id="knowledge-d45d0474f54b-compact-desc">研究问题与封存负载: 数据集 · 模型批次 · 分母 · 来源 → 定义测试契约 → Harness 与执行契约: 提示词 · 工具权限 · 环境 · 重复次数 → 生成追踪产物 → 原始输出与确定性校验: 任务轨迹 · 校验结果 · 缺失值记录 → 带条件汇总 → 得分、稳健性与延迟: 保留单位、条件与不确定性 → 支持有边界的结论 → 报告与可复现性: 7 卡来源报告 · 局限 · 是否独立复现？</desc><rect width="360" height="852" rx="16" fill="#081525" stroke="#284566"/><rect x="16" y="14" width="224" height="22" rx="11" fill="#112844" stroke="#2d5a88"/><text x="28" y="29" fill="#56ddcd" font-size="11.5" font-weight="700"><tspan x="28" dy="0">数据流向与架构要点 · 竖屏视图</tspan></text><text x="20" y="58" fill="#eef5ff" font-size="18" font-weight="700"><tspan x="20" dy="0">Terminal-Bench 4.1 深度解析与</tspan><tspan x="20" dy="25.2">架构师洞察工作台 — 排行榜 ·</tspan><tspan x="20" dy="25.2">帕累托散点图 · 66 项智能体任</tspan><tspan x="20" dy="25.2">务</tspan></text><text x="20" y="158" fill="#a9b8ce" font-size="12.5" font-weight="400"><tspan x="20" dy="0">概念拓扑 · 箭头表示数据/控制流向，非实测指标</tspan></text><g data-concept="1"><rect x="16" y="180" width="328" height="94" rx="12" fill="#0e2036" stroke="#38597d"/><rect x="16" y="180" width="328" height="4" rx="2" fill="#38bdf8"/><text x="30" y="203" fill="#38bdf8" font-size="11.5" font-weight="700"><tspan x="30" dy="0">01 · 输入与意图</tspan></text><text x="30" y="226" fill="#f0f6ff" font-size="16.5" font-weight="700"><tspan x="30" dy="0">研究问题与封存负载</tspan></text><text x="30" y="253" fill="#c4d5e8" font-size="13" font-weight="400"><tspan x="30" dy="0">数据集 · 模型批次 · 分母 · 来源</tspan></text></g><g data-relationship="定义测试契约"><path d="M34 276 V314" fill="none" stroke="#56ddcd" stroke-width="2.2"/><path d="M29 308 L34 315 L39 308" fill="none" stroke="#56ddcd" stroke-width="2.2"/><text x="50" y="298" fill="#8eeadf" font-size="12.5" font-weight="600"><tspan x="50" dy="0">01→02 定义测试契约</tspan></text></g><g data-concept="2"><rect x="16" y="320" width="328" height="94" rx="12" fill="#122842" stroke="#38597d"/><rect x="16" y="320" width="328" height="4" rx="2" fill="#34d399"/><text x="30" y="343" fill="#34d399" font-size="11.5" font-weight="700"><tspan x="30" dy="0">02 · 上下文锚定</tspan></text><text x="30" y="366" fill="#f0f6ff" font-size="16.5" font-weight="700"><tspan x="30" dy="0">Harness 与执行契约</tspan></text><text x="30" y="393" fill="#c4d5e8" font-size="13" font-weight="400"><tspan x="30" dy="0">提示词 · 工具权限 · 环境 · 重复次数</tspan></text></g><g data-relationship="生成追踪产物"><path d="M34 416 V454" fill="none" stroke="#56ddcd" stroke-width="2.2"/><path d="M29 448 L34 455 L39 448" fill="none" stroke="#56ddcd" stroke-width="2.2"/><text x="50" y="438" fill="#8eeadf" font-size="12.5" font-weight="600"><tspan x="50" dy="0">02→03 生成追踪产物</tspan></text></g><g data-concept="3"><rect x="16" y="460" width="328" height="94" rx="12" fill="#0e2036" stroke="#38597d"/><rect x="16" y="460" width="328" height="4" rx="2" fill="#a78bfa"/><text x="30" y="483" fill="#a78bfa" font-size="11.5" font-weight="700"><tspan x="30" dy="0">03 · 策略与门禁</tspan></text><text x="30" y="506" fill="#f0f6ff" font-size="16.5" font-weight="700"><tspan x="30" dy="0">原始输出与确定性校验</tspan></text><text x="30" y="533" fill="#c4d5e8" font-size="13" font-weight="400"><tspan x="30" dy="0">任务轨迹 · 校验结果 · 缺失值记录</tspan></text></g><g data-relationship="带条件汇总"><path d="M34 556 V594" fill="none" stroke="#56ddcd" stroke-width="2.2"/><path d="M29 588 L34 595 L39 588" fill="none" stroke="#56ddcd" stroke-width="2.2"/><text x="50" y="578" fill="#8eeadf" font-size="12.5" font-weight="600"><tspan x="50" dy="0">03→04 带条件汇总</tspan></text></g><g data-concept="4"><rect x="16" y="600" width="328" height="94" rx="12" fill="#122842" stroke="#38597d"/><rect x="16" y="600" width="328" height="4" rx="2" fill="#f59e0b"/><text x="30" y="623" fill="#f59e0b" font-size="11.5" font-weight="700"><tspan x="30" dy="0">04 · 执行与运行</tspan></text><text x="30" y="646" fill="#f0f6ff" font-size="16.5" font-weight="700"><tspan x="30" dy="0">得分、稳健性与延迟</tspan></text><text x="30" y="673" fill="#c4d5e8" font-size="13" font-weight="400"><tspan x="30" dy="0">保留单位、条件与不确定性</tspan></text></g><g data-relationship="支持有边界的结论"><path d="M34 696 V734" fill="none" stroke="#56ddcd" stroke-width="2.2"/><path d="M29 728 L34 735 L39 728" fill="none" stroke="#56ddcd" stroke-width="2.2"/><text x="50" y="718" fill="#8eeadf" font-size="12.5" font-weight="600"><tspan x="50" dy="0">04→05 支持有边界的结论</tspan></text></g><g data-concept="5"><rect x="16" y="740" width="328" height="94" rx="12" fill="#0e2036" stroke="#38597d"/><rect x="16" y="740" width="328" height="4" rx="2" fill="#56ddcd"/><text x="30" y="763" fill="#56ddcd" font-size="11.5" font-weight="700"><tspan x="30" dy="0">05 · 审计与评测</tspan></text><text x="30" y="786" fill="#f0f6ff" font-size="16.5" font-weight="700"><tspan x="30" dy="0">报告与可复现性</tspan></text><text x="30" y="813" fill="#c4d5e8" font-size="13" font-weight="400"><tspan x="30" dy="0">7 卡来源报告 · 局限 · 是否独立复现？</tspan></text></g></svg><svg xmlns="http://www.w3.org/2000/svg" lang="zh-CN" class="knowledge-graph-wide" role="img" aria-labelledby="knowledge-d45d0474f54b-title knowledge-d45d0474f54b-desc" viewBox="0 0 1080 448" width="1080" style="width:100%;height:auto;max-width:1080px;margin:0 auto;font-family:system-ui,sans-serif"><title id="knowledge-d45d0474f54b-title">Terminal-Bench 4.1 深度解析与架构师洞察工作台 — 排行榜 · 帕累托散点图 · 66 项智能体任务</title><desc id="knowledge-d45d0474f54b-desc">研究问题与封存负载: 数据集 · 模型批次 · 分母 · 来源 → 定义测试契约 → Harness 与执行契约: 提示词 · 工具权限 · 环境 · 重复次数 → 生成追踪产物 → 原始输出与确定性校验: 任务轨迹 · 校验结果 · 缺失值记录 → 带条件汇总 → 得分、稳健性与延迟: 保留单位、条件与不确定性 → 支持有边界的结论 → 报告与可复现性: 7 卡来源报告 · 局限 · 是否独立复现？</desc><rect width="1080" height="448" rx="16" fill="#081525" stroke="#284566"/><rect x="24" y="16" width="292" height="24" rx="12" fill="#102742" stroke="#2d5a88"/><text x="38" y="32" fill="#56ddcd" font-size="11.5" font-weight="700"><tspan x="38" dy="0">数据流向与核心要点架构图 · 横向全景</tspan></text><rect x="646" y="16" width="196" height="24" rx="12" fill="#0d2238" stroke="#254b6e"/><text x="660" y="32" fill="#7ce8d8" font-size="11.5" font-weight="600"><tspan x="660" dy="0">──▶ 阶段数据与上下文流</tspan></text><rect x="852" y="16" width="204" height="24" rx="12" fill="#15203c" stroke="#3b4278"/><text x="866" y="32" fill="#c4b5fd" font-size="11.5" font-weight="600"><tspan x="866" dy="0">◆ 策略门禁与要点说明</tspan></text><text x="24" y="62" fill="#f2f7ff" font-size="18" font-weight="700"><tspan x="24" dy="0">Terminal-Bench 4.1 深度解析与架构师洞察工作台 — 排行榜 · 帕累托散点</tspan><tspan x="24" dy="25.2">图 · 66 项智能体任务</tspan></text><g data-concept="1"><rect x="24" y="106" width="187" height="186" rx="12" fill="#0d1e34" stroke="#335277" stroke-width="1.2"/><rect x="24" y="106" width="187" height="5" rx="2.5" fill="#38bdf8"/><rect x="34" y="119" width="167" height="22" rx="6" fill="#081424" stroke="#223b59"/><text x="40" y="134" fill="#38bdf8" font-size="11.5" font-weight="700"><tspan x="40" dy="0">01 · 输入与意图</tspan></text><text x="36" y="160" fill="#f4f8ff" font-size="13.5" font-weight="700"><tspan x="36" dy="0">研究问题与封存负载</tspan></text><path d="M36 175 H199" stroke="#233b57" stroke-width="1"/><text x="36" y="193" fill="#c5d6e8" font-size="12" font-weight="400"><tspan x="36" dy="0">数据集 · 模型批次 · 分母</tspan><tspan x="36" dy="16.799999999999997">· 来源</tspan></text></g><g data-relationship="定义测试契约"><path d="M213 199 H231" fill="none" stroke="#56ddcd" stroke-width="2.4"/><path d="M225 194 L232 199 L225 204" fill="none" stroke="#56ddcd" stroke-width="2.4"/><rect x="24" y="300" width="187" height="30" rx="8" fill="#0b2239" stroke="#2b5b6c"/><text x="34" y="319" fill="#7ce8d8" font-size="11.5" font-weight="600"><tspan x="34" dy="0">01→02 定义测试契约</tspan></text></g><g data-concept="2"><rect x="235" y="106" width="187" height="186" rx="12" fill="#112640" stroke="#335277" stroke-width="1.2"/><rect x="235" y="106" width="187" height="5" rx="2.5" fill="#34d399"/><rect x="245" y="119" width="167" height="22" rx="6" fill="#081424" stroke="#223b59"/><text x="251" y="134" fill="#34d399" font-size="11.5" font-weight="700"><tspan x="251" dy="0">02 · 上下文锚定</tspan></text><text x="247" y="160" fill="#f4f8ff" font-size="13.5" font-weight="700"><tspan x="247" dy="0">Harness 与执行契约</tspan></text><path d="M247 175 H410" stroke="#233b57" stroke-width="1"/><text x="247" y="193" fill="#c5d6e8" font-size="12" font-weight="400"><tspan x="247" dy="0">提示词 · 工具权限 · 环境</tspan><tspan x="247" dy="16.799999999999997">· 重复次数</tspan></text></g><g data-relationship="生成追踪产物"><path d="M424 199 H442" fill="none" stroke="#56ddcd" stroke-width="2.4"/><path d="M436 194 L443 199 L436 204" fill="none" stroke="#56ddcd" stroke-width="2.4"/><rect x="235" y="300" width="187" height="30" rx="8" fill="#0b2239" stroke="#2b5b6c"/><text x="245" y="319" fill="#7ce8d8" font-size="11.5" font-weight="600"><tspan x="245" dy="0">02→03 生成追踪产物</tspan></text></g><g data-concept="3"><rect x="446" y="106" width="187" height="186" rx="12" fill="#0d1e34" stroke="#335277" stroke-width="1.2"/><rect x="446" y="106" width="187" height="5" rx="2.5" fill="#a78bfa"/><rect x="456" y="119" width="167" height="22" rx="6" fill="#081424" stroke="#223b59"/><text x="462" y="134" fill="#a78bfa" font-size="11.5" font-weight="700"><tspan x="462" dy="0">03 · 策略与门禁</tspan></text><text x="458" y="160" fill="#f4f8ff" font-size="13.5" font-weight="700"><tspan x="458" dy="0">原始输出与确定性校验</tspan></text><path d="M458 175 H621" stroke="#233b57" stroke-width="1"/><text x="458" y="193" fill="#c5d6e8" font-size="12" font-weight="400"><tspan x="458" dy="0">任务轨迹 · 校验结果 · 缺</tspan><tspan x="458" dy="16.799999999999997">失值记录</tspan></text></g><g data-relationship="带条件汇总"><path d="M635 199 H653" fill="none" stroke="#56ddcd" stroke-width="2.4"/><path d="M647 194 L654 199 L647 204" fill="none" stroke="#56ddcd" stroke-width="2.4"/><rect x="446" y="300" width="187" height="30" rx="8" fill="#0b2239" stroke="#2b5b6c"/><text x="456" y="319" fill="#7ce8d8" font-size="11.5" font-weight="600"><tspan x="456" dy="0">03→04 带条件汇总</tspan></text></g><g data-concept="4"><rect x="657" y="106" width="187" height="186" rx="12" fill="#112640" stroke="#335277" stroke-width="1.2"/><rect x="657" y="106" width="187" height="5" rx="2.5" fill="#f59e0b"/><rect x="667" y="119" width="167" height="22" rx="6" fill="#081424" stroke="#223b59"/><text x="673" y="134" fill="#f59e0b" font-size="11.5" font-weight="700"><tspan x="673" dy="0">04 · 执行与运行</tspan></text><text x="669" y="160" fill="#f4f8ff" font-size="13.5" font-weight="700"><tspan x="669" dy="0">得分、稳健性与延迟</tspan></text><path d="M669 175 H832" stroke="#233b57" stroke-width="1"/><text x="669" y="193" fill="#c5d6e8" font-size="12" font-weight="400"><tspan x="669" dy="0">保留单位、条件与不确定性</tspan></text></g><g data-relationship="支持有边界的结论"><path d="M846 199 H864" fill="none" stroke="#56ddcd" stroke-width="2.4"/><path d="M858 194 L865 199 L858 204" fill="none" stroke="#56ddcd" stroke-width="2.4"/><rect x="657" y="300" width="187" height="30" rx="8" fill="#0b2239" stroke="#2b5b6c"/><text x="667" y="319" fill="#7ce8d8" font-size="11.5" font-weight="600"><tspan x="667" dy="0">04→05 支持有边界的结论</tspan></text></g><g data-concept="5"><rect x="868" y="106" width="187" height="186" rx="12" fill="#0d1e34" stroke="#335277" stroke-width="1.2"/><rect x="868" y="106" width="187" height="5" rx="2.5" fill="#56ddcd"/><rect x="878" y="119" width="167" height="22" rx="6" fill="#081424" stroke="#223b59"/><text x="884" y="134" fill="#56ddcd" font-size="11.5" font-weight="700"><tspan x="884" dy="0">05 · 审计与评测</tspan></text><text x="880" y="160" fill="#f4f8ff" font-size="13.5" font-weight="700"><tspan x="880" dy="0">报告与可复现性</tspan></text><path d="M880 175 H1043" stroke="#233b57" stroke-width="1"/><text x="880" y="193" fill="#c5d6e8" font-size="12" font-weight="400"><tspan x="880" dy="0">7 卡来源报告 · 局限 · 是</tspan><tspan x="880" dy="16.799999999999997">否独立复现？</tspan></text></g><rect x="868" y="300" width="187" height="30" rx="8" fill="#0e2538" stroke="#2e5470"/><text x="878" y="319" fill="#93c5fd" font-size="11.5" font-weight="600"><tspan x="878" dy="0">05 闭环 · 审计与证据核验</tspan></text><g data-takeaway="1"><rect x="24" y="344" width="334" height="88" rx="10" fill="#0b1a2e" stroke="#284466"/><rect x="24" y="356" width="4" height="64" rx="2" fill="#38bdf8"/><text x="38" y="369" fill="#38bdf8" font-size="11.5" font-weight="700"><tspan x="38" dy="0">要点 01 · 全链路数据流向</tspan></text><text x="38" y="390" fill="#d5e4f5" font-size="12" font-weight="400"><tspan x="38" dy="0">自左向右从「研究问题与封存负载」递进至「报告</tspan><tspan x="38" dy="16.799999999999997">与可复现性」，明确各阶段输入与输出契约。</tspan></text></g><g data-takeaway="2"><rect x="373" y="344" width="334" height="88" rx="10" fill="#0b1a2e" stroke="#284466"/><rect x="373" y="356" width="4" height="64" rx="2" fill="#a78bfa"/><text x="387" y="369" fill="#a78bfa" font-size="11.5" font-weight="700"><tspan x="387" dy="0">要点 02 · 核心控制与策略门禁</tspan></text><text x="387" y="390" fill="#d5e4f5" font-size="12" font-weight="400"><tspan x="387" dy="0">核心门禁「原始输出与确定性校验」：任务轨迹 ·</tspan><tspan x="387" dy="16.799999999999997">校验结果 · 缺失值记录</tspan></text></g><g data-takeaway="3"><rect x="722" y="344" width="334" height="88" rx="10" fill="#0b1a2e" stroke="#284466"/><rect x="722" y="356" width="4" height="64" rx="2" fill="#34d399"/><text x="736" y="369" fill="#34d399" font-size="11.5" font-weight="700"><tspan x="736" dy="0">要点 03 · 证据核验与适用边界</tspan></text><text x="736" y="390" fill="#d5e4f5" font-size="12" font-weight="400"><tspan x="736" dy="0">7 卡来源报告 · 局限 · 是否独立复现？ · 概念</tspan><tspan x="736" dy="16.799999999999997">拓扑示意，非实测延迟。</tspan></text></g></svg><figcaption style="font:13px/1.6 system-ui,sans-serif;margin:10px auto 0;max-width:1080px;color:#9fb2ca;overflow-wrap:anywhere">整体架构与数据流向图示：自左向右阅读阶段数据流转、策略门禁与底部三项核心要点说明（概念拓扑，不代表实测吞吐或生产排名）。</figcaption></figure><!-- site-remediation-knowledge:end -->
+<main id="main-content" class="tb-shell">
+
+  <header class="tb-hero">
+    <div class="tb-hero-top">
+      <span class="tb-eyebrow">TERMINAL-BENCH 4.1 · HARBOR 隔离验证器 · 2026-11-19 官方快照</span>
+      <div class="tb-toolbar-actions">
+        <a class="tb-btn tb-btn-primary" href="../benchmarks/terminal-bench-4-1-cards.zh-CN.html">7 卡 4:5 视觉报告集</a>
+        <a class="tb-btn" href="../../assets/terminal-bench-4-1-overview.zh.svg">一页式架构总览 SVG</a>
+        <a class="tb-btn" href="https://github.com/turbo998/benchmark-harness-engineering/blob/main/docs/reports/terminal-bench-4-1.md" target="_blank" rel="noopener">GitHub 深度长文报告</a>
+        <a class="tb-btn" href="https://www.tbench.ai/" target="_blank" rel="noopener">tbench.ai 官网</a>
+        <a class="tb-btn" href="../../zh-benchmarks.html">返回测评中心</a>
+        <a class="tb-btn" href="index.html">EN Edition</a>
+        <button type="button" class="tb-btn" id="tb-theme-toggle">切换明暗主题</button>
+      </div>
+    </div>
+    <h1>Terminal-Bench 4.1 深度消化与 AI 解决方案架构师实战洞察工作台</h1>
+    <p class="tb-lead">
+      完整复盘 <code>terminal-bench@4.1.0</code> 全量 <strong>65 组官方评测运行</strong>（<strong>52 组唯一 模型 × 智能体脚手架</strong>、<strong>66 项真实容器工程任务</strong>、<strong>21,450 次独立沙箱试验</strong>）。围绕<strong>排行榜统计陷阱</strong>、<strong>帕累托成本前沿与过度思考税</strong>、以及<strong>智能体任务的「编译器神谕反馈定律」</strong>提供可交互推演与企业级多模型路由方案。
+    </p>
+    <div class="tb-kpi-grid">
+      <div class="tb-kpi">
+        <div class="tb-kpi-label">#1 榜首 SOTA（多模型协同）</div>
+        <div class="tb-kpi-val accent">71.21% ± 2.88%</div>
+        <div class="tb-kpi-sub">Copilot Fusion + GitHub Copilot · $1,987.33 · 领先 #2 达 +5.45pt</div>
+      </div>
+      <div class="tb-kpi">
+        <div class="tb-kpi-label">帕累托黄金拐点（主力生产默认）</div>
+        <div class="tb-kpi-val success">61.52% · $349.16</div>
+        <div class="tb-kpi-sub">GPT-6.2 Sol + Codex · $1.72/解 · 仅耗 1.09B 词元（比 Sonnet 省 17.8 倍）</div>
+      </div>
+      <div class="tb-kpi">
+        <div class="tb-kpi-label">#1 Pass@5 探索上限之王</div>
+        <div class="tb-kpi-val">84.85% (+25.15pt)</div>
+        <div class="tb-kpi-sub">Kimi K3.1 Pro + Claude Code · 均耗 123.2s · 攻克多项前十全灭超难题</div>
+      </div>
+      <div class="tb-kpi">
+        <div class="tb-kpi-label">商业帕累托有效率</div>
+        <div class="tb-kpi-val accent">7 / 52 (13.5%)</div>
+        <div class="tb-kpi-sub">86.5% 配置被严格支配 · #2–#8 置信区间重叠却差价 47.2 倍</div>
+      </div>
+      <div class="tb-kpi">
+        <div class="tb-kpi-label">评测规模与防作弊隔离</div>
+        <div class="tb-kpi-val">66 题 · 21,450 试次</div>
+        <div class="tb-kpi-sub">63 CPU + 3 H100 GPU · Harbor 4.1 <code>separate</code> 双容器产物移交验证</div>
+      </div>
+      <div class="tb-kpi">
+        <div class="tb-kpi-label">最薄弱领域与零解之墙</div>
+        <div class="tb-kpi-val">Operations 26%</div>
+        <div class="tb-kpi-sub">远低于 Security 52% / ML 43% · 4 道真实任务全榜 0/325 零解出</div>
+      </div>
+    </div>
+  </header>
+
+
+  <nav class="tb-tabs" role="tablist" aria-label="Terminal-Bench 4.1 分析视图">
+    <button type="button" class="tb-tab" role="tab" aria-selected="true" data-tab="leaderboard">1. 排行榜与统计批判 (TABLE · 65)</button>
+    <button type="button" class="tb-tab" role="tab" aria-selected="false" data-tab="pareto">2. 帕累托散点图与前沿经济学 (PARETO)</button>
+    <button type="button" class="tb-tab" role="tab" aria-selected="false" data-tab="tasks">3. 66 项智能体任务与失败模式解剖 (TASKS)</button>
+    <button type="button" class="tb-tab" role="tab" aria-selected="false" data-tab="harness">4. Harbor 4.1 隔离验证与版本演进 (HARNESS)</button>
+    <button type="button" class="tb-tab" role="tab" aria-selected="false" data-tab="playbook">5. 架构师个人洞察与路由手册 (SA PLAYBOOK)</button>
+  </nav>
+
+
+  <section class="tb-panel active" id="panel-leaderboard" role="tabpanel"><span id="leaderboard" hidden></span>
+    <div class="tb-card">
+      <h2>官方全量排行榜交互检视（65 组评测运行 / 52 组唯一 模型 × 脚手架）</h2>
+      <p class="tb-card-sub">支持「最佳推理档位去重（52）」与「全量档位扫描（65）」一键切换、脚手架过滤及任意指标排序。点击任一行可展开词元缓存结构及与榜首/黄金拐点的精确差值。</p>
+      <div class="tb-controls">
+        <div class="tb-chip-group" id="lb-mode-group">
+          <button type="button" class="tb-chip active" data-mode="best">最佳档位去重 (52)</button>
+          <button type="button" class="tb-chip" data-mode="all">全量运行含推理扫描 (65)</button>
+        </div>
+        <div class="tb-chip-group" id="lb-cohort-group">
+          <button type="button" class="tb-chip active" data-cohort="all">全部</button>
+          <button type="button" class="tb-chip" data-cohort="pareto">帕累托前沿 (7)</button>
+          <button type="button" class="tb-chip" data-cohort="tie">#2–#8 置信重叠带</button>
+          <button type="button" class="tb-chip" data-cohort="sweep">多档推理实验组</button>
+          <button type="button" class="tb-chip" data-cohort="pass5">高探索上限 (Pass@5 &ge; 78%)</button>
+        </div>
+        <select class="tb-select" id="lb-scaffold" aria-label="按智能体脚手架过滤">
+          <option value="all">全部脚手架 (All Scaffolds)</option>
+          <option value="GitHub Copilot">GitHub Copilot</option>
+          <option value="Claude Code">Claude Code</option>
+          <option value="Codex">Codex</option>
+          <option value="Antigravity CLI">Antigravity CLI</option>
+          <option value="Muse Code">Muse Code</option>
+          <option value="Grok Build">Grok Build</option>
+          <option value="mini-swe-agent">mini-swe-agent</option>
+        </select>
+        <input type="search" class="tb-input" id="lb-search" placeholder="搜索模型、厂商、脚手架..." aria-label="搜索排行榜" />
+        <span class="tb-badge" id="lb-count-badge">52 / 52</span>
+      </div>
+      <div class="tb-table-wrap">
+        <table class="tb-table" id="lb-table">
+          <thead>
+            <tr>
+              <th data-sort="rank">排名</th>
+              <th data-sort="model">模型 × 智能体脚手架</th>
+              <th data-sort="effort">推理档位</th>
+              <th data-sort="acc">解决率 (±95% CI) ↓</th>
+              <th data-sort="pass5">Pass@5</th>
+              <th data-sort="upside">探索增益</th>
+              <th data-sort="cost">总成本 ($)</th>
+              <th data-sort="cost_solve">单解成本 ($)</th>
+              <th data-sort="tokens_b">总词元 (B)</th>
+              <th data-sort="dur">均耗时 (s)</th>
+            </tr>
+          </thead>
+          <tbody id="lb-tbody"></tbody>
+        </table>
+      </div>
+      <div class="tb-inspector" id="lb-inspector"></div>
+    </div>
+
+    <div class="tb-card">
+      <h2>排行榜深度点评：表面名次背后的四个架构真相</h2>
+      <p class="tb-card-sub">如果只看第一列百分比买模型，企业团队大概率会多花 10–47 倍预算却买不到统计显著的准确率提升。</p>
+      <div class="tb-grid-2">
+        <div class="tb-insight-box">
+          <h3>1. 多模型协同路由 + 原生 Harness 完胜单一大模型暴力堆算力</h3>
+          <p><strong>#1 Copilot Fusion + GitHub Copilot (71.21% ± 2.88%, $1,987.33)</strong> 是全榜唯一突破 70% 大关的系统，领先并列第二的 <strong>Opus 5.5 ($4,718.65)</strong> 与 <strong>Fable 5.2 ($16,492.76)</strong> 整整 <strong>+5.45 个百分点</strong>（超出双方 95% 置信区间），同时成本仅为两者的 <strong>42%</strong> 与 <strong>12%</strong>。这证明前沿 SOTA 已从「单模型参数竞赛」转向「异构模型融合路由 + 工具链状态机协同设计」。</p>
+        </div>
+        <div class="tb-insight-box">
+          <h3>2. #2 至 #8 的「统计平局幻觉」掩盖了惊人的 47.2 倍成本鸿沟</h3>
+          <p>从 <strong>#2 Opus 5.5 / Fable 5.2 (65.76%)</strong> 到 <strong>#8 GPT-6.1 Sol (60.91% ± 2.97%)</strong>，各配置的 95% 置信区间彼此大幅重叠——在 330 次试验样本下属于同一统计梯队。但总成本却从 <strong>GPT-6.2 Sol 的 $349.16</strong> 暴涨至 <strong>Fable 5.2 的 $16,492.76</strong>（相差 <strong>47.2 倍</strong>，单解成本 $1.72 vs $76.00）。盲目按名次采购第二名是典型的 FinOps 灾难。</p>
+        </div>
+        <div class="tb-insight-box">
+          <h3>3. 脚手架锁定效应（Scaffold Lock-In）与通用 mini-swe-agent 折损</h3>
+          <p>排行榜前 15 名 100% 由第一方深度协同脚手架垄断（<code>GitHub Copilot</code>、<code>Claude Code</code>、<code>Codex</code>、<code>Antigravity CLI</code>）。而搭载通用极简框架 <code>mini-swe-agent</code> 的强模型普遍遭遇严重能力折损（如 <strong>GLM-5.3 35.15%</strong> vs <code>Claude Code</code> 上的 <strong>GLM-5.3-Flash 49.39%</strong>；<strong>Kimi K3 34.85%</strong> vs <code>Claude Code</code> 上的 <strong>Kimi K3.1 Pro 59.70%</strong>）。补丁编辑容错、上下文压缩与超时守护决定了模型下限。</p>
+        </div>
+        <div class="tb-insight-box">
+          <h3>4. #11 Kimi K3.1 Pro 的采样多样性超能力（Pass@5 = 84.85% 全榜第一）</h3>
+          <p>单次运行排名第 11 的 <strong>Kimi K3.1 Pro (59.70% ± 4.18%)</strong> 在 5 次独立采样下的 <strong>Pass@5 高达 84.85%（全榜 #1，超越 Copilot Fusion 的 83.33%）</strong>，增益达 <strong>+25.15pt</strong>，且平均耗时仅 <strong>123.2 秒</strong>（比前列慢思考模型快 10–60 倍）。它在RL策略坍缩更少，能搜出前十名全军覆没的异构解法路径。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="tb-panel" id="panel-pareto" role="tabpanel"><span id="pareto" hidden></span>
+    <div class="tb-card">
+      <h2>交互式帕累托前沿散点图（复刻增强版 tbench.ai/?view=pareto）</h2>
+      <p class="tb-card-sub">支持 X 轴多维经济学指标切换（总成本对数/线性坐标、单解成本、总词元、平均耗时、Pass@5 增益）、95% CI 误差棒、排除 $0 未定价预览开关，以及同一模型跨推理档位（low → max）演化轨迹线。</p>
+      <div class="tb-controls">
+        <label class="tb-check">X 轴：
+          <select class="tb-select" id="pt-xaxis">
+            <option value="cost">总成本 Total Cost ($)</option>
+            <option value="cost_solve">单解成本 Cost / Solve ($)</option>
+            <option value="tokens_b">总词元 Total Tokens (B)</option>
+            <option value="dur">平均耗时 Avg Duration (s)</option>
+            <option value="upside">探索增益 Pass@5 - Pass@1 (+pt)</option>
+          </select>
+        </label>
+        <label class="tb-check">Y 轴：
+          <select class="tb-select" id="pt-yaxis">
+            <option value="acc">单次解决率 Resolution Rate (%)</option>
+            <option value="pass5">5 次采样上限 Pass@5 (%)</option>
+          </select>
+        </label>
+        <div class="tb-chip-group" id="pt-scale-group">
+          <button type="button" class="tb-chip active" data-scale="log">对数坐标 (Log)</button>
+          <button type="button" class="tb-chip" data-scale="linear">线性坐标 (Linear)</button>
+        </div>
+        <label class="tb-check"><input type="checkbox" id="pt-best-only" checked /> 仅看最佳档位 (52)</label>
+        <label class="tb-check"><input type="checkbox" id="pt-exclude-zero" checked /> 排除 $0 预览版 (Muse Spark 1.3)</label>
+        <label class="tb-check"><input type="checkbox" id="pt-show-ci" checked /> 显示 ±95% CI 误差棒</label>
+        <label class="tb-check"><input type="checkbox" id="pt-show-traj" checked /> 显示推理档位演化轨迹 (All-65 激活)</label>
+      </div>
+      <div class="tb-pareto-layout">
+        <div class="tb-svg-wrap">
+          <svg id="pt-svg" viewBox="0 0 920 520" role="img" aria-label="Terminal-Bench 4.1 帕累托前沿散点图"></svg>
+        </div>
+        <div>
+          <div class="tb-inspector" id="pt-inspector" style="margin-top:0"></div>
+          <div class="tb-insight-box" style="margin-top:14px">
+            <h3>散点图读图指南</h3>
+            <p><strong>深红实心大圆 + 阶梯折线</strong>代表当前坐标下的<strong>帕累托最优前沿</strong>（不存在更便宜且更准的对手）。勾选右上角「显示推理档位演化轨迹」（自动切换至 65 全量视图），即可直观看到 <code>Fable 5.1</code> 与 <code>Opus 5</code> 在 <code>max</code> 档向右上方停滞甚至<strong>向右下倒退</strong>的「过度思考税」拐点。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tb-grid-2">
+      <div class="tb-card" style="margin-bottom:0">
+        <h2>7 大商业定价帕累托前沿配置（仅占 52 组的 13.5%）</h2>
+        <p class="tb-card-sub">其余 86.5% 的模型配置均处于阶梯折线右下方阴影区（花更多钱却解出更少任务）。</p>
+        <div class="tb-table-wrap">
+          <table class="tb-table">
+            <thead>
+              <tr><th>前沿层级</th><th>模型 × 脚手架</th><th>解决率</th><th>总成本</th><th>边际跃迁点评</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><span class="tb-badge">Tier 0 极微底线</span></td><td><strong>Inkling Small</strong> · mini-swe-agent</td><td>0.91%</td><td>$49.55</td><td>价格地板，无实用工程解出能力</td></tr>
+              <tr><td><span class="tb-badge">Tier 1 轻量起步</span></td><td><strong>GPT-6 Luna</strong> · Codex</td><td>15.15%</td><td>$72.14</td><td>+$22.59 换取 +14.24pt 初步脚本修复力</td></tr>
+              <tr><td><span class="tb-badge">Tier 2 入门代理</span></td><td><strong>Muse Ember</strong> · Muse Code</td><td>30.61%</td><td>$157.18</td><td>百元级突破 30%（All-65 含 GLM-5.3-Flash none 35.45% @ $118.74）</td></tr>
+              <tr><td><span class="tb-badge good">Tier 3 极速预算王</span></td><td><strong>DeepSeek V4.1 Flash 1017</strong> · Claude Code</td><td>38.48%</td><td>$184.89</td><td>Pass@5 达 65.15%，均耗 148.4s，高并发预筛利器</td></tr>
+              <tr><td><span class="tb-badge pareto">Tier 4 黄金拐点 ★</span></td><td><strong>GPT-6.2 Sol</strong> · Codex</td><td><strong>61.52%</strong></td><td><strong>$349.16</strong></td><td><strong>全图最陡峭斜率：仅加 $164.27 暴涨 +23.04pt！</strong></td></tr>
+              <tr><td><span class="tb-badge">Tier 5 准旗舰台阶</span></td><td><strong>Gemini 4 Carbon</strong> · Antigravity CLI</td><td>64.55%</td><td>$1,358.25</td><td>+$1,009.09 换取 +3.03pt，多模态/科学计算稳健</td></tr>
+              <tr><td><span class="tb-badge pareto">Tier 6 绝对 SOTA ★</span></td><td><strong>Copilot Fusion</strong> · GitHub Copilot</td><td><strong>71.21%</strong></td><td><strong>$1,987.33</strong></td><td>+$629.08 再跃升 +6.66pt，终结单模型上限瓶颈</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="tb-card" style="margin-bottom:0">
+        <h2>「过度思考税」(Reasoning Overthinking Tax) 实证审计</h2>
+        <p class="tb-card-sub">在有状态终端环境中，把推理预算拉满到 <code>max</code> 往往引发灾难性负收益与词元空转。</p>
+        <div class="tb-table-wrap">
+          <table class="tb-table">
+            <thead>
+              <tr><th>模型家族</th><th>更优档位 (Sweet Spot)</th><th>拉满 max 档位</th><th>账单与准确率恶化后果</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Fable 5.1</strong><br/><span class="mono">Claude Code</span></td>
+                <td><code>xhigh</code>: <strong>57.58%</strong><br/>$4,872.04 · 5,735s</td>
+                <td><code>max</code>: 57.27%<br/>$6,243.50 · 6,419s</td>
+                <td><span class="tb-badge bad">倒退 -0.31pt / 多烧 +$1,371.46</span><br/>过度推翻正确初稿，引发容器超时</td>
+              </tr>
+              <tr>
+                <td><strong>Opus 5</strong><br/><span class="mono">Claude Code</span></td>
+                <td><code>xhigh</code>: <strong>53.33%</strong><br/>$6,086.22 · 4,826s</td>
+                <td><code>max</code>: 52.12%<br/>$5,969.11 · 5,104s</td>
+                <td><span class="tb-badge bad">倒退 -1.21pt / 变慢 +278.1s</span><br/>330 试次少解出 4 题，陷入无效自检循环</td>
+              </tr>
+              <tr>
+                <td><strong>GPT-6 Astra</strong><br/><span class="mono">Codex</span></td>
+                <td><code>high</code>: <strong>60.00%</strong><br/>$2,269.42 · 2,167s</td>
+                <td><code>max</code>: 60.30%<br/>$3,267.18 · 3,025s</td>
+                <td><span class="tb-badge warn">成本暴涨 +43.96% (+$997.76)</span><br/>仅在 330 次试验中多解出区区 1 次 (+0.30pt)</td>
+              </tr>
+              <tr>
+                <td><strong>词元冗长度对比</strong><br/><span class="mono">Sonnet 5.5 vs Sol</span></td>
+                <td><strong>GPT-6.2 Sol</strong>: 61.52%<br/><strong>1.09B</strong> 词元 ($349)</td>
+                <td><strong>Sonnet 5.5</strong>: 63.94%<br/><strong>19.41B</strong> 词元 ($7,334)</td>
+                <td><span class="tb-badge bad">17.8 倍词元膨胀 · 21 倍成本</span><br/>刷屏重读长日志耗尽上下文缓存预算</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="tb-panel" id="panel-tasks" role="tabpanel"><span id="tasks" hidden></span>
+    <div class="tb-card">
+      <h2>7 大工程领域解出率断层与「编译器神谕反馈定律」</h2>
+      <p class="tb-card-sub">点击任一领域卡片即可下方联动过滤对应任务。注意看：为什么人类觉得极难的底层安全（52%）与 GPU 内核（43%）解出率最高，而看似普通的企业运营排班与理赔（Operations, 26%）却全线崩盘？</p>
+      <div class="tb-domain-strip" id="tk-domain-strip"></div>
+      <div class="tb-insight-box">
+        <h3>个人核心洞察：智能体能力边界不取决于「人类学科难度」，而取决于「本地可验证神谕的信号密度」</h3>
+        <p>在 <code>Security (52%)</code>、<code>ML (43%)</code> 与形式化证明（如 <code>coq-block-bound 74%</code>、<code>fp8-rmsnorm-gemm 66%</code>）中，容器内天然存在<strong>零歧义的确定性神谕</strong>（<code>coqc</code> 类型检查器、<code>nvcc</code> + PyTorch 精度比对、<code>pytest</code> exploit 验证）。智能体可在闭环中执行 15–30 轮「假设→编译→报错定位→收敛」。相反，在 <strong>Enterprise Operations (26%)</strong>、<strong>3D CAD 几何拓扑</strong> 与 <strong>负向安全不变量（防源码/隐私泄漏）</strong> 中，容器没有编译器替你指出「漏算了一条跨班次海关截单规则」或「产物体内残留了传递依赖 sourcemap」——只要缺乏即时反例信号，前沿模型哪怕烧掉上百亿词元也会自信地输出错误结果！</p>
+      </div>
+    </div>
+
+    <div class="tb-card">
+      <h2>前 12 强配置 × 7 大领域能力专长热力矩阵（单位：%）</h2>
+      <p class="tb-card-sub">揭示同分梯队内部的显著偏科：Copilot Fusion 统治 ML(78%)/Media(80%)/Software(76%)/Ops(69%)；GPT-6.2 Sol 以 $349 拿下并列第一的 Security(84%)；Kimi K3.1 Pro 在 Operations(64%) 远超同价位对手。</p>
+      <div class="tb-table-wrap">
+        <table class="tb-table" id="tk-heatmap-table"></table>
+      </div>
+    </div>
+
+    <div class="tb-card">
+      <h2>6 道代表性基准任务深度解剖（从 74% 稳解到 0/325 全军覆没）</h2>
+      <p class="tb-card-sub">精选跨越编译闭环高分区、异步流状态机盲区、无头三维几何盲区、负向安全泄漏与企业排班规则地狱的 6 个典型样本。</p>
+      <div class="tb-grid-3">
+        <div class="tb-insight-box">
+          <span class="tb-badge good">Science · 74% (239/325)</span>
+          <h3 class="mono" style="margin-top:8px">coq-block-bound</h3>
+          <p><strong>形式化定理机械证明</strong>：前 11 强全部斩获 <strong>5/5 满分</strong>。原因：<code>coqc</code> 证明助手拒绝一切幻觉，每一步证明策略（tactic）立即返回严格剩余子目标（subgoals），将开放推理完美降维为确定性树搜索。</p>
+        </div>
+        <div class="tb-insight-box">
+          <span class="tb-badge good">ML · H100 GPU · 66% (214/325)</span>
+          <h3 class="mono" style="margin-top:8px">fp8-rmsnorm-gemm</h3>
+          <p><strong>融合 FP8 RMSNorm + GEMM 内核优化</strong>：前 11 强同样全部 <strong>5/5</strong>。尽管涉及底层 Tensor Core 量化缩放与带宽对齐，但基准脚本直接提供数值误差阈值与延迟读数，闭环反馈极度清晰。</p>
+        </div>
+        <div class="tb-insight-box">
+          <span class="tb-badge warn">ML · H100 GPU · 6% (21/325)</span>
+          <h3 class="mono" style="margin-top:8px">vllm-deepseek-streaming</h3>
+          <p><strong>vLLM DeepSeek 流式工具调用边界竞态</strong>：<strong>前 10 强模型全部 0/5 团灭！</strong>唯独 <strong>#11 Kimi K3.1 Pro 斩获 4/5</strong>。根因：主流模型被强先验锚定在常规 token 解析分支，漏掉跨异步 SSE 分片边界的状态残留。</p>
+        </div>
+        <div class="tb-insight-box">
+          <span class="tb-badge bad">Hardware · 3D CAD · 1% (4/325)</span>
+          <h3 class="mono" style="margin-top:8px">freecad-impeller</h3>
+          <p><strong>无头 FreeCAD 离心叶轮参数化建模</strong>：前 10 强 <strong>全部 0/5</strong>（仅 Kimi、DeepSeek Flash/Pro、Grok 4.6 各偶中 1 次）。纯文本 CLI 下编写复杂曲面扫掠极易产生 B-Rep 拓扑自交，模型缺乏空间几何视觉回路。</p>
+        </div>
+        <div class="tb-insight-box">
+          <span class="tb-badge bad">Software · 负向安全 · 0% (0/325)</span>
+          <h3 class="mono" style="margin-top:8px">bun-sourcemap-leak</h3>
+          <p><strong>阻断 Bun 生产构建源码映射泄漏</strong>：全榜 65 组运行 <strong>0/325 绝对零解</strong>（同类 <code>data-anonymization</code> 仅 1/325）。智能体擅长验证「构建成功且服务能跑」，却系统性遗漏递归产物审计与传递依赖隐式导出。</p>
+        </div>
+        <div class="tb-insight-box">
+          <span class="tb-badge bad">Operations · 排班截单 · 0% (0/325)</span>
+          <h3 class="mono" style="margin-top:8px">freight-dispatch-shift</h3>
+          <p><strong>货运跨班次动态调度交接</strong>：全榜 <strong>0/325 绝对零解</strong>（同类 <code>cargo-flight-dispatch</code> 3/325 全由 Kimi 包揽）。面对滚动截单时间戳、司机工时法规与异常改派事件流，单处隐式状态漏算即导致全局排班作废。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="tb-card">
+      <h2>全量 66 项智能体测试任务目录与前 12 强解出探针</h2>
+      <p class="tb-card-sub">支持一键筛选「0% 零解之墙」、「&le;10% 超难任务」、「H100 GPU 任务」及按超时/报错排序。点击任意任务查看前 12 强在 5 次试验中的命中数与全榜稀有解出者。</p>
+      <div class="tb-controls">
+        <div class="tb-chip-group" id="tk-filter-group">
+          <button type="button" class="tb-chip active" data-tkf="all">全部任务 (66)</button>
+          <button type="button" class="tb-chip" data-tkf="zero">0% 零解之墙 (5)</button>
+          <button type="button" class="tb-chip" data-tkf="ultra">&le;10% 超难任务 (10)</button>
+          <button type="button" class="tb-chip" data-tkf="gpu">H100 GPU 任务 (3)</button>
+          <button type="button" class="tb-chip" data-tkf="high">&ge;60% 高解基线 (11)</button>
+        </div>
+        <select class="tb-select" id="tk-domain-select" aria-label="按领域筛选任务">
+          <option value="all">全部 7 大领域</option>
+          <option value="Security">Security (安全 · 52%)</option>
+          <option value="ML">ML (机器学习 · 43%)</option>
+          <option value="Media">Media (媒体处理 · 38%)</option>
+          <option value="Hardware">Hardware (硬件与 CAD · 37%)</option>
+          <option value="Software">Software (软件工程 · 35%)</option>
+          <option value="Science">Science (科学计算 · 34%)</option>
+          <option value="Operations">Operations (企业运营 · 26%)</option>
+        </select>
+        <input type="search" class="tb-input" id="tk-search" placeholder="搜索任务 slug（如 vllm, freecad, dispatch）..." aria-label="搜索任务" />
+        <span class="tb-badge" id="tk-count-badge">66 / 66</span>
+      </div>
+      <div class="tb-table-wrap">
+        <table class="tb-table" id="tk-table">
+          <thead>
+            <tr>
+              <th data-tksort="task">任务标识 (Task Slug)</th>
+              <th data-tksort="domain">所属领域</th>
+              <th data-tksort="gpu">算力</th>
+              <th data-tksort="solve_pct">全榜解出率 ↑</th>
+              <th data-tksort="pass_count">通过 / 总试次</th>
+              <th data-tksort="timeout_count">超时数</th>
+              <th data-tksort="error_count">异常数</th>
+              <th>Top-3 强队表现 (Fusion / Opus5.5 / Sol6.2)</th>
+            </tr>
+          </thead>
+          <tbody id="tk-tbody"></tbody>
+        </table>
+      </div>
+      <div class="tb-inspector" id="tk-inspector"></div>
+    </div>
+  </section>
+
+
+  <section class="tb-panel" id="panel-harness" role="tabpanel"><span id="harness" hidden></span>
+    <div class="tb-card">
+      <h2>Harbor 4.1 防作弊革命：<code>environment_mode = "separate"</code> 双容器隔离验证架构</h2>
+      <p class="tb-card-sub">为什么 Terminal-Bench 从 4.0 升级到 4.1 必须重构底层评测协议？因为在共享容器里，高智商 Agent 会本能地利用环境残留信号完成「奖励黑客（Reward Hacking）」。</p>
+      <div class="tb-arch-flow">
+        <div class="tb-arch-step">
+          <strong>阶段 1 · 智能体执行沙箱</strong>
+          <div class="mono" style="font-weight:700;margin-bottom:6px">environment/Dockerfile</div>
+          <p style="margin:0;font-size:13px;color:var(--cp-text-muted)">智能体在完全不含任何测试脚本、断言阈值或参考答案的纯净生产镜像中执行 bash / 编辑工具。彻底根除偷看 <code>/tests</code> 或搜索评测进程内存。</p>
+        </div>
+        <div class="tb-arch-step">
+          <strong>阶段 2 · 停机与声明式产物提取</strong>
+          <div class="mono" style="font-weight:700;margin-bottom:6px">task.toml [[artifacts]]</div>
+          <p style="margin:0;font-size:13px;color:var(--cp-text-muted)">任务结束立即停止智能体容器（消灭后台守护进程伪造响应或 LD_PRELOAD 劫持），Harbor 仅拷贝白名单声明的交付路径（二进制、补丁、报表、模型权重）。</p>
+        </div>
+        <div class="tb-arch-step">
+          <strong>阶段 3 · 全新独立验证器容器</strong>
+          <div class="mono" style="font-weight:700;margin-bottom:6px">tests/Dockerfile + test.sh</div>
+          <p style="margin:0;font-size:13px;color:var(--cp-text-muted)">拉起与智能体完全隔离的评测容器，挂载提取出的交付产物，运行隐藏测试集与负向安全扫描，仅凭确定性奖励文件判定 0/1 通过。</p>
+        </div>
+      </div>
+      <div class="tb-insight-box">
+        <h3>对企业 AI 平台团队的直接启示：永远不要让编码 Agent 在自己的沙箱里跑最终验收门禁</h3>
+        <p>在内部 CI/CD 自动修复流水线中，如果让 Agent 拥有修改测试配置、<code>conftest.py</code> 或环境变量的权限并以同一容器退出码为准，高能力模型在遇到棘手回归时会高概率通过放宽断言或 mock 掉报错模块来「骗绿流水线」。<strong>「作业容器与验收容器物理分离 + 仅移交白名单 Git Diff / 构建产物」</strong>应当成为企业 L3/L4 Agent 平台的强制安全基线。</p>
+      </div>
+    </div>
+
+    <div class="tb-card">
+      <h2><code>x.y.z</code>（Rerun · Regrade · Reuse）持续语义化基准演进史（2.0 → 4.1）</h2>
+      <p class="tb-card-sub">静态基准通常在发布后 6–9 个月内因前沿模型饱和与训练污染而失效。Terminal-Bench 引入三段式语义版本号治理基准生命周期：</p>
+      <div class="tb-grid-3" style="margin-bottom:16px">
+        <div class="tb-arch-step">
+          <strong>Major (x · Rerun 重跑)</strong>
+          <p style="margin:0;font-size:13px;color:var(--cp-text-muted)">任务集大换血或环境协议改变（如 2.x → 3.0 难度重置、3.0 → 4.0 新任务集），旧轨迹作废，所有模型必须重新跑完整沙箱。</p>
+        </div>
+        <div class="tb-arch-step">
+          <strong>Minor (y · Regrade 重判)</strong>
+          <p style="margin:0;font-size:13px;color:var(--cp-text-muted)">任务指令不变但修复测试判分漏洞或切换隔离验证（如 4.0 → 4.1 引入独立验证器与漏洞修补），对受影响任务重判或定向补跑。</p>
+        </div>
+        <div class="tb-arch-step">
+          <strong>Patch (z · Reuse 复用)</strong>
+          <p style="margin:0;font-size:13px;color:var(--cp-text-muted)">文档、元数据或展示层修正，评分语义完全兼容，100% 复用历史已封存评测轨迹，避免重复消耗数万美元算力。</p>
+        </div>
+      </div>
+      <div class="tb-table-wrap">
+        <table class="tb-table">
+          <thead>
+            <tr><th>基准版本</th><th>评测运行数</th><th>全榜最高分 (SOTA)</th><th>全榜中位数</th><th>当前榜首代表配置</th><th>生命周期诊断</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>TB 2.0</strong></td><td>142</td><td>84.72%</td><td>44.33%</td><td>GPT-5.5 + NexAU-AHE</td><td>早期经典终端任务集，头部逼近 85% 天花板</td></tr>
+            <tr><td><strong>TB 2.1</strong></td><td>22</td><td><strong>87.42%</strong></td><td><strong>78.43%</strong></td><td>GPT-6 Astra + Codex ($773.50)</td><td><span class="tb-badge warn">完全饱和</span> 中位数升至 78.4%，失去区分度</td></tr>
+            <tr><td><strong>TB 3.0</strong></td><td>12</td><td>42.70%</td><td>21.08%</td><td>Opus 5 + mini-SWE-agent ($5,818.20)</td><td><span class="tb-badge bad">硬核重置</span> 淘汰饱和题，注入深度系统/科研难题</td></tr>
+            <tr><td><strong>TB 4.0</strong></td><td>57</td><td>64.85%</td><td>37.27%</td><td>Opus 5.5 + Claude Code ($4,718.65)</td><td>扩展至 7 大领域 66 题，单模型逼近 65%</td></tr>
+            <tr><td><strong>TB 4.1 (当前)</strong></td><td><strong>65</strong></td><td><strong>71.21%</strong></td><td><strong>38.48%</strong></td><td><strong>Copilot Fusion + GitHub Copilot ($1,987.33)</strong></td><td><span class="tb-badge pareto">Harbor separate 隔离验证</span> 多模型融合首破 70%</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="tb-panel" id="panel-playbook" role="tabpanel"><span id="playbook" hidden></span>
+    <div class="tb-card">
+      <h2>AI 解决方案架构师（SA）多层级路由选型矩阵与月度 FinOps 测算器</h2>
+      <p class="tb-card-sub">告别「所有工单无脑调最贵旗舰模型」。结合 Terminal-Bench 4.1 的真实成本、延迟与采样上限，按任务风险与验证器密度实施四级分层路由：</p>
+      <div class="tb-table-wrap" style="margin-bottom:18px">
+        <table class="tb-table">
+          <thead>
+            <tr><th>路由层级与定位</th><th>推荐模型 × 脚手架</th><th>建议推理档位</th><th>基准指标参考</th><th>最佳适用企业场景</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="tb-badge good">L1 高吞吐预筛 / 简单巡检</span></td>
+              <td><strong>DeepSeek V4.1 Flash 1017</strong> + Claude Code<br/>（或 <strong>GLM-5.3-Flash</strong>）</td>
+              <td><code>max</code></td>
+              <td>38.48% ($184.89)<br/>49.39% ($190.83)</td>
+              <td>日志初筛、常规依赖升级、低风险脚手架生成（单次试验仅 $0.56–$0.58，秒级响应）</td>
+            </tr>
+            <tr>
+              <td><span class="tb-badge pareto">L2 企业主力生产默认 (70% 流量)</span></td>
+              <td><strong>GPT-6.2 Sol</strong> + Codex</td>
+              <td><code>high</code> / <code>max</code></td>
+              <td><strong>61.52% ($349.16)</strong><br/>1.09B 词元 · $1.72/解</td>
+              <td>日常研发 PR 实现、CI 报错修复、安全补丁加固（Security 高达 84%），兼具紧凑词元与高吞吐</td>
+            </tr>
+            <tr>
+              <td><span class="tb-badge">L3 并行探索救援池 (Best-of-5)</span></td>
+              <td><strong>Kimi K3.1 Pro</strong> + Claude Code</td>
+              <td><code>max</code> (并行 N=3~5)</td>
+              <td><strong>Pass@5 = 84.85% (#1)</strong><br/>均耗仅 123.2s</td>
+              <td>当主力模型连续 2 次卡死在流式并发竞态、复杂排班或边缘 Bug 时，触发并行快速采样 + 自动测试择优</td>
+            </tr>
+            <tr>
+              <td><span class="tb-badge pareto">L4 关键任务升级兜底 (SOTA)</span></td>
+              <td><strong>Copilot Fusion</strong> + GitHub Copilot</td>
+              <td><code>max</code></td>
+              <td><strong>71.21% ($1,987.33)</strong><br/>ML 78% · Ops 69%</td>
+              <td>跨模块复杂架构重构、核心生产事故根因定位、高价值科研/ML 流水线攻坚（比单调 Fable 5.2 省 88% 成本）</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="tb-controls" style="justify-content:space-between">
+        <label class="tb-check" style="flex:1;min-width:260px">
+          月度复杂终端 Agent 任务量（次）：<strong id="est-runs-val" class="mono">3,300</strong>
+          <input type="range" id="est-runs" min="330" max="33000" step="330" value="3300" style="width:180px;margin-left:8px" />
+        </label>
+        <span class="tb-badge pareto" id="est-saving-badge">分层路由相比无脑旗舰节省 82%+</span>
+      </div>
+      <div class="tb-kpi-grid" id="est-grid"></div>
+    </div>
+
+    <div class="tb-card">
+      <h2>架构师落地行动清单：如何把「26% 的运营黑盒题」改造成「70% 的编译器闭环题」？</h2>
+      <p class="tb-card-sub">个人核心总结——在企业落地 Agent 时，<strong>投资确定性领域验证器（Harness Engineering）的 ROI 远高于等待下一代基础模型涨 5 个点</strong>：</p>
+      <div class="tb-grid-2">
+        <div class="tb-insight-box">
+          <h3>行动 1：为业务规则构建「类编译器状态机检查器」(Operations Compiler)</h3>
+          <p><code>freight-dispatch-shift (0%)</code> 的全灭警示我们：绝不能把 ERP/供应链/理赔 SOP 只写在自然语言 Prompt 里让大模型心算。必须将排班时效截单、工时上限、科目平衡表写成<strong>确定性 Python/SQL 约束校验 CLI</strong> 暴露给 Agent 反复试算调用，直接将每次迭代的报错精度拉齐到 <code>coqc</code> 级别。</p>
+        </div>
+        <div class="tb-insight-box">
+          <h3>行动 2：在交付门禁强制嵌入「负向安全与隐私不变量扫描」</h3>
+          <p>针对 <code>bun-sourcemap-leak (0%)</code> 与 <code>data-anonymization (1/325)</code> 暴露出的正向验证偏见，在独立验收容器中内置产物树扫描器（检查 <code>*.map</code>、源码注释、PII 正则残留、k-匿名度重识别阈值），未通过直接打回重修。</p>
+        </div>
+        <div class="tb-insight-box">
+          <h3>行动 3：实施推理档位熔断（默认锁定 high/xhigh，禁用盲目 max）</h3>
+          <p>除明确证明有收益的模型外，在网关层将 <code>Claude Code / Codex</code> 工作流默认控制在 <code>high</code> 或 <code>xhigh</code>，并设置单任务词元预算上限，直接规避 <code>Fable 5.1 / Opus 5</code> 式的多烧 20%–44% 预算反降准确率的过度思考陷阱。</p>
+        </div>
+        <div class="tb-insight-box">
+          <h3>行动 4：拒绝「裸调 API + 简陋自研 Bash 循环」，优先对齐原生协同脚手架</h3>
+          <p>Terminal-Bench 4.1 证明同一水准模型在 <code>mini-swe-agent</code> 与第一方协同 Harness 之间存在 15–25pt 落差。自建企业 Agent 时，应复用成熟的精准行级编辑协议、增量上下文裁剪与独立容器产物验收机制。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <footer class="tb-footer">
+    <div>数据来源：Terminal-Bench 4.1 官方评测快照（<code>2026-11-19T03:41:57Z</code> · <code>Apache-2.0</code> · <code>harbor-framework/terminal-bench</code>）。所有坐标与统计指标均由实测汇总数据精确生成，不含任何评测金丝雀字串。</div>
+    <div>作者与架构点评：Qi Chen (@turbo998) · AI Systems &amp; Harness Engineering</div>
+  </footer>
+
+</main>
+<script>
+const TB_DATA = {"snapshot_utc":"2026-11-19T03:41:57Z","benchmark_id":"terminal-bench@4.1.0","license":"Apache-2.0 (harbor-framework/terminal-bench)","total_rows":65,"unique_pairs":52,"total_tasks":66,"cpu_tasks":63,"gpu_tasks":3,"total_trials":21450,"domains":[{"domain":"Security","task_count":5,"avg_solve_pct":52},{"domain":"ML","task_count":11,"avg_solve_pct":43},{"domain":"Media","task_count":4,"avg_solve_pct":38},{"domain":"Hardware","task_count":5,"avg_solve_pct":37},{"domain":"Software","task_count":18,"avg_solve_pct":35},{"domain":"Science","task_count":14,"avg_solve_pct":34},{"domain":"Operations","task_count":9,"avg_solve_pct":26}],"top12_domains":[{"label":"#1 Copilot Fusion / GitHub Copilot (max)","scores":{"Security":88.0,"ML":80.0,"Media":90.0,"Hardware":76.0,"Software":66.67,"Science":68.57,"Operations":53.33}},{"label":"#2 Opus 5.5 / Claude Code (max)","scores":{"Security":76.0,"ML":83.64,"Media":80.0,"Hardware":80.0,"Software":52.22,"Science":64.29,"Operations":53.33}},{"label":"#2 Fable 5.2 / Claude Code (max)","scores":{"Security":84.0,"ML":72.73,"Media":75.0,"Hardware":80.0,"Software":54.44,"Science":67.14,"Operations":55.56}},{"label":"#4 Gemini 4 Carbon / Antigravity CLI (high)","scores":{"Security":60.0,"ML":74.55,"Media":70.0,"Hardware":80.0,"Software":61.11,"Science":68.57,"Operations":44.44}},{"label":"#5 Sonnet 5.5 / Claude Code (max)","scores":{"Security":88.0,"ML":81.82,"Media":85.0,"Hardware":64.0,"Software":57.78,"Science":51.43,"Operations":51.11}},{"label":"#6 GPT-6.2 Astra / Codex (max)","scores":{"Security":48.0,"ML":67.27,"Media":75.0,"Hardware":80.0,"Software":67.78,"Science":57.14,"Operations":44.44}},{"label":"#7 GPT-6.2 Sol / Codex (max)","scores":{"Security":64.0,"ML":65.45,"Media":80.0,"Hardware":64.0,"Software":66.67,"Science":54.29,"Operations":46.67}},{"label":"#8 GPT-6.1 Sol / Codex (max)","scores":{"Security":80.0,"ML":67.27,"Media":70.0,"Hardware":68.0,"Software":63.33,"Science":52.86,"Operations":42.22}},{"label":"#9 GPT-6 Astra / Codex (max)","scores":{"Security":88.0,"ML":69.09,"Media":90.0,"Hardware":64.0,"Software":62.22,"Science":42.86,"Operations":42.22}},{"label":"#10 GPT-6 Astra / Codex (high)","scores":{"Security":80.0,"ML":70.91,"Media":90.0,"Hardware":64.0,"Software":63.33,"Science":45.71,"Operations":35.56}},{"label":"#11 GPT-6 Astra / Codex (xhigh)","scores":{"Security":80.0,"ML":69.09,"Media":80.0,"Hardware":72.0,"Software":61.11,"Science":44.29,"Operations":42.22}},{"label":"#11 Kimi K3.1 Pro / Claude Code (max)","scores":{"Security":64.0,"ML":78.18,"Media":85.0,"Hardware":52.0,"Software":43.33,"Science":58.57,"Operations":64.44}}],"versions":{"4.1":{"n_rows":65,"median_acc":38.48,"max_acc":71.21,"top3":[{"model":"Copilot Fusion","agent":"GitHub Copilot","accuracy":71.21,"cost":1987.33},{"model":"Opus 5.5","agent":"Claude Code","accuracy":65.76,"cost":4718.65},{"model":"Fable 5.2","agent":"Claude Code","accuracy":65.76,"cost":16492.76}]},"4.0":{"n_rows":57,"median_acc":37.27,"max_acc":64.85,"top3":[{"model":"Opus 5.5","agent":"Claude Code","accuracy":64.85,"cost":4718.65},{"model":"Sonnet 5.5","agent":"Claude Code","accuracy":61.82,"cost":7333.64},{"model":"Kimi K3.1 Pro","agent":"Claude Code","accuracy":60.91,"cost":1086.66}]},"3.0":{"n_rows":12,"median_acc":21.08,"max_acc":42.7,"top3":[{"model":"Opus 5","agent":"mini-SWE-agent","accuracy":42.7,"cost":5818.2},{"model":"GPT-5.6 Sol","agent":"Codex","accuracy":34.59,"cost":3950.9},{"model":"Fable 5","agent":"Claude Code","accuracy":34.05,"cost":6480.94}]},"2.1":{"n_rows":22,"median_acc":78.43,"max_acc":87.42,"top3":[{"model":"GPT-6 Astra","agent":"Codex","accuracy":87.42,"cost":773.5},{"model":"GPT-6 Astra","agent":"Codex","accuracy":86.97,"cost":619.07},{"model":"GPT-6 Astra","agent":"Codex","accuracy":86.74,"cost":463.45}]},"2.0":{"n_rows":142,"median_acc":44.3258426966,"max_acc":84.7191011236,"top3":[{"model":"GPT-5.5","agent":"NexAU-AHE","accuracy":84.7191011236,"cost":null},{"model":"Multiple","agent":"LemonHarness","accuracy":84.4943820225,"cost":null},{"model":"GPT-5.5","agent":"Capy","accuracy":83.1460674157,"cost":null}]}},"rows":[{"id":0,"rank":1,"model":"Copilot Fusion","agent":"GitHub Copilot","scaffold":"GitHub Copilot","model_org":"GitHub","agent_org":"GitHub","effort":"max","date":"2026-11-17","acc":71.21,"ci95":2.88,"pass2":78.33,"pass5":83.33,"upside":12.12,"trials":330,"solves":235,"cost":1987.33,"cost_trial":6.02,"cost_solve":8.46,"tokens_b":3.32,"out_tokens_m":80.2,"cached_tokens_b":3.07,"uncached_tokens_b":3.24,"dur":4233.6,"is_best":true,"has_sweep":false,"unpriced":false},{"id":1,"rank":2,"model":"Opus 5.5","agent":"Claude Code","scaffold":"Claude Code","model_org":"Anthropic","agent_org":"Anthropic","effort":"max","date":"2026-09-22","acc":65.76,"ci95":3.11,"pass2":74.09,"pass5":80.3,"upside":14.54,"trials":330,"solves":217,"cost":4718.65,"cost_trial":14.3,"cost_solve":21.74,"tokens_b":8.03,"out_tokens_m":88.8,"cached_tokens_b":7.7,"uncached_tokens_b":7.95,"dur":4790.4,"is_best":true,"has_sweep":false,"unpriced":false},{"id":2,"rank":2,"model":"Fable 5.2","agent":"Claude Code","scaffold":"Claude Code","model_org":"Anthropic","agent_org":"Anthropic","effort":"max","date":"2026-11-09","acc":65.76,"ci95":2.85,"pass2":72.73,"pass5":78.79,"upside":13.03,"trials":330,"solves":217,"cost":16492.76,"cost_trial":49.98,"cost_solve":76.0,"tokens_b":15.73,"out_tokens_m":162.1,"cached_tokens_b":14.86,"uncached_tokens_b":15.56,"dur":7333,"is_best":true,"has_sweep":false,"unpriced":false},{"id":3,"rank":4,"model":"Gemini 4 Carbon","agent":"Antigravity CLI","scaffold":"Antigravity CLI","model_org":"Google","agent_org":"Google","effort":"high","date":"2026-10-28","acc":64.55,"ci95":3.23,"pass2":73.48,"pass5":78.79,"upside":14.24,"trials":330,"solves":213,"cost":1358.25,"cost_trial":4.12,"cost_solve":6.38,"tokens_b":3.78,"out_tokens_m":54.8,"cached_tokens_b":3.5,"uncached_tokens_b":3.73,"dur":3495.8,"is_best":true,"has_sweep":false,"unpriced":false},{"id":4,"rank":5,"model":"Sonnet 5.5","agent":"Claude Code","scaffold":"Claude Code","model_org":"Anthropic","agent_org":"Anthropic","effort":"max","date":"2026-09-28","acc":63.94,"ci95":3,"pass2":71.67,"pass5":80.3,"upside":16.36,"trials":330,"solves":211,"cost":7333.64,"cost_trial":22.22,"cost_solve":34.76,"tokens_b":19.41,"out_tokens_m":186.6,"cached_tokens_b":18.58,"uncached_tokens_b":19.23,"dur":7431.6,"is_best":true,"has_sweep":false,"unpriced":false},{"id":5,"rank":6,"model":"GPT-6.2 Astra","agent":"Codex","scaffold":"Codex","model_org":"OpenAI","agent_org":"OpenAI","effort":"max","date":"2026-11-17","acc":62.12,"ci95":2.3,"pass2":66.67,"pass5":72.73,"upside":10.61,"trials":330,"solves":205,"cost":1409.14,"cost_trial":4.27,"cost_solve":6.87,"tokens_b":1.12,"out_tokens_m":16.5,"cached_tokens_b":1.07,"uncached_tokens_b":1.1,"dur":1349.5,"is_best":true,"has_sweep":false,"unpriced":false},{"id":6,"rank":7,"model":"GPT-6.2 Sol","agent":"Codex","scaffold":"Codex","model_org":"OpenAI","agent_org":"OpenAI","effort":"max","date":"2026-11-17","acc":61.52,"ci95":2.75,"pass2":68.03,"pass5":72.73,"upside":11.21,"trials":330,"solves":203,"cost":349.16,"cost_trial":1.06,"cost_solve":1.72,"tokens_b":1.09,"out_tokens_m":16.0,"cached_tokens_b":1.03,"uncached_tokens_b":1.07,"dur":1214.3,"is_best":true,"has_sweep":false,"unpriced":false},{"id":7,"rank":8,"model":"GPT-6.1 Sol","agent":"Codex","scaffold":"Codex","model_org":"OpenAI","agent_org":"OpenAI","effort":"max","date":"2026-09-29","acc":60.91,"ci95":2.97,"pass2":68.48,"pass5":74.24,"upside":13.33,"trials":330,"solves":201,"cost":634.24,"cost_trial":1.92,"cost_solve":3.16,"tokens_b":1.46,"out_tokens_m":31.3,"cached_tokens_b":1.35,"uncached_tokens_b":1.43,"dur":3176.7,"is_best":true,"has_sweep":false,"unpriced":false},{"id":8,"rank":9,"model":"GPT-6 Astra","agent":"Codex","scaffold":"Codex","model_org":"OpenAI","agent_org":"OpenAI","effort":"max","date":"2026-09-03","acc":60.3,"ci95":2.82,"pass2":67.12,"pass5":72.73,"upside":12.43,"trials":330,"solves":199,"cost":3267.18,"cost_trial":9.9,"cost_solve":16.42,"tokens_b":1.53,"out_tokens_m":24.0,"cached_tokens_b":1.44,"uncached_tokens_b":1.51,"dur":2796.3,"is_best":true,"has_sweep":true,"unpriced":false},{"id":9,"rank":10,"model":"GPT-6 Astra","agent":"Codex","scaffold":"Codex","model_org":"OpenAI","agent_org":"OpenAI","effort":"high","date":"2026-09-03","acc":60,"ci95":2.79,"pass2":66.67,"pass5":71.21,"upside":11.21,"trials":330,"solves":198,"cost":2269.42,"cost_trial":6.88,"cost_solve":11.46,"tokens_b":1.21,"out_tokens_m":13.7,"cached_tokens_b":1.15,"uncached_tokens_b":1.19,"dur":2113.7,"is_best":false,"has_sweep":true,"unpriced":false},{"id":10,"rank":11,"model":"GPT-6 Astra","agent":"Codex","scaffold":"Codex","model_org":"OpenAI","agent_org":"OpenAI","effort":"xhigh","date":"2026-09-03","acc":59.7,"ci95":2.69,"pass2":65.91,"pass5":69.7,"upside":10.0,"trials":330,"solves":197,"cost":2350.51,"cost_trial":7.12,"cost_solve":11.93,"tokens_b":1.2,"out_tokens_m":15.0,"cached_tokens_b":1.14,"uncached_tokens_b":1.19,"dur":2208.5,"is_best":false,"has_sweep":true,"unpriced":false},{"id":11,"rank":11,"model":"Kimi K3.1 Pro","agent":"Claude Code","scaffold":"Claude Code","model_org":"Moonshot AI","agent_org":"Anthropic","effort":"max","date":"2026-10-24","acc":59.7,"ci95":4.18,"pass2":74.7,"pass5":84.85,"upside":25.15,"trials":330,"solves":197,"cost":1086.66,"cost_trial":3.29,"cost_solve":5.52,"tokens_b":3.16,"out_tokens_m":26.7,"cached_tokens_b":3.03,"uncached_tokens_b":3.14,"dur":123.2,"is_best":true,"has_sweep":false,"unpriced":false},{"id":12,"rank":13,"model":"Fable 5.1","agent":"Claude Code","scaffold":"Claude Code","model_org":"Anthropic","agent_org":"Anthropic","effort":"xhigh","date":"2026-09-01","acc":57.58,"ci95":3.31,"pass2":66.97,"pass5":74.24,"upside":16.66,"trials":330,"solves":190,"cost":4872.04,"cost_trial":14.76,"cost_solve":25.64,"tokens_b":2.34,"out_tokens_m":50.4,"cached_tokens_b":2.14,"uncached_tokens_b":2.29,"dur":3202.1,"is_best":true,"has_sweep":true,"unpriced":false},{"id":13,"rank":14,"model":"Fable 5.1","agent":"Claude Code","scaffold":"Claude Code","model_org":"Anthropic","agent_org":"Anthropic","effort":"max","date":"2026-09-01","acc":57.27,"ci95":3.83,"pass2":69.85,"pass5":78.79,"upside":21.52,"trials":330,"solves":189,"cost":6243.5,"cost_trial":18.92,"cost_solve":33.03,"tokens_b":2.75,"out_tokens_m":63.1,"cached_tokens_b":2.47,"uncached_tokens_b":2.68,"dur":3893.5,"is_best":false,"has_sweep":true,"unpriced":false},{"id":14,"rank":15,"model":"Gemini 4 Hydrogen","agent":"Antigravity CLI","scaffold":"Antigravity CLI","model_org":"Google","agent_org":"Google","effort":"high","date":"2026-11-12","acc":56.36,"ci95":2.97,"pass2":63.94,"pass5":69.7,"upside":13.34,"trials":330,"solves":186,"cost":784.24,"cost_trial":2.38,"cost_solve":4.22,"tokens_b":3.59,"out_tokens_m":39.4,"cached_tokens_b":3.39,"uncached_tokens_b":3.55,"dur":1926.2,"is_best":true,"has_sweep":false,"unpriced":false},{"id":15,"rank":16,"model":"Gemini 4 Argon","agent":"Antigravity CLI","scaffold":"Antigravity CLI","model_org":"Google","agent_org":"Google","effort":"high","date":"2026-09-30","acc":55.45,"ci95":2.85,"pass2":62.42,"pass5":65.15,"upside":9.7,"trials":330,"solves":183,"cost":1108.98,"cost_trial":3.36,"cost_solve":6.06,"tokens_b":2.78,"out_tokens_m":53.8,"cached_tokens_b":2.57,"uncached_tokens_b":2.73,"dur":125.2,"is_best":true,"has_sweep":false,"unpriced":false},{"id":16,"rank":17,"model":"GPT-6 Astra","agent":"Codex","scaffold":"Codex","model_org":"OpenAI","agent_org":"OpenAI","effort":"medium","date":"2026-09-03","acc":55.15,"ci95":2.66,"pass2":61.21,"pass5":68.18,"upside":13.03,"trials":330,"solves":182,"cost":1914.8,"cost_trial":5.8,"cost_solve":10.52,"tokens_b":1.05,"out_tokens_m":10.8,"cached_tokens_b":1.0,"uncached_tokens_b":1.04,"dur":1885.9,"is_best":false,"has_sweep":true,"unpriced":false},{"id":17,"rank":18,"model":"Fable 5.1","agent":"Claude Code","scaffold":"Claude Code","model_org":"Anthropic","agent_org":"Anthropic","effort":"high","date":"2026-09-01","acc":54.85,"ci95":3.41,"pass2":64.85,"pass5":75.76,"upside":20.91,"trials":330,"solves":181,"cost":3985.38,"cost_trial":12.08,"cost_solve":22.02,"tokens_b":2.23,"out_tokens_m":37.4,"cached_tokens_b":2.06,"uncached_tokens_b":2.2,"dur":3017.7,"is_best":false,"has_sweep":true,"unpriced":false},{"id":18,"rank":19,"model":"Fable 5.1","agent":"Claude Code","scaffold":"Claude Code","model_org":"Anthropic","agent_org":"Anthropic","effort":"medium","date":"2026-09-01","acc":53.94,"ci95":3.39,"pass2":63.79,"pass5":71.21,"upside":17.27,"trials":330,"solves":178,"cost":2832.9,"cost_trial":8.58,"cost_solve":15.92,"tokens_b":1.62,"out_tokens_m":26.0,"cached_tokens_b":1.5,"uncached_tokens_b":1.59,"dur":2528.3,"is_best":false,"has_sweep":true,"unpriced":false},{"id":19,"rank":20,"model":"Opus 5","agent":"Claude Code","scaffold":"Claude Code","model_org":"Anthropic","agent_org":"Anthropic","effort":"xhigh","date":"2026-07-24","acc":53.33,"ci95":3.09,"pass2":61.52,"pass5":68.18,"upside":14.85,"trials":330,"solves":176,"cost":6086.22,"cost_trial":18.44,"cost_solve":34.58,"tokens_b":6.9,"out_tokens_m":59.2,"cached_tokens_b":6.63,"uncached_tokens_b":6.84,"dur":4514.7,"is_best":true,"has_sweep":true,"unpriced":false},{"id":20,"rank":20,"model":"GPT-6.1 Terra","agent":"Codex","scaffold":"Codex","model_org":"OpenAI","agent_org":"OpenAI","effort":"max","date":"2026-10-26","acc":53.33,"ci95":3.09,"pass2":61.52,"pass5":66.67,"upside":13.34,"trials":330,"solves":176,"cost":874.44,"cost_trial":2.65,"cost_solve":4.97,"tokens_b":8.48,"out_tokens_m":33.0,"cached_tokens_b":8.38,"uncached_tokens_b":8.45,"dur":123.1,"is_best":true,"has_sweep":false,"unpriced":false},{"id":21,"rank":22,"model":"Opus 5","agent":"Claude Code","scaffold":"Claude Code","model_org":"Anthropic","agent_org":"Anthropic","effort":"max","date":"2026-07-24","acc":52.12,"ci95":3.39,"pass2":61.97,"pass5":69.7,"upside":17.58,"trials":330,"solves":172,"cost":5969.11,"cost_trial":18.09,"cost_solve":34.7,"tokens_b":6.53,"out_tokens_m":66.0,"cached_tokens_b":6.27,"uncached_tokens_b":6.46,"dur":4792.8,"is_best":false,"has_sweep":true,"unpriced":false},{"id":22,"rank":23,"model":"GPT-6 Astra","agent":"Codex","scaffold":"Codex","model_org":"OpenAI","agent_org":"OpenAI","effort":"low","date":"2026-09-03","acc":50.91,"ci95":2.79,"pass2":57.58,"pass5":63.64,"upside":12.73,"trials":330,"solves":168,"cost":1557.3,"cost_trial":4.72,"cost_solve":9.27,"tokens_b":0.89,"out_tokens_m":8.0,"cached_tokens_b":0.85,"uncached_tokens_b":0.88,"dur":1683.7,"is_best":false,"has_sweep":true,"unpriced":false},{"id":23,"rank":24,"model":"GPT-6 Sol","agent":"Codex","scaffold":"Codex","model_org":"OpenAI","agent_org":"OpenAI","effort":"max","date":"2026-09-22","acc":50.3,"ci95":3.23,"pass2":59.24,"pass5":66.67,"upside":16.37,"trials":330,"solves":166,"cost":1451.32,"cost_trial":4.4,"cost_solve":8.74,"tokens_b":4.98,"out_tokens_m":30.6,"cached_tokens_b":4.88,"uncached_tokens_b":4.95,"dur":2662.2,"is_best":true,"has_sweep":false,"unpriced":false},{"id":24,"rank":25,"model":"Opus 5","agent":"Claude Code","scaffold":"Claude Code","model_org":"Anthropic","agent_org":"Anthropic","effort":"high","date":"2026-07-24","acc":49.7,"ci95":3.69,"pass2":61.36,"pass5":72.73,"upside":23.03,"trials":330,"solves":164,"cost":4662.27,"cost_trial":14.13,"cost_solve":28.43,"tokens_b":5.48,"out_tokens_m":47.6,"cached_tokens_b":5.3,"uncached_tokens_b":5.43,"dur":3822.2,"is_best":false,"has_sweep":true,"unpriced":false},{"id":25,"rank":26,"model":"Muse Wonder","agent":"Muse Code","scaffold":"Muse Code","model_org":"Meta","agent_org":"Meta","effort":"xhigh","date":"2026-10-12","acc":46.97,"ci95":3.78,"pass2":59.24,"pass5":71.21,"upside":24.24,"trials":330,"solves":155,"cost":2452.31,"cost_trial":7.43,"cost_solve":15.82,"tokens_b":5.45,"out_tokens_m":42.7,"cached_tokens_b":5.27,"uncached_tokens_b":5.41,"dur":2827.5,"is_best":true,"has_sweep":false,"unpriced":false},{"id":26,"rank":27,"model":"Opus 5","agent":"Claude Code","scaffold":"Claude Code","model_org":"Anthropic","agent_org":"Anthropic","effort":"medium","date":"2026-07-24","acc":45.15,"ci95":3.85,"pass2":57.88,"pass5":69.7,"upside":24.55,"trials":330,"solves":149,"cost":3191.59,"cost_trial":9.67,"cost_solve":21.42,"tokens_b":3.67,"out_tokens_m":33.5,"cached_tokens_b":3.54,"uncached_tokens_b":3.63,"dur":3292.9,"is_best":false,"has_sweep":true,"unpriced":false},{"id":27,"rank":28,"model":"Fable 5","agent":"Claude Code","scaffold":"Claude Code","model_org":"Anthropic","agent_org":"Anthropic","effort":"max","date":"2026-06-09","acc":44.85,"ci95":3.83,"pass2":57.42,"pass5":68.18,"upside":23.33,"trials":330,"solves":148,"cost":7265.01,"cost_trial":22.02,"cost_solve":49.09,"tokens_b":3.79,"out_tokens_m":58.6,"cached_tokens_b":3.56,"uncached_tokens_b":3.73,"dur":4202.8,"is_best":true,"has_sweep":false,"unpriced":false},{"id":28,"rank":29,"model":"Fable 5.1","agent":"Claude Code","scaffold":"Claude Code","model_org":"Anthropic","agent_org":"Anthropic","effort":"low","date":"2026-09-01","acc":43.33,"ci95":3.61,"pass2":54.55,"pass5":65.15,"upside":21.82,"trials":330,"solves":143,"cost":2358.72,"cost_trial":7.15,"cost_solve":16.49,"tokens_b":1.33,"out_tokens_m":19.9,"cached_tokens_b":1.23,"uncached_tokens_b":1.31,"dur":2290.8,"is_best":false,"has_sweep":true,"unpriced":false},{"id":29,"rank":30,"model":"GLM-5.3","agent":"Claude Code","scaffold":"Claude Code","model_org":"Z.ai","agent_org":"Anthropic","effort":"max","date":"2026-08-14","acc":41.21,"ci95":3.28,"pass2":50.45,"pass5":57.58,"upside":16.37,"trials":330,"solves":136,"cost":2727.63,"cost_trial":8.27,"cost_solve":20.06,"tokens_b":8.68,"out_tokens_m":68.7,"cached_tokens_b":8.44,"uncached_tokens_b":8.61,"dur":5831,"is_best":true,"has_sweep":false,"unpriced":false},{"id":30,"rank":31,"model":"Haiku 5.5","agent":"Claude Code","scaffold":"Claude Code","model_org":"Anthropic","agent_org":"Anthropic","effort":"max","date":"2026-10-07","acc":40,"ci95":3.61,"pass2":51.21,"pass5":60.61,"upside":20.61,"trials":330,"solves":132,"cost":952.47,"cost_trial":2.89,"cost_solve":7.22,"tokens_b":12.08,"out_tokens_m":127.5,"cached_tokens_b":11.73,"uncached_tokens_b":11.95,"dur":140.5,"is_best":true,"has_sweep":false,"unpriced":false},{"id":31,"rank":32,"model":"Grok 4.7","agent":"Grok Build","scaffold":"Grok Build","model_org":"xAI","agent_org":"xAI","effort":"xhigh","date":"2026-09-21","acc":38.79,"ci95":3.59,"pass2":49.85,"pass5":62.12,"upside":23.33,"trials":330,"solves":128,"cost":3683.29,"cost_trial":11.16,"cost_solve":28.78,"tokens_b":5.49,"out_tokens_m":23.0,"cached_tokens_b":5.21,"uncached_tokens_b":0.26,"dur":5700.9,"is_best":true,"has_sweep":false,"unpriced":false},{"id":32,"rank":33,"model":"GPT-5.6 Sol","agent":"Codex","scaffold":"Codex","model_org":"OpenAI","agent_org":"OpenAI","effort":"max","date":"2026-06-26","acc":38.48,"ci95":3.83,"pass2":51.06,"pass5":62.12,"upside":23.64,"trials":330,"solves":127,"cost":2541.7,"cost_trial":7.7,"cost_solve":20.01,"tokens_b":4.41,"out_tokens_m":23.5,"cached_tokens_b":4.32,"uncached_tokens_b":4.39,"dur":2388.4,"is_best":true,"has_sweep":false,"unpriced":false},{"id":33,"rank":33,"model":"DeepSeek V4.1 Flash 1017","agent":"Claude Code","scaffold":"Claude Code","model_org":"DeepSeek","agent_org":"Anthropic","effort":"max","date":"2026-10-17","acc":38.48,"ci95":3.76,"pass2":50.61,"pass5":65.15,"upside":26.67,"trials":330,"solves":127,"cost":184.89,"cost_trial":0.56,"cost_solve":1.46,"tokens_b":8.19,"out_tokens_m":164.1,"cached_tokens_b":7.6,"uncached_tokens_b":8.02,"dur":148.4,"is_best":true,"has_sweep":false,"unpriced":false},{"id":34,"rank":35,"model":"Hy4","agent":"Claude Code","scaffold":"Claude Code","model_org":"Tencent","agent_org":"Anthropic","effort":"max","date":"2026-11-04","acc":37.88,"ci95":3.51,"pass2":48.48,"pass5":59.09,"upside":21.21,"trials":330,"solves":125,"cost":347.6,"cost_trial":1.05,"cost_solve":2.78,"tokens_b":5.35,"out_tokens_m":121.7,"cached_tokens_b":5.01,"uncached_tokens_b":5.22,"dur":126.2,"is_best":true,"has_sweep":false,"unpriced":false},{"id":35,"rank":36,"model":"GLM-5.3-Flash","agent":"Claude Code","scaffold":"Claude Code","model_org":"Z.ai","agent_org":"Anthropic","effort":"max","date":"2026-08-26","acc":36.97,"ci95":3.64,"pass2":48.33,"pass5":62.12,"upside":25.15,"trials":330,"solves":122,"cost":374.72,"cost_trial":1.14,"cost_solve":3.07,"tokens_b":8.18,"out_tokens_m":151.7,"cached_tokens_b":7.55,"uncached_tokens_b":8.03,"dur":120.4,"is_best":true,"has_sweep":true,"unpriced":false},{"id":36,"rank":37,"model":"GLM-5.3-Flash","agent":"Claude Code","scaffold":"Claude Code","model_org":"Z.ai","agent_org":"Anthropic","effort":"none","date":"2026-08-26","acc":35.45,"ci95":3.56,"pass2":46.36,"pass5":56.06,"upside":20.61,"trials":330,"solves":117,"cost":118.74,"cost_trial":0.36,"cost_solve":1.01,"tokens_b":2.92,"out_tokens_m":44.6,"cached_tokens_b":2.79,"uncached_tokens_b":2.87,"dur":6209.8,"is_best":false,"has_sweep":true,"unpriced":false},{"id":37,"rank":38,"model":"Opus 5","agent":"Claude Code","scaffold":"Claude Code","model_org":"Anthropic","agent_org":"Anthropic","effort":"low","date":"2026-07-24","acc":34.85,"ci95":3.92,"pass2":48.03,"pass5":60.61,"upside":25.76,"trials":330,"solves":115,"cost":2393.88,"cost_trial":7.25,"cost_solve":20.82,"tokens_b":2.72,"out_tokens_m":23.8,"cached_tokens_b":2.62,"uncached_tokens_b":2.7,"dur":2947.3,"is_best":false,"has_sweep":true,"unpriced":false},{"id":38,"rank":39,"model":"Muse Ember","agent":"Muse Code","scaffold":"Muse Code","model_org":"Meta","agent_org":"Meta","effort":"xhigh","date":"2026-11-09","acc":30.61,"ci95":3.8,"pass2":43.03,"pass5":59.09,"upside":28.48,"trials":330,"solves":101,"cost":157.18,"cost_trial":0.48,"cost_solve":1.56,"tokens_b":8.13,"out_tokens_m":54.6,"cached_tokens_b":7.88,"uncached_tokens_b":8.08,"dur":2288.4,"is_best":true,"has_sweep":false,"unpriced":false},{"id":39,"rank":40,"model":"Mistral Large 4","agent":"Claude Code","scaffold":"Claude Code","model_org":"Mistral AI","agent_org":"Anthropic","effort":"max","date":"2026-10-06","acc":27.58,"ci95":3.87,"pass2":40.45,"pass5":57.58,"upside":30.0,"trials":330,"solves":91,"cost":718.4,"cost_trial":2.18,"cost_solve":7.89,"tokens_b":5.77,"out_tokens_m":83.7,"cached_tokens_b":5.46,"uncached_tokens_b":5.68,"dur":142.7,"is_best":true,"has_sweep":false,"unpriced":false},{"id":40,"rank":41,"model":"Qwen3.8-Max-0902","agent":"Claude Code","scaffold":"Claude Code","model_org":"Alibaba","agent_org":"Anthropic","effort":"max","date":"2026-09-02","acc":26.97,"ci95":3.87,"pass2":39.85,"pass5":54.55,"upside":27.58,"trials":330,"solves":89,"cost":4635.67,"cost_trial":14.05,"cost_solve":52.09,"tokens_b":2.96,"out_tokens_m":83.4,"cached_tokens_b":2.7,"uncached_tokens_b":2.87,"dur":9953,"is_best":true,"has_sweep":false,"unpriced":false},{"id":41,"rank":41,"model":"MiMo V2.6 Pro","agent":"mini-swe-agent","scaffold":"mini-swe-agent","model_org":"Xiaomi","agent_org":"SWE-agent","effort":"none","date":"2026-09-22","acc":26.97,"ci95":3.61,"pass2":38.18,"pass5":53.03,"upside":26.06,"trials":330,"solves":89,"cost":282.32,"cost_trial":0.86,"cost_solve":3.17,"tokens_b":7.79,"out_tokens_m":81.1,"cached_tokens_b":7.28,"uncached_tokens_b":7.71,"dur":168.2,"is_best":true,"has_sweep":false,"unpriced":false},{"id":42,"rank":43,"model":"Opus 4.8","agent":"Claude Code","scaffold":"Claude Code","model_org":"Anthropic","agent_org":"Anthropic","effort":"max","date":"2026-05-28","acc":23.64,"ci95":3.59,"pass2":34.7,"pass5":46.97,"upside":23.33,"trials":330,"solves":78,"cost":6481.26,"cost_trial":19.64,"cost_solve":83.09,"tokens_b":6.42,"out_tokens_m":88.8,"cached_tokens_b":6.14,"uncached_tokens_b":6.33,"dur":5163,"is_best":true,"has_sweep":false,"unpriced":false},{"id":43,"rank":44,"model":"Kimi K3","agent":"Claude Code","scaffold":"Claude Code","model_org":"Moonshot AI","agent_org":"Anthropic","effort":"max","date":"2026-07-16","acc":23.03,"ci95":3.73,"pass2":35.0,"pass5":53.03,"upside":30.0,"trials":330,"solves":76,"cost":1919.83,"cost_trial":5.82,"cost_solve":25.26,"tokens_b":4.92,"out_tokens_m":64.5,"cached_tokens_b":4.49,"uncached_tokens_b":4.86,"dur":141.9,"is_best":true,"has_sweep":false,"unpriced":false},{"id":44,"rank":45,"model":"Ember-1","agent":"mini-swe-agent","scaffold":"mini-swe-agent","model_org":"Fireworks","agent_org":"SWE-agent","effort":"none","date":"2026-09-24","acc":21.82,"ci95":3.46,"pass2":32.12,"pass5":42.42,"upside":20.6,"trials":330,"solves":72,"cost":4718.49,"cost_trial":14.3,"cost_solve":65.53,"tokens_b":11.91,"out_tokens_m":61.9,"cached_tokens_b":11.76,"uncached_tokens_b":11.84,"dur":4959.5,"is_best":true,"has_sweep":false,"unpriced":false},{"id":45,"rank":46,"model":"GPT-5.6 Terra","agent":"Codex","scaffold":"Codex","model_org":"OpenAI","agent_org":"OpenAI","effort":"max","date":"2026-06-26","acc":21.52,"ci95":3.25,"pass2":30.61,"pass5":43.94,"upside":22.42,"trials":330,"solves":71,"cost":1733.52,"cost_trial":5.25,"cost_solve":24.42,"tokens_b":5.68,"out_tokens_m":33.2,"cached_tokens_b":5.56,"uncached_tokens_b":5.65,"dur":2514.6,"is_best":true,"has_sweep":false,"unpriced":false},{"id":46,"rank":47,"model":"Grok 4.6","agent":"Grok Build","scaffold":"Grok Build","model_org":"xAI","agent_org":"xAI","effort":"high","date":"2026-08-12","acc":19.7,"ci95":3.09,"pass2":27.88,"pass5":39.39,"upside":19.69,"trials":330,"solves":65,"cost":3591.58,"cost_trial":10.88,"cost_solve":55.26,"tokens_b":4.0,"out_tokens_m":32.6,"cached_tokens_b":3.88,"uncached_tokens_b":3.97,"dur":2351.5,"is_best":true,"has_sweep":false,"unpriced":false},{"id":47,"rank":48,"model":"Hy4 Preview","agent":"Claude Code","scaffold":"Claude Code","model_org":"Tencent","agent_org":"Anthropic","effort":"max","date":"2026-08-28","acc":19.09,"ci95":3.09,"pass2":27.27,"pass5":37.88,"upside":18.79,"trials":330,"solves":63,"cost":658.09,"cost_trial":1.99,"cost_solve":10.45,"tokens_b":6.04,"out_tokens_m":102.1,"cached_tokens_b":5.74,"uncached_tokens_b":5.93,"dur":6967,"is_best":true,"has_sweep":false,"unpriced":false},{"id":48,"rank":49,"model":"Gemini 3.8 Flash","agent":"mini-SWE-agent","scaffold":"mini-swe-agent","model_org":"Google","agent_org":"SWE-agent","effort":"high","date":"2026-09-02","acc":18.18,"ci95":3.36,"pass2":27.88,"pass5":43.94,"upside":25.76,"trials":330,"solves":60,"cost":1828.77,"cost_trial":5.54,"cost_solve":30.48,"tokens_b":17.19,"out_tokens_m":68.1,"cached_tokens_b":16.69,"uncached_tokens_b":17.12,"dur":1995.1,"is_best":true,"has_sweep":false,"unpriced":false},{"id":49,"rank":50,"model":"GPT-5.6 Luna","agent":"Codex","scaffold":"Codex","model_org":"OpenAI","agent_org":"OpenAI","effort":"max","date":"2026-06-26","acc":17.58,"ci95":2.91,"pass2":24.85,"pass5":34.85,"upside":17.27,"trials":330,"solves":58,"cost":346.67,"cost_trial":1.05,"cost_solve":5.98,"tokens_b":11.56,"out_tokens_m":61.3,"cached_tokens_b":11.31,"uncached_tokens_b":11.5,"dur":4088.3,"is_best":true,"has_sweep":false,"unpriced":false},{"id":50,"rank":51,"model":"MiMo V2.6 Flash","agent":"mini-swe-agent","scaffold":"mini-swe-agent","model_org":"Xiaomi","agent_org":"SWE-agent","effort":"none","date":"2026-09-22","acc":16.06,"ci95":3.36,"pass2":25.76,"pass5":37.88,"upside":21.82,"trials":330,"solves":53,"cost":194.6,"cost_trial":0.59,"cost_solve":3.67,"tokens_b":9.9,"out_tokens_m":66.0,"cached_tokens_b":8.76,"uncached_tokens_b":9.84,"dur":160.8,"is_best":true,"has_sweep":false,"unpriced":false},{"id":51,"rank":52,"model":"GPT-6 Luna","agent":"Codex","scaffold":"Codex","model_org":"OpenAI","agent_org":"OpenAI","effort":"max","date":"2026-09-22","acc":15.15,"ci95":2.66,"pass2":21.21,"pass5":28.79,"upside":13.64,"trials":330,"solves":50,"cost":72.14,"cost_trial":0.22,"cost_solve":1.44,"tokens_b":3.91,"out_tokens_m":45.5,"cached_tokens_b":3.78,"uncached_tokens_b":3.86,"dur":2284.1,"is_best":true,"has_sweep":false,"unpriced":false},{"id":52,"rank":53,"model":"Muse Spark 1.3","agent":"Muse Code","scaffold":"Muse Code","model_org":"Meta","agent_org":"Meta","effort":"xhigh","date":"2026-09-02","acc":14.85,"ci95":3,"pass2":22.58,"pass5":34.85,"upside":20.0,"trials":330,"solves":49,"cost":0.0,"cost_trial":0.0,"cost_solve":0.0,"tokens_b":9.01,"out_tokens_m":87.5,"cached_tokens_b":8.65,"uncached_tokens_b":8.92,"dur":4341.7,"is_best":true,"has_sweep":false,"unpriced":true},{"id":53,"rank":54,"model":"Inkling Small 2","agent":"mini-swe-agent","scaffold":"mini-swe-agent","model_org":"Thinking Machines Lab","agent_org":"SWE-agent","effort":"xhigh","date":"2026-11-05","acc":13.03,"ci95":2.85,"pass2":20.0,"pass5":30.3,"upside":17.27,"trials":330,"solves":43,"cost":963.65,"cost_trial":2.92,"cost_solve":22.41,"tokens_b":27.47,"out_tokens_m":102.2,"cached_tokens_b":27.22,"uncached_tokens_b":27.37,"dur":7272.7,"is_best":true,"has_sweep":false,"unpriced":false},{"id":54,"rank":55,"model":"Gemini 3.7 Flash","agent":"mini-SWE-agent","scaffold":"mini-swe-agent","model_org":"Google","agent_org":"SWE-agent","effort":"high","date":"2026-08-13","acc":12.42,"ci95":2.52,"pass2":17.88,"pass5":27.27,"upside":14.85,"trials":330,"solves":41,"cost":1261.87,"cost_trial":3.82,"cost_solve":30.78,"tokens_b":11.14,"out_tokens_m":52.1,"cached_tokens_b":10.74,"uncached_tokens_b":11.09,"dur":1688.9,"is_best":true,"has_sweep":false,"unpriced":false},{"id":55,"rank":55,"model":"Grok 4.5","agent":"Grok Build","scaffold":"Grok Build","model_org":"xAI","agent_org":"xAI","effort":"high","date":"2026-07-16","acc":12.42,"ci95":2.62,"pass2":18.33,"pass5":27.27,"upside":14.85,"trials":330,"solves":41,"cost":2094.11,"cost_trial":6.35,"cost_solve":51.08,"tokens_b":3.4,"out_tokens_m":32.4,"cached_tokens_b":3.25,"uncached_tokens_b":3.37,"dur":3162.1,"is_best":true,"has_sweep":false,"unpriced":false},{"id":56,"rank":57,"model":"Sonnet 5","agent":"Claude Code","scaffold":"Claude Code","model_org":"Anthropic","agent_org":"Anthropic","effort":"max","date":"2026-06-30","acc":12.12,"ci95":3,"pass2":19.85,"pass5":33.33,"upside":21.21,"trials":330,"solves":40,"cost":9603.86,"cost_trial":29.1,"cost_solve":240.1,"tokens_b":21.56,"out_tokens_m":116.6,"cached_tokens_b":21.03,"uncached_tokens_b":21.45,"dur":6510.3,"is_best":true,"has_sweep":false,"unpriced":false},{"id":57,"rank":58,"model":"MiniMax M3","agent":"mini-swe-agent","scaffold":"mini-swe-agent","model_org":"MiniMax","agent_org":"SWE-agent","effort":"none","date":"2026-06-01","acc":7.58,"ci95":2.75,"pass2":14.09,"pass5":27.27,"upside":19.69,"trials":330,"solves":25,"cost":1149.33,"cost_trial":3.48,"cost_solve":45.97,"tokens_b":16.5,"out_tokens_m":77.4,"cached_tokens_b":16.12,"uncached_tokens_b":16.42,"dur":204,"is_best":true,"has_sweep":false,"unpriced":false},{"id":58,"rank":59,"model":"DeepSeek V4 Pro 0813","agent":"Claude Code","scaffold":"Claude Code","model_org":"DeepSeek","agent_org":"Anthropic","effort":"max","date":"2026-08-13","acc":6.67,"ci95":2.52,"pass2":12.12,"pass5":22.73,"upside":16.06,"trials":330,"solves":22,"cost":727.02,"cost_trial":2.2,"cost_solve":33.05,"tokens_b":3.83,"out_tokens_m":80.9,"cached_tokens_b":3.46,"uncached_tokens_b":3.75,"dur":138.2,"is_best":true,"has_sweep":false,"unpriced":false},{"id":59,"rank":60,"model":"Beam 1.0","agent":"mini-swe-agent","scaffold":"mini-swe-agent","model_org":"Reflection","agent_org":"SWE-agent","effort":"none","date":"2026-10-16","acc":6.36,"ci95":1.68,"pass2":8.79,"pass5":10.61,"upside":4.25,"trials":330,"solves":21,"cost":220.96,"cost_trial":0.67,"cost_solve":10.52,"tokens_b":4.12,"out_tokens_m":21.3,"cached_tokens_b":3.97,"uncached_tokens_b":4.1,"dur":178.6,"is_best":true,"has_sweep":false,"unpriced":false},{"id":60,"rank":61,"model":"Gemini 3.1 Pro","agent":"Antigravity CLI","scaffold":"Antigravity CLI","model_org":"Google","agent_org":"Google","effort":"high","date":"2026-02-19","acc":2.73,"ci95":1.68,"pass2":5.15,"pass5":10.61,"upside":7.88,"trials":330,"solves":9,"cost":3651.15,"cost_trial":11.06,"cost_solve":405.68,"tokens_b":7.93,"out_tokens_m":28.9,"cached_tokens_b":7.7,"uncached_tokens_b":7.9,"dur":4583.2,"is_best":true,"has_sweep":false,"unpriced":false},{"id":61,"rank":62,"model":"GPT-5.4 Mini","agent":"Codex","scaffold":"Codex","model_org":"OpenAI","agent_org":"OpenAI","effort":"xhigh","date":"2026-03-17","acc":1.82,"ci95":1.26,"pass2":3.18,"pass5":6.06,"upside":4.24,"trials":330,"solves":6,"cost":671.57,"cost_trial":2.04,"cost_solve":111.93,"tokens_b":4.19,"out_tokens_m":56.0,"cached_tokens_b":3.97,"uncached_tokens_b":4.13,"dur":141.5,"is_best":true,"has_sweep":false,"unpriced":false},{"id":62,"rank":63,"model":"Inkling Small","agent":"mini-swe-agent","scaffold":"mini-swe-agent","model_org":"Thinking Machines Lab","agent_org":"SWE-agent","effort":"none","date":"2026-07-30","acc":0.91,"ci95":0.94,"pass2":1.67,"pass5":3.03,"upside":2.12,"trials":330,"solves":3,"cost":49.55,"cost_trial":0.15,"cost_solve":16.52,"tokens_b":0.37,"out_tokens_m":6.6,"cached_tokens_b":0.35,"uncached_tokens_b":0.37,"dur":141.3,"is_best":true,"has_sweep":false,"unpriced":false},{"id":63,"rank":64,"model":"Nemotron 3.5 Super VL","agent":"mini-swe-agent","scaffold":"mini-swe-agent","model_org":"NVIDIA","agent_org":"SWE-agent","effort":"none","date":"2026-10-15","acc":0.3,"ci95":0.59,"pass2":0.61,"pass5":1.52,"upside":1.22,"trials":330,"solves":1,"cost":167.29,"cost_trial":0.51,"cost_solve":167.29,"tokens_b":3.35,"out_tokens_m":52.7,"cached_tokens_b":2.72,"uncached_tokens_b":3.3,"dur":135.8,"is_best":true,"has_sweep":false,"unpriced":false},{"id":64,"rank":65,"model":"Inkling","agent":"mini-swe-agent","scaffold":"mini-swe-agent","model_org":"Thinking Machines Lab","agent_org":"SWE-agent","effort":"none","date":"2026-07-17","acc":0,"ci95":0,"pass2":0,"pass5":0,"upside":0,"trials":330,"solves":0,"cost":1011.52,"cost_trial":3.07,"cost_solve":0.0,"tokens_b":1.39,"out_tokens_m":13.0,"cached_tokens_b":0.5,"uncached_tokens_b":1.38,"dur":174.1,"is_best":true,"has_sweep":false,"unpriced":false}],"tasks":[{"task":"shadow-relay","domain":"Security","solve_pct":70,"pass_count":229,"fail_count":83,"timeout_count":10,"error_count":3,"total_trials":325,"gpu":false,"top12":{"Copilot Fusion (GitHub Copilot, max)":4,"Opus 5.5 (Claude Code, max)":3,"Fable 5.2 (Claude Code, max)":5,"Gemini 4 Carbon (Antigravity CLI, high)":4,"Sonnet 5.5 (Claude Code, max)":5,"GPT-6.2 Astra (Codex, max)":5,"GPT-6.2 Sol (Codex, max)":5,"GPT-6.1 Sol (Codex, max)":5,"GPT-6 Astra (Codex, max)":5,"GPT-6 Astra (Codex, high)":5,"GPT-6 Astra (Codex, xhigh)":5,"Kimi K3.1 Pro (Claude Code, max)":4},"rare_solvers":{}},{"task":"uefi-bootkit","domain":"Security","solve_pct":62,"pass_count":201,"fail_count":112,"timeout_count":6,"error_count":6,"total_trials":325,"gpu":false,"top12":{"Copilot Fusion (GitHub Copilot, max)":5,"Opus 5.5 (Claude Code, max)":5,"Fable 5.2 (Claude Code, max)":2,"Gemini 4 Carbon (Antigravity CLI, high)":1,"Sonnet 5.5 (Claude Code, max)":2,"GPT-6.2 Astra (Codex, max)":4,"GPT-6.2 Sol (Codex, max)":5,"GPT-6.1 Sol (Codex, max)":5,"GPT-6 Astra (Codex, max)":5,"GPT-6 Astra (Codex, high)":5,"GPT-6 Astra (Codex, xhigh)":5,"Kimi K3.1 Pro (Claude Code, max)":5},"rare_solvers":{}},{"task":"interleaved-vigenere","domain":"Security","solve_pct":57,"pass_count":184,"fail_count":112,"timeout_count":2,"error_count":27,"total_trials":325,"gpu":false,"top12":{"Copilot Fusion (GitHub Copilot, max)":5,"Opus 5.5 (Claude Code, max)":5,"Fable 5.2 (Claude Code, max)":5,"Gemini 4 Carbon (Antigravity CLI, high)":5,"Sonnet 5.5 (Claude Code, max)":5,"GPT-6.2 Astra (Codex, max)":2,"GPT-6.2 Sol (Codex, max)":2,"GPT-6.1 Sol (Codex, max)":4,"GPT-6 Astra (Codex, max)":5,"GPT-6 Astra (Codex, high)":4,"GPT-6 Astra (Codex, xhigh)":5,"Kimi K3.1 Pro (Claude Code, max)":3},"rare_solvers":{}},{"task":"formal-crypto","domain":"Security","solve_pct":45,"pass_count":145,"fail_count":172,"timeout_count":0,"error_count":8,"total_trials":325,"gpu":false,"top12":{"Copilot Fusion (GitHub Copilot, max)":4,"Opus 5.5 (Claude Code, max)":3,"Fable 5.2 (Claude Code, max)":4,"Gemini 4 Carbon (Antigravity CLI, high)":0,"Sonnet 5.5 (Claude Code, max)":5,"GPT-6.2 Astra (Codex, max)":0,"GPT-6.2 Sol (Codex, max)":0,"GPT-6.1 Sol (Codex, max)":5,"GPT-6 Astra (Codex, max)":5,"GPT-6 Astra (Codex, high)":5,"GPT-6 Astra (Codex, xhigh)":5,"Kimi K3.1 Pro (Claude Code, max)":0},"rare_solvers":{}},{"task":"html-js-filter","domain":"Security","solve_pct":29,"pass_count":93,"fail_count":229,"timeout_count":0,"error_count":3,"total_trials":325,"gpu":false,"top12":{"Copilot Fusion (GitHub Copilot, max)":4,"Opus 5.5 (Claude Code, max)":3,"Fable 5.2 (Claude Code, max)":5,"Gemini 4 Carbon (Antigravity CLI, high)":5,"Sonnet 5.5 (Claude Code, max)":5,"GPT-6.2 Astra (Codex, max)":1,"GPT-6.2 Sol (Codex, max)":4,"GPT-6.1 Sol (Codex, max)":1,"GPT-6 Astra (Codex, max)":2,"GPT-6 Astra (Codex, high)":1,"GPT-6 Astra (Codex, xhigh)":0,"Kimi K3.1 Pro (Claude Code, max)":4},"rare_solvers":{}},{"task":"mp-checkpoint-consolidation","domain":"ML","solve_pct":78,"pass_count":254,"fail_count":66,"timeout_count":1,"error_count":4,"total_trials":325,"gpu":false,"top12":{"Copilot Fusion (GitHub Copilot, max)":5,"Opus 5.5 (Claude Code, max)":5,"Fable 5.2 (Claude Code, max)":5,"Gemini 4 Carbon (Antigravity CLI, high)":5,"Sonnet 5.5 (Claude Code, max)":5,"GPT-6.2 Astra (Codex, max)":5,"GPT-6.2 Sol (Codex, max)":5,"GPT-6.1 Sol (Codex, max)":5,"GPT-6 Astra (Codex, max)":5,"GPT-6 Astra (Codex, high)":5,"GPT-6 Astra (Codex, xhigh)":5,"Kimi K3.1 Pro (Claude Code, max)":5},"rare_solvers":{}},{"task":"risk-scorer-replay","domain":"ML","solve_pct":67,"pass_count":218,"fail_count":106,"timeout_count":0,"error_count":1,"total_trials":325,"gpu":false,"top12":{"Copilot Fusion (GitHub Copilot, max)":5,"Opus 5.5 (Claude Code, max)":5,"Fable 5.2 (Claude Code, max)":5,"Gemini 4 Carbon (Antigravity CLI, high)":5,"Sonnet 5.5 (Claude Code, max)":5,"GPT-6.2 Astra (Codex, max)":5,"GPT-6.2 Sol (Codex, max)":5,"GPT-6.1 Sol (Codex, max)":5,"GPT-6 Astra (Codex, max)":5,"GPT-6 Astra (Codex, high)":5,"GPT-6 Astra (Codex, xhigh)":5,"Kimi K3.1 Pro (Claude Code, max)":5},"rare_solvers":{}},{"task":"fp8-rmsnorm-gemm","domain":"ML","solve_pct":66,"pass_count":214,"fail_count":97,"timeout_count":7,"error_count":7,"total_trials":325,"gpu":true,"top12":{"Copilot Fusion (GitHub Copilot, max)":5,"Opus 5.5 (Claude Code, max)":5,"Fable 5.2 (Claude Code, max)":5,"Gemini 4 Carbon (Antigravity CLI, high)":5,"Sonnet 5.5 (Claude Code, max)":5,"GPT-6.2 Astra (Codex, max)":5,"GPT-6.2 Sol (Codex, max)":5,"GPT-6.1 Sol (Codex, max)":5,"GPT-6 Astra (Codex, max)":5,"GPT-6 Astra (Codex, high)":5,"GPT-6 Astra (Codex, xhigh)":5,"Kimi K3.1 Pro (Claude Code, max)":4},"rare_solvers":{}},{"task":"embedding-drift-monitor","domain":"ML","solve_pct":61,"pass_count":197,"fail_count":128,"timeout_count":0,"error_count":0,"total_trials":325,"gpu":false,"top12":{"Copilot Fusion (GitHub Copilot, max)":5,"Opus 5.5 (Claude Code, max)":5,"Fable 5.2 (Claude Code, max)":5,"Gemini 4 Carbon (Antigravity CLI, high)":5,"Sonnet 5.5 (Claude Code, max)":5,"GPT-6.2 Astra (Codex, max)":5,"GPT-6.2 Sol (Codex, max)":5,"GPT-6.1 Sol (Codex, max)":5,"GPT-6 Astra (Codex, max)":5,"GPT-6 Astra (Codex, high)":5,"GPT-6 Astra (Codex, xhigh)":4,"Kimi K3.1 Pro (Claude Code, max)":5},"rare_solvers":{}},{"task":"vpp-loss-divergence","domain":"ML","solve_pct":48,"pass_count":155,"fail_count":165,"timeout_count":0,"error_count":5,"total_trials":325,"gpu":false,"top12":{"Copilot Fusion (GitHub Copilot, max)":5,"Opus 5.5 (Claude Code, max)":3,"Fable 5.2 (Claude Code, max)":5,"Gemini 4 Carbon (Antigravity CLI, high)":5,"Sonnet 5.5 (Claude Code, max)":5,"GPT-6.2 Astra (Codex, max)":5,"GPT-6.2 Sol (Codex, max)":3,"GPT-6.1 Sol (Codex, max)":5,"GPT-6 Astra (Codex, max)":5,"GPT-6 Astra (Codex, high)":5,"GPT-6 Astra (Codex, xhigh)":5,"Kimi K3.1 Pro (Claude Code, max)":5},"rare_solvers":{}},{"task":"pretrain-shard-corruption","domain":"ML","solve_pct":45,"pass_count":146,"fail_count":166,"timeout_count":4,"error_count":9,"total_trials":325,"gpu":false,"top12":{"Copilot Fusion (GitHub Copilot, max)":5,"Opus 5.5 (Claude Code, max)":5,"Fable 5.2 (Claude Code, max)":5,"Gemini 4 Carbon (Antigravity CLI, high)":5,"Sonnet 5.5 (Claude Code, max)":5,"GPT-6.2 Astra (Codex, max)":5,"GPT-6.2 Sol (Codex, max)":5,"GPT-6.1 Sol (Codex, max)":5,"GPT-6 Astra (Codex, max)":5,"GPT-6 Astra (Codex, high)":5,"GPT-6 Astra (Codex, xhigh)":5,"Kimi K3.1 Pro (Claude Code, max)":4},"rare_solvers":{}},{"task":"batched-eval-parity","domain":"ML","solve_pct":37,"pass_count":121,"fail_count":204,"timeout_count":0,"error_count":0,"total_trials":325,"gpu":false,"top12":{"Copilot Fusion (GitHub Copilot, max)":5,"Opus 5.5 (Claude Code, max)":5,"Fable 5.2 (Claude Code, max)":1,"Gemini 4 Carbon (Antigravity CLI, high)":4,"Sonnet 5.5 (Claude Code, max)":5,"GPT-6.2 Astra (Codex, max)":1,"GPT-6.2 Sol (Codex, max)":5,"GPT-6.1 Sol (Codex, max)":2,"GPT-6 Astra (Codex, max)":1,"GPT-6 Astra (Codex, high)":2,"GPT-6 Astra (Codex, xhigh)":1,"Kimi K3.1 Pro (Claude Code, max)":4},"rare_solvers":{}},{"task":"math-eval-grader","domain":"ML","solve_pct":31,"pass_count":101,"fail_count":220,"timeout_count":0,"error_count":4,"total_trials":325,"gpu":false,"top12":{"Copilot Fusion (GitHub Copilot, max)":3,"Opus 5.5 (Claude Code, max)":5,"Fable 5.2 (Claude Code, max)":5,"Gemini 4 Carbon (Antigravity CLI, high)":2,"Sonnet 5.5 (Claude Code, max)":5,"GPT-6.2 Astra (Codex, max)":5,"GPT-6.2 Sol (Codex, max)":3,"GPT-6.1 Sol (Codex, max)":2,"GPT-6 Astra (Codex, max)":4,"GPT-6 Astra (Codex, high)":4,"GPT-6 Astra (Codex, xhigh)":5,"Kimi K3.1 Pro (Claude Code, max)":4},"rare_solvers":{}},{"task":"sglang-qwen-burst","domain":"ML","solve_pct":19,"pass_count":61,"fail_count":255,"timeout_count":0,"error_count":9,"total_trials":325,"gpu":false,"top12":{"Copilot Fusion (GitHub Copilot, max)":1,"Opus 5.5 (Claude Code, max)":3,"Fable 5.2 (Claude Code, max)":0,"Gemini 4 Carbon (Antigravity CLI, high)":3,"Sonnet 5.5 (Claude Code, max)":0,"GPT-6.2 Astra (Codex, max)":0,"GPT-6.2 Sol (Codex, max)":0,"GPT-6.1 Sol (Codex, max)":0,"GPT-6 Astra (Codex, max)":0,"GPT-6 Astra (Codex, high)":0,"GPT-6 Astra (Codex, xhigh)":0,"Kimi K3.1 Pro (Claude Code, max)":3},"rare_solvers":{}},{"task":"jax-speedrun-gpu","domain":"ML","solve_pct":18,"pass_count":59,"fail_count":220,"timeout_count":31,"error_count":15,"total_trials":325,"gpu":true,"top12":{"Copilot Fusion (GitHub Copilot, max)":5,"Opus 5.5 (Claude Code, max)":5,"Fable 5.2 (Claude Code, max)":4,"Gemini 4 Carbon (Antigravity CLI, high)":2,"Sonnet 5.5 (Claude Code, max)":5,"GPT-6.2 Astra (Codex, max)":1,"GPT-6.2 Sol (Codex, max)":0,"GPT-6.1 Sol (Codex, max)":3,"GPT-6 Astra (Codex, max)":3,"GPT-6 Astra (Codex, high)":3,"GPT-6 Astra (Codex, xhigh)":3,"Kimi K3.1 Pro (Claude Code, max)":0},"rare_solvers":{}},{"task":"vllm-deepseek-streaming","domain":"ML","solve_pct":6,"pass_count":21,"fail_count":302,"timeout_count":0,"error_count":2,"total_trials":325,"gpu":true,"top12":{"Copilot Fusion (GitHub Copilot, max)":0,"Opus 5.5 (Claude Code, max)":0,"Fable 5.2 (Claude Code, max)":0,"Gemini 4 Carbon (Antigravity CLI, high)":0,"Sonnet 5.5 (Claude Code, max)":0,"GPT-6.2 Astra (Codex, max)":0,"GPT-6.2 Sol (Codex, max)":0,"GPT-6.1 Sol (Codex, max)":0,"GPT-6 Astra (Codex, max)":0,"GPT-6 Astra (Codex, high)":0,"GPT-6 Astra (Codex, xhigh)":0,"Kimi K3.1 Pro (Claude Code, max)":4},"rare_solvers":{"#11 Kimi K3.1 Pro / Claude Code (max)":4,"#33 GPT-5.6 Sol / Codex (max)":2,"#39 Muse Ember / Muse Code (xhigh)":2,"#49 Gemini 3.8 Flash / mini-SWE-agent (high)":3,"#50 GPT-5.6 Luna / Codex (max)":1,"#53 Muse Spark 1.3 / Muse Code (xhigh)":3,"#55 Gemini 3.7 Flash / mini-SWE-agent (high)":2,"#60 Beam 1.0 / mini-swe-agent (none)":3,"#62 GPT-5.4 Mini / Codex (xhigh)":1}},{"task":"layout-config-recreation2","domain":"Media","solve_pct":73,"pass_count":238,"fail_count":69,"timeout_count":4,"error_count":14,"total_trials":325,"gpu":false,"top12":{"Copilot Fusion (GitHub Copilot, max)":5,"Opus 5.5 (Claude Code, max)":5,"Fable 5.2 (Claude Code, max)":5,"Gemini 4 Carbon (Antigravity CLI, high)":5,"Sonnet 5.5 (Claude Code, max)":5,"GPT-6.2 Astra (Codex, max)":5,"GPT-6.2 Sol (Codex, max)":5,"GPT-6.1 Sol (Codex, max)":5,"GPT-6 Astra (Codex, max)":5,"GPT-6 Astra (Codex, high)":5,"GPT-6 Astra (Codex, xhigh)":5,"Kimi K3.1 Pro (Claude Code, max)":5},"rare_solvers":{}},{"task":"satb-audio-transcription","domain":"Media","solve_pct":44,"pass_count":143,"fail_count":179,"timeout_count":0,"error_count":3,"total_trials":325,"gpu":false,"top12":{"Copilot Fusion (GitHub Copilot, max)":5,"Opus 5.5 (Claude Code, max)":5,"Fable 5.2 (Claude Code, max)":5,"Gemini 4 Carbon (Antigravity CLI, high)":4,"Sonnet 5.5 (Claude Code, max)":5,"GPT-6.2 Astra (Codex, max)":5,"GPT-6.2 Sol (Codex, max)":5,"GPT-6.1 Sol (Codex, max)":5,"GPT-6 Astra (Codex, max)":5,"GPT-6 Astra (Codex, high)":5,"GPT-6 Astra (Codex, xhigh)":5,"Kimi K3.1 Pro (Claude Code, max)":5},"rare_solvers":{}},{"task":"layout-config-recreation","domain":"Media","solve_pct":18,"pass_count":59,"fail_count":250,"timeout_count":4,"error_count":12,"total_trials":325,"gpu":false,"top12":{"Copilot Fusion (GitHub Copilot, max)":4,"Opus 5.5 (Claude Code, max)":5,"Fable 5.2 (Claude Code, max)":5,"Gemini 4 Carbon (Antigravity CLI, high)":2,"Sonnet 5.5 (Claude Code, max)":5,"GPT-6.2 Astra (Codex, max)":3,"GPT-6.2 Sol (Codex, max)":3,"GPT-6.1 Sol (Codex, max)":0,"GPT-6 Astra (Codex, max)":3,"GPT-6 Astra (Codex, high)":3,"GPT-6 Astra (Codex, xhigh)":3,"Kimi K3.1 Pro (Claude Code, max)":2},"rare_solvers":{}},{"task":"music-harmony","domain":"Media","solve_pct":17,"pass_count":56,"fail_count":253,"timeout_count":0,"error_count":16,"total_trials":325,"gpu":false,"top12":{"Copilot Fusion (GitHub Copilot, max)":4,"Opus 5.5 (Claude Code, max)":1,"Fable 5.2 (Claude Code, max)":0,"Gemini 4 Carbon (Antigravity CLI, high)":3,"Sonnet 5.5 (Claude Code, max)":2,"GPT-6.2 Astra (Codex, max)":2,"GPT-6.2 Sol (Codex, max)":3,"GPT-6.1 Sol (Codex, max)":4,"GPT-6 Astra (Codex, max)":5,"GPT-6 Astra (Codex, high)":5,"GPT-6 Astra (Codex, xhigh)":3,"Kimi K3.1 Pro (Claude Code, max)":5},"rare_solvers":{}},{"task":"retro-console-soc","domain":"Hardware","solve_pct":55,"pass_count":180,"fail_count":133,"timeout_count":9,"error_count":3,"total_trials":325,"gpu":false,"top12":{"Copilot Fusion (GitHub Copilot, max)":5,"Opus 5.5 (Claude Code, max)":5,"Fable 5.2 (Claude Code, max)":5,"Gemini 4 Carbon (Antigravity CLI, high)":5,"Sonnet 5.5 (Claude Code, max)":5,"GPT-6.2 Astra (Codex, max)":5,"GPT-6.2 Sol (Codex, max)":5,"GPT-6.1 Sol (Codex, max)":5,"GPT-6 Astra (Codex, max)":4,"GPT-6 Astra (Codex, high)":5,"GPT-6 Astra (Codex, xhigh)":5,"Kimi K3.1 Pro (Claude Code, max)":4},"rare_solvers":{}},{"task":"freecad-platform-drawing","domain":"Hardware","solve_pct":50,"pass_count":162,"fail_count":151,"timeout_count":0,"error_count":12,"total_trials":325,"gpu":false,"top12":{"Copilot Fusion (GitHub Copilot, max)":5,"Opus 5.5 (Claude Code, max)":5,"Fable 5.2 (Claude Code, max)":5,"Gemini 4 Carbon (Antigravity CLI, high)":5,"Sonnet 5.5 (Claude Code, max)":3,"GPT-6.2 Astra (Codex, max)":5,"GPT-6.2 Sol (Codex, max)":5,"GPT-6.1 Sol (Codex, max)":5,"GPT-6 Astra (Codex, max)":5,"GPT-6 Astra (Codex, high)":5,"GPT-6 Astra (Codex, xhigh)":5,"Kimi K3.1 Pro (Claude Code, max)":3},"rare_solvers":{}},{"task":"cad-model","domain":"Hardware","solve_pct":44,"pass_count":144,"fail_count":168,"timeout_count":0,"error_count":13,"total_trials":325,"gpu":false,"top12":{"Copilot Fusion (GitHub Copilot, max)":5,"Opus 5.5 (Claude Code, max)":5,"Fable 5.2 (Claude Code, max)":5,"Gemini 4 Carbon (Antigravity CLI, high)":5,"Sonnet 5.5 (Claude Code, max)":3,"GPT-6.2 Astra (Codex, max)":5,"GPT-6.2 Sol (Codex, max)":5,"GPT-6.1 Sol (Codex, max)":5,"GPT-6 Astra (Codex, max)":5,"GPT-6 Astra (Codex, high)":5,"GPT-6 Astra (Codex, xhigh)":5,"Kimi K3.1 Pro (Claude Code, max)":2},"rare_solvers":{}},{"task":"freecad-spring-clip","domain":"Hardware","solve_pct":34,"pass_count":111,"fail_count":195,"timeout_count":0,"error_count":19,"total_trials":325,"gpu":false,"top12":{"Copilot Fusion (GitHub Copilot, max)":4,"Opus 5.5 (Claude Code, max)":5,"Fable 5.2 (Claude Code, max)":5,"Gemini 4 Carbon (Antigravity CLI, high)":5,"Sonnet 5.5 (Claude Code, max)":5,"GPT-6.2 Astra (Codex, max)":5,"GPT-6.2 Sol (Codex, max)":1,"GPT-6.1 Sol (Codex, max)":2,"GPT-6 Astra (Codex, max)":2,"GPT-6 Astra (Codex, high)":1,"GPT-6 Astra (Codex, xhigh)":3,"Kimi K3.1 Pro (Claude Code, max)":3},"rare_solvers":{}},{"task":"freecad-impeller","domain":"Hardware","solve_pct":1,"pass_count":4,"fail_count":318,"timeout_count":0,"error_count":3,"total_trials":325,"gpu":false,"top12":{"Copilot Fusion (GitHub Copilot, max)":0,"Opus 5.5 (Claude Code, max)":0,"Fable 5.2 (Claude Code, max)":0,"Gemini 4 Carbon (Antigravity CLI, high)":0,"Sonnet 5.5 (Claude Code, max)":0,"GPT-6.2 Astra (Codex, max)":0,"GPT-6.2 Sol (Codex, max)":0,"GPT-6.1 Sol (Codex, max)":0,"GPT-6 Astra (Codex, max)":0,"GPT-6 Astra (Codex, high)":0,"GPT-6 Astra (Codex, xhigh)":0,"Kimi K3.1 Pro (Claude Code, max)":1},"rare_solvers":{"#11 Kimi K3.1 Pro / Claude Code (max)":1,"#33 DeepSeek V4.1 Flash 1017 / Claude Code (max)":1,"#47 Grok 4.6 / Grok Build (high)":1,"#59 DeepSeek V4 Pro 0813 / Claude Code (max)":1}},{"task":"telecom-entity-resolution","domain":"Software","solve_pct":71,"pass_count":230,"fail_count":95,"timeout_count":0,"error_count":0,"total_trials":325,"gpu":false,"top12":{"Copilot Fusion (GitHub Copilot, max)":5,"Opus 5.5 (Claude Code, max)":5,"Fable 5.2 (Claude Code, max)":5,"Gemini 4 Carbon (Antigravity CLI, high)":5,"Sonnet 5.5 (Claude Code, max)":5,"GPT-6.2 Astra (Codex, max)":5,"GPT-6.2 Sol (Codex, max)":5,"GPT-6.1 Sol (Codex, max)":5,"GPT-6 Astra (Codex, max)":4,"GPT-6 Astra (Codex, high)":5,"GPT-6 Astra (Codex, xhigh)":5,"Kimi K3.1 Pro (Claude Code, max)":2},"rare_solvers":{}},{"task":"payments-pipeline-fix","domain":"Software","solve_pct":63,"pass_count":204,"fail_count":120,"timeout_count":0,"error_count":1,"total_trials":325,"gpu":false,"top12":{"Copilot Fusion (GitHub Copilot, max)":5,"Opus 5.5 (Claude Code, max)":4,"Fable 5.2 (Claude Code, max)":5,"Gemini 4 Carbon (Antigravity CLI, high)":5,"Sonnet 5.5 (Claude Code, max)":5,"GPT-6.2 Astra (Codex, max)":5,"GPT-6.2 Sol (Codex, max)":4,"GPT-6.1 Sol (Codex, max)":4,"GPT-6 Astra (Codex, max)":5,"GPT-6 Astra (Codex, high)":5,"GPT-6 Astra (Codex, xhigh)":3,"Kimi K3.1 Pro (Claude Code, max)":2},"rare_solvers":{}},{"task":"mvcc-lsm-compaction","domain":"Software","solve_pct":57,"pass_count":185,"fail_count":140,"timeout_count":0,"error_count":0,"total_trials":325,"gpu":false,"top12":{"Copilot Fusion (GitHub Copilot, max)":5,"Opus 5.5 (Claude Code, max)":5,"Fable 5.2 (Claude Code, max)":5,"Gemini 4 Carbon (Antigravity CLI, high)":5,"Sonnet 5.5 (Claude Code, max)":5,"GPT-6.2 Astra (Codex, max)":5,"GPT-6.2 Sol (Codex, max)":5,"GPT-6.1 Sol (Codex, max)":5,"GPT-6 Astra (Codex, max)":4,"GPT-6 Astra (Codex, high)":5,"GPT-6 Astra (Codex, xhigh)":4,"Kimi K3.1 Pro (Claude Code, max)":5},"rare_solvers":{}},{"task":"cumulative-layout-shift","domain":"Software","solve_pct":55,"pass_count":179,"fail_count":84,"timeout_count":2,"error_count":60,"total_trials":325,"gpu":false,"top12":{"Copilot Fusion (GitHub Copilot, max)":5,"Opus 5.5 (Claude Code, max)":5,"Fable 5.2 (Claude Code, max)":5,"Gemini 4 Carbon (Antigravity CLI, high)":5,"Sonnet 5.5 (Claude Code, max)":5,"GPT-6.2 Astra (Codex, max)":4,"GPT-6.2 Sol (Codex, max)":5,"GPT-6.1 Sol (Codex, max)":3,"GPT-6 Astra (Codex, max)":5,"GPT-6 Astra (Codex, high)":4,"GPT-6 Astra (Codex, xhigh)":4,"Kimi K3.1 Pro (Claude Code, max)":4},"rare_solvers":{}},{"task":"react-lead-form","domain":"Software","solve_pct":50,"pass_count":161,"fail_count":163,"timeout_count":0,"error_count":1,"total_trials":325,"gpu":false,"top12":{"Copilot Fusion (GitHub Copilot, max)":5,"Opus 5.5 (Claude Code, max)":4,"Fable 5.2 (Claude Code, max)":5,"Gemini 4 Carbon (Antigravity CLI, high)":0,"Sonnet 5.5 (Claude Code, max)":5,"GPT-6.2 Astra (Codex, max)":1,"GPT-6.2 Sol (Codex, max)":1,"GPT-6.1 Sol (Codex, max)":0,"GPT-6 Astra (Codex, max)":0,"GPT-6 Astra (Codex, high)":0,"GPT-6 Astra (Codex, xhigh)":0,"Kimi K3.1 Pro (Claude Code, max)":4},"rare_solvers":{}},{"task":"rs-archive-clone","domain":"Software","solve_pct":47,"pass_count":153,"fail_count":158,"timeout_count":2,"error_count":12,"total_trials":325,"gpu":false,"top12":{"Copilot Fusion (GitHub Copilot, max)":5,"Opus 5.5 (Claude Code, max)":5,"Fable 5.2 (Claude Code, max)":4,"Gemini 4 Carbon (Antigravity CLI, high)":5,"Sonnet 5.5 (Claude Code, max)":5,"GPT-6.2 Astra (Codex, max)":4,"GPT-6.2 Sol (Codex, max)":5,"GPT-6.1 Sol (Codex, max)":5,"GPT-6 Astra (Codex, max)":5,"GPT-6 Astra (Codex, high)":5,"GPT-6 Astra (Codex, xhigh)":5,"Kimi K3.1 Pro (Claude Code, max)":4},"rare_solvers":{}},{"task":"distributed-dedup","domain":"Software","solve_pct":46,"pass_count":150,"fail_count":168,"timeout_count":4,"error_count":3,"total_trials":325,"gpu":false,"top12":{"Copilot Fusion (GitHub Copilot, max)":5,"Opus 5.5 (Claude Code, max)":5,"Fable 5.2 (Claude Code, max)":4,"Gemini 4 Carbon (Antigravity CLI, high)":4,"Sonnet 5.5 (Claude Code, max)":4,"GPT-6.2 Astra (Codex, max)":5,"GPT-6.2 Sol (Codex, max)":5,"GPT-6.1 Sol (Codex, max)":4,"GPT-6 Astra (Codex, max)":3,"GPT-6 Astra (Codex, high)":2,"GPT-6 Astra (Codex, xhigh)":3,"Kimi K3.1 Pro (Claude Code, max)":1},"rare_solvers":{}},{"task":"photonic-waveguide-routing","domain":"Software","solve_pct":45,"pass_count":147,"fail_count":86,"timeout_count":6,"error_count":86,"total_trials":325,"gpu":false,"top12":{"Copilot Fusion (GitHub Copilot, max)":5,"Opus 5.5 (Claude Code, max)":1,"Fable 5.2 (Claude Code, max)":3,"Gemini 4 Carbon (Antigravity CLI, high)":5,"Sonnet 5.5 (Claude Code, max)":5,"GPT-6.2 Astra (Codex, max)":5,"GPT-6.2 Sol (Codex, max)":5,"GPT-6.1 Sol (Codex, max)":5,"GPT-6 Astra (Codex, max)":5,"GPT-6 Astra (Codex, high)":5,"GPT-6 Astra (Codex, xhigh)":5,"Kimi K3.1 Pro (Claude Code, max)":3},"rare_solvers":{}},{"task":"live-database-cutover","domain":"Software","solve_pct":42,"pass_count":136,"fail_count":188,"timeout_count":0,"error_count":1,"total_trials":325,"gpu":false,"top12":{"Copilot Fusion (GitHub Copilot, max)":5,"Opus 5.5 (Claude Code, max)":3,"Fable 5.2 (Claude Code, max)":2,"Gemini 4 Carbon (Antigravity CLI, high)":3,"Sonnet 5.5 (Claude Code, max)":3,"GPT-6.2 Astra (Codex, max)":5,"GPT-6.2 Sol (Codex, max)":5,"GPT-6.1 Sol (Codex, max)":5,"GPT-6 Astra (Codex, max)":3,"GPT-6 Astra (Codex, high)":4,"GPT-6 Astra (Codex, xhigh)":5,"Kimi K3.1 Pro (Claude Code, max)":0},"rare_solvers":{}},{"task":"kv-live-surgery","domain":"Software","solve_pct":34,"pass_count":109,"fail_count":197,"timeout_count":3,"error_count":16,"total_trials":325,"gpu":false,"top12":{"Copilot Fusion (GitHub Copilot, max)":3,"Opus 5.5 (Claude Code, max)":2,"Fable 5.2 (Claude Code, max)":0,"Gemini 4 Carbon (Antigravity CLI, high)":4,"Sonnet 5.5 (Claude Code, max)":1,"GPT-6.2 Astra (Codex, max)":5,"GPT-6.2 Sol (Codex, max)":4,"GPT-6.1 Sol (Codex, max)":4,"GPT-6 Astra (Codex, max)":5,"GPT-6 Astra (Codex, high)":3,"GPT-6 Astra (Codex, xhigh)":5,"Kimi K3.1 Pro (Claude Code, max)":3},"rare_solvers":{}},{"task":"wal-recovery-ordering","domain":"Software","solve_pct":33,"pass_count":107,"fail_count":218,"timeout_count":0,"error_count":0,"total_trials":325,"gpu":false,"top12":{"Copilot Fusion (GitHub Copilot, max)":2,"Opus 5.5 (Claude Code, max)":0,"Fable 5.2 (Claude Code, max)":1,"Gemini 4 Carbon (Antigravity CLI, high)":2,"Sonnet 5.5 (Claude Code, max)":2,"GPT-6.2 Astra (Codex, max)":2,"GPT-6.2 Sol (Codex, max)":2,"GPT-6.1 Sol (Codex, max)":5,"GPT-6 Astra (Codex, max)":5,"GPT-6 Astra (Codex, high)":5,"GPT-6 Astra (Codex, xhigh)":5,"Kimi K3.1 Pro (Claude Code, max)":2},"rare_solvers":{}},{"task":"nextjs-performance","domain":"Software","solve_pct":32,"pass_count":104,"fail_count":218,"timeout_count":1,"error_count":2,"total_trials":325,"gpu":false,"top12":{"Copilot Fusion (GitHub Copilot, max)":5,"Opus 5.5 (Claude Code, max)":3,"Fable 5.2 (Claude Code, max)":5,"Gemini 4 Carbon (Antigravity CLI, high)":4,"Sonnet 5.5 (Claude Code, max)":5,"GPT-6.2 Astra (Codex, max)":5,"GPT-6.2 Sol (Codex, max)":4,"GPT-6.1 Sol (Codex, max)":4,"GPT-6 Astra (Codex, max)":5,"GPT-6 Astra (Codex, high)":5,"GPT-6 Astra (Codex, xhigh)":5,"Kimi K3.1 Pro (Claude Code, max)":0},"rare_solvers":{}},{"task":"vf2-speedup-networkx","domain":"Software","solve_pct":23,"pass_count":75,"fail_count":248,"timeout_count":0,"error_count":2,"total_trials":325,"gpu":false,"top12":{"Copilot Fusion (GitHub Copilot, max)":1,"Opus 5.5 (Claude Code, max)":3,"Fable 5.2 (Claude Code, max)":4,"Gemini 4 Carbon (Antigravity CLI, high)":1,"Sonnet 5.5 (Claude Code, max)":1,"GPT-6.2 Astra (Codex, max)":5,"GPT-6.2 Sol (Codex, max)":5,"GPT-6.1 Sol (Codex, max)":3,"GPT-6 Astra (Codex, max)":3,"GPT-6 Astra (Codex, high)":4,"GPT-6 Astra (Codex, xhigh)":4,"Kimi K3.1 Pro (Claude Code, max)":3},"rare_solvers":{}},{"task":"vba-userform-port","domain":"Software","solve_pct":21,"pass_count":67,"fail_count":238,"timeout_count":0,"error_count":20,"total_trials":325,"gpu":false,"top12":{"Copilot Fusion (GitHub Copilot, max)":0,"Opus 5.5 (Claude Code, max)":0,"Fable 5.2 (Claude Code, max)":1,"Gemini 4 Carbon (Antigravity CLI, high)":3,"Sonnet 5.5 (Claude Code, max)":1,"GPT-6.2 Astra (Codex, max)":0,"GPT-6.2 Sol (Codex, max)":0,"GPT-6.1 Sol (Codex, max)":1,"GPT-6 Astra (Codex, max)":1,"GPT-6 Astra (Codex, high)":0,"GPT-6 Astra (Codex, xhigh)":0,"Kimi K3.1 Pro (Claude Code, max)":1},"rare_solvers":{}},{"task":"session-window-debug","domain":"Software","solve_pct":19,"pass_count":61,"fail_count":262,"timeout_count":0,"error_count":2,"total_trials":325,"gpu":false,"top12":{"Copilot Fusion (GitHub Copilot, max)":4,"Opus 5.5 (Claude Code, max)":1,"Fable 5.2 (Claude Code, max)":0,"Gemini 4 Carbon (Antigravity CLI, high)":4,"Sonnet 5.5 (Claude Code, max)":0,"GPT-6.2 Astra (Codex, max)":5,"GPT-6.2 Sol (Codex, max)":5,"GPT-6.1 Sol (Codex, max)":4,"GPT-6 Astra (Codex, max)":3,"GPT-6 Astra (Codex, high)":5,"GPT-6 Astra (Codex, xhigh)":2,"Kimi K3.1 Pro (Claude Code, max)":5},"rare_solvers":{}},{"task":"bun-sourcemap-leak","domain":"Software","solve_pct":0,"pass_count":0,"fail_count":325,"timeout_count":0,"error_count":0,"total_trials":325,"gpu":false,"top12":{"Copilot Fusion (GitHub Copilot, max)":0,"Opus 5.5 (Claude Code, max)":0,"Fable 5.2 (Claude Code, max)":0,"Gemini 4 Carbon (Antigravity CLI, high)":0,"Sonnet 5.5 (Claude Code, max)":0,"GPT-6.2 Astra (Codex, max)":0,"GPT-6.2 Sol (Codex, max)":0,"GPT-6.1 Sol (Codex, max)":0,"GPT-6 Astra (Codex, max)":0,"GPT-6 Astra (Codex, high)":0,"GPT-6 Astra (Codex, xhigh)":0,"Kimi K3.1 Pro (Claude Code, max)":0},"rare_solvers":{}},{"task":"data-anonymization","domain":"Software","solve_pct":0,"pass_count":1,"fail_count":321,"timeout_count":1,"error_count":2,"total_trials":325,"gpu":false,"top12":{"Copilot Fusion (GitHub Copilot, max)":0,"Opus 5.5 (Claude Code, max)":1,"Fable 5.2 (Claude Code, max)":0,"Gemini 4 Carbon (Antigravity CLI, high)":0,"Sonnet 5.5 (Claude Code, max)":0,"GPT-6.2 Astra (Codex, max)":0,"GPT-6.2 Sol (Codex, max)":0,"GPT-6.1 Sol (Codex, max)":0,"GPT-6 Astra (Codex, max)":0,"GPT-6 Astra (Codex, high)":0,"GPT-6 Astra (Codex, xhigh)":0,"Kimi K3.1 Pro (Claude Code, max)":0},"rare_solvers":{"#2 Opus 5.5 / Claude Code (max)":1}},{"task":"ontology-kg-querying","domain":"Software","solve_pct":0,"pass_count":0,"fail_count":315,"timeout_count":10,"error_count":0,"total_trials":325,"gpu":false,"top12":{"Copilot Fusion (GitHub Copilot, max)":0,"Opus 5.5 (Claude Code, max)":0,"Fable 5.2 (Claude Code, max)":0,"Gemini 4 Carbon (Antigravity CLI, high)":0,"Sonnet 5.5 (Claude Code, max)":0,"GPT-6.2 Astra (Codex, max)":0,"GPT-6.2 Sol (Codex, max)":0,"GPT-6.1 Sol (Codex, max)":0,"GPT-6 Astra (Codex, max)":0,"GPT-6 Astra (Codex, high)":0,"GPT-6 Astra (Codex, xhigh)":0,"Kimi K3.1 Pro (Claude Code, max)":0},"rare_solvers":{}},{"task":"wdm-design","domain":"Science","solve_pct":75,"pass_count":243,"fail_count":72,"timeout_count":3,"error_count":7,"total_trials":325,"gpu":false,"top12":{"Copilot Fusion (GitHub Copilot, max)":5,"Opus 5.5 (Claude Code, max)":5,"Fable 5.2 (Claude Code, max)":5,"Gemini 4 Carbon (Antigravity CLI, high)":5,"Sonnet 5.5 (Claude Code, max)":5,"GPT-6.2 Astra (Codex, max)":5,"GPT-6.2 Sol (Codex, max)":5,"GPT-6.1 Sol (Codex, max)":5,"GPT-6 Astra (Codex, max)":5,"GPT-6 Astra (Codex, high)":5,"GPT-6 Astra (Codex, xhigh)":5,"Kimi K3.1 Pro (Claude Code, max)":5},"rare_solvers":{}},{"task":"coq-block-bound","domain":"Science","solve_pct":74,"pass_count":239,"fail_count":69,"timeout_count":3,"error_count":14,"total_trials":325,"gpu":false,"top12":{"Copilot Fusion (GitHub Copilot, max)":5,"Opus 5.5 (Claude Code, max)":5,"Fable 5.2 (Claude Code, max)":5,"Gemini 4 Carbon (Antigravity CLI, high)":5,"Sonnet 5.5 (Claude Code, max)":5,"GPT-6.2 Astra (Codex, max)":5,"GPT-6.2 Sol (Codex, max)":5,"GPT-6.1 Sol (Codex, max)":5,"GPT-6 Astra (Codex, max)":5,"GPT-6 Astra (Codex, high)":5,"GPT-6 Astra (Codex, xhigh)":5,"Kimi K3.1 Pro (Claude Code, max)":4},"rare_solvers":{}},{"task":"sound-change-cascade","domain":"Science","solve_pct":60,"pass_count":196,"fail_count":117,"timeout_count":1,"error_count":11,"total_trials":325,"gpu":false,"top12":{"Copilot Fusion (GitHub Copilot, max)":5,"Opus 5.5 (Claude Code, max)":5,"Fable 5.2 (Claude Code, max)":5,"Gemini 4 Carbon (Antigravity CLI, high)":5,"Sonnet 5.5 (Claude Code, max)":5,"GPT-6.2 Astra (Codex, max)":5,"GPT-6.2 Sol (Codex, max)":5,"GPT-6.1 Sol (Codex, max)":5,"GPT-6 Astra (Codex, max)":5,"GPT-6 Astra (Codex, high)":5,"GPT-6 Astra (Codex, xhigh)":5,"Kimi K3.1 Pro (Claude Code, max)":4},"rare_solvers":{}},{"task":"hof-topology-interpenetration","domain":"Science","solve_pct":56,"pass_count":181,"fail_count":139,"timeout_count":0,"error_count":5,"total_trials":325,"gpu":false,"top12":{"Copilot Fusion (GitHub Copilot, max)":5,"Opus 5.5 (Claude Code, max)":5,"Fable 5.2 (Claude Code, max)":5,"Gemini 4 Carbon (Antigravity CLI, high)":5,"Sonnet 5.5 (Claude Code, max)":5,"GPT-6.2 Astra (Codex, max)":5,"GPT-6.2 Sol (Codex, max)":5,"GPT-6.1 Sol (Codex, max)":5,"GPT-6 Astra (Codex, max)":5,"GPT-6 Astra (Codex, high)":5,"GPT-6 Astra (Codex, xhigh)":5,"Kimi K3.1 Pro (Claude Code, max)":5},"rare_solvers":{}},{"task":"biped-contact-dynamics","domain":"Science","solve_pct":43,"pass_count":141,"fail_count":160,"timeout_count":7,"error_count":17,"total_trials":325,"gpu":false,"top12":{"Copilot Fusion (GitHub Copilot, max)":4,"Opus 5.5 (Claude Code, max)":4,"Fable 5.2 (Claude Code, max)":5,"Gemini 4 Carbon (Antigravity CLI, high)":3,"Sonnet 5.5 (Claude Code, max)":5,"GPT-6.2 Astra (Codex, max)":5,"GPT-6.2 Sol (Codex, max)":4,"GPT-6.1 Sol (Codex, max)":4,"GPT-6 Astra (Codex, max)":1,"GPT-6 Astra (Codex, high)":4,"GPT-6 Astra (Codex, xhigh)":3,"Kimi K3.1 Pro (Claude Code, max)":5},"rare_solvers":{}},{"task":"takens-embedding-lean","domain":"Science","solve_pct":36,"pass_count":117,"fail_count":182,"timeout_count":10,"error_count":16,"total_trials":325,"gpu":false,"top12":{"Copilot Fusion (GitHub Copilot, max)":5,"Opus 5.5 (Claude Code, max)":5,"Fable 5.2 (Claude Code, max)":5,"Gemini 4 Carbon (Antigravity CLI, high)":5,"Sonnet 5.5 (Claude Code, max)":5,"GPT-6.2 Astra (Codex, max)":5,"GPT-6.2 Sol (Codex, max)":5,"GPT-6.1 Sol (Codex, max)":5,"GPT-6 Astra (Codex, max)":5,"GPT-6 Astra (Codex, high)":2,"GPT-6 Astra (Codex, xhigh)":2,"Kimi K3.1 Pro (Claude Code, max)":3},"rare_solvers":{}},{"task":"atrx-vep-crispr","domain":"Science","solve_pct":33,"pass_count":106,"fail_count":205,"timeout_count":0,"error_count":14,"total_trials":325,"gpu":false,"top12":{"Copilot Fusion (GitHub Copilot, max)":5,"Opus 5.5 (Claude Code, max)":3,"Fable 5.2 (Claude Code, max)":3,"Gemini 4 Carbon (Antigravity CLI, high)":0,"Sonnet 5.5 (Claude Code, max)":2,"GPT-6.2 Astra (Codex, max)":0,"GPT-6.2 Sol (Codex, max)":0,"GPT-6.1 Sol (Codex, max)":1,"GPT-6 Astra (Codex, max)":0,"GPT-6 Astra (Codex, high)":0,"GPT-6 Astra (Codex, xhigh)":0,"Kimi K3.1 Pro (Claude Code, max)":5},"rare_solvers":{}},{"task":"lake-temp-glm","domain":"Science","solve_pct":22,"pass_count":72,"fail_count":247,"timeout_count":0,"error_count":6,"total_trials":325,"gpu":false,"top12":{"Copilot Fusion (GitHub Copilot, max)":3,"Opus 5.5 (Claude Code, max)":3,"Fable 5.2 (Claude Code, max)":4,"Gemini 4 Carbon (Antigravity CLI, high)":2,"Sonnet 5.5 (Claude Code, max)":2,"GPT-6.2 Astra (Codex, max)":5,"GPT-6.2 Sol (Codex, max)":3,"GPT-6.1 Sol (Codex, max)":3,"GPT-6 Astra (Codex, max)":0,"GPT-6 Astra (Codex, high)":2,"GPT-6 Astra (Codex, xhigh)":1,"Kimi K3.1 Pro (Claude Code, max)":2},"rare_solvers":{}},{"task":"gsea-proteomics","domain":"Science","solve_pct":21,"pass_count":67,"fail_count":258,"timeout_count":0,"error_count":0,"total_trials":325,"gpu":false,"top12":{"Copilot Fusion (GitHub Copilot, max)":5,"Opus 5.5 (Claude Code, max)":5,"Fable 5.2 (Claude Code, max)":5,"Gemini 4 Carbon (Antigravity CLI, high)":5,"Sonnet 5.5 (Claude Code, max)":0,"GPT-6.2 Astra (Codex, max)":0,"GPT-6.2 Sol (Codex, max)":0,"GPT-6.1 Sol (Codex, max)":0,"GPT-6 Astra (Codex, max)":0,"GPT-6 Astra (Codex, high)":0,"GPT-6 Astra (Codex, xhigh)":0,"Kimi K3.1 Pro (Claude Code, max)":2},"rare_solvers":{}},{"task":"ks-solver-cpp","domain":"Science","solve_pct":21,"pass_count":67,"fail_count":242,"timeout_count":15,"error_count":1,"total_trials":325,"gpu":false,"top12":{"Copilot Fusion (GitHub Copilot, max)":1,"Opus 5.5 (Claude Code, max)":0,"Fable 5.2 (Claude Code, max)":4,"Gemini 4 Carbon (Antigravity CLI, high)":3,"Sonnet 5.5 (Claude Code, max)":1,"GPT-6.2 Astra (Codex, max)":5,"GPT-6.2 Sol (Codex, max)":5,"GPT-6.1 Sol (Codex, max)":3,"GPT-6 Astra (Codex, max)":4,"GPT-6 Astra (Codex, high)":4,"GPT-6 Astra (Codex, xhigh)":5,"Kimi K3.1 Pro (Claude Code, max)":2},"rare_solvers":{}},{"task":"protein-autointerp-disulfide","domain":"Science","solve_pct":18,"pass_count":57,"fail_count":262,"timeout_count":0,"error_count":6,"total_trials":325,"gpu":false,"top12":{"Copilot Fusion (GitHub Copilot, max)":0,"Opus 5.5 (Claude Code, max)":0,"Fable 5.2 (Claude Code, max)":0,"Gemini 4 Carbon (Antigravity CLI, high)":5,"Sonnet 5.5 (Claude Code, max)":0,"GPT-6.2 Astra (Codex, max)":0,"GPT-6.2 Sol (Codex, max)":0,"GPT-6.1 Sol (Codex, max)":1,"GPT-6 Astra (Codex, max)":0,"GPT-6 Astra (Codex, high)":0,"GPT-6 Astra (Codex, xhigh)":0,"Kimi K3.1 Pro (Claude Code, max)":0},"rare_solvers":{}},{"task":"roy-polymorph-cn","domain":"Science","solve_pct":16,"pass_count":53,"fail_count":269,"timeout_count":0,"error_count":3,"total_trials":325,"gpu":false,"top12":{"Copilot Fusion (GitHub Copilot, max)":5,"Opus 5.5 (Claude Code, max)":5,"Fable 5.2 (Claude Code, max)":1,"Gemini 4 Carbon (Antigravity CLI, high)":5,"Sonnet 5.5 (Claude Code, max)":1,"GPT-6.2 Astra (Codex, max)":0,"GPT-6.2 Sol (Codex, max)":1,"GPT-6.1 Sol (Codex, max)":0,"GPT-6 Astra (Codex, max)":0,"GPT-6 Astra (Codex, high)":0,"GPT-6 Astra (Codex, xhigh)":0,"Kimi K3.1 Pro (Claude Code, max)":2},"rare_solvers":{}},{"task":"foodstuff-beta-activity","domain":"Science","solve_pct":1,"pass_count":4,"fail_count":320,"timeout_count":0,"error_count":1,"total_trials":325,"gpu":false,"top12":{"Copilot Fusion (GitHub Copilot, max)":0,"Opus 5.5 (Claude Code, max)":0,"Fable 5.2 (Claude Code, max)":0,"Gemini 4 Carbon (Antigravity CLI, high)":0,"Sonnet 5.5 (Claude Code, max)":0,"GPT-6.2 Astra (Codex, max)":0,"GPT-6.2 Sol (Codex, max)":0,"GPT-6.1 Sol (Codex, max)":0,"GPT-6 Astra (Codex, max)":0,"GPT-6 Astra (Codex, high)":0,"GPT-6 Astra (Codex, xhigh)":0,"Kimi K3.1 Pro (Claude Code, max)":2},"rare_solvers":{"#11 Kimi K3.1 Pro / Claude Code (max)":2,"#24 GPT-6 Sol / Codex (max)":1,"#35 Hy4 / Claude Code (max)":1}},{"task":"glycan-ms2-elucidation","domain":"Science","solve_pct":0,"pass_count":0,"fail_count":322,"timeout_count":0,"error_count":3,"total_trials":325,"gpu":false,"top12":{"Copilot Fusion (GitHub Copilot, max)":0,"Opus 5.5 (Claude Code, max)":0,"Fable 5.2 (Claude Code, max)":0,"Gemini 4 Carbon (Antigravity CLI, high)":0,"Sonnet 5.5 (Claude Code, max)":0,"GPT-6.2 Astra (Codex, max)":0,"GPT-6.2 Sol (Codex, max)":0,"GPT-6.1 Sol (Codex, max)":0,"GPT-6 Astra (Codex, max)":0,"GPT-6 Astra (Codex, high)":0,"GPT-6 Astra (Codex, xhigh)":0,"Kimi K3.1 Pro (Claude Code, max)":0},"rare_solvers":{}},{"task":"fin-saccr-rwa","domain":"Operations","solve_pct":65,"pass_count":210,"fail_count":112,"timeout_count":0,"error_count":3,"total_trials":325,"gpu":false,"top12":{"Copilot Fusion (GitHub Copilot, max)":3,"Opus 5.5 (Claude Code, max)":5,"Fable 5.2 (Claude Code, max)":5,"Gemini 4 Carbon (Antigravity CLI, high)":5,"Sonnet 5.5 (Claude Code, max)":5,"GPT-6.2 Astra (Codex, max)":5,"GPT-6.2 Sol (Codex, max)":5,"GPT-6.1 Sol (Codex, max)":5,"GPT-6 Astra (Codex, max)":5,"GPT-6 Astra (Codex, high)":5,"GPT-6 Astra (Codex, xhigh)":5,"Kimi K3.1 Pro (Claude Code, max)":5},"rare_solvers":{}},{"task":"heat-pump-warranty","domain":"Operations","solve_pct":39,"pass_count":127,"fail_count":188,"timeout_count":0,"error_count":10,"total_trials":325,"gpu":false,"top12":{"Copilot Fusion (GitHub Copilot, max)":5,"Opus 5.5 (Claude Code, max)":3,"Fable 5.2 (Claude Code, max)":3,"Gemini 4 Carbon (Antigravity CLI, high)":3,"Sonnet 5.5 (Claude Code, max)":3,"GPT-6.2 Astra (Codex, max)":4,"GPT-6.2 Sol (Codex, max)":5,"GPT-6.1 Sol (Codex, max)":5,"GPT-6 Astra (Codex, max)":5,"GPT-6 Astra (Codex, high)":4,"GPT-6 Astra (Codex, xhigh)":5,"Kimi K3.1 Pro (Claude Code, max)":5},"rare_solvers":{}},{"task":"legacy-utility-triage","domain":"Operations","solve_pct":39,"pass_count":128,"fail_count":175,"timeout_count":0,"error_count":22,"total_trials":325,"gpu":false,"top12":{"Copilot Fusion (GitHub Copilot, max)":5,"Opus 5.5 (Claude Code, max)":5,"Fable 5.2 (Claude Code, max)":4,"Gemini 4 Carbon (Antigravity CLI, high)":4,"Sonnet 5.5 (Claude Code, max)":5,"GPT-6.2 Astra (Codex, max)":5,"GPT-6.2 Sol (Codex, max)":5,"GPT-6.1 Sol (Codex, max)":5,"GPT-6 Astra (Codex, max)":5,"GPT-6 Astra (Codex, high)":5,"GPT-6 Astra (Codex, xhigh)":5,"Kimi K3.1 Pro (Claude Code, max)":3},"rare_solvers":{}},{"task":"intrastat-meldung","domain":"Operations","solve_pct":35,"pass_count":113,"fail_count":210,"timeout_count":0,"error_count":2,"total_trials":325,"gpu":false,"top12":{"Copilot Fusion (GitHub Copilot, max)":4,"Opus 5.5 (Claude Code, max)":2,"Fable 5.2 (Claude Code, max)":1,"Gemini 4 Carbon (Antigravity CLI, high)":3,"Sonnet 5.5 (Claude Code, max)":3,"GPT-6.2 Astra (Codex, max)":1,"GPT-6.2 Sol (Codex, max)":3,"GPT-6.1 Sol (Codex, max)":0,"GPT-6 Astra (Codex, max)":1,"GPT-6 Astra (Codex, high)":0,"GPT-6 Astra (Codex, xhigh)":0,"Kimi K3.1 Pro (Claude Code, max)":1},"rare_solvers":{}},{"task":"ctr-optimization","domain":"Operations","solve_pct":28,"pass_count":90,"fail_count":234,"timeout_count":1,"error_count":0,"total_trials":325,"gpu":false,"top12":{"Copilot Fusion (GitHub Copilot, max)":3,"Opus 5.5 (Claude Code, max)":4,"Fable 5.2 (Claude Code, max)":5,"Gemini 4 Carbon (Antigravity CLI, high)":5,"Sonnet 5.5 (Claude Code, max)":3,"GPT-6.2 Astra (Codex, max)":5,"GPT-6.2 Sol (Codex, max)":3,"GPT-6.1 Sol (Codex, max)":4,"GPT-6 Astra (Codex, max)":3,"GPT-6 Astra (Codex, high)":2,"GPT-6 Astra (Codex, xhigh)":4,"Kimi K3.1 Pro (Claude Code, max)":2},"rare_solvers":{}},{"task":"production-planning","domain":"Operations","solve_pct":21,"pass_count":68,"fail_count":247,"timeout_count":0,"error_count":10,"total_trials":325,"gpu":false,"top12":{"Copilot Fusion (GitHub Copilot, max)":1,"Opus 5.5 (Claude Code, max)":5,"Fable 5.2 (Claude Code, max)":3,"Gemini 4 Carbon (Antigravity CLI, high)":0,"Sonnet 5.5 (Claude Code, max)":2,"GPT-6.2 Astra (Codex, max)":0,"GPT-6.2 Sol (Codex, max)":0,"GPT-6.1 Sol (Codex, max)":0,"GPT-6 Astra (Codex, max)":0,"GPT-6 Astra (Codex, high)":0,"GPT-6 Astra (Codex, xhigh)":0,"Kimi K3.1 Pro (Claude Code, max)":5},"rare_solvers":{}},{"task":"medical-claims-processing","domain":"Operations","solve_pct":6,"pass_count":20,"fail_count":290,"timeout_count":0,"error_count":15,"total_trials":325,"gpu":false,"top12":{"Copilot Fusion (GitHub Copilot, max)":3,"Opus 5.5 (Claude Code, max)":0,"Fable 5.2 (Claude Code, max)":4,"Gemini 4 Carbon (Antigravity CLI, high)":0,"Sonnet 5.5 (Claude Code, max)":2,"GPT-6.2 Astra (Codex, max)":0,"GPT-6.2 Sol (Codex, max)":0,"GPT-6.1 Sol (Codex, max)":0,"GPT-6 Astra (Codex, max)":0,"GPT-6 Astra (Codex, high)":0,"GPT-6 Astra (Codex, xhigh)":0,"Kimi K3.1 Pro (Claude Code, max)":5},"rare_solvers":{"#1 Copilot Fusion / GitHub Copilot (max)":3,"#2 Fable 5.2 / Claude Code (max)":4,"#5 Sonnet 5.5 / Claude Code (max)":2,"#11 Kimi K3.1 Pro / Claude Code (max)":5,"#16 Gemini 4 Argon / Antigravity CLI (high)":2,"#36 GLM-5.3-Flash / Claude Code (max)":1,"#46 GPT-5.6 Terra / Codex (max)":1,"#54 Inkling Small 2 / mini-swe-agent (xhigh)":1,"#58 MiniMax M3 / mini-swe-agent (none)":1}},{"task":"cargo-flight-dispatch","domain":"Operations","solve_pct":1,"pass_count":3,"fail_count":318,"timeout_count":0,"error_count":4,"total_trials":325,"gpu":false,"top12":{"Copilot Fusion (GitHub Copilot, max)":0,"Opus 5.5 (Claude Code, max)":0,"Fable 5.2 (Claude Code, max)":0,"Gemini 4 Carbon (Antigravity CLI, high)":0,"Sonnet 5.5 (Claude Code, max)":0,"GPT-6.2 Astra (Codex, max)":0,"GPT-6.2 Sol (Codex, max)":0,"GPT-6.1 Sol (Codex, max)":0,"GPT-6 Astra (Codex, max)":0,"GPT-6 Astra (Codex, high)":0,"GPT-6 Astra (Codex, xhigh)":0,"Kimi K3.1 Pro (Claude Code, max)":3},"rare_solvers":{"#11 Kimi K3.1 Pro / Claude Code (max)":3}},{"task":"freight-dispatch-shift","domain":"Operations","solve_pct":0,"pass_count":0,"fail_count":317,"timeout_count":0,"error_count":8,"total_trials":325,"gpu":false,"top12":{"Copilot Fusion (GitHub Copilot, max)":0,"Opus 5.5 (Claude Code, max)":0,"Fable 5.2 (Claude Code, max)":0,"Gemini 4 Carbon (Antigravity CLI, high)":0,"Sonnet 5.5 (Claude Code, max)":0,"GPT-6.2 Astra (Codex, max)":0,"GPT-6.2 Sol (Codex, max)":0,"GPT-6.1 Sol (Codex, max)":0,"GPT-6 Astra (Codex, max)":0,"GPT-6 Astra (Codex, high)":0,"GPT-6 Astra (Codex, xhigh)":0,"Kimi K3.1 Pro (Claude Code, max)":0},"rare_solvers":{}}]};
+const I18N = {"lang": "zh-CN", "paretoTag": "帕累托 ★", "previewTag": "$0 预览版", "tieTag": "#2–#8 置信重叠带", "sweepTag": "多推理档位", "inspTitle": "当前选中配置遥测与对比", "vsFusion": "对比 #1 Copilot Fusion", "vsSol": "对比 #7 GPT-6.2 Sol (黄金拐点)", "tokensLabel": "总词元 / 输出 / 缓存命中率", "costLabel": "总成本 / 单次试验 / 单次解出", "paretoYes": "位于商业定价帕累托前沿（无可替代性价比点）", "paretoUnpriced": "未定价预览运行（$0 API 预览，排除在商业前沿外）", "paretoDomPrefix": "被帕累托前沿配置支配：", "taskInspTitle": "任务试验分布与前 12 强解出明细（每模型 5 次独立试验）", "rareSolvers": "全榜稀有解出者（<=10% 超难任务专项记录）", "zeroSolvers": "全榜 65 组配置（325 次独立容器试验）全部 0 解出！", "gpuBadge": "H100 GPU", "cpuBadge": "CPU 容器", "xCost": "总成本 USD", "xCostSolve": "单次成功成本 USD/Solve", "xTokens": "总消耗词元 (十亿 Tokens)", "xDur": "平均单题耗时 (秒)", "xUpside": "Pass@5 探索增益 (+pt)", "yAcc": "解决率 Resolution Rate (%)", "yPass5": "5 次采样上限 Pass@5 (%)", "themeBtn": "切换明暗主题", "estSummary": "预估月度账单对比（基于 330 次试验等效任务折算）"};
+
+(() => {
+  const rows = TB_DATA.rows;
+  const tasks = TB_DATA.tasks;
+  const fusion = rows.find(r => r.model === "Copilot Fusion");
+  const sol62 = rows.find(r => r.model === "GPT-6.2 Sol");
+
+  // Compute commercial Best-Effort Pareto frontier (minimize cost, maximize acc)
+  function computeParetoSet(subset, xKey, yKey, minimizeX = true) {
+    const eligible = subset.slice().sort((a, b) => minimizeX ? (a[xKey] - b[xKey] || b[yKey] - a[yKey]) : (b[xKey] - a[xKey] || b[yKey] - a[yKey]));
+    const frontier = [];
+    let bestY = -Infinity;
+    for (const item of eligible) {
+      if (item[yKey] > bestY) {
+        frontier.push(item);
+        bestY = item[yKey];
+      }
+    }
+    return frontier;
+  }
+
+  const pricedBest = rows.filter(r => r.is_best && !r.unpriced);
+  const pricedParetoIds = new Set(computeParetoSet(pricedBest, "cost", "acc", true).map(r => r.id));
+
+  // Theme toggle
+  document.getElementById("tb-theme-toggle")?.addEventListener("click", () => {
+    const cur = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
+    document.documentElement.setAttribute("data-theme", cur);
+    renderScatter();
+  });
+
+  // Tabs + URL hash support
+  const tabs = Array.from(document.querySelectorAll(".tb-tab"));
+  const panels = {
+    leaderboard: document.getElementById("panel-leaderboard"),
+    pareto: document.getElementById("panel-pareto"),
+    tasks: document.getElementById("panel-tasks"),
+    harness: document.getElementById("panel-harness"),
+    playbook: document.getElementById("panel-playbook"),
+  };
+  function activateTab(name) {
+    if (!panels[name]) return;
+    tabs.forEach(btn => btn.setAttribute("aria-selected", String(btn.dataset.tab === name)));
+    Object.entries(panels).forEach(([k, el]) => el.classList.toggle("active", k === name));
+    if (name === "pareto") renderScatter();
+  }
+  tabs.forEach(btn => btn.addEventListener("click", () => {
+    activateTab(btn.dataset.tab);
+    history.replaceState(null, "", "#" + btn.dataset.tab);
+  }));
+  const initHash = window.location.hash.replace("#", "");
+  if (panels[initHash]) activateTab(initHash);
+
+  // ---------------- TAB 1: LEADERBOARD ----------------
+  let lbMode = "best";
+  let lbCohort = "all";
+  let lbScaffold = "all";
+  let lbQuery = "";
+  let lbSortKey = "acc";
+  let lbSortAsc = false;
+  let selectedRowId = fusion.id;
+
+  function renderInspector(r) {
+    const el = document.getElementById("lb-inspector");
+    if (!r || !el) return;
+    const totalInput = r.cached_tokens_b + r.uncached_tokens_b;
+    const cachePct = totalInput > 0 ? ((r.cached_tokens_b / totalInput) * 100).toFixed(1) : "0.0";
+    const dFusionAcc = (r.acc - fusion.acc).toFixed(2);
+    const dSolAcc = (r.acc - sol62.acc).toFixed(2);
+    const costRatioSol = r.cost > 0 ? (r.cost / sol62.cost).toFixed(2) + "x" : "$0";
+
+    let domMsg = I18N.paretoYes;
+    if (r.unpriced) {
+      domMsg = I18N.paretoUnpriced;
+    } else if (!pricedParetoIds.has(r.id)) {
+      const dom = pricedBest.filter(p => pricedParetoIds.has(p.id) && p.cost <= r.cost && p.acc >= r.acc && (p.cost < r.cost || p.acc > r.acc))
+        .sort((a, b) => b.acc - a.acc)[0];
+      if (dom) {
+        domMsg = I18N.paretoDomPrefix + `${dom.model} + ${dom.agent} (${dom.acc.toFixed(2)}% @ $${dom.cost.toLocaleString()})`;
+      }
+    }
+
+    el.innerHTML = `
+      <div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;margin-bottom:10px">
+        <div><strong>#${r.rank} ${r.model} &times; ${r.agent}</strong> <span class="tb-badge mono">${r.effort}</span> <span class="tb-badge">${r.model_org}</span></div>
+        <div class="mono" style="font-size:12.5px;color:var(--cp-accent);font-weight:700">${domMsg}</div>
+      </div>
+      <div class="tb-kpi-grid">
+        <div class="tb-kpi">
+          <div class="tb-kpi-label">${I18N.tokensLabel}</div>
+          <div class="tb-kpi-val mono" style="font-size:17px">${r.tokens_b.toFixed(2)}B / ${r.out_tokens_m.toFixed(1)}M / ${cachePct}%</div>
+          <div class="tb-kpi-sub">Cached: ${r.cached_tokens_b.toFixed(2)}B &middot; Uncached: ${r.uncached_tokens_b.toFixed(2)}B</div>
+        </div>
+        <div class="tb-kpi">
+          <div class="tb-kpi-label">${I18N.costLabel}</div>
+          <div class="tb-kpi-val mono" style="font-size:17px">$${r.cost.toLocaleString()} / $${r.cost_trial.toFixed(2)} / $${r.cost_solve.toFixed(2)}</div>
+          <div class="tb-kpi-sub">Solves: ${r.solves} / ${r.trials} &middot; Pass@2: ${r.pass2.toFixed(2)}% &middot; Pass@5: ${r.pass5.toFixed(2)}%</div>
+        </div>
+        <div class="tb-kpi">
+          <div class="tb-kpi-label">${I18N.vsFusion}</div>
+          <div class="tb-kpi-val mono" style="font-size:17px">${dFusionAcc >= 0 ? "+" + dFusionAcc : dFusionAcc}pt</div>
+          <div class="tb-kpi-sub">Cost: $${r.cost.toLocaleString()} vs $${fusion.cost.toLocaleString()}</div>
+        </div>
+        <div class="tb-kpi">
+          <div class="tb-kpi-label">${I18N.vsSol}</div>
+          <div class="tb-kpi-val mono" style="font-size:17px">${dSolAcc >= 0 ? "+" + dSolAcc : dSolAcc}pt &middot; ${costRatioSol}</div>
+          <div class="tb-kpi-sub">Avg Duration: ${r.dur.toFixed(1)}s vs ${sol62.dur.toFixed(1)}s</div>
+        </div>
+      </div>
+    `;
+  }
+
+  function renderLeaderboard() {
+    const filtered = rows.filter(r => {
+      if (lbMode === "best" && !r.is_best) return false;
+      if (lbScaffold !== "all" && r.scaffold !== lbScaffold) return false;
+      if (lbCohort === "pareto" && !pricedParetoIds.has(r.id)) return false;
+      if (lbCohort === "tie" && !(r.rank >= 2 && r.rank <= 8)) return false;
+      if (lbCohort === "sweep" && !r.has_sweep) return false;
+      if (lbCohort === "pass5" && r.pass5 < 78) return false;
+      if (lbQuery) {
+        const hay = `${r.model} ${r.agent} ${r.model_org} ${r.effort}`.toLowerCase();
+        if (!hay.includes(lbQuery)) return false;
+      }
+      return true;
+    });
+
+    filtered.sort((a, b) => {
+      const va = a[lbSortKey], vb = b[lbSortKey];
+      if (typeof va === "string") return lbSortAsc ? va.localeCompare(vb) : vb.localeCompare(va);
+      return lbSortAsc ? (va - vb) : (vb - va);
+    });
+
+    const denom = lbMode === "best" ? 52 : 65;
+    document.getElementById("lb-count-badge").textContent = `${filtered.length} / ${denom}`;
+
+    const tbody = document.getElementById("lb-tbody");
+    tbody.innerHTML = filtered.map(r => {
+      const badges = [];
+      if (pricedParetoIds.has(r.id)) badges.push(`<span class="tb-badge pareto">${I18N.paretoTag}</span>`);
+      if (r.unpriced) badges.push(`<span class="tb-badge warn">${I18N.previewTag}</span>`);
+      if (r.rank >= 2 && r.rank <= 8 && r.is_best) badges.push(`<span class="tb-badge">${I18N.tieTag}</span>`);
+      const sel = r.id === selectedRowId ? "selected" : "";
+      return `
+        <tr class="${sel}" data-rowid="${r.id}">
+          <td class="mono"><strong>#${r.rank}</strong></td>
+          <td>
+            <div><strong>${r.model}</strong> <span style="color:var(--cp-text-muted)">&times; ${r.agent}</span></div>
+            <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:3px">${badges.join("")}</div>
+          </td>
+          <td class="mono">${r.effort}</td>
+          <td>
+            <div class="mono"><strong>${r.acc.toFixed(2)}%</strong> <span style="color:var(--cp-text-soft)">&plusmn;${r.ci95.toFixed(2)}</span></div>
+            <div class="tb-bar-track" style="margin-top:4px">
+              <div class="tb-bar-fill" style="width:${Math.min(100, r.acc)}%"></div>
+              <div class="tb-bar-p5" style="left:${Math.min(99, r.pass5)}%" title="Pass@5: ${r.pass5.toFixed(2)}%"></div>
+            </div>
+          </td>
+          <td class="mono"><strong>${r.pass5.toFixed(2)}%</strong></td>
+          <td class="mono" style="color:var(--cp-link)">+${r.upside.toFixed(2)}pt</td>
+          <td class="mono">${r.unpriced ? "$0*" : "$" + r.cost.toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2})}</td>
+          <td class="mono">${r.unpriced ? "$0*" : "$" + r.cost_solve.toFixed(2)}</td>
+          <td class="mono">${r.tokens_b.toFixed(2)}B</td>
+          <td class="mono">${r.dur.toFixed(1)}s</td>
+        </tr>
+      `;
+    }).join("");
+
+    tbody.querySelectorAll("tr").forEach(tr => tr.addEventListener("click", () => {
+      selectedRowId = Number(tr.dataset.rowid);
+      renderLeaderboard();
+    }));
+    renderInspector(rows.find(r => r.id === selectedRowId) || filtered[0]);
+  }
+
+  document.querySelectorAll("#lb-mode-group .tb-chip").forEach(btn => btn.addEventListener("click", () => {
+    document.querySelectorAll("#lb-mode-group .tb-chip").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    lbMode = btn.dataset.mode;
+    renderLeaderboard();
+  }));
+  document.querySelectorAll("#lb-cohort-group .tb-chip").forEach(btn => btn.addEventListener("click", () => {
+    document.querySelectorAll("#lb-cohort-group .tb-chip").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    lbCohort = btn.dataset.cohort;
+    renderLeaderboard();
+  }));
+  document.getElementById("lb-scaffold").addEventListener("change", e => { lbScaffold = e.target.value; renderLeaderboard(); });
+  document.getElementById("lb-search").addEventListener("input", e => { lbQuery = e.target.value.trim().toLowerCase(); renderLeaderboard(); });
+  document.querySelectorAll("#lb-table th[data-sort]").forEach(th => th.addEventListener("click", () => {
+    const key = th.dataset.sort;
+    if (lbSortKey === key) lbSortAsc = !lbSortAsc;
+    else {
+      lbSortKey = key;
+      lbSortAsc = key === "rank" || key === "cost" || key === "cost_solve" || key === "tokens_b" || key === "dur";
+    }
+    renderLeaderboard();
+  }));
+
+  // ---------------- TAB 2: PARETO SCATTER PLOT ----------------
+  let ptScale = "log";
+  let ptSelectedId = sol62.id;
+
+  const effortOrder = { none: 0, minimal: 1, low: 2, medium: 3, high: 4, xhigh: 5, max: 6 };
+  const sweepFamilies = [
+    { model: "GPT-6 Astra", agent: "Codex", stroke: "var(--cp-link)" },
+    { model: "Fable 5.1", agent: "Claude Code", stroke: "var(--cp-danger)" },
+    { model: "Opus 5", agent: "Claude Code", stroke: "var(--cp-warning)" },
+    { model: "GLM-5.3-Flash", agent: "Claude Code", stroke: "var(--cp-success)" },
+  ];
+
+  function renderPtInspector(r, activeFrontierIds) {
+    const el = document.getElementById("pt-inspector");
+    if (!r || !el) return;
+    const onFront = activeFrontierIds.has(r.id);
+    el.innerHTML = `
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px">
+        <span class="tb-badge ${onFront ? "pareto" : ""}">${onFront ? I18N.paretoTag : "#" + r.rank}</span>
+        <span class="mono" style="font-size:12px;color:var(--cp-text-muted)">${r.date} &middot; ${r.effort}</span>
+      </div>
+      <h3 style="margin:0 0 4px;font-size:17px">${r.model}</h3>
+      <div style="font-size:13px;color:var(--cp-text-muted);margin-bottom:12px">${r.agent} (${r.model_org})</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12.5px">
+        <div class="tb-kpi" style="padding:10px"><div class="tb-kpi-label">Accuracy</div><div class="mono" style="font-weight:800;font-size:16px">${r.acc.toFixed(2)}% &plusmn;${r.ci95.toFixed(2)}</div></div>
+        <div class="tb-kpi" style="padding:10px"><div class="tb-kpi-label">Pass@5</div><div class="mono" style="font-weight:800;font-size:16px">${r.pass5.toFixed(2)}% (+${r.upside.toFixed(1)})</div></div>
+        <div class="tb-kpi" style="padding:10px"><div class="tb-kpi-label">Total Cost</div><div class="mono" style="font-weight:800;font-size:16px">${r.unpriced ? "$0*" : "$" + r.cost.toLocaleString()}</div></div>
+        <div class="tb-kpi" style="padding:10px"><div class="tb-kpi-label">Tokens / Time</div><div class="mono" style="font-weight:800;font-size:15px">${r.tokens_b.toFixed(2)}B &middot; ${r.dur.toFixed(0)}s</div></div>
+      </div>
+    `;
+  }
+
+  function renderScatter() {
+    const svg = document.getElementById("pt-svg");
+    if (!svg) return;
+    const xKey = document.getElementById("pt-xaxis").value;
+    const yKey = document.getElementById("pt-yaxis").value;
+    const showTraj = document.getElementById("pt-show-traj").checked;
+    const bestOnly = showTraj ? false : document.getElementById("pt-best-only").checked;
+    const excludeZero = document.getElementById("pt-exclude-zero").checked;
+    const showCi = document.getElementById("pt-show-ci").checked;
+
+    const minimizeX = xKey !== "upside";
+    const useLog = ptScale === "log" && xKey !== "upside";
+
+    let pts = rows.filter(r => {
+      if (bestOnly && !r.is_best) return false;
+      if (excludeZero && r.unpriced) return false;
+      if (useLog && r[xKey] <= 0) return false;
+      return true;
+    });
+    if (!pts.length) return;
+
+    const W = 920, H = 520, padL = 68, padR = 32, padT = 28, padB = 54;
+    const plotW = W - padL - padR, plotH = H - padT - padB;
+
+    const xVals = pts.map(p => p[xKey]);
+    const xMinRaw = Math.min(...xVals), xMaxRaw = Math.max(...xVals);
+    const xMin = useLog ? Math.max(0.05, xMinRaw * 0.85) : Math.min(0, xMinRaw);
+    const xMax = xMaxRaw * 1.12;
+
+    const mapX = v => {
+      if (useLog) {
+        const lv = Math.log10(Math.max(xMin, v));
+        return padL + ((lv - Math.log10(xMin)) / (Math.log10(xMax) - Math.log10(xMin))) * plotW;
+      }
+      return padL + ((v - xMin) / (xMax - xMin || 1)) * plotW;
+    };
+    const mapY = v => padT + plotH - (Math.max(0, Math.min(100, v)) / 100) * plotH;
+
+    // Frontier on current view
+    const frontier = computeParetoSet(pts.filter(p => !p.unpriced || !excludeZero), xKey, yKey, minimizeX);
+    const frontierIds = new Set(frontier.map(f => f.id));
+
+    let out = [];
+    // Grid lines Y
+    for (const yv of [0, 20, 40, 60, 80, 100]) {
+      const py = mapY(yv).toFixed(1);
+      out.push(`<line x1="${padL}" y1="${py}" x2="${W - padR}" y2="${py}" stroke="var(--cp-border)" stroke-dasharray="3 3" />`);
+      out.push(`<text x="${padL - 10}" y="${Number(py) + 4}" text-anchor="end" fill="var(--cp-text-muted)" font-size="11.5" font-family="Consolas, monospace">${yv}%</text>`);
+    }
+
+    // Grid lines X
+    let xTicks = [];
+    if (useLog) {
+      const candidates = [0.1, 0.2, 0.5, 1, 2, 5, 10, 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000, 20000];
+      xTicks = candidates.filter(t => t >= xMin && t <= xMax);
+    } else {
+      for (let i = 0; i <= 5; i++) xTicks.push(xMin + ((xMax - xMin) * i) / 5);
+    }
+    for (const xt of xTicks) {
+      const px = mapX(xt).toFixed(1);
+      const lbl = (xKey === "cost" || xKey === "cost_solve") ? ("$" + (xt >= 100 ? Math.round(xt).toLocaleString() : xt.toFixed(xt < 1 ? 2 : 0)))
+        : xKey === "tokens_b" ? (xt.toFixed(xt < 1 ? 1 : 0) + "B")
+        : xKey === "dur" ? (Math.round(xt) + "s") : ("+" + xt.toFixed(0) + "pt");
+      out.push(`<line x1="${px}" y1="${padT}" x2="${px}" y2="${padT + plotH}" stroke="var(--cp-border)" stroke-dasharray="3 3" />`);
+      out.push(`<text x="${px}" y="${padT + plotH + 20}" text-anchor="middle" fill="var(--cp-text-muted)" font-size="11" font-family="Consolas, monospace">${lbl}</text>`);
+    }
+
+    // Step-line Pareto Frontier + dominated shading
+    if (frontier.length > 1 && minimizeX) {
+      let dStep = `M ${mapX(frontier[0][xKey]).toFixed(1)} ${mapY(0).toFixed(1)} L ${mapX(frontier[0][xKey]).toFixed(1)} ${mapY(frontier[0][yKey]).toFixed(1)}`;
+      for (let i = 1; i < frontier.length; i++) {
+        const prevY = mapY(frontier[i - 1][yKey]).toFixed(1);
+        const curX = mapX(frontier[i][xKey]).toFixed(1);
+        const curY = mapY(frontier[i][yKey]).toFixed(1);
+        dStep += ` L ${curX} ${prevY} L ${curX} ${curY}`;
+      }
+      dStep += ` L ${W - padR} ${mapY(frontier[frontier.length - 1][yKey]).toFixed(1)}`;
+      const dArea = dStep + ` L ${W - padR} ${mapY(0).toFixed(1)} Z`;
+      out.push(`<path d="${dArea}" fill="var(--cp-accent-soft)" />`);
+      out.push(`<path d="${dStep}" fill="none" stroke="var(--cp-accent)" stroke-width="2.4" />`);
+    }
+
+    // Reasoning-effort sweep trajectories
+    if (showTraj) {
+      for (const fam of sweepFamilies) {
+        const chain = pts.filter(p => p.model === fam.model && p.agent === fam.agent)
+          .sort((a, b) => (effortOrder[a.effort] ?? 9) - (effortOrder[b.effort] ?? 9));
+        if (chain.length > 1) {
+          const poly = chain.map(c => `${mapX(c[xKey]).toFixed(1)},${mapY(c[yKey]).toFixed(1)}`).join(" ");
+          out.push(`<polyline points="${poly}" fill="none" stroke="${fam.stroke}" stroke-width="2.2" stroke-dasharray="5 3" />`);
+          const last = chain[chain.length - 1];
+          out.push(`<text x="${(mapX(last[xKey]) + 7).toFixed(1)}" y="${(mapY(last[yKey]) + 4).toFixed(1)}" fill="${fam.stroke}" font-size="11" font-weight="700">${fam.model} (${last.effort})</text>`);
+        }
+      }
+    }
+
+    // Points + CI whiskers
+    const labelTargets = new Set(["Copilot Fusion", "GPT-6.2 Sol", "Gemini 4 Carbon", "DeepSeek V4.1 Flash 1017", "Kimi K3.1 Pro", "Fable 5.2", "Opus 5.5", "Sonnet 5.5"]);
+    for (const p of pts) {
+      const cx = mapX(p[xKey]), cy = mapY(p[yKey]);
+      const isFront = frontierIds.has(p.id);
+      const isSel = p.id === ptSelectedId;
+      if (showCi && yKey === "acc") {
+        const yTop = mapY(p.acc + p.ci95), yBot = mapY(Math.max(0, p.acc - p.ci95));
+        out.push(`<line x1="${cx.toFixed(1)}" y1="${yTop.toFixed(1)}" x2="${cx.toFixed(1)}" y2="${yBot.toFixed(1)}" stroke="var(--cp-border-strong)" stroke-width="1.2" />`);
+      }
+      const r = isSel ? 8.5 : (isFront ? 6.8 : 4.8);
+      const fill = isFront ? "var(--cp-accent)" : (p.has_sweep && showTraj ? "var(--cp-link)" : "var(--cp-surface)");
+      const stroke = isSel ? "var(--cp-text)" : (isFront ? "var(--cp-accent)" : "var(--cp-border-strong)");
+      out.push(`<circle class="pt-node" data-id="${p.id}" cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" r="${r}" fill="${fill}" stroke="${stroke}" stroke-width="${isSel ? 2.6 : 1.8}" style="cursor:pointer" />`);
+      if ((isFront || labelTargets.has(p.model)) && (p.is_best || !showTraj)) {
+        const dy = p.model === "Opus 5.5" ? -10 : (p.model === "GPT-6.2 Sol" ? -10 : -9);
+        out.push(`<text x="${cx.toFixed(1)}" y="${(cy + dy).toFixed(1)}" text-anchor="middle" fill="var(--cp-text)" font-size="11" font-weight="${isFront ? 700 : 600}">${p.model}</text>`);
+      }
+    }
+
+    // Axis titles
+    const xLabelMap = { cost: I18N.xCost, cost_solve: I18N.xCostSolve, tokens_b: I18N.xTokens, dur: I18N.xDur, upside: I18N.xUpside };
+    const yLabelMap = { acc: I18N.yAcc, pass5: I18N.yPass5 };
+    out.push(`<text x="${padL + plotW / 2}" y="${H - 12}" text-anchor="middle" fill="var(--cp-text)" font-size="12.5" font-weight="700">${xLabelMap[xKey]}</text>`);
+    out.push(`<text x="18" y="${padT + plotH / 2}" text-anchor="middle" fill="var(--cp-text)" font-size="12.5" font-weight="700" transform="rotate(-90 18 ${padT + plotH / 2})">${yLabelMap[yKey]}</text>`);
+
+    svg.innerHTML = out.join("");
+    svg.querySelectorAll(".pt-node").forEach(node => {
+      const pick = () => {
+        ptSelectedId = Number(node.dataset.id);
+        renderScatter();
+      };
+      node.addEventListener("click", pick);
+      node.addEventListener("mouseenter", () => {
+        const item = rows.find(r => r.id === Number(node.dataset.id));
+        if (item) renderPtInspector(item, frontierIds);
+      });
+    });
+    renderPtInspector(rows.find(r => r.id === ptSelectedId) || frontier[frontier.length - 1] || pts[0], frontierIds);
+  }
+
+  ["pt-xaxis", "pt-yaxis", "pt-best-only", "pt-exclude-zero", "pt-show-ci", "pt-show-traj"].forEach(id => {
+    document.getElementById(id)?.addEventListener("change", () => {
+      if (id === "pt-show-traj" && document.getElementById("pt-show-traj").checked) {
+        document.getElementById("pt-best-only").checked = false;
+      }
+      renderScatter();
+    });
+  });
+  document.querySelectorAll("#pt-scale-group .tb-chip").forEach(btn => btn.addEventListener("click", () => {
+    document.querySelectorAll("#pt-scale-group .tb-chip").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    ptScale = btn.dataset.scale;
+    renderScatter();
+  }));
+
+  // ---------------- TAB 3: 66 AGENT TEST TASKS ----------------
+  let tkFilter = "all";
+  let tkDomain = "all";
+  let tkQuery = "";
+  let tkSortKey = "solve_pct";
+  let tkSortAsc = true;
+  let selectedTaskSlug = "vllm-deepseek-streaming";
+
+  function renderDomainStrip() {
+    const strip = document.getElementById("tk-domain-strip");
+    strip.innerHTML = TB_DATA.domains.map(d => `
+      <button type="button" class="tb-domain-card ${tkDomain === d.domain ? "active" : ""}" data-dom="${d.domain}">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <strong>${d.domain}</strong>
+          <span class="tb-badge mono">${d.task_count}</span>
+        </div>
+        <div class="mono" style="font-size:22px;font-weight:800;margin:6px 0;color:${d.avg_solve_pct <= 30 ? "var(--cp-danger)" : "var(--cp-accent)"}">${d.avg_solve_pct}%</div>
+        <div class="tb-bar-track" style="width:100%"><div class="tb-bar-fill" style="width:${d.avg_solve_pct}%"></div></div>
+      </button>
+    `).join("");
+    strip.querySelectorAll(".tb-domain-card").forEach(btn => btn.addEventListener("click", () => {
+      tkDomain = tkDomain === btn.dataset.dom ? "all" : btn.dataset.dom;
+      document.getElementById("tk-domain-select").value = tkDomain;
+      renderDomainStrip();
+      renderTasks();
+    }));
+  }
+
+  function renderHeatmap() {
+    const domCols = ["Security", "ML", "Media", "Hardware", "Software", "Science", "Operations"];
+    const tbl = document.getElementById("tk-heatmap-table");
+    const thead = `<thead><tr><th>Model &times; Scaffold</th>${domCols.map(c => `<th>${c}</th>`).join("")}</tr></thead>`;
+    const tbody = TB_DATA.top12_domains.map(row => {
+      const cells = domCols.map(c => {
+        const v = row.scores[c];
+        const cls = v >= 70 ? "tb-heat-high" : (v < 58 ? "tb-heat-low" : "tb-heat-mid");
+        return `<td><div class="tb-heat-cell mono ${cls}">${v}%</div></td>`;
+      }).join("");
+      return `<tr><td><strong>${row.label}</strong></td>${cells}</tr>`;
+    }).join("");
+    tbl.innerHTML = thead + `<tbody>${tbody}</tbody>`;
+  }
+
+  function renderTaskInspector(t) {
+    const el = document.getElementById("tk-inspector");
+    if (!t || !el) return;
+    const t12 = Object.entries(t.top12).map(([k, v]) => `
+      <div class="tb-kpi" style="padding:10px">
+        <div style="font-size:11.5px;color:var(--cp-text-muted);margin-bottom:4px">${k}</div>
+        <div class="mono" style="font-size:16px;font-weight:800;color:${v >= 4 ? "var(--cp-success)" : (v === 0 ? "var(--cp-danger)" : "var(--cp-text)")}">${v} / 5</div>
+      </div>
+    `).join("");
+    const rareKeys = Object.entries(t.rare_solvers || {});
+    let rareBlock = "";
+    if (t.pass_count === 0) {
+      rareBlock = `<div style="margin-top:10px;color:var(--cp-danger);font-weight:700">${I18N.zeroSolvers}</div>`;
+    } else if (rareKeys.length > 0) {
+      rareBlock = `<div style="margin-top:10px"><strong style="font-size:12.5px">${I18N.rareSolvers}:</strong> ` +
+        rareKeys.map(([k, v]) => `<span class="tb-badge pareto mono" style="margin:2px">${k}: ${v}/5</span>`).join(" ") + `</div>`;
+    }
+    el.innerHTML = `
+      <div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;margin-bottom:10px">
+        <div><strong class="mono" style="font-size:16px">${t.task}</strong> <span class="tb-badge">${t.domain}</span> <span class="tb-badge">${t.gpu ? I18N.gpuBadge : I18N.cpuBadge}</span></div>
+        <div class="mono" style="font-size:13px">Pass: <strong>${t.pass_count}/${t.total_trials} (${t.solve_pct}%)</strong> &middot; Timeouts: ${t.timeout_count} &middot; Errors: ${t.error_count}</div>
+      </div>
+      <div style="font-size:12.5px;font-weight:700;color:var(--cp-text-muted);margin-bottom:8px">${I18N.taskInspTitle}</div>
+      <div class="tb-kpi-grid">${t12}</div>
+      ${rareBlock}
+    `;
+  }
+
+  function renderTasks() {
+    const filtered = tasks.filter(t => {
+      if (tkDomain !== "all" && t.domain !== tkDomain) return false;
+      if (tkFilter === "zero" && t.solve_pct !== 0) return false;
+      if (tkFilter === "ultra" && t.solve_pct > 10) return false;
+      if (tkFilter === "gpu" && !t.gpu) return false;
+      if (tkFilter === "high" && t.solve_pct < 60) return false;
+      if (tkQuery && !`${t.task} ${t.domain}`.toLowerCase().includes(tkQuery)) return false;
+      return true;
+    });
+    filtered.sort((a, b) => {
+      const va = a[tkSortKey], vb = b[tkSortKey];
+      if (typeof va === "string") return tkSortAsc ? va.localeCompare(vb) : vb.localeCompare(va);
+      if (typeof va === "boolean") return tkSortAsc ? (Number(va) - Number(vb)) : (Number(vb) - Number(va));
+      return tkSortAsc ? (va - vb || a.pass_count - b.pass_count) : (vb - va || b.pass_count - a.pass_count);
+    });
+    document.getElementById("tk-count-badge").textContent = `${filtered.length} / 66`;
+
+    const tbody = document.getElementById("tk-tbody");
+    tbody.innerHTML = filtered.map(t => {
+      const f5 = t.top12["Copilot Fusion (GitHub Copilot, max)"] ?? 0;
+      const o5 = t.top12["Opus 5.5 (Claude Code, max)"] ?? 0;
+      const s5 = t.top12["GPT-6.2 Sol (Codex, max)"] ?? 0;
+      const k5 = t.top12["Kimi K3.1 Pro (Claude Code, max)"] ?? 0;
+      const badgeCls = t.solve_pct === 0 ? "bad" : (t.solve_pct <= 10 ? "warn" : (t.solve_pct >= 60 ? "good" : ""));
+      return `
+        <tr class="${t.task === selectedTaskSlug ? "selected" : ""}" data-slug="${t.task}">
+          <td class="mono"><strong>${t.task}</strong></td>
+          <td>${t.domain}</td>
+          <td><span class="tb-badge ${t.gpu ? "pareto" : ""}">${t.gpu ? I18N.gpuBadge : I18N.cpuBadge}</span></td>
+          <td><span class="tb-badge ${badgeCls} mono">${t.solve_pct}%</span></td>
+          <td class="mono">${t.pass_count} / ${t.total_trials}</td>
+          <td class="mono">${t.timeout_count}</td>
+          <td class="mono">${t.error_count}</td>
+          <td class="mono">Fusion:${f5}/5 &middot; Opus:${o5}/5 &middot; Sol:${s5}/5 &middot; Kimi:${k5}/5</td>
+        </tr>
+      `;
+    }).join("");
+    tbody.querySelectorAll("tr").forEach(tr => tr.addEventListener("click", () => {
+      selectedTaskSlug = tr.dataset.slug;
+      renderTasks();
+    }));
+    renderTaskInspector(tasks.find(t => t.task === selectedTaskSlug) || filtered[0]);
+  }
+
+  document.querySelectorAll("#tk-filter-group .tb-chip").forEach(btn => btn.addEventListener("click", () => {
+    document.querySelectorAll("#tk-filter-group .tb-chip").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    tkFilter = btn.dataset.tkf;
+    renderTasks();
+  }));
+  document.getElementById("tk-domain-select").addEventListener("change", e => {
+    tkDomain = e.target.value;
+    renderDomainStrip();
+    renderTasks();
+  });
+  document.getElementById("tk-search").addEventListener("input", e => { tkQuery = e.target.value.trim().toLowerCase(); renderTasks(); });
+  document.querySelectorAll("#tk-table th[data-tksort]").forEach(th => th.addEventListener("click", () => {
+    const k = th.dataset.tksort;
+    if (tkSortKey === k) tkSortAsc = !tkSortAsc;
+    else { tkSortKey = k; tkSortAsc = k === "solve_pct" || k === "task"; }
+    renderTasks();
+  }));
+
+  // ---------------- TAB 5: FINOPS ESTIMATOR ----------------
+  function renderEstimator() {
+    const slider = document.getElementById("est-runs");
+    const n = Number(slider.value);
+    document.getElementById("est-runs-val").textContent = n.toLocaleString();
+    // Official per-trial costs from bundle
+    const cSol = n * sol62.cost_trial;
+    const cFusion = n * fusion.cost_trial;
+    const opus55 = rows.find(r => r.model === "Opus 5.5");
+    const fable52 = rows.find(r => r.model === "Fable 5.2");
+    const flash = rows.find(r => r.model === "DeepSeek V4.1 Flash 1017");
+    const kimi = rows.find(r => r.model === "Kimi K3.1 Pro");
+    // Recommended 4-tier mix: 25% Flash + 55% Sol + 10% Kimi (x3 parallel) + 10% Fusion
+    const cTiered = n * (0.25 * flash.cost_trial + 0.55 * sol62.cost_trial + 0.10 * (3 * kimi.cost_trial) + 0.10 * fusion.cost_trial);
+    const cOpus = n * opus55.cost_trial;
+    const cFable = n * fable52.cost_trial;
+    const saveVsOpus = (((cOpus - cTiered) / cOpus) * 100).toFixed(1);
+    document.getElementById("est-saving-badge").textContent = `-${saveVsOpus}% vs Opus 5.5 / -${(((cFable - cTiered) / cFable) * 100).toFixed(1)}% vs Fable 5.2`;
+
+    document.getElementById("est-grid").innerHTML = `
+      <div class="tb-kpi">
+        <div class="tb-kpi-label">4-Tier SA Portfolio (Recommended)</div>
+        <div class="tb-kpi-val success mono">$${Math.round(cTiered).toLocaleString()}</div>
+        <div class="tb-kpi-sub">25% Flash + 55% Sol + 10% Kimi(x3) + 10% Fusion</div>
+      </div>
+      <div class="tb-kpi">
+        <div class="tb-kpi-label">100% GPT-6.2 Sol Default</div>
+        <div class="tb-kpi-val mono">$${Math.round(cSol).toLocaleString()}</div>
+        <div class="tb-kpi-sub">$${sol62.cost_trial.toFixed(2)}/task &middot; 61.52% baseline</div>
+      </div>
+      <div class="tb-kpi">
+        <div class="tb-kpi-label">100% Copilot Fusion SOTA</div>
+        <div class="tb-kpi-val accent mono">$${Math.round(cFusion).toLocaleString()}</div>
+        <div class="tb-kpi-sub">$${fusion.cost_trial.toFixed(2)}/task &middot; 71.21% SOTA</div>
+      </div>
+      <div class="tb-kpi">
+        <div class="tb-kpi-label">100% Unrouted Opus 5.5 / Fable 5.2</div>
+        <div class="tb-kpi-val mono">$${Math.round(cOpus).toLocaleString()} – $${Math.round(cFable).toLocaleString()}</div>
+        <div class="tb-kpi-sub">65.76% tied #2 &middot; 7.2x–25.3x pricier than tiered</div>
+      </div>
+    `;
+  }
+  document.getElementById("est-runs")?.addEventListener("input", renderEstimator);
+
+  // Initial render
+  renderLeaderboard();
+  renderScatter();
+  renderDomainStrip();
+  renderHeatmap();
+  renderTasks();
+  renderEstimator();
+})();
+</script>
+</body>
+</html>
