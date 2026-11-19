@@ -6597,6 +6597,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r535File),'utf8');
       assert.ok(txt.includes('2,760.00')&&txt.includes('4,100.00')&&txt.includes('6,860.00')&&txt.includes('75.00')&&txt.includes('260.00')&&txt.includes('335.00')&&txt.includes('6,525.00')&&txt.includes('95.12%')&&txt.includes('not_measured'),r535File+': contains exact 11-19 R11 R535 veil+artexdefense+wp2node+artboards closed-form parameters');
     }
+    // 2026-11-19 Night Round 12 (R536: xyc999-ai/go-bot + baney75/smoothstone + hovocope135-tech/DSH-projects + YinkaiYu/chat-in-dsh) verification
+    const r536PathA=2620.00+40.0*100.00;
+    assert.equal(r536PathA.toFixed(2),'6620.00','11-19 R12 R536 Path A total');
+    const r536PathC=70.00+2.5*100.00;
+    assert.equal(r536PathC.toFixed(2),'320.00','11-19 R12 R536 Path C total');
+    assert.equal((r536PathA-r536PathC).toFixed(2),'6300.00','11-19 R12 R536 savings vs Path A');
+    assert.equal(((r536PathA-r536PathC)/r536PathA*100).toFixed(2),'95.17','11-19 R12 R536 pct savings vs Path A');
+    for(const r536File of ['workshops/github-trending-radar/docs/go-bot-smoothstone-dsh-projects-chat-in-dsh-go-personal-agent-17b-cpu-3d-recipes-goal-context-decoupling-minimal-prompt-panel-selection-faq.md','workshops/github-trending-radar/docs/go-bot-smoothstone-dsh-projects-chat-in-dsh-go-personal-agent-17b-cpu-3d-recipes-goal-context-decoupling-minimal-prompt-panel-selection-faq.en.md','assets/github-ai-radar-2026-11-19-r12-gobot-smoothstone-dshprojects-chatindsh.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-19-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r536File),'utf8');
+      assert.ok(txt.includes('2,620.00')&&txt.includes('4,000.00')&&txt.includes('6,620.00')&&txt.includes('70.00')&&txt.includes('250.00')&&txt.includes('320.00')&&txt.includes('6,300.00')&&txt.includes('95.17%')&&txt.includes('not_measured'),r536File+': contains exact 11-19 R12 R536 gobot+smoothstone+dshprojects+chatindsh closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
