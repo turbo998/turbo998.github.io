@@ -6509,6 +6509,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r527File),'utf8');
       assert.ok(txt.includes('2,680.00')&&txt.includes('4,100.00')&&txt.includes('6,780.00')&&txt.includes('75.00')&&txt.includes('270.00')&&txt.includes('345.00')&&txt.includes('6,435.00')&&txt.includes('94.91%')&&txt.includes('not_measured'),r527File+': contains exact 11-19 R3 R527 superpowers+autoclip+phasyn+subcast closed-form parameters');
     }
+    // 2026-11-19 Night Round 4 (R528: icons8/hub + pansy-ai/pansy + arhen/nodwarden + HiSeax/dsh-windows-superagent) verification
+    const r528PathA=2620.00+40.0*100.00;
+    assert.equal(r528PathA.toFixed(2),'6620.00','11-19 R4 R528 Path A total');
+    const r528PathC=75.00+2.6*100.00;
+    assert.equal(r528PathC.toFixed(2),'335.00','11-19 R4 R528 Path C total');
+    assert.equal((r528PathA-r528PathC).toFixed(2),'6285.00','11-19 R4 R528 savings vs Path A');
+    assert.equal(((r528PathA-r528PathC)/r528PathA*100).toFixed(2),'94.94','11-19 R4 R528 pct savings vs Path A');
+    for(const r528File of ['workshops/github-trending-radar/docs/icons8-hub-pansy-nodwarden-dsh-windows-superagent-100session-decision-hub-4protocol-local-gateway-touchid-bitwarden-aac-wechat-ticket-board-selection-faq.md','workshops/github-trending-radar/docs/icons8-hub-pansy-nodwarden-dsh-windows-superagent-100session-decision-hub-4protocol-local-gateway-touchid-bitwarden-aac-wechat-ticket-board-selection-faq.en.md','assets/github-ai-radar-2026-11-19-r4-icons8hub-pansy-nodwarden-dshwin.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-19-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r528File),'utf8');
+      assert.ok(txt.includes('2,620.00')&&txt.includes('4,000.00')&&txt.includes('6,620.00')&&txt.includes('75.00')&&txt.includes('260.00')&&txt.includes('335.00')&&txt.includes('6,285.00')&&txt.includes('94.94%')&&txt.includes('not_measured'),r528File+': contains exact 11-19 R4 R528 icons8hub+pansy+nodwarden+dshwin closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
