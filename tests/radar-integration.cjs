@@ -6542,6 +6542,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r530File),'utf8');
       assert.ok(txt.includes('2,820.00')&&txt.includes('4,150.00')&&txt.includes('6,970.00')&&txt.includes('80.00')&&txt.includes('270.00')&&txt.includes('350.00')&&txt.includes('6,620.00')&&txt.includes('94.98%')&&txt.includes('not_measured'),r530File+': contains exact 11-19 R6 R530 zazypentest+prompteng+gdmrobotics+fastframes closed-form parameters');
     }
+    // 2026-11-19 Night Round 7 (R531: ntu0831/RAG-MCP-Server + Easyblue11/ezness + IsmailHatim/zaag + NaiboWang/FoldMobileGym) verification
+    const r531PathA=2640.00+40.0*100.00;
+    assert.equal(r531PathA.toFixed(2),'6640.00','11-19 R7 R531 Path A total');
+    const r531PathC=75.00+2.6*100.00;
+    assert.equal(r531PathC.toFixed(2),'335.00','11-19 R7 R531 Path C total');
+    assert.equal((r531PathA-r531PathC).toFixed(2),'6305.00','11-19 R7 R531 savings vs Path A');
+    assert.equal(((r531PathA-r531PathC)/r531PathA*100).toFixed(2),'94.95','11-19 R7 R531 pct savings vs Path A');
+    for(const r531File of ['workshops/github-trending-radar/docs/rag-mcp-server-ezness-zaag-foldmobilegym-whitebox-hybrid-rag-mcp-windows-work-director-zellij-wasm-sidebar-foldable-gui-benchmark-selection-faq.md','workshops/github-trending-radar/docs/rag-mcp-server-ezness-zaag-foldmobilegym-whitebox-hybrid-rag-mcp-windows-work-director-zellij-wasm-sidebar-foldable-gui-benchmark-selection-faq.en.md','assets/github-ai-radar-2026-11-19-r7-ragmcp-ezness-zaag-foldmobilegym.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-19-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r531File),'utf8');
+      assert.ok(txt.includes('2,640.00')&&txt.includes('4,000.00')&&txt.includes('6,640.00')&&txt.includes('75.00')&&txt.includes('260.00')&&txt.includes('335.00')&&txt.includes('6,305.00')&&txt.includes('94.95%')&&txt.includes('not_measured'),r531File+': contains exact 11-19 R7 R531 ragmcp+ezness+zaag+foldmobilegym closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
