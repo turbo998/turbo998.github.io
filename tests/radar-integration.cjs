@@ -6531,6 +6531,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r529File),'utf8');
       assert.ok(txt.includes('2,560.00')&&txt.includes('3,950.00')&&txt.includes('6,510.00')&&txt.includes('70.00')&&txt.includes('260.00')&&txt.includes('330.00')&&txt.includes('6,180.00')&&txt.includes('94.93%')&&txt.includes('not_measured'),r529File+': contains exact 11-19 R5 R529 lumodesktop+frontdesk+t3boat+wmpf closed-form parameters');
     }
+    // 2026-11-19 Night Round 6 (R530 Milestone: AnandJogawade/Zazy-Pentest-Plugin-for-Claude + mzainulabideendev/Universal-AI-Prompt-Engineer + google-deepmind/robotics-antigravity-plugin + apple-aiml-research/ml-fastframes) verification
+    const r530PathA=2820.00+41.5*100.00;
+    assert.equal(r530PathA.toFixed(2),'6970.00','11-19 R6 R530 Path A total');
+    const r530PathC=80.00+2.7*100.00;
+    assert.equal(r530PathC.toFixed(2),'350.00','11-19 R6 R530 Path C total');
+    assert.equal((r530PathA-r530PathC).toFixed(2),'6620.00','11-19 R6 R530 savings vs Path A');
+    assert.equal(((r530PathA-r530PathC)/r530PathA*100).toFixed(2),'94.98','11-19 R6 R530 pct savings vs Path A');
+    for(const r530File of ['workshops/github-trending-radar/docs/zazy-pentest-universal-prompt-engineer-gdm-robotics-plugin-apple-ml-fastframes-318skill-oast-verifier-9mode-vscode-secretstorage-mujoco-sim2real-35ms-video-selection-faq.md','workshops/github-trending-radar/docs/zazy-pentest-universal-prompt-engineer-gdm-robotics-plugin-apple-ml-fastframes-318skill-oast-verifier-9mode-vscode-secretstorage-mujoco-sim2real-35ms-video-selection-faq.en.md','assets/github-ai-radar-2026-11-19-r6-r530-zazypentest-prompteng-gdmrobotics-fastframes.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-19-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r530File),'utf8');
+      assert.ok(txt.includes('2,820.00')&&txt.includes('4,150.00')&&txt.includes('6,970.00')&&txt.includes('80.00')&&txt.includes('270.00')&&txt.includes('350.00')&&txt.includes('6,620.00')&&txt.includes('94.98%')&&txt.includes('not_measured'),r530File+': contains exact 11-19 R6 R530 zazypentest+prompteng+gdmrobotics+fastframes closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
