@@ -6619,6 +6619,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r537File),'utf8');
       assert.ok(txt.includes('2,520.00')&&txt.includes('3,900.00')&&txt.includes('6,420.00')&&txt.includes('65.00')&&txt.includes('250.00')&&txt.includes('315.00')&&txt.includes('6,105.00')&&txt.includes('95.09%')&&txt.includes('not_measured'),r537File+': contains exact 11-19 R13 R537 reviewgallery+beatreel+teachme+bookbuilder closed-form parameters');
     }
+    // 2026-11-19 Night Round 14 (R538: aileron-tech/wingbox + arpitpatel25/ReadAnyDoc + Balanov/mcp-attest + Andsu-dev/runelay) verification
+    const r538PathA=2680.00+40.5*100.00;
+    assert.equal(r538PathA.toFixed(2),'6730.00','11-19 R14 R538 Path A total');
+    const r538PathC=75.00+2.6*100.00;
+    assert.equal(r538PathC.toFixed(2),'335.00','11-19 R14 R538 Path C total');
+    assert.equal((r538PathA-r538PathC).toFixed(2),'6395.00','11-19 R14 R538 savings vs Path A');
+    assert.equal(((r538PathA-r538PathC)/r538PathA*100).toFixed(2),'95.02','11-19 R14 R538 pct savings vs Path A');
+    for(const r538File of ['workshops/github-trending-radar/docs/wingbox-readanydoc-mcp-attest-runelay-local-blast-radius-graph-reducto-cited-doc-parser-24rule-mcp-auth-conformance-unified-mcp-gateway-selection-faq.md','workshops/github-trending-radar/docs/wingbox-readanydoc-mcp-attest-runelay-local-blast-radius-graph-reducto-cited-doc-parser-24rule-mcp-auth-conformance-unified-mcp-gateway-selection-faq.en.md','assets/github-ai-radar-2026-11-19-r14-wingbox-readanydoc-mcpattest-runelay.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-19-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r538File),'utf8');
+      assert.ok(txt.includes('2,680.00')&&txt.includes('4,050.00')&&txt.includes('6,730.00')&&txt.includes('75.00')&&txt.includes('260.00')&&txt.includes('335.00')&&txt.includes('6,395.00')&&txt.includes('95.02%')&&txt.includes('not_measured'),r538File+': contains exact 11-19 R14 R538 wingbox+readanydoc+mcpattest+runelay closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
