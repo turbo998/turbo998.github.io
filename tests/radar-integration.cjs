@@ -6564,6 +6564,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r532File),'utf8');
       assert.ok(txt.includes('2,660.00')&&txt.includes('4,050.00')&&txt.includes('6,710.00')&&txt.includes('75.00')&&txt.includes('260.00')&&txt.includes('335.00')&&txt.includes('6,375.00')&&txt.includes('95.01%')&&txt.includes('not_measured'),r532File+': contains exact 11-19 R8 R532 finalphaselite+videoskills+iris+simulator closed-form parameters');
     }
+    // 2026-11-19 Night Round 9 (R533: etodanik/deslop + naheel0/dev-skills + Git-Agni/apple-app-review-skill + BigBrother168/red-crab) verification
+    const r533PathA=2540.00+39.0*100.00;
+    assert.equal(r533PathA.toFixed(2),'6440.00','11-19 R9 R533 Path A total');
+    const r533PathC=65.00+2.5*100.00;
+    assert.equal(r533PathC.toFixed(2),'315.00','11-19 R9 R533 Path C total');
+    assert.equal((r533PathA-r533PathC).toFixed(2),'6125.00','11-19 R9 R533 savings vs Path A');
+    assert.equal(((r533PathA-r533PathC)/r533PathA*100).toFixed(2),'95.11','11-19 R9 R533 pct savings vs Path A');
+    for(const r533File of ['workshops/github-trending-radar/docs/deslop-dev-skills-apple-app-review-skill-red-crab-psycholinguistic-deslop-engagement-learning-loop-guideline43-notes-zero-token-companion-selection-faq.md','workshops/github-trending-radar/docs/deslop-dev-skills-apple-app-review-skill-red-crab-psycholinguistic-deslop-engagement-learning-loop-guideline43-notes-zero-token-companion-selection-faq.en.md','assets/github-ai-radar-2026-11-19-r9-deslop-devskills-applereview-redcrab.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-19-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r533File),'utf8');
+      assert.ok(txt.includes('2,540.00')&&txt.includes('3,900.00')&&txt.includes('6,440.00')&&txt.includes('65.00')&&txt.includes('250.00')&&txt.includes('315.00')&&txt.includes('6,125.00')&&txt.includes('95.11%')&&txt.includes('not_measured'),r533File+': contains exact 11-19 R9 R533 deslop+devskills+applereview+redcrab closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
