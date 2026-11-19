@@ -6806,6 +6806,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r554File),'utf8');
       assert.ok(txt.includes('2,650.00')&&txt.includes('4,000.00')&&txt.includes('6,650.00')&&txt.includes('65.00')&&txt.includes('250.00')&&txt.includes('315.00')&&txt.includes('6,335.00')&&txt.includes('95.26%')&&txt.includes('not_measured'),r554File+': contains exact 11-19 R30 R554 intelbureau+cyberqwen2b+foldstudio+musechrome closed-form parameters');
     }
+    // 2026-11-19 Night Round 31 (R555 Milestone: oneo-me/nsgo-agio + johnrobinsn/AvatarVoice + 5nix/anyu-browser + Sipty/jobfit) verification
+    const r555PathA=2840.00+41.5*100.00;
+    assert.equal(r555PathA.toFixed(2),'6990.00','11-19 R31 R555 Path A total');
+    const r555PathC=70.00+2.5*100.00;
+    assert.equal(r555PathC.toFixed(2),'320.00','11-19 R31 R555 Path C total');
+    assert.equal((r555PathA-r555PathC).toFixed(2),'6670.00','11-19 R31 R555 savings vs Path A');
+    assert.equal(((r555PathA-r555PathC)/r555PathA*100).toFixed(2),'95.42','11-19 R31 R555 pct savings vs Path A');
+    for(const r555File of ['workshops/github-trending-radar/docs/nsgo-agio-avatarvoice-anyu-browser-jobfit-11harness-go-core-single-gpu-webrtc-avatar-failclosed-exit-browser-deterministic-jobfit-pdf-selection-faq.md','workshops/github-trending-radar/docs/nsgo-agio-avatarvoice-anyu-browser-jobfit-11harness-go-core-single-gpu-webrtc-avatar-failclosed-exit-browser-deterministic-jobfit-pdf-selection-faq.en.md','assets/github-ai-radar-2026-11-19-r31-r555-nsgoagio-avatarvoice-anyubrowser-jobfit.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-19-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r555File),'utf8');
+      assert.ok(txt.includes('2,840.00')&&txt.includes('4,150.00')&&txt.includes('6,990.00')&&txt.includes('70.00')&&txt.includes('250.00')&&txt.includes('320.00')&&txt.includes('6,670.00')&&txt.includes('95.42%')&&txt.includes('not_measured'),r555File+': contains exact 11-19 R31 R555 nsgoagio+avatarvoice+anyubrowser+jobfit closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
