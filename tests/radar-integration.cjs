@@ -6652,6 +6652,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r540File),'utf8');
       assert.ok(txt.includes('2,820.00')&&txt.includes('4,150.00')&&txt.includes('6,970.00')&&txt.includes('75.00')&&txt.includes('260.00')&&txt.includes('335.00')&&txt.includes('6,635.00')&&txt.includes('95.19%')&&txt.includes('not_measured'),r540File+': contains exact 11-19 R16 R540 wevisforensics+walkthrough+applelens+vpscybersec closed-form parameters');
     }
+    // 2026-11-19 Night Round 17 (R541: namiq-ai/devkb + ussefidder/shopify-store-sync-mcp + karlmoriaty/AxurePR-return-rp + T-Crypt/replicator) verification
+    const r541PathA=2710.00+40.5*100.00;
+    assert.equal(r541PathA.toFixed(2),'6760.00','11-19 R17 R541 Path A total');
+    const r541PathC=70.00+2.5*100.00;
+    assert.equal(r541PathC.toFixed(2),'320.00','11-19 R17 R541 Path C total');
+    assert.equal((r541PathA-r541PathC).toFixed(2),'6440.00','11-19 R17 R541 savings vs Path A');
+    assert.equal(((r541PathA-r541PathC)/r541PathA*100).toFixed(2),'95.27','11-19 R17 R541 pct savings vs Path A');
+    for(const r541File of ['workshops/github-trending-radar/docs/devkb-shopify-store-sync-mcp-axurepr-return-rp-replicator-context-pack-graph-non-destructive-shopify-sync-native-axure-rp-manifold3d-cad-urdf-selection-faq.md','workshops/github-trending-radar/docs/devkb-shopify-store-sync-mcp-axurepr-return-rp-replicator-context-pack-graph-non-destructive-shopify-sync-native-axure-rp-manifold3d-cad-urdf-selection-faq.en.md','assets/github-ai-radar-2026-11-19-r17-devkb-shopifysync-returnrp-replicator.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-19-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r541File),'utf8');
+      assert.ok(txt.includes('2,710.00')&&txt.includes('4,050.00')&&txt.includes('6,760.00')&&txt.includes('70.00')&&txt.includes('250.00')&&txt.includes('320.00')&&txt.includes('6,440.00')&&txt.includes('95.27%')&&txt.includes('not_measured'),r541File+': contains exact 11-19 R17 R541 devkb+shopifysync+returnrp+replicator closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
