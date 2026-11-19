@@ -6828,6 +6828,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r556File),'utf8');
       assert.ok(txt.includes('2,420.00')&&txt.includes('3,800.00')&&txt.includes('6,220.00')&&txt.includes('55.00')&&txt.includes('220.00')&&txt.includes('275.00')&&txt.includes('5,945.00')&&txt.includes('95.58%')&&txt.includes('not_measured'),r556File+': contains exact 11-19 R32 R556 kanso+thrones+promptmaster+openpm closed-form parameters');
     }
+    // 2026-11-19 Night Round 33 (R557: PedroMarinhoDev/ComfyUI-LongCat-Avatar + jemry/promptdock + ihsan-ramadhan/freepi-bridge + astro-weights/astro-weights) verification
+    const r557PathA=3180.00+39.0*100.00;
+    assert.equal(r557PathA.toFixed(2),'7080.00','11-19 R33 R557 Path A total');
+    const r557PathC=80.00+2.4*100.00;
+    assert.equal(r557PathC.toFixed(2),'320.00','11-19 R33 R557 Path C total');
+    assert.equal((r557PathA-r557PathC).toFixed(2),'6760.00','11-19 R33 R557 savings vs Path A');
+    assert.equal(((r557PathA-r557PathC)/r557PathA*100).toFixed(2),'95.48','11-19 R33 R557 pct savings vs Path A');
+    for(const r557File of ['workshops/github-trending-radar/docs/comfyui-longcat-avatar-promptdock-freepi-bridge-astro-weights-24gb-long-avatar-menu-prompt-launcher-rust-openai-bridge-agentic-weight-editing-selection-faq.md','workshops/github-trending-radar/docs/comfyui-longcat-avatar-promptdock-freepi-bridge-astro-weights-24gb-long-avatar-menu-prompt-launcher-rust-openai-bridge-agentic-weight-editing-selection-faq.en.md','assets/github-ai-radar-2026-11-19-r33-longcatavatar-promptdock-freepibridge-astroweights.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-19-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r557File),'utf8');
+      assert.ok(txt.includes('3,180.00')&&txt.includes('3,900.00')&&txt.includes('7,080.00')&&txt.includes('80.00')&&txt.includes('240.00')&&txt.includes('320.00')&&txt.includes('6,760.00')&&txt.includes('95.48%')&&txt.includes('not_measured'),r557File+': contains exact 11-19 R33 R557 longcatavatar+promptdock+freepibridge+astroweights closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
