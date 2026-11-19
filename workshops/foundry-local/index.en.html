@@ -1,0 +1,1483 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script>
+  (() => {
+    const params = new URLSearchParams(window.location.search);
+    const param = params.get("theme") || params.get("scoutTheme");
+    let stored = null;
+    try { stored = localStorage.getItem("fl-theme"); } catch (_) {}
+    const theme =
+      param || stored || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    document.documentElement.setAttribute("data-theme", theme);
+  })();
+</script>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Foundry Local On-Device AI Architecture &amp; Copilot+ PC Readiness Workbench — NPU/WebGPU/CPU Catalog &amp; Sizer</title>
+<meta name="description" content="Grounded in Microsoft Learn and the live foundrylocal.ai/api/models catalog (2026-11-19): Windows AI 4-tier positioning, ~20 MB in-process Core API, QNN NPU 13 / WebGPU 43 / CPU 59 catalog explorer, Copilot+ PC unified memory readiness sizer, and .NET 10 / Python engineering pitfalls." />
+<style>
+:root {
+  color-scheme: light;
+  --cp-bg: #f7f4ef;
+  --cp-bg-elevated: #fcfbf8;
+  --cp-surface: #ffffff;
+  --cp-surface-soft: #f3f5f8;
+  --cp-border: #dedede;
+  --cp-border-strong: #8c96a6;
+  --cp-text: #1e2430;
+  --cp-text-muted: #525d6f;
+  --cp-text-soft: #6b7688;
+  --cp-accent: #0b6bcb;
+  --cp-accent-hover: #0856a4;
+  --cp-accent-soft: rgba(11, 107, 203, 0.09);
+  --cp-accent-fg: #ffffff;
+  --cp-npu: #059669;
+  --cp-npu-soft: rgba(5, 150, 105, 0.11);
+  --cp-gpu: #2563eb;
+  --cp-gpu-soft: rgba(37, 99, 235, 0.11);
+  --cp-cpu: #d97706;
+  --cp-cpu-soft: rgba(217, 119, 6, 0.12);
+  --cp-success: #16a34a;
+  --cp-danger: #dc2626;
+  --cp-warning: #d97706;
+  --cp-link: #0067b8;
+  --cp-code-bg: #0f172a;
+  --cp-code-fg: #e2e8f0;
+  --cp-shadow: 0 16px 42px rgba(15, 23, 42, 0.09);
+}
+html[data-theme="dark"] {
+  color-scheme: dark;
+  --cp-bg: #0f1624;
+  --cp-bg-elevated: #151f32;
+  --cp-surface: #182338;
+  --cp-surface-soft: #1e2c45;
+  --cp-border: #2b3d5c;
+  --cp-border-strong: #49638c;
+  --cp-text: #e8eef8;
+  --cp-text-muted: #9fb0ca;
+  --cp-text-soft: #7f93b2;
+  --cp-accent: #38bdf8;
+  --cp-accent-hover: #7dd3fc;
+  --cp-accent-soft: rgba(56, 189, 248, 0.14);
+  --cp-accent-fg: #081220;
+  --cp-npu: #34d399;
+  --cp-npu-soft: rgba(52, 211, 153, 0.14);
+  --cp-gpu: #60a5fa;
+  --cp-gpu-soft: rgba(96, 165, 250, 0.14);
+  --cp-cpu: #fbbf24;
+  --cp-cpu-soft: rgba(251, 191, 36, 0.14);
+  --cp-success: #4ade80;
+  --cp-danger: #f87171;
+  --cp-warning: #fbbf24;
+  --cp-link: #60a5fa;
+  --cp-code-bg: #09101d;
+  --cp-code-fg: #e2e8f0;
+  --cp-shadow: 0 18px 48px rgba(0, 0, 0, 0.36);
+}
+*, *::before, *::after { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--cp-bg);
+  color: var(--cp-text);
+  font-family: "Segoe UI", Aptos, system-ui, -apple-system, sans-serif;
+  line-height: 1.58;
+  -webkit-font-smoothing: antialiased;
+}
+code, pre, .mono {
+  font-family: Consolas, "Cascadia Mono", "Courier New", monospace;
+}
+a { color: var(--cp-link); text-decoration: none; }
+a:hover { text-decoration: underline; }
+.fl-shell {
+  max-width: 1360px;
+  margin: 0 auto;
+  padding: 20px 20px 64px;
+}
+.fl-hero {
+  background: var(--cp-surface);
+  border: 1px solid var(--cp-border);
+  border-radius: 16px;
+  padding: 26px 28px;
+  margin-bottom: 20px;
+  box-shadow: var(--cp-shadow);
+}
+.fl-hero-top {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.fl-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: var(--cp-accent-soft);
+  color: var(--cp-accent);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.fl-toolbar-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+.fl-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 13px;
+  border-radius: 9px;
+  border: 1px solid var(--cp-border);
+  background: var(--cp-bg-elevated);
+  color: var(--cp-text);
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  font-family: inherit;
+}
+.fl-btn:hover {
+  border-color: var(--cp-accent);
+  color: var(--cp-accent);
+  text-decoration: none;
+}
+.fl-btn-primary {
+  background: var(--cp-accent);
+  border-color: var(--cp-accent);
+  color: var(--cp-accent-fg);
+}
+.fl-btn-primary:hover {
+  background: var(--cp-accent-hover);
+  border-color: var(--cp-accent-hover);
+  color: var(--cp-accent-fg);
+}
+.fl-hero h1 {
+  margin: 0 0 12px;
+  font-size: clamp(23px, 2.8vw, 33px);
+  line-height: 1.24;
+  letter-spacing: -0.015em;
+}
+.fl-lead {
+  margin: 0 0 20px;
+  color: var(--cp-text-muted);
+  font-size: 15px;
+  max-width: 1160px;
+}
+.fl-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+}
+.fl-kpi {
+  background: var(--cp-bg-elevated);
+  border: 1px solid var(--cp-border);
+  border-radius: 12px;
+  padding: 14px 16px;
+}
+.fl-kpi-label {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--cp-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 4px;
+}
+.fl-kpi-val {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--cp-text);
+  line-height: 1.25;
+}
+.fl-kpi-val.npu { color: var(--cp-npu); }
+.fl-kpi-val.gpu { color: var(--cp-gpu); }
+.fl-kpi-val.cpu { color: var(--cp-cpu); }
+.fl-kpi-val.accent { color: var(--cp-accent); }
+.fl-kpi-sub {
+  margin-top: 5px;
+  font-size: 12px;
+  color: var(--cp-text-muted);
+  line-height: 1.42;
+}
+.fl-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 18px;
+  padding: 8px;
+  background: var(--cp-surface);
+  border: 1px solid var(--cp-border);
+  border-radius: 14px;
+  position: sticky;
+  top: var(--header-offset, 108px);
+  z-index: 40;
+}
+.fl-tab {
+  flex: 1 1 220px;
+  padding: 11px 14px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--cp-text-muted);
+  font-family: inherit;
+  font-size: 13.5px;
+  font-weight: 700;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.15s ease;
+}
+.fl-tab:hover {
+  color: var(--cp-text);
+  background: var(--cp-surface-soft);
+}
+.fl-tab[aria-selected="true"] {
+  background: var(--cp-accent);
+  color: var(--cp-accent-fg);
+  border-color: var(--cp-accent);
+}
+.fl-panel { display: none; }
+.fl-panel.active { display: block; }
+.fl-card {
+  background: var(--cp-surface);
+  border: 1px solid var(--cp-border);
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 18px;
+}
+.fl-card h2 {
+  margin: 0 0 8px;
+  font-size: 20px;
+  line-height: 1.3;
+}
+.fl-card-sub {
+  margin: 0 0 18px;
+  color: var(--cp-text-muted);
+  font-size: 14px;
+}
+.fl-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 16px;
+}
+.fl-callout {
+  background: var(--cp-bg-elevated);
+  border: 1px solid var(--cp-border);
+  border-left: 4px solid var(--cp-accent);
+  border-radius: 12px;
+  padding: 15px 18px;
+  margin-bottom: 16px;
+}
+.fl-callout.warn { border-left-color: var(--cp-warning); }
+.fl-callout.npu { border-left-color: var(--cp-npu); }
+.fl-callout.danger { border-left-color: var(--cp-danger); }
+.fl-callout h3 {
+  margin: 0 0 6px;
+  font-size: 15px;
+}
+.fl-callout p {
+  margin: 0;
+  font-size: 13.5px;
+  color: var(--cp-text-muted);
+}
+.fl-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--cp-border);
+  border-radius: 12px;
+}
+.fl-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.fl-table th, .fl-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--cp-border);
+  text-align: left;
+  vertical-align: middle;
+}
+.fl-table th {
+  background: var(--cp-surface-soft);
+  color: var(--cp-text-muted);
+  font-size: 11.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+.fl-table th.sortable { cursor: pointer; user-select: none; }
+.fl-table th.sortable:hover { color: var(--cp-accent); }
+.fl-table tbody tr.clickable { cursor: pointer; }
+.fl-table tbody tr.clickable:hover { background: var(--cp-surface-soft); }
+.fl-table tbody tr.selected { background: var(--cp-accent-soft); }
+.fl-table tr:last-child td { border-bottom: 0; }
+.fl-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  border: 1px solid var(--cp-border);
+  background: var(--cp-bg-elevated);
+  color: var(--cp-text-muted);
+  white-space: nowrap;
+}
+.fl-badge.npu { border-color: var(--cp-npu); background: var(--cp-npu-soft); color: var(--cp-npu); }
+.fl-badge.gpu { border-color: var(--cp-gpu); background: var(--cp-gpu-soft); color: var(--cp-gpu); }
+.fl-badge.cpu { border-color: var(--cp-cpu); background: var(--cp-cpu-soft); color: var(--cp-cpu); }
+.fl-chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 14px;
+}
+.fl-chip {
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--cp-border);
+  background: var(--cp-bg-elevated);
+  color: var(--cp-text-muted);
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.fl-chip:hover { border-color: var(--cp-accent); color: var(--cp-text); }
+.fl-chip.active {
+  border-color: var(--cp-accent);
+  background: var(--cp-accent-soft);
+  color: var(--cp-accent);
+}
+.fl-controls-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 14px;
+  margin-bottom: 18px;
+}
+.fl-field {
+  background: var(--cp-bg-elevated);
+  border: 1px solid var(--cp-border);
+  border-radius: 12px;
+  padding: 13px 15px;
+}
+.fl-field label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12.5px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.fl-select, .fl-input {
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--cp-border-strong);
+  background: var(--cp-surface);
+  color: var(--cp-text);
+  font-family: inherit;
+  font-size: 13px;
+}
+.fl-range { width: 100%; accent-color: var(--cp-accent); cursor: pointer; }
+.fl-mem-bar {
+  display: flex;
+  width: 100%;
+  height: 28px;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--cp-border-strong);
+  background: var(--cp-surface-soft);
+  margin: 12px 0 10px;
+}
+.fl-mem-seg {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: #ffffff;
+  overflow: hidden;
+  white-space: nowrap;
+  transition: width 0.2s ease;
+}
+.fl-mem-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  font-size: 12px;
+  color: var(--cp-text-muted);
+  margin-bottom: 14px;
+}
+.fl-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  margin-right: 5px;
+  vertical-align: middle;
+}
+.fl-verdict-box {
+  border-radius: 14px;
+  padding: 18px 20px;
+  border: 1.5px solid var(--cp-border-strong);
+  background: var(--cp-bg-elevated);
+}
+.fl-verdict-box.pass { border-color: var(--cp-npu); background: var(--cp-npu-soft); }
+.fl-verdict-box.warn { border-color: var(--cp-warning); background: var(--cp-cpu-soft); }
+.fl-verdict-box.bad { border-color: var(--cp-danger); background: rgba(220, 38, 38, 0.1); }
+.fl-code-wrap {
+  position: relative;
+  background: var(--cp-code-bg);
+  color: var(--cp-code-fg);
+  border-radius: 12px;
+  border: 1px solid #263552;
+  padding: 16px 18px;
+  overflow-x: auto;
+  font-size: 12.8px;
+  line-height: 1.56;
+}
+.fl-code-wrap pre { margin: 0; white-space: pre; }
+.fl-copy-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 5px 10px;
+  border-radius: 7px;
+  border: 1px solid #3b5178;
+  background: #16233b;
+  color: #cbd5e1;
+  font-size: 11.5px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.fl-copy-btn:hover { border-color: #38bdf8; color: #ffffff; }
+.fl-inspector {
+  background: var(--cp-bg-elevated);
+  border: 1px solid var(--cp-border-strong);
+  border-radius: 12px;
+  padding: 16px 18px;
+  margin-top: 14px;
+}
+.fl-footer {
+  margin-top: 28px;
+  padding-top: 18px;
+  border-top: 1px solid var(--cp-border);
+  color: var(--cp-text-muted);
+  font-size: 12.5px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 12px;
+}
+@media (max-width: 760px) {
+  .fl-shell { padding: 14px 12px 48px; }
+  .fl-hero, .fl-card { padding: 16px; }
+  .fl-tabs { position: static; }
+}
+</style>
+<style id="site-remediation-style">
+.kee-dedicated-nav {
+  all: initial; box-sizing: border-box; position: relative; display: flex;
+  flex-wrap: wrap; align-items: center; gap: 6px 14px; width: 100%;
+  padding: 12px 18px; margin: 0 0 16px; border: 1px solid #314361;
+  background: #101A30; color: #EEF3FF; font: 13px/1.5 system-ui, sans-serif;
+  text-align: left; isolation: isolate; color-scheme: dark;
+}
+.kee-dedicated-nav a {
+  all: revert; box-sizing: border-box; display: inline-block; padding: 4px 0;
+  color: #9AABFF; background: transparent; font: inherit; text-decoration: underline;
+  text-underline-offset: 3px; border: 0; border-radius: 0; box-shadow: none;
+}
+.kee-dedicated-nav a:focus-visible { outline: 3px solid #56DDCD; outline-offset: 3px; }
+.kee-dedicated-nav .kee-dedicated-identity { font-weight: 700; color: #EEF3FF; }
+[data-professional-header]{box-sizing:border-box;display:grid!important;grid-template-columns:auto minmax(0,1fr) 230px auto!important;align-items:center;gap:18px!important;width:100%;max-width:none;height:auto!important;min-height:0!important;padding:18px 24px!important;margin:0;position:sticky!important;top:0!important;z-index:1000!important;overflow:visible!important;background:var(--search-bg,#101A30)!important;color:#EEF3FF;border:1px solid #314361;font:13px/1.5 system-ui,sans-serif;isolation:isolate;color-scheme:dark;--header-glass:rgba(16,26,48,.92)}
+[data-professional-header] *{box-sizing:border-box;min-width:0;max-height:none}
+[data-professional-header] a{font:inherit;text-decoration:none;color:#9AABFF;overflow-wrap:anywhere;white-space:normal}
+[data-professional-header] .professional-identity{font-weight:750;color:#EEF3FF;white-space:nowrap;font-size:14px;margin:0}
+[data-professional-header] .professional-primary{display:grid;grid-template-columns:1.45fr repeat(5,minmax(0,1fr));gap:6px;align-items:stretch;min-width:0}
+[data-professional-header] .professional-primary a{display:flex;align-items:center;justify-content:center;padding:10px 9px;border:1px solid #314361;border-radius:12px;background:#172440;text-align:center;line-height:1.4;min-height:44px}
+[data-professional-header] .professional-primary a[aria-current=page]{background:#23375a;border-color:#56DDCD;color:#56DDCD}
+[data-professional-header] .professional-controls{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:4px;font-size:12px;margin:0;position:static}
+[data-professional-header] .professional-controls>a{display:flex;align-items:center;justify-content:center;padding:8px;min-height:40px;min-width:32px;border-radius:10px}
+[data-professional-header] .professional-mobile{display:none}
+.professional-mobile summary{min-width:38px;min-height:42px;display:grid;place-items:center;cursor:pointer;list-style:none}
+.professional-mobile summary::-webkit-details-marker{display:none}
+[data-professional-header] .professional-context{display:none}
+:root{--search-bg:#101a30;--search-soft:#172440;--search-ink:#eef3ff;--search-muted:#adbbd1;--search-line:#293956;--search-accent:#9aabff;--header-offset:108px}
+.site-search,.site-search *{box-sizing:border-box!important;font-family:"Segoe UI",sans-serif;letter-spacing:normal;text-transform:none}
+.site-search{position:relative;display:flex;align-items:center;gap:5px;min-width:0;width:230px;max-width:100%;margin:0!important;padding:0!important;line-height:1.4;border:1px solid var(--search-line);border-radius:9px;background:var(--search-soft);color:var(--search-ink);isolation:isolate}
+.site-search input[type=search]{display:block;flex:1;min-width:0;width:100%;height:42px;margin:0;padding:9px 8px!important;font-size:12px!important;line-height:1.5;border:0!important;border-radius:9px;background:transparent!important;color:var(--search-ink)!important;box-shadow:none!important;appearance:none}
+.site-search input::placeholder{color:var(--search-muted);opacity:1}
+.site-search kbd{font:11px Consolas,monospace;color:var(--search-muted);padding:1px 5px;border:1px solid var(--search-line);border-radius:4px}
+.site-search button[type=submit]{flex:none;width:38px;min-width:38px;height:42px;min-height:42px;padding:0;margin:0;border:0;border-radius:8px;background:transparent;color:var(--search-accent);font-size:24px;cursor:pointer;box-shadow:none}
+.search-label,.search-status{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.site-search .search-results{position:absolute;top:calc(100% + 10px);right:0;z-index:1100;width:min(480px,calc(100vw - 32px));max-height:min(560px,65vh);overflow-y:auto;border:1px solid var(--search-line);border-radius:12px;background:var(--search-bg);color:var(--search-ink);padding:10px;box-shadow:0 12px 32px #0005;text-align:left}
+.site-search .search-results[hidden]{display:none!important}
+.site-search .search-results a{display:block!important;padding:10px!important;margin:3px 0!important;border:1px solid transparent!important;border-radius:7px;background:transparent;color:var(--search-ink)!important;font-size:13px!important;text-decoration:none!important;white-space:normal;overflow-wrap:anywhere;text-align:left!important;line-height:1.5!important}
+.site-search .search-results a[aria-selected=true],.site-search .search-results a:hover{border-color:var(--search-accent)!important;background:var(--search-soft)}
+.search-results a small{display:block;font-size:10px;color:var(--search-muted);margin-top:4px}
+.professional-context-bar{padding:12px 24px;border-bottom:1px solid var(--search-line);background:var(--search-bg);color:var(--search-muted);font:12px/1.6 "Segoe UI",sans-serif;display:flex;flex-wrap:wrap;gap:8px 18px;overflow-wrap:anywhere}
+.professional-context-bar a{color:var(--search-accent)}
+@media(max-width:1250px) and (min-width:701px){[data-professional-header]{grid-template-columns:minmax(0,1fr) 230px auto!important;gap:12px!important}[data-professional-header]>.professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header]>.site-search{grid-column:2;grid-row:1}[data-professional-header]>.professional-controls{grid-column:3;grid-row:1}:root{--header-offset:172px}}
+@media(max-width:700px){[data-professional-header]{grid-template-columns:minmax(0,1fr) auto!important;padding:10px 16px!important;gap:8px!important}[data-professional-header]>.professional-primary{display:none!important}[data-professional-header]>.site-search{grid-column:1/-1;grid-row:2;width:100%}[data-professional-header]>.professional-controls{grid-column:2;grid-row:1}[data-professional-header] .professional-mobile{display:block}[data-professional-header] .professional-mobile[open]>.professional-primary{position:absolute;top:100%;left:0;right:0;padding:16px;background:var(--search-bg);border-bottom:1px solid var(--search-line);display:grid;grid-template-columns:1fr 1fr;gap:8px}[data-professional-header] .professional-mobile .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:12px!important}}
+.knowledge-graph-wide{display:block}.knowledge-graph-compact{display:none}@media(max-width:640px){.knowledge-graph-wide{display:none}.knowledge-graph-compact{display:block}}
+</style>
+<script src="../../assets/editorial/search-index.js" defer></script>
+<script src="../../assets/editorial/search.js" defer></script>
+</head>
+<body>
+<nav class="kee-dedicated-nav" data-professional-header>
+  <a class="professional-identity reading-brand kee-dedicated-identity identity" href="../../index.html">Qi Chen · @turbo998</a>
+  <div class="professional-primary" role="navigation" aria-label="Primary navigation">
+    <a href="../../studio/index.html" data-section="hub" aria-current="page">Frontier Transformation Engineering Hub</a>
+    <a href="../../diamond.html" data-section="diamond">Diamond Showcase</a>
+    <a href="../../benchmarks.html" data-section="benchmarks">Benchmarks</a>
+    <a href="../../github-radar.html" data-section="radar">GitHub AI Radar</a>
+    <a href="../../openrouter.html" data-section="routing">OpenRouter Telemetry</a>
+    <a href="../../about.html" data-section="profile">Principal Profile</a>
+  </div>
+  <form class="site-search" role="search" action="../../studio/archive.html" method="get" data-search-root="../../index.html" data-search-language="en">
+    <label class="search-label" for="site-search-input">Search architectures, benchmarks, demos, skills...</label>
+    <input id="site-search-input" name="q" type="search" placeholder="Search architectures, benchmarks, demos, skills..." autocomplete="off" spellcheck="false" aria-keyshortcuts="/ Control+k Meta+k" />
+    <kbd aria-hidden="true">/</kbd>
+    <button type="submit" aria-label="Search everything">⌕</button>
+    <div class="search-results" id="site-search-results" hidden></div>
+    <span class="search-status" role="status" aria-live="polite"></span>
+  </form>
+  <div class="reading-controls professional-controls" aria-label="Site language and appearance">
+    <a href="index.en.html" hreflang="en" lang="en" aria-current="page">EN</a>
+    <a href="index.html" hreflang="zh-CN" lang="zh-CN">中文</a>
+    <details class="professional-mobile">
+      <summary aria-label="Open primary navigation">☰</summary>
+      <div class="professional-primary" role="navigation" aria-label="Mobile primary navigation">
+        <a href="../../studio/index.html" aria-current="page">Frontier Transformation Engineering Hub</a>
+        <a href="../../diamond.html">Diamond Showcase</a>
+        <a href="../../benchmarks.html">Benchmarks</a>
+        <a href="../../github-radar.html">GitHub AI Radar</a>
+        <a href="../../openrouter.html">OpenRouter Telemetry</a>
+        <a href="../../about.html">Principal Profile</a>
+      </div>
+    </details>
+    <a href="index.en.html?theme=light" aria-label="Light theme">☀</a>
+    <a href="index.en.html?theme=dark" aria-label="Dark theme">◐</a>
+  </div>
+</nav>
+<div class="professional-context-bar">
+  <a href="../../studio/index.html">← Engineering Hub</a> · <a class="reading-context" href="../../studio/infra.html">AI Infra &amp; On-Device Runtime</a> · <span>Foundry Local On-Device AI Architecture &amp; Readiness Workbench</span>
+</div>
+
+<figure class="knowledge-figure" data-knowledge-atlas="infra" style="margin:18px auto 0;max-width:1320px;padding:0 20px;box-sizing:border-box">
+  <svg xmlns="http://www.w3.org/2000/svg" lang="en" class="knowledge-graph-wide" role="img" aria-label="Foundry Local On-Device Data Flow and Execution Architecture" viewBox="0 0 1120 220" width="1120" style="width:100%;height:auto;display:block;margin:0 auto">
+    <rect width="1120" height="220" rx="16" fill="#091526" stroke="#284566"/>
+    <text x="24" y="32" fill="#56ddcd" font-family="Segoe UI, sans-serif" font-size="12" font-weight="700">END-TO-END ON-DEVICE RUNTIME PIPELINE · FOUNDRY LOCAL × WINDOWS ML × ONNX RUNTIME GENAI</text>
+    <g transform="translate(24,52)">
+      <rect width="196" height="142" rx="12" fill="#0f2138" stroke="#38bdf8"/>
+      <text x="14" y="25" fill="#38bdf8" font-size="11.5" font-weight="700">01 · APP / SDK ENTRY</text>
+      <text x="14" y="48" fill="#f8fafc" font-size="13" font-weight="700">Core API / CLI / OpenAI</text>
+      <text x="14" y="72" fill="#cbd5e1" font-size="11.2">• In-process Core (~20 MB)</text>
+      <text x="14" y="92" fill="#cbd5e1" font-size="11.2">• CLI v0.14.0 local server</text>
+      <text x="14" y="112" fill="#94a3b8" font-size="10.8">• Zero LAF access token</text>
+    </g>
+    <path d="M224 123 H244" stroke="#56ddcd" stroke-width="2.2"/><path d="M239 118 L246 123 L239 128" fill="none" stroke="#56ddcd" stroke-width="2.2"/>
+    <g transform="translate(248,52)">
+      <rect width="196" height="142" rx="12" fill="#10253f" stroke="#34d399"/>
+      <text x="14" y="25" fill="#34d399" font-size="11.5" font-weight="700">02 · WINML EP BROKER</text>
+      <text x="14" y="48" fill="#f8fafc" font-size="13" font-weight="700">Dynamic EP Registration</text>
+      <text x="14" y="72" fill="#cbd5e1" font-size="11.2">• Driver gates (&gt;= 30.0.140.0)</text>
+      <text x="14" y="92" fill="#cbd5e1" font-size="11.2">• On-demand IHV EP pull</text>
+      <text x="14" y="112" fill="#94a3b8" font-size="10.8">• No bundled giant IHV DLLs</text>
+    </g>
+    <path d="M448 123 H468" stroke="#56ddcd" stroke-width="2.2"/><path d="M463 118 L470 123 L463 128" fill="none" stroke="#56ddcd" stroke-width="2.2"/>
+    <g transform="translate(472,52)">
+      <rect width="208" height="142" rx="12" fill="#0f2138" stroke="#a78bfa"/>
+      <text x="14" y="25" fill="#c4b5fd" font-size="11.5" font-weight="700">03 · EP PRIORITY GATE</text>
+      <text x="14" y="48" fill="#f8fafc" font-size="13" font-weight="700">P0 NPU -&gt; P1 GPU -&gt; P2 -&gt; P4</text>
+      <text x="14" y="72" fill="#34d399" font-size="11.2">• P0 QNN NPU (13 QuaRot)</text>
+      <text x="14" y="92" fill="#60a5fa" font-size="11.2">• P1 CUDA/TRT · OpenVINO/Vitis</text>
+      <text x="14" y="112" fill="#fbbf24" font-size="11.2">• P2 WebGPU (43) · P4 CPU (59)</text>
+    </g>
+    <path d="M684 123 H704" stroke="#56ddcd" stroke-width="2.2"/><path d="M699 118 L706 123 L699 128" fill="none" stroke="#56ddcd" stroke-width="2.2"/>
+    <g transform="translate(708,52)">
+      <rect width="192" height="142" rx="12" fill="#10253f" stroke="#f59e0b"/>
+      <text x="14" y="25" fill="#fbbf24" font-size="11.5" font-weight="700">04 · UNIFIED POOL &amp; ORT</text>
+      <text x="14" y="48" fill="#f8fafc" font-size="13" font-weight="700">ORT GenAI + KV Cache</text>
+      <text x="14" y="72" fill="#cbd5e1" font-size="11.2">• 32 GB LPDDR5x shared pool</text>
+      <text x="14" y="92" fill="#fca5a5" font-size="11.2">• Commit guard vs QNN 5005</text>
+      <text x="14" y="112" fill="#94a3b8" font-size="10.8">• LLM / VLM / Emb / ASR</text>
+    </g>
+    <path d="M904 123 H924" stroke="#56ddcd" stroke-width="2.2"/><path d="M919 118 L926 123 L919 128" fill="none" stroke="#56ddcd" stroke-width="2.2"/>
+    <g transform="translate(928,52)">
+      <rect width="168" height="142" rx="12" fill="#0f2138" stroke="#ec4899"/>
+      <text x="14" y="25" fill="#f472b6" font-size="11.5" font-weight="700">05 · HYBRID CLOUD</text>
+      <text x="14" y="48" fill="#f8fafc" font-size="13" font-weight="700">Microsoft Foundry</text>
+      <text x="14" y="72" fill="#cbd5e1" font-size="11.2">• Privacy &amp; low-latency local</text>
+      <text x="14" y="92" fill="#cbd5e1" font-size="11.2">• Frontier reasoning burst</text>
+      <text x="14" y="112" fill="#94a3b8" font-size="10.8">• Unified OpenAI contract</text>
+    </g>
+  </svg>
+  <svg xmlns="http://www.w3.org/2000/svg" lang="en" class="knowledge-graph-compact" role="img" aria-label="Compact Foundry Local 5-Stage Pipeline" viewBox="0 0 360 310" width="360" style="width:100%;height:auto;max-width:520px;margin:0 auto">
+    <rect width="360" height="310" rx="14" fill="#091526" stroke="#284566"/>
+    <text x="18" y="28" fill="#56ddcd" font-size="11.5" font-weight="700">FOUNDRY LOCAL · 5-STAGE RUNTIME PIPELINE</text>
+    <rect x="18" y="42" width="324" height="44" rx="8" fill="#0f2138" stroke="#38bdf8"/>
+    <text x="30" y="69" fill="#f8fafc" font-size="12.2" font-weight="700">01 In-Process Core (~20 MB) / CLI v0.14.0</text>
+    <rect x="18" y="96" width="324" height="44" rx="8" fill="#10253f" stroke="#34d399"/>
+    <text x="30" y="123" fill="#f8fafc" font-size="12.2" font-weight="700">02 WinML Dynamic EP Discovery &amp; Driver Gates</text>
+    <rect x="18" y="150" width="324" height="44" rx="8" fill="#0f2138" stroke="#a78bfa"/>
+    <text x="30" y="177" fill="#f8fafc" font-size="12.2" font-weight="700">03 P0 QNN (13) -&gt; P1 GPU -&gt; P2 WebGPU (43)</text>
+    <rect x="18" y="204" width="324" height="44" rx="8" fill="#10253f" stroke="#f59e0b"/>
+    <text x="30" y="231" fill="#f8fafc" font-size="12.2" font-weight="700">04 32G Unified Pool (QNN 5005 Guard) + CPU (59)</text>
+    <rect x="18" y="258" width="324" height="38" rx="8" fill="#0f2138" stroke="#ec4899"/>
+    <text x="30" y="282" fill="#f8fafc" font-size="12.2" font-weight="700">05 Cloud Microsoft Foundry Hybrid Escalation</text>
+  </svg>
+</figure>
+
+<main id="main-content" class="fl-shell">
+  <header class="fl-hero">
+    <div class="fl-hero-top">
+      <span class="fl-eyebrow">FOUNDRY LOCAL · WINDOWS ML · LIVE CATALOG SNAPSHOT (2026-11-19)</span>
+      <div class="fl-toolbar-actions">
+        <a class="fl-btn fl-btn-primary" href="https://github.com/turbo998/Azure-Foundry-Quick-Start/blob/main/foundry-local-on-device-ai-guide.en.md" target="_blank" rel="noopener">GitHub Deep-Dive Guide (EN) ↗</a>
+        <a class="fl-btn" href="https://github.com/turbo998/Azure-Foundry-Quick-Start/blob/main/foundry-local-on-device-ai-guide.md" target="_blank" rel="noopener">中文深度指南 ↗</a>
+        <a class="fl-btn" href="../../assets/foundry-local-overview.en.svg" target="_blank" rel="noopener">One-Page Overview SVG</a>
+        <a class="fl-btn" href="https://learn.microsoft.com/en-us/windows/ai/foundry-local/get-started" target="_blank" rel="noopener">Microsoft Learn Docs ↗</a>
+        <a class="fl-btn" href="index.html">中文工作台</a>
+        <button type="button" class="fl-btn" id="fl-theme-toggle">Toggle Theme</button>
+      </div>
+    </div>
+    <h1>Foundry Local On-Device AI Architecture &amp; Copilot+ PC Readiness Workbench</h1>
+    <p class="fl-lead">
+      An interactive Solution Architect decision workbench grounded in Microsoft Learn's <em>Get started with Foundry Local</em> and the live <code>foundrylocal.ai/api/models</code> catalog (verified 2026-11-19): dissecting the <strong>Windows AI 4-tier stack</strong>, <strong>~20 MB in-process native Core API + Windows ML dynamic EP registration</strong>, an interactive <strong>Copilot+ PC Unified Memory Readiness Sizer</strong> (anchored on the Surface Laptop 7th Edition · Snapdragon X Elite <code>X1E80100</code> · 45 TOPS Hexagon NPU · 32 GB LPDDR5x reference case study), and the full <strong>13 / 43 / 59 device catalog</strong>.
+    </p>
+    <div class="fl-kpi-grid">
+      <div class="fl-kpi">
+        <div class="fl-kpi-label">In-Process Core Overhead</div>
+        <div class="fl-kpi-val accent">~20 MB Core API</div>
+        <div class="fl-kpi-sub"><code>Microsoft.AI.Foundry.Local.WinML</code> / Python WinML · Optional CLI <code>v0.14.0</code></div>
+      </div>
+      <div class="fl-kpi">
+        <div class="fl-kpi-label">Copilot+ PC Reference Audit</div>
+        <div class="fl-kpi-val npu">PASS · 45 TOPS Ready</div>
+        <div class="fl-kpi-sub">Snapdragon X Elite · NPU driver <code>30.0.220.3000</code> (&ge;<code>30.0.140.0</code>) · 32 GB LPDDR5x · Build <code>26300</code></div>
+      </div>
+      <div class="fl-kpi">
+        <div class="fl-kpi-label">Hexagon QNN NPU Catalog</div>
+        <div class="fl-kpi-val npu">13 Models (QuaRot+GPTQ)</div>
+        <div class="fl-kpi-sub"><code>0.43–7.12 GB</code> · Includes <code>phi-4-mini-reasoning</code> (2.78G) &amp; <code>deepseek-r1-14b</code> (7.12G)</div>
+      </div>
+      <div class="fl-kpi">
+        <div class="fl-kpi-label">WebGPU Cross-GPU Catalog</div>
+        <div class="fl-kpi-val gpu">43 Models (RTN · D3D12)</div>
+        <div class="fl-kpi-sub">Covers <code>phi-4</code> (8.37G), <code>qwen3</code>, VLM <code>qwen3.5</code> / <code>gemma-4</code>, Embeddings &amp; Ranking</div>
+      </div>
+      <div class="fl-kpi">
+        <div class="fl-kpi-label">CPU MLAS &amp; Speech ASR</div>
+        <div class="fl-kpi-val cpu">59 Models (+ Full ASR)</div>
+        <div class="fl-kpi-sub">x64/arm64 fallback · Adds <code>whisper</code> family, <code>parakeet-tdt-0.6b-v2</code> &amp; <code>nemotron-asr</code></div>
+      </div>
+      <div class="fl-kpi">
+        <div class="fl-kpi-label">Key SA Routing Insight</div>
+        <div class="fl-kpi-val gpu">phi-4-mini -&gt; WebGPU</div>
+        <div class="fl-kpi-sub"><code>phi-4-mini</code> has NO QNN build -&gt; Adreno GPU (3.72G); <code>phi-4-mini-reasoning</code> (2.78G) runs on NPU!</div>
+      </div>
+    </div>
+  </header>
+
+  <nav class="fl-tabs" role="tablist" aria-label="Foundry Local Workbench Views">
+    <button type="button" class="fl-tab" role="tab" aria-selected="true" data-tab="architecture">1. Architecture &amp; Windows AI 4-Tier Matrix</button>
+    <button type="button" class="fl-tab" role="tab" aria-selected="false" data-tab="sizer">2. Hardware &amp; Unified Memory Readiness Sizer</button>
+    <button type="button" class="fl-tab" role="tab" aria-selected="false" data-tab="catalog">3. Live Catalog Explorer (13 / 43 / 59)</button>
+    <button type="button" class="fl-tab" role="tab" aria-selected="false" data-tab="quickstart">4. .NET 10 / Python Quickstart &amp; SA Pitfalls</button>
+  </nav>
+
+  <!-- TAB 1: ARCHITECTURE & 4-TIER MATRIX -->
+  <section class="fl-panel active" id="panel-architecture" role="tabpanel"><span id="architecture" hidden></span>
+    <div class="fl-card">
+      <h2>In-Process Native Core API (~20 MB) vs. CLI v0.14.0 &amp; OpenAI Local Server</h2>
+      <p class="fl-card-sub">
+        Foundry Local sits atop <strong>ONNX Runtime GenAI + Windows ML dynamic Execution Provider (EP) registration</strong>. Toggle between the two integration topologies below to inspect memory footprint, IPC overhead, and production trade-offs:
+      </p>
+      <div class="fl-chip-row" id="arch-mode-chips">
+        <button type="button" class="fl-chip active" data-arch="inproc">Path A: In-Process Native Core API (~20 MB Overhead · Production Client Default)</button>
+        <button type="button" class="fl-chip" data-arch="server">Path B: CLI v0.14.0 + OpenAI-Compatible Local Server (Prototyping &amp; Polyglot Sidecar)</button>
+      </div>
+      <div id="arch-mode-detail" class="fl-inspector"></div>
+    </div>
+
+    <div class="fl-card">
+      <h2>Windows AI 4-Tier Positioning Matrix (When Should SAs Choose Foundry Local?)</h2>
+      <p class="fl-card-sub">
+        Clear architectural boundaries across Microsoft's four on-device and hybrid AI tiers on Windows 11:
+      </p>
+      <div class="fl-table-wrap">
+        <table class="fl-table">
+          <thead>
+            <tr>
+              <th>Stack Tier</th>
+              <th>Model Scope &amp; Engine</th>
+              <th>Hardware Target</th>
+              <th>Access Token / Governance</th>
+              <th>Integration Contract &amp; Ideal Fit</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>1. Windows AI APIs</strong><br><span class="fl-badge">OS Inbox Model</span></td>
+              <td>System-managed <code>Phi Silica</code> and inbox vision/text skills (zero app-bundled weights)</td>
+              <td>Copilot+ PC NPU (40+ TOPS) and supported GPUs</td>
+              <td>Generative text APIs gated by <strong>LAF (Limited Access Feature) token</strong>, transitioning toward <code>Aion Instruct</code></td>
+              <td>Lightweight Windows apps seeking zero model download size using OS-shared summarization/rewrite primitives</td>
+            </tr>
+            <tr class="selected">
+              <td><strong>2. Foundry Local ★</strong><br><span class="fl-badge npu">On-Device GenAI Default</span></td>
+              <td><strong>70+ curated pre-quantized variants</strong> (QNN NPU 13 / WebGPU 43 / CPU 59: Phi, Qwen, DeepSeek, Gemma, Whisper, etc.)</td>
+              <td>Full spectrum: <strong>Hexagon NPU (QNN)</strong>, NVIDIA CUDA/TRT-RTX, Intel OpenVINO, AMD VitisAI, <strong>WebGPU</strong>, CPU MLAS</td>
+              <td><strong>No token required</strong>; governed directly by upstream open model licenses (MIT / Apache-2.0, etc.)</td>
+              <td><strong>~20 MB In-Process Core SDK</strong> (.NET / Python) or <strong>OpenAI-compatible REST server</strong>; offline copilots, local RAG embeddings, multimodal VLMs &amp; ASR</td>
+            </tr>
+            <tr>
+              <td><strong>3. Windows ML</strong><br><span class="fl-badge gpu">BYO Custom ONNX</span></td>
+              <td><strong>Bring-Your-Own (BYO) ONNX</strong> graphs: custom fine-tuned classifiers, vision pipelines, industrial anomaly models</td>
+              <td>Dynamic runtime discovery, download, and registration of silicon-vendor IHV Execution Providers</td>
+              <td>No token required; standard Windows App SDK distribution</td>
+              <td>Custom ONNX workloads avoiding multi-hundred-MB bundled IHV runtime DLLs (also powers Foundry Local's dynamic EP layer)</td>
+            </tr>
+            <tr>
+              <td><strong>4. Cloud Microsoft Foundry</strong><br><span class="fl-badge">Frontier Cloud Fallback</span></td>
+              <td>Frontier multi-hundred-billion parameter reasoning models, deep tool orchestration &amp; million-token context</td>
+              <td>Managed Azure GPU clusters</td>
+              <td>Enterprise Entra ID RBAC, quota governance &amp; content safety</td>
+              <td><strong>Hybrid cloud escalation tier</strong> when local confidence gates or context limits exceed on-device envelopes</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="fl-card">
+      <h2>Execution Provider (EP) Priority Chain &amp; Driver Hard Thresholds</h2>
+      <p class="fl-card-sub">
+        At startup, Foundry Local (WinML) probes installed silicon and driver versions, dynamically registering the highest-priority compliant EP and falling back deterministically if drivers fall below threshold:
+      </p>
+      <div class="fl-table-wrap">
+        <table class="fl-table">
+          <thead>
+            <tr>
+              <th>Priority Rank</th>
+              <th>Execution Provider</th>
+              <th>Target Silicon</th>
+              <th>Minimum Driver / Runtime Threshold</th>
+              <th>Catalog Coverage &amp; Quantization</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="fl-badge npu">Priority 0 (Top)</span></td>
+              <td><code>QNNExecutionProvider</code></td>
+              <td>Qualcomm Snapdragon X Elite / X Plus <strong>Hexagon NPU</strong> (e.g., 45 TOPS)</td>
+              <td>NPU driver <strong>&ge; <code>30.0.140.0</code></strong><br><small>(Reference case study verified: <code>30.0.220.3000</code> ✓)</small></td>
+              <td><strong>13 curated models</strong> (<code>QuaRot + GPTQ</code> outlier-free INT4), ultra-low-wattage sustained inference</td>
+            </tr>
+            <tr>
+              <td><span class="fl-badge gpu">Priority 1</span></td>
+              <td><code>CUDAExecutionProvider</code> /<br><code>NvTensorRTRTXExecutionProvider</code></td>
+              <td>NVIDIA GeForce <strong>RTX 30XX+</strong> discrete GPUs</td>
+              <td>Game Ready / Studio driver <strong>&ge; <code>32.0.15.5585</code></strong> (<strong>CUDA 12.5</strong> baseline)</td>
+              <td>High-throughput discrete VRAM prefill &amp; low TTFT for heavy workstation coding &amp; long prompts</td>
+            </tr>
+            <tr>
+              <td><span class="fl-badge gpu">IHV Accelerators</span></td>
+              <td><code>OpenVINOExecutionProvider</code> /<br><code>VitisAIExecutionProvider</code></td>
+              <td>Intel <strong>11th / 12th / 15th Gen+</strong> Core / Core Ultra · AMD Ryzen AI</td>
+              <td>Matching Intel iGPU/NPU driver · AMD Adrenalin <strong><code>25.6.3</code>–<code>25.9.1</code></strong> validated range</td>
+              <td>Vendor-native graph fusion across x64 AI PC integrated GPUs and NPUs</td>
+            </tr>
+            <tr>
+              <td><span class="fl-badge gpu">Priority 2</span></td>
+              <td><code>WebGpuExecutionProvider</code></td>
+              <td>Cross-vendor GPU compute (<strong>Dawn -&gt; Windows D3D12 / macOS Metal</strong>, incl. Qualcomm Adreno X1-85 GPU)</td>
+              <td>Modern D3D12 / Shader Model 6.x capable iGPU or dGPU</td>
+              <td><strong>43 models</strong> (<code>RTN</code>), unlocking <code>phi-4</code>, <code>qwen3</code>, <strong>multimodal VLMs <code>qwen3.5</code> / <code>gemma-4</code></strong>, embeddings &amp; ranking</td>
+            </tr>
+            <tr>
+              <td><span class="fl-badge cpu">Priority 4 (Fallback)</span></td>
+              <td><code>CPUExecutionProvider</code></td>
+              <td>Universal <strong>x64 / arm64 CPU</strong> via ONNX Runtime <strong>MLAS</strong> kernels</td>
+              <td>Windows 10 / 11 (8 GB+ RAM minimum, SSD storage)</td>
+              <td><strong>59 models</strong> (<code>RTN</code>), exclusively hosting the full <strong><code>whisper</code> / <code>parakeet</code> / <code>nemotron</code> Speech ASR</strong> suite</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- TAB 2: INTERACTIVE HARDWARE & UNIFIED MEMORY SIZER -->
+  <section class="fl-panel" id="panel-sizer" role="tabpanel"><span id="sizer" hidden></span>
+    <div class="fl-card">
+      <h2>Interactive Hardware &amp; Unified Memory Readiness Sizer</h2>
+      <p class="fl-card-sub">
+        Preloaded with the anonymized <strong>Copilot+ PC Reference Case Study (Surface Laptop 7th Edition · Snapdragon X Elite X1E80100 · Hexagon NPU 45 TOPS driver 30.0.220.3000 · Adreno X1-85 GPU · 32 GB Unified LPDDR5x · Windows 11 Build 26300)</strong>. Switch hardware presets or drag sliders to evaluate EP routing and <strong>QNN Error <code>5005</code> commit-charge pressure</strong>:
+      </p>
+
+      <div class="fl-chip-row" id="hw-preset-chips">
+        <button type="button" class="fl-chip active" data-preset="copilot32">★ Copilot+ PC Ref Case (X Elite · 32 GB Unified)</button>
+        <button type="button" class="fl-chip" data-preset="copilot16">Mainstream Copilot+ PC (X Plus · 16 GB Unified)</button>
+        <button type="button" class="fl-chip" data-preset="rtx32">dGPU Workstation (RTX 4070 12G · 32 GB RAM)</button>
+        <button type="button" class="fl-chip" data-preset="x64ai16">x64 AI PC (Core Ultra / Ryzen AI · 16 GB)</button>
+        <button type="button" class="fl-chip" data-preset="entry8">Entry x64 Laptop (8 GB RAM · CPU Only)</button>
+      </div>
+
+      <div class="fl-controls-grid">
+        <div class="fl-field">
+          <label for="sz-ram"><span>Total System / Unified Memory</span><strong class="mono" id="sz-ram-val">32 GB</strong></label>
+          <input type="range" id="sz-ram" class="fl-range" min="8" max="64" step="4" value="32" />
+          <div style="font-size:11.5px;color:var(--cp-text-muted);margin-top:4px">Official minimum: 8 GB; 16–32 GB+ strongly recommended for 7B+ &amp; VLMs</div>
+        </div>
+        <div class="fl-field">
+          <label for="sz-os"><span>Current OS + Desktop Commit Charge</span><strong class="mono" id="sz-os-val">13.5 GB</strong></label>
+          <input type="range" id="sz-os" class="fl-range" min="4" max="28" step="0.5" value="13.5" />
+          <div style="font-size:11.5px;color:var(--cp-text-muted);margin-top:4px">Browsers/IDEs/Teams reduce contiguous locked pages available to QNN/WebGPU</div>
+        </div>
+        <div class="fl-field">
+          <label for="sz-model"><span>Target Workload (Verified 2026-11-19 Catalog Footprints)</span></label>
+          <select id="sz-model" class="fl-select"></select>
+        </div>
+        <div class="fl-field">
+          <label for="sz-driver"><span>Accelerator Driver Compliance</span></label>
+          <select id="sz-driver" class="fl-select">
+            <option value="ok" selected>Compliant (e.g., QNN 30.0.220.3000 &ge; 30.0.140.0 / CUDA &ge; 5585)</option>
+            <option value="old">Outdated Driver (Below threshold -&gt; triggers EP fallback)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="fl-mem-bar" id="sz-mem-bar" aria-label="Unified memory allocation bar"></div>
+      <div class="fl-mem-legend">
+        <span><i class="fl-dot" style="background:#64748b"></i>OS &amp; App Commit (<strong id="lg-os">13.5 GB</strong>)</span>
+        <span><i class="fl-dot" style="background:#2563eb"></i>Model Footprint (<strong id="lg-model">2.78 GB</strong>)</span>
+        <span><i class="fl-dot" style="background:#8b5cf6"></i>KV Cache + WinML/ORT Reserve (<strong id="lg-kv">1.12 GB</strong> · incl. ~20 MB Core)</span>
+        <span><i class="fl-dot" style="background:#10b981"></i>Safe Uncommitted Headroom (<strong id="lg-free">14.60 GB</strong>)</span>
+      </div>
+
+      <div id="sz-verdict" class="fl-verdict-box pass"></div>
+    </div>
+
+    <div class="fl-card">
+      <h2>Copilot+ PC Reference Case Study Requirement Audit ("Can This Machine Run Foundry Local?")</h2>
+      <div class="fl-table-wrap">
+        <table class="fl-table">
+          <thead>
+            <tr>
+              <th>Dimension</th>
+              <th>Official Foundry Local Requirement</th>
+              <th>Copilot+ PC Reference Case Study (Surface Laptop 7)</th>
+              <th>Readiness Verdict &amp; Architectural Impact</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>OS &amp; Architecture</strong></td>
+              <td>Windows 10 (x64) or Windows 11 (x64 / ARM64)</td>
+              <td>Windows 11 ARM64 · <strong>Build 26300</strong></td>
+              <td><span class="fl-badge npu">PASS ✓</span> Native match for <code>foundry-0.14.0-win-arm64.msix</code> and WinML ARM64 bindings</td>
+            </tr>
+            <tr>
+              <td><strong>System Memory</strong></td>
+              <td>8 GB RAM minimum; <strong>16 GB+ recommended</strong></td>
+              <td><strong>32 GB Unified LPDDR5x</strong> (shared across CPU / Adreno GPU / Hexagon NPU)</td>
+              <td><span class="fl-badge npu">EXCEEDS SPEC ✓</span> Comfortably hosts 1.5B–7B models and even fits <code>deepseek-r1-14b</code> (7.12G) &amp; <code>qwen3-14b</code> (9.93G)</td>
+            </tr>
+            <tr>
+              <td><strong>Disk Free Space</strong></td>
+              <td>3 GB free SSD minimum; 10–20 GB+ recommended</td>
+              <td>NVMe SSD (individual catalog variants span <code>0.13 GB</code>–<code>9.93 GB</code>)</td>
+              <td><span class="fl-badge npu">PASS ✓</span> Cache path relocatable anytime via <code>foundry cache cd &lt;path&gt;</code></td>
+            </tr>
+            <tr>
+              <td><strong>NPU Silicon &amp; Driver</strong></td>
+              <td>Snapdragon X Hexagon NPU, driver <strong>&ge; <code>30.0.140.0</code></strong></td>
+              <td>Snapdragon X Elite <code>X1E80100</code> · Hexagon NPU <strong>45 TOPS</strong> · Driver <strong><code>30.0.220.3000</code></strong></td>
+              <td><span class="fl-badge npu">PRIORITY 0 ACTIVE ✓</span> Unlocks all <strong>13 native QNN NPU models</strong> with silent thermals &amp; minimal battery draw</td>
+            </tr>
+            <tr>
+              <td><strong>GPU WebGPU Compute</strong></td>
+              <td>D3D12-capable GPU (<code>WebGpuExecutionProvider</code>)</td>
+              <td>Qualcomm <strong>Adreno X1-85 GPU</strong> over unified LPDDR5x</td>
+              <td><span class="fl-badge gpu">PRIORITY 2 ACTIVE ✓</span> Unlocks <strong>43 WebGPU models</strong> including <code>phi-4-mini</code>, <code>phi-4</code>, and VLMs <code>qwen3.5</code> / <code>gemma-4</code></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- TAB 3: LIVE CATALOG EXPLORER -->
+  <section class="fl-panel" id="panel-catalog" role="tabpanel"><span id="catalog" hidden></span>
+    <div class="fl-card">
+      <h2>Live Device Model Catalog Explorer (QNN NPU: 13 · WebGPU: 43 · CPU: 59)</h2>
+      <p class="fl-card-sub">
+        All model aliases, quantization schemes, and byte-accurate GB footprints come directly from <code>foundrylocal.ai/api/models</code> (verified 2026-11-19). Filter by EP/modality, sort columns, or click any row to inspect CLI commands:
+      </p>
+
+      <div class="fl-callout warn">
+        <h3>Crucial SA Routing Insight: Why <code>phi-4-mini</code> Runs on Adreno WebGPU While <code>phi-4-mini-reasoning</code> Runs on Hexagon NPU</h3>
+        <p>
+          In the live catalog, standard instruct <strong><code>phi-4-mini</code> currently ships NO QNN NPU build</strong>—on Snapdragon X Elite it automatically routes to <strong>Adreno X1-85 <code>WebGpuExecutionProvider</code> (<code>3.72 GB</code> disk / <code>3.74 GB</code> VRAM)</strong>. By contrast, <strong><code>phi-4-mini-reasoning</code> ships a native <code>QuaRot + GPTQ</code> QNN package (<code>2.78 GB</code>)</strong> that executes directly on the <strong>45 TOPS Hexagon NPU (Priority 0)</strong> while saving 25.3% memory!
+        </p>
+      </div>
+
+      <div class="fl-chip-row" id="cat-filter-chips">
+        <button type="button" class="fl-chip active" data-ep="all">All Core Model Series</button>
+        <button type="button" class="fl-chip" data-ep="QNN">QNN NPU Native (All 13 · QuaRot+GPTQ)</button>
+        <button type="button" class="fl-chip" data-ep="WebGPU">WebGPU Accelerated (43 Total · RTN)</button>
+        <button type="button" class="fl-chip" data-ep="CPU">CPU &amp; Speech ASR (59 Total · RTN)</button>
+        <button type="button" class="fl-chip" data-ep="VLM">Multimodal VLM</button>
+        <button type="button" class="fl-chip" data-ep="Coder">Code Generation</button>
+        <button type="button" class="fl-chip" data-ep="EmbRank">Embeddings &amp; Ranking</button>
+        <button type="button" class="fl-chip" data-ep="ASR">Speech ASR</button>
+      </div>
+
+      <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-bottom:14px">
+        <input type="search" id="cat-search" class="fl-input" style="max-width:380px" placeholder="Filter by alias or capability (e.g., phi-4, qwen3.5, deepseek, whisper, kev)..." />
+        <span id="cat-count-label" style="font-size:12.5px;color:var(--cp-text-muted);font-weight:600"></span>
+      </div>
+
+      <div class="fl-table-wrap">
+        <table class="fl-table" id="cat-table">
+          <thead>
+            <tr>
+              <th class="sortable" data-sort="alias">Model Alias ↕</th>
+              <th>Supported EPs (Best First)</th>
+              <th>Quantization</th>
+              <th class="sortable" data-sort="size">Footprint (GB) ↕</th>
+              <th>Modality &amp; Role</th>
+              <th>32GB Copilot+ PC Guidance</th>
+            </tr>
+          </thead>
+          <tbody id="cat-tbody"></tbody>
+        </table>
+      </div>
+
+      <div id="cat-inspector" class="fl-inspector"></div>
+    </div>
+  </section>
+
+  <!-- TAB 4: QUICKSTART & PITFALLS -->
+  <section class="fl-panel" id="panel-quickstart" role="tabpanel"><span id="quickstart" hidden></span>
+    <div class="fl-card">
+      <h2>.NET 10 WinML In-Process Core API, Python SDK &amp; CLI v0.14.0 Quickstart</h2>
+      <p class="fl-card-sub">
+        For production Windows client apps, prefer the <strong>in-process WinML Core API (<code>Microsoft.AI.Foundry.Local.WinML</code> or <code>foundry-local-sdk-winml</code>)</strong>—adding only <code>~20 MB</code> runtime overhead with zero background daemon management:
+      </p>
+
+      <div class="fl-chip-row" id="code-lang-chips">
+        <button type="button" class="fl-chip active" data-lang="dotnet">1. C# / .NET 10 In-Process WinML Core API</button>
+        <button type="button" class="fl-chip" data-lang="python">2. Python WinML SDK (foundry-local-sdk-winml)</button>
+        <button type="button" class="fl-chip" data-lang="cli">3. CLI v0.14.0 &amp; OpenAI-Compatible Local Server</button>
+      </div>
+
+      <div class="fl-code-wrap">
+        <button type="button" class="fl-copy-btn" id="code-copy-btn">Copy Code</button>
+        <pre><code id="code-display"></code></pre>
+      </div>
+    </div>
+
+    <div class="fl-card">
+      <h2>Four Production Engineering Pitfalls (Field-Verified SA Playbook)</h2>
+      <div class="fl-grid-2">
+        <div class="fl-callout danger">
+          <h3>Pitfall 1: <code>.NET 10</code> Generic TFM Breaks WinML Dynamic EP Registration</h3>
+          <p>
+            Scaffolding a project with bare <code>&lt;TargetFramework&gt;net10.0&lt;/TargetFramework&gt;</code> omits Windows WinRT/WinML projections, causing dynamic IHV EP discovery to fail or silently fall back to CPU. <strong>Fix:</strong> Target a Windows-specific TFM such as <code>net10.0-windows10.0.26100.0</code> (or <code>net8.0-windows10.0.22621.0</code>) and set an explicit <code>&lt;RuntimeIdentifier&gt;win-arm64&lt;/RuntimeIdentifier&gt;</code> (or <code>win-x64</code>).
+          </p>
+        </div>
+        <div class="fl-callout warn">
+          <h3>Pitfall 2: Silent EP Divergence Between <code>phi-4-mini</code> and <code>phi-4-mini-reasoning</code></h3>
+          <p>
+            Assuming every <code>phi-4-mini*</code> alias runs on NPU leads to unexpected GPU load: <code>phi-4-mini</code> (instruct) has only WebGPU (<code>3.72 GB</code> disk / <code>3.74 GB</code> VRAM) and CPU builds, whereas <code>phi-4-mini-reasoning</code> (<code>2.78 GB</code>, <code>QuaRot + GPTQ</code>) runs natively on Hexagon NPU. <strong>Fix:</strong> Pin background low-power agents explicitly to <code>phi-4-mini-reasoning</code>, <code>phi-3.5-mini</code> (2.02G), or <code>qwen2.5-coder-1.5b</code> (1.06G).
+          </p>
+        </div>
+        <div class="fl-callout danger">
+          <h3>Pitfall 3: Unified Memory Commit Pressure &amp; QNN Error <code>5005</code> on 32 GB Systems</h3>
+          <p>
+            On unified LPDDR5x Copilot+ PCs, even when Task Manager shows "Available physical RAM", heavy browser/IDE/container workloads can push <strong>Windows Commit Charge near the Commit Limit</strong>, causing Hexagon QNN contiguous buffer allocation for 7B/14B models to fail with <code>QNN error 5005</code>. <strong>Fix:</strong> Keep &ge; 10 GB uncommitted headroom before loading <code>deepseek-r1-14b</code> (7.12G), allow system-managed pagefile growth, and unload idle model sessions promptly.
+          </p>
+        </div>
+        <div class="fl-callout npu">
+          <h3>Pitfall 4: <code>foundry-local-sdk-winml</code> vs. <code>foundry-local-sdk</code> Namespace Collision</h3>
+          <p>
+            Both Python packages share the exact <code>foundry_local</code> module namespace, but only <code>foundry-local-sdk-winml</code> includes Windows ML dynamic EP registration. Installing both in the same virtualenv corrupts package files and strips NPU discovery. <strong>Fix:</strong> Use a clean venv and run <code>pip uninstall -y foundry-local-sdk foundry-local-sdk-winml</code> before installing <code>foundry-local-sdk-winml</code> alone.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="fl-footer">
+    <div>
+      <strong>Provenance &amp; Privacy Guardrail:</strong> All architectural specs, driver thresholds, and model sizes are verified against Microsoft Learn and <code>foundrylocal.ai/api/models</code> (2026-11-19), evaluated against an anonymized Copilot+ PC reference configuration (Surface Laptop 7th Edition · Snapdragon X Elite · 32 GB) with zero fabricated coordinates.
+    </div>
+    <div>
+      <a href="https://github.com/turbo998/Azure-Foundry-Quick-Start/blob/main/foundry-local-on-device-ai-guide.en.md" target="_blank" rel="noopener">Companion GitHub Guide (EN) ↗</a> ·
+      <a href="../../index.html">Back to Homepage</a>
+    </div>
+  </footer>
+</main>
+
+<script>
+(() => {
+  // Theme toggle
+  const themeBtn = document.getElementById("fl-theme-toggle");
+  themeBtn?.addEventListener("click", () => {
+    const cur = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
+    document.documentElement.setAttribute("data-theme", cur);
+    try { localStorage.setItem("fl-theme", cur); } catch (_) {}
+  });
+
+  // Tabs + URL hash deep-linking
+  const tabs = Array.from(document.querySelectorAll(".fl-tab[data-tab]"));
+  const panels = Array.from(document.querySelectorAll(".fl-panel"));
+  function activateTab(id, updateHash = false) {
+    tabs.forEach(t => t.setAttribute("aria-selected", String(t.dataset.tab === id)));
+    panels.forEach(p => p.classList.toggle("active", p.id === "panel-" + id));
+    if (updateHash) history.replaceState(null, "", "#" + id);
+  }
+  tabs.forEach(t => t.addEventListener("click", () => activateTab(t.dataset.tab, true)));
+  const initHash = window.location.hash.replace("#", "");
+  if (["architecture", "sizer", "catalog", "quickstart"].includes(initHash)) {
+    activateTab(initHash, false);
+  }
+
+  // Tab 1: Dual Integration Path inspector
+  const ARCH_MODES = {
+    inproc: {
+      title: "Path A: In-Process Native Core API (Microsoft.AI.Foundry.Local.WinML / foundry-local-sdk-winml)",
+      badges: ["~20 MB Footprint", "Zero Open Loopback Port", "Dynamic WinML EP Pull", "Recommended for ISV Apps"],
+      desc: "Loads the native Foundry Local Core runtime directly inside your .NET or Python process over ONNX Runtime GenAI, delegating driver threshold checks (e.g., QNN >= 30.0.140.0) and on-demand IHV EP registration to Windows ML.",
+      pros: [
+        "Tiny ~20 MB app bundle overhead — eliminates shipping hundreds of megabytes of vendor-specific CUDA/QNN DLLs",
+        "Zero HTTP serialization overhead and stronger endpoint security with no localhost port collisions or side-channel access",
+        "Deterministic memory lifecycle: load weights on demand and release unified LPDDR5x KV caches immediately when idle"
+      ]
+    },
+    server: {
+      title: "Path B: Optional CLI v0.14.0 (foundry-0.14.0-win-arm64.msix) + OpenAI-Compatible Local Server",
+      badges: ["CLI v0.14.0", "OpenAI /v1/chat/completions", "Zero-Code Interactive Test", "Polyglot Multi-Process Reuse"],
+      desc: "Installed via winget or MSIX (foundry-0.14.0-win-arm64.msix on ARM64), exposing a dynamic local HTTP endpoint compatible with standard OpenAI SDKs, Semantic Kernel, LangChain, Node.js, Go, and Rust clients.",
+      pros: [
+        "Instant hardware readiness verification and interactive terminal streaming via foundry model run <alias>",
+        "Drop-in base_url swap for existing OpenAI Chat Completions & Embeddings client codebases",
+        "Shared weight residency across multiple local developer scripts or IDE plugins"
+      ]
+    }
+  };
+
+  function renderArchMode(key) {
+    const m = ARCH_MODES[key];
+    document.getElementById("arch-mode-detail").innerHTML = `
+      <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:8px">
+        <strong style="font-size:15px">${m.title}</strong>
+        ${m.badges.map(b => `<span class="fl-badge npu">${b}</span>`).join("")}
+      </div>
+      <p style="margin:0 0 10px;font-size:13.5px;color:var(--cp-text-muted)">${m.desc}</p>
+      <ul style="margin:0;padding-left:18px;font-size:13px;line-height:1.65">
+        ${m.pros.map(p => `<li>${p}</li>`).join("")}
+      </ul>
+    `;
+  }
+  document.querySelectorAll("#arch-mode-chips .fl-chip").forEach(btn => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll("#arch-mode-chips .fl-chip").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      renderArchMode(btn.dataset.arch);
+    });
+  });
+  renderArchMode("inproc");
+
+  // Verified 2026-11-19 Catalog Data (zero fabricated metrics)
+  const CATALOG = [
+    // All 13 QNN NPU Models (QuaRot + GPTQ)
+    { alias: "phi-4-mini-reasoning", ep: "QNN", allEps: "QNN NPU · WebGPU · CPU", quant: "QuaRot + GPTQ", size: 2.78, cat: "Reasoning", modality: "Math, logic & step-by-step planning", fit32: "★ Top NPU Pick (always-on low power)", note: "Native Hexagon NPU build; 25.3% smaller than WebGPU phi-4-mini (3.72G) with zero GPU contention!" },
+    { alias: "phi-3.5-mini", ep: "QNN", allEps: "QNN NPU · WebGPU · CPU", quant: "QuaRot + GPTQ", size: 2.02, cat: "Reasoning", modality: "Fast multilingual chat & summarization", fit32: "★ Ultra-lightweight NPU resident", note: "Only 2.02 GB; effortless background residency on both 16 GB and 32 GB Copilot+ PCs." },
+    { alias: "phi-3-mini-4k", ep: "QNN", allEps: "QNN NPU · WebGPU · CPU", quant: "QuaRot + GPTQ", size: 3.54, cat: "Reasoning", modality: "General instruction following (4K)", fit32: "Smooth on Hexagon NPU", note: "Compact 4K context baseline for short-turn on-device assistants." },
+    { alias: "phi-3-mini-128k", ep: "QNN", allEps: "QNN NPU · WebGPU · CPU", quant: "QuaRot + GPTQ", size: 3.54, cat: "Reasoning", modality: "Long-document local summarization (128K)", fit32: "Smooth on NPU (budget KV cache)", note: "Supports extended context; reserve extra unified memory headroom on very long prompts." },
+    { alias: "deepseek-r1-1.5b", ep: "QNN", allEps: "QNN NPU · WebGPU · CPU", quant: "QuaRot + GPTQ", size: 1.52, cat: "Reasoning", modality: "Distilled chain-of-thought reasoning", fit32: "★ Tiny CoT footprint (1.52 GB)", note: "Runs comfortably even on tighter 16 GB unified-memory envelopes." },
+    { alias: "deepseek-r1-7b", ep: "QNN", allEps: "QNN NPU · WebGPU · CPU", quant: "QuaRot + GPTQ", size: 3.71, cat: "Reasoning", modality: "Balanced 7B chain-of-thought reasoning", fit32: "★ 32 GB NPU Sweet Spot", note: "Strong reasoning accuracy-to-latency balance on 45 TOPS Hexagon NPU." },
+    { alias: "deepseek-r1-14b", ep: "QNN", allEps: "QNN NPU · WebGPU · CPU", quant: "QuaRot + GPTQ", size: 7.12, cat: "Reasoning", modality: "Flagship 14B on-device reasoning", fit32: "Fits 32 GB (watch QNN 5005 commit)", note: "Largest QNN NPU model (7.12 GB); keep >= 10 GB uncommitted RAM before loading." },
+    { alias: "qwen2.5-0.5b", ep: "QNN", allEps: "QNN NPU · WebGPU · CPU", quant: "QuaRot + GPTQ", size: 0.43, cat: "Reasoning", modality: "Sub-second intent routing & extraction", fit32: "Instant load (0.43 GB)", note: "Ideal local classifier/router gate in front of larger models." },
+    { alias: "qwen2.5-1.5b", ep: "QNN", allEps: "QNN NPU · WebGPU · CPU", quant: "QuaRot + GPTQ", size: 1.06, cat: "Reasoning", modality: "Bilingual EN/ZH lightweight Q&A & rewrite", fit32: "★ Best 1 GB bilingual NPU model", note: "Strong bilingual fluency at just 1.06 GB." },
+    { alias: "qwen2.5-7b", ep: "QNN", allEps: "QNN NPU · WebGPU · CPU", quant: "QuaRot + GPTQ", size: 6.81, cat: "Reasoning", modality: "7B general bilingual drafting & assistant", fit32: "Comfortable on 32 GB unified pool", note: "6.81 GB QNN package for rich offline enterprise drafting." },
+    { alias: "qwen2.5-coder-0.5b", ep: "QNN", allEps: "QNN NPU · WebGPU · CPU", quant: "QuaRot + GPTQ", size: 0.43, cat: "Coder", modality: "Shell command & regex micro-completion", fit32: "Instant load (0.43 GB)", note: "Zero-lag CLI helper on NPU." },
+    { alias: "qwen2.5-coder-1.5b", ep: "QNN", allEps: "QNN NPU · WebGPU · CPU", quant: "QuaRot + GPTQ", size: 1.06, cat: "Coder", modality: "Real-time IDE inline code completion", fit32: "★ Recommended NPU IDE copilot", note: "Leaves CPU cores and GPU completely free for builds and UI rendering." },
+    { alias: "qwen2.5-coder-7b", ep: "QNN", allEps: "QNN NPU · WebGPU · CPU", quant: "QuaRot + GPTQ", size: 7.08, cat: "Coder", modality: "Offline code review, unit tests & refactoring", fit32: "Recommended on 32 GB dev laptops", note: "7.08 GB air-gapped coding powerhouse running natively on Hexagon NPU." },
+
+    // Representative WebGPU Models (43 total in live catalog, RTN)
+    { alias: "phi-4-mini", ep: "WebGPU", allEps: "WebGPU · CPU (No QNN build!)", quant: "RTN", size: 3.72, vram: 3.74, cat: "Reasoning", modality: "General instruct & tool/function calling", fit32: "Routes to Adreno WebGPU (3.74G VRAM)", note: "Key SA caveat: no QNN variant in catalog — runs on Adreno X1-85 GPU via D3D12 WebGPU!" },
+    { alias: "phi-4", ep: "WebGPU", allEps: "WebGPU · CPU", quant: "RTN", size: 8.37, cat: "Reasoning", modality: "14B-class STEM & dense reasoning", fit32: "Smooth on 32 GB WebGPU", note: "8.37 GB footprint; tight on 16 GB devices but well within 32 GB unified memory." },
+    { alias: "qwen3-0.6b / 1.7b / 4b", ep: "WebGPU", allEps: "WebGPU · CPU", quant: "RTN", size: 2.87, sizeLabel: "0.52 / 1.39 / 2.87", cat: "Reasoning", modality: "Hybrid thinking/non-thinking small tiers", fit32: "★ Smooth on 16 GB & 32 GB WebGPU", note: "Covers 0.6B (0.52G), 1.7B (1.39G), and 4B (2.87G) footprints." },
+    { alias: "qwen3-8b / 14b", ep: "WebGPU", allEps: "WebGPU · CPU", quant: "RTN", size: 9.93, sizeLabel: "6.00 / 9.93", cat: "Reasoning", modality: "Mid/large hybrid reasoning tiers", fit32: "8B (6.00G) easy · 14B (9.93G) needs 32G", note: "qwen3-14b (9.93 GB) is the upper-bound stress test for 32 GB unified memory laptops." },
+    { alias: "qwen3.5-0.8b / 2b / 4b / 9b", ep: "WebGPU", allEps: "WebGPU · CPU", quant: "RTN", size: 4.09, sizeLabel: "1.45 / 2.97 / 4.09 / 6.98", cat: "VLM", modality: "Native Multimodal Vision-Language (VLM)", fit32: "★ Primary on-device UI/chart/OCR VLM", note: "Four size tiers: 0.8B (1.45G), 2B (2.97G), 4B (4.09G), and 9B (6.98G)." },
+    { alias: "gemma-4-e2b-it", ep: "WebGPU", allEps: "WebGPU · CPU", quant: "RTN", size: 6.87, cat: "VLM", modality: "Multimodal & multilingual instruction model", fit32: "Fits 32 GB WebGPU cleanly", note: "6.87 GB package for rich multimodal local workflows." },
+    { alias: "ministral-3-3b-instruct-2512", ep: "WebGPU", allEps: "WebGPU · CPU", quant: "RTN", size: 3.59, cat: "Reasoning", modality: "Compact 3B instruct & structured JSON", fit32: "Fits 16 GB & 32 GB easily", note: "3.59 GB footprint tailored for fast schema-constrained outputs." },
+    { alias: "qwen3-embedding-0.6b / 8b", ep: "WebGPU", allEps: "WebGPU · CPU", quant: "RTN", size: 0.50, sizeLabel: "0.50 / 6.00", cat: "EmbRank", modality: "Dense vector embeddings for local RAG", fit32: "★ 0.6B (0.50G) instant local indexing", note: "0.6B (0.50 GB) indexes local corpora fast; 8B (6.00 GB) maximizes retrieval recall." },
+    { alias: "kev-0.8b / kev-4b", ep: "WebGPU", allEps: "WebGPU · CPU", quant: "RTN", size: 1.21, sizeLabel: "1.21 / 5.54", cat: "EmbRank", modality: "On-device evaluation, scoring & reranking", fit32: "0.8B (1.21G) & 4B (5.54G) ready", note: "Dedicated decision/scoring models for local routing gates." },
+    { alias: "clm-v0.1-8b", ep: "WebGPU", allEps: "WebGPU · CPU", quant: "RTN", size: 8.34, cat: "EmbRank", modality: "Specialized 8B policy & language model", fit32: "Fits 32 GB WebGPU", note: "8.34 GB footprint; target 32 GB systems." },
+
+    // Representative CPU ASR Models (59 total in live catalog, RTN)
+    { alias: "whisper-tiny / base / small / medium / large-v3-turbo", ep: "CPU", allEps: "CPU MLAS (x64 / arm64)", quant: "RTN", size: 1.25, sizeLabel: "0.13 – 1.25", cat: "ASR", modality: "Offline multilingual speech-to-text (ASR)", fit32: "★ Co-runs on CPU alongside NPU LLMs", note: "Spans 0.13 GB (tiny) to 1.25 GB (large-v3-turbo) — pair with QNN NPU LLM for full voice pipelines!" },
+    { alias: "parakeet-tdt-0.6b-v2", ep: "CPU", allEps: "CPU MLAS (x64 / arm64)", quant: "RTN", size: 0.68, cat: "ASR", modality: "High-throughput Token-and-Duration ASR", fit32: "★ 0.68 GB fast transcription", note: "Compact 0.68 GB footprint for real-time meeting notes." },
+    { alias: "nemotron-3.5-asr-streaming-0.6b", ep: "CPU", allEps: "CPU MLAS (x64 / arm64)", quant: "RTN", size: 0.74, cat: "ASR", modality: "Low-latency streaming speech recognition", fit32: "★ 0.74 GB streaming voice agent pick", note: "Built specifically for low-latency incremental voice turn-taking." }
+  ];
+
+  // Tab 2: Sizer Logic
+  const SIZER_MODELS = [
+    { id: "phi4mr", label: "phi-4-mini-reasoning (2.78 GB · Native QNN NPU)", size: 2.78, ep: "QNN", kv: 1.1 },
+    { id: "phi4m", label: "phi-4-mini Instruct (3.72 GB disk / 3.74 GB VRAM · No QNN -> WebGPU)", size: 3.74, ep: "WebGPU", kv: 1.3 },
+    { id: "qwen25c15", label: "qwen2.5-coder-1.5b (1.06 GB · Native QNN NPU)", size: 1.06, ep: "QNN", kv: 0.8 },
+    { id: "r1_7b", label: "deepseek-r1-7b (3.71 GB · Native QNN NPU)", size: 3.71, ep: "QNN", kv: 1.6 },
+    { id: "qwen25c7", label: "qwen2.5-coder-7b (7.08 GB · Native QNN NPU)", size: 7.08, ep: "QNN", kv: 2.1 },
+    { id: "r1_14b", label: "deepseek-r1-14b (7.12 GB · Largest QNN NPU Model)", size: 7.12, ep: "QNN", kv: 2.4 },
+    { id: "qwen35_4b", label: "qwen3.5-4b Multimodal VLM (4.09 GB · WebGPU)", size: 4.09, ep: "WebGPU", kv: 1.8 },
+    { id: "phi4", label: "phi-4 14B (8.37 GB · WebGPU)", size: 8.37, ep: "WebGPU", kv: 2.5 },
+    { id: "qwen3_14b", label: "qwen3-14b (9.93 GB · Heavy WebGPU Tier)", size: 9.93, ep: "WebGPU", kv: 2.8 },
+    { id: "whisper_turbo", label: "whisper-large-v3-turbo (1.25 GB · CPU MLAS Speech)", size: 1.25, ep: "CPU", kv: 0.6 }
+  ];
+
+  const HW_PRESETS = {
+    copilot32: { name: "Surface Laptop 7th Ed · Snapdragon X Elite X1E80100 · 32 GB Unified LPDDR5x", ram: 32, os: 13.5, hasQnn: true, hasCuda: false, hasIhv: false, hasWebgpu: true },
+    copilot16: { name: "Mainstream Copilot+ PC · Snapdragon X Plus · 16 GB Unified LPDDR5x", ram: 16, os: 8.5, hasQnn: true, hasCuda: false, hasIhv: false, hasWebgpu: true },
+    rtx32: { name: "x64 Workstation · NVIDIA RTX 4070 (12 GB VRAM) · 32 GB System RAM", ram: 32, os: 12.0, hasQnn: false, hasCuda: true, hasIhv: false, hasWebgpu: true },
+    x64ai16: { name: "x64 AI PC · Intel Core Ultra / AMD Ryzen AI · 16 GB Unified RAM", ram: 16, os: 8.0, hasQnn: false, hasCuda: false, hasIhv: true, hasWebgpu: true },
+    entry8: { name: "Entry x64 Office Laptop · 8 GB RAM (CPU Fallback Only)", ram: 8, os: 4.8, hasQnn: false, hasCuda: false, hasIhv: false, hasWebgpu: false }
+  };
+
+  let curPreset = HW_PRESETS.copilot32;
+  const szModelSel = document.getElementById("sz-model");
+  szModelSel.innerHTML = SIZER_MODELS.map(m => `<option value="${m.id}">${m.label}</option>`).join("");
+
+  function updateSizer() {
+    const ram = Number(document.getElementById("sz-ram").value);
+    const os = Math.min(ram - 1, Number(document.getElementById("sz-os").value));
+    document.getElementById("sz-ram-val").textContent = ram + " GB";
+    document.getElementById("sz-os-val").textContent = os.toFixed(1) + " GB";
+    const m = SIZER_MODELS.find(x => x.id === szModelSel.value) || SIZER_MODELS[0];
+    const driverOk = document.getElementById("sz-driver").value === "ok";
+
+    let resolvedEp = "CPUExecutionProvider (Priority 4 · MLAS)";
+    let epNote = "";
+    if (m.ep === "QNN") {
+      if (curPreset.hasQnn && driverOk) {
+        resolvedEp = "QNNExecutionProvider (Priority 0 · Hexagon NPU 45 TOPS)";
+        epNote = "Driver >= 30.0.140.0 verified — offloaded natively to Hexagon NPU tensor blocks.";
+      } else if (curPreset.hasCuda && driverOk) {
+        resolvedEp = "CUDA / NvTensorRTRTX (Priority 1) or WebGPU build";
+        epNote = "Non-Snapdragon host; Foundry Local selects the matching GPU/WebGPU variant.";
+      } else if (curPreset.hasWebgpu) {
+        resolvedEp = "WebGpuExecutionProvider (Priority 2 · D3D12 Fallback)";
+        epNote = driverOk ? "No QNN silicon; matched to WebGPU variant." : "NPU driver below 30.0.140.0 — automatically fell back to WebGPU (D3D12)!";
+      } else {
+        resolvedEp = "CPUExecutionProvider (Priority 4 · MLAS Fallback)";
+        epNote = "No compliant NPU/WebGPU available; running on CPU MLAS.";
+      }
+    } else if (m.ep === "WebGPU") {
+      if (curPreset.hasCuda && driverOk) {
+        resolvedEp = "CUDA / WebGpuExecutionProvider (Discrete GPU)";
+        epNote = "Accelerated via high-bandwidth discrete GPU memory.";
+      } else if (curPreset.hasIhv && driverOk) {
+        resolvedEp = "OpenVINO / VitisAI / WebGpuExecutionProvider";
+        epNote = "Dispatched across x64 AI PC iGPU/NPU or D3D12 WebGPU via WinML.";
+      } else if (curPreset.hasWebgpu) {
+        resolvedEp = "WebGpuExecutionProvider (Priority 2 · Adreno / D3D12 GPU)";
+        epNote = curPreset.hasQnn
+          ? "SA Note: This model has NO QNN NPU variant in the live catalog and routes to Adreno X1-85 GPU (WebGPU)!"
+          : "Executed via Dawn -> D3D12 GPU compute.";
+      } else {
+        resolvedEp = "CPUExecutionProvider (Priority 4 · MLAS)";
+        epNote = "Fallback execution on CPU MLAS.";
+      }
+    } else {
+      resolvedEp = "CPUExecutionProvider (Priority 4 · Native MLAS ASR Pipeline)";
+      epNote = "ASR speech models run efficiently on CPU MLAS in parallel with NPU LLMs without contention!";
+    }
+
+    const kvReserve = Number((m.kv + 0.02).toFixed(2));
+    const totalUsed = os + m.size + kvReserve;
+    const free = Number((ram - totalUsed).toFixed(2));
+
+    const pOs = Math.min(100, (os / ram) * 100);
+    const pMod = Math.min(100 - pOs, (m.size / ram) * 100);
+    const pKv = Math.min(100 - pOs - pMod, (kvReserve / ram) * 100);
+    const pFree = Math.max(0, 100 - pOs - pMod - pKv);
+
+    document.getElementById("sz-mem-bar").innerHTML = `
+      <div class="fl-mem-seg" style="width:${pOs.toFixed(1)}%;background:#64748b">${pOs > 10 ? os.toFixed(1) + "G OS" : ""}</div>
+      <div class="fl-mem-seg" style="width:${pMod.toFixed(1)}%;background:#2563eb">${pMod > 8 ? m.size.toFixed(2) + "G Model" : ""}</div>
+      <div class="fl-mem-seg" style="width:${pKv.toFixed(1)}%;background:#8b5cf6">${pKv > 7 ? kvReserve.toFixed(1) + "G KV" : ""}</div>
+      <div class="fl-mem-seg" style="width:${pFree.toFixed(1)}%;background:#10b981">${pFree > 10 ? Math.max(0, free).toFixed(1) + "G Free" : ""}</div>
+    `;
+    document.getElementById("lg-os").textContent = os.toFixed(1) + " GB";
+    document.getElementById("lg-model").textContent = m.size.toFixed(2) + " GB";
+    document.getElementById("lg-kv").textContent = kvReserve.toFixed(2) + " GB";
+    document.getElementById("lg-free").textContent = (free >= 0 ? free.toFixed(2) : "Over by " + Math.abs(free).toFixed(2)) + " GB";
+
+    const vbox = document.getElementById("sz-verdict");
+    let statusClass = "pass";
+    let headline = "";
+    let advice = "";
+
+    if (free < 0.5) {
+      statusClass = "bad";
+      headline = `✕ Blocked by Memory Ceiling (Needs ${(m.size + kvReserve).toFixed(2)} GB runtime space; only ${(ram - os).toFixed(2)} GB uncommitted)`;
+      advice = `Host (${curPreset.name}) with ${os.toFixed(1)} GB OS/app commit cannot fit this workload. Switch to <code>phi-4-mini-reasoning</code> (2.78G) / <code>qwen2.5-1.5b</code> (1.06G) or close memory-heavy apps.`;
+    } else if (free < 3.2) {
+      statusClass = "warn";
+      headline = `⚠ Runnable Under High Commit Pressure (${free.toFixed(2)} GB Headroom · Watch for QNN Error 5005)`;
+      advice = `Resolved EP: <strong>${resolvedEp}</strong>. ${epNote} Uncommitted headroom is tight (&lt; 3.2 GB); contiguous page-locked buffer allocation on unified memory may trigger <code>QNN error 5005</code> or paging thrash. Free 2–4 GB of background commit before long sessions.`;
+    } else {
+      statusClass = "pass";
+      headline = `✓ READY (PASS): Smooth Accelerated Execution · ${free.toFixed(2)} GB Safe Memory Headroom`;
+      advice = `Target Host: <strong>${curPreset.name}</strong> → Active EP: <strong>${resolvedEp}</strong>.<br>${epNote} In-process Core API adds only <code>~20 MB</code> overhead, leaving ample unified memory headroom for sustained production use.`;
+    }
+    vbox.className = "fl-verdict-box " + statusClass;
+    vbox.innerHTML = `<div style="font-size:16px;font-weight:800;margin-bottom:6px">${headline}</div><div style="font-size:13.5px;line-height:1.6">${advice}</div>`;
+  }
+
+  document.querySelectorAll("#hw-preset-chips .fl-chip").forEach(btn => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll("#hw-preset-chips .fl-chip").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      curPreset = HW_PRESETS[btn.dataset.preset];
+      document.getElementById("sz-ram").value = curPreset.ram;
+      document.getElementById("sz-os").value = curPreset.os;
+      updateSizer();
+    });
+  });
+  ["sz-ram", "sz-os", "sz-model", "sz-driver"].forEach(id => {
+    document.getElementById(id).addEventListener("input", updateSizer);
+    document.getElementById(id).addEventListener("change", updateSizer);
+  });
+  updateSizer();
+
+  // Tab 3: Live Catalog Explorer
+  let catFilter = "all";
+  let catQuery = "";
+  let catSortKey = "size";
+  let catSortAsc = true;
+  let selectedAlias = "phi-4-mini-reasoning";
+
+  function renderCatalog() {
+    const filtered = CATALOG.filter(item => {
+      if (catFilter === "QNN" && item.ep !== "QNN") return false;
+      if (catFilter === "WebGPU" && item.ep !== "WebGPU") return false;
+      if (catFilter === "CPU" && item.ep !== "CPU") return false;
+      if (["VLM", "Coder", "EmbRank", "ASR"].includes(catFilter) && item.cat !== catFilter) return false;
+      if (catQuery) {
+        const hay = `${item.alias} ${item.allEps} ${item.modality} ${item.note}`.toLowerCase();
+        if (!hay.includes(catQuery)) return false;
+      }
+      return true;
+    }).sort((a, b) => {
+      const mul = catSortAsc ? 1 : -1;
+      if (catSortKey === "alias") return a.alias.localeCompare(b.alias) * mul;
+      return (a.size - b.size) * mul;
+    });
+
+    document.getElementById("cat-count-label").textContent =
+      `Showing ${filtered.length} catalog entries (Live device totals: QNN NPU 13 / WebGPU 43 / CPU 59)`;
+
+    const tbody = document.getElementById("cat-tbody");
+    tbody.innerHTML = filtered.map(item => {
+      const epClass = item.ep === "QNN" ? "npu" : item.ep === "WebGPU" ? "gpu" : "cpu";
+      const sizeText = item.sizeLabel ? `${item.sizeLabel} GB` : `${item.size.toFixed(2)} GB` + (item.vram ? ` (${item.vram}G VRAM)` : "");
+      const isSel = item.alias === selectedAlias;
+      return `
+        <tr class="clickable ${isSel ? "selected" : ""}" data-alias="${item.alias}">
+          <td><strong class="mono">${item.alias}</strong></td>
+          <td><span class="fl-badge ${epClass}">${item.allEps}</span></td>
+          <td class="mono">${item.quant}</td>
+          <td class="mono"><strong>${sizeText}</strong></td>
+          <td>${item.modality}</td>
+          <td>${item.fit32}</td>
+        </tr>
+      `;
+    }).join("");
+
+    tbody.querySelectorAll("tr[data-alias]").forEach(tr => {
+      tr.addEventListener("click", () => {
+        selectedAlias = tr.dataset.alias;
+        renderCatalog();
+      });
+    });
+
+    const sel = CATALOG.find(x => x.alias === selectedAlias) || filtered[0];
+    if (sel) {
+      const firstConcreteAlias = sel.alias.split(" ")[0].trim();
+      document.getElementById("cat-inspector").innerHTML = `
+        <div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;margin-bottom:8px">
+          <div><strong class="mono" style="font-size:15px">${sel.alias}</strong> · <span class="fl-badge">${sel.quant}</span> · <span class="fl-badge npu">${sel.allEps}</span></div>
+          <span style="font-size:12.5px;color:var(--cp-text-muted)">Click any table row to inspect commands</span>
+        </div>
+        <p style="margin:0 0 10px;font-size:13.5px">${sel.note}</p>
+        <div class="fl-code-wrap" style="padding:12px 14px">
+          <pre><code># Pull &amp; launch with highest-priority hardware EP via CLI v0.14.0
+foundry model run ${firstConcreteAlias}
+
+# Inspect resolved device variant and local cache metadata
+foundry model info ${firstConcreteAlias}</code></pre>
+        </div>
+      `;
+    }
+  }
+
+  document.querySelectorAll("#cat-filter-chips .fl-chip").forEach(btn => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll("#cat-filter-chips .fl-chip").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      catFilter = btn.dataset.ep;
+      renderCatalog();
+    });
+  });
+  document.getElementById("cat-search").addEventListener("input", e => {
+    catQuery = e.target.value.trim().toLowerCase();
+    renderCatalog();
+  });
+  document.querySelectorAll("#cat-table th.sortable").forEach(th => {
+    th.addEventListener("click", () => {
+      const k = th.dataset.sort;
+      if (catSortKey === k) catSortAsc = !catSortAsc;
+      else { catSortKey = k; catSortAsc = true; }
+      renderCatalog();
+    });
+  });
+  renderCatalog();
+
+  // Tab 4: Quickstart Code Switcher
+  const CODE_SNIPPETS = {
+    dotnet: `<!-- 1. FoundryLocalDemo.csproj: NEVER use bare net10.0 — bind a Windows SDK TFM for WinML! -->
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0-windows10.0.26100.0</TargetFramework>
+    <!-- Use win-arm64 on Snapdragon X Copilot+ PCs; win-x64 on Intel/AMD hosts -->
+    <RuntimeIdentifier>win-arm64</RuntimeIdentifier>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- ~20 MB in-process native Core API + dynamic Windows ML EP registration -->
+    <PackageReference Include="Microsoft.AI.Foundry.Local.WinML" Version="*" />
+  </ItemGroup>
+</Project>
+
+// 2. Program.cs: Drive Hexagon QNN NPU directly in-process (zero background HTTP daemon)
+using Microsoft.AI.Foundry.Local;
+
+var config = new Configuration
+{
+    AppName = "CopilotPlusReadinessDemo",
+    LogLevel = LogLevel.Information
+};
+
+await FoundryLocalManager.CreateAsync(config);
+var mgr = FoundryLocalManager.Instance;
+
+// Dynamically verifies driver thresholds (e.g., QNN >= 30.0.140.0) & registers IHV EPs
+await mgr.EnsureExecutionProvidersAsync();
+
+var catalog = await mgr.GetCatalogAsync();
+// Select phi-4-mini-reasoning (2.78 GB QuaRot+GPTQ) for native Hexagon NPU execution
+var model = await catalog.GetModelAsync("phi-4-mini-reasoning")
+            ?? throw new InvalidOperationException("Model phi-4-mini-reasoning not found in catalog.");
+
+await model.DownloadAsync();
+using var chatClient = await model.GetChatClientAsync();
+
+Console.WriteLine($"Loaded in-process model: {model.Id}");
+await foreach (var chunk in chatClient.CompleteChatStreamingAsync("Summarize three architectural benefits of on-device NPU inference."))
+{
+    Console.Write(chunk);
+}`,
+    python: `# 1. Create an isolated virtual environment (NEVER mix foundry-local-sdk and -winml!)
+python -m venv .venv
+.\\.venv\\Scripts\\activate
+pip uninstall -y foundry-local-sdk foundry-local-sdk-winml
+pip install foundry-local-sdk-winml
+
+# 2. run_npu_inproc.py: Dynamic WinML EP registration + Foundry Local execution
+from foundry_local import FoundryLocalManager
+
+# Automatically probes Hexagon QNN (Priority 0) -> CUDA (Priority 1) -> WebGPU (Priority 2) -> CPU
+manager = FoundryLocalManager()
+
+# SA Note: phi-4-mini-reasoning (2.78 GB) runs on Hexagon NPU; phi-4-mini (3.72 GB) routes to WebGPU
+alias = "phi-4-mini-reasoning"
+model_info = manager.download_model(alias)
+print(f"Resolved variant: {model_info.id} | Device target: {model_info.device_type}")
+
+# Optional: Connect via standard OpenAI Python client when local endpoint is enabled
+from openai import OpenAI
+client = OpenAI(base_url=manager.endpoint, api_key=manager.api_key)
+stream = client.chat.completions.create(
+    model=model_info.id,
+    messages=[{"role": "user", "content": "Give key memory sizing tips for 32 GB unified LPDDR5x laptops."}],
+    stream=True,
+)
+for chunk in stream:
+    if chunk.choices and chunk.choices[0].delta.content:
+        print(chunk.choices[0].delta.content, end="", flush=True)`,
+    cli: `# 1. Install Foundry Local CLI v0.14.0 (ARM64 package: foundry-0.14.0-win-arm64.msix)
+winget install Microsoft.FoundryLocal
+foundry --version
+
+# 2. List curated variants compatible with this machine's NPU / GPU / CPU
+foundry model list
+
+# 3. Run native Hexagon NPU reasoning model (2.78 GB QuaRot+GPTQ, Priority 0)
+foundry model run phi-4-mini-reasoning
+
+# 4. Run multimodal VLM over Adreno X1-85 / D3D12 WebGPU (4.09 GB RTN, Priority 2)
+foundry model run qwen3.5-4b
+
+# 5. Inspect local cache & stop background service to reclaim unified memory commit charge
+foundry cache ls
+foundry service status
+foundry service stop`
+  };
+
+  let curCodeLang = "dotnet";
+  function renderCode() {
+    document.getElementById("code-display").textContent = CODE_SNIPPETS[curCodeLang];
+  }
+  document.querySelectorAll("#code-lang-chips .fl-chip").forEach(btn => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll("#code-lang-chips .fl-chip").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      curCodeLang = btn.dataset.lang;
+      renderCode();
+    });
+  });
+  document.getElementById("code-copy-btn").addEventListener("click", async () => {
+    const btn = document.getElementById("code-copy-btn");
+    try {
+      await navigator.clipboard.writeText(CODE_SNIPPETS[curCodeLang]);
+      btn.textContent = "Copied ✓";
+      setTimeout(() => { btn.textContent = "Copy Code"; }, 1600);
+    } catch (_) {
+      btn.textContent = "Manual Copy";
+    }
+  });
+  renderCode();
+})();
+</script>
+</body>
+</html>
