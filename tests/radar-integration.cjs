@@ -6608,6 +6608,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r536File),'utf8');
       assert.ok(txt.includes('2,620.00')&&txt.includes('4,000.00')&&txt.includes('6,620.00')&&txt.includes('70.00')&&txt.includes('250.00')&&txt.includes('320.00')&&txt.includes('6,300.00')&&txt.includes('95.17%')&&txt.includes('not_measured'),r536File+': contains exact 11-19 R12 R536 gobot+smoothstone+dshprojects+chatindsh closed-form parameters');
     }
+    // 2026-11-19 Night Round 13 (R537: RevStudio/review-gallery + anand-reddi/Beatreel + AayushPandey2/teachme-skill + shariefabdelmonem/interactive-book-builder) verification
+    const r537PathA=2520.00+39.0*100.00;
+    assert.equal(r537PathA.toFixed(2),'6420.00','11-19 R13 R537 Path A total');
+    const r537PathC=65.00+2.5*100.00;
+    assert.equal(r537PathC.toFixed(2),'315.00','11-19 R13 R537 Path C total');
+    assert.equal((r537PathA-r537PathC).toFixed(2),'6105.00','11-19 R13 R537 savings vs Path A');
+    assert.equal(((r537PathA-r537PathC)/r537PathA*100).toFixed(2),'95.09','11-19 R13 R537 pct savings vs Path A');
+    for(const r537File of ['workshops/github-trending-radar/docs/review-gallery-beatreel-teachme-skill-interactive-book-builder-local-visual-review-kokoro-hyperframes-reels-7point-critic-vault-offline-flipbook-selection-faq.md','workshops/github-trending-radar/docs/review-gallery-beatreel-teachme-skill-interactive-book-builder-local-visual-review-kokoro-hyperframes-reels-7point-critic-vault-offline-flipbook-selection-faq.en.md','assets/github-ai-radar-2026-11-19-r13-reviewgallery-beatreel-teachme-bookbuilder.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-19-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r537File),'utf8');
+      assert.ok(txt.includes('2,520.00')&&txt.includes('3,900.00')&&txt.includes('6,420.00')&&txt.includes('65.00')&&txt.includes('250.00')&&txt.includes('315.00')&&txt.includes('6,105.00')&&txt.includes('95.09%')&&txt.includes('not_measured'),r537File+': contains exact 11-19 R13 R537 reviewgallery+beatreel+teachme+bookbuilder closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
