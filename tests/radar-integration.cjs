@@ -6553,6 +6553,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r531File),'utf8');
       assert.ok(txt.includes('2,640.00')&&txt.includes('4,000.00')&&txt.includes('6,640.00')&&txt.includes('75.00')&&txt.includes('260.00')&&txt.includes('335.00')&&txt.includes('6,305.00')&&txt.includes('94.95%')&&txt.includes('not_measured'),r531File+': contains exact 11-19 R7 R531 ragmcp+ezness+zaag+foldmobilegym closed-form parameters');
     }
+    // 2026-11-19 Night Round 8 (R532: Jadouminou/final-phase-lite + Viprasol-Tech/claude-video-editing-skills + Dylan-Nihilo/iris + Nyxera0x/simulator) verification
+    const r532PathA=2660.00+40.5*100.00;
+    assert.equal(r532PathA.toFixed(2),'6710.00','11-19 R8 R532 Path A total');
+    const r532PathC=75.00+2.6*100.00;
+    assert.equal(r532PathC.toFixed(2),'335.00','11-19 R8 R532 Path C total');
+    assert.equal((r532PathA-r532PathC).toFixed(2),'6375.00','11-19 R8 R532 savings vs Path A');
+    assert.equal(((r532PathA-r532PathC)/r532PathA*100).toFixed(2),'95.01','11-19 R8 R532 pct savings vs Path A');
+    for(const r532File of ['workshops/github-trending-radar/docs/final-phase-lite-claude-video-editing-skills-iris-simulator-circle-to-edit-preview-40style-video-core-headless-zoom-recorder-60fps-industry-simulator-selection-faq.md','workshops/github-trending-radar/docs/final-phase-lite-claude-video-editing-skills-iris-simulator-circle-to-edit-preview-40style-video-core-headless-zoom-recorder-60fps-industry-simulator-selection-faq.en.md','assets/github-ai-radar-2026-11-19-r8-finalphaselite-videoskills-iris-simulator.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-19-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r532File),'utf8');
+      assert.ok(txt.includes('2,660.00')&&txt.includes('4,050.00')&&txt.includes('6,710.00')&&txt.includes('75.00')&&txt.includes('260.00')&&txt.includes('335.00')&&txt.includes('6,375.00')&&txt.includes('95.01%')&&txt.includes('not_measured'),r532File+': contains exact 11-19 R8 R532 finalphaselite+videoskills+iris+simulator closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
