@@ -6762,6 +6762,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r550File),'utf8');
       assert.ok(txt.includes('2,760.00')&&txt.includes('4,100.00')&&txt.includes('6,860.00')&&txt.includes('70.00')&&txt.includes('250.00')&&txt.includes('320.00')&&txt.includes('6,540.00')&&txt.includes('95.34%')&&txt.includes('not_measured'),r550File+': contains exact 11-19 R26 R550 morty+unlock+videofeedback+agentcontrol closed-form parameters');
     }
+    // 2026-11-19 Night Round 27 (R551: adamoelz/gemkeeper + a-schaefers/claudes-workbench + Vecshield/Markwright + mczlwl/Askjudge) verification
+    const r551PathA=2720.00+40.5*100.00;
+    assert.equal(r551PathA.toFixed(2),'6770.00','11-19 R27 R551 Path A total');
+    const r551PathC=70.00+2.5*100.00;
+    assert.equal(r551PathC.toFixed(2),'320.00','11-19 R27 R551 Path C total');
+    assert.equal((r551PathA-r551PathC).toFixed(2),'6450.00','11-19 R27 R551 savings vs Path A');
+    assert.equal(((r551PathA-r551PathC)/r551PathA*100).toFixed(2),'95.27','11-19 R27 R551 pct savings vs Path A');
+    for(const r551File of ['workshops/github-trending-radar/docs/gemkeeper-claudes-workbench-markwright-askjudge-2pct-context-ledger-claude-opencode-hybrid-gpu-llm-watermark-control-plane-selective-human-judge-selection-faq.md','workshops/github-trending-radar/docs/gemkeeper-claudes-workbench-markwright-askjudge-2pct-context-ledger-claude-opencode-hybrid-gpu-llm-watermark-control-plane-selective-human-judge-selection-faq.en.md','assets/github-ai-radar-2026-11-19-r27-gemkeeper-claudesworkbench-markwright-askjudge.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-19-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r551File),'utf8');
+      assert.ok(txt.includes('2,720.00')&&txt.includes('4,050.00')&&txt.includes('6,770.00')&&txt.includes('70.00')&&txt.includes('250.00')&&txt.includes('320.00')&&txt.includes('6,450.00')&&txt.includes('95.27%')&&txt.includes('not_measured'),r551File+': contains exact 11-19 R27 R551 gemkeeper+claudesworkbench+markwright+askjudge closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
