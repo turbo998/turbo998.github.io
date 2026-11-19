@@ -166,7 +166,10 @@ async function main() {
           const expectedScenes = Object.entries(manifest.scenes[track]).filter(([, entry]) => entry.track === track);
           assert.equal(state.scenes.length, expectedScenes.length, file);
           assert.ok(Object.values(state.stageCards).every(count=>count>0),file+': four populated card-grid stages');
-          await page.screenshot({path:path.join(output,`${path.basename(file,'.html')}-topic-${width}.png`),fullPage:true});
+          const docHeight = await page.evaluate(() => document.documentElement.scrollHeight);
+          const shotPath = path.join(output, `${path.basename(file, '.html')}-topic-${width}.png`);
+          if (docHeight <= 16000) await page.screenshot({ path: shotPath, fullPage: true });
+          else await page.screenshot({ path: shotPath, clip: { x: 0, y: 0, width, height: 16000 }, captureBeyondViewport: true });
         }
         delete state.links;
         report.pages.push({file, width, ...state});

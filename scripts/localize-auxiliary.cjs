@@ -312,40 +312,382 @@ const cadBimEnHtml = `<!doctype html>
 </html>
 `;
 
-function localizeRetainedVisualDemos() {
-  const manifest = JSON.parse(fs.readFileSync(path.join(root, 'generative-visual-lab/nightly-visual-2026-11-18.json'), 'utf8'));
-  for (const round of manifest.rounds) {
-    for (const lab of ['animation', 'generative-visual-lab']) {
-      const demoDir = path.join(root, lab, 'demos', round.slug);
-      const indexFile = path.join(demoDir, 'index.html');
-      if (!fs.existsSync(indexFile)) continue;
-      if (round.slug === 'brand-lora-training-dataset-dedup-caption-hygiene-workbench' || round.slug === 'cad-bim-sketch-to-photoreal-architectural-controlnet-studio') {
-        let zhHtml = fs.readFileSync(indexFile, 'utf8')
-          .replace(/<meta\s+http-equiv="Content-Security-Policy"[\s\S]*?\/>\s*/i, '')
-          .replace(/← 返回 \d+ 演示门户/g, '← 返回视觉实验室门户');
-        fs.writeFileSync(indexFile, zhHtml);
-        const enHtml = round.slug.startsWith('brand-lora') ? brandLoraEnHtml : cadBimEnHtml;
-        fs.writeFileSync(path.join(demoDir, 'index.en.html'), enHtml);
-      } else {
-        let enHtml = fs.readFileSync(indexFile, 'utf8')
-          .replace(/<meta\s+http-equiv="Content-Security-Policy"[\s\S]*?\/>\s*/i, '')
-          .replace(/Round \d+\s*[·•-]\s*/g, '');
-        fs.writeFileSync(indexFile, enHtml);
-        const zhHtml = enHtml
-          .replace(/<html lang="[^"]*"/i, '<html lang="zh-CN"')
-          .replace(/<title>[\s\S]*?<\/title>/i, `<title>${round.title_zh}</title>`);
-        fs.writeFileSync(path.join(demoDir, 'index.zh.html'), zhHtml);
+const r500WorkbenchEnHtml = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'" />
+  <title>R500 Milestone · Enterprise AI Architecture &amp; FinOps Decision Workbench (2026-11-18)</title>
+  <style>
+    :root {
+      --bg: #0b1120;
+      --panel: #1e293b;
+      --panel-dark: #0f172a;
+      --border: #334155;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --emerald: #10b981;
+      --amber: #f59e0b;
+      --red: #ef4444;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 24px;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+    .container { max-width: 1180px; margin: 0 auto; }
+    .header {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      border: 1px solid var(--border);
+      border-top: 5px solid var(--amber);
+      border-radius: 14px;
+      padding: 22px 26px;
+      margin-bottom: 20px;
+    }
+    .badge {
+      display: inline-block;
+      background: rgba(245, 158, 11, 0.16);
+      color: #fbbf24;
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+    h1 { margin: 10px 0 6px; font-size: 24px; }
+    .sub { color: var(--muted); font-size: 14px; margin: 0; }
+    .grid {
+      display: grid;
+      grid-template-columns: 360px 1fr;
+      gap: 20px;
+    }
+    @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+    }
+    .card h2 { margin: 0 0 14px; font-size: 17px; color: var(--accent); }
+    label { display: block; font-size: 13px; color: var(--muted); margin-bottom: 6px; font-weight: 600; }
+    select, input[type="range"] {
+      width: 100%;
+      margin-bottom: 16px;
+      background: var(--panel-dark);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 10px;
+      font-size: 13.5px;
+    }
+    .kpi-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+    .kpi {
+      background: var(--panel-dark);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px;
+    }
+    .kpi .lbl { font-size: 12px; color: var(--muted); }
+    .kpi .val { font-size: 22px; font-weight: 800; margin-top: 4px; }
+    .bar-group { margin-bottom: 14px; }
+    .bar-head { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 5px; }
+    .bar-track { background: var(--panel-dark); height: 18px; border-radius: 6px; overflow: hidden; }
+    .bar-fill { height: 100%; border-radius: 6px; transition: width 0.25s ease; }
+    table { width: 100%; border-collapse: collapse; margin-top: 14px; font-size: 13px; }
+    th, td { text-align: left; padding: 10px; border-bottom: 1px solid var(--border); }
+    th { color: var(--muted); font-weight: 700; background: var(--panel-dark); }
+    .pill {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 11.5px;
+      font-weight: 700;
+      background: rgba(16, 185, 129, 0.15);
+      color: #34d399;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <span class="badge">CUMULATIVE ROUND 500 MILESTONE (2026-11-18 NIGHT SHIFT · R481–R500)</span>
+      <h1>Enterprise AI Architecture &amp; FinOps Decision Workbench</h1>
+      <p class="sub">Covering the R481–R500 enterprise stack (SkillEvaluator / Signet / MyDB / Agent-LeakCheck / Flecten / Skywake / agy-hq / PaperMate / Blueprint / Fable-5.2-Prompting) · Base Hardware CapEx: <code>not_measured</code></p>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <h2>1. Workload &amp; Engineering Team Controls</h2>
+        <label for="presetSelect">Architecture Stack Preset (Round Preset)</label>
+        <select id="presetSelect">
+          <option value="r500">R500 (Night R20): PaperMate 298 Rules + Blueprint + OpenFactura + Fable Prompting</option>
+          <option value="r499">R499 (Night R19): clauds 90% Auto-Switch + ClaudeLink Rollback + aBridge + Remote MCP</option>
+          <option value="r498">R498 (Night R18): agy-hq Zero-Token Gate + dsh-workboard + Skill-Siphon + Claude Wiki</option>
+          <option value="r496">R496 (Night R16): Skywake 95ms S3 Fork + ReproCase AuthZ Proof + Microbrains</option>
+          <option value="r490">R490 (Night R10): MyDB SQL Gate + pgvectorfast + Agentic-RAG-KB</option>
+          <option value="r481">R481 (Night R1): NVIDIA SkillEvaluator + Signet + OpenAgentsControl</option>
+        </select>
+
+        <label for="seatRange">Engineering &amp; Architecture Seats: <span id="seatVal">45</span></label>
+        <input type="range" id="seatRange" min="15" max="180" step="15" value="45" />
+
+        <label for="rateRange">Blended Engineer Hourly Rate: $<span id="rateVal">100</span> / hr</label>
+        <input type="range" id="rateRange" min="50" max="200" step="10" value="100" />
+
+        <label for="promptTaxSelect">Prompt Patch FinOps Policy (Fable 5.2 Mode)</label>
+        <select id="promptTaxSelect">
+          <option value="targeted">Symptom-Scoped Patch Only (0% Redundant Token Tax)</option>
+          <option value="finishing">Always-On Finishing Work Patch (+30% Output Token Tax)</option>
+          <option value="ownership">Unscoped Full Ownership Stack (+75% Output Token Tax)</option>
+        </select>
+      </div>
+
+      <div class="card">
+        <h2>2. Closed-Form Monthly &amp; Annual FinOps Output</h2>
+        <div class="kpi-row">
+          <div class="kpi">
+            <div class="lbl">Path A (Manual / Unscoped Baseline) Monthly</div>
+            <div class="val" id="pathAVal" style="color: #fca5a5;">$6,520.00</div>
+          </div>
+          <div class="kpi">
+            <div class="lbl">Path C (Recommended Open-Source Stack) Monthly</div>
+            <div class="val" id="pathCVal" style="color: #34d399;">$375.00</div>
+          </div>
+          <div class="kpi">
+            <div class="lbl">Net Monthly &amp; Annual Savings</div>
+            <div class="val" id="savingsVal" style="color: #38bdf8;">-94.25% ($73,740/yr)</div>
+          </div>
+        </div>
+
+        <div class="bar-group">
+          <div class="bar-head"><span>Path A (Baseline Unoptimized / Manual)</span><span id="barALbl">$6,520.00 / mo</span></div>
+          <div class="bar-track"><div class="bar-fill" id="barA" style="width: 100%; background: var(--red);"></div></div>
+        </div>
+        <div class="bar-group">
+          <div class="bar-head"><span>Path B (Commercial SaaS / Heavy Middleware)</span><span id="barBLbl">$2,700.00 / mo</span></div>
+          <div class="bar-track"><div class="bar-fill" id="barB" style="width: 41.4%; background: #64748b;"></div></div>
+        </div>
+        <div class="bar-group">
+          <div class="bar-head"><span>Path C (Recommended R481–R500 Architecture Stack)</span><span id="barCLbl">$375.00 / mo</span></div>
+          <div class="bar-track"><div class="bar-fill" id="barC" style="width: 5.75%; background: var(--emerald);"></div></div>
+        </div>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Primary Repositories</th>
+              <th>Mechanical Architecture Guarantee</th>
+              <th>Audit Claim ID</th>
+            </tr>
+          </thead>
+          <tbody id="detailBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const PRESETS = {
+      r500: {
+        claim: "CLAIM-20261118-R20-R500-PAPERMATE-BLUEPRINT-OPENFACTURA-FABLEPROMPT",
+        aComp: 2420, aHrs: 41.0, bComp: 1050, bHrs: 16.5, cComp: 85, cHrs: 2.9,
+        rows: [
+          ["peacefulj/SSCI-SCI-skills (PaperMate v1.3.0)", "298-rule deterministic backend evaluation + UAC-free split program/data directories"],
+          ["intincrab/blueprint (/blueprint)", "Animated <blueprint-scene> technical explainers + Playwright frame verification"],
+          ["xaviigna/openfactura", "Cloudflare Workers DTE Normativa 2.0 signing, contingency, and voiding native MCP"],
+          ["sktjgudals/fable-5-2-prompting", "Read-only CLAUDE.md audit + symptom-scoped patches quantifying +30% / +70%-80% token tax"]
+        ]
+      },
+      r499: {
+        claim: "CLAIM-20261118-R19-CLAUDS-CLAUDELINK-ABRIDGE-REMOTEMCP",
+        aComp: 2080, aHrs: 36.5, bComp: 910, bHrs: 15.0, cComp: 65, cHrs: 2.5,
+        rows: [
+          ["codeFi/clauds", "Isolated account directories with zero-relogin switching + zero-copy session sharing at 90% quota"],
+          ["slobys/ClaudeLink (v1.5.1)", "Dual-hop chained proxy + scoped IPv6/timezone guard + deterministic exit state restore"],
+          ["xerrors/aBridge (v0.4.18)", "Streamable HTTP MCP + Chrome 116+/macOS/Linux/Android TTL-scoped authorization"],
+          ["dqIndieGames/remote-pc-mcp-gateway", "OAuth 2.1 PKCE + 198.18.0.0/15 Fake-IP QUIC bypass + isolated per-tab pageId routing"]
+        ]
+      },
+      r498: {
+        claim: "CLAIM-20261118-R18-AGYHQ-DSHWORKBOARD-SKILLSIPHON-CLAUDEWIKI",
+        aComp: 2140, aHrs: 37.0, bComp: 880, bHrs: 15.0, cComp: 70, cHrs: 2.6,
+        rows: [
+          ["zjshen14/agy-hq", "PreToolUse foreground 3-query cap + pure Go SHA-256 zero-token gatekeeper + 24h approval"],
+          ["lukeinx/dsh-workboard", "52 built-in widgets + cookie-isolated custom card sandbox + explicit host proxy"],
+          ["JL-GUO/skill-siphon", "Read-only skill distillation into 01 Study Guide / 02 Hands-On / 03 Provenance & Boundaries"],
+          ["yibie/claude-best-practices-zh", "173 triple-reviewed engineering notes + 100 atomic Karpathy LLM Wiki nodes + 202 edges"]
+        ]
+      },
+      r496: {
+        claim: "CLAIM-20261118-R16-SKYWAKE-REPROCASE-MICROBRAINS-MODERNJAVA",
+        aComp: 2320, aHrs: 39.0, bComp: 980, bHrs: 16.0, cComp: 85, cHrs: 2.8,
+        rows: [
+          ["skywakehq/skywake", "95ms S3 pointer fork on 1GB workspace trees (vs 28.7s) + 10.1ms 10M-vector retrieval"],
+          ["theasbug/reprocase", "Dual-account (attacker/victim) cross-tenant write AuthZ verifier + HTTP trace replay"],
+          ["drtikov/microbrainsforagents", "1.3ms pure NumPy patch preflight gate + 39% tool schema token reduction"],
+          ["wkd09/modern-java-guidance", "Millisecond PostToolUse hook blocking legacy javax.* and RestTemplate regressions"]
+        ]
+      },
+      r490: {
+        claim: "CLAIM-20261118-R10-MYDB-PGVECTORFAST-AGENTICRAG",
+        aComp: 2680, aHrs: 43.0, bComp: 1120, bHrs: 17.5, cComp: 125, cHrs: 3.2,
+        rows: [
+          ["yzsind/mydb (v1.0.0)", "5-tier SQL permission gate + EXPLAIN dry-run + pre/post row-level snapshot rollback"],
+          ["mitdbg/pgvectorfast", "Disk-aware PostgreSQL vector index acceleration and memory footprint reduction"],
+          ["Golden-66/agentic-rag-kb", "Hybrid retrieval + RRF reranking + self-reflective citation verification"],
+          ["Replyze/ai-customer-support-agent", "Confidence-gated ticket routing with lossless human-agent escalation"]
+        ]
+      },
+      r481: {
+        claim: "CLAIM-20261118-R1-SKILLEVAL-SIGNET",
+        aComp: 2260, aHrs: 42.0, bComp: 960, bHrs: 16.0, cComp: 95, cHrs: 3.2,
+        rows: [
+          ["NVIDIA/SkillEvaluator", "3-tier hybrid grading (deterministic script + LLM Judge + CI regression gate)"],
+          ["therandomsecurityguy/signet", "macOS Secure Enclave hardware key isolation + Touch ID biometric signing"],
+          ["darrenhinde/OpenAgentsControl", "Plan-First approval workflow + <80-line Minimum Viable Context (MVI) injection"]
+        ]
       }
-      // Clean Round NNN from test-report-cards titles as well
-      for (const rep of ['test-report-cards.html', 'test-report-cards.zh.html']) {
-        const repPath = path.join(demoDir, rep);
-        if (fs.existsSync(repPath)) {
-          const cleaned = fs.readFileSync(repPath, 'utf8').replace(/Round \d+\s*[·•:—-]\s*/g, '');
-          fs.writeFileSync(repPath, cleaned);
+    };
+
+    function render() {
+      const key = document.getElementById("presetSelect").value;
+      const seats = parseInt(document.getElementById("seatRange").value, 10);
+      const rate = parseInt(document.getElementById("rateRange").value, 10);
+      const taxMode = document.getElementById("promptTaxSelect").value;
+      document.getElementById("seatVal").textContent = seats;
+      document.getElementById("rateVal").textContent = rate;
+
+      const p = PRESETS[key];
+      const scale = seats / 45.0;
+      const taxMultiplier = taxMode === "ownership" ? 1.75 : (taxMode === "finishing" ? 1.30 : 1.0);
+
+      const aTotal = (p.aComp * scale) + (p.aHrs * scale * rate);
+      const bTotal = (p.bComp * scale) + (p.bHrs * scale * rate);
+      const cTotal = (p.cComp * scale * taxMultiplier) + (p.cHrs * scale * rate);
+      const saved = aTotal - cTotal;
+      const pct = (saved / aTotal) * 100;
+
+      document.getElementById("pathAVal").textContent = "$" + aTotal.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      document.getElementById("pathCVal").textContent = "$" + cTotal.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      document.getElementById("savingsVal").textContent = "-" + pct.toFixed(2) + "% ($" + (saved * 12).toLocaleString("en-US", { minimumFractionDigits: 0, maximumFractionDigits: 0 }) + "/yr)";
+
+      document.getElementById("barALbl").textContent = "$" + aTotal.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " / mo";
+      document.getElementById("barBLbl").textContent = "$" + bTotal.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " / mo";
+      document.getElementById("barCLbl").textContent = "$" + cTotal.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " / mo";
+
+      document.getElementById("barB").style.width = Math.min(100, (bTotal / aTotal) * 100).toFixed(1) + "%";
+      document.getElementById("barC").style.width = Math.min(100, (cTotal / aTotal) * 100).toFixed(2) + "%";
+
+      const tbody = document.getElementById("detailBody");
+      tbody.innerHTML = p.rows.map(r => \`<tr><td><strong>\${r[0]}</strong></td><td>\${r[1]}</td><td><span class="pill">\${p.claim}</span></td></tr>\`).join("");
+    }
+
+    ["presetSelect", "seatRange", "rateRange", "promptTaxSelect"].forEach(id => {
+      document.getElementById(id).addEventListener("input", render);
+    });
+    render();
+  </script>
+</body>
+</html>
+`;
+
+function stripFinalizedChrome(html) {
+  return html
+    .replace(/\s*<link rel="stylesheet" href="[^"]*assets\/editorial\/professional-header\.css">\s*/g, '\n')
+    .replace(/\s*<style id="professional-header-style">[\s\S]*?<\/style>\s*/g, '\n')
+    .replace(/\s*<style id="knowledge-atlas-style">[\s\S]*?<\/style>\s*/g, '\n')
+    .replace(/\s*<header class="professional-header" data-professional-header>[\s\S]*?<\/header>\s*/g, '\n')
+    .replace(/\s*<figure class="knowledge-atlas" data-knowledge-atlas="[^"]*">[\s\S]*?<\/figure>\s*/g, '\n')
+    .replace(/\s*<script src="[^"]*assets\/editorial\/search-index\.js" defer><\/script>\s*<script src="[^"]*assets\/editorial\/search\.js" defer><\/script>\s*/g, '\n');
+}
+
+function escapeHtml(text) {
+  return String(text ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function localizeRetainedVisualDemos() {
+  const manifestFiles = fs.readdirSync(path.join(root, 'generative-visual-lab'))
+    .filter(f => /^nightly-visual-\d{4}-\d{2}-\d{2}\.json$/.test(f))
+    .sort();
+  for (const manifestFile of manifestFiles) {
+    const manifest = JSON.parse(fs.readFileSync(path.join(root, 'generative-visual-lab', manifestFile), 'utf8'));
+    for (const round of manifest.rounds) {
+      for (const lab of ['animation', 'generative-visual-lab']) {
+        const demoDir = path.join(root, lab, 'demos', round.slug);
+        const indexFile = path.join(demoDir, 'index.html');
+        if (!fs.existsSync(indexFile)) continue;
+        const rawHtml = stripFinalizedChrome(fs.readFileSync(indexFile, 'utf8'))
+          .replace(/<meta\s+http-equiv="Content-Security-Policy"[\s\S]*?\/>\s*/i, '');
+        const declaredLang = (rawHtml.match(/<html[^>]*\blang="([^"]+)"/i) || [])[1] || 'en';
+
+        if (round.slug === 'brand-lora-training-dataset-dedup-caption-hygiene-workbench' || round.slug === 'cad-bim-sketch-to-photoreal-architectural-controlnet-studio') {
+          const zhHtml = rawHtml.replace(/← 返回 \d+ 演示门户/g, '← 返回视觉实验室门户');
+          fs.writeFileSync(indexFile, zhHtml);
+          const enHtml = round.slug.startsWith('brand-lora') ? brandLoraEnHtml : cadBimEnHtml;
+          fs.writeFileSync(path.join(demoDir, 'index.en.html'), enHtml);
+        } else if (declaredLang.toLowerCase().startsWith('zh')) {
+          const zhHtml = rawHtml
+            .replace(/← 返回 \d+ 演示门户/g, '← 返回视觉实验室门户')
+            .replace(/Round \d+\s*[·•-]\s*/g, '');
+          fs.writeFileSync(indexFile, zhHtml);
+          const faqZh = round.faq ? `../../research/${round.faq}` : '../../index.html';
+          const faqEn = round.faq ? `../../research/${round.faq.replace(/\.html$/, '.en.html')}` : '../../index.html';
+          const enHtml = zhHtml
+            .replace(/<html lang="[^"]*"/i, '<html lang="en"')
+            .replace(/<title>[\s\S]*?<\/title>/i, `<title>${escapeHtml(round.title_en)}</title>`)
+            .replace(/<h1>[\s\S]*?<\/h1>/i, `<h1>${escapeHtml(round.title_en)}</h1>`)
+            .replace(/<p class="subtitle">[\s\S]*?<\/p>/i, `<p class="subtitle">${escapeHtml(round.summary_en)}</p>`)
+            .replace(/<div class="header-links">[\s\S]*?<\/div>/i, `<div class="header-links">
+          <a class="chip-link" href="../../index.html">← Back to Visual Lab</a>
+          <a class="chip-link" href="${faqEn}">Selection FAQ (English)</a>
+          <a class="chip-link" href="${faqZh}">选型 FAQ (中文)</a>
+          <a class="chip-link" href="./test-report-cards.html">7-Card Report</a>
+        </div>`);
+          fs.writeFileSync(path.join(demoDir, 'index.en.html'), enHtml);
+        } else {
+          const enHtml = rawHtml.replace(/Round \d+\s*[·•-]\s*/g, '');
+          fs.writeFileSync(indexFile, enHtml);
+          const zhHtml = enHtml
+            .replace(/<html lang="[^"]*"/i, '<html lang="zh-CN"')
+            .replace(/<title>[\s\S]*?<\/title>/i, `<title>${escapeHtml(round.title_zh)}</title>`);
+          fs.writeFileSync(path.join(demoDir, 'index.zh.html'), zhHtml);
+        }
+
+        for (const rep of ['test-report-cards.html', 'test-report-cards.zh.html']) {
+          const repPath = path.join(demoDir, rep);
+          if (fs.existsSync(repPath)) {
+            const cleaned = fs.readFileSync(repPath, 'utf8').replace(/Round \d+\s*[·•:—-]\s*/g, '');
+            fs.writeFileSync(repPath, cleaned);
+          }
         }
       }
     }
   }
+}
+
+function localizeR500Workbench() {
+  const zhPath = path.join(root, 'workshops/github-trending-radar/r500-enterprise-agent-finops-workbench.html');
+  const enPath = path.join(root, 'workshops/github-trending-radar/r500-enterprise-agent-finops-workbench.en.html');
+  if (!fs.existsSync(zhPath)) return;
+  const zhClean = stripFinalizedChrome(fs.readFileSync(zhPath, 'utf8'));
+  fs.writeFileSync(zhPath, zhClean);
+  fs.writeFileSync(enPath, r500WorkbenchEnHtml);
 }
 
 function main(){
@@ -360,6 +702,7 @@ function main(){
  localizeFoleyReports();
  localizeFoleyDemos();
  localizeRetainedVisualDemos();
+ localizeR500Workbench();
  require('./localization/harness-workbenches.cjs').localizeHarnessWorkshops();
  console.log('Localized VM compatibility entry, retained visual studios, and harness workbenches in English and Chinese');
 }

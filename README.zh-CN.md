@@ -2,7 +2,7 @@
 
 # Qi Chen — Personal Site, Frontier AI Studio & Technical Assets / 个人网站、七大工作台与技术作品
 
-从技术分享走到动手实践：这里收录双语个人网站（[https://turbo998.github.io/](https://turbo998.github.io/)）、**Frontier AI Studio 七大交互工程主线**（[https://turbo998.github.io/frontier-ai-studio.html](https://turbo998.github.io/frontier-ai-studio.html)）、**7-Card 4:5 纵向视觉基准报告集**、职业履历与伙伴培训入口。个人网站使用纯 HTML/CSS/JS，无构建步骤。
+从技术分享走到动手实践：这里收录 **Qi Chen（Frontier Transformation Engineer · 资深 AI 解决方案架构师）** 的双语个人网站（[https://turbo998.github.io/](https://turbo998.github.io/)）、**[Frontier Transformation Engineer (FTE) 个人履历（微软 · AWS · 华讯 Cloud CoE · 思科 & AB-100 / AI-103 / GH-300 认证）](https://turbo998.github.io/zh-about.html)**、**[FTE 全景介绍、86 小时学习路径与注册指南](https://turbo998.github.io/zh-fte.html)**（[English FTE Guide](https://turbo998.github.io/fte.html)）、**Frontier AI Studio 工程主线**（[https://turbo998.github.io/frontier-ai-studio.html](https://turbo998.github.io/frontier-ai-studio.html)）与 **7-Card 4:5 纵向视觉基准报告集**。个人网站使用纯 HTML/CSS/JS，无运行时构建后端。
 
 ![Frontier AI Studio & Command Center Architecture](assets/command-center-architecture.svg)
 

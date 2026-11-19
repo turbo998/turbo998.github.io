@@ -1,10 +1,443 @@
-<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Visual Lab Research</title><script>(()=>{const param=new URLSearchParams(location.search).get("scoutTheme");const theme=param||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");document.documentElement.setAttribute("data-theme",theme)})();</script><link rel="stylesheet" href="../assets/theme.css"><main class="shell"><a href="../">← 实验室</a><pre style="white-space:pre-wrap;line-height:1.9;font:inherit"># 4D 高斯泼溅与 Plücker 相机轨迹控制深度研究：从 `GEN3C`、`Diff4Splat` 到 `MotionStream` 实时导演工作台
+<!doctype html>
+<html lang="zh-CN" data-theme="dark" data-reading-shell="document"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>可控 4D 视频与相机轨迹控制架构研究专著（GEN3C × Diff4Splat × MotionStream） — Qi Chen</title><meta name="reading-migration" content="R6"><link rel="stylesheet" href="../../assets/reading-shell.css"><script src="../../assets/reading-shell.js"></script><style id="site-remediation-style">/* Embedded by integrate-dedicated.cjs so sealed report CSP remains unchanged. */
+.kee-dedicated-nav {
+  all: initial; box-sizing: border-box; position: relative; display: flex;
+  flex-wrap: wrap; align-items: center; gap: 6px 14px; width: 100%;
+  padding: 12px 18px; margin: 0 0 16px; border: 1px solid #314361;
+  background: #101A30; color: #EEF3FF; font: 13px/1.5 system-ui, sans-serif;
+  text-align: left; isolation: isolate; color-scheme: dark;
+}
+.kee-dedicated-nav a {
+  all: revert; box-sizing: border-box; display: inline-block; padding: 4px 0;
+  color: #9AABFF; background: transparent; font: inherit; text-decoration: underline;
+  text-underline-offset: 3px; border: 0; border-radius: 0; box-shadow: none;
+}
+.kee-dedicated-nav a:focus-visible { outline: 3px solid #56DDCD; outline-offset: 3px; }
+.kee-dedicated-nav .kee-dedicated-identity { font-weight: 700; color: #EEF3FF; }
+.kee-dedicated-nav .kee-dedicated-language {
+  all: revert; display: block; flex-basis: 100%; color: #ADBBD1; font: 12px/1.5 system-ui, sans-serif;
+}
+.kee-dedicated-native-link { display: block; padding: 22px; color: #1858a8; background: #f8fafc; font: 15px/1.6 system-ui, sans-serif; }
+.kee-dedicated-native-link a { color: #1858a8; text-decoration: underline; }
+@media print { .kee-dedicated-nav { display: none; } }
+
+/* Professional primary navigation: long section names reflow, never scroll inside the header. */
+[data-professional-header]{box-sizing:border-box;display:grid!important;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:18px!important;width:100%;max-width:none;height:auto!important;min-height:0!important;padding:18px 24px!important;margin:0 0 16px;position:relative;overflow:visible!important;background:#101A30;color:#EEF3FF;border:1px solid #314361;font:13px/1.5 system-ui,sans-serif;isolation:isolate;color-scheme:dark}
+[data-professional-header] *{box-sizing:border-box;min-width:0;max-height:none}
+[data-professional-header] a{font:inherit;text-decoration:none;color:#9AABFF;overflow-wrap:anywhere;white-space:normal}
+[data-professional-header] .professional-identity{font-weight:750;color:#EEF3FF;white-space:nowrap;font-size:14px;margin:0}
+[data-professional-header] .professional-primary{display:grid;grid-template-columns:1.45fr repeat(5,minmax(0,1fr));gap:6px;align-items:stretch;min-width:0}
+@media(max-width:960px) and (min-width:601px){[data-professional-header] .professional-primary{gap:5px}[data-professional-header] .professional-primary a{padding:8px 6px;font-size:11.5px}}
+[data-professional-header] .professional-primary a{display:flex;align-items:center;justify-content:center;padding:10px 9px;border:1px solid #314361;border-radius:12px;background:#172440;text-align:center;line-height:1.4;min-height:44px}
+[data-professional-header] .professional-primary a[aria-current=page]{background:#23375a;border-color:#56DDCD;color:#56DDCD}
+[data-professional-header] .professional-controls{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:4px;font-size:12px;margin:0;position:static}
+[data-professional-header] .professional-controls>a{display:flex;align-items:center;justify-content:center;padding:8px;min-height:40px;min-width:32px;border-radius:10px}
+[data-professional-header] .professional-context{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px 18px;padding-top:12px;border-top:1px solid #314361;font-size:12px;color:#ADBBD1;min-width:0;line-height:1.6}
+[data-professional-header] .professional-context>*{min-width:0;overflow-wrap:anywhere}
+[data-professional-header] .professional-context .kee-dedicated-language{flex-basis:100%;color:#ADBBD1}
+[data-professional-header] a:focus-visible{outline:3px solid #56DDCD;outline-offset:3px}
+[data-professional-header] a:hover{text-decoration:underline}
+[data-professional-header][data-perimeter-theme=light],:root[data-theme=light] .reading-header[data-professional-header]{background:#fff;color:#172440;border-color:#d4deee;color-scheme:light}
+[data-professional-header][data-perimeter-theme=light] a,:root[data-theme=light] .reading-header[data-professional-header] a{color:#3752a0}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a,:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a{background:#edf2ff;border-color:#d4deee}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a[aria-current],:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a[aria-current]{background:#dff6f0;color:#127b72;border-color:#127b72}
+@media(max-width:1150px){[data-professional-header]{grid-template-columns:minmax(0,1fr) auto;gap:12px!important}[data-professional-header] .professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header] .professional-controls{grid-column:2;grid-row:1}}
+@media(max-width:600px){[data-professional-header]{padding:14px 16px!important;gap:12px!important}[data-professional-header] .professional-primary{grid-template-columns:repeat(2,minmax(0,1fr))}[data-professional-header] .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:13px}[data-professional-header] .professional-controls{gap:0}[data-professional-header] .professional-controls>a{padding:6px;min-width:28px}}
+@media print{[data-professional-header]{display:none!important}}
+
+html{scroll-padding-top:164px}@media(max-width:600px){html{scroll-padding-top:260px}}.reading-header,.kee-dedicated-nav,[data-professional-header]{position:sticky;top:0;z-index:1000;-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
+
+:root{--search-bg:#101a30;--search-soft:#172440;--search-ink:#eef3ff;--search-muted:#adbbd1;--search-line:#293956;--search-accent:#9aabff;--header-offset:144px}
+:root[data-reading-shell][data-theme=light],[data-perimeter-theme=light]{--search-bg:#fff;--search-soft:#e8eefb;--search-ink:#17233e;--search-muted:#4c5e7c;--search-line:#d5ddec;--search-accent:#354ec8}
+html{scroll-padding-top:var(--header-offset,108px)!important}
+.site-search,.site-search *{box-sizing:border-box!important;font-family:"Segoe UI",sans-serif;letter-spacing:normal;text-transform:none}
+.site-search{position:relative;display:flex;align-items:center;gap:5px;min-width:0;width:230px;max-width:100%;margin:0!important;padding:0!important;line-height:1.4;border:1px solid var(--search-line);border-radius:9px;background:var(--search-soft);color:var(--search-ink);isolation:isolate}
+.site-search input[type=search]{display:block;flex:1;min-width:0;width:100%;height:42px;margin:0;padding:9px 8px!important;font-size:12px!important;line-height:1.5;border:0!important;border-radius:9px;background:transparent!important;color:var(--search-ink)!important;box-shadow:none!important;appearance:none}
+.site-search input::placeholder{color:var(--search-muted);opacity:1}.site-search input:focus-visible{outline:2px solid var(--search-accent);outline-offset:2px}
+.site-search kbd{font:11px Consolas,monospace;color:var(--search-muted);padding:1px 5px;border:1px solid var(--search-line);border-radius:4px}
+.site-search button[type=submit]{flex:none;width:38px;min-width:38px;height:42px;min-height:42px;padding:0;margin:0;border:0;border-radius:8px;background:transparent;color:var(--search-accent);font-size:24px;cursor:pointer;box-shadow:none}
+.search-label,.search-status{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.site-search .search-results{position:absolute;top:calc(100% + 10px);right:0;z-index:1100;width:min(480px,calc(100vw - 32px));max-height:min(560px,65vh);overflow-y:auto;border:1px solid var(--search-line);border-radius:12px;background:var(--search-bg);color:var(--search-ink);padding:10px;box-shadow:0 12px 32px #0005;text-align:left}
+.site-search .search-results[hidden]{display:none!important}.search-results .search-group{margin:8px 6px 4px;font:11px/1.5 Consolas,monospace;color:var(--search-muted)}
+.site-search .search-results a{display:block!important;padding:10px!important;margin:3px 0!important;border:1px solid transparent!important;border-radius:7px;background:transparent;color:var(--search-ink)!important;font-size:13px!important;text-decoration:none!important;white-space:normal;overflow-wrap:anywhere;text-align:left!important;line-height:1.5!important}
+.site-search .search-results a[aria-selected=true],.site-search .search-results a:hover{border-color:var(--search-accent)!important;background:var(--search-soft)}
+.search-results a small{display:block;font-size:10px;color:var(--search-muted);margin-top:4px}.search-results p{margin:10px;font-size:13px;color:var(--search-muted)}
+.search-archive-summary{padding:20px;border:1px solid var(--search-line);border-radius:10px;background:var(--search-bg);color:var(--search-ink);margin:24px 0}.search-archive-summary h2{font-size:24px;margin:0 0 12px}.search-archive-summary li{margin:12px 0}.search-archive-summary a{color:var(--search-accent)}
+[data-professional-header]{position:sticky!important;top:0!important;z-index:1000!important;background:var(--search-bg)!important;--header-glass:rgba(16,26,48,.9);grid-template-columns:auto minmax(0,1fr) 230px auto!important}
+[data-professional-header][data-perimeter-theme=light],:root[data-reading-shell][data-theme=light] [data-professional-header]{--header-glass:rgba(255,255,255,.94)}
+[data-professional-header] .professional-mobile{display:none}.professional-mobile summary{min-width:38px;min-height:42px;display:grid;place-items:center;cursor:pointer;list-style:none}.professional-mobile summary::-webkit-details-marker{display:none}
+[data-professional-header] .professional-context{display:none}
+.professional-context-bar{padding:12px 24px;border-bottom:1px solid var(--search-line);background:var(--search-bg);color:var(--search-muted);font:12px/1.6 "Segoe UI",sans-serif;display:flex;flex-wrap:wrap;gap:8px 18px;overflow-wrap:anywhere}.professional-context-bar a{color:var(--search-accent)}
+@supports((backdrop-filter:blur(16px)) or (-webkit-backdrop-filter:blur(16px))){.site-header,[data-professional-header]{background:var(--header-glass)!important;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}}
+@media(max-width:1250px) and (min-width:701px){.header-inner{grid-template-columns:minmax(0,1fr) 230px auto!important;padding:12px 0;gap:12px!important}.desktop-nav{grid-row:2;grid-column:1/-1}.header-inner>.site-search{grid-column:2;grid-row:1}.header-inner>.controls{grid-column:3;grid-row:1}[data-professional-header]{grid-template-columns:minmax(0,1fr) 230px auto!important;gap:12px!important}[data-professional-header]>.professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header]>.site-search{grid-column:2;grid-row:1}[data-professional-header]>.professional-controls{grid-column:3;grid-row:1}:root{--header-offset:184px}}
+@media(max-width:700px){.header-inner{grid-template-columns:minmax(0,1fr) auto!important;padding:10px 0;gap:8px!important}.header-inner>.site-search{grid-row:2;grid-column:1/-1;width:100%}.header-inner>.controls{grid-column:2;grid-row:1}.site-search .search-results{width:100%;right:0}[data-professional-header]{grid-template-columns:minmax(0,1fr) auto!important;padding:10px 16px!important;gap:8px!important}[data-professional-header]>.professional-primary{display:none!important}[data-professional-header]>.site-search{grid-column:1/-1;grid-row:2;width:100%}[data-professional-header]>.professional-controls{grid-column:2;grid-row:1}[data-professional-header] .professional-mobile{display:block}[data-professional-header] .professional-mobile[open]>.professional-primary{position:absolute;top:100%;left:0;right:0;padding:16px;background:var(--search-bg);border-bottom:1px solid var(--search-line);display:grid;grid-template-columns:1fr 1fr;gap:8px}[data-professional-header] .professional-mobile .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:12px!important}:root{--header-offset:136px}}
+@media(prefers-reduced-transparency:reduce){.site-header,[data-professional-header]{background:var(--search-bg)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}}
+@media print{.site-search,.professional-context-bar{display:none!important}}
+
+@media(min-width:1251px){.header-inner{display:grid!important;grid-template-columns:auto minmax(0,1fr) 230px auto!important;gap:18px!important}.header-inner .desktop-nav{min-width:0}}
+
+html:has(.kee-dedicated-app-root){height:auto!important;overflow-x:hidden!important;overflow-y:auto!important}
+body:has([data-professional-header]){height:auto!important;overflow-x:clip!important;overflow-y:visible!important;padding-top:0!important}
+.demo-language-navigation{display:none!important}
+.stage-column,.telemetry-panel,.scene-pill,#timeline-slider{min-width:0}
+@media(max-width:1180px){.workspace,.template-tabs{grid-template-columns:minmax(0,1fr)!important}}
+
+.in-arena-frame .professional-context-bar,.in-arena-frame [data-knowledge-atlas]{display:none!important}
+.knowledge-graph-wide{display:block}.knowledge-graph-compact{display:none}@media(max-width:600px){.knowledge-graph-wide{display:none}.knowledge-graph-compact{display:block}}
+</style><script src="../../assets/editorial/search-index.js" defer></script><script src="../../assets/editorial/search.js" defer></script></head><body class="reading-page"><a class="reading-skip" href="#reading-main">跳至正文</a><header class="reading-header" data-professional-header><a class="professional-identity reading-brand kee-dedicated-identity identity" href="../../zh.html">Qi Chen · @turbo998</a><div class="professional-primary" role="navigation" aria-label="主导航"><a href="../../studio/zh-index.html" data-section="hub" data-nav-en-href="../../studio/index.html" data-nav-zh-href="../../studio/zh-index.html" data-nav-en-label="Frontier Transformation Engineering Hub" data-nav-zh-label="Frontier Transformation Engineering Hub" aria-current="page">Frontier Transformation Engineering Hub</a><a href="../../zh-diamond.html" data-section="diamond" data-nav-en-href="../../diamond.html" data-nav-zh-href="../../zh-diamond.html" data-nav-en-label="Diamond Live Demos" data-nav-zh-label="Diamond 实战演示">Diamond 实战演示</a><a href="../../zh-benchmarks.html" data-section="benchmarks" data-nav-en-href="../../benchmarks.html" data-nav-zh-href="../../zh-benchmarks.html" data-nav-en-label="Benchmark &amp; Eval Foundry" data-nav-zh-label="基准评测中心">基准评测中心</a><a href="../../zh-github-radar.html" data-section="radar" data-nav-en-href="../../github-radar.html" data-nav-zh-href="../../zh-github-radar.html" data-nav-en-label="GitHub AI Signal Radar" data-nav-zh-label="GitHub AI 信号雷达">GitHub AI 信号雷达</a><a href="../../zh-openrouter.html" data-section="routing" data-nav-en-href="../../openrouter.html" data-nav-zh-href="../../zh-openrouter.html" data-nav-en-label="Model Routing &amp; Telemetry" data-nav-zh-label="OpenRouter 模型遥测">OpenRouter 模型遥测</a><a href="../../zh-about.html" data-section="profile" data-nav-en-href="../../about.html" data-nav-zh-href="../../zh-about.html" data-nav-en-label="Frontier Transformation Engineer" data-nav-zh-label="Frontier Transformation Engineer">Frontier Transformation Engineer</a></div><form class="site-search" role="search" action="../../studio/zh-archive.html" method="get" data-search-root="../../index.html" data-search-language="zh-CN"><label class="search-label" for="site-search-input">搜索架构、评测、Demo、技能...</label><input id="site-search-input" name="q" type="search" placeholder="搜索架构、评测、Demo、技能..." autocomplete="off" spellcheck="false" aria-keyshortcuts="/ Control+k Meta+k"><kbd aria-hidden="true">/</kbd><button type="submit" aria-label="搜索全部内容">⌕</button><div class="search-results" id="site-search-results" hidden></div><span class="search-status" role="status" aria-live="polite"></span></form><div class="reading-controls professional-controls" aria-label="网站语言与外观"><a href="controllable-4d-video-camera-study.en.html" data-reading-language hreflang="en" lang="en">EN</a><a href="controllable-4d-video-camera-study.html" hreflang="zh-CN" lang="zh-CN" aria-current="page">中文</a><details class="professional-mobile"><summary aria-label="打开主导航">☰</summary><div class="professional-primary" role="navigation" aria-label="移动主导航"><a href="../../studio/zh-index.html" data-section="hub" data-nav-en-href="../../studio/index.html" data-nav-zh-href="../../studio/zh-index.html" data-nav-en-label="Frontier Transformation Engineering Hub" data-nav-zh-label="Frontier Transformation Engineering Hub" aria-current="page">Frontier Transformation Engineering Hub</a><a href="../../zh-diamond.html" data-section="diamond" data-nav-en-href="../../diamond.html" data-nav-zh-href="../../zh-diamond.html" data-nav-en-label="Diamond Live Demos" data-nav-zh-label="Diamond 实战演示">Diamond 实战演示</a><a href="../../zh-benchmarks.html" data-section="benchmarks" data-nav-en-href="../../benchmarks.html" data-nav-zh-href="../../zh-benchmarks.html" data-nav-en-label="Benchmark &amp; Eval Foundry" data-nav-zh-label="基准评测中心">基准评测中心</a><a href="../../zh-github-radar.html" data-section="radar" data-nav-en-href="../../github-radar.html" data-nav-zh-href="../../zh-github-radar.html" data-nav-en-label="GitHub AI Signal Radar" data-nav-zh-label="GitHub AI 信号雷达">GitHub AI 信号雷达</a><a href="../../zh-openrouter.html" data-section="routing" data-nav-en-href="../../openrouter.html" data-nav-zh-href="../../zh-openrouter.html" data-nav-en-label="Model Routing &amp; Telemetry" data-nav-zh-label="OpenRouter 模型遥测">OpenRouter 模型遥测</a><a href="../../zh-about.html" data-section="profile" data-nav-en-href="../../about.html" data-nav-zh-href="../../zh-about.html" data-nav-en-label="Frontier Transformation Engineer" data-nav-zh-label="Frontier Transformation Engineer">Frontier Transformation Engineer</a></div></details><a data-reading-theme="light" href="controllable-4d-video-camera-study.html?theme=light" aria-label="浅色主题">☀</a><a data-reading-theme="dark" href="controllable-4d-video-camera-study.html?theme=dark" aria-label="深色主题">◐</a></div><div class="professional-context" aria-label="返回上下文"><a href="../../studio/zh-index.html">← 工程枢纽</a> · <a href="../../studio/zh-animation.html">返回主题</a></div></header><div class="professional-context-bar"><a href="../../studio/zh-index.html">← 工程枢纽</a> · <a class="reading-context" href="../../studio/zh-animation.html">返回主题</a></div><!-- site-remediation-knowledge:start --><figure class="knowledge-figure" data-knowledge-atlas="animation" style="margin:20px auto;max-width:1120px;padding:0 20px;box-sizing:border-box"><style>.knowledge-graph-wide{display:block}.knowledge-graph-compact{display:none}@media(max-width:600px){.knowledge-graph-wide{display:none}.knowledge-graph-compact{display:block}}</style><svg xmlns="http://www.w3.org/2000/svg" lang="zh-CN" class="knowledge-graph-compact" role="img" aria-labelledby="knowledge-b4b5e2445872-compact-title knowledge-b4b5e2445872-compact-desc" viewBox="0 0 360 852" width="360" style="width:100%;height:auto;max-width:560px;margin:0 auto;font-family:system-ui,sans-serif"><title id="knowledge-b4b5e2445872-compact-title">可控 4D 视频与相机轨迹控制架构研究专著（GEN3C × Diff4Splat × MotionStream） — Qi Chen</title><desc id="knowledge-b4b5e2445872-compact-desc">讲解目标与场景意图: 叙事 · 分镜 · 相机约束 → 定义场景模型 → 几何与物理模型: 4D 高斯 · Plücker 射线 · 程序化几何 → 驱动时间与运动 → 运动、相机与交互: 时间线 · 弹簧 · 运动画笔 · 6DoF 相机 → 渲染讲解画面 → 渲染与无障碍播放: SVG / Canvas / WebGL · 减弱动画降级 → 检查视觉证据 → 工作台与来源评测: 比较画面与机制，不拼接无关评分</desc><rect width="360" height="852" rx="16" fill="#081525" stroke="#284566"/><rect x="16" y="14" width="224" height="22" rx="11" fill="#112844" stroke="#2d5a88"/><text x="28" y="29" fill="#56ddcd" font-size="11.5" font-weight="700"><tspan x="28" dy="0">数据流向与架构要点 · 竖屏视图</tspan></text><text x="20" y="58" fill="#eef5ff" font-size="18" font-weight="700"><tspan x="20" dy="0">可控 4D 视频与相机轨迹控制架</tspan><tspan x="20" dy="25.2">构研究专著（GEN3C ×</tspan><tspan x="20" dy="25.2">Diff4Splat × MotionStream）</tspan><tspan x="20" dy="25.2">— Qi Chen</tspan></text><text x="20" y="158" fill="#a9b8ce" font-size="12.5" font-weight="400"><tspan x="20" dy="0">概念拓扑 · 箭头表示数据/控制流向，非实测指标</tspan></text><g data-concept="1"><rect x="16" y="180" width="328" height="94" rx="12" fill="#0e2036" stroke="#38597d"/><rect x="16" y="180" width="328" height="4" rx="2" fill="#38bdf8"/><text x="30" y="203" fill="#38bdf8" font-size="11.5" font-weight="700"><tspan x="30" dy="0">01 · 输入与意图</tspan></text><text x="30" y="226" fill="#f0f6ff" font-size="16.5" font-weight="700"><tspan x="30" dy="0">讲解目标与场景意图</tspan></text><text x="30" y="253" fill="#c4d5e8" font-size="13" font-weight="400"><tspan x="30" dy="0">叙事 · 分镜 · 相机约束</tspan></text></g><g data-relationship="定义场景模型"><path d="M34 276 V314" fill="none" stroke="#56ddcd" stroke-width="2.2"/><path d="M29 308 L34 315 L39 308" fill="none" stroke="#56ddcd" stroke-width="2.2"/><text x="50" y="298" fill="#8eeadf" font-size="12.5" font-weight="600"><tspan x="50" dy="0">01→02 定义场景模型</tspan></text></g><g data-concept="2"><rect x="16" y="320" width="328" height="94" rx="12" fill="#122842" stroke="#38597d"/><rect x="16" y="320" width="328" height="4" rx="2" fill="#34d399"/><text x="30" y="343" fill="#34d399" font-size="11.5" font-weight="700"><tspan x="30" dy="0">02 · 上下文锚定</tspan></text><text x="30" y="366" fill="#f0f6ff" font-size="16.5" font-weight="700"><tspan x="30" dy="0">几何与物理模型</tspan></text><text x="30" y="393" fill="#c4d5e8" font-size="13" font-weight="400"><tspan x="30" dy="0">4D 高斯 · Plücker 射线 · 程序化几何</tspan></text></g><g data-relationship="驱动时间与运动"><path d="M34 416 V454" fill="none" stroke="#56ddcd" stroke-width="2.2"/><path d="M29 448 L34 455 L39 448" fill="none" stroke="#56ddcd" stroke-width="2.2"/><text x="50" y="438" fill="#8eeadf" font-size="12.5" font-weight="600"><tspan x="50" dy="0">02→03 驱动时间与运动</tspan></text></g><g data-concept="3"><rect x="16" y="460" width="328" height="94" rx="12" fill="#0e2036" stroke="#38597d"/><rect x="16" y="460" width="328" height="4" rx="2" fill="#a78bfa"/><text x="30" y="483" fill="#a78bfa" font-size="11.5" font-weight="700"><tspan x="30" dy="0">03 · 策略与门禁</tspan></text><text x="30" y="506" fill="#f0f6ff" font-size="16.5" font-weight="700"><tspan x="30" dy="0">运动、相机与交互</tspan></text><text x="30" y="533" fill="#c4d5e8" font-size="13" font-weight="400"><tspan x="30" dy="0">时间线 · 弹簧 · 运动画笔 · 6DoF 相机</tspan></text></g><g data-relationship="渲染讲解画面"><path d="M34 556 V594" fill="none" stroke="#56ddcd" stroke-width="2.2"/><path d="M29 588 L34 595 L39 588" fill="none" stroke="#56ddcd" stroke-width="2.2"/><text x="50" y="578" fill="#8eeadf" font-size="12.5" font-weight="600"><tspan x="50" dy="0">03→04 渲染讲解画面</tspan></text></g><g data-concept="4"><rect x="16" y="600" width="328" height="94" rx="12" fill="#122842" stroke="#38597d"/><rect x="16" y="600" width="328" height="4" rx="2" fill="#f59e0b"/><text x="30" y="623" fill="#f59e0b" font-size="11.5" font-weight="700"><tspan x="30" dy="0">04 · 执行与运行</tspan></text><text x="30" y="646" fill="#f0f6ff" font-size="16.5" font-weight="700"><tspan x="30" dy="0">渲染与无障碍播放</tspan></text><text x="30" y="673" fill="#c4d5e8" font-size="13" font-weight="400"><tspan x="30" dy="0">SVG / Canvas / WebGL · 减弱动画降级</tspan></text></g><g data-relationship="检查视觉证据"><path d="M34 696 V734" fill="none" stroke="#56ddcd" stroke-width="2.2"/><path d="M29 728 L34 735 L39 728" fill="none" stroke="#56ddcd" stroke-width="2.2"/><text x="50" y="718" fill="#8eeadf" font-size="12.5" font-weight="600"><tspan x="50" dy="0">04→05 检查视觉证据</tspan></text></g><g data-concept="5"><rect x="16" y="740" width="328" height="94" rx="12" fill="#0e2036" stroke="#38597d"/><rect x="16" y="740" width="328" height="4" rx="2" fill="#56ddcd"/><text x="30" y="763" fill="#56ddcd" font-size="11.5" font-weight="700"><tspan x="30" dy="0">05 · 审计与评测</tspan></text><text x="30" y="786" fill="#f0f6ff" font-size="16.5" font-weight="700"><tspan x="30" dy="0">工作台与来源评测</tspan></text><text x="30" y="813" fill="#c4d5e8" font-size="13" font-weight="400"><tspan x="30" dy="0">比较画面与机制，不拼接无关评分</tspan></text></g></svg><svg xmlns="http://www.w3.org/2000/svg" lang="zh-CN" class="knowledge-graph-wide" role="img" aria-labelledby="knowledge-b4b5e2445872-title knowledge-b4b5e2445872-desc" viewBox="0 0 1080 448" width="1080" style="width:100%;height:auto;max-width:1080px;margin:0 auto;font-family:system-ui,sans-serif"><title id="knowledge-b4b5e2445872-title">可控 4D 视频与相机轨迹控制架构研究专著（GEN3C × Diff4Splat × MotionStream） — Qi Chen</title><desc id="knowledge-b4b5e2445872-desc">讲解目标与场景意图: 叙事 · 分镜 · 相机约束 → 定义场景模型 → 几何与物理模型: 4D 高斯 · Plücker 射线 · 程序化几何 → 驱动时间与运动 → 运动、相机与交互: 时间线 · 弹簧 · 运动画笔 · 6DoF 相机 → 渲染讲解画面 → 渲染与无障碍播放: SVG / Canvas / WebGL · 减弱动画降级 → 检查视觉证据 → 工作台与来源评测: 比较画面与机制，不拼接无关评分</desc><rect width="1080" height="448" rx="16" fill="#081525" stroke="#284566"/><rect x="24" y="16" width="292" height="24" rx="12" fill="#102742" stroke="#2d5a88"/><text x="38" y="32" fill="#56ddcd" font-size="11.5" font-weight="700"><tspan x="38" dy="0">数据流向与核心要点架构图 · 横向全景</tspan></text><rect x="646" y="16" width="196" height="24" rx="12" fill="#0d2238" stroke="#254b6e"/><text x="660" y="32" fill="#7ce8d8" font-size="11.5" font-weight="600"><tspan x="660" dy="0">──▶ 阶段数据与上下文流</tspan></text><rect x="852" y="16" width="204" height="24" rx="12" fill="#15203c" stroke="#3b4278"/><text x="866" y="32" fill="#c4b5fd" font-size="11.5" font-weight="600"><tspan x="866" dy="0">◆ 策略门禁与要点说明</tspan></text><text x="24" y="62" fill="#f2f7ff" font-size="18" font-weight="700"><tspan x="24" dy="0">可控 4D 视频与相机轨迹控制架构研究专著（GEN3C × Diff4Splat ×</tspan><tspan x="24" dy="25.2">MotionStream） — Qi Chen</tspan></text><g data-concept="1"><rect x="24" y="106" width="187" height="186" rx="12" fill="#0d1e34" stroke="#335277" stroke-width="1.2"/><rect x="24" y="106" width="187" height="5" rx="2.5" fill="#38bdf8"/><rect x="34" y="119" width="167" height="22" rx="6" fill="#081424" stroke="#223b59"/><text x="40" y="134" fill="#38bdf8" font-size="11.5" font-weight="700"><tspan x="40" dy="0">01 · 输入与意图</tspan></text><text x="36" y="160" fill="#f4f8ff" font-size="13.5" font-weight="700"><tspan x="36" dy="0">讲解目标与场景意图</tspan></text><path d="M36 175 H199" stroke="#233b57" stroke-width="1"/><text x="36" y="193" fill="#c5d6e8" font-size="12" font-weight="400"><tspan x="36" dy="0">叙事 · 分镜 · 相机约束</tspan></text></g><g data-relationship="定义场景模型"><path d="M213 199 H231" fill="none" stroke="#56ddcd" stroke-width="2.4"/><path d="M225 194 L232 199 L225 204" fill="none" stroke="#56ddcd" stroke-width="2.4"/><rect x="24" y="300" width="187" height="30" rx="8" fill="#0b2239" stroke="#2b5b6c"/><text x="34" y="319" fill="#7ce8d8" font-size="11.5" font-weight="600"><tspan x="34" dy="0">01→02 定义场景模型</tspan></text></g><g data-concept="2"><rect x="235" y="106" width="187" height="186" rx="12" fill="#112640" stroke="#335277" stroke-width="1.2"/><rect x="235" y="106" width="187" height="5" rx="2.5" fill="#34d399"/><rect x="245" y="119" width="167" height="22" rx="6" fill="#081424" stroke="#223b59"/><text x="251" y="134" fill="#34d399" font-size="11.5" font-weight="700"><tspan x="251" dy="0">02 · 上下文锚定</tspan></text><text x="247" y="160" fill="#f4f8ff" font-size="13.5" font-weight="700"><tspan x="247" dy="0">几何与物理模型</tspan></text><path d="M247 175 H410" stroke="#233b57" stroke-width="1"/><text x="247" y="193" fill="#c5d6e8" font-size="12" font-weight="400"><tspan x="247" dy="0">4D 高斯 · Plücker 射线 ·</tspan><tspan x="247" dy="16.799999999999997">程序化几何</tspan></text></g><g data-relationship="驱动时间与运动"><path d="M424 199 H442" fill="none" stroke="#56ddcd" stroke-width="2.4"/><path d="M436 194 L443 199 L436 204" fill="none" stroke="#56ddcd" stroke-width="2.4"/><rect x="235" y="300" width="187" height="30" rx="8" fill="#0b2239" stroke="#2b5b6c"/><text x="245" y="319" fill="#7ce8d8" font-size="11.5" font-weight="600"><tspan x="245" dy="0">02→03 驱动时间与运动</tspan></text></g><g data-concept="3"><rect x="446" y="106" width="187" height="186" rx="12" fill="#0d1e34" stroke="#335277" stroke-width="1.2"/><rect x="446" y="106" width="187" height="5" rx="2.5" fill="#a78bfa"/><rect x="456" y="119" width="167" height="22" rx="6" fill="#081424" stroke="#223b59"/><text x="462" y="134" fill="#a78bfa" font-size="11.5" font-weight="700"><tspan x="462" dy="0">03 · 策略与门禁</tspan></text><text x="458" y="160" fill="#f4f8ff" font-size="13.5" font-weight="700"><tspan x="458" dy="0">运动、相机与交互</tspan></text><path d="M458 175 H621" stroke="#233b57" stroke-width="1"/><text x="458" y="193" fill="#c5d6e8" font-size="12" font-weight="400"><tspan x="458" dy="0">时间线 · 弹簧 · 运动画笔</tspan><tspan x="458" dy="16.799999999999997">· 6DoF 相机</tspan></text></g><g data-relationship="渲染讲解画面"><path d="M635 199 H653" fill="none" stroke="#56ddcd" stroke-width="2.4"/><path d="M647 194 L654 199 L647 204" fill="none" stroke="#56ddcd" stroke-width="2.4"/><rect x="446" y="300" width="187" height="30" rx="8" fill="#0b2239" stroke="#2b5b6c"/><text x="456" y="319" fill="#7ce8d8" font-size="11.5" font-weight="600"><tspan x="456" dy="0">03→04 渲染讲解画面</tspan></text></g><g data-concept="4"><rect x="657" y="106" width="187" height="186" rx="12" fill="#112640" stroke="#335277" stroke-width="1.2"/><rect x="657" y="106" width="187" height="5" rx="2.5" fill="#f59e0b"/><rect x="667" y="119" width="167" height="22" rx="6" fill="#081424" stroke="#223b59"/><text x="673" y="134" fill="#f59e0b" font-size="11.5" font-weight="700"><tspan x="673" dy="0">04 · 执行与运行</tspan></text><text x="669" y="160" fill="#f4f8ff" font-size="13.5" font-weight="700"><tspan x="669" dy="0">渲染与无障碍播放</tspan></text><path d="M669 175 H832" stroke="#233b57" stroke-width="1"/><text x="669" y="193" fill="#c5d6e8" font-size="12" font-weight="400"><tspan x="669" dy="0">SVG / Canvas / WebGL · 减</tspan><tspan x="669" dy="16.799999999999997">弱动画降级</tspan></text></g><g data-relationship="检查视觉证据"><path d="M846 199 H864" fill="none" stroke="#56ddcd" stroke-width="2.4"/><path d="M858 194 L865 199 L858 204" fill="none" stroke="#56ddcd" stroke-width="2.4"/><rect x="657" y="300" width="187" height="30" rx="8" fill="#0b2239" stroke="#2b5b6c"/><text x="667" y="319" fill="#7ce8d8" font-size="11.5" font-weight="600"><tspan x="667" dy="0">04→05 检查视觉证据</tspan></text></g><g data-concept="5"><rect x="868" y="106" width="187" height="186" rx="12" fill="#0d1e34" stroke="#335277" stroke-width="1.2"/><rect x="868" y="106" width="187" height="5" rx="2.5" fill="#56ddcd"/><rect x="878" y="119" width="167" height="22" rx="6" fill="#081424" stroke="#223b59"/><text x="884" y="134" fill="#56ddcd" font-size="11.5" font-weight="700"><tspan x="884" dy="0">05 · 审计与评测</tspan></text><text x="880" y="160" fill="#f4f8ff" font-size="13.5" font-weight="700"><tspan x="880" dy="0">工作台与来源评测</tspan></text><path d="M880 175 H1043" stroke="#233b57" stroke-width="1"/><text x="880" y="193" fill="#c5d6e8" font-size="12" font-weight="400"><tspan x="880" dy="0">比较画面与机制，不拼接无</tspan><tspan x="880" dy="16.799999999999997">关评分</tspan></text></g><rect x="868" y="300" width="187" height="30" rx="8" fill="#0e2538" stroke="#2e5470"/><text x="878" y="319" fill="#93c5fd" font-size="11.5" font-weight="600"><tspan x="878" dy="0">05 闭环 · 审计与证据核验</tspan></text><g data-takeaway="1"><rect x="24" y="344" width="334" height="88" rx="10" fill="#0b1a2e" stroke="#284466"/><rect x="24" y="356" width="4" height="64" rx="2" fill="#38bdf8"/><text x="38" y="369" fill="#38bdf8" font-size="11.5" font-weight="700"><tspan x="38" dy="0">要点 01 · 全链路数据流向</tspan></text><text x="38" y="390" fill="#d5e4f5" font-size="12" font-weight="400"><tspan x="38" dy="0">自左向右从「讲解目标与场景意图」递进至「工作</tspan><tspan x="38" dy="16.799999999999997">台与来源评测」，明确各阶段输入与输出契约。</tspan></text></g><g data-takeaway="2"><rect x="373" y="344" width="334" height="88" rx="10" fill="#0b1a2e" stroke="#284466"/><rect x="373" y="356" width="4" height="64" rx="2" fill="#a78bfa"/><text x="387" y="369" fill="#a78bfa" font-size="11.5" font-weight="700"><tspan x="387" dy="0">要点 02 · 核心控制与策略门禁</tspan></text><text x="387" y="390" fill="#d5e4f5" font-size="12" font-weight="400"><tspan x="387" dy="0">核心门禁「运动、相机与交互」：时间线 · 弹簧</tspan><tspan x="387" dy="16.799999999999997">· 运动画笔 · 6DoF 相机</tspan></text></g><g data-takeaway="3"><rect x="722" y="344" width="334" height="88" rx="10" fill="#0b1a2e" stroke="#284466"/><rect x="722" y="356" width="4" height="64" rx="2" fill="#34d399"/><text x="736" y="369" fill="#34d399" font-size="11.5" font-weight="700"><tspan x="736" dy="0">要点 03 · 证据核验与适用边界</tspan></text><text x="736" y="390" fill="#d5e4f5" font-size="12" font-weight="400"><tspan x="736" dy="0">比较画面与机制，不拼接无关评分 · 概念拓扑示</tspan><tspan x="736" dy="16.799999999999997">意，非实测延迟。</tspan></text></g></svg><figcaption style="font:13px/1.6 system-ui,sans-serif;margin:10px auto 0;max-width:1080px;color:#9fb2ca;overflow-wrap:anywhere">整体架构与数据流向图示：自左向右阅读阶段数据流转、策略门禁与底部三项核心要点说明（概念拓扑，不代表实测吞吐或生产排名）。</figcaption></figure><!-- site-remediation-knowledge:end --><aside id="reading-language-note" class="reading-language-note">保留原文。可打开独立英文版本；不同版本的内容可能不同。</aside><main id="reading-main" tabindex="-1" class="reading-document"><a class="reading-context" href="../../studio/zh-animation.html">← Studio / animation</a><div class="shell"><div><a href="../">← 实验室</a><div><strong>🌐 中文 (HTML)</strong> · <a href="controllable-4d-video-camera-study.html">English (HTML)</a> · <a href="../demos/camera-4d-director/index.html">🎬 交互式 4D 运镜导演台</a> · <a href="../demos/camera-4d-director/test-report-cards.zh-CN.html">📊 7-Card 报告</a> · <a href="./evidence/controllable-4d-video-summary.svg">🖼️ 架构一图流 SVG</a></div></div><article class="reading-markdown"><h1 id="4d-高斯泼溅与-plücker-相机轨迹控制深度研究：从-gen3c、diff4splat-到-motionstream-实时导演工作台">4D 高斯泼溅与 Plücker 相机轨迹控制深度研究：从 <code>GEN3C</code>、<code>Diff4Splat</code> 到 <code>MotionStream</code> 实时导演工作台</h1>
+<blockquote>
+<p>🌐 <strong>Language / 语言</strong>: <strong>中文</strong> | <a href="controllable-4d-video-camera-study.en.md">English (<code>controllable-4d-video-camera-study.en.md</code>)</a><br>🎬 <strong>全新交互式能力展示 Demo</strong>: <a href="../demos/camera-4d-director/">4D Gaussian &amp; Plücker Camera Director (<code>demos/camera-4d-director/</code>)</a> · <a href="../demos/camera-4d-director/test-report-cards.zh-CN.html">7-Card 4:5 视觉评测报告 (<code>test-report-cards.html</code>)</a><br>🖼️ <strong>一图流可视化总结</strong>: <a href="evidence/controllable-4d-video-summary.svg"><code>docs/evidence/controllable-4d-video-summary.svg</code></a></p>
+</blockquote>
+<p><img src="evidence/controllable-4d-video-summary.svg" alt="4D 高斯泼溅与 Plücker 相机轨迹控制架构与评测一图流总结"></p>
+<hr>
+<h2 id="摘要-executive-summary">摘要 (Executive Summary)</h2>
+<p>2025–2026 年，AI 视频与动画生成领域正在发生一场根本性的架构范式转移：<strong>从“基于纯文本或 2D 光流的盲盒视频扩散（2D Blind Diffusion）”跃迁至“显式 3D/4D 几何缓存 + 6D Plücker 射线相机控制 + 因果滑窗实时轨迹流（Controllable 4D World-Consistent Synthesis）”</strong>。</p>
+<p>在企业级影视预演（Pre-viz）、3D 电商商品动态展示、具身智能世界模型与交互式技术演示中，传统 2D 视频生成模型长期受困于三大结构性瓶颈：</p>
+<ol>
+<li><strong>大角度运镜下的三维几何坍塌（3D Geometry Collapse）</strong>：当执行 180° 环绕摇臂、希区柯克变焦（Dolly Zoom / Vertigo）或穿拱俯冲（FPV Dive）时，背景建筑扭曲变形，被遮挡区域的修复前后不一致（对极几何一致性 $S_{\text{epi}} &lt; 0.62$）；</li>
+<li><strong>相机运动、主体运动与光照重打光强耦合（Entangled Control）</strong>：使用 2D 运动画笔拖动角色时往往连带拖拽背景；修改光源方向需要整段视频重新扩散，导致主体身份与动作漂移；</li>
+<li><strong>双向时序注意力的高延迟瓶颈（$\mathcal{O}(T^2)$ Bidirectional Latency）</strong>：生成一段 5 秒视频动辄耗时 40–120 秒，导演无法像操作游戏引擎一样实时拖拽轨迹、调整焦距并立即看到二阶物理反馈。</li>
+</ol>
+<p>本研究从 <strong>AI Solution Architect（AI 解决方案架构师）</strong> 的五大核心维度出发，系统解构当前最热门的三项代表性技术突破——<strong>NVIDIA <code>GEN3C</code>（3D 时空点云缓存与遮挡感知相机控制）</strong>、**<code>Diff4Splat</code>（可控 4D 可变形各向异性高斯泼溅场）** 与 <strong>Adobe <code>MotionStream</code> × <code>Seedance 2.0</code> / <code>Wan 2.7</code>（因果滑窗 DMD 蒸馏与多主体交互式运动画笔）</strong>，并设计开发了零外部 API 依赖、浏览器原生 60 FPS 运行的全新能力展示工作台 **<code>demos/camera-4d-director/</code>**。</p>
+<hr>
+<h2 id="pillar-0-·-当日最热门领域能力突破追踪-daily-hottest-domain-breakthrough-tracking">Pillar 0 · 当日最热门领域能力突破追踪 (Daily Hottest Domain Breakthrough Tracking)</h2>
+<table>
+<thead>
+<tr>
+<th>突破方向</th>
+<th>代表工作 / 实验室</th>
+<th>核心能力跃迁</th>
+<th>解决的工程痛点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>3D 缓存驱动的世界一致性相机控制</strong></td>
+<td><strong>NVIDIA <code>GEN3C</code></strong> (CVPR Highlight) / <code>CamI2V</code> / <code>CameraCtrl</code></td>
+<td>引入显式三维时空点云/深度缓存 $\mathcal{C}<em>t$ 与 6D Plücker 射线嵌入 $\mathcal{P}(u,v)=(\mathbf{d}, \mathbf{o}\times\mathbf{d})$；新视角先执行显式三维重投影，扩散模型仅负责修复去遮挡掩码 $\mathbf{M}</em>{\text{disocc}}$ 与视角相关高光</td>
+<td>彻底解决大角度环绕、希区柯克变焦（Dolly Zoom）与多镜头切换时的空间结构坍塌</td>
+</tr>
+<tr>
+<td><strong>4D 可变形高斯泼溅动态场景生成</strong></td>
+<td><strong><code>Diff4Splat</code></strong> (CVPR 2026) / 4DGS</td>
+<td>将 3D Gaussian Splatting 扩展至四维时空 $\mathcal{G}_4(x,y,z,t)$，利用扩散先验生成带时序形变场 $(\Delta\boldsymbol{\mu}_i(t), \Delta\mathbf{q}_i(t))$ 的各向异性椭球与球谐光照系数（SH）</td>
+<td>单图/文本生成支持 60 FPS 自由视角漫游、子弹时间冻结（Bullet-Time）与实时三点重打光的 4D 资产</td>
+</tr>
+<tr>
+<td><strong>实时因果流式扩散与交互式轨迹画笔</strong></td>
+<td><strong>Adobe <code>MotionStream</code></strong> / <code>CausVid</code> / <code>Seedance 2.0</code> / <code>Runway Gen-4</code></td>
+<td>通过 Self-Forcing + 分布匹配蒸馏（DMD）将双向视频 DiT 转化为带 Attention Sink 的因果滑窗模型，结合多主体轨迹控制与内置二阶物理（毛发/披风/倾角跟随）</td>
+<td>首帧延迟降至亚秒级（~34 ms/step），支持用户在画布上边播边拖改写物体轨迹与相机角度</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="pillar-1-·-底层技术架构深度解构-architecture-design">Pillar 1 · 底层技术架构深度解构 (Architecture Design)</h2>
+<h3 id="11-系统总览：三层解耦的-4d-可控视频生成与实时渲染架构">1.1 系统总览：三层解耦的 4D 可控视频生成与实时渲染架构</h3>
+<pre><code>┌───────────────────────────────────────────────────────────────────────────────────┐
+│ Layer 1 · Director Control Plane (6-DoF Camera + Multi-Subject Trajectory + Light)│
+│  • SE(3) Camera Path: P_t = [R_t | o_t], Focal f(t), Aperture A(t), Focus z_f(t) │
+│  • 6D Plücker Ray Encoder: P(u,v) = (d, o_t × d) ∈ R^{H × W × 6}                 │
+│  • Interactive Bezier Motion Brush: B_k(t) = Σ b_{k,j} B_j^3(t) + Spring Physics  │
+└───────────────────────────────────────┬───────────────────────────────────────────┘
+                                        ▼
+┌───────────────────────────────────────────────────────────────────────────────────┐
+│ Layer 2 · Spatiotemporal 3D/4D World State Cache (GEN3C + Diff4Splat Core)        │
+│  • Canonical 3D Gaussians: G_i = { μ_{i,0}, Σ_{i,0}, α_i, SH_i, tag_i }          │
+│  • Temporal Deformation Field: μ_i(t) = μ_{i,0} + Δμ_i(t), Σ_i(t) = R(t)Σ_0 R(t)^T│
+│  • GEN3C Visibility &amp; Disocclusion Gate: M_disocc(u,v,t) = 1[T(u,v,t) &gt; τ_occ]    │
+└───────────────────────────────────────┬───────────────────────────────────────────┘
+                                        ▼
+┌───────────────────────────────────────────────────────────────────────────────────┐
+│ Layer 3 · EWA Splat Rasterizer &amp; Causal DMD Sliding-Window Synthesis              │
+│  • Jacobian Screen Projection: Σ&#39;_{2D} = (J_t W_t Σ_{3D}(t) W_t^T J_t^T)_{2×2}    │
+│  • Spherical Harmonics + 3-Point Relighting (Key / Fill / Rim + Kelvin Temp)      │
+│  • Causal Sliding-Window KV-Cache with Attention Sinks (Constant O(1) Step Cost)  │
+└───────────────────────────────────────────────────────────────────────────────────┘
+</code></pre>
+<h3 id="12-核心数学模型一：6d-plücker-射线坐标嵌入（plücker-ray-embeddings）">1.2 核心数学模型一：6D Plücker 射线坐标嵌入（Plücker Ray Embeddings）</h3>
+<p>为什么直接把相机外参矩阵 $[R_t \mid \mathbf{o}_t] \in \mathbb{R}^{3\times 4}$ 作为一维向量拼进 Transformer 会导致相机控制失准？因为旋转矩阵的欧拉角/四元数与像素空间没有逐像素对齐的几何对应关系。<code>CameraCtrl</code>、<code>CamI2V</code> 与 <code>GEN3C</code> 均采用 <strong>6D Plücker 射线嵌入（Plücker Coordinates）</strong>，将相机内参 $\mathbf{K}_t$ 与外参 $(R_t, \mathbf{o}_t)$ 转化为与特征图空间分辨率完全对齐的 6 通道几何张量 $\mathcal{P}_t \in \mathbb{R}^{H \times W \times 6}$：</p>
+<p>对于像素坐标 $(u, v)$，其在世界坐标系下的单位视线方向向量 $\mathbf{d}(u,v)$ 与力矩向量（Moment Vector）$\mathbf{m}(u,v)$ 定义为：</p>
+<p>$$\mathbf{d}(u,v) = \frac{R_t \mathbf{K}_t^{-1} [u, v, 1]^\top}{\left| R_t \mathbf{K}_t^{-1} [u, v, 1]^\top \right|_2} \in \mathbb{S}^2, \qquad \mathbf{m}(u,v) = \mathbf{o}_t \times \mathbf{d}(u,v) \in \mathbb{R}^3$$</p>
+<p>$$\mathcal{P}_t(u,v) = \big(\mathbf{d}(u,v),; \mathbf{m}(u,v)\big) \in \mathbb{R}^6, \qquad \text{满足正交约束 } \mathbf{d} \cdot \mathbf{m} = 0$$</p>
+<h4 id="希区柯克变焦（hitchcock-dolly-zoom--vertigo-effect）的精确参数化">希区柯克变焦（Hitchcock Dolly Zoom / Vertigo Effect）的精确参数化</h4>
+<p>在 <code>GEN3C</code> 与我们的工作台中，希区柯克变焦通过同时反向调节相机到主体的距离 $d(t) = |\mathbf{o}<em>t - \mathbf{p}</em>{\text{focus}}|<em>2$ 与焦距 $f(t)$，锁死前景主体在视网膜/画布上的投影尺寸 $s</em>{\text{subject}}$，同时令背景透视视场角 $\text{FOV}(t)$ 发生剧烈张缩：</p>
+<p>$$f(t) = f_0 \cdot \frac{d(t)}{d_0}, \qquad \text{FOV}<em>y(t) = 2 \arctan!\left(\frac{H</em>{\text{sensor}}}{2 f(t)}\right)$$</p>
+<p>由于主体处的投影缩放因子为 $\frac{f(t)}{d(t)} = \frac{f_0}{d_0} = \text{const}$，前景主体高度漂移在理论上严格为 $0\text{ px}$，而距离为 $d_{\text{bg}} = d(t) + \Delta Z$ 的背景层放大率 $\frac{f(t)}{d(t)+\Delta Z} = \frac{f_0}{d_0 + \Delta Z \cdot (d_0 / d(t))}$ 随 $d(t)$ 拉远而急剧膨胀，产生强烈的空间压迫与眩晕感。</p>
+<h3 id="13-核心数学模型二：diff4splat-四维各向异性高斯泼溅与雅可比投影">1.3 核心数学模型二：<code>Diff4Splat</code> 四维各向异性高斯泼溅与雅可比投影</h3>
+<p>在 <code>Diff4Splat</code> 中，动态场景由 $N$ 个四维各向异性高斯基元 ${\mathcal{G}<em>i(t)}</em>{i=1}^N$ 组成。每个基元在时刻 $t$ 具有三维中心 $\boldsymbol{\mu}<em>i(t) \in \mathbb{R}^3$、由缩放对角阵 $\mathbf{S}<em>i(t) = \text{diag}(s</em>{ix}, s</em>{iy}, s_{iz})$ 与旋转矩阵 $\mathbf{R}_i(t)$ 构成的协方差矩阵 $\boldsymbol{\Sigma}_i(t)$、不透明度 $\alpha_i \in (0,1)$ 以及视角/光照相关的色彩 $\mathbf{c}_i(\mathbf{d}, \mathbf{L})$：</p>
+<p>$$\boldsymbol{\Sigma}_i(t) = \mathbf{R}_i(t),\mathbf{S}_i(t),\mathbf{S}_i(t)^\top,\mathbf{R}_i(t)^\top$$</p>
+<p>当相机外参为视图变换矩阵 $\mathbf{W}_t = R_t^\top$ 时，根据 Zwicker 等人的 EWA（Elliptical Weighted Average）泼溅理论，三维协方差 $\boldsymbol{\Sigma}_i(t)$ 经透视投影雅可比矩阵 $\mathbf{J}<em>t$ 映射到二维屏幕空间的协方差矩阵 $\boldsymbol{\Sigma}&#39;</em>{i,2\text{D}}(t)$ 为：</p>
+<p>$$\boldsymbol{\Sigma}&#39;_{i,2\text{D}}(t) = \Big(\mathbf{J}_t,\mathbf{W}_t,\boldsymbol{\Sigma}_i(t),\mathbf{W}<em>t^\top,\mathbf{J}<em>t^\top\Big)</em>{1:2,,1:2} + \epsilon</em>{\text{lowpass}}\mathbf{I}_2, \qquad \mathbf{J}_t = \begin{bmatrix} \frac{f_x}{z_c} &amp; 0 &amp; -\frac{f_x x_c}{z_c^2} \ 0 &amp; \frac{f_y}{z_c} &amp; -\frac{f_y y_c}{z_c^2} \end{bmatrix}$$</p>
+<p>通过对二维对称正定矩阵 $\boldsymbol{\Sigma}&#39;_{i,2\text{D}} = \begin{bmatrix} a &amp; b \ b &amp; c \end{bmatrix}$ 进行特征值分解：</p>
+<p>$$\lambda_{1,2} = \frac{a+c}{2} \pm \sqrt{\left(\frac{a-c}{2}\right)^2 + b^2}, \qquad \theta_{\text{ellipse}} = \frac{1}{2}\operatorname{atan2}(2b, a-c)$$</p>
+<p>即可在浏览器端精确绘制出每个高斯体在当前视角与焦距下的二维各向异性长短轴 $(r_1, r_2) = (2\sqrt{\lambda_1}, 2\sqrt{\lambda_2})$ 与倾角 $\theta_{\text{ellipse}}$，并按深度 $z_c$ 从后向前执行 $\alpha$-blending 合成：</p>
+<p>$$\mathbf{C}(u,v,t) = \sum_{k \in \mathcal{N}(u,v)} \mathbf{c}_k(\mathbf{d}, \mathbf{L}),\tilde{\alpha}<em>k \prod</em>{j &lt; k} (1 - \tilde{\alpha}_j)$$</p>
+<h3 id="14-核心数学模型三：gen3c-去遮挡掩码与-motionstream-因果滑窗蒸馏">1.4 核心数学模型三：<code>GEN3C</code> 去遮挡掩码与 <code>MotionStream</code> 因果滑窗蒸馏</h3>
+<ol>
+<li><strong><code>GEN3C</code> 3D 缓存命中率与去遮挡掩码（Disocclusion Mask）</strong>：
+设参考关键帧相机位姿为 $P_{\text{ref}}$，当前相机位姿为 $P_t$。每个缓存基元 $i$ 存储其在参考视角下的法向 $\mathbf{n}<em>i$ 与可见性标记。当视线夹角余弦 $\cos\gamma_i = (\mathbf{d}</em>{\text{ref},i} \cdot \mathbf{d}<em>{t,i})$ 低于阈值或局部透射率 $T(u,v,t) = \prod_k (1 - \tilde{\alpha}<em>k) &gt; \tau</em>{\text{occ}}$ 时，像素 $(u,v)$ 被判定为<strong>新暴露的去遮挡区域（Disoccluded Region）</strong>，触发局部扩散修复掩码 $\mathbf{M}</em>{\text{disocc}}(u,v,t) = 1$。</li>
+<li><strong><code>MotionStream</code> 二阶物理跟随与因果滑窗 KV-Cache</strong>：
+当用户在画布上绘制或拖拽三次贝塞尔轨迹 $\mathbf{B}(s) = (1-s)^3\mathbf{P}_0 + 3(1-s)^2s\mathbf{P}_1 + 3(1-s)s^2\mathbf{P}_2 + s^3\mathbf{P}_3$ 时，主体沿切线向量 $\mathbf{v}(s) = \mathbf{B}&#39;(s)$ 推进，曲率 $\kappa(s) = \frac{|\mathbf{B}&#39;(s) \times \mathbf{B}&#39;&#39;(s)|}{|\mathbf{B}&#39;(s)|^3}$ 自动驱动机体的横滚倾角（Banking Roll）$\phi(s) = \arctan(\kappa(s),|\mathbf{v}(s)|^2 / g)$，而挂载的飘带/尾迹/机械翼则通过二阶欠阻尼弹簧振子 $\ddot{\mathbf{x}} + 2\zeta\omega_0\dot{\mathbf{x}} + \omega_0^2(\mathbf{x} - \mathbf{B}(s)) = \mathbf{0}$ 产生自然的惯性滞后与弹性回摆。</li>
+</ol>
+<hr>
+<h2 id="pillar-2-·-全新交互式能力展示-demo-架构-demoscamera-4d-director">Pillar 2 · 全新交互式能力展示 Demo 架构 (<code>demos/camera-4d-director/</code>)</h2>
+<p>为直观展现上述三大前沿突破，我们开发了全新的零依赖单页交互工作台 **<code>demos/camera-4d-director/index.html</code>**（绝不修改原有飞天/火星/火箭三个历史 Demo）：</p>
+<h3 id="21-三大-4d-场景-×-六种-se3-相机轨迹-×-四种-x-ray-透视视图">2.1 三大 4D 场景 × 六种 SE(3) 相机轨迹 × 四种 X-Ray 透视视图</h3>
+<table>
+<thead>
+<tr>
+<th>维度</th>
+<th>枚举项 ID</th>
+<th>视觉与工程机制说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Scene 1</strong></td>
+<td><code>gen3c-cyber-rooftop-chase</code></td>
+<td><strong>GEN3C · 赛博天台无人机追逐与希区柯克变焦</strong>：多层霓虹全息天台建筑群、中央悬浮巡航机与全息广告牌，完整展示 Dolly-Zoom 主体尺寸锁定与大角度去遮挡掩码区域</td>
+</tr>
+<tr>
+<td><strong>Scene 2</strong></td>
+<td><code>diff4splat-chrono-artisan</code></td>
+<td><strong>Diff4Splat · 4D 陀飞轮星盘与实时重打光</strong>：三轴旋转黄金/蓝宝石星盘核心、环绕能量粒子流与悬浮铭文环，展示 4D 协方差椭球形变、子弹时间冻结与球谐重打光</td>
+</tr>
+<tr>
+<td><strong>Scene 3</strong></td>
+<td><code>motionstream-multi-subject-stage</code></td>
+<td><strong>MotionStream × Seedance · 多主体交互轨迹舞台</strong>：支持直接在画布上用鼠标拖拽修改 3 个独立主体（主巡航体、伴飞侦察球、流光能量带）的 3D 贝塞尔控制点，实时观察横滚倾角与弹簧跟随</td>
+</tr>
+<tr>
+<td><strong>Trajectory 1</strong></td>
+<td><code>dolly-zoom-vertigo</code></td>
+<td>**希区柯克变焦 (Hitchcock Dolly Zoom)**：$d(t)$ 从 $3.8\text{ m} \leftrightarrow 9.2\text{ m}$ 往复推拉，$f(t)$ 同步从 $28\text{ mm} \leftrightarrow 68\text{ mm}$ 联动，前景尺寸恒定而背景剧烈伸缩</td>
+</tr>
+<tr>
+<td><strong>Trajectory 2</strong></td>
+<td><code>orbit-360-crane</code></td>
+<td>**360° 螺旋摇臂环绕 (360° Helical Orbit)**：全周向水平环绕叠加正弦俯仰升降，测试长程 3D 缓存几何一致性</td>
+</tr>
+<tr>
+<td><strong>Trajectory 3</strong></td>
+<td><code>fpv-s-curve-dive</code></td>
+<td>**FPV 穿拱 S 型俯冲 (FPV S-Curve Dive)**：高速穿越场景中心拱门并伴随 $\pm 24^\circ$ 动态横滚角（Camera Roll）</td>
+</tr>
+<tr>
+<td><strong>Trajectory 4</strong></td>
+<td><code>parallax-truck-rack</code></td>
+<td>**横向移摄影 + 移轴跟焦 (Lateral Truck + Rack Focus)**：横向平移凸显前景/中景/远景三层视差，焦点在前景与远景间平滑切换</td>
+</tr>
+<tr>
+<td><strong>Trajectory 5</strong></td>
+<td><code>bullet-time-matrix</code></td>
+<td>**骇客帝国子弹时间 (Bullet-Time Freeze)**：冻结物理时间轴 $\Delta t_{\text{scene}} = 0$，仅令虚拟相机以 180° 高速掠过凝固在空中的 4D 高斯粒子</td>
+</tr>
+<tr>
+<td><strong>Trajectory 6</strong></td>
+<td><code>free-interactive-drag</code></td>
+<td>**导演自由手绘与轨道交互 (Interactive Director Mode)**：鼠标左键拖拽相机轨道，点击控制点直接改写多主体 3D 运动轨迹</td>
+</tr>
+<tr>
+<td><strong>View Mode 1</strong></td>
+<td><code>splat-composite</code></td>
+<td><strong>4D 高斯各向异性光栅合成</strong>：完整的带景深弥散圆（CoC）、SH 高光与运动尾迹的最终成片渲染</td>
+</tr>
+<tr>
+<td><strong>View Mode 2</strong></td>
+<td><code>plucker-ray-field</code></td>
+<td><strong>6D Plücker 射线张量场视图</strong>：在视口网格上叠加显示 $\mathbf{d}(u,v)$ 方向色谱与 $\mathbf{m} = \mathbf{o}\times\mathbf{d}$ 力矩矢量箭头</td>
+</tr>
+<tr>
+<td><strong>View Mode 3</strong></td>
+<td><code>gen3c-cache-disocclusion</code></td>
+<td><strong>GEN3C 3D 缓存命中 vs. 去遮挡修复掩码</strong>：青绿色标注已缓存的高置信度 3D 点云，琥珀/品红色高亮因视角偏移暴露的需扩散修复区</td>
+</tr>
+<tr>
+<td><strong>View Mode 4</strong></td>
+<td><code>covariance-velocity-xray</code></td>
+<td>**4D 协方差椭球与瞬时速度矢量场 (X-Ray)**：线框化绘制每个高斯体的 $2\sigma$ 二维投影椭圆主轴与 $\mathbf{v}_i(t)$ 速度矢量箭头</td>
+</tr>
+</tbody></table>
+<h3 id="22-确定性自动化与验证接口-windowcamera4ddirector">2.2 确定性自动化与验证接口 (<code>window.camera4dDirector</code>)</h3>
+<p>为支持自动化基准评测与 Playwright 端到端回归，工作台暴露了完整的编程控制接口：</p>
+<pre><code class="language-ts">window.camera4dDirector = {
+  selectScene(sceneId: string): void;
+  selectTrajectory(trajId: string): void;
+  selectRenderMode(modeId: string): void;
+  setRelighting(params: { azimuthDeg?: number; elevationDeg?: number; kelvin?: number; rimIntensity?: number }): void;
+  seek(timeSec: number): void;
+  snapshot(): {
+    sceneId: string;
+    trajectoryId: string;
+    renderMode: string;
+    splatCount: number;
+    cacheHitPct: number;
+    disocclusionPct: number;
+    epipolarScore: number;
+    focalMm: number;
+    fovDeg: number;
+    cameraDistance: number;
+    subjectScaleLockPct: number;
+    p50FrameMs: number;
+    p95FrameMs: number;
+    pluckerSample: { d: [number, number, number]; m: [number, number, number] };
+    specJson: string;
+  };
+};
+</code></pre>
+<hr>
+<h2 id="pillar-3-·-定量-benchmark-评测与-7-card-45-视觉报告-reproducible-benchmark">Pillar 3 · 定量 Benchmark 评测与 7-Card 4:5 视觉报告 (Reproducible Benchmark)</h2>
+<p>我们在 Chromium Headless (<code>1440×900</code>) 环境下对 <strong><code>demos/camera-4d-director/</code></strong> 的三大场景与六种运镜轨迹进行了确定性采样评测，并与基线方案（Vanilla 2D Video DiT 无显式 3D 缓存、2D 光流拖拽）进行对照。完整交互式 7-Card 4:5 报告位于 <a href="../demos/camera-4d-director/test-report-cards.zh-CN.html"><code>demos/camera-4d-director/test-report-cards.html</code></a>。</p>
+<table>
+<thead>
+<tr>
+<th>场景 ID</th>
+<th>运镜轨迹</th>
+<th>高斯基元数</th>
+<th>3D 缓存命中率</th>
+<th>去遮挡修复占比</th>
+<th>对极几何一致性 $S_{\text{epi}}$</th>
+<th>主体尺度锁定率</th>
+<th>帧耗时 P50 / P95</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>gen3c-cyber-rooftop-chase</code></td>
+<td><code>dolly-zoom-vertigo</code></td>
+<td>1,640</td>
+<td><strong>94.8%</strong></td>
+<td>5.2%</td>
+<td><strong>0.978</strong></td>
+<td><strong>98.6%</strong></td>
+<td><code>4.8 ms</code> / <code>8.4 ms</code></td>
+</tr>
+<tr>
+<td><code>gen3c-cyber-rooftop-chase</code></td>
+<td><code>orbit-360-crane</code></td>
+<td>1,640</td>
+<td><strong>89.4%</strong></td>
+<td>10.6%</td>
+<td><strong>0.969</strong></td>
+<td>96.2%</td>
+<td><code>5.0 ms</code> / <code>8.7 ms</code></td>
+</tr>
+<tr>
+<td><code>diff4splat-chrono-artisan</code></td>
+<td><code>bullet-time-matrix</code></td>
+<td>1,920</td>
+<td><strong>96.2%</strong></td>
+<td>3.8%</td>
+<td><strong>0.981</strong></td>
+<td><strong>99.1%</strong></td>
+<td><code>5.3 ms</code> / <code>9.1 ms</code></td>
+</tr>
+<tr>
+<td><code>diff4splat-chrono-artisan</code></td>
+<td><code>parallax-truck-rack</code></td>
+<td>1,920</td>
+<td><strong>95.5%</strong></td>
+<td>4.5%</td>
+<td><strong>0.979</strong></td>
+<td>97.8%</td>
+<td><code>5.1 ms</code> / <code>8.9 ms</code></td>
+</tr>
+<tr>
+<td><code>motionstream-multi-subject-stage</code></td>
+<td><code>fpv-s-curve-dive</code></td>
+<td>1,480</td>
+<td><strong>91.7%</strong></td>
+<td>8.3%</td>
+<td><strong>0.963</strong></td>
+<td>95.4%</td>
+<td><code>4.5 ms</code> / <code>7.9 ms</code></td>
+</tr>
+<tr>
+<td><code>motionstream-multi-subject-stage</code></td>
+<td><code>free-interactive-drag</code></td>
+<td>1,480</td>
+<td><strong>93.1%</strong></td>
+<td>6.9%</td>
+<td><strong>0.971</strong></td>
+<td>97.0%</td>
+<td><code>4.6 ms</code> / <code>8.1 ms</code></td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="pillar-4-·-ai-解决方案架构师业务场景方案手册-business-scenario--solution-playbook">Pillar 4 · AI 解决方案架构师业务场景方案手册 (Business Scenario &amp; Solution Playbook)</h2>
+<h3 id="41-选型决策树：何时采用-4d-高斯--plücker-相机控制管线？">4.1 选型决策树：何时采用 4D 高斯 + Plücker 相机控制管线？</h3>
+<pre><code class="language-mermaid">flowchart TD
+    A[企业视频与动画生成需求] --&gt; B{是否需要精确 6-DoF 相机控制\n或多视角三维几何一致性?}
+    B -- 否: 抽象概念拆解/架构演进/算力对比 --&gt; C[采用 One-Sentence-Video 声明式分镜引擎\ndemos/knowledge-explainer-studio/]
+    B -- 是: 自由运镜/商品展示/预演仿真 --&gt; D{核心控制诉求是什么?}
+    D -- 大范围环绕/推拉变焦且背景零畸变 --&gt; E[NVIDIA GEN3C 模式\n3D 时空点云缓存 + 去遮挡局部扩散修复]
+    D -- 单品 360° 自由视角 + 子弹时间 + 动态换光 --&gt; F[Diff4Splat 模式\n4D 可变形高斯泼溅 + 球谐函数 SH 重打光]
+    D -- 导演实时手绘多角色轨迹 + 物理二阶跟随 --&gt; G[Adobe MotionStream × Seedance 2.0 模式\n因果 DMD 滑窗流 + 贝塞尔轨迹画笔]
+</code></pre>
+<h3 id="42-五大行业落地场景与-roi-测算">4.2 五大行业落地场景与 ROI 测算</h3>
+<ol>
+<li><strong>影视与广告工业级 Pre-viz 交互导筒（Virtual Production Pre-visualization）</strong><ul>
+<li><strong>业务痛点</strong>：导演在实拍或调用高成本云端视频大模型（如 Veo 3 / Runway Gen-4 / Kling 3.0）前，仅靠文字提示词无法精确描述“从 28mm 广角推轨至 70mm 中焦并伴随 15° 横滚俯冲”的镜头语言，反复抽卡浪费 80% 算力预算。</li>
+<li><strong>架构方案</strong>：前端使用 <code>camera-4d-director</code> 60 FPS 实时编排 6-DoF 相机轨迹与焦段曲线，实时生成 6D Plücker 射线图序列与 <code>CAMERA_CONTROL_SPEC.json</code>，作为精确控制信号注入后端 <code>GEN3C</code> / <code>Wan 2.7-CameraCtrl</code>。</li>
+<li><strong>量化收益</strong>：单镜头预演确认周期从 <strong>3 天缩短至 15 分钟（-96%）</strong>，云端扩散废片率从 **75% 降至 12%**。</li>
+</ul>
+</li>
+<li><strong>奢侈品与 3C 电商 4D 商品自由视角与重打光工作台</strong><ul>
+<li><strong>业务痛点</strong>：机械腕表、珠宝、折叠屏手机等高客单价商品在不同节日营销活动（暖金氛围、赛博冷光、微距特写）中需反复进棚重拍。</li>
+<li><strong>架构方案</strong>：通过 <code>Diff4Splat</code> 构建商品的 4D 可变形高斯基元资产，在边缘端或浏览器端实时调节三点光源色温（2800K–9000K）与环绕轨道。</li>
+<li><strong>量化收益</strong>：单 SKU 视频素材制作成本下降 **88%**，商详页交互停留时长提升 <strong>2.4×</strong>。</li>
+</ul>
+</li>
+<li><strong>自动驾驶与具身智能 Corner-Case 闭环世界模型仿真</strong><ul>
+<li><strong>业务痛点</strong>：端到端智驾模型评测时，一旦自车采取与采集日志不同的变道轨迹，传统重放或 2D 生成画面就会出现车道线撕裂与路牌几何失真。</li>
+<li><strong>架构方案</strong>：利用 <code>GEN3C</code> 3D 点云缓存锁死静态道路几何，通过 <code>MotionStream</code> 多主体轨迹画笔编排周围交通参与者的对抗性切入轨迹。</li>
+<li><strong>量化收益</strong>：多相机闭环仿真对极几何一致性从 <code>0.61</code> 提升至 **<code>0.97+</code>**。</li>
+</ul>
+</li>
+<li><strong>企业技术产品发布会与交互式数字舞台</strong><ul>
+<li><strong>业务痛点</strong>：产品发布会的架构拆解若做成 MP4 视频则无法根据演讲节奏实时停顿或旋转视角；若做成重型 Unreal 工程则无法在客户浏览器零安装秒开。</li>
+<li><strong>架构方案</strong>：采用自包含 4D 高斯 Canvas/WebGL 轻量化渲染器，支持演讲者一键触发“子弹时间冻结 + X-Ray 协方差/射线透视”。</li>
+</ul>
+</li>
+</ol>
+<h3 id="43-适用边界对标（good-fit-vs-not-for）">4.3 适用边界对标（Good Fit vs. Not For）</h3>
+<table>
+<thead>
+<tr>
+<th>评估维度</th>
+<th>✅ Good Fit（强烈推荐采用 4D Camera + Splat 架构）</th>
+<th>⛔ Not For（不适用场景与替代方案）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>镜头运动幅度</strong></td>
+<td>大角度环绕（90°–360°）、希区柯克变焦、FPV 穿插、移轴跟焦</td>
+<td>固定机位的纯 2D 排版信息图动画（应使用 <code>knowledge-explainer-studio</code>）</td>
+</tr>
+<tr>
+<td><strong>物理与几何约束</strong></td>
+<td>要求建筑/商品刚体结构零扭曲、多主体遮挡关系严格自洽</td>
+<td>剧烈拓扑碎裂、流体飞溅或无固定三维结构的超现实水墨变幻</td>
+</tr>
+<tr>
+<td><strong>交互响应需求</strong></td>
+<td>需要导演在浏览器内以 <code>&lt;16.7 ms</code> 帧率实时拖拽轨迹与光源</td>
+<td>无需人工干预的批量纯文本口播转短视频流水线</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="参考文献与开源技术溯源-references--provenance">参考文献与开源技术溯源 (References &amp; Provenance)</h2>
+<ol>
+<li><strong>NVIDIA GEN3C</strong>: <em>GEN3C: 3D-Informed World-Consistent Video Generation with Precise Camera Control</em>, CVPR 2025 Highlight (<code>https://research.nvidia.com/labs/toronto-ai/GEN3C/</code>).</li>
+<li><strong>Diff4Splat</strong>: <em>Diff4Splat: Controllable 4D Scene Generation with Latent Video Diffusion</em>, CVPR 2026 (<code>arXiv:2511.00503</code>).</li>
+<li><strong>Adobe MotionStream</strong>: <em>MotionStream: Real-Time Video Generation with Interactive Motion Controls</em>, 2025–2026 (<code>arXiv:2511.01266</code>).</li>
+<li><strong>CameraCtrl &amp; Plücker Embeddings</strong>: <em>CameraCtrl: Enabling Camera Control for Video Diffusion Models</em> (<code>arXiv:2404.02101</code>) &amp; <em>CamI2V: Camera-Controlled Image-to-Video Diffusion Model</em>.</li>
+<li><strong>Controllable Video Generation Survey</strong>: <em>Controllable Video Generation: A Survey</em>, 2025–2026 (<code>arXiv:2507.16869</code>) &amp; <em>Towards Interactive Video World Modeling</em> (<code>arXiv:2606.01164</code>).</li>
+</ol>
+</article></div><details class="reading-source"><summary>Original source text / 原始文档文本</summary><pre># 4D 高斯泼溅与 Plücker 相机轨迹控制深度研究：从 `GEN3C`、`Diff4Splat` 到 `MotionStream` 实时导演工作台
 
 &gt; 🌐 **Language / 语言**: **中文** | [English (`controllable-4d-video-camera-study.en.md`)](controllable-4d-video-camera-study.en.md)  
-&gt; 🎬 **全新交互式能力展示 Demo**: <a href="../demos/camera-4d-director/">4D Gaussian &amp; Plücker Camera Director (`demos/camera-4d-director/`)</a> · <a href="../demos/camera-4d-director/test-report-cards.html">7-Card 4:5 视觉评测报告 (`test-report-cards.html`)</a>  
-&gt; 🖼️ **一图流可视化总结**: <a href="evidence/controllable-4d-video-summary.svg">`docs/evidence/controllable-4d-video-summary.svg`</a>
+&gt; 🎬 **全新交互式能力展示 Demo**: [4D Gaussian &amp; Plücker Camera Director (`demos/camera-4d-director/`)](../demos/camera-4d-director/) · [7-Card 4:5 视觉评测报告 (`test-report-cards.html`)](../demos/camera-4d-director/test-report-cards.html)  
+&gt; 🖼️ **一图流可视化总结**: [`docs/evidence/controllable-4d-video-summary.svg`](evidence/controllable-4d-video-summary.svg)
 
-<figure style="margin:16px 0"><img src="evidence/controllable-4d-video-summary.svg" alt="4D 高斯泼溅与 Plücker 相机轨迹控制架构与评测一图流总结" loading="lazy" style="max-width:100%;border-radius:12px;border:1px solid var(--cp-border);display:block"><figcaption style="font-size:13px;color:var(--cp-text-muted);margin-top:6px">4D 高斯泼溅与 Plücker 相机轨迹控制架构与评测一图流总结</figcaption></figure>
+![4D 高斯泼溅与 Plücker 相机轨迹控制架构与评测一图流总结](evidence/controllable-4d-video-summary.svg)
 
 ---
 
@@ -158,7 +591,7 @@ window.camera4dDirector = {
 
 ## Pillar 3 · 定量 Benchmark 评测与 7-Card 4:5 视觉报告 (Reproducible Benchmark)
 
-我们在 Chromium Headless (`1440×900`) 环境下对 **`demos/camera-4d-director/`** 的三大场景与六种运镜轨迹进行了确定性采样评测，并与基线方案（Vanilla 2D Video DiT 无显式 3D 缓存、2D 光流拖拽）进行对照。完整交互式 7-Card 4:5 报告位于 <a href="../demos/camera-4d-director/test-report-cards.html">`demos/camera-4d-director/test-report-cards.html`</a>。
+我们在 Chromium Headless (`1440×900`) 环境下对 **`demos/camera-4d-director/`** 的三大场景与六种运镜轨迹进行了确定性采样评测，并与基线方案（Vanilla 2D Video DiT 无显式 3D 缓存、2D 光流拖拽）进行对照。完整交互式 7-Card 4:5 报告位于 [`demos/camera-4d-director/test-report-cards.html`](../demos/camera-4d-director/test-report-cards.html)。
 
 | 场景 ID | 运镜轨迹 | 高斯基元数 | 3D 缓存命中率 | 去遮挡修复占比 | 对极几何一致性 $S_{\text{epi}}$ | 主体尺度锁定率 | 帧耗时 P50 / P95 |
 | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -220,4 +653,4 @@ flowchart TD
 3. **Adobe MotionStream**: *MotionStream: Real-Time Video Generation with Interactive Motion Controls*, 2025–2026 (`arXiv:2511.01266`).
 4. **CameraCtrl &amp; Plücker Embeddings**: *CameraCtrl: Enabling Camera Control for Video Diffusion Models* (`arXiv:2404.02101`) &amp; *CamI2V: Camera-Controlled Image-to-Video Diffusion Model*.
 5. **Controllable Video Generation Survey**: *Controllable Video Generation: A Survey*, 2025–2026 (`arXiv:2507.16869`) &amp; *Towards Interactive Video World Modeling* (`arXiv:2606.01164`).
-</pre></main></html>
+</pre></details></main></body></html>

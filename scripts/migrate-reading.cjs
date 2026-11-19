@@ -8,7 +8,7 @@ const puppeteer = require('puppeteer');
 const { marked } = require('marked');
 const root = path.resolve(__dirname, '..');
 const inventory = require('../docs/redesign/route-inventory.json');
-const excluded = ['index.html', 'zh.html', 'frontier-ai-studio.html'];
+const excluded = ['index.html', 'zh.html', 'diamond.html', 'zh-diamond.html', 'frontier-ai-studio.html', 'about.html', 'zh-about.html', 'career.html', 'zh-career.html', 'skills.html', 'zh-skills.html', 'fte.html', 'zh-fte.html'];
 const pages = inventory.content.filter(p => ['portal', 'topic', 'article'].includes(p.role) && !excluded.includes(p.path));
 const sourceOverrides = {
   'workshops/azure-agent-infra/index.html':'8c84971c7e952a5fb6f254ee8fcfef5678d9941d',

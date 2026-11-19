@@ -16,7 +16,7 @@ const primary = [
   ['Benchmark & Eval Foundry','基准评测中心','benchmarks.html','zh-benchmarks.html'],
   ['GitHub AI Signal Radar','GitHub AI 信号雷达','github-radar.html','zh-github-radar.html'],
   ['Model Routing & Telemetry','OpenRouter 模型遥测','openrouter.html','zh-openrouter.html'],
-  ['Principal Architect Profile','首席架构师履历','about.html','zh-about.html']
+  ['Frontier Transformation Engineer','Frontier Transformation Engineer','about.html','zh-about.html']
 ];
 function context(file, zh, active) {
   const items = [...tracks, ['sa-skills','SA Skill & HVE Library','SA Skill 与 HVE 技能库']];

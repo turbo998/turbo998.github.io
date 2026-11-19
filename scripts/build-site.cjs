@@ -154,7 +154,11 @@ const motionPages = hasMotionDemo(root) ? [
   {path:motionDemoRoutes.en,role:'demo',title:'GPT-6.2 Motion Studies',tracks:['animation'],language:{declared:'en'}},
   {path:motionDemoRoutes['zh-CN'],role:'demo',title:'GPT-6.2 动势图鉴',tracks:['animation'],language:{declared:'zh-CN'}}
 ] : [];
-const archivePages = [...inventory.content, ...translations, ...diamondPages, ...webiqPages, ...radarPages, ...infraPages, ...dataLabPages, ...phase179Pages, ...clioHarnessPages, ...harnessFrameworksPages, ...harnessCoevolutionPages, ...gpt62SolPages, ...recentSupplementPages, ...commerceTrendsPages, ...camera4dPages, ...audiovisualFoleyPages, ...physGaussianPages, ...neuralRelightPages, ...worldMemPages, ...nightlyVisualPages, ...motionPages].map(page => ({...page, tracks:[classifyPage(page), ...(page.tracks || []).filter(track => track !== classifyPage(page) && track !== 'infra')]}));
+const ftePages = [
+  {path:'fte.html',role:'article',title:'Frontier Transformation Engineer (FTE) · Panorama, ~86-Hour Learning Path & Registration Hub',tracks:['general'],language:{declared:'en'},supplemental:true},
+  {path:'zh-fte.html',role:'article',title:'Frontier Transformation Engineer (FTE) 全景介绍 · 86 小时学习路径、6 周 Sprint 与注册入口',tracks:['general'],language:{declared:'zh-CN'},supplemental:true}
+];
+const archivePages = [...inventory.content, ...translations, ...ftePages, ...diamondPages, ...webiqPages, ...radarPages, ...infraPages, ...dataLabPages, ...phase179Pages, ...clioHarnessPages, ...harnessFrameworksPages, ...harnessCoevolutionPages, ...gpt62SolPages, ...recentSupplementPages, ...commerceTrendsPages, ...camera4dPages, ...audiovisualFoleyPages, ...physGaussianPages, ...neuralRelightPages, ...worldMemPages, ...nightlyVisualPages, ...motionPages].map(page => ({...page, tracks:[classifyPage(page), ...(page.tracks || []).filter(track => track !== classifyPage(page) && track !== 'infra')]}));
 function archiveNote(page, zh) {
   const t = (en, cn) => zh ? cn : en;
   const record = readingByPath.get(page.path);
@@ -165,6 +169,7 @@ function archiveNote(page, zh) {
   return `${lang?.resolved || page.language.declared || 'und'} · ${t('Original source edition','原始来源版本')}`;
 }
 buildKnowledgeAtlas({root,write});
+require('./build-profile-pages.cjs')({root,write});
 require('./hub-pages.cjs')({root,inventory,readingRecords,archivePages,archiveNote,motionPages,topics,sceneNames,destination,readingDestination,sourceNote,write});
 // Keep historical module hashes as aliases while adding the new source-derived track routes.
 const routeData = Object.fromEntries(tracks.map(([track])=>[track,Object.fromEntries(inventory.scenes.filter(s=>classifyScene(s)===track || s.track===track).map(s=>[s.id,{en:destination(s,false).url,zh:destination(s,true).url,track:classifyScene(s)}]))]));

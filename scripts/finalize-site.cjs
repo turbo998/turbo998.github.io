@@ -15,6 +15,7 @@ function localeRegistry() {
     if(counterpart)add(...(row.language.resolved.startsWith('zh')?[counterpart,row.path]:[row.path,counterpart]));
   }
   add('index.html','zh.html');add('diamond.html','zh-diamond.html');add('style-preview.html','zh-style-preview.html');add('frontier-ai-studio.en.html','frontier-ai-studio.html');
+  add('about.html','zh-about.html');add('career.html','zh-career.html');add('skills.html','zh-skills.html');add('fte.html','zh-fte.html');
   add('articles/agent-harness-coevolution.en.html','articles/agent-harness-coevolution.html');
   add('workshops/agent-harness-coevolution/index.en.html','workshops/agent-harness-coevolution/index.html');
   add('workshops/agent-harness-coevolution/cards.html','workshops/agent-harness-coevolution/cards.zh.html');

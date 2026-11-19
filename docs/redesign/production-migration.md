@@ -22,7 +22,7 @@ Qi Chen (@turbo998) remains the site identity. The revised Dark Aurora Studio di
 
 ### Card-grid hierarchy / 卡片网格层级
 
-- Tier 1: personal identity, five primary navigation pills, language and theme controls. The fixed first brand is **Frontier Transformation Engineering Hub**; the other sections are **Benchmark & Eval Foundry / 基准评测中心**, **GitHub AI Signal Radar / GitHub AI 信号雷达**, **Model Routing & Telemetry / OpenRouter 模型遥测**, and **Principal Architect Profile / 首席架构师履历**.
+- Tier 1: personal identity, six primary navigation pills, language and theme controls. The fixed first brand is **Frontier Transformation Engineering Hub**; the other sections are **Diamond Live Demos / Diamond 实战演示**, **Benchmark & Eval Foundry / 基准评测中心**, **GitHub AI Signal Radar / GitHub AI 信号雷达**, **Model Routing & Telemetry / OpenRouter 模型遥测**, and **Frontier Transformation Engineer**.
 - Tier 2: eight contextual track links, plus four stage anchors on topic pages. Breadcrumbs and parent-return links remain native HTML.
 - Home and Hub: seven core tracks plus Infra Lab and SA Skill & HVE extension cards; 14 flagship workbench cards; seven verified public repository cards. The Hub retains Frontier AI Studio as explanatory context, not its primary name.
 - Topic stages retain Architecture → Evaluation → Demos → Resources, with a populated card grid inside every stage. Infra prominently exposes both external extension collections.

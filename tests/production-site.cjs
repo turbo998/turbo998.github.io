@@ -71,7 +71,7 @@ async function main() {
           assert.equal(state.documentWidth, width, name);
           assert.ok(state.headerHeight <= (width === 390 ? 136 : width === 768 ? 180 : 144), `${name}: primary header reflow`);
           const zh = file.startsWith('zh-');
-          assert.deepEqual(state.primary.map(item=>item.label), ['Frontier Transformation Engineering Hub', ...(zh?['Diamond 实战演示','基准评测中心','GitHub AI 信号雷达','OpenRouter 模型遥测','首席架构师履历']:['Diamond Live Demos','Benchmark & Eval Foundry','GitHub AI Signal Radar','Model Routing & Telemetry','Principal Architect Profile'])], name+': six primary sections');
+          assert.deepEqual(state.primary.map(item=>item.label),['Frontier Transformation Engineering Hub',...(zh?['Diamond 实战演示','基准评测中心','GitHub AI 信号雷达','OpenRouter 模型遥测','Frontier Transformation Engineer']:['Diamond Live Demos','Benchmark & Eval Foundry','GitHub AI Signal Radar','Model Routing & Telemetry','Frontier Transformation Engineer'])],name+': six primary sections');
           assert.equal(state.primary.filter(item=>item.current==='page').length,1,name+': one active primary section');
           assert.equal(state.primary[0].current,'page',name+': Hub is active');
           assert.equal(state.contextLinks,10,name+': ten contextual tracks');
