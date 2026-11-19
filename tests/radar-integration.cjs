@@ -6586,6 +6586,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r534File),'utf8');
       assert.ok(txt.includes('2,580.00')&&txt.includes('3,950.00')&&txt.includes('6,530.00')&&txt.includes('70.00')&&txt.includes('250.00')&&txt.includes('320.00')&&txt.includes('6,210.00')&&txt.includes('95.10%')&&txt.includes('not_measured'),r534File+': contains exact 11-19 R10 R534 cospan+peer+mindmark+dshbots closed-form parameters');
     }
+    // 2026-11-19 Night Round 11 (R535 Milestone: min-1225/veil-skill + ja1sh/artex-defense + ttaie13/wordpress-to-nodejs-skill + unixzii/artboards) verification
+    const r535PathA=2760.00+41.0*100.00;
+    assert.equal(r535PathA.toFixed(2),'6860.00','11-19 R11 R535 Path A total');
+    const r535PathC=75.00+2.6*100.00;
+    assert.equal(r535PathC.toFixed(2),'335.00','11-19 R11 R535 Path C total');
+    assert.equal((r535PathA-r535PathC).toFixed(2),'6525.00','11-19 R11 R535 savings vs Path A');
+    assert.equal(((r535PathA-r535PathC)/r535PathA*100).toFixed(2),'95.12','11-19 R11 R535 pct savings vs Path A');
+    for(const r535File of ['workshops/github-trending-radar/docs/veil-skill-artex-defense-wordpress-to-nodejs-artboards-4lang-reversible-pii-masking-sigma-purple-replay-wp-nextjs-migration-taffy-skia-ui-selection-faq.md','workshops/github-trending-radar/docs/veil-skill-artex-defense-wordpress-to-nodejs-artboards-4lang-reversible-pii-masking-sigma-purple-replay-wp-nextjs-migration-taffy-skia-ui-selection-faq.en.md','assets/github-ai-radar-2026-11-19-r11-r535-veil-artexdefense-wp2node-artboards.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-19-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r535File),'utf8');
+      assert.ok(txt.includes('2,760.00')&&txt.includes('4,100.00')&&txt.includes('6,860.00')&&txt.includes('75.00')&&txt.includes('260.00')&&txt.includes('335.00')&&txt.includes('6,525.00')&&txt.includes('95.12%')&&txt.includes('not_measured'),r535File+': contains exact 11-19 R11 R535 veil+artexdefense+wp2node+artboards closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
