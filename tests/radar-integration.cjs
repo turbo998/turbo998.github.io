@@ -6696,6 +6696,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r544File),'utf8');
       assert.ok(txt.includes('2,610.00')&&txt.includes('3,950.00')&&txt.includes('6,560.00')&&txt.includes('65.00')&&txt.includes('250.00')&&txt.includes('315.00')&&txt.includes('6,245.00')&&txt.includes('95.20%')&&txt.includes('not_measured'),r544File+': contains exact 11-19 R20 R544 craftmcphub+agybridge+remotepcmcp+ruum closed-form parameters');
     }
+    // 2026-11-19 Night Round 21 (R545 Milestone: 582835293/gemini-web-agent + bloomway-ai/bloomway-world-director + AIwithhassan/likhari-ai + wonderandyou/dsh-research) verification
+    const r545PathA=2780.00+41.0*100.00;
+    assert.equal(r545PathA.toFixed(2),'6880.00','11-19 R21 R545 Path A total');
+    const r545PathC=70.00+2.5*100.00;
+    assert.equal(r545PathC.toFixed(2),'320.00','11-19 R21 R545 Path C total');
+    assert.equal((r545PathA-r545PathC).toFixed(2),'6560.00','11-19 R21 R545 savings vs Path A');
+    assert.equal(((r545PathA-r545PathC)/r545PathA*100).toFixed(2),'95.35','11-19 R21 R545 pct savings vs Path A');
+    for(const r545File of ['workshops/github-trending-radar/docs/gemini-web-agent-bloomway-world-director-likhari-ai-dsh-research-3site-quota-offload-3d-previs-studio-nonactivating-ptt-dictation-preedit-research-gate-selection-faq.md','workshops/github-trending-radar/docs/gemini-web-agent-bloomway-world-director-likhari-ai-dsh-research-3site-quota-offload-3d-previs-studio-nonactivating-ptt-dictation-preedit-research-gate-selection-faq.en.md','assets/github-ai-radar-2026-11-19-r21-r545-geminiwebagent-worlddirector-likhari-dshresearch.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-19-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r545File),'utf8');
+      assert.ok(txt.includes('2,780.00')&&txt.includes('4,100.00')&&txt.includes('6,880.00')&&txt.includes('70.00')&&txt.includes('250.00')&&txt.includes('320.00')&&txt.includes('6,560.00')&&txt.includes('95.35%')&&txt.includes('not_measured'),r545File+': contains exact 11-19 R21 R545 geminiwebagent+worlddirector+likhari+dshresearch closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
