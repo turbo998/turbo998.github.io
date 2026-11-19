@@ -6729,6 +6729,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r547File),'utf8');
       assert.ok(txt.includes('2,630.00')&&txt.includes('3,950.00')&&txt.includes('6,580.00')&&txt.includes('65.00')&&txt.includes('250.00')&&txt.includes('315.00')&&txt.includes('6,265.00')&&txt.includes('95.21%')&&txt.includes('not_measured'),r547File+': contains exact 11-19 R23 R547 cloudssh+storytimeline+examplesnotreqs+kapeweb closed-form parameters');
     }
+    // 2026-11-19 Night Round 24 (R548: tusharsrivastava/shark-skills + Qingxuan365/oneAI + JL-GUO/skill-siphon + RobinVivant/runout-bar) verification
+    const r548PathA=2590.00+39.0*100.00;
+    assert.equal(r548PathA.toFixed(2),'6490.00','11-19 R24 R548 Path A total');
+    const r548PathC=65.00+2.5*100.00;
+    assert.equal(r548PathC.toFixed(2),'315.00','11-19 R24 R548 Path C total');
+    assert.equal((r548PathA-r548PathC).toFixed(2),'6175.00','11-19 R24 R548 savings vs Path A');
+    assert.equal(((r548PathA-r548PathC)/r548PathA*100).toFixed(2),'95.15','11-19 R24 R548 pct savings vs Path A');
+    for(const r548File of ['workshops/github-trending-radar/docs/shark-skills-oneai-skill-siphon-runout-bar-parallel-lanes-audited-merge-multi-cli-workbench-skill-distiller-quota-runout-forecast-selection-faq.md','workshops/github-trending-radar/docs/shark-skills-oneai-skill-siphon-runout-bar-parallel-lanes-audited-merge-multi-cli-workbench-skill-distiller-quota-runout-forecast-selection-faq.en.md','assets/github-ai-radar-2026-11-19-r24-sharkskills-oneai-skillsiphon-runoutbar.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-19-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r548File),'utf8');
+      assert.ok(txt.includes('2,590.00')&&txt.includes('3,900.00')&&txt.includes('6,490.00')&&txt.includes('65.00')&&txt.includes('250.00')&&txt.includes('315.00')&&txt.includes('6,175.00')&&txt.includes('95.15%')&&txt.includes('not_measured'),r548File+': contains exact 11-19 R24 R548 sharkskills+oneai+skillsiphon+runoutbar closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
