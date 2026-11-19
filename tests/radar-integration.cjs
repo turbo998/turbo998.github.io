@@ -6839,6 +6839,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r557File),'utf8');
       assert.ok(txt.includes('3,180.00')&&txt.includes('3,900.00')&&txt.includes('7,080.00')&&txt.includes('80.00')&&txt.includes('240.00')&&txt.includes('320.00')&&txt.includes('6,760.00')&&txt.includes('95.48%')&&txt.includes('not_measured'),r557File+': contains exact 11-19 R33 R557 longcatavatar+promptdock+freepibridge+astroweights closed-form parameters');
     }
+    // 2026-11-19 Night Round 34 (R558: nace-ai/intern + Commonwealth-Bank-of-Australia/CodeCheck + Tobi1chi/arch-grower + salahudinalyb/SalkarsaUI) verification
+    const r558PathA=3560.00+42.0*100.00;
+    assert.equal(r558PathA.toFixed(2),'7760.00','11-19 R34 R558 Path A total');
+    const r558PathC=95.00+2.5*100.00;
+    assert.equal(r558PathC.toFixed(2),'345.00','11-19 R34 R558 Path C total');
+    assert.equal((r558PathA-r558PathC).toFixed(2),'7415.00','11-19 R34 R558 savings vs Path A');
+    assert.equal(((r558PathA-r558PathC)/r558PathA*100).toFixed(2),'95.55','11-19 R34 R558 pct savings vs Path A');
+    for(const r558File of ['workshops/github-trending-radar/docs/intern-codecheck-arch-grower-salkarsaui-trimodel-supervisor-agent-bank-llm-sast-autoregressive-architecture-shadcn-design-skill-selection-faq.md','workshops/github-trending-radar/docs/intern-codecheck-arch-grower-salkarsaui-trimodel-supervisor-agent-bank-llm-sast-autoregressive-architecture-shadcn-design-skill-selection-faq.en.md','assets/github-ai-radar-2026-11-19-r34-intern-codecheck-archgrower-salkarsaui.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-19-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r558File),'utf8');
+      assert.ok(txt.includes('3,560.00')&&txt.includes('4,200.00')&&txt.includes('7,760.00')&&txt.includes('95.00')&&txt.includes('250.00')&&txt.includes('345.00')&&txt.includes('7,415.00')&&txt.includes('95.55%')&&txt.includes('not_measured'),r558File+': contains exact 11-19 R34 R558 intern+codecheck+archgrower+salkarsaui closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
