@@ -6795,6 +6795,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r553File),'utf8');
       assert.ok(txt.includes('2,790.00')&&txt.includes('4,100.00')&&txt.includes('6,890.00')&&txt.includes('75.00')&&txt.includes('250.00')&&txt.includes('325.00')&&txt.includes('6,565.00')&&txt.includes('95.28%')&&txt.includes('not_measured'),r553File+': contains exact 11-19 R29 R553 playgroundserve+openrocode+layoutstudio+agykit closed-form parameters');
     }
+    // 2026-11-19 Night Round 30 (R554: Merziller/intel-bureau + sambuddha001/cyberqwen-2b + youraipulse/Fold-Studio + xiaoyaodev/musechrome) verification
+    const r554PathA=2650.00+40.0*100.00;
+    assert.equal(r554PathA.toFixed(2),'6650.00','11-19 R30 R554 Path A total');
+    const r554PathC=65.00+2.5*100.00;
+    assert.equal(r554PathC.toFixed(2),'315.00','11-19 R30 R554 Path C total');
+    assert.equal((r554PathA-r554PathC).toFixed(2),'6335.00','11-19 R30 R554 savings vs Path A');
+    assert.equal(((r554PathA-r554PathC)/r554PathA*100).toFixed(2),'95.26','11-19 R30 R554 pct savings vs Path A');
+    for(const r554File of ['workshops/github-trending-radar/docs/intel-bureau-cyberqwen-2b-fold-studio-musechrome-verbatim-im-radar-airgapped-2b-cyber-slm-3d-packaging-dieline-isolated-browser-profiles-selection-faq.md','workshops/github-trending-radar/docs/intel-bureau-cyberqwen-2b-fold-studio-musechrome-verbatim-im-radar-airgapped-2b-cyber-slm-3d-packaging-dieline-isolated-browser-profiles-selection-faq.en.md','assets/github-ai-radar-2026-11-19-r30-intelbureau-cyberqwen2b-foldstudio-musechrome.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-19-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r554File),'utf8');
+      assert.ok(txt.includes('2,650.00')&&txt.includes('4,000.00')&&txt.includes('6,650.00')&&txt.includes('65.00')&&txt.includes('250.00')&&txt.includes('315.00')&&txt.includes('6,335.00')&&txt.includes('95.26%')&&txt.includes('not_measured'),r554File+': contains exact 11-19 R30 R554 intelbureau+cyberqwen2b+foldstudio+musechrome closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
