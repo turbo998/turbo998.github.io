@@ -6707,6 +6707,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r545File),'utf8');
       assert.ok(txt.includes('2,780.00')&&txt.includes('4,100.00')&&txt.includes('6,880.00')&&txt.includes('70.00')&&txt.includes('250.00')&&txt.includes('320.00')&&txt.includes('6,560.00')&&txt.includes('95.35%')&&txt.includes('not_measured'),r545File+': contains exact 11-19 R21 R545 geminiwebagent+worlddirector+likhari+dshresearch closed-form parameters');
     }
+    // 2026-11-19 Night Round 22 (R546: wajahatkarim3/play-data-safety-skill + tracebit-com/turingpot + win4r/pi-charter + ApostPap/yardmaster) verification
+    const r546PathA=2690.00+40.0*100.00;
+    assert.equal(r546PathA.toFixed(2),'6690.00','11-19 R22 R546 Path A total');
+    const r546PathC=70.00+2.5*100.00;
+    assert.equal(r546PathC.toFixed(2),'320.00','11-19 R22 R546 Path C total');
+    assert.equal((r546PathA-r546PathC).toFixed(2),'6370.00','11-19 R22 R546 savings vs Path A');
+    assert.equal(((r546PathA-r546PathC)/r546PathA*100).toFixed(2),'95.22','11-19 R22 R546 pct savings vs Path A');
+    for(const r546File of ['workshops/github-trending-radar/docs/play-data-safety-skill-turingpot-pi-charter-yardmaster-36sdk-play-privacy-scanner-ja4-agent-honeypot-code-enforced-charter-worktree-kanban-selection-faq.md','workshops/github-trending-radar/docs/play-data-safety-skill-turingpot-pi-charter-yardmaster-36sdk-play-privacy-scanner-ja4-agent-honeypot-code-enforced-charter-worktree-kanban-selection-faq.en.md','assets/github-ai-radar-2026-11-19-r22-playdatasafety-turingpot-picharter-yardmaster.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-19-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r546File),'utf8');
+      assert.ok(txt.includes('2,690.00')&&txt.includes('4,000.00')&&txt.includes('6,690.00')&&txt.includes('70.00')&&txt.includes('250.00')&&txt.includes('320.00')&&txt.includes('6,370.00')&&txt.includes('95.22%')&&txt.includes('not_measured'),r546File+': contains exact 11-19 R22 R546 playdatasafety+turingpot+picharter+yardmaster closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
