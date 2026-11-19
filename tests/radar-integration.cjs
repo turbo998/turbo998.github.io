@@ -6498,6 +6498,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r526File),'utf8');
       assert.ok(txt.includes('2,740.00')&&txt.includes('4,050.00')&&txt.includes('6,790.00')&&txt.includes('80.00')&&txt.includes('270.00')&&txt.includes('350.00')&&txt.includes('6,440.00')&&txt.includes('94.85%')&&txt.includes('not_measured'),r526File+': contains exact 11-19 R2 R526 clianything+affine+gkesandboxes+searchevals closed-form parameters');
     }
+    // 2026-11-19 Night Round 3 (R527: obra/superpowers + zhouxiaoka/autoclip + phasyn/phasyn-studio + joeseesun/subcast) verification
+    const r527PathA=2680.00+41.0*100.00;
+    assert.equal(r527PathA.toFixed(2),'6780.00','11-19 R3 R527 Path A total');
+    const r527PathC=75.00+2.7*100.00;
+    assert.equal(r527PathC.toFixed(2),'345.00','11-19 R3 R527 Path C total');
+    assert.equal((r527PathA-r527PathC).toFixed(2),'6435.00','11-19 R3 R527 savings vs Path A');
+    assert.equal(((r527PathA-r527PathC)/r527PathA*100).toFixed(2),'94.91','11-19 R3 R527 pct savings vs Path A');
+    for(const r527File of ['workshops/github-trending-radar/docs/superpowers-autoclip-phasyn-studio-subcast-15harness-tdd-sdlc-local-video-clip-mcp-byogpu-film-studio-bilingual-podcast-qa-selection-faq.md','workshops/github-trending-radar/docs/superpowers-autoclip-phasyn-studio-subcast-15harness-tdd-sdlc-local-video-clip-mcp-byogpu-film-studio-bilingual-podcast-qa-selection-faq.en.md','assets/github-ai-radar-2026-11-19-r3-superpowers-autoclip-phasyn-subcast.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-19-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r527File),'utf8');
+      assert.ok(txt.includes('2,680.00')&&txt.includes('4,100.00')&&txt.includes('6,780.00')&&txt.includes('75.00')&&txt.includes('270.00')&&txt.includes('345.00')&&txt.includes('6,435.00')&&txt.includes('94.91%')&&txt.includes('not_measured'),r527File+': contains exact 11-19 R3 R527 superpowers+autoclip+phasyn+subcast closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
