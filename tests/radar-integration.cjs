@@ -6773,6 +6773,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r551File),'utf8');
       assert.ok(txt.includes('2,720.00')&&txt.includes('4,050.00')&&txt.includes('6,770.00')&&txt.includes('70.00')&&txt.includes('250.00')&&txt.includes('320.00')&&txt.includes('6,450.00')&&txt.includes('95.27%')&&txt.includes('not_measured'),r551File+': contains exact 11-19 R27 R551 gemkeeper+claudesworkbench+markwright+askjudge closed-form parameters');
     }
+    // 2026-11-19 Night Round 28 (R552: shihao101/jiutouniao + SolitudeZY/OpinionLens + gaoshanyuhupo/agy-bot + catlog22/self-evolving-workflow) verification
+    const r552PathA=2750.00+41.0*100.00;
+    assert.equal(r552PathA.toFixed(2),'6850.00','11-19 R28 R552 Path A total');
+    const r552PathC=70.00+2.5*100.00;
+    assert.equal(r552PathC.toFixed(2),'320.00','11-19 R28 R552 Path C total');
+    assert.equal((r552PathA-r552PathC).toFixed(2),'6530.00','11-19 R28 R552 savings vs Path A');
+    assert.equal(((r552PathA-r552PathC)/r552PathA*100).toFixed(2),'95.33','11-19 R28 R552 pct savings vs Path A');
+    for(const r552File of ['workshops/github-trending-radar/docs/jiutouniao-opinionlens-agy-bot-self-evolving-workflow-l0l1l2-authorized-pentest-7platform-sentiment-desktop-camoufox-miniapp-takeover-episodic-skill-evolution-selection-faq.md','workshops/github-trending-radar/docs/jiutouniao-opinionlens-agy-bot-self-evolving-workflow-l0l1l2-authorized-pentest-7platform-sentiment-desktop-camoufox-miniapp-takeover-episodic-skill-evolution-selection-faq.en.md','assets/github-ai-radar-2026-11-19-r28-jiutouniao-opinionlens-agybot-selfevolving.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-19-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r552File),'utf8');
+      assert.ok(txt.includes('2,750.00')&&txt.includes('4,100.00')&&txt.includes('6,850.00')&&txt.includes('70.00')&&txt.includes('250.00')&&txt.includes('320.00')&&txt.includes('6,530.00')&&txt.includes('95.33%')&&txt.includes('not_measured'),r552File+': contains exact 11-19 R28 R552 jiutouniao+opinionlens+agybot+selfevolving closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
