@@ -6520,6 +6520,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r528File),'utf8');
       assert.ok(txt.includes('2,620.00')&&txt.includes('4,000.00')&&txt.includes('6,620.00')&&txt.includes('75.00')&&txt.includes('260.00')&&txt.includes('335.00')&&txt.includes('6,285.00')&&txt.includes('94.94%')&&txt.includes('not_measured'),r528File+': contains exact 11-19 R4 R528 icons8hub+pansy+nodwarden+dshwin closed-form parameters');
     }
+    // 2026-11-19 Night Round 5 (R529: ProtonLumo/lumo-desktop + Phz-06/agent-frontdesk + paukraft/t3boat + yiyihuohuo/WMPFWorkbench-go) verification
+    const r529PathA=2560.00+39.5*100.00;
+    assert.equal(r529PathA.toFixed(2),'6510.00','11-19 R5 R529 Path A total');
+    const r529PathC=70.00+2.6*100.00;
+    assert.equal(r529PathC.toFixed(2),'330.00','11-19 R5 R529 Path C total');
+    assert.equal((r529PathA-r529PathC).toFixed(2),'6180.00','11-19 R5 R529 savings vs Path A');
+    assert.equal(((r529PathA-r529PathC)/r529PathA*100).toFixed(2),'94.93','11-19 R5 R529 pct savings vs Path A');
+    for(const r529File of ['workshops/github-trending-radar/docs/lumo-desktop-agent-frontdesk-t3boat-wmpfworkbench-go-privacy-keychain-mcp-unified-desktop-frontdesk-autosleep-cloud-machines-16tool-miniprogram-mcp-selection-faq.md','workshops/github-trending-radar/docs/lumo-desktop-agent-frontdesk-t3boat-wmpfworkbench-go-privacy-keychain-mcp-unified-desktop-frontdesk-autosleep-cloud-machines-16tool-miniprogram-mcp-selection-faq.en.md','assets/github-ai-radar-2026-11-19-r5-lumodesktop-frontdesk-t3boat-wmpf.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-19-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r529File),'utf8');
+      assert.ok(txt.includes('2,560.00')&&txt.includes('3,950.00')&&txt.includes('6,510.00')&&txt.includes('70.00')&&txt.includes('260.00')&&txt.includes('330.00')&&txt.includes('6,180.00')&&txt.includes('94.93%')&&txt.includes('not_measured'),r529File+': contains exact 11-19 R5 R529 lumodesktop+frontdesk+t3boat+wmpf closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
