@@ -6718,6 +6718,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r546File),'utf8');
       assert.ok(txt.includes('2,690.00')&&txt.includes('4,000.00')&&txt.includes('6,690.00')&&txt.includes('70.00')&&txt.includes('250.00')&&txt.includes('320.00')&&txt.includes('6,370.00')&&txt.includes('95.22%')&&txt.includes('not_measured'),r546File+': contains exact 11-19 R22 R546 playdatasafety+turingpot+picharter+yardmaster closed-form parameters');
     }
+    // 2026-11-19 Night Round 23 (R547: Microck/cloudssh + d6u/story-timeline + reshiramsq18-alt/examples-are-not-requirements + brewed-ops/kape-web-framework) verification
+    const r547PathA=2630.00+39.5*100.00;
+    assert.equal(r547PathA.toFixed(2),'6580.00','11-19 R23 R547 Path A total');
+    const r547PathC=65.00+2.5*100.00;
+    assert.equal(r547PathC.toFixed(2),'315.00','11-19 R23 R547 Path C total');
+    assert.equal((r547PathA-r547PathC).toFixed(2),'6265.00','11-19 R23 R547 savings vs Path A');
+    assert.equal(((r547PathA-r547PathC)/r547PathA*100).toFixed(2),'95.21','11-19 R23 R547 pct savings vs Path A');
+    for(const r547File of ['workshops/github-trending-radar/docs/cloudssh-story-timeline-examples-are-not-requirements-kape-web-framework-codex-ssh-workspaces-sqlite-graphql-epistemic-timeline-anti-example-anchoring-97check-astro-selection-faq.md','workshops/github-trending-radar/docs/cloudssh-story-timeline-examples-are-not-requirements-kape-web-framework-codex-ssh-workspaces-sqlite-graphql-epistemic-timeline-anti-example-anchoring-97check-astro-selection-faq.en.md','assets/github-ai-radar-2026-11-19-r23-cloudssh-storytimeline-examplesnotreqs-kapeweb.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-19-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r547File),'utf8');
+      assert.ok(txt.includes('2,630.00')&&txt.includes('3,950.00')&&txt.includes('6,580.00')&&txt.includes('65.00')&&txt.includes('250.00')&&txt.includes('315.00')&&txt.includes('6,265.00')&&txt.includes('95.21%')&&txt.includes('not_measured'),r547File+': contains exact 11-19 R23 R547 cloudssh+storytimeline+examplesnotreqs+kapeweb closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
