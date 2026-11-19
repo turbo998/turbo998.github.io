@@ -6740,6 +6740,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r548File),'utf8');
       assert.ok(txt.includes('2,590.00')&&txt.includes('3,900.00')&&txt.includes('6,490.00')&&txt.includes('65.00')&&txt.includes('250.00')&&txt.includes('315.00')&&txt.includes('6,175.00')&&txt.includes('95.15%')&&txt.includes('not_measured'),r548File+': contains exact 11-19 R24 R548 sharkskills+oneai+skillsiphon+runoutbar closed-form parameters');
     }
+    // 2026-11-19 Night Round 25 (R549: wonseokjung/reversebusiness + olele114/teach-to-learn + itsmeyaw/skillset + saberc8/codex-project-pulse) verification
+    const r549PathA=2610.00+39.5*100.00;
+    assert.equal(r549PathA.toFixed(2),'6560.00','11-19 R25 R549 Path A total');
+    const r549PathC=65.00+2.5*100.00;
+    assert.equal(r549PathC.toFixed(2),'315.00','11-19 R25 R549 Path C total');
+    assert.equal((r549PathA-r549PathC).toFixed(2),'6245.00','11-19 R25 R549 savings vs Path A');
+    assert.equal(((r549PathA-r549PathC)/r549PathA*100).toFixed(2),'95.20','11-19 R25 R549 pct savings vs Path A');
+    for(const r549File of ['workshops/github-trending-radar/docs/reversebusiness-teach-to-learn-skillset-codex-project-pulse-cleanroom-business-dissection-spaced-transfer-mastery-pinned-skillset-cli-cross-project-pulse-selection-faq.md','workshops/github-trending-radar/docs/reversebusiness-teach-to-learn-skillset-codex-project-pulse-cleanroom-business-dissection-spaced-transfer-mastery-pinned-skillset-cli-cross-project-pulse-selection-faq.en.md','assets/github-ai-radar-2026-11-19-r25-reversebusiness-teachtolearn-skillset-projectpulse.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-19-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r549File),'utf8');
+      assert.ok(txt.includes('2,610.00')&&txt.includes('3,950.00')&&txt.includes('6,560.00')&&txt.includes('65.00')&&txt.includes('250.00')&&txt.includes('315.00')&&txt.includes('6,245.00')&&txt.includes('95.20%')&&txt.includes('not_measured'),r549File+': contains exact 11-19 R25 R549 reversebusiness+teachtolearn+skillset+projectpulse closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
