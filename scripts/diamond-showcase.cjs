@@ -77,6 +77,7 @@ function diamondResources(zh) {
       ],
       links: [
         link(['Launch 4-Act Coexistence Console', '启动 Databricks × Fabric 四幕控制台'], dbxUrl),
+        link(['🔐 Live Zero-InPrivate Gateway & Video', '🔐 实机免无痕直连与实录'], `${dbxUrl}#act-live`),
         link(['AI/BI Genie Root-Cause Drilldown', 'AI/BI Genie 五步追因'], `${dbxUrl}#act-2`),
         link(['10-Dimension SA Battlecard', '10 维度双平台选型对战卡'], `${dbxUrl}#act-4`)
       ]
@@ -238,6 +239,7 @@ function renderDiamondPage(file, zh) {
       <div class="actions">
         <a class="button primary" href="${ui.href(file, tclUrl)}">${t(zh, 'Launch Demo 1 · TCL × Microsoft Fabric', '启动演示 1 · TCL × Microsoft Fabric 六幕驾驶舱')} ↗</a>
         <a class="button diamond-cta" href="${ui.href(file, dbxUrl)}">${t(zh, 'Launch Demo 2 · Databricks × Fabric', '启动演示 2 · Databricks × Fabric 四幕控制台')} ↗</a>
+        <a class="button" href="${ui.href(file, `${dbxUrl}#act-live`)}" style="border-color:rgba(16,185,129,.55);background:rgba(16,185,129,.14);font-weight:600">${t(zh, '🔐 Zava Live Zero-InPrivate Gateway & Video', '🔐 Zava 实机免无痕直连与实录')} ↗</a>
         <a class="button" href="${ui.href(file, dataInfraUrl)}">${t(zh, 'Data & Infra Lab Track', '数据与云底座实验室专区')} ↗</a>
       </div>
     </div>

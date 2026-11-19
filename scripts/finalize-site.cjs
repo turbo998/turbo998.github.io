@@ -52,6 +52,8 @@ function localeRegistry() {
     'workshops/benchmarks/aipc-kev-sft-q8-gguf-cards',
     'workshops/benchmarks/clio-industry-harness-cards',
     'workshops/benchmarks/gpt-6-2-sol-cards',
+    'workshops/benchmarks/mai-image-2-7-cards',
+    'workshops/benchmarks/terminal-bench-4-1-cards',
     'workshops/benchmarks/mi300x-large-moe-bf16-mxfp4-cards',
     'workshops/scientific-and-industry-harness-engineering/cards',
     'workshops/scientific-and-industry-harness-engineering/test-report-cards'

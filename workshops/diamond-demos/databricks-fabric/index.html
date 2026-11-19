@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:;" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://*.azuredatabricks.net https://login.microsoftonline.com; media-src 'self'; connect-src 'self' https://login.microsoftonline.com https://*.azuredatabricks.net;" />
   <title>Zava 全渠道零售冷链驾驶舱 — Azure Databricks × Microsoft Fabric 零拷贝共生演示</title>
   <meta name="description" content="Diamond 企业级实战演示：基于 Unity Catalog (zava_retail)、AI/BI Genie 3 分钟根因下钻、OneLake 零拷贝镜像、0 DBU Power BI Direct Lake 与 Lakebase/Teams 应急调拨闭环，附 SA 十维中立选型战卡。" />
   <link rel="stylesheet" href="styles.css" />
@@ -112,12 +112,13 @@ body:has([data-professional-header]){height:auto!important;overflow-x:clip!impor
         <span class="pulse-dot"></span>
         <span>Diamond Sanitized Snapshot · 0 Tenant Leak</span>
       </div>
+      <button type="button" class="btn btn-fabric" id="btnHeroLiveAccess">🔐 实机环境免无痕直连</button>
       <button type="button" class="btn" id="btnToggleCue">🎙️ 提词器: 开</button>
       <button type="button" class="btn btn-dbx" id="btnNextAct">下一幕 ➔</button>
     </div>
   </header>
 
-  <nav class="act-nav-strip" aria-label="演示幕次导航">
+  <nav class="act-nav-strip tab-bar" aria-label="演示幕次导航">
     <button type="button" class="act-tab active" id="act-1" data-tab="catalog">
       <span class="act-num">ACT 1</span> Unity Catalog 治理与动态脱敏
     </button>
@@ -129,6 +130,9 @@ body:has([data-professional-header]){height:auto!important;overflow-x:clip!impor
     </button>
     <button type="button" class="act-tab" id="act-4" data-tab="battlecard">
       <span class="act-num">ACT 4</span> Fabric vs Databricks 十维选型战卡
+    </button>
+    <button type="button" class="act-tab" id="act-live" data-tab="live">
+      <span class="act-num">ACT 5</span> 🔐 5. 实机免无痕直连与实录展播
     </button>
   </nav>
 
@@ -358,6 +362,43 @@ RETURN CASE WHEN is_account_group_member('compliance_auditors')
             </thead>
             <tbody id="battlecardBody"></tbody>
           </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ACT 5: LIVE ZERO-INPRIVATE GATEWAY & 1080P RECORDED WALKTHROUGHS -->
+    <section class="tab-pane" id="pane-live">
+      <div id="liveGatewayMount" style="margin-bottom:18px;"></div>
+
+      <div class="card" id="liveVideoTheaterCard">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title">🎬 1080p 实机环境全流程字幕实录展播（免口令即点即看 · 断网/访客兜底）</h2>
+            <p class="card-subtitle">直接在个人网站播放真实 Azure Databricks Diamond 环境四幕高清实录（含双语级关键指标字幕），无需登录即可完整演示 Unity Catalog、AI/BI Genie 追因与高管看板</p>
+          </div>
+          <span class="pill-tag tag-green">1080p MP4 · 4 Chapters · Zero Auth Required</span>
+        </div>
+
+        <div class="video-theater-layout">
+          <div class="video-player-frame">
+            <video id="zavaWalkthroughVideo" class="live-video-player" controls preload="metadata" playsinline src="videos/act1-unity-catalog.mp4"></video>
+            <div class="video-player-meta">
+              <div style="min-width:0;flex:1;">
+                <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+                  <span class="pill-tag tag-blue" id="videoActiveBadge">CHAPTER 1 / 4</span>
+                  <strong id="videoActiveTitle" style="font-size:13.5px;">第一幕 · Unity Catalog 三层奖牌架构与列级血缘实录</strong>
+                </div>
+                <div id="videoActiveDesc" style="font-size:12px;color:var(--text-muted);margin-top:3px;">铜银金 24,024→24,000 质检拦截、mask_phone() 动态脱敏与 mv_retail_kpi 指标视图实机巡检</div>
+              </div>
+              <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                <button type="button" class="btn btn-sm" id="btnVideoPrev">◀ 上一章</button>
+                <button type="button" class="btn btn-sm btn-dbx" id="btnVideoNext">下一章 ▶</button>
+                <a class="btn btn-sm" id="videoDirectLink" href="videos/act1-unity-catalog.mp4" target="_blank" rel="noopener">↗ 独立窗口播放</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="video-chapter-list" id="videoChapterList"></div>
         </div>
       </div>
     </section>
