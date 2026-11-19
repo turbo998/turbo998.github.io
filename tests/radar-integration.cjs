@@ -6458,6 +6458,35 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r524File),'utf8');
       assert.ok(txt.includes('2,720.00')&&txt.includes('4,150.00')&&txt.includes('6,870.00')&&txt.includes('80.00')&&txt.includes('270.00')&&txt.includes('350.00')&&txt.includes('6,520.00')&&txt.includes('94.91%')&&txt.includes('not_measured'),r524File+': contains exact 11-18 R44 R524 nocobase+happy+egolite+primeagent closed-form parameters');
     }
+    // 2026-11-19 Raw Evidence SHA-256, Track A/B & Night Round 1 (R525 Milestone: firecrawl/firecrawl + Tracer-Cloud/opensre + replit/datacat + mjmirza/app-store-compliance) verification
+    const rawHtml1119=fs.readFileSync(path.join(__dirname,'..','workshops','github-trending-radar','evidence','trending-daily-2026-11-19-raw.html'),'utf8').replace(/\r\n/g,'\n');
+    assert.equal(crypto.createHash('sha256').update(rawHtml1119).digest('hex'),'9f756482871e71f3364e0333dec489ce7030e3ddef7c33cf1a136d68115f5dc9','2026-11-19 raw HTML LF sha256');
+    const rawSearch1119Str=fs.readFileSync(path.join(__dirname,'..','workshops','github-trending-radar','evidence','search-new-repos-2026-11-19-raw.json'),'utf8').replace(/\r\n/g,'\n');
+    assert.equal(crypto.createHash('sha256').update(rawSearch1119Str).digest('hex'),'581ab7fdb5e4ea1d4828738bf2e075984f8fe6ceb8fe861d77b7f545bfd0bc1d','2026-11-19 raw Search JSON LF sha256');
+    const rawSearch1119=JSON.parse(rawSearch1119Str);
+    const rawSearch1119Map=new Map(rawSearch1119.items.map(it=>[it.full_name,it]));
+    for(const item of reportJson.fastest_rising_leaderboard_2026_11_19.track_a_24h_star_surge){
+      assert.equal(item.provenance,'measured',item.full_name+': 11-19 Track A provenance');
+      assert.ok(rawHtml1119.includes(`href="/${item.full_name}"`),item.full_name+': present in 11-19 raw HTML');
+      assert.ok(rawHtml1119.includes(`${item.stars_today.toLocaleString('en-US')} stars today`),item.full_name+': exact stars_today in 11-19 raw HTML');
+    }
+    for(const item of reportJson.fastest_rising_leaderboard_2026_11_19.track_b_new_repo_breakout_slope){
+      assert.equal(item.stars_today,'not_measured',item.full_name+': 11-19 Track B stars_today must be not_measured');
+      assert.ok(rawSearch1119Map.has(item.full_name),item.full_name+': present in 11-19 archived Search API JSON');
+      const rawEntry=rawSearch1119Map.get(item.full_name);
+      assert.equal(item.stars_total_search_api,rawEntry.stargazers_count,item.full_name+': 11-19 stars_total_search_api matches Search API JSON');
+      assert.equal(item.stars_per_day,Math.round(item.stars_total/item.age_days),item.full_name+': 11-19 stars_per_day closed-form');
+    }
+    const r525PathA=2860.00+42.0*100.00;
+    assert.equal(r525PathA.toFixed(2),'7060.00','11-19 R1 R525 Path A total');
+    const r525PathC=85.00+2.8*100.00;
+    assert.equal(r525PathC.toFixed(2),'365.00','11-19 R1 R525 Path C total');
+    assert.equal((r525PathA-r525PathC).toFixed(2),'6695.00','11-19 R1 R525 savings vs Path A');
+    assert.equal(((r525PathA-r525PathC)/r525PathA*100).toFixed(2),'94.83','11-19 R1 R525 pct savings vs Path A');
+    for(const r525File of ['workshops/github-trending-radar/docs/firecrawl-opensre-datacat-app-store-compliance-550provider-agent-web-infra-selfhosted-cicd-sre-datadog-otlp-observability-117pattern-store-guard-selection-faq.md','workshops/github-trending-radar/docs/firecrawl-opensre-datacat-app-store-compliance-550provider-agent-web-infra-selfhosted-cicd-sre-datadog-otlp-observability-117pattern-store-guard-selection-faq.en.md','assets/github-ai-radar-2026-11-19.svg','assets/github-ai-radar-2026-11-19-r1-r525-firecrawl-opensre-datacat-appstorecompliance.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-19-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r525File),'utf8');
+      assert.ok(txt.includes('2,860.00')&&txt.includes('4,200.00')&&txt.includes('7,060.00')&&txt.includes('85.00')&&txt.includes('280.00')&&txt.includes('365.00')&&txt.includes('6,695.00')&&txt.includes('94.83%')&&txt.includes('not_measured'),r525File+': contains exact 11-19 R1 R525 firecrawl+opensre+datacat+appstorecompliance closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
