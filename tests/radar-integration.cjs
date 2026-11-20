@@ -6887,6 +6887,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r561File),'utf8');
       assert.ok(txt.includes('2,940.00')&&txt.includes('3,900.00')&&txt.includes('6,840.00')&&txt.includes('75.00')&&txt.includes('250.00')&&txt.includes('325.00')&&txt.includes('6,515.00')&&txt.includes('95.25%')&&txt.includes('not_measured'),r561File+': contains exact 11-20 R2 R561 agentbus+sedimem+atlas+nestjsskills closed-form parameters');
     }
+    // 2026-11-20 Night Round 3 (R562: cloveric/tarobird + nickvasilescu/openman + svaraborut/work3 + eddiezywang/wemail) verification
+    const r562PathA=3060.00+40.0*100.00;
+    assert.equal(r562PathA.toFixed(2),'7060.00','11-20 R3 R562 Path A total');
+    const r562PathC=80.00+2.5*100.00;
+    assert.equal(r562PathC.toFixed(2),'330.00','11-20 R3 R562 Path C total');
+    assert.equal((r562PathA-r562PathC).toFixed(2),'6730.00','11-20 R3 R562 savings vs Path A');
+    assert.equal(((r562PathA-r562PathC)/r562PathA*100).toFixed(2),'95.33','11-20 R3 R562 pct savings vs Path A');
+    for(const r562File of ['workshops/github-trending-radar/docs/tarobird-openman-work3-wemail-12chat-mobile-cli-hub-orgo-cloud-computer-agent-1cmd-worktree-fleet-local-ai-email-selection-faq.md','workshops/github-trending-radar/docs/tarobird-openman-work3-wemail-12chat-mobile-cli-hub-orgo-cloud-computer-agent-1cmd-worktree-fleet-local-ai-email-selection-faq.en.md','assets/github-ai-radar-2026-11-20-r3-tarobird-openman-work3-wemail.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-20-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r562File),'utf8');
+      assert.ok(txt.includes('3,060.00')&&txt.includes('4,000.00')&&txt.includes('7,060.00')&&txt.includes('80.00')&&txt.includes('250.00')&&txt.includes('330.00')&&txt.includes('6,730.00')&&txt.includes('95.33%')&&txt.includes('not_measured'),r562File+': contains exact 11-20 R3 R562 tarobird+openman+work3+wemail closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
