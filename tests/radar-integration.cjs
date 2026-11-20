@@ -7074,6 +7074,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r578File),'utf8');
       assert.ok(txt.includes('2,980.00')&&txt.includes('3,900.00')&&txt.includes('6,880.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('6,570.00')&&txt.includes('95.49%')&&txt.includes('not_measured'),r578File+': contains exact 11-20 R19 R578 civilcode+academicskills+selfmedia+beansprout closed-form parameters');
     }
+    // 2026-11-20 Night Round 20 (R579: howznguyen/phonedesk + cheso-ai-platform/dsh-cheso-design + danielwh2/sprite-stacking + zuanfilm/Zuanfilm-Retrolab) verification
+    const r579PathA=3040.00+39.5*100.00;
+    assert.equal(r579PathA.toFixed(2),'6990.00','11-20 R20 R579 Path A total');
+    const r579PathC=75.00+2.4*100.00;
+    assert.equal(r579PathC.toFixed(2),'315.00','11-20 R20 R579 Path C total');
+    assert.equal((r579PathA-r579PathC).toFixed(2),'6675.00','11-20 R20 R579 savings vs Path A');
+    assert.equal(((r579PathA-r579PathC)/r579PathA*100).toFixed(2),'95.49','11-20 R20 R579 pct savings vs Path A');
+    for(const r579File of ['workshops/github-trending-radar/docs/phonedesk-dsh-cheso-design-sprite-stacking-zuanfilm-retrolab-selection-faq.md','workshops/github-trending-radar/docs/phonedesk-dsh-cheso-design-sprite-stacking-zuanfilm-retrolab-selection-faq.en.md','assets/github-ai-radar-2026-11-20-r20-r579-phonedesk-chesodesign-spritestacking-retrolab.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-20-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r579File),'utf8');
+      assert.ok(txt.includes('3,040.00')&&txt.includes('3,950.00')&&txt.includes('6,990.00')&&txt.includes('75.00')&&txt.includes('240.00')&&txt.includes('315.00')&&txt.includes('6,675.00')&&txt.includes('95.49%')&&txt.includes('not_measured'),r579File+': contains exact 11-20 R20 R579 phonedesk+chesodesign+spritestacking+retrolab closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
