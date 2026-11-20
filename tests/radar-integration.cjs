@@ -7184,6 +7184,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r588File),'utf8');
       assert.ok(txt.includes('3,320.00')&&txt.includes('4,150.00')&&txt.includes('7,470.00')&&txt.includes('85.00')&&txt.includes('250.00')&&txt.includes('335.00')&&txt.includes('7,135.00')&&txt.includes('95.52%')&&txt.includes('not_measured'),r588File+': contains exact 11-20 R29 R588 higgsfield+higgsv3tts+autodrama+comfyuidoctor closed-form parameters');
     }
+    // 2026-11-20 Night Round 30 (R589: HoldMyBeer-gg/blenderwright + ffroliva/gflow-cli + BrokkAi/mjolnir + AlephantAI/AIephant-AI-Agent-Gateway) verification
+    const r589PathA=3220.00+40.0*100.00;
+    assert.equal(r589PathA.toFixed(2),'7220.00','11-20 R30 R589 Path A total');
+    const r589PathC=75.00+2.4*100.00;
+    assert.equal(r589PathC.toFixed(2),'315.00','11-20 R30 R589 Path C total');
+    assert.equal((r589PathA-r589PathC).toFixed(2),'6905.00','11-20 R30 R589 savings vs Path A');
+    assert.equal(((r589PathA-r589PathC)/r589PathA*100).toFixed(2),'95.64','11-20 R30 R589 pct savings vs Path A');
+    for(const r589File of ['workshops/github-trending-radar/docs/blenderwright-gflow-cli-mjolnir-alephant-gateway-selection-faq.md','workshops/github-trending-radar/docs/blenderwright-gflow-cli-mjolnir-alephant-gateway-selection-faq.en.md','assets/github-ai-radar-2026-11-20-r30-r589-blenderwright-gflowcli-mjolnir-alephantgateway.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-20-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r589File),'utf8');
+      assert.ok(txt.includes('3,220.00')&&txt.includes('4,000.00')&&txt.includes('7,220.00')&&txt.includes('75.00')&&txt.includes('240.00')&&txt.includes('315.00')&&txt.includes('6,905.00')&&txt.includes('95.64%')&&txt.includes('not_measured'),r589File+': contains exact 11-20 R30 R589 blenderwright+gflowcli+mjolnir+alephantgateway closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
