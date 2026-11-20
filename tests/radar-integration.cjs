@@ -7129,6 +7129,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r583File),'utf8');
       assert.ok(txt.includes('3,240.00')&&txt.includes('4,050.00')&&txt.includes('7,290.00')&&txt.includes('80.00')&&txt.includes('250.00')&&txt.includes('330.00')&&txt.includes('6,960.00')&&txt.includes('95.47%')&&txt.includes('not_measured'),r583File+': contains exact 11-20 R24 R583 qda+longcatavatar+k2editorial+livestreamclip closed-form parameters');
     }
+    // 2026-11-20 Night Round 25 (R584: BarbaraCovarrubias/ai-agent-academy + damkandev/hilo + termlet/termlet + NPCmillionaire/unredact.tools) verification
+    const r584PathA=3180.00+40.0*100.00;
+    assert.equal(r584PathA.toFixed(2),'7180.00','11-20 R25 R584 Path A total');
+    const r584PathC=75.00+2.4*100.00;
+    assert.equal(r584PathC.toFixed(2),'315.00','11-20 R25 R584 Path C total');
+    assert.equal((r584PathA-r584PathC).toFixed(2),'6865.00','11-20 R25 R584 savings vs Path A');
+    assert.equal(((r584PathA-r584PathC)/r584PathA*100).toFixed(2),'95.61','11-20 R25 R584 pct savings vs Path A');
+    for(const r584File of ['workshops/github-trending-radar/docs/ai-agent-academy-hilo-termlet-unredact-tools-rag-opsec-selection-faq.md','workshops/github-trending-radar/docs/ai-agent-academy-hilo-termlet-unredact-tools-rag-opsec-selection-faq.en.md','assets/github-ai-radar-2026-11-20-r25-r584-aiagentacademy-hilo-termlet-unredact.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-20-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r584File),'utf8');
+      assert.ok(txt.includes('3,180.00')&&txt.includes('4,000.00')&&txt.includes('7,180.00')&&txt.includes('75.00')&&txt.includes('240.00')&&txt.includes('315.00')&&txt.includes('6,865.00')&&txt.includes('95.61%')&&txt.includes('not_measured'),r584File+': contains exact 11-20 R25 R584 aiagentacademy+hilo+termlet+unredact closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
