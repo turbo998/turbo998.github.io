@@ -7228,6 +7228,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r592File),'utf8');
       assert.ok(txt.includes('3,380.00')&&txt.includes('4,150.00')&&txt.includes('7,530.00')&&txt.includes('80.00')&&txt.includes('250.00')&&txt.includes('330.00')&&txt.includes('7,200.00')&&txt.includes('95.62%')&&txt.includes('not_measured'),r592File+': contains exact 11-20 R33 R592 agentswarm+pad+taskobserver+subpool closed-form parameters');
     }
+    // 2026-11-20 Night Round 34 (R593: zosmaai/zosma-cowork + riffpad/riffpad + kele-dev/Claude-Orchestrator-Skill + timoncool/givememod) verification
+    const r593PathA=3220.00+39.5*100.00;
+    assert.equal(r593PathA.toFixed(2),'7170.00','11-20 R34 R593 Path A total');
+    const r593PathC=75.00+2.4*100.00;
+    assert.equal(r593PathC.toFixed(2),'315.00','11-20 R34 R593 Path C total');
+    assert.equal((r593PathA-r593PathC).toFixed(2),'6855.00','11-20 R34 R593 savings vs Path A');
+    assert.equal(((r593PathA-r593PathC)/r593PathA*100).toFixed(2),'95.61','11-20 R34 R593 pct savings vs Path A');
+    for(const r593File of ['workshops/github-trending-radar/docs/zosma-cowork-riffpad-claude-orchestrator-skill-givememod-selection-faq.md','workshops/github-trending-radar/docs/zosma-cowork-riffpad-claude-orchestrator-skill-givememod-selection-faq.en.md','assets/github-ai-radar-2026-11-20-r34-r593-zosmacowork-riffpad-orchestratorskill-givememod.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-20-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r593File),'utf8');
+      assert.ok(txt.includes('3,220.00')&&txt.includes('3,950.00')&&txt.includes('7,170.00')&&txt.includes('75.00')&&txt.includes('240.00')&&txt.includes('315.00')&&txt.includes('6,855.00')&&txt.includes('95.61%')&&txt.includes('not_measured'),r593File+': contains exact 11-20 R34 R593 zosmacowork+riffpad+orchestratorskill+givememod closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
