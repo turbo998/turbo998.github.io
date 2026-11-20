@@ -7261,6 +7261,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r595File),'utf8');
       assert.ok(txt.includes('3,360.00')&&txt.includes('4,100.00')&&txt.includes('7,460.00')&&txt.includes('80.00')&&txt.includes('250.00')&&txt.includes('330.00')&&txt.includes('7,130.00')&&txt.includes('95.58%')&&txt.includes('not_measured'),r595File+': contains exact 11-20 R36 R595 devicechain+ekos+openclawdesktop+motive closed-form parameters');
     }
+    // 2026-11-20 Night Round 37 (R596: w1ne/labwired-core + byAbas/archgram + AKzar1el/mcp-gsc + karero/croftweaver) verification
+    const r596PathA=3180.00+39.5*100.00;
+    assert.equal(r596PathA.toFixed(2),'7130.00','11-20 R37 R596 Path A total');
+    const r596PathC=70.00+2.4*100.00;
+    assert.equal(r596PathC.toFixed(2),'310.00','11-20 R37 R596 Path C total');
+    assert.equal((r596PathA-r596PathC).toFixed(2),'6820.00','11-20 R37 R596 savings vs Path A');
+    assert.equal(((r596PathA-r596PathC)/r596PathA*100).toFixed(2),'95.65','11-20 R37 R596 pct savings vs Path A');
+    for(const r596File of ['workshops/github-trending-radar/docs/labwired-core-archgram-mcp-gsc-croftweaver-selection-faq.md','workshops/github-trending-radar/docs/labwired-core-archgram-mcp-gsc-croftweaver-selection-faq.en.md','assets/github-ai-radar-2026-11-20-r37-r596-labwired-archgram-mcpgsc-croftweaver.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-20-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r596File),'utf8');
+      assert.ok(txt.includes('3,180.00')&&txt.includes('3,950.00')&&txt.includes('7,130.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('6,820.00')&&txt.includes('95.65%')&&txt.includes('not_measured'),r596File+': contains exact 11-20 R37 R596 labwired+archgram+mcpgsc+croftweaver closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
