@@ -6898,6 +6898,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r562File),'utf8');
       assert.ok(txt.includes('3,060.00')&&txt.includes('4,000.00')&&txt.includes('7,060.00')&&txt.includes('80.00')&&txt.includes('250.00')&&txt.includes('330.00')&&txt.includes('6,730.00')&&txt.includes('95.33%')&&txt.includes('not_measured'),r562File+': contains exact 11-20 R3 R562 tarobird+openman+work3+wemail closed-form parameters');
     }
+    // 2026-11-20 Night Round 4 (R563: Echoxiawan/echobench + yanshuxiang/point-taken + adunext/mep + Merziller/dsh-video-workbench) verification
+    const r563PathA=2820.00+38.0*100.00;
+    assert.equal(r563PathA.toFixed(2),'6620.00','11-20 R4 R563 Path A total');
+    const r563PathC=70.00+2.4*100.00;
+    assert.equal(r563PathC.toFixed(2),'310.00','11-20 R4 R563 Path C total');
+    assert.equal((r563PathA-r563PathC).toFixed(2),'6310.00','11-20 R4 R563 savings vs Path A');
+    assert.equal(((r563PathA-r563PathC)/r563PathA*100).toFixed(2),'95.32','11-20 R4 R563 pct savings vs Path A');
+    for(const r563File of ['workshops/github-trending-radar/docs/echobench-point-taken-mep-dsh-video-workbench-webcodecs-mobile-test-voice-circle-note-motion-edit-protocol-32mcp-video-studio-selection-faq.md','workshops/github-trending-radar/docs/echobench-point-taken-mep-dsh-video-workbench-webcodecs-mobile-test-voice-circle-note-motion-edit-protocol-32mcp-video-studio-selection-faq.en.md','assets/github-ai-radar-2026-11-20-r4-echobench-pointtaken-mep-videoworkbench.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-20-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r563File),'utf8');
+      assert.ok(txt.includes('2,820.00')&&txt.includes('3,800.00')&&txt.includes('6,620.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('6,310.00')&&txt.includes('95.32%')&&txt.includes('not_measured'),r563File+': contains exact 11-20 R4 R563 echobench+pointtaken+mep+videoworkbench closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
