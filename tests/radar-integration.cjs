@@ -6997,6 +6997,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r571File),'utf8');
       assert.ok(txt.includes('3,140.00')&&txt.includes('4,000.00')&&txt.includes('7,140.00')&&txt.includes('75.00')&&txt.includes('250.00')&&txt.includes('325.00')&&txt.includes('6,815.00')&&txt.includes('95.45%')&&txt.includes('not_measured'),r571File+': contains exact 11-20 R12 R571 voiceisolator+sava+zeyvola+convert closed-form parameters');
     }
+    // 2026-11-20 Night Round 13 (R572: nilbuild/stick-scene + lemomo-ai/lemo-animi + 0xpratzyy/subtle + chapter-dev-pty-ltd/product-demo-agent-toolkit) verification
+    const r572PathA=2960.00+39.0*100.00;
+    assert.equal(r572PathA.toFixed(2),'6860.00','11-20 R13 R572 Path A total');
+    const r572PathC=70.00+2.4*100.00;
+    assert.equal(r572PathC.toFixed(2),'310.00','11-20 R13 R572 Path C total');
+    assert.equal((r572PathA-r572PathC).toFixed(2),'6550.00','11-20 R13 R572 savings vs Path A');
+    assert.equal(((r572PathA-r572PathC)/r572PathA*100).toFixed(2),'95.48','11-20 R13 R572 pct savings vs Path A');
+    for(const r572File of ['workshops/github-trending-radar/docs/stick-scene-lemo-animi-subtle-product-demo-agent-toolkit-selection-faq.md','workshops/github-trending-radar/docs/stick-scene-lemo-animi-subtle-product-demo-agent-toolkit-selection-faq.en.md','assets/github-ai-radar-2026-11-20-r13-r572-stickscene-lemoanimi-subtle-productdemo.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-20-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r572File),'utf8');
+      assert.ok(txt.includes('2,960.00')&&txt.includes('3,900.00')&&txt.includes('6,860.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('6,550.00')&&txt.includes('95.48%')&&txt.includes('not_measured'),r572File+': contains exact 11-20 R13 R572 stickscene+lemoanimi+subtle+productdemo closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
