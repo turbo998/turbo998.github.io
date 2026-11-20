@@ -6986,6 +6986,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r570File),'utf8');
       assert.ok(txt.includes('3,220.00')&&txt.includes('4,100.00')&&txt.includes('7,320.00')&&txt.includes('80.00')&&txt.includes('250.00')&&txt.includes('330.00')&&txt.includes('6,990.00')&&txt.includes('95.49%')&&txt.includes('not_measured'),r570File+': contains exact 11-20 R11 R570 openmindlab+tuomin+whiskerrs+tickpipe closed-form parameters');
     }
+    // 2026-11-20 Night Round 12 (R571: inworld-ai/voice-isolator + inworld-ai/sava + YildizDikme/zeyvola-screen-recorder + newtonstudios/convert) verification
+    const r571PathA=3140.00+40.0*100.00;
+    assert.equal(r571PathA.toFixed(2),'7140.00','11-20 R12 R571 Path A total');
+    const r571PathC=75.00+2.5*100.00;
+    assert.equal(r571PathC.toFixed(2),'325.00','11-20 R12 R571 Path C total');
+    assert.equal((r571PathA-r571PathC).toFixed(2),'6815.00','11-20 R12 R571 savings vs Path A');
+    assert.equal(((r571PathA-r571PathC)/r571PathA*100).toFixed(2),'95.45','11-20 R12 R571 pct savings vs Path A');
+    for(const r571File of ['workshops/github-trending-radar/docs/inworld-voice-isolator-sava-zeyvola-convert-voice-turn-privacy-faq.md','workshops/github-trending-radar/docs/inworld-voice-isolator-sava-zeyvola-convert-voice-turn-privacy-faq.en.md','assets/github-ai-radar-2026-11-20-r12-r571-voiceisolator-sava-zeyvola-convert.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-20-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r571File),'utf8');
+      assert.ok(txt.includes('3,140.00')&&txt.includes('4,000.00')&&txt.includes('7,140.00')&&txt.includes('75.00')&&txt.includes('250.00')&&txt.includes('325.00')&&txt.includes('6,815.00')&&txt.includes('95.45%')&&txt.includes('not_measured'),r571File+': contains exact 11-20 R12 R571 voiceisolator+sava+zeyvola+convert closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
