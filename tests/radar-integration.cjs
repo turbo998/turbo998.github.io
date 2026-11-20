@@ -7173,6 +7173,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r587File),'utf8');
       assert.ok(txt.includes('3,280.00')&&txt.includes('4,050.00')&&txt.includes('7,330.00')&&txt.includes('80.00')&&txt.includes('250.00')&&txt.includes('330.00')&&txt.includes('7,000.00')&&txt.includes('95.50%')&&txt.includes('not_measured'),r587File+': contains exact 11-20 R28 R587 clickhouseloom+intutic+researchforge+dataagent closed-form parameters');
     }
+    // 2026-11-20 Night Round 29 (R588: lucataco/open-source-higgsfield + Saganaki22/Higgs_v3-TTS-ComfyUI + qiukaihui/comfyui-auto-drama + rookiestar28/ComfyUI-Doctor) verification
+    const r588PathA=3320.00+41.5*100.00;
+    assert.equal(r588PathA.toFixed(2),'7470.00','11-20 R29 R588 Path A total');
+    const r588PathC=85.00+2.5*100.00;
+    assert.equal(r588PathC.toFixed(2),'335.00','11-20 R29 R588 Path C total');
+    assert.equal((r588PathA-r588PathC).toFixed(2),'7135.00','11-20 R29 R588 savings vs Path A');
+    assert.equal(((r588PathA-r588PathC)/r588PathA*100).toFixed(2),'95.52','11-20 R29 R588 pct savings vs Path A');
+    for(const r588File of ['workshops/github-trending-radar/docs/open-source-higgsfield-higgs-v3-tts-auto-drama-comfyui-doctor-selection-faq.md','workshops/github-trending-radar/docs/open-source-higgsfield-higgs-v3-tts-auto-drama-comfyui-doctor-selection-faq.en.md','assets/github-ai-radar-2026-11-20-r29-r588-higgsfield-higgsv3tts-autodrama-comfyuidoctor.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-20-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r588File),'utf8');
+      assert.ok(txt.includes('3,320.00')&&txt.includes('4,150.00')&&txt.includes('7,470.00')&&txt.includes('85.00')&&txt.includes('250.00')&&txt.includes('335.00')&&txt.includes('7,135.00')&&txt.includes('95.52%')&&txt.includes('not_measured'),r588File+': contains exact 11-20 R29 R588 higgsfield+higgsv3tts+autodrama+comfyuidoctor closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
