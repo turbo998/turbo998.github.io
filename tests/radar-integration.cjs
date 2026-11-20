@@ -6931,6 +6931,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r565File),'utf8');
       assert.ok(txt.includes('3,240.00')&&txt.includes('4,150.00')&&txt.includes('7,390.00')&&txt.includes('80.00')&&txt.includes('250.00')&&txt.includes('330.00')&&txt.includes('7,060.00')&&txt.includes('95.53%')&&txt.includes('not_measured'),r565File+': contains exact 11-20 R6 R565 antigrativedashboard+polanon+lifeboat+imaginationstudio closed-form parameters');
     }
+    // 2026-11-20 Night Round 7 (R566: finktheartist/rubber-hose-ui + rs-4/dissolve + jshguo-labs/monohud + ecapri-dev/simulab-skill) verification
+    const r566PathA=2680.00+37.0*100.00;
+    assert.equal(r566PathA.toFixed(2),'6380.00','11-20 R7 R566 Path A total');
+    const r566PathC=65.00+2.3*100.00;
+    assert.equal(r566PathC.toFixed(2),'295.00','11-20 R7 R566 Path C total');
+    assert.equal((r566PathA-r566PathC).toFixed(2),'6085.00','11-20 R7 R566 savings vs Path A');
+    assert.equal(((r566PathA-r566PathC)/r566PathA*100).toFixed(2),'95.38','11-20 R7 R566 pct savings vs Path A');
+    for(const r566File of ['workshops/github-trending-radar/docs/rubber-hose-ui-dissolve-monohud-simulab-skill-a11y-webcomponents-skia-ui-3d-lab-selection-faq.md','workshops/github-trending-radar/docs/rubber-hose-ui-dissolve-monohud-simulab-skill-a11y-webcomponents-skia-ui-3d-lab-selection-faq.en.md','assets/github-ai-radar-2026-11-20-r7-rubberhose-dissolve-monohud-simulab.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-20-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r566File),'utf8');
+      assert.ok(txt.includes('2,680.00')&&txt.includes('3,700.00')&&txt.includes('6,380.00')&&txt.includes('65.00')&&txt.includes('230.00')&&txt.includes('295.00')&&txt.includes('6,085.00')&&txt.includes('95.38%')&&txt.includes('not_measured'),r566File+': contains exact 11-20 R7 R566 rubberhose+dissolve+monohud+simulab closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
