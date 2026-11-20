@@ -7140,6 +7140,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r584File),'utf8');
       assert.ok(txt.includes('3,180.00')&&txt.includes('4,000.00')&&txt.includes('7,180.00')&&txt.includes('75.00')&&txt.includes('240.00')&&txt.includes('315.00')&&txt.includes('6,865.00')&&txt.includes('95.61%')&&txt.includes('not_measured'),r584File+': contains exact 11-20 R25 R584 aiagentacademy+hilo+termlet+unredact closed-form parameters');
     }
+    // 2026-11-20 Night Round 26 (R585 Milestone: rostik32/zest + lqshow/dsh-wechat-studio + codewithsiddique-04/3d-video-studio + hashmil/gemini-hydrogen-art) verification
+    const r585PathA=3260.00+41.0*100.00;
+    assert.equal(r585PathA.toFixed(2),'7360.00','11-20 R26 R585 Path A total');
+    const r585PathC=80.00+2.5*100.00;
+    assert.equal(r585PathC.toFixed(2),'330.00','11-20 R26 R585 Path C total');
+    assert.equal((r585PathA-r585PathC).toFixed(2),'7030.00','11-20 R26 R585 savings vs Path A');
+    assert.equal(((r585PathA-r585PathC)/r585PathA*100).toFixed(2),'95.52','11-20 R26 R585 pct savings vs Path A');
+    for(const r585File of ['workshops/github-trending-radar/docs/zest-dsh-wechat-studio-3d-video-studio-hydrogen-art-selection-faq.md','workshops/github-trending-radar/docs/zest-dsh-wechat-studio-3d-video-studio-hydrogen-art-selection-faq.en.md','assets/github-ai-radar-2026-11-20-r26-r585-zest-dshwechat-3dvideostudio-hydrogenart.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-20-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r585File),'utf8');
+      assert.ok(txt.includes('3,260.00')&&txt.includes('4,100.00')&&txt.includes('7,360.00')&&txt.includes('80.00')&&txt.includes('250.00')&&txt.includes('330.00')&&txt.includes('7,030.00')&&txt.includes('95.52%')&&txt.includes('not_measured'),r585File+': contains exact 11-20 R26 R585 zest+dshwechat+3dvideostudio+hydrogenart closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
