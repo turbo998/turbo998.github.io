@@ -6953,6 +6953,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r567File),'utf8');
       assert.ok(txt.includes('2,740.00')&&txt.includes('3,750.00')&&txt.includes('6,490.00')&&txt.includes('65.00')&&txt.includes('230.00')&&txt.includes('295.00')&&txt.includes('6,195.00')&&txt.includes('95.45%')&&txt.includes('not_measured'),r567File+': contains exact 11-20 R8 R567 brief2mp4+talkinghead+comfyuicapcut+halfsize closed-form parameters');
     }
+    // 2026-11-20 Night Round 9 (R568: zgraham1981/Stablecoin-Payment-Gateway + niyouqianma/workbuddy2api-hub + kyiov/agybridge + apissaj/zcode-gateway) verification
+    const r568PathA=3040.00+38.5*100.00;
+    assert.equal(r568PathA.toFixed(2),'6890.00','11-20 R9 R568 Path A total');
+    const r568PathC=75.00+2.4*100.00;
+    assert.equal(r568PathC.toFixed(2),'315.00','11-20 R9 R568 Path C total');
+    assert.equal((r568PathA-r568PathC).toFixed(2),'6575.00','11-20 R9 R568 savings vs Path A');
+    assert.equal(((r568PathA-r568PathC)/r568PathA*100).toFixed(2),'95.43','11-20 R9 R568 pct savings vs Path A');
+    for(const r568File of ['workshops/github-trending-radar/docs/x402-payment-gateway-workbuddy2api-agybridge-zcode-gateway-cache-hash-routing-selection-faq.md','workshops/github-trending-radar/docs/x402-payment-gateway-workbuddy2api-agybridge-zcode-gateway-cache-hash-routing-selection-faq.en.md','assets/github-ai-radar-2026-11-20-r9-x402gateway-workbuddy2api-agybridge-zcodegateway.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-20-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r568File),'utf8');
+      assert.ok(txt.includes('3,040.00')&&txt.includes('3,850.00')&&txt.includes('6,890.00')&&txt.includes('75.00')&&txt.includes('240.00')&&txt.includes('315.00')&&txt.includes('6,575.00')&&txt.includes('95.43%')&&txt.includes('not_measured'),r568File+': contains exact 11-20 R9 R568 x402gateway+workbuddy2api+agybridge+zcodegateway closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
