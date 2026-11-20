@@ -6920,6 +6920,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r564File),'utf8');
       assert.ok(txt.includes('3,120.00')&&txt.includes('4,050.00')&&txt.includes('7,170.00')&&txt.includes('85.00')&&txt.includes('260.00')&&txt.includes('345.00')&&txt.includes('6,825.00')&&txt.includes('95.19%')&&txt.includes('not_measured'),r564File+': contains exact 11-20 R5 R564 duskbot+harnessspec+soa+apexcluster closed-form parameters');
     }
+    // 2026-11-20 Night Round 6 (R565 Milestone: ATtacK030130/antigrative-dashboard + boromat/polanon + johnpsasser/lifeboat + Keys-Wasserman/hermes-imagination-studio) verification
+    const r565PathA=3240.00+41.5*100.00;
+    assert.equal(r565PathA.toFixed(2),'7390.00','11-20 R6 R565 Path A total');
+    const r565PathC=80.00+2.5*100.00;
+    assert.equal(r565PathC.toFixed(2),'330.00','11-20 R6 R565 Path C total');
+    assert.equal((r565PathA-r565PathC).toFixed(2),'7060.00','11-20 R6 R565 savings vs Path A');
+    assert.equal(((r565PathA-r565PathC)/r565PathA*100).toFixed(2),'95.53','11-20 R6 R565 pct savings vs Path A');
+    for(const r565File of ['workshops/github-trending-radar/docs/antigrative-dashboard-polanon-lifeboat-hermes-imagination-studio-quota-pace-hud-streaming-pii-gateway-200gb-offline-rag-local-film-studio-selection-faq.md','workshops/github-trending-radar/docs/antigrative-dashboard-polanon-lifeboat-hermes-imagination-studio-quota-pace-hud-streaming-pii-gateway-200gb-offline-rag-local-film-studio-selection-faq.en.md','assets/github-ai-radar-2026-11-20-r6-r565-antigrativedashboard-polanon-lifeboat-imaginationstudio.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-20-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r565File),'utf8');
+      assert.ok(txt.includes('3,240.00')&&txt.includes('4,150.00')&&txt.includes('7,390.00')&&txt.includes('80.00')&&txt.includes('250.00')&&txt.includes('330.00')&&txt.includes('7,060.00')&&txt.includes('95.53%')&&txt.includes('not_measured'),r565File+': contains exact 11-20 R6 R565 antigrativedashboard+polanon+lifeboat+imaginationstudio closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
