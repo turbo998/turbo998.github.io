@@ -7250,6 +7250,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r594File),'utf8');
       assert.ok(txt.includes('3,240.00')&&txt.includes('4,000.00')&&txt.includes('7,240.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('6,930.00')&&txt.includes('95.72%')&&txt.includes('not_measured'),r594File+': contains exact 11-20 R35 R594 claudeworkflows+secondskyskills+skillexchange+cronalytics closed-form parameters');
     }
+    // 2026-11-20 Night Round 36 (R595 Milestone: devicechain-io/devicechain + alexeyban/EKOS + rshodoskar-star/openclaw-desktop + geezerrrr/motive) verification
+    const r595PathA=3360.00+41.0*100.00;
+    assert.equal(r595PathA.toFixed(2),'7460.00','11-20 R36 R595 Path A total');
+    const r595PathC=80.00+2.5*100.00;
+    assert.equal(r595PathC.toFixed(2),'330.00','11-20 R36 R595 Path C total');
+    assert.equal((r595PathA-r595PathC).toFixed(2),'7130.00','11-20 R36 R595 savings vs Path A');
+    assert.equal(((r595PathA-r595PathC)/r595PathA*100).toFixed(2),'95.58','11-20 R36 R595 pct savings vs Path A');
+    for(const r595File of ['workshops/github-trending-radar/docs/devicechain-ekos-openclaw-desktop-motive-selection-faq.md','workshops/github-trending-radar/docs/devicechain-ekos-openclaw-desktop-motive-selection-faq.en.md','assets/github-ai-radar-2026-11-20-r36-r595-devicechain-ekos-openclawdesktop-motive.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-20-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r595File),'utf8');
+      assert.ok(txt.includes('3,360.00')&&txt.includes('4,100.00')&&txt.includes('7,460.00')&&txt.includes('80.00')&&txt.includes('250.00')&&txt.includes('330.00')&&txt.includes('7,130.00')&&txt.includes('95.58%')&&txt.includes('not_measured'),r595File+': contains exact 11-20 R36 R595 devicechain+ekos+openclawdesktop+motive closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
