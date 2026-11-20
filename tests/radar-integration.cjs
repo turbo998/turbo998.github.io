@@ -6964,6 +6964,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r568File),'utf8');
       assert.ok(txt.includes('3,040.00')&&txt.includes('3,850.00')&&txt.includes('6,890.00')&&txt.includes('75.00')&&txt.includes('240.00')&&txt.includes('315.00')&&txt.includes('6,575.00')&&txt.includes('95.43%')&&txt.includes('not_measured'),r568File+': contains exact 11-20 R9 R568 x402gateway+workbuddy2api+agybridge+zcodegateway closed-form parameters');
     }
+    // 2026-11-20 Night Round 10 (R569: felixbfx/MuleCreate + luccacerfz/character-factory-skills + dmitrykurash/holospot + jweihe/Awesome-3D-Coding) verification
+    const r569PathA=2780.00+38.0*100.00;
+    assert.equal(r569PathA.toFixed(2),'6580.00','11-20 R10 R569 Path A total');
+    const r569PathC=70.00+2.4*100.00;
+    assert.equal(r569PathC.toFixed(2),'310.00','11-20 R10 R569 Path C total');
+    assert.equal((r569PathA-r569PathC).toFixed(2),'6270.00','11-20 R10 R569 savings vs Path A');
+    assert.equal(((r569PathA-r569PathC)/r569PathA*100).toFixed(2),'95.29','11-20 R10 R569 pct savings vs Path A');
+    for(const r569File of ['workshops/github-trending-radar/docs/mulecreate-character-factory-holospot-awesome-3d-coding-usd-mcp-unity-gates-selection-faq.md','workshops/github-trending-radar/docs/mulecreate-character-factory-holospot-awesome-3d-coding-usd-mcp-unity-gates-selection-faq.en.md','assets/github-ai-radar-2026-11-20-r10-mulecreate-characterfactory-holospot-awesome3dcoding.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-20-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r569File),'utf8');
+      assert.ok(txt.includes('2,780.00')&&txt.includes('3,800.00')&&txt.includes('6,580.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('6,270.00')&&txt.includes('95.29%')&&txt.includes('not_measured'),r569File+': contains exact 11-20 R10 R569 mulecreate+characterfactory+holospot+awesome3dcoding closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
