@@ -7030,6 +7030,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r574File),'utf8');
       assert.ok(txt.includes('3,120.00')&&txt.includes('3,950.00')&&txt.includes('7,070.00')&&txt.includes('75.00')&&txt.includes('240.00')&&txt.includes('315.00')&&txt.includes('6,755.00')&&txt.includes('95.54%')&&txt.includes('not_measured'),r574File+': contains exact 11-20 R15 R574 voicebox+araravoice+egglab+linger closed-form parameters');
     }
+    // 2026-11-20 Night Round 16 (R575 Milestone: cyberterm/ComfyUI-OmniLoRA + ZIWU-AI/robotics-bench + ArsenOria/tau-job-research-skills + adunext/human-video-knowledge) verification
+    const r575PathA=3260.00+41.0*100.00;
+    assert.equal(r575PathA.toFixed(2),'7360.00','11-20 R16 R575 Path A total');
+    const r575PathC=80.00+2.5*100.00;
+    assert.equal(r575PathC.toFixed(2),'330.00','11-20 R16 R575 Path C total');
+    assert.equal((r575PathA-r575PathC).toFixed(2),'7030.00','11-20 R16 R575 savings vs Path A');
+    assert.equal(((r575PathA-r575PathC)/r575PathA*100).toFixed(2),'95.52','11-20 R16 R575 pct savings vs Path A');
+    for(const r575File of ['workshops/github-trending-radar/docs/comfyui-omnilora-robotics-bench-tau-skills-video-kb-selection-faq.md','workshops/github-trending-radar/docs/comfyui-omnilora-robotics-bench-tau-skills-video-kb-selection-faq.en.md','assets/github-ai-radar-2026-11-20-r16-r575-omnilora-roboticsbench-tauskills-videokb.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-20-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r575File),'utf8');
+      assert.ok(txt.includes('3,260.00')&&txt.includes('4,100.00')&&txt.includes('7,360.00')&&txt.includes('80.00')&&txt.includes('250.00')&&txt.includes('330.00')&&txt.includes('7,030.00')&&txt.includes('95.52%')&&txt.includes('not_measured'),r575File+': contains exact 11-20 R16 R575 omnilora+roboticsbench+tauskills+videokb closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
