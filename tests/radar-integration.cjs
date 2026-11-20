@@ -7283,6 +7283,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r597File),'utf8');
       assert.ok(txt.includes('3,260.00')&&txt.includes('4,050.00')&&txt.includes('7,310.00')&&txt.includes('75.00')&&txt.includes('240.00')&&txt.includes('315.00')&&txt.includes('6,995.00')&&txt.includes('95.69%')&&txt.includes('not_measured'),r597File+': contains exact 11-20 R38 R597 mycfoagent+marketingskills+paywallpilot+jobagent closed-form parameters');
     }
+    // 2026-11-20 Night Round 39 (R598: Git-FED/MuseAi-Account-Backup + netresearch/agent-rules-skill + ayukyo/icode-skill + estebanbaigts/Yumi) verification
+    const r598PathA=3160.00+39.5*100.00;
+    assert.equal(r598PathA.toFixed(2),'7110.00','11-20 R39 R598 Path A total');
+    const r598PathC=70.00+2.4*100.00;
+    assert.equal(r598PathC.toFixed(2),'310.00','11-20 R39 R598 Path C total');
+    assert.equal((r598PathA-r598PathC).toFixed(2),'6800.00','11-20 R39 R598 savings vs Path A');
+    assert.equal(((r598PathA-r598PathC)/r598PathA*100).toFixed(2),'95.64','11-20 R39 R598 pct savings vs Path A');
+    for(const r598File of ['workshops/github-trending-radar/docs/museai-account-backup-agent-rules-skill-icode-skill-yumi-selection-faq.md','workshops/github-trending-radar/docs/museai-account-backup-agent-rules-skill-icode-skill-yumi-selection-faq.en.md','assets/github-ai-radar-2026-11-20-r39-r598-museaibackup-agentrules-icodeskill-yumi.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-20-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r598File),'utf8');
+      assert.ok(txt.includes('3,160.00')&&txt.includes('3,950.00')&&txt.includes('7,110.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('6,800.00')&&txt.includes('95.64%')&&txt.includes('not_measured'),r598File+': contains exact 11-20 R39 R598 museaibackup+agentrules+icodeskill+yumi closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
