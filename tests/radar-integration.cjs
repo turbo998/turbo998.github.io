@@ -7008,6 +7008,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r572File),'utf8');
       assert.ok(txt.includes('2,960.00')&&txt.includes('3,900.00')&&txt.includes('6,860.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('6,550.00')&&txt.includes('95.48%')&&txt.includes('not_measured'),r572File+': contains exact 11-20 R13 R572 stickscene+lemoanimi+subtle+productdemo closed-form parameters');
     }
+    // 2026-11-20 Night Round 14 (R573: lynote-ai/local-ai-note-taker + DawitLemmaBalcha/code-review-bench + byrishi/punchcutter + KlockTX/KlockUI) verification
+    const r573PathA=3080.00+40.0*100.00;
+    assert.equal(r573PathA.toFixed(2),'7080.00','11-20 R14 R573 Path A total');
+    const r573PathC=75.00+2.5*100.00;
+    assert.equal(r573PathC.toFixed(2),'325.00','11-20 R14 R573 Path C total');
+    assert.equal((r573PathA-r573PathC).toFixed(2),'6755.00','11-20 R14 R573 savings vs Path A');
+    assert.equal(((r573PathA-r573PathC)/r573PathA*100).toFixed(2),'95.41','11-20 R14 R573 pct savings vs Path A');
+    for(const r573File of ['workshops/github-trending-radar/docs/lynote-code-review-bench-punchcutter-klockui-meeting-crbench-selection-faq.md','workshops/github-trending-radar/docs/lynote-code-review-bench-punchcutter-klockui-meeting-crbench-selection-faq.en.md','assets/github-ai-radar-2026-11-20-r14-r573-lynote-crbench-punchcutter-klockui.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-20-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r573File),'utf8');
+      assert.ok(txt.includes('3,080.00')&&txt.includes('4,000.00')&&txt.includes('7,080.00')&&txt.includes('75.00')&&txt.includes('250.00')&&txt.includes('325.00')&&txt.includes('6,755.00')&&txt.includes('95.41%')&&txt.includes('not_measured'),r573File+': contains exact 11-20 R14 R573 lynote+crbench+punchcutter+klockui closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
