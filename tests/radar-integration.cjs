@@ -7239,6 +7239,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r593File),'utf8');
       assert.ok(txt.includes('3,220.00')&&txt.includes('3,950.00')&&txt.includes('7,170.00')&&txt.includes('75.00')&&txt.includes('240.00')&&txt.includes('315.00')&&txt.includes('6,855.00')&&txt.includes('95.61%')&&txt.includes('not_measured'),r593File+': contains exact 11-20 R34 R593 zosmacowork+riffpad+orchestratorskill+givememod closed-form parameters');
     }
+    // 2026-11-20 Night Round 35 (R594: shinpr/claude-code-workflows + secondsky/claude-skills + agentskillexchange/skills + 8bit64k/cronalytics) verification
+    const r594PathA=3240.00+40.0*100.00;
+    assert.equal(r594PathA.toFixed(2),'7240.00','11-20 R35 R594 Path A total');
+    const r594PathC=70.00+2.4*100.00;
+    assert.equal(r594PathC.toFixed(2),'310.00','11-20 R35 R594 Path C total');
+    assert.equal((r594PathA-r594PathC).toFixed(2),'6930.00','11-20 R35 R594 savings vs Path A');
+    assert.equal(((r594PathA-r594PathC)/r594PathA*100).toFixed(2),'95.72','11-20 R35 R594 pct savings vs Path A');
+    for(const r594File of ['workshops/github-trending-radar/docs/claude-code-workflows-secondsky-skills-skill-exchange-cronalytics-selection-faq.md','workshops/github-trending-radar/docs/claude-code-workflows-secondsky-skills-skill-exchange-cronalytics-selection-faq.en.md','assets/github-ai-radar-2026-11-20-r35-r594-claudeworkflows-secondskyskills-skillexchange-cronalytics.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-20-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r594File),'utf8');
+      assert.ok(txt.includes('3,240.00')&&txt.includes('4,000.00')&&txt.includes('7,240.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('6,930.00')&&txt.includes('95.72%')&&txt.includes('not_measured'),r594File+': contains exact 11-20 R35 R594 claudeworkflows+secondskyskills+skillexchange+cronalytics closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
