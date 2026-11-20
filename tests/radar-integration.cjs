@@ -7162,6 +7162,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r586File),'utf8');
       assert.ok(txt.includes('3,140.00')&&txt.includes('3,950.00')&&txt.includes('7,090.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('6,780.00')&&txt.includes('95.63%')&&txt.includes('not_measured'),r586File+': contains exact 11-20 R27 R586 ratclone+icloudphoto+nikonmatcher+opencliplugins closed-form parameters');
     }
+    // 2026-11-20 Night Round 28 (R587: ClickHouse/loom + intutic/intutic + forger-labs-hq/researchforge + qifan777/data-agent-tutorial) verification
+    const r587PathA=3280.00+40.5*100.00;
+    assert.equal(r587PathA.toFixed(2),'7330.00','11-20 R28 R587 Path A total');
+    const r587PathC=80.00+2.5*100.00;
+    assert.equal(r587PathC.toFixed(2),'330.00','11-20 R28 R587 Path C total');
+    assert.equal((r587PathA-r587PathC).toFixed(2),'7000.00','11-20 R28 R587 savings vs Path A');
+    assert.equal(((r587PathA-r587PathC)/r587PathA*100).toFixed(2),'95.50','11-20 R28 R587 pct savings vs Path A');
+    for(const r587File of ['workshops/github-trending-radar/docs/clickhouse-loom-intutic-researchforge-data-agent-selection-faq.md','workshops/github-trending-radar/docs/clickhouse-loom-intutic-researchforge-data-agent-selection-faq.en.md','assets/github-ai-radar-2026-11-20-r28-r587-clickhouseloom-intutic-researchforge-dataagent.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-20-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r587File),'utf8');
+      assert.ok(txt.includes('3,280.00')&&txt.includes('4,050.00')&&txt.includes('7,330.00')&&txt.includes('80.00')&&txt.includes('250.00')&&txt.includes('330.00')&&txt.includes('7,000.00')&&txt.includes('95.50%')&&txt.includes('not_measured'),r587File+': contains exact 11-20 R28 R587 clickhouseloom+intutic+researchforge+dataagent closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
