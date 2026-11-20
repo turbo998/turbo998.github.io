@@ -7272,6 +7272,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r596File),'utf8');
       assert.ok(txt.includes('3,180.00')&&txt.includes('3,950.00')&&txt.includes('7,130.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('6,820.00')&&txt.includes('95.65%')&&txt.includes('not_measured'),r596File+': contains exact 11-20 R37 R596 labwired+archgram+mcpgsc+croftweaver closed-form parameters');
     }
+    // 2026-11-20 Night Round 38 (R597: jeanzxiang-xjz/my-cfo-agent + hyperfx-ai/marketing-skills + Nikolai-Iakubovskii/app-paywall-pilot + vaibhavarora14/job-application-agent) verification
+    const r597PathA=3260.00+40.5*100.00;
+    assert.equal(r597PathA.toFixed(2),'7310.00','11-20 R38 R597 Path A total');
+    const r597PathC=75.00+2.4*100.00;
+    assert.equal(r597PathC.toFixed(2),'315.00','11-20 R38 R597 Path C total');
+    assert.equal((r597PathA-r597PathC).toFixed(2),'6995.00','11-20 R38 R597 savings vs Path A');
+    assert.equal(((r597PathA-r597PathC)/r597PathA*100).toFixed(2),'95.69','11-20 R38 R597 pct savings vs Path A');
+    for(const r597File of ['workshops/github-trending-radar/docs/my-cfo-agent-marketing-skills-app-paywall-pilot-job-application-agent-selection-faq.md','workshops/github-trending-radar/docs/my-cfo-agent-marketing-skills-app-paywall-pilot-job-application-agent-selection-faq.en.md','assets/github-ai-radar-2026-11-20-r38-r597-mycfoagent-marketingskills-paywallpilot-jobagent.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-20-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r597File),'utf8');
+      assert.ok(txt.includes('3,260.00')&&txt.includes('4,050.00')&&txt.includes('7,310.00')&&txt.includes('75.00')&&txt.includes('240.00')&&txt.includes('315.00')&&txt.includes('6,995.00')&&txt.includes('95.69%')&&txt.includes('not_measured'),r597File+': contains exact 11-20 R38 R597 mycfoagent+marketingskills+paywallpilot+jobagent closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
