@@ -6942,6 +6942,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r566File),'utf8');
       assert.ok(txt.includes('2,680.00')&&txt.includes('3,700.00')&&txt.includes('6,380.00')&&txt.includes('65.00')&&txt.includes('230.00')&&txt.includes('295.00')&&txt.includes('6,085.00')&&txt.includes('95.38%')&&txt.includes('not_measured'),r566File+': contains exact 11-20 R7 R566 rubberhose+dissolve+monohud+simulab closed-form parameters');
     }
+    // 2026-11-20 Night Round 8 (R567: qualixar/brief2mp4 + moluyao/ai-talking-head-edit + leisongde/ComfyUI-CapCut + YKLovePython/halfsize) verification
+    const r567PathA=2740.00+37.5*100.00;
+    assert.equal(r567PathA.toFixed(2),'6490.00','11-20 R8 R567 Path A total');
+    const r567PathC=65.00+2.3*100.00;
+    assert.equal(r567PathC.toFixed(2),'295.00','11-20 R8 R567 Path C total');
+    assert.equal((r567PathA-r567PathC).toFixed(2),'6195.00','11-20 R8 R567 savings vs Path A');
+    assert.equal(((r567PathA-r567PathC)/r567PathA*100).toFixed(2),'95.45','11-20 R8 R567 pct savings vs Path A');
+    for(const r567File of ['workshops/github-trending-radar/docs/brief2mp4-talking-head-edit-comfyui-capcut-halfsize-30style-motion-vmaf-mcp-selection-faq.md','workshops/github-trending-radar/docs/brief2mp4-talking-head-edit-comfyui-capcut-halfsize-30style-motion-vmaf-mcp-selection-faq.en.md','assets/github-ai-radar-2026-11-20-r8-brief2mp4-talkinghead-comfyuicapcut-halfsize.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-20-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r567File),'utf8');
+      assert.ok(txt.includes('2,740.00')&&txt.includes('3,750.00')&&txt.includes('6,490.00')&&txt.includes('65.00')&&txt.includes('230.00')&&txt.includes('295.00')&&txt.includes('6,195.00')&&txt.includes('95.45%')&&txt.includes('not_measured'),r567File+': contains exact 11-20 R8 R567 brief2mp4+talkinghead+comfyuicapcut+halfsize closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
