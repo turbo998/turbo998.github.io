@@ -1,6 +1,6 @@
 # Enterprise Agentic Commerce Lab — Reference Architecture & AI Solution Architect Playbooks
 
-🌐 **Language / 语言切换**: **[中文主页 (`README.md`)](README.md)** | **English (Current)** | **[📚 Full SA Decision Guide Catalog (178 Bilingual FAQs)](https://github.com/turbo998/agentic-commerce-lab/blob/main/docs/index.en.md)** | **[🚀 Interactive SA Workbench (`live-demo.en.html`)](live-demo.en.html)** | **[📊 7-Card Benchmark Deck (`benchmark-cards.en.html`)](benchmark-cards.en.html)**
+🌐 **Language / 语言切换**: **[中文主页 (`README.md`)](README.md)** | **English (Current)** | **[📚 Full SA Decision Guide Catalog (229 Bilingual FAQs)](https://github.com/turbo998/agentic-commerce-lab/blob/main/docs/index.en.md)** | **[🚀 Interactive SA Workbench (`live-demo.en.html`)](live-demo.en.html)** | **[📊 7-Card Benchmark Deck (`benchmark-cards.en.html`)](benchmark-cards.en.html)**
 
 > **An Enterprise Engineering & Architecture Reference Hub for AI Solution Architects**
 > Focused exclusively on **Retail & Multi-Merchant E-Commerce, Agent Payment & Cryptographic Mandate Protocols (`Google AP2`, `Stripe SPT`, `Visa VIC & TAP`, `Mastercard Agent Pay`, `PayPal`, `x402`), Enterprise B2B Procurement & ERP 3-Way Match, OTA / Airline (`IATA NDC`) Dynamic Booking, SaaS Usage Metering & FinOps, and Cross-Border Tax (`MoR`) / FX Clearing / `Visa CE 3.0` Chargeback Defense** — pairing executive decision guides with a **6-Plane Reference Architecture, deterministic Python guardrails, and self-contained interactive workbenches**.
@@ -23,7 +23,7 @@ All HTML workbenches and `4:5` 7-Card visual benchmark decks are 100% self-conta
 
 | Deliverable | English Entry | 中文入口 | Architectural Scope & Key Findings |
 |---|---|---|---|
-| **Interactive SA Commerce Workbench** | [`live-demo.en.html`](live-demo.en.html) | [`live-demo.html`](live-demo.html) | Microsoft Web IQ grounding + Google AP2 circuit breaker + Stripe SPT / `x402` dual-rail checkout + **searchable Explorer of 180 Enterprise Policy Sandboxes** |
+| **Interactive SA Commerce Workbench** | [`live-demo.en.html`](live-demo.en.html) | [`live-demo.html`](live-demo.html) | Microsoft Web IQ grounding + Google AP2 circuit breaker + Stripe SPT / `x402` dual-rail checkout + **searchable Explorer of 231 Enterprise Policy Sandboxes** |
 | **Web IQ Grounding & Checkout 7-Card Deck** | [`benchmark-cards.en.html`](benchmark-cards.en.html) | [`benchmark-cards.html`](benchmark-cards.html) | Async parallel `passage` grounding (`2.75x` speedup, `7.1x` token reduction), `100%` hidden DOM injection block rate, and `0.0 pt` option-reversal drift |
 | **6-Plane AI-Native Workload Benchmark** | [`reports/agentic-commerce-6plane-bench/index.html`](reports/agentic-commerce-6plane-bench/index.html) | [`report.json`](reports/agentic-commerce-6plane-bench/report.json) | Evaluates 6-Plane deterministic fiduciary controls vs. classic 3-tier web handling across replay, drift, and authorization edge cases |
 | **Enterprise B2B Procurement & 3-Way Match** | [`reports/agentic-commerce-enterprise-procurement-bench/index.html`](reports/agentic-commerce-enterprise-procurement-bench/index.html) | [`report.json`](reports/agentic-commerce-enterprise-procurement-bench/report.json) | `PO == GRN == Invoice` tolerances, Commit-Reveal Vickrey RFQs, BEC IBAN hijack defense, and `2/10 Net 30` dynamic discounting |
@@ -104,9 +104,24 @@ flowchart TB
 
 ---
 
-## 5. Six Enterprise Pillars & Flagship SA Playbooks (178 Bilingual Guides)
+## 5. Six Enterprise Pillars & Flagship SA Playbooks (229 Bilingual Guides)
 
-> 📚 **Browse the Complete Catalog**: [**English Full Catalog (178 Bilingual FAQs + 21 Blueprints)**](https://github.com/turbo998/agentic-commerce-lab/blob/main/docs/index.en.md) ｜ [**中文总目录 (`docs/index.md`)**](https://github.com/turbo998/agentic-commerce-lab/blob/main/docs/index.md)
+> 📚 **Browse the Complete Catalog**: [**English Full Catalog (229 Bilingual FAQs + 21 Blueprints)**](https://github.com/turbo998/agentic-commerce-lab/blob/main/docs/index.en.md) ｜ [**中文总目录 (`docs/index.md`)**](https://github.com/turbo998/agentic-commerce-lab/blob/main/docs/index.md)
+
+### 🔥 2026-11-20/21 New Addition: 51 Mainstream Commercial & Enterprise SA Selection Guides (Rounds 60–110, 229 Total Bilingual FAQs)
+- **High-AOV Retail, Secondary Luxury Authentication & Household Subscriptions (31 New Guides)**:
+  - [Luxury Handbag Buyback & Consignment Escrow: Pre-Ship <=10% Haircut Cap, Tamper-Evident NFC Seal & Multi-Desk Arbitrage](https://github.com/turbo998/agentic-commerce-lab/blob/main/docs/luxury-handbag-buyback-consignment-anti-lowball-escrow-agent-selection-faq.en.md) ｜ [Luxury Watch Secondary Market Escrow: Random Time-Set Liveness, CW21 Anti-Frankenwatch Movement Audit & Parcel Pro Specie Transit](https://github.com/turbo998/agentic-commerce-lab/blob/main/docs/luxury-watch-secondary-market-frankenwatch-movement-escrow-agent-selection-faq.en.md)
+  - [Tailored Bespoke Suit & Made-to-Measure (MTM) Escrow: Basted Full-Canvas Gate, Mill Selvedge QR & Uncut Cuff Lock](https://github.com/turbo998/agentic-commerce-lab/blob/main/docs/bespoke-suit-mtm-full-canvas-fabric-selvedge-escrow-agent-selection-faq.en.md) ｜ [Bespoke Engagement Ring & Loose Diamond Escrow: Cross-Site GIA Arbitrage, Zero-BGM Gate & Post-Setting Girdle Verification](https://github.com/turbo998/agentic-commerce-lab/blob/main/docs/bespoke-diamond-ring-gold-jewelry-gia-girdle-escrow-agent-selection-faq.en.md)
+  - [Pet Health Insurance & 60s Vet Direct-Pay: Bilateral Cruciate Coverage Lock, Day-1 SOAP Underwriting & Chewy Rx Arbitrage](https://github.com/turbo998/agentic-commerce-lab/blob/main/docs/pet-insurance-bilateral-exclusion-vet-directpay-escrow-agent-selection-faq.en.md) ｜ [Pet Boarding & GPS Dog-Walking Escrow: Anti-Fake-Walk IMU Gate, Bordetella Vaccine Lock & Brachycephalic Dryer Safety](https://github.com/turbo998/agentic-commerce-lab/blob/main/docs/pet-boarding-dog-walking-gps-vaccine-vet-escrow-agent-selection-faq.en.md)
+  - [Online Grocery & Catch-Weight Pre-Auth: Flat-Dollar Tip Lock, <=1.05x Substitution Cap & 0%-Markup Parity Routing](https://github.com/turbo998/agentic-commerce-lab/blob/main/docs/online-grocery-catch-weight-substitution-coldchain-escrow-agent-selection-faq.en.md) ｜ [Online Flower & Holiday Bouquet Escrow: Bench-Photo Stem Count Vision, Direct-Studio Payout & ASPCA Pet-Safe Gate](https://github.com/turbo998/agentic-commerce-lab/blob/main/docs/online-flower-bouquet-wire-skim-stem-count-escrow-agent-selection-faq.en.md)
+  - [Solar, Battery Storage (ESS) & 25-Year PPA Escrow: 0% Escalator Lock, 1m LiDAR Shade Audit & Utility PTO Holdback](https://github.com/turbo998/agentic-commerce-lab/blob/main/docs/solar-ess-vpp-ppa-escalator-pto-escrow-agent-selection-faq.en.md) ｜ [Rooftop Replacement & Storm-Chaser Escrow: Anti-AOB Lock, 4-Layer Tear-Off Vision & UL 2218 Class-4 Insurer Discount](https://github.com/turbo998/agentic-commerce-lab/blob/main/docs/rooftop-replacement-storm-chaser-aob-ul2218-escrow-agent-selection-faq.en.md)
+  - [Musical Instrument Rent-to-Own & Piano Humidity Escrow: 100% Street-MAP Equity, RPT Pinblock >=70 in-lbs & 14d Acclimation](https://github.com/turbo998/agentic-commerce-lab/blob/main/docs/musical-instrument-rent-to-own-piano-humidity-escrow-agent-selection-faq.en.md) ｜ [Pool Service Subscription & VSP Pump Escrow: CYA <=60ppm Lock, Spin-Touch LSI Balance & Pump Affinity Law (-72% kWh)](https://github.com/turbo998/agentic-commerce-lab/blob/main/docs/pool-maintenance-subscription-cya-chlorine-lock-lsi-escrow-agent-selection-faq.en.md)
+  - [Golf Tee-Time & Greens Aerification Radar](https://github.com/turbo998/agentic-commerce-lab/blob/main/docs/golf-teetime-country-club-aerification-raincheck-escrow-agent-selection-faq.en.md) ｜ [Ski Pass (Epic/Ikon) Blackout Sync & Lift-Open Gate](https://github.com/turbo998/agentic-commerce-lab/blob/main/docs/ski-pass-resort-lift-ticket-equipment-rental-escrow-agent-selection-faq.en.md) ｜ [Yacht Marina Exact LOA & Sub-Metered Shore Power](https://github.com/turbo998/agentic-commerce-lab/blob/main/docs/yacht-marina-berth-shorepower-haulout-shipyard-escrow-agent-selection-faq.en.md) ｜ [Fine Wine En Primeur Segregated LWIN18 Title](https://github.com/turbo998/agentic-commerce-lab/blob/main/docs/fine-wine-en-primeur-bonded-cellar-livex-ullage-escrow-agent-selection-faq.en.md)
+- **Enterprise B2B Procurement, Workplace IFM & Compliance Escrow (20 New Guides)**:
+  - [B2B Corporate Offsite & MICE Room-Block Attrition: Audited PMS 100% Resale Credit, $0 Outside-AV Rider & Shoulder Shift](https://github.com/turbo998/agentic-commerce-lab/blob/main/docs/b2b-corporate-offsite-mice-room-block-attrition-av-escrow-agent-selection-faq.en.md) ｜ [B2B Trade-Show Booth & Exhibition Drayage: Single-BOL Skid Consolidation, BeMatrix Lightweighting (-76% CWT) & Universal Badge OCR](https://github.com/turbo998/agentic-commerce-lab/blob/main/docs/b2b-tradeshow-booth-drayage-cwt-material-handling-escrow-agent-selection-faq.en.md)
+  - [B2B Localization (L10n) & AI Dubbing Escrow: TMX Leverage Discount Matrix, Cloud CAT TER Edit-Distance & ICU AST Compiler](https://github.com/turbo998/agentic-commerce-lab/blob/main/docs/b2b-localization-translation-memory-fuzzy-match-dubbing-escrow-agent-selection-faq.en.md) ｜ [B2B OOH Billboard & Programmatic DOOH: Cryptographic Player PoP Log, 150m Dashcam LoS Vision & Rush-Hour Dayparting](https://github.com/turbo998/agentic-commerce-lab/blob/main/docs/b2b-ooh-billboard-dooh-transit-media-pop-visibility-escrow-agent-selection-faq.en.md)
+  - [B2B Document Shredding & NIST 800-88 SSD ITAD: On-Site DIN P-4 Truck, <=2mm SSD Serial Lock & Ultrasonic Bin Sensor](https://github.com/turbo998/agentic-commerce-lab/blob/main/docs/b2b-document-shredding-naid-nist80088-itad-escrow-agent-selection-faq.en.md) ｜ [B2B Corporate Security Guard & Remote GSOC: Turnstile Biometric Parity, BLE+IMU Patrol Lock & AI Thermal Talk-Down](https://github.com/turbo998/agentic-commerce-lab/blob/main/docs/b2b-corporate-security-guard-patrol-ghost-post-gsoc-escrow-agent-selection-faq.en.md)
+  - [B2B Uniform & Linen UHF-RFID Custody Scan](https://github.com/turbo998/agentic-commerce-lab/blob/main/docs/b2b-uniform-linen-rental-rfid-loss-waiver-evergreen-escrow-agent-selection-faq.en.md) ｜ [Commercial Pest Control Inside-Lid NFC & LoRaWAN Traps](https://github.com/turbo998/agentic-commerce-lab/blob/main/docs/b2b-commercial-pest-control-ipm-iot-trap-haccp-escrow-agent-selection-faq.en.md) ｜ [B2B Office Coffee (OCS) & POU Filter NFC+TDS Gate](https://github.com/turbo998/agentic-commerce-lab/blob/main/docs/b2b-office-coffee-service-water-filtration-micromarket-escrow-agent-selection-faq.en.md) ｜ [B2B Office Plant Lease 100% Free 5-Day Swap & CapEx Sub-Irrigation](https://github.com/turbo998/agentic-commerce-lab/blob/main/docs/b2b-office-plant-lease-biophilic-wall-replacement-escrow-agent-selection-faq.en.md)
 
 ### 🔥 2026-11-19/20 New Addition: 30 Mainstream Commercial & Enterprise SA Selection Guides (178 Total Bilingual FAQs)
 - **Retail E-Commerce, O2O Services, Mobility & Ticketing (18 New Guides)**:
@@ -183,7 +198,7 @@ agentic-commerce-lab/
 ├── live-demo.html / live-demo.en.html # Self-contained H5 interactive SA workbenches (ZH / EN)
 ├── benchmark-cards.html / .en.html   # 7-Card 4:5 visual benchmark decks (ZH / EN)
 ├── docs/
-│   ├── index.md / index.en.md        # Categorized catalog of all 178 bilingual SA Decision Guides
+│   ├── index.md / index.en.md        # Categorized catalog of all 229 bilingual SA Decision Guides
 │   ├── *-faq.md / *-faq.en.md        # Scenario FAQs with Mermaid architecture diagrams & checklists
 │   ├── architecture/                 # 21 deterministic domain state-machine & conservation blueprints
 │   └── research/                     # Full-stack 6-plane blueprint, Web IQ competitive matrix & trend reports
@@ -191,13 +206,13 @@ agentic-commerce-lab/
 ├── lab/                              # Zero-dependency Python fiduciary control-plane guards & bench builders
 ├── src/agentic_commerce/             # Microsoft Web IQ × Agentic Commerce evaluation engine
 ├── reports/                          # Sealed benchmark report bundles (JSON data + self-contained HTML)
-└── tests/                            # 1,056 deterministic unit tests across 69 test modules
+└── tests/                            # 1,107 deterministic unit tests across 69 test modules
 ```
 
 ### Quickstart (Python 3.11+ Standard Library Only)
 
 ```bash
-# 1. Run the complete deterministic test suite (69 test modules / 1,056 assertions)
+# 1. Run the complete deterministic test suite (69 test modules / 1,107 assertions)
 python -m unittest discover -s tests
 
 # 2. Run the offline final-cart approval, idempotency & tamper-block baseline demo
