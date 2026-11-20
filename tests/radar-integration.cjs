@@ -7085,6 +7085,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r579File),'utf8');
       assert.ok(txt.includes('3,040.00')&&txt.includes('3,950.00')&&txt.includes('6,990.00')&&txt.includes('75.00')&&txt.includes('240.00')&&txt.includes('315.00')&&txt.includes('6,675.00')&&txt.includes('95.49%')&&txt.includes('not_measured'),r579File+': contains exact 11-20 R20 R579 phonedesk+chesodesign+spritestacking+retrolab closed-form parameters');
     }
+    // 2026-11-20 Night Round 21 (R580 Milestone: Ssbullock/pcb-layout-llm + DJMcNewgent/DabbleCAD + 1251639747jm-ctrl/blockbench-codex-skills + liangdabiao/dsh-realman-studio) verification
+    const r580PathA=3280.00+41.0*100.00;
+    assert.equal(r580PathA.toFixed(2),'7380.00','11-20 R21 R580 Path A total');
+    const r580PathC=80.00+2.5*100.00;
+    assert.equal(r580PathC.toFixed(2),'330.00','11-20 R21 R580 Path C total');
+    assert.equal((r580PathA-r580PathC).toFixed(2),'7050.00','11-20 R21 R580 savings vs Path A');
+    assert.equal(((r580PathA-r580PathC)/r580PathA*100).toFixed(2),'95.53','11-20 R21 R580 pct savings vs Path A');
+    for(const r580File of ['workshops/github-trending-radar/docs/pcb-layout-llm-dabblecad-blockbench-skills-realman-studio-selection-faq.md','workshops/github-trending-radar/docs/pcb-layout-llm-dabblecad-blockbench-skills-realman-studio-selection-faq.en.md','assets/github-ai-radar-2026-11-20-r21-r580-pcblayoutllm-dabblecad-blockbench-realmanstudio.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-20-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r580File),'utf8');
+      assert.ok(txt.includes('3,280.00')&&txt.includes('4,100.00')&&txt.includes('7,380.00')&&txt.includes('80.00')&&txt.includes('250.00')&&txt.includes('330.00')&&txt.includes('7,050.00')&&txt.includes('95.53%')&&txt.includes('not_measured'),r580File+': contains exact 11-20 R21 R580 pcblayoutllm+dabblecad+blockbench+realmanstudio closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
