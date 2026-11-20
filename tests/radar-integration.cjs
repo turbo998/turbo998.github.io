@@ -7195,6 +7195,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r589File),'utf8');
       assert.ok(txt.includes('3,220.00')&&txt.includes('4,000.00')&&txt.includes('7,220.00')&&txt.includes('75.00')&&txt.includes('240.00')&&txt.includes('315.00')&&txt.includes('6,905.00')&&txt.includes('95.64%')&&txt.includes('not_measured'),r589File+': contains exact 11-20 R30 R589 blenderwright+gflowcli+mjolnir+alephantgateway closed-form parameters');
     }
+    // 2026-11-20 Night Round 31 (R590 Milestone: mdowis/anansi + LGDiMaggio/predictive-maintenance-mcp + saltsalt123/buywise-agent + kochetkov-ma/claude-brewcode) verification
+    const r590PathA=3340.00+41.0*100.00;
+    assert.equal(r590PathA.toFixed(2),'7440.00','11-20 R31 R590 Path A total');
+    const r590PathC=80.00+2.5*100.00;
+    assert.equal(r590PathC.toFixed(2),'330.00','11-20 R31 R590 Path C total');
+    assert.equal((r590PathA-r590PathC).toFixed(2),'7110.00','11-20 R31 R590 savings vs Path A');
+    assert.equal(((r590PathA-r590PathC)/r590PathA*100).toFixed(2),'95.56','11-20 R31 R590 pct savings vs Path A');
+    for(const r590File of ['workshops/github-trending-radar/docs/anansi-predictive-maintenance-mcp-buywise-agent-claude-brewcode-selection-faq.md','workshops/github-trending-radar/docs/anansi-predictive-maintenance-mcp-buywise-agent-claude-brewcode-selection-faq.en.md','assets/github-ai-radar-2026-11-20-r31-r590-anansi-predmaintmcp-buywise-brewcode.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-20-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r590File),'utf8');
+      assert.ok(txt.includes('3,340.00')&&txt.includes('4,100.00')&&txt.includes('7,440.00')&&txt.includes('80.00')&&txt.includes('250.00')&&txt.includes('330.00')&&txt.includes('7,110.00')&&txt.includes('95.56%')&&txt.includes('not_measured'),r590File+': contains exact 11-20 R31 R590 anansi+predmaintmcp+buywise+brewcode closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
