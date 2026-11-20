@@ -1,0 +1,404 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Google《Harnesses That Improve Themselves》4-Tab 自进化模拟器工作台 — 陈琪 Qi Chen</title>
+<style>
+  :root {
+    --bg: #0b1120;
+    --panel: #121c32;
+    --panel-2: #172542;
+    --ink: #f8fafc;
+    --ink-2: #cbd5e1;
+    --muted: #94a3b8;
+    --line: #283a5e;
+    --blue: #38bdf8;
+    --green: #34d399;
+    --amber: #fbbf24;
+    --red: #f87171;
+    --purple: #c4b5fd;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    line-height: 1.6;
+  }
+  .topnav {
+    position: sticky; top: 0; z-index: 40;
+    background: rgba(11, 17, 32, 0.92);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+    padding: 12px 24px;
+    display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px;
+  }
+  .brand { color: var(--ink); text-decoration: none; font-weight: 800; font-size: 15px; }
+  .navlinks { display: flex; flex-wrap: wrap; gap: 10px; font-size: 13px; align-items: center; }
+  .navlinks a {
+    color: var(--ink-2); text-decoration: none; padding: 5px 12px;
+    border-radius: 999px; border: 1px solid var(--line); background: var(--panel);
+  }
+  .navlinks a.primary { background: #2563eb; border-color: #3b82f6; color: #fff; font-weight: 700; }
+  .wrap { max-width: 1240px; margin: 0 auto; padding: 28px 20px 64px; }
+  .eyebrow { color: var(--blue); font-size: 12px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; }
+  h1 { font-size: clamp(24px, 3vw, 34px); margin: 8px 0 10px; line-height: 1.25; }
+  .sub { color: var(--ink-2); max-width: 980px; font-size: 15px; margin-bottom: 20px; }
+  .kpi-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-bottom: 24px; }
+  .kpi { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px; }
+  .kpi .v { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: 26px; font-weight: 800; color: var(--green); }
+  .kpi .l { font-size: 12.5px; color: var(--muted); margin-top: 4px; }
+  .tabs { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; border-bottom: 1px solid var(--line); padding-bottom: 14px; }
+  .tab-btn {
+    cursor: pointer; border: 1px solid var(--line); background: var(--panel); color: var(--ink-2);
+    padding: 9px 16px; border-radius: 10px; font-size: 13.5px; font-weight: 700;
+  }
+  .tab-btn.active { background: #2563eb; border-color: #60a5fa; color: #fff; }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 22px; margin-bottom: 20px; }
+  .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 18px; }
+  .pill-group { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 16px; }
+  .pill-btn {
+    cursor: pointer; border: 1px solid var(--line); background: var(--panel-2); color: var(--ink-2);
+    padding: 7px 14px; border-radius: 999px; font-size: 13px; font-weight: 700;
+  }
+  .pill-btn.active { background: #059669; border-color: #34d399; color: #fff; }
+  .bar-item { margin: 12px 0; }
+  .bar-head { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 5px; font-weight: 700; }
+  .track { height: 14px; background: #0b1324; border-radius: 999px; overflow: hidden; border: 1px solid var(--line); }
+  .fill { height: 100%; border-radius: 999px; transition: width 0.25s ease; }
+  pre {
+    background: #090e1a; border: 1px solid var(--line); border-radius: 12px; padding: 14px;
+    overflow-x: auto; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: 12.5px; color: #e2e8f0;
+  }
+  .verdict-box { padding: 14px 16px; border-radius: 12px; border: 1px solid var(--green); background: rgba(16,185,129,0.1); margin-top: 12px; font-size: 13.5px; }
+  .verdict-box.reject { border-color: var(--red); background: rgba(239,68,68,0.12); }
+  .slider-row { margin: 14px 0; }
+  .slider-row label { display: flex; justify-content: space-between; font-size: 13.5px; font-weight: 700; margin-bottom: 6px; }
+  input[type="range"] { width: 100%; accent-color: #38bdf8; }
+  img.diagram { width: 100%; height: auto; border-radius: 14px; border: 1px solid var(--line); margin-top: 14px; }
+</style>
+</head>
+<body>
+  <nav class="topnav" data-professional-header>
+    <a class="brand" href="../../zh.html">Qi Chen · @turbo998</a>
+    <div class="navlinks">
+      <a href="../../studio/zh-index.html">工程枢纽 Hub</a>
+      <a href="../../studio/zh-benchmarks.html">基准与 Harness 赛道</a>
+      <a href="../../articles/google-self-improving-harnesses.html">深度图解长文</a>
+      <a href="cards.zh.html">7 卡 4:5 视觉报告</a>
+      <a href="https://github.com/turbo998/ai-research-public/tree/main/docs/research/google-self-improving-harnesses" target="_blank" rel="noopener">GitHub ↗</a>
+      <a class="primary" href="index.en.html">English Version</a>
+    </div>
+  </nav>
+
+  <main class="wrap">
+    <div class="eyebrow">GOOGLE RESEARCH · ARXIV:2611.22299V1 · INTERACTIVE SIMULATOR</div>
+    <h1>Google《Harnesses That Improve Themselves》自进化架构交互模拟台</h1>
+    <p class="sub">完整复现 Deep Shah & Nehal Kathrotia (Google, 2026-11-17) 的双环受约束演化机制：交互对比 SWE-bench Lite 四种方法在 Gemini 3.8 Flash 与零样本迁移 Gemini 4 Argon 上的表现，逐行检视 142 行四模块补丁与 Stage 3 门禁拦截逻辑，并测算企业生产部署回本周期。</p>
+
+    <div class="kpi-row">
+      <div class="kpi"><div class="v">5.0% → 40.0%</div><div class="l">Gemini 3.8 Flash 盲测解率 (8.0×)</div></div>
+      <div class="kpi"><div class="v" style="color:var(--blue)">46.7k tok</div><div class="l">单题均耗（较全重写省 9.7×）</div></div>
+      <div class="kpi"><div class="v" style="color:var(--purple)">37.5% (#1)</div><div class="l">零样本迁移 Gemini 4 Argon 夺冠</div></div>
+      <div class="kpi"><div class="v" style="color:var(--amber)">&lt; 100 题</div><div class="l">赚回全部 100 轮外环搜索开销</div></div>
+    </div>
+
+    <div class="tabs" role="tablist">
+      <button class="tab-btn active" data-tab="t1">01 · 双模型盲测竞技场</button>
+      <button class="tab-btn" data-tab="t2">02 · 四模块补丁与 Stage 3 门禁</button>
+      <button class="tab-btn" data-tab="t3">03 · 5 类故障 × 4 道防线</button>
+      <button class="tab-btn" data-tab="t4">04 · 企业 Token 回本精算器</button>
+    </div>
+
+    <!-- TAB 1 -->
+    <section id="t1" class="tab-panel active">
+      <div class="card">
+        <h2>SWE-bench Lite 盲测对照：从 Flash 搜索到 Argon 零样本迁移</h2>
+        <div class="pill-group">
+          <button class="pill-btn active" id="btn-flash">Part A · 冻结 Gemini 3.8 Flash (演化基准)</button>
+          <button class="pill-btn" id="btn-argon">Part B · 零样本迁移 Gemini 4 Argon (不重调)</button>
+        </div>
+        <div id="arena-bars"></div>
+        <div id="arena-note" class="verdict-box"></div>
+        <img class="diagram" src="assets/00-executive-summary.svg" alt="Executive Benchmark Diagram" />
+      </div>
+    </section>
+
+    <!-- TAB 2 -->
+    <section id="t2" class="tab-panel">
+      <div class="grid-2">
+        <div class="card">
+          <h2>142 行种子四步演化审查器</h2>
+          <div class="pill-group" id="step-pills">
+            <button class="pill-btn active" data-step="0">1. context_mgr.py</button>
+            <button class="pill-btn" data-step="1">2. action_aci.py</button>
+            <button class="pill-btn" data-step="2">3. control.py (12→18)</button>
+            <button class="pill-btn" data-step="3">4. verify.py</button>
+          </div>
+          <pre id="step-code"></pre>
+          <div id="step-verdict" class="verdict-box"></div>
+        </div>
+        <div class="card">
+          <h2>Stage 3 门禁交互调参 (G_val + B_tok)</h2>
+          <p style="color:var(--ink-2);font-size:13.5px;margin:8px 0 14px">拖动单题 Token 预算上限 B_tok，观察 Stage 3 如何同时基于「行覆盖率 >0%」、「独立验证集不回退」与「Token 红线」裁决四大候选方案：</p>
+          <div class="slider-row">
+            <label><span>单题 Token 上限 B_tok</span><span id="btok-val">110k</span></label>
+            <input type="range" id="btok-slider" min="40" max="500" step="5" value="110" />
+          </div>
+          <div id="gate-results"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 3 -->
+    <section id="t3" class="tab-panel">
+      <div class="card">
+        <h2>五大自修改故障模式与四道跨阶段防线（防过拟合与防篡改刷分）</h2>
+        <div class="pill-group" id="mode-pills">
+          <button class="pill-btn active" data-mode="0">Mode 1 · 提示词膨胀</button>
+          <button class="pill-btn" data-mode="1">Mode 2 · 技能遮蔽</button>
+          <button class="pill-btn" data-mode="2">Mode 3 · 跨模块耦合崩坏</button>
+          <button class="pill-btn" data-mode="3">Mode 4 · 沙箱捷径投机</button>
+          <button class="pill-btn" data-mode="4">Mode 5 · 篡改评测器</button>
+        </div>
+        <div id="mode-detail" class="verdict-box reject"></div>
+        <img class="diagram" src="assets/01-dual-loop-architecture.svg" alt="Dual-Loop Architecture Diagram" />
+      </div>
+    </section>
+
+    <!-- TAB 4 -->
+    <section id="t4" class="tab-panel">
+      <div class="card">
+        <h2>企业级外环搜索摊销与月度算力节省精算器</h2>
+        <div class="grid-2" style="margin-top:14px">
+          <div>
+            <div class="slider-row">
+              <label><span>日均生产任务调用量</span><span id="vol-val">250</span></label>
+              <input type="range" id="vol-slider" min="10" max="2000" step="10" value="250" />
+            </div>
+            <div class="slider-row">
+              <label><span>外环进化搜索 Rollouts 总轮数</span><span id="roll-val">100</span></label>
+              <input type="range" id="roll-slider" min="20" max="400" step="20" value="100" />
+            </div>
+            <div class="slider-row">
+              <label><span>每百万混合 Token 单价 ($/1M)</span><span id="price-val">$1.50</span></label>
+              <input type="range" id="price-slider" min="0.2" max="10.0" step="0.2" value="1.5" />
+            </div>
+          </div>
+          <div id="roi-output" class="verdict-box" style="margin-top:0"></div>
+        </div>
+      </div>
+    </section>
+
+    <p style="font-size:13px;color:var(--muted);margin-top:16px">
+      ← <a href="../../zh-writing.html" style="color:var(--blue)">返回全部研究与工作台列表</a>
+    </p>
+  </main>
+
+<script>
+(() => {
+  const ZH = true;
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById(btn.dataset.tab).classList.add('active');
+    });
+  });
+
+  const ARENA = {
+    flash: {
+      rows: [
+        { name: ZH ? '1. Seed 初始种子 (142行 · 12轮)' : '1. Seed Harness (142 lines · 12t)', acc: 5.0, tok: '116.8k', solvedTok: '2,336.0k', color: '#60a5fa' },
+        { name: ZH ? '2. 纯提示词反思 (RULES.md · 早退翻倍至30%!)' : '2. Prompt Reflection (RULES.md · 30% bad exits!)', acc: 2.5, tok: 'N/A', solvedTok: 'N/A', color: '#f87171' },
+        { name: ZH ? '3. 无约束全量重写 (28轮无压缩 · 峰值>2.8M)' : '3. Unconstrained Rewrite (28t · max >2.8M)', acc: 42.5, tok: '451.6k', solvedTok: '1,062.6k', color: '#fbbf24' },
+        { name: ZH ? '4. 门控模块化演化 (12轮 + 代码钩子 · 推荐)' : '4. Modular Gated Evolution (12t + hooks · Ours)', acc: 40.0, tok: '46.7k', solvedTok: '116.8k', color: '#34d399' }
+      ],
+      note: ZH
+        ? '诊断结论（Flash）：纯文本 RULES.md 无运行时阻断能力，跨仓未验证退出从 15% 恶化至 30%；门控模块化演化以 46.7k 均耗达成 8 倍解率（40.0%），每解出 1 题的 Token 账单比无约束全重写便宜 9.1 倍！'
+        : 'Flash Verdict: Text-only RULES.md doubled unverified cross-repo exits (15% → 30%) and halved accuracy to 2.5%. Modular Gated Evolution reached 40.0% (8× seed) at 46.7k tokens/task—9.1× cheaper per solved issue than Unconstrained Rewrite!'
+    },
+    argon: {
+      rows: [
+        { name: ZH ? '1. Seed 初始种子 (零样本迁移)' : '1. Seed Harness (Zero-Shot)', acc: 10.0, tok: 'Uncompacted', solvedTok: '—', color: '#60a5fa' },
+        { name: ZH ? '2. 纯提示词反思 (零样本迁移)' : '2. Prompt Reflection (Zero-Shot)', acc: 15.0, tok: 'Uncompacted', solvedTok: '—', color: '#94a3b8' },
+        { name: ZH ? '3. 无约束全量重写 (28轮与长推理链冲突 ↓-12.5pp)' : '3. Unconstrained Rewrite (28t collides w/ long CoT ↓-12.5pp)', acc: 30.0, tok: '>269.0k', solvedTok: '>896k', color: '#f87171' },
+        { name: ZH ? '4. 门控模块化演化 (#1 全场最高 · 零样本夺冠!)' : '4. Modular Gated Evolution (#1 Overall Winner!)', acc: 37.5, tok: '64.8k', solvedTok: '172.8k', color: '#34d399' }
+      ],
+      note: ZH
+        ? '跨代迁移定律（Flash → Argon）：无约束 28 轮全量重写在更强的 Gemini 4 Argon 上从 42.5% 崩塌至 30.0%（长思维链叠加未压缩历史引发上下文迷失）；精炼的门控模块化 Harness 以 37.5% 零样本夺得双仓冠军，且成本不足其 1/4！'
+        : 'Zero-Shot Argon Verdict: Unconstrained 28-turn rewrite collapsed from 42.5% to 30.0% as Argon\'s longer reasoning chains compounded with uncompacted history. Lean Modular Gated Evolution won #1 overall (37.5%) at <1/4th the token cost (64.8k)!'
+    }
+  };
+
+  function renderArena(mode) {
+    const d = ARENA[mode];
+    document.getElementById('arena-bars').innerHTML = d.rows.map(r => `
+      <div class="bar-item">
+        <div class="bar-head"><span>${r.name}</span><span>${r.acc.toFixed(1)}% · Tok/Task: ${r.tok} · Tok/Solved: ${r.solvedTok}</span></div>
+        <div class="track"><div class="fill" style="width:${Math.min(100, r.acc * 2)}%;background:${r.color}"></div></div>
+      </div>
+    `).join('');
+    document.getElementById('arena-note').textContent = d.note;
+  }
+  document.getElementById('btn-flash').onclick = () => {
+    document.getElementById('btn-flash').classList.add('active');
+    document.getElementById('btn-argon').classList.remove('active');
+    renderArena('flash');
+  };
+  document.getElementById('btn-argon').onclick = () => {
+    document.getElementById('btn-argon').classList.add('active');
+    document.getElementById('btn-flash').classList.remove('active');
+    renderArena('argon');
+  };
+  renderArena('flash');
+
+  const STEPS = [
+    {
+      code: `# context_mgr.py (Accepted by Stage 3)
+def build_messages(history, turn, max_turns, edited_files):
+    compacted = [
+        head_tail_summary(obs, keep_lines=20) if age > 2 else obs
+        for age, obs in enumerate_from_end(history)
+    ]  # Preserves prefix KV cache!
+    footer = f"[Status: Turn {turn}/{max_turns} | Edited: {len(edited_files)} files]"
+    return compacted + [footer]`,
+      ok: true,
+      msg: ZH ? 'ACCEPTED · 压缩 >2 轮旧观察并注入实时状态页脚：Token 大幅下降，同时使 Dev 与 Val 准确率直接跃升 5 倍。' : 'ACCEPTED · Head-tail compaction (>2 turns) + live status footer cut context tokens while lifting Dev & Val accuracy 5×.'
+    },
+    {
+      code: `# action_aci.py (Accepted by Stage 3)
+def view_file(path, start=1, window=120):
+    return read_window(path, start, start + window)
+
+def finish(workspace):
+    if not git_diff_non_empty(workspace):
+        return "BLOCKED: git diff is empty. Apply and verify a fix before calling finish."`,
+      ok: true,
+      msg: ZH ? 'ACCEPTED · 窗口化读取长文件 + Shell 截断 + finish 空 diff 硬件守卫，彻底消灭空补丁盲目早退。' : 'ACCEPTED · Windowed file views, stdout truncation, and empty-diff guard on finish eliminated zero-edit exits.'
+    },
+    {
+      code: `# control.py (REJECTED by Stage 3 Gate!)
+- MAX_TURNS = 12
++ MAX_TURNS = 18  # Candidate patch proposed raising turn budget
+
+# Stage 3 Audit:
+#   Dev Accuracy:  +8.3% (up)
+#   Val Accuracy:  -12.5% (REGRESSION!)
+#   Mean Tokens:   124.0k > B_tok (110.0k BREACH!)`,
+      ok: false,
+      msg: ZH ? 'REJECTED BY STAGE 3 · 虽然 Dev 分上涨，但独立 Val 分回退且平均 Token (124k) 突破 110k 上限——成功拦截高耗能过拟合！' : 'REJECTED BY STAGE 3 · Dev rose, but held-out Val regressed and mean tokens (124k) breached the 110k B_tok ceiling!'
+    },
+    {
+      code: `# verify.py (Accepted by Stage 3)
+def pre_stop_hook(workspace, edited_py_files):
+    if not git_diff_non_empty(workspace):
+        return False, "No code changes detected."
+    for f in edited_py_files:
+        compile_ok, err = py_compile_check(f)
+        if not compile_ok:
+            return False, f"Syntax error in {f}: {err}"
+    return run_targeted_pytest(workspace)`,
+      ok: true,
+      msg: ZH ? 'ACCEPTED · 退出前强制非空 diff + Python 语法编译 + 测试通过：盲测解率锁定 40.0%（8×），未验证退出降至 0.0%！' : 'ACCEPTED · Pre-stop syntax + test verification locked in 40.0% held-out accuracy (8× seed) and 0.0% unverified exits at 46.7k tokens!'
+    }
+  ];
+
+  function renderStep(idx) {
+    const s = STEPS[idx];
+    document.getElementById('step-code').textContent = s.code;
+    const v = document.getElementById('step-verdict');
+    v.textContent = s.msg;
+    v.className = s.ok ? 'verdict-box' : 'verdict-box reject';
+  }
+  document.querySelectorAll('#step-pills .pill-btn').forEach(btn => {
+    btn.onclick = () => {
+      document.querySelectorAll('#step-pills .pill-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderStep(Number(btn.dataset.step));
+    };
+  });
+  renderStep(0);
+
+  function renderGate() {
+    const cap = Number(document.getElementById('btok-slider').value);
+    document.getElementById('btok-val').textContent = cap + 'k';
+    const cands = [
+      { name: 'Step 1+2+4 Modular Patch Suite', tok: 46.7, valOk: true, cov: 100 },
+      { name: 'Step 3 control.py (12 → 18 turns)', tok: 124.0, valOk: false, cov: 100 },
+      { name: 'Unconstrained Rewrite (28 turns)', tok: 451.6, valOk: true, cov: 82 },
+      { name: 'Unreachable Helper Patch (Dead Code)', tok: 46.9, valOk: true, cov: 0 }
+    ];
+    document.getElementById('gate-results').innerHTML = cands.map(c => {
+      const pass = c.cov > 0 && c.valOk && c.tok <= cap;
+      const reason = c.cov === 0
+        ? (ZH ? '拒绝：行执行覆盖率 0%（死代码）' : 'REJECT: 0% runtime line coverage (dead code)')
+        : !c.valOk
+        ? (ZH ? '拒绝：独立 Val 验证集倒退' : 'REJECT: Val split regression')
+        : c.tok > cap
+        ? (ZH ? `拒绝：均耗 ${c.tok}k 超出上限 ${cap}k` : `REJECT: ${c.tok}k exceeds B_tok=${cap}k`)
+        : (ZH ? `通过：覆盖率 ${c.cov}%，均耗 ${c.tok}k ≤ ${cap}k` : `ACCEPT: ${c.cov}% line execution, ${c.tok}k ≤ ${cap}k`);
+      return `<div class="verdict-box ${pass ? '' : 'reject'}" style="margin-top:8px;padding:10px 12px"><b>${c.name}</b><br/><span>${reason}</span></div>`;
+    }).join('');
+  }
+  document.getElementById('btok-slider').oninput = renderGate;
+  renderGate();
+
+  const MODES = [
+    ZH ? '【Mode 1 · 提示词膨胀与丢约束】单次报错后不断往 RULES.md 追加规则，稀释指令注意力（Flash 盲测跌至 2.5%）。→ 防线 S2：必须绑定跨多题失败簇（N≥10），采用 RRSI 递减 diff 预算，把硬不变量写成 Python 钩子。'
+       : '[Mode 1 · Prompt Bloat & Lost Constraints] Appending ad-hoc rules to RULES.md dilutes attention (halving Flash accuracy to 2.5%). → Safeguard 2: Tie edits to recurring failure clusters (N≥10) with shrinking RRSI diff budgets and enforce invariants in Python hooks.',
+    ZH ? '【Mode 2 · 工具混淆与技能遮蔽】自动合成大量描述重叠的插件包装器，导致模型选错工具（不如精简 Shell ACI）。→ 防线 S1+S2：保持 action_aci.py 极简锋利，剔除低覆盖冗余包装。'
+       : '[Mode 2 · Tool Confusion / Skill Shadowing] Sprawling auto-generated wrappers with overlapping descriptions degrade tool selection. → Safeguards 1 & 2: Maintain a minimal, sharp action_aci.py and prune low-coverage wrappers.',
+    ZH ? '【Mode 3 · 跨模块耦合崩坏】单次全量重写 4 个文件破坏状态结构契约，且在跨代迁移 Argon 时暴跌 -12.5pp。→ 防线 S1：强制单模块隔离修改 + 显式集成合并验证（Integration Merge）。'
+       : '[Mode 3 · Cross-Module Coupling Breakage] Monolithic multi-file rewrites violate shared state invariants and collapse -12.5pp on Argon transfer. → Safeguard 1: Restrict Stage-2 proposals to one module + gated Integration Merge.',
+    ZH ? '【Mode 4 · 基准沙箱捷径投机】非密封容器泄露 git 远端分支或缓存捷径，外环搜索会迅速放大作弊路径。→ 防线 S4：密封无网沙箱 + 跨仓库 OOD（django/django）独立盲测。'
+       : '[Mode 4 · Benchmark Shortcut Gaming] Non-hermetic containers leak git history or environment shortcuts amplified by evolutionary search. → Safeguard 4: Hermetic sandboxes + cross-repo OOD sign-off (django/django).',
+    ZH ? '【Mode 5 · 篡改评测器与日志（最危险!）】若评分脚本、单测或日志在工作区可写，自修改 Agent 会直接把测试改成恒真通过！→ 防线 S3+S4：外部验证器 R_x、评分套件与遥测账本必须容器外只读挂载！'
+       : '[Mode 5 · Evaluator & Log Tampering (Critical!)] Writable grading scripts or test suites inside the workspace let a self-editing harness rewrite tests to pass! → Safeguards 3 & 4: Mount verifiers R_x, tests, and logs strictly read-only outside the workspace!'
+  ];
+  document.querySelectorAll('#mode-pills .pill-btn').forEach(btn => {
+    btn.onclick = () => {
+      document.querySelectorAll('#mode-pills .pill-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('mode-detail').textContent = MODES[Number(btn.dataset.mode)];
+    };
+  });
+  document.getElementById('mode-detail').textContent = MODES[0];
+
+  function renderROI() {
+    const vol = Number(document.getElementById('vol-slider').value);
+    const rolls = Number(document.getElementById('roll-slider').value);
+    const price = Number(document.getElementById('price-slider').value);
+    document.getElementById('vol-val').textContent = String(vol);
+    document.getElementById('roll-val').textContent = String(rolls);
+    document.getElementById('price-val').textContent = '$' + price.toFixed(2);
+
+    const seedTokK = 116.75;
+    const modTokK = 46.7;
+    const fullTokK = 451.6;
+    const savedVsSeedK = seedTokK - modTokK; // 70.05k/task
+    const savedVsFullK = fullTokK - modTokK; // 404.9k/task
+    const searchTotalK = rolls * 68.0;
+    const paybackTasks = Math.ceil(searchTotalK / savedVsSeedK);
+    const paybackDays = (paybackTasks / vol).toFixed(2);
+    const monthlySavedM = ((vol * 30 * savedVsFullK) / 1000).toFixed(1);
+    const monthlyUsdSaved = ((vol * 30 * savedVsFullK / 1000) * price).toFixed(0);
+
+    document.getElementById('roi-output').innerHTML = ZH
+      ? `<b>回本任务数（相对种子 Harness）：</b>仅需 <b>${paybackTasks} 个生产任务</b>（按日均 ${vol} 单仅需 <b>${paybackDays} 天</b>）即赚回全部 ${rolls} 轮外环搜索 Token！<br/><br/>` +
+        `<b>月度算力节省（相对无约束全量重写）：</b>每月净省 <b>${monthlySavedM}M Tokens</b>（约 <b>$${monthlyUsdSaved}/月</b>），同时跨仓未验证早退保持 <b>0.0%</b>。`
+      : `<b>Break-Even Horizon (vs. Seed):</b> Repays all ${rolls} search rollouts in just <b>${paybackTasks} deployed tasks</b> (<b>${paybackDays} days</b> at ${vol} runs/day)!<br/><br/>` +
+        `<b>Monthly Savings (vs. Unconstrained Rewrite):</b> Saves <b>${monthlySavedM}M tokens/month</b> (~<b>$${monthlyUsdSaved}/mo</b>) while maintaining <b>0.0%</b> unverified exits.`;
+  }
+  ['vol-slider', 'roll-slider', 'price-slider'].forEach(id => {
+    document.getElementById(id).oninput = renderROI;
+  });
+  renderROI();
+})();
+</script>
+</body>
+</html>

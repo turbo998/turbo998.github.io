@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="dark" data-reading-shell="document">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Google《Harnesses That Improve Themselves》深度研究：自进化 Agent Harness 双环门控架构与 SA 决策指南 — 陈琪 Qi Chen</title>
+  <meta name="description" content="深度拆解 Google arXiv:2611.22299v1 自进化 Agent Harness 统一框架：内环四模块状态机、外环 Stage 3 行执行覆盖与 110k Token 预算门禁、SWE-bench Lite 8 倍提效及 Gemini 4 Argon 零样本迁移规律。">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230a0a0e'/%3E%3Ctext x='32' y='42' font-family='Segoe UI,sans-serif' font-size='26' font-weight='700' fill='%23a5b4fc' text-anchor='middle'%3EQC%3C/text%3E%3C/svg%3E">
+  <meta name="reading-migration" content="R6">
+  <link rel="stylesheet" href="../assets/reading-shell.css">
+  <script src="../assets/reading-shell.js"></script>
+  <style>
+    .report-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 18px 0 24px;
+    }
+    .report-actions a {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 15px;
+      border-radius: 999px;
+      border: 1px solid rgba(121, 192, 255, 0.35);
+      background: rgba(31, 111, 235, 0.14);
+      color: inherit;
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 650;
+    }
+    .report-actions a.primary-pill {
+      background: #1f6feb;
+      color: #ffffff;
+      border-color: #388bfd;
+    }
+    .kpi-grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin: 20px 0 24px;
+    }
+    @media (max-width: 760px) {
+      .kpi-grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    .kpi-tile {
+      padding: 14px 16px;
+      border-radius: 12px;
+      border: 1px solid rgba(148, 163, 184, 0.24);
+      background: rgba(15, 23, 42, 0.45);
+    }
+    :root[data-theme="light"] .kpi-tile {
+      background: #f8fafc;
+      border-color: #cbd5e1;
+    }
+    .kpi-tile .k-label { font-size: 0.78rem; opacity: 0.78; font-weight: 700; }
+    .kpi-tile .k-val { font-size: 1.45rem; font-weight: 800; margin: 4px 0; font-family: ui-monospace, Consolas, monospace; color: #58a6ff; }
+    :root[data-theme="light"] .kpi-tile .k-val { color: #1d4ed8; }
+    .kpi-tile .k-sub { font-size: 0.8rem; opacity: 0.85; line-height: 1.4; }
+    figure.chart-figure {
+      margin: 24px 0 28px;
+      padding: 14px;
+      border-radius: 14px;
+      background: #0d1117;
+      border: 1px solid #30363d;
+    }
+    figure.chart-figure img {
+      display: block;
+      width: 100%;
+      height: auto;
+      border-radius: 10px;
+    }
+    figure.chart-figure figcaption {
+      margin-top: 10px;
+      font-size: 0.84rem;
+      color: #8b949e;
+      line-height: 1.55;
+    }
+    .diff-pair {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin: 18px 0 24px;
+    }
+    @media (max-width: 780px) {
+      .diff-pair { grid-template-columns: 1fr; }
+    }
+    .diff-card {
+      border-radius: 12px;
+      padding: 14px 16px;
+      background: #0d1117;
+      border: 1px solid #30363d;
+      color: #e6edf3;
+    }
+    .diff-card .d-head {
+      font-size: 0.82rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .diff-card.before .d-head { color: #ffa198; }
+    .diff-card.after .d-head { color: #7ee787; }
+    .diff-card pre {
+      margin: 0;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.78rem;
+      line-height: 1.55;
+      white-space: pre-wrap;
+      word-break: break-word;
+      color: #e6edf3;
+      background: transparent;
+      border: 0;
+      padding: 0;
+    }
+  </style>
+<script src="../assets/editorial/search-index.js" defer></script><script src="../assets/editorial/search.js" defer></script><style id="site-remediation-style">/* Embedded by integrate-dedicated.cjs so sealed report CSP remains unchanged. */
+.kee-dedicated-nav {
+  all: initial; box-sizing: border-box; position: relative; display: flex;
+  flex-wrap: wrap; align-items: center; gap: 6px 14px; width: 100%;
+  padding: 12px 18px; margin: 0 0 16px; border: 1px solid #314361;
+  background: #101A30; color: #EEF3FF; font: 13px/1.5 system-ui, sans-serif;
+  text-align: left; isolation: isolate; color-scheme: dark;
+}
+.kee-dedicated-nav a {
+  all: revert; box-sizing: border-box; display: inline-block; padding: 4px 0;
+  color: #9AABFF; background: transparent; font: inherit; text-decoration: underline;
+  text-underline-offset: 3px; border: 0; border-radius: 0; box-shadow: none;
+}
+.kee-dedicated-nav a:focus-visible { outline: 3px solid #56DDCD; outline-offset: 3px; }
+.kee-dedicated-nav .kee-dedicated-identity { font-weight: 700; color: #EEF3FF; }
+.kee-dedicated-nav .kee-dedicated-language {
+  all: revert; display: block; flex-basis: 100%; color: #ADBBD1; font: 12px/1.5 system-ui, sans-serif;
+}
+.kee-dedicated-native-link { display: block; padding: 22px; color: #1858a8; background: #f8fafc; font: 15px/1.6 system-ui, sans-serif; }
+.kee-dedicated-native-link a { color: #1858a8; text-decoration: underline; }
+@media print { .kee-dedicated-nav { display: none; } }
+
+/* Professional primary navigation: long section names reflow, never scroll inside the header. */
+[data-professional-header]{box-sizing:border-box;display:grid!important;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:18px!important;width:100%;max-width:none;height:auto!important;min-height:0!important;padding:18px 24px!important;margin:0 0 16px;position:relative;overflow:visible!important;background:#101A30;color:#EEF3FF;border:1px solid #314361;font:13px/1.5 system-ui,sans-serif;isolation:isolate;color-scheme:dark}
+[data-professional-header] *{box-sizing:border-box;min-width:0;max-height:none}
+[data-professional-header] a{font:inherit;text-decoration:none;color:#9AABFF;overflow-wrap:anywhere;white-space:normal}
+[data-professional-header] .professional-identity{font-weight:750;color:#EEF3FF;white-space:nowrap;font-size:14px;margin:0}
+[data-professional-header] .professional-primary{display:grid;grid-template-columns:1.45fr repeat(5,minmax(0,1fr));gap:6px;align-items:stretch;min-width:0}
+@media(max-width:960px) and (min-width:601px){[data-professional-header] .professional-primary{gap:5px}[data-professional-header] .professional-primary a{padding:8px 6px;font-size:11.5px}}
+[data-professional-header] .professional-primary a{display:flex;align-items:center;justify-content:center;padding:10px 9px;border:1px solid #314361;border-radius:12px;background:#172440;text-align:center;line-height:1.4;min-height:44px}
+[data-professional-header] .professional-primary a[aria-current=page]{background:#23375a;border-color:#56DDCD;color:#56DDCD}
+[data-professional-header] .professional-controls{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:4px;font-size:12px;margin:0;position:static}
+[data-professional-header] .professional-controls>a{display:flex;align-items:center;justify-content:center;padding:8px;min-height:40px;min-width:32px;border-radius:10px}
+[data-professional-header] .professional-context{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px 18px;padding-top:12px;border-top:1px solid #314361;font-size:12px;color:#ADBBD1;min-width:0;line-height:1.6}
+[data-professional-header] .professional-context>*{min-width:0;overflow-wrap:anywhere}
+[data-professional-header] .professional-context .kee-dedicated-language{flex-basis:100%;color:#ADBBD1}
+[data-professional-header] a:focus-visible{outline:3px solid #56DDCD;outline-offset:3px}
+[data-professional-header] a:hover{text-decoration:underline}
+[data-professional-header][data-perimeter-theme=light],:root[data-theme=light] .reading-header[data-professional-header]{background:#fff;color:#172440;border-color:#d4deee;color-scheme:light}
+[data-professional-header][data-perimeter-theme=light] a,:root[data-theme=light] .reading-header[data-professional-header] a{color:#3752a0}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a,:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a{background:#edf2ff;border-color:#d4deee}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a[aria-current],:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a[aria-current]{background:#dff6f0;color:#127b72;border-color:#127b72}
+@media(max-width:1150px){[data-professional-header]{grid-template-columns:minmax(0,1fr) auto;gap:12px!important}[data-professional-header] .professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header] .professional-controls{grid-column:2;grid-row:1}}
+@media(max-width:600px){[data-professional-header]{padding:14px 16px!important;gap:12px!important}[data-professional-header] .professional-primary{grid-template-columns:repeat(2,minmax(0,1fr))}[data-professional-header] .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:13px}[data-professional-header] .professional-controls{gap:0}[data-professional-header] .professional-controls>a{padding:6px;min-width:28px}}
+@media print{[data-professional-header]{display:none!important}}
+
+html{scroll-padding-top:164px}@media(max-width:600px){html{scroll-padding-top:260px}}.reading-header,.kee-dedicated-nav,[data-professional-header]{position:sticky;top:0;z-index:1000;-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
+
+:root{--search-bg:#101a30;--search-soft:#172440;--search-ink:#eef3ff;--search-muted:#adbbd1;--search-line:#293956;--search-accent:#9aabff;--header-offset:144px}
+:root[data-reading-shell][data-theme=light],[data-perimeter-theme=light]{--search-bg:#fff;--search-soft:#e8eefb;--search-ink:#17233e;--search-muted:#4c5e7c;--search-line:#d5ddec;--search-accent:#354ec8}
+html{scroll-padding-top:var(--header-offset,108px)!important}
+.site-search,.site-search *{box-sizing:border-box!important;font-family:"Segoe UI",sans-serif;letter-spacing:normal;text-transform:none}
+.site-search{position:relative;display:flex;align-items:center;gap:5px;min-width:0;width:230px;max-width:100%;margin:0!important;padding:0!important;line-height:1.4;border:1px solid var(--search-line);border-radius:9px;background:var(--search-soft);color:var(--search-ink);isolation:isolate}
+.site-search input[type=search]{display:block;flex:1;min-width:0;width:100%;height:42px;margin:0;padding:9px 8px!important;font-size:12px!important;line-height:1.5;border:0!important;border-radius:9px;background:transparent!important;color:var(--search-ink)!important;box-shadow:none!important;appearance:none}
+.site-search input::placeholder{color:var(--search-muted);opacity:1}.site-search input:focus-visible{outline:2px solid var(--search-accent);outline-offset:2px}
+.site-search kbd{font:11px Consolas,monospace;color:var(--search-muted);padding:1px 5px;border:1px solid var(--search-line);border-radius:4px}
+.site-search button[type=submit]{flex:none;width:38px;min-width:38px;height:42px;min-height:42px;padding:0;margin:0;border:0;border-radius:8px;background:transparent;color:var(--search-accent);font-size:24px;cursor:pointer;box-shadow:none}
+.search-label,.search-status{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.site-search .search-results{position:absolute;top:calc(100% + 10px);right:0;z-index:1100;width:min(480px,calc(100vw - 32px));max-height:min(560px,65vh);overflow-y:auto;border:1px solid var(--search-line);border-radius:12px;background:var(--search-bg);color:var(--search-ink);padding:10px;box-shadow:0 12px 32px #0005;text-align:left}
+.site-search .search-results[hidden]{display:none!important}.search-results .search-group{margin:8px 6px 4px;font:11px/1.5 Consolas,monospace;color:var(--search-muted)}
+.site-search .search-results a{display:block!important;padding:10px!important;margin:3px 0!important;border:1px solid transparent!important;border-radius:7px;background:transparent;color:var(--search-ink)!important;font-size:13px!important;text-decoration:none!important;white-space:normal;overflow-wrap:anywhere;text-align:left!important;line-height:1.5!important}
+.site-search .search-results a[aria-selected=true],.site-search .search-results a:hover{border-color:var(--search-accent)!important;background:var(--search-soft)}
+.search-results a small{display:block;font-size:10px;color:var(--search-muted);margin-top:4px}.search-results p{margin:10px;font-size:13px;color:var(--search-muted)}
+.search-archive-summary{padding:20px;border:1px solid var(--search-line);border-radius:10px;background:var(--search-bg);color:var(--search-ink);margin:24px 0}.search-archive-summary h2{font-size:24px;margin:0 0 12px}.search-archive-summary li{margin:12px 0}.search-archive-summary a{color:var(--search-accent)}
+[data-professional-header]{position:sticky!important;top:0!important;z-index:1000!important;background:var(--search-bg)!important;--header-glass:rgba(16,26,48,.9);grid-template-columns:auto minmax(0,1fr) 230px auto!important}
+[data-professional-header][data-perimeter-theme=light],:root[data-reading-shell][data-theme=light] [data-professional-header]{--header-glass:rgba(255,255,255,.94)}
+[data-professional-header] .professional-mobile{display:none}.professional-mobile summary{min-width:38px;min-height:42px;display:grid;place-items:center;cursor:pointer;list-style:none}.professional-mobile summary::-webkit-details-marker{display:none}
+[data-professional-header] .professional-context{display:none}
+.professional-context-bar{padding:12px 24px;border-bottom:1px solid var(--search-line);background:var(--search-bg);color:var(--search-muted);font:12px/1.6 "Segoe UI",sans-serif;display:flex;flex-wrap:wrap;gap:8px 18px;overflow-wrap:anywhere}.professional-context-bar a{color:var(--search-accent)}
+@supports((backdrop-filter:blur(16px)) or (-webkit-backdrop-filter:blur(16px))){.site-header,[data-professional-header]{background:var(--header-glass)!important;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}}
+@media(max-width:1250px) and (min-width:701px){.header-inner{grid-template-columns:minmax(0,1fr) 230px auto!important;padding:12px 0;gap:12px!important}.desktop-nav{grid-row:2;grid-column:1/-1}.header-inner>.site-search{grid-column:2;grid-row:1}.header-inner>.controls{grid-column:3;grid-row:1}[data-professional-header]{grid-template-columns:minmax(0,1fr) 230px auto!important;gap:12px!important}[data-professional-header]>.professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header]>.site-search{grid-column:2;grid-row:1}[data-professional-header]>.professional-controls{grid-column:3;grid-row:1}:root{--header-offset:184px}}
+@media(max-width:700px){.header-inner{grid-template-columns:minmax(0,1fr) auto!important;padding:10px 0;gap:8px!important}.header-inner>.site-search{grid-row:2;grid-column:1/-1;width:100%}.header-inner>.controls{grid-column:2;grid-row:1}.site-search .search-results{width:100%;right:0}[data-professional-header]{grid-template-columns:minmax(0,1fr) auto!important;padding:10px 16px!important;gap:8px!important}[data-professional-header]>.professional-primary{display:none!important}[data-professional-header]>.site-search{grid-column:1/-1;grid-row:2;width:100%}[data-professional-header]>.professional-controls{grid-column:2;grid-row:1}[data-professional-header] .professional-mobile{display:block}[data-professional-header] .professional-mobile[open]>.professional-primary{position:absolute;top:100%;left:0;right:0;padding:16px;background:var(--search-bg);border-bottom:1px solid var(--search-line);display:grid;grid-template-columns:1fr 1fr;gap:8px}[data-professional-header] .professional-mobile .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:12px!important}:root{--header-offset:136px}}
+@media(prefers-reduced-transparency:reduce){.site-header,[data-professional-header]{background:var(--search-bg)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}}
+@media print{.site-search,.professional-context-bar{display:none!important}}
+
+@media(min-width:1251px){.header-inner{display:grid!important;grid-template-columns:auto minmax(0,1fr) 230px auto!important;gap:18px!important}.header-inner .desktop-nav{min-width:0}}
+
+html:has(.kee-dedicated-app-root){height:auto!important;overflow-x:hidden!important;overflow-y:auto!important}
+body:has([data-professional-header]){height:auto!important;overflow-x:clip!important;overflow-y:visible!important;padding-top:0!important}
+.demo-language-navigation{display:none!important}
+.stage-column,.telemetry-panel,.scene-pill,#timeline-slider{min-width:0}
+@media(max-width:1180px){.workspace,.template-tabs{grid-template-columns:minmax(0,1fr)!important}}
+
+.in-arena-frame .professional-context-bar,.in-arena-frame [data-knowledge-atlas]{display:none!important}
+.knowledge-graph-wide{display:block}.knowledge-graph-compact{display:none}@media(max-width:600px){.knowledge-graph-wide{display:none}.knowledge-graph-compact{display:block}}
+</style></head>
+<body class="reading-page"><nav class="kee-dedicated-nav" data-professional-header><a class="professional-identity reading-brand kee-dedicated-identity identity" href="../zh.html">Qi Chen · @turbo998</a><div class="professional-primary" role="navigation" aria-label="主导航"><a href="../studio/zh-index.html" data-section="hub" data-nav-en-href="../studio/index.html" data-nav-zh-href="../studio/zh-index.html" data-nav-en-label="Frontier Transformation Engineering Hub" data-nav-zh-label="Frontier Transformation Engineering Hub" aria-current="page">Frontier Transformation Engineering Hub</a><a href="../zh-diamond.html" data-section="diamond" data-nav-en-href="../diamond.html" data-nav-zh-href="../zh-diamond.html" data-nav-en-label="Diamond Live Demos" data-nav-zh-label="Diamond 实战演示">Diamond 实战演示</a><a href="../zh-benchmarks.html" data-section="benchmarks" data-nav-en-href="../benchmarks.html" data-nav-zh-href="../zh-benchmarks.html" data-nav-en-label="Benchmark &amp; Eval Foundry" data-nav-zh-label="基准评测中心">基准评测中心</a><a href="../zh-github-radar.html" data-section="radar" data-nav-en-href="../github-radar.html" data-nav-zh-href="../zh-github-radar.html" data-nav-en-label="GitHub AI Signal Radar" data-nav-zh-label="GitHub AI 信号雷达">GitHub AI 信号雷达</a><a href="../zh-openrouter.html" data-section="routing" data-nav-en-href="../openrouter.html" data-nav-zh-href="../zh-openrouter.html" data-nav-en-label="Model Routing &amp; Telemetry" data-nav-zh-label="OpenRouter 模型遥测">OpenRouter 模型遥测</a><a href="../zh-about.html" data-section="profile" data-nav-en-href="../about.html" data-nav-zh-href="../zh-about.html" data-nav-en-label="Frontier Transformation Engineer" data-nav-zh-label="Frontier Transformation Engineer">Frontier Transformation Engineer</a></div><form class="site-search" role="search" action="../studio/zh-archive.html" method="get" data-search-root="../index.html" data-search-language="zh-CN"><label class="search-label" for="site-search-input">搜索架构、评测、Demo、技能...</label><input id="site-search-input" name="q" type="search" placeholder="搜索架构、评测、Demo、技能..." autocomplete="off" spellcheck="false" aria-keyshortcuts="/ Control+k Meta+k"><kbd aria-hidden="true">/</kbd><button type="submit" aria-label="搜索全部内容">⌕</button><div class="search-results" id="site-search-results" hidden></div><span class="search-status" role="status" aria-live="polite"></span></form><div class="reading-controls professional-controls" aria-label="网站语言与外观"><a href="google-self-improving-harnesses.en.html" data-reading-language hreflang="en" lang="en">EN</a><a href="google-self-improving-harnesses.html" hreflang="zh-CN" lang="zh-CN" aria-current="page">中文</a><details class="professional-mobile"><summary aria-label="打开主导航">☰</summary><div class="professional-primary" role="navigation" aria-label="移动主导航"><a href="../studio/zh-index.html" data-section="hub" data-nav-en-href="../studio/index.html" data-nav-zh-href="../studio/zh-index.html" data-nav-en-label="Frontier Transformation Engineering Hub" data-nav-zh-label="Frontier Transformation Engineering Hub" aria-current="page">Frontier Transformation Engineering Hub</a><a href="../zh-diamond.html" data-section="diamond" data-nav-en-href="../diamond.html" data-nav-zh-href="../zh-diamond.html" data-nav-en-label="Diamond Live Demos" data-nav-zh-label="Diamond 实战演示">Diamond 实战演示</a><a href="../zh-benchmarks.html" data-section="benchmarks" data-nav-en-href="../benchmarks.html" data-nav-zh-href="../zh-benchmarks.html" data-nav-en-label="Benchmark &amp; Eval Foundry" data-nav-zh-label="基准评测中心">基准评测中心</a><a href="../zh-github-radar.html" data-section="radar" data-nav-en-href="../github-radar.html" data-nav-zh-href="../zh-github-radar.html" data-nav-en-label="GitHub AI Signal Radar" data-nav-zh-label="GitHub AI 信号雷达">GitHub AI 信号雷达</a><a href="../zh-openrouter.html" data-section="routing" data-nav-en-href="../openrouter.html" data-nav-zh-href="../zh-openrouter.html" data-nav-en-label="Model Routing &amp; Telemetry" data-nav-zh-label="OpenRouter 模型遥测">OpenRouter 模型遥测</a><a href="../zh-about.html" data-section="profile" data-nav-en-href="../about.html" data-nav-zh-href="../zh-about.html" data-nav-en-label="Frontier Transformation Engineer" data-nav-zh-label="Frontier Transformation Engineer">Frontier Transformation Engineer</a></div></details><a data-reading-theme="light" href="google-self-improving-harnesses.html?theme=light" aria-label="浅色主题">☀</a><a data-reading-theme="dark" href="google-self-improving-harnesses.html?theme=dark" aria-label="深色主题">◐</a></div><div class="professional-context" aria-label="返回上下文"><a href="../studio/zh-index.html">← 工程枢纽</a> · <a href="../studio/zh-benchmarks.html">返回主题</a></div></nav><div class="professional-context-bar"><a href="../studio/zh-index.html">← 工程枢纽</a> · <a class="reading-context" href="../studio/zh-benchmarks.html">返回主题</a></div><a class="reading-skip" href="#reading-main">跳至正文</a>
+    <main id="reading-main" tabindex="-1" class="reading-document">
+    <article class="article">
+      <div class="sec-label">GOOGLE RESEARCH 深度拆解 · ARXIV:2611.22299V1 (2026-11-17)</div>
+      <h1>Google《Harnesses That Improve Themselves》深度研究：自进化 Agent Harness 四组件双环架构与 SA 选型指南</h1>
+      <p class="meta">陈琪 Qi Chen · 2026 年 11 月 20 日 · 论文精读与架构对齐 · Deep Shah &amp; Nehal Kathrotia (Google) · 约 12 分钟阅读</p>
+
+      <div class="report-actions">
+        <a class="primary-pill" href="../workshops/google-self-improving-harnesses/index.html">打开 4-Tab 自进化模拟器工作台 →</a>
+        <a href="../workshops/google-self-improving-harnesses/cards.zh.html">查看 7 卡 4:5 基准视觉报告 →</a>
+        <a href="agent-harness-coevolution.html">姊妹实战篇：120 Skills × 前沿模型协同演进</a>
+        <a href="harness-engineering.html">理论前篇：Harness 工程化</a>
+        <a href="https://github.com/turbo998/ai-research-public/tree/main/docs/research/google-self-improving-harnesses" target="_blank" rel="noopener">ai-research-public 双语档案 ↗</a>
+      </div>
+
+      <p>当基础大模型（如 <code>Gemini 3.8 Flash</code>、<code>Gemini 4 Argon/Carbon</code>、<code>GPT-6.2 Sol</code>）的参数 $M_\theta$ 被冻结在生产 API 之后，决定企业智能体成败的核心变量，已从静态系统提示词全面转向包裹在模型外围的 <b>Agent Harness（可执行运行时承载层）</b>。2026 年 11 月 17 日，Google 研究员 <b>Deep Shah</b> 与 <b>Nehal Kathrotia</b> 发表重磅论文 <b>《Harnesses That Improve Themselves: A Unifying Framework for Self-Improving Agent Harnesses》（<code>arXiv:2611.22299v1</code>）</b>，首次将散落在学术界与工业界的元提示搜索（如 <code>RRSI</code>、<code>MoSIB</code>）、自指涉优化（如上海 AI Lab 6 月提出的同名先驱作 <code>Self-Harness, arXiv:2606.09498</code>）与递归自我改写智能体（如 <code>DGM/MGM</code>）统一为<b>受约束的模块化运行时软件演化问题</b>。</p>
+
+      <div class="kpi-grid-4">
+        <div class="kpi-tile">
+          <div class="k-label">Flash 盲测解率跃升</div>
+          <div class="k-val">5.0% → 40.0%</div>
+          <div class="k-sub">提升 8.0× · 跨仓未验证早退归零</div>
+        </div>
+        <div class="kpi-tile">
+          <div class="k-label">单题运行时均耗</div>
+          <div class="k-val">46.7k tok</div>
+          <div class="k-sub">较种子省 2.5× · 较全重写省 9.7×</div>
+        </div>
+        <div class="kpi-tile">
+          <div class="k-label">Argon 零样本迁移</div>
+          <div class="k-val">37.5% (#1)</div>
+          <div class="k-sub">反超全量重写 (30.0%) · 成本 &lt;1/4</div>
+        </div>
+        <div class="kpi-tile">
+          <div class="k-label">搜索算力回本周期</div>
+          <div class="k-val">&lt; 100 题</div>
+          <div class="k-sub">上线百题内赚回全部 100 轮演化开销</div>
+        </div>
+      </div>
+
+      <figure class="svg-figure">
+        <img src="../workshops/google-self-improving-harnesses/assets/00-executive-summary.svg" alt="Google Harnesses That Improve Themselves 一图流战果总结" loading="eager">
+        <figcaption>图 1：SWE-bench Lite（sympy 域内 + django 跨仓 OOD 共 40 道盲测题）四套策略在冻结 Gemini 3.8 Flash 与零样本迁移 Gemini 4 Argon 上的解率、单题解出成本及四步门控演化账本。</figcaption>
+      </figure>
+
+      <h2>一、核心范式跃迁：把 Agent Harness 当作受门禁约束的可变软件，而非静态提示词</h2>
+      <p>Google 指出，传统“反思式提示词追加（如不断往 <code>RULES.md</code> 里写禁令）”与“无约束全量重写整个 Agent 代码”分别走入了两个极端：前者<b>没有任何运行时强制约束力</b>，在复杂跨仓排障压力下极易被模型忽略；后者则<b>破坏跨模块状态契约，并靠暴力拉长交互轮数（如 12→28 轮）烧掉近 10 倍算力</b>。</p>
+
+      <p>为此，论文构建了清晰的<b>内外双环形式化架构（公式 1）</b>：在内环，冻结模型 $M_\theta$ 通过四组件运行时 $h = (h_{\text{ctx}}, h_{\text{ctrl}}, h_{\text{act}}, h_{\text{ver}}) \in \mathcal{H}$ 与隔离沙箱 $\mathcal{E}_x$ 交互；在外环，优化器在满足<b>单题平均 Token 预算 $\mathbb{E}[C(\tau)] \le B_{\text{tok}}$（实验中设为 <code>110k</code>）与验证门禁 $G_{\text{val}}(h, h_0)=1$</b> 的前提下，最大化外部只读验证器得分 $\mathbb{E}[R_x(\tau)]$。</p>
+
+      <figure class="svg-figure">
+        <img src="../workshops/google-self-improving-harnesses/assets/01-dual-loop-architecture.svg" alt="自进化 Agent Harness 双环架构与四道安全防线" loading="lazy">
+        <figcaption>图 2：内环四大正交可编辑 Python 模块（h_ctx, h_ctrl, h_act, h_ver）与外环四阶段门控自进化闭环及跨阶段反作弊护栏。</figcaption>
+      </figure>
+
+      <h2>二、最震撼的对照发现：为什么纯文本反思（RULES.md）反而让准确率腰斩？</h2>
+      <p>在 SWE-bench Lite 实验（60 题：<code>sympy/sympy</code> 开发 12 题 + 验证 8 题 + 域内盲测 20 题；<code>django/django</code> 跨仓 OOD 盲测 20 题）中，142 行种子 Harness 常犯一个典型毛病：还没改代码或没跑单测就调用 <code>finish</code> 匆匆交卷（跨仓未验证退出率达 <code>15.0%</code>）。</p>
+      <ul>
+        <li><b>纯提示词反思（Prompt-Only Reflection）的溃败：</b>外环在 <code>RULES.md</code> 中明文追加严厉规则禁止空 diff 和未测试退出。但因没有 Python 代码在运行时阻断 <code>finish</code> 调用，<code>Gemini 3.8 Flash</code> 在跨仓 <code>django</code> 长上下文下直接无视文本禁令——<b>未验证早退率不仅没降，反而从 <code>15.0%</code> 翻倍恶化至 <code>30.0%</code>，整体盲测解率从 <code>5.0%</code> 跌至 <code>2.5%</code>（<code>1/40</code>）</b>！</li>
+        <li><b>门控模块化代码钩子（Modular Gated Evolution）的根治：</b>外环依次独立演化 4 个文件并过 Stage 3 门禁：
+          <ol>
+            <li><code>context_mgr.py</code>（<b>通过</b>）：对超过 2 轮的旧观察执行<b>首尾摘要压缩（Head-Tail Compaction，保留前缀 KV 缓存）</b>并追加实时轮次/编辑状态页脚，使 Dev/Val 准确率直接跃升 <code>5×</code>；</li>
+            <li><code>action_aci.py</code>（<b>通过</b>）：引入分页文件窗口视图、Shell 长输出截断与 <code>finish</code> 空 diff 前置守卫；</li>
+            <li><code>control.py</code>（<b>被 Stage 3 当场拦截!</b>）：候选补丁提议将轮数上限从 <code>12</code> 提到 <code>18</code>——虽然 Dev 分上涨，但独立 Val 分回退且平均 Token 突破 <code>110k</code> 红线，被精准识别为高耗能过拟合；</li>
+            <li><code>verify.py</code>（<b>通过</b>）：注入 <code>pre-stop</code> 钩子，强制 <code>git diff</code> 非空、修改后的 Python 文件编译无语法错误且测试运行通过才允许退出，否则把报错打回内环继续修复。</li>
+          </ol>
+        </li>
+      </ul>
+
+      <h2>三、跨代模型零样本迁移：对“反向脚手架定律”的完美独立实证</h2>
+      <p>论文 Section VII Part B 做了一个极具前瞻性的测试：把围绕轻量模型 <code>Gemini 3.8 Flash</code> 演化出的四套 Harness，<b>一行不改零样本迁移到推理能力更强的新一代模型 <code>Gemini 4 Argon</code></b>：</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>演化方案（Flash 上搜索 → Argon 零样本）</th>
+              <th>Flash 盲测解率</th>
+              <th>Flash 均耗 / 解出单题成本</th>
+              <th>Argon 零样本解率</th>
+              <th>迁移工程诊断</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><b>1. Seed 种子 Harness (142行 · 12轮)</b></td>
+              <td><code>5.0%</code> (2/40)</td>
+              <td><code>~116.8k</code> / <code>2,336k</code></td>
+              <td><code>10.0%</code> (4/40)</td>
+              <td>指令遵循增强不再空退，但 12 轮耗尽于未压缩大文件读取</td>
+            </tr>
+            <tr>
+              <td><b>2. 纯提示词反思 (RULES.md · 12轮)</b></td>
+              <td><code>2.5%</code> (1/40) ↓</td>
+              <td>早退恶化至 <code>30.0%</code></td>
+              <td><code>15.0%</code> (6/40)</td>
+              <td>强模型能听懂部分文本规则，但缺乏压缩与自动测试闭环</td>
+            </tr>
+            <tr>
+              <td><b>3. 无约束全量重写 (28轮无压缩)</b></td>
+              <td><code>42.5%</code> (17/40)</td>
+              <td><code>451.6k</code> / <code>1,062.6k</code></td>
+              <td><b><code>30.0%</code> (↓ -12.5pp)</b></td>
+              <td><b>跨代崩塌！</b>Argon 更长的推理链与 28 轮全量日志叠加，均耗超 <code>269k</code> 引发注意力退化</td>
+            </tr>
+            <tr>
+              <td><b>4. 门控模块化演化 (12轮 + 代码钩子)</b></td>
+              <td><b><code>40.0%</code> (16/40)</b></td>
+              <td><b><code>46.7k</code> / <code>116.8k</code></b></td>
+              <td><b><code>37.5%</code> (#1 双仓夺冠)</b></td>
+              <td><b>跨代保值！</b>均耗仅 <code>64.8k</code>（不足全重写 1/4），干净软件契约零样本胜出</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>这与我们在前序实测报告《<a href="agent-harness-coevolution.html">随模型升级持续演进 Agent Harness：120 个 Skills 审计</a>》中总结的<b>“反向脚手架定律（Inverse Scaffolding Law）”</b>严丝合缝：<b>为弱模型修筑的臃肿循环与冗长提示拐杖，在新一代强推理模型上会变成上下文毒药；唯有精简上下文压缩、锋利工具窗口与确定性代码验证门才能跨代复利。</b></p>
+
+      <h2>四、五大自修改故障模式与 AI Solution Architect 生产落地四道铁律</h2>
+      <p>针对企业最担心的“自进化 Agent 越改越乱甚至篡改测试刷分（Reward Hacking）”，Google 给出了五类故障（Table II）与四道必选工程护栏：</p>
+      <ol>
+        <li><b>护栏 1 · 四模块物理隔离 + 显式集成合并（防 Mode 3 耦合崩坏）：</b>严禁外环单次重写整套运行时；每次仅允许针对单一组件提补丁，多分支合并必须重过独立验证集。</li>
+        <li><b>护栏 2 · 绑定失败簇 + 收缩 Diff 预算（防 Mode 1 提示词膨胀 &amp; Mode 2 技能遮蔽）：</b>严禁针对单次偶然报错打补丁，必须先对 <code>N ≥ 10</code> 失败轨迹聚类，结合 <code>RRSI</code> 递减编辑预算，杜绝单题硬编码提示。</li>
+        <li><b>护栏 3 · 行级运行时覆盖率 + 硬 Token 红线（Stage 3 三联门禁）：</b>新合入的每一行代码必须在验证集真实触发执行（<code>Line Coverage &gt; 0%</code>，零死代码容忍），且严守 $\mathbb{E}[C(\tau)] \le B_{\text{tok}}$。</li>
+        <li><b>护栏 4 · 容器外只读评测器与密封沙箱（防 Mode 4 捷径投机 &amp; Mode 5 篡改评分器）：</b>曾有自修改系统直接改写工作区内的评分脚本把 <code>assert</code> 变 <code>True</code>！生产环境中，测试集、评分器 $R_x$ 与 Token 遥测日志必须以<b>容器外只读权限</b>挂载。</li>
+      </ol>
+
+      <hr>
+      <p>
+        <b>配套交互工具与双语归档：</b><br>
+        · <a href="../workshops/google-self-improving-harnesses/index.html">4-Tab 自进化 Harness 交互模拟器（含 Stage 3 预算门禁调参与企业回本计算器）</a><br>
+        · <a href="../workshops/google-self-improving-harnesses/cards.zh.html">7 卡 4:5 基准测试视觉报告</a> · <a href="agent-harness-coevolution.html">姊妹实战篇：120 个 Skills 审计与模型协同演进</a><br>
+        · 开源研究档案：<a href="https://github.com/turbo998/ai-research-public/tree/main/docs/research/google-self-improving-harnesses" target="_blank" rel="noopener">turbo998/ai-research-public (含确定性 Python 校验套件)</a><br>
+        ← <a href="../zh-writing.html">返回全部文章与评测列表</a>
+      </p>
+    </article>
+  </main>
+</body>
+</html>

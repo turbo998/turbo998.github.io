@@ -19,6 +19,8 @@ function localeRegistry() {
   add('articles/agent-harness-coevolution.en.html','articles/agent-harness-coevolution.html');
   add('workshops/agent-harness-coevolution/index.en.html','workshops/agent-harness-coevolution/index.html');
   add('workshops/agent-harness-coevolution/cards.html','workshops/agent-harness-coevolution/cards.zh.html');
+  add('workshops/google-self-improving-harnesses/index.en.html','workshops/google-self-improving-harnesses/index.html');
+  add('workshops/google-self-improving-harnesses/cards.html','workshops/google-self-improving-harnesses/cards.zh.html');
   for(const file of htmlFiles().filter(file=>file.startsWith('studio/')&&!path.posix.basename(file).startsWith('zh-'))) {
     const zh=file.replace(/([^/]+)$/,'zh-$1');if(fs.existsSync(path.join(root,zh)))add(file,zh);
   }

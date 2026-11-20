@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="en" data-theme="dark" data-reading-shell="document">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Google's Harnesses That Improve Themselves: Dual-Loop Architecture, Gated Evolution & SA Playbook — Qi Chen</title>
+  <meta name="description" content="Architectural deep dive into Google's arXiv:2611.22299v1 unifying framework for self-improving agent harnesses: 4-module runtime, Stage-3 line-coverage & 110k token gates, 8x SWE-bench Lite gains, and zero-shot Gemini 4 Argon transfer.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230a0a0e'/%3E%3Ctext x='32' y='42' font-family='Segoe UI,sans-serif' font-size='26' font-weight='700' fill='%23a5b4fc' text-anchor='middle'%3EQC%3C/text%3E%3C/svg%3E">
+  <meta name="reading-migration" content="R6">
+  <link rel="stylesheet" href="../assets/reading-shell.css">
+  <script src="../assets/reading-shell.js"></script>
+  <style>
+    .report-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 18px 0 24px;
+    }
+    .report-actions a {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 15px;
+      border-radius: 999px;
+      border: 1px solid rgba(121, 192, 255, 0.35);
+      background: rgba(31, 111, 235, 0.14);
+      color: inherit;
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 650;
+    }
+    .report-actions a.primary-pill {
+      background: #1f6feb;
+      color: #ffffff;
+      border-color: #388bfd;
+    }
+    .kpi-grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin: 20px 0 24px;
+    }
+    @media (max-width: 760px) {
+      .kpi-grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    .kpi-tile {
+      padding: 14px 16px;
+      border-radius: 12px;
+      border: 1px solid rgba(148, 163, 184, 0.24);
+      background: rgba(15, 23, 42, 0.45);
+    }
+    :root[data-theme="light"] .kpi-tile {
+      background: #f8fafc;
+      border-color: #cbd5e1;
+    }
+    .kpi-tile .k-label { font-size: 0.76rem; opacity: 0.78; font-weight: 700; text-transform: uppercase; }
+    .kpi-tile .k-val { font-size: 1.45rem; font-weight: 800; margin: 4px 0; font-family: ui-monospace, Consolas, monospace; color: #58a6ff; }
+    :root[data-theme="light"] .kpi-tile .k-val { color: #1d4ed8; }
+    .kpi-tile .k-sub { font-size: 0.8rem; opacity: 0.85; line-height: 1.4; }
+    figure.chart-figure {
+      margin: 24px 0 28px;
+      padding: 14px;
+      border-radius: 14px;
+      background: #0d1117;
+      border: 1px solid #30363d;
+    }
+    figure.chart-figure img {
+      display: block;
+      width: 100%;
+      height: auto;
+      border-radius: 10px;
+    }
+    figure.chart-figure figcaption {
+      margin-top: 10px;
+      font-size: 0.84rem;
+      color: #8b949e;
+      line-height: 1.55;
+    }
+    .diff-pair {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin: 18px 0 24px;
+    }
+    @media (max-width: 780px) {
+      .diff-pair { grid-template-columns: 1fr; }
+    }
+    .diff-card {
+      border-radius: 12px;
+      padding: 14px 16px;
+      background: #0d1117;
+      border: 1px solid #30363d;
+      color: #e6edf3;
+    }
+    .diff-card .d-head {
+      font-size: 0.82rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .diff-card.before .d-head { color: #ffa198; }
+    .diff-card.after .d-head { color: #7ee787; }
+    .diff-card pre {
+      margin: 0;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.78rem;
+      line-height: 1.55;
+      white-space: pre-wrap;
+      word-break: break-word;
+      color: #e6edf3;
+      background: transparent;
+      border: 0;
+      padding: 0;
+    }
+  </style>
+<script src="../assets/editorial/search-index.js" defer></script><script src="../assets/editorial/search.js" defer></script><style id="site-remediation-style">/* Embedded by integrate-dedicated.cjs so sealed report CSP remains unchanged. */
+.kee-dedicated-nav {
+  all: initial; box-sizing: border-box; position: relative; display: flex;
+  flex-wrap: wrap; align-items: center; gap: 6px 14px; width: 100%;
+  padding: 12px 18px; margin: 0 0 16px; border: 1px solid #314361;
+  background: #101A30; color: #EEF3FF; font: 13px/1.5 system-ui, sans-serif;
+  text-align: left; isolation: isolate; color-scheme: dark;
+}
+.kee-dedicated-nav a {
+  all: revert; box-sizing: border-box; display: inline-block; padding: 4px 0;
+  color: #9AABFF; background: transparent; font: inherit; text-decoration: underline;
+  text-underline-offset: 3px; border: 0; border-radius: 0; box-shadow: none;
+}
+.kee-dedicated-nav a:focus-visible { outline: 3px solid #56DDCD; outline-offset: 3px; }
+.kee-dedicated-nav .kee-dedicated-identity { font-weight: 700; color: #EEF3FF; }
+.kee-dedicated-nav .kee-dedicated-language {
+  all: revert; display: block; flex-basis: 100%; color: #ADBBD1; font: 12px/1.5 system-ui, sans-serif;
+}
+.kee-dedicated-native-link { display: block; padding: 22px; color: #1858a8; background: #f8fafc; font: 15px/1.6 system-ui, sans-serif; }
+.kee-dedicated-native-link a { color: #1858a8; text-decoration: underline; }
+@media print { .kee-dedicated-nav { display: none; } }
+
+/* Professional primary navigation: long section names reflow, never scroll inside the header. */
+[data-professional-header]{box-sizing:border-box;display:grid!important;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:18px!important;width:100%;max-width:none;height:auto!important;min-height:0!important;padding:18px 24px!important;margin:0 0 16px;position:relative;overflow:visible!important;background:#101A30;color:#EEF3FF;border:1px solid #314361;font:13px/1.5 system-ui,sans-serif;isolation:isolate;color-scheme:dark}
+[data-professional-header] *{box-sizing:border-box;min-width:0;max-height:none}
+[data-professional-header] a{font:inherit;text-decoration:none;color:#9AABFF;overflow-wrap:anywhere;white-space:normal}
+[data-professional-header] .professional-identity{font-weight:750;color:#EEF3FF;white-space:nowrap;font-size:14px;margin:0}
+[data-professional-header] .professional-primary{display:grid;grid-template-columns:1.45fr repeat(5,minmax(0,1fr));gap:6px;align-items:stretch;min-width:0}
+@media(max-width:960px) and (min-width:601px){[data-professional-header] .professional-primary{gap:5px}[data-professional-header] .professional-primary a{padding:8px 6px;font-size:11.5px}}
+[data-professional-header] .professional-primary a{display:flex;align-items:center;justify-content:center;padding:10px 9px;border:1px solid #314361;border-radius:12px;background:#172440;text-align:center;line-height:1.4;min-height:44px}
+[data-professional-header] .professional-primary a[aria-current=page]{background:#23375a;border-color:#56DDCD;color:#56DDCD}
+[data-professional-header] .professional-controls{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:4px;font-size:12px;margin:0;position:static}
+[data-professional-header] .professional-controls>a{display:flex;align-items:center;justify-content:center;padding:8px;min-height:40px;min-width:32px;border-radius:10px}
+[data-professional-header] .professional-context{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px 18px;padding-top:12px;border-top:1px solid #314361;font-size:12px;color:#ADBBD1;min-width:0;line-height:1.6}
+[data-professional-header] .professional-context>*{min-width:0;overflow-wrap:anywhere}
+[data-professional-header] .professional-context .kee-dedicated-language{flex-basis:100%;color:#ADBBD1}
+[data-professional-header] a:focus-visible{outline:3px solid #56DDCD;outline-offset:3px}
+[data-professional-header] a:hover{text-decoration:underline}
+[data-professional-header][data-perimeter-theme=light],:root[data-theme=light] .reading-header[data-professional-header]{background:#fff;color:#172440;border-color:#d4deee;color-scheme:light}
+[data-professional-header][data-perimeter-theme=light] a,:root[data-theme=light] .reading-header[data-professional-header] a{color:#3752a0}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a,:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a{background:#edf2ff;border-color:#d4deee}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a[aria-current],:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a[aria-current]{background:#dff6f0;color:#127b72;border-color:#127b72}
+@media(max-width:1150px){[data-professional-header]{grid-template-columns:minmax(0,1fr) auto;gap:12px!important}[data-professional-header] .professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header] .professional-controls{grid-column:2;grid-row:1}}
+@media(max-width:600px){[data-professional-header]{padding:14px 16px!important;gap:12px!important}[data-professional-header] .professional-primary{grid-template-columns:repeat(2,minmax(0,1fr))}[data-professional-header] .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:13px}[data-professional-header] .professional-controls{gap:0}[data-professional-header] .professional-controls>a{padding:6px;min-width:28px}}
+@media print{[data-professional-header]{display:none!important}}
+
+html{scroll-padding-top:164px}@media(max-width:600px){html{scroll-padding-top:260px}}.reading-header,.kee-dedicated-nav,[data-professional-header]{position:sticky;top:0;z-index:1000;-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
+
+:root{--search-bg:#101a30;--search-soft:#172440;--search-ink:#eef3ff;--search-muted:#adbbd1;--search-line:#293956;--search-accent:#9aabff;--header-offset:144px}
+:root[data-reading-shell][data-theme=light],[data-perimeter-theme=light]{--search-bg:#fff;--search-soft:#e8eefb;--search-ink:#17233e;--search-muted:#4c5e7c;--search-line:#d5ddec;--search-accent:#354ec8}
+html{scroll-padding-top:var(--header-offset,108px)!important}
+.site-search,.site-search *{box-sizing:border-box!important;font-family:"Segoe UI",sans-serif;letter-spacing:normal;text-transform:none}
+.site-search{position:relative;display:flex;align-items:center;gap:5px;min-width:0;width:230px;max-width:100%;margin:0!important;padding:0!important;line-height:1.4;border:1px solid var(--search-line);border-radius:9px;background:var(--search-soft);color:var(--search-ink);isolation:isolate}
+.site-search input[type=search]{display:block;flex:1;min-width:0;width:100%;height:42px;margin:0;padding:9px 8px!important;font-size:12px!important;line-height:1.5;border:0!important;border-radius:9px;background:transparent!important;color:var(--search-ink)!important;box-shadow:none!important;appearance:none}
+.site-search input::placeholder{color:var(--search-muted);opacity:1}.site-search input:focus-visible{outline:2px solid var(--search-accent);outline-offset:2px}
+.site-search kbd{font:11px Consolas,monospace;color:var(--search-muted);padding:1px 5px;border:1px solid var(--search-line);border-radius:4px}
+.site-search button[type=submit]{flex:none;width:38px;min-width:38px;height:42px;min-height:42px;padding:0;margin:0;border:0;border-radius:8px;background:transparent;color:var(--search-accent);font-size:24px;cursor:pointer;box-shadow:none}
+.search-label,.search-status{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.site-search .search-results{position:absolute;top:calc(100% + 10px);right:0;z-index:1100;width:min(480px,calc(100vw - 32px));max-height:min(560px,65vh);overflow-y:auto;border:1px solid var(--search-line);border-radius:12px;background:var(--search-bg);color:var(--search-ink);padding:10px;box-shadow:0 12px 32px #0005;text-align:left}
+.site-search .search-results[hidden]{display:none!important}.search-results .search-group{margin:8px 6px 4px;font:11px/1.5 Consolas,monospace;color:var(--search-muted)}
+.site-search .search-results a{display:block!important;padding:10px!important;margin:3px 0!important;border:1px solid transparent!important;border-radius:7px;background:transparent;color:var(--search-ink)!important;font-size:13px!important;text-decoration:none!important;white-space:normal;overflow-wrap:anywhere;text-align:left!important;line-height:1.5!important}
+.site-search .search-results a[aria-selected=true],.site-search .search-results a:hover{border-color:var(--search-accent)!important;background:var(--search-soft)}
+.search-results a small{display:block;font-size:10px;color:var(--search-muted);margin-top:4px}.search-results p{margin:10px;font-size:13px;color:var(--search-muted)}
+.search-archive-summary{padding:20px;border:1px solid var(--search-line);border-radius:10px;background:var(--search-bg);color:var(--search-ink);margin:24px 0}.search-archive-summary h2{font-size:24px;margin:0 0 12px}.search-archive-summary li{margin:12px 0}.search-archive-summary a{color:var(--search-accent)}
+[data-professional-header]{position:sticky!important;top:0!important;z-index:1000!important;background:var(--search-bg)!important;--header-glass:rgba(16,26,48,.9);grid-template-columns:auto minmax(0,1fr) 230px auto!important}
+[data-professional-header][data-perimeter-theme=light],:root[data-reading-shell][data-theme=light] [data-professional-header]{--header-glass:rgba(255,255,255,.94)}
+[data-professional-header] .professional-mobile{display:none}.professional-mobile summary{min-width:38px;min-height:42px;display:grid;place-items:center;cursor:pointer;list-style:none}.professional-mobile summary::-webkit-details-marker{display:none}
+[data-professional-header] .professional-context{display:none}
+.professional-context-bar{padding:12px 24px;border-bottom:1px solid var(--search-line);background:var(--search-bg);color:var(--search-muted);font:12px/1.6 "Segoe UI",sans-serif;display:flex;flex-wrap:wrap;gap:8px 18px;overflow-wrap:anywhere}.professional-context-bar a{color:var(--search-accent)}
+@supports((backdrop-filter:blur(16px)) or (-webkit-backdrop-filter:blur(16px))){.site-header,[data-professional-header]{background:var(--header-glass)!important;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}}
+@media(max-width:1250px) and (min-width:701px){.header-inner{grid-template-columns:minmax(0,1fr) 230px auto!important;padding:12px 0;gap:12px!important}.desktop-nav{grid-row:2;grid-column:1/-1}.header-inner>.site-search{grid-column:2;grid-row:1}.header-inner>.controls{grid-column:3;grid-row:1}[data-professional-header]{grid-template-columns:minmax(0,1fr) 230px auto!important;gap:12px!important}[data-professional-header]>.professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header]>.site-search{grid-column:2;grid-row:1}[data-professional-header]>.professional-controls{grid-column:3;grid-row:1}:root{--header-offset:184px}}
+@media(max-width:700px){.header-inner{grid-template-columns:minmax(0,1fr) auto!important;padding:10px 0;gap:8px!important}.header-inner>.site-search{grid-row:2;grid-column:1/-1;width:100%}.header-inner>.controls{grid-column:2;grid-row:1}.site-search .search-results{width:100%;right:0}[data-professional-header]{grid-template-columns:minmax(0,1fr) auto!important;padding:10px 16px!important;gap:8px!important}[data-professional-header]>.professional-primary{display:none!important}[data-professional-header]>.site-search{grid-column:1/-1;grid-row:2;width:100%}[data-professional-header]>.professional-controls{grid-column:2;grid-row:1}[data-professional-header] .professional-mobile{display:block}[data-professional-header] .professional-mobile[open]>.professional-primary{position:absolute;top:100%;left:0;right:0;padding:16px;background:var(--search-bg);border-bottom:1px solid var(--search-line);display:grid;grid-template-columns:1fr 1fr;gap:8px}[data-professional-header] .professional-mobile .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:12px!important}:root{--header-offset:136px}}
+@media(prefers-reduced-transparency:reduce){.site-header,[data-professional-header]{background:var(--search-bg)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}}
+@media print{.site-search,.professional-context-bar{display:none!important}}
+
+@media(min-width:1251px){.header-inner{display:grid!important;grid-template-columns:auto minmax(0,1fr) 230px auto!important;gap:18px!important}.header-inner .desktop-nav{min-width:0}}
+
+html:has(.kee-dedicated-app-root){height:auto!important;overflow-x:hidden!important;overflow-y:auto!important}
+body:has([data-professional-header]){height:auto!important;overflow-x:clip!important;overflow-y:visible!important;padding-top:0!important}
+.demo-language-navigation{display:none!important}
+.stage-column,.telemetry-panel,.scene-pill,#timeline-slider{min-width:0}
+@media(max-width:1180px){.workspace,.template-tabs{grid-template-columns:minmax(0,1fr)!important}}
+
+.in-arena-frame .professional-context-bar,.in-arena-frame [data-knowledge-atlas]{display:none!important}
+.knowledge-graph-wide{display:block}.knowledge-graph-compact{display:none}@media(max-width:600px){.knowledge-graph-wide{display:none}.knowledge-graph-compact{display:block}}
+</style></head>
+<body class="reading-page"><nav class="kee-dedicated-nav" data-professional-header><a class="professional-identity reading-brand kee-dedicated-identity identity" href="../index.html">Qi Chen · @turbo998</a><div class="professional-primary" role="navigation" aria-label="Primary sections"><a href="../studio/index.html" data-section="hub" data-nav-en-href="../studio/index.html" data-nav-zh-href="../studio/zh-index.html" data-nav-en-label="Frontier Transformation Engineering Hub" data-nav-zh-label="Frontier Transformation Engineering Hub" aria-current="page">Frontier Transformation Engineering Hub</a><a href="../diamond.html" data-section="diamond" data-nav-en-href="../diamond.html" data-nav-zh-href="../zh-diamond.html" data-nav-en-label="Diamond Live Demos" data-nav-zh-label="Diamond 实战演示">Diamond Live Demos</a><a href="../benchmarks.html" data-section="benchmarks" data-nav-en-href="../benchmarks.html" data-nav-zh-href="../zh-benchmarks.html" data-nav-en-label="Benchmark &amp; Eval Foundry" data-nav-zh-label="基准评测中心">Benchmark &amp; Eval Foundry</a><a href="../github-radar.html" data-section="radar" data-nav-en-href="../github-radar.html" data-nav-zh-href="../zh-github-radar.html" data-nav-en-label="GitHub AI Signal Radar" data-nav-zh-label="GitHub AI 信号雷达">GitHub AI Signal Radar</a><a href="../openrouter.html" data-section="routing" data-nav-en-href="../openrouter.html" data-nav-zh-href="../zh-openrouter.html" data-nav-en-label="Model Routing &amp; Telemetry" data-nav-zh-label="OpenRouter 模型遥测">Model Routing &amp; Telemetry</a><a href="../about.html" data-section="profile" data-nav-en-href="../about.html" data-nav-zh-href="../zh-about.html" data-nav-en-label="Frontier Transformation Engineer" data-nav-zh-label="Frontier Transformation Engineer">Frontier Transformation Engineer</a></div><form class="site-search" role="search" action="../studio/archive.html" method="get" data-search-root="../index.html" data-search-language="en"><label class="search-label" for="site-search-input">Search architecture, benchmarks, demos...</label><input id="site-search-input" name="q" type="search" placeholder="Search architecture, benchmarks, demos..." autocomplete="off" spellcheck="false" aria-keyshortcuts="/ Control+k Meta+k"><kbd aria-hidden="true">/</kbd><button type="submit" aria-label="Search all content">⌕</button><div class="search-results" id="site-search-results" hidden></div><span class="search-status" role="status" aria-live="polite"></span></form><div class="reading-controls professional-controls" aria-label="Site language and appearance"><a href="google-self-improving-harnesses.en.html" hreflang="en" lang="en" aria-current="page">EN</a><a href="google-self-improving-harnesses.html" data-reading-language hreflang="zh-CN" lang="zh-CN">中文</a><details class="professional-mobile"><summary aria-label="Open navigation">☰</summary><div class="professional-primary" role="navigation" aria-label="Mobile navigation"><a href="../studio/index.html" data-section="hub" data-nav-en-href="../studio/index.html" data-nav-zh-href="../studio/zh-index.html" data-nav-en-label="Frontier Transformation Engineering Hub" data-nav-zh-label="Frontier Transformation Engineering Hub" aria-current="page">Frontier Transformation Engineering Hub</a><a href="../diamond.html" data-section="diamond" data-nav-en-href="../diamond.html" data-nav-zh-href="../zh-diamond.html" data-nav-en-label="Diamond Live Demos" data-nav-zh-label="Diamond 实战演示">Diamond Live Demos</a><a href="../benchmarks.html" data-section="benchmarks" data-nav-en-href="../benchmarks.html" data-nav-zh-href="../zh-benchmarks.html" data-nav-en-label="Benchmark &amp; Eval Foundry" data-nav-zh-label="基准评测中心">Benchmark &amp; Eval Foundry</a><a href="../github-radar.html" data-section="radar" data-nav-en-href="../github-radar.html" data-nav-zh-href="../zh-github-radar.html" data-nav-en-label="GitHub AI Signal Radar" data-nav-zh-label="GitHub AI 信号雷达">GitHub AI Signal Radar</a><a href="../openrouter.html" data-section="routing" data-nav-en-href="../openrouter.html" data-nav-zh-href="../zh-openrouter.html" data-nav-en-label="Model Routing &amp; Telemetry" data-nav-zh-label="OpenRouter 模型遥测">Model Routing &amp; Telemetry</a><a href="../about.html" data-section="profile" data-nav-en-href="../about.html" data-nav-zh-href="../zh-about.html" data-nav-en-label="Frontier Transformation Engineer" data-nav-zh-label="Frontier Transformation Engineer">Frontier Transformation Engineer</a></div></details><a data-reading-theme="light" href="google-self-improving-harnesses.en.html?theme=light" aria-label="Light theme">☀</a><a data-reading-theme="dark" href="google-self-improving-harnesses.en.html?theme=dark" aria-label="Dark theme">◐</a></div><div class="professional-context" aria-label="Back to context"><a href="../studio/index.html">← Engineering Hub</a> · <a href="../studio/benchmarks.html">Parent topic</a></div></nav><div class="professional-context-bar"><a href="../studio/index.html">← Engineering Hub</a> · <a class="reading-context" href="../studio/benchmarks.html">Parent topic</a></div><a class="reading-skip" href="#reading-main">Skip to content</a>
+    <main id="reading-main" tabindex="-1" class="reading-document">
+    <article class="article">
+      <div class="sec-label">GOOGLE RESEARCH DEEP DIVE · ARXIV:2611.22299V1 (NOV 17, 2026)</div>
+      <h1>Google's <i>Harnesses That Improve Themselves</i>: Dual-Loop Architecture, Gated Modular Evolution &amp; Enterprise SA Playbook</h1>
+      <p class="meta">Qi Chen · November 20, 2026 · Architectural Synthesis · Paper by Deep Shah &amp; Nehal Kathrotia (Google) · ~12 min read</p>
+
+      <div class="report-actions">
+        <a class="primary-pill" href="../workshops/google-self-improving-harnesses/index.en.html">Launch 4-Tab Evolution Simulator →</a>
+        <a href="../workshops/google-self-improving-harnesses/cards.html">Open 7-Card 4:5 Benchmark Deck →</a>
+        <a href="agent-harness-coevolution.en.html">Empirical Companion: 120-Skill Co-Evolution</a>
+        <a href="harness-engineering.en.html">Conceptual Companion: Harness Engineering</a>
+        <a href="https://github.com/turbo998/ai-research-public/tree/main/docs/research/google-self-improving-harnesses" target="_blank" rel="noopener">ai-research-public Dossier ↗</a>
+      </div>
+
+      <p>Once foundation model weights $M_\theta$ are frozen behind production APIs (<code>Gemini 3.8 Flash</code>, <code>Gemini 4 Argon/Carbon</code>, <code>GPT-6.2 Sol</code>), real-world agent reliability is governed not by static system prompts, but by the <b>Agent Harness</b>—the executable multi-turn runtime managing context assembly, loop control, tool interfaces (ACI), and verification hooks. On November 17, 2026, Google researchers <b>Deep Shah</b> and <b>Nehal Kathrotia</b> published <b><i>"Harnesses That Improve Themselves: A Unifying Framework for Self-Improving Agent Harnesses"</i> (<code>arXiv:2611.22299v1</code>)</b>, unifying external meta-harness search (<code>RRSI</code>, <code>MoSIB</code>), self-referential proposers (including June 2026's <code>Self-Harness, arXiv:2606.09498</code>), and recursive self-rewriting agents (<code>DGM/MGM</code>) under <b>constrained modular software evolution</b>.</p>
+
+      <div class="kpi-grid-4">
+        <div class="kpi-tile">
+          <div class="k-label">Flash Held-Out Gain</div>
+          <div class="k-val">5.0% → 40.0%</div>
+          <div class="k-sub">8.0× seed · 0.0% unverified exits</div>
+        </div>
+        <div class="kpi-tile">
+          <div class="k-label">Runtime Cost / Task</div>
+          <div class="k-val">46.7k tok</div>
+          <div class="k-sub">2.5× below seed · 9.7× below rewrite</div>
+        </div>
+        <div class="kpi-tile">
+          <div class="k-label">Argon 0-Shot Transfer</div>
+          <div class="k-val">37.5% (#1)</div>
+          <div class="k-sub">Beats full rewrite (30.0%) at &lt;1/4 cost</div>
+        </div>
+        <div class="kpi-tile">
+          <div class="k-label">Search Payback ROI</div>
+          <div class="k-val">&lt; 100 Tasks</div>
+          <div class="k-sub">Token savings repay 100 rollouts</div>
+        </div>
+      </div>
+
+      <figure class="svg-figure">
+        <img src="../workshops/google-self-improving-harnesses/assets/00-executive-summary.en.svg" alt="Google Harnesses That Improve Themselves Benchmark & Transfer Summary" loading="eager">
+        <figcaption>Figure 1: Controlled SWE-bench Lite evaluation (40 held-out tasks across sympy in-domain and django cross-repo OOD) comparing solve rate, tokens per solved task, and 4-step gated evolution across Gemini 3.8 Flash and zero-shot Gemini 4 Argon.</figcaption>
+      </figure>
+
+      <h2>1. Core Paradigm: Treating the Agent Harness as Gated Mutable Software</h2>
+      <p>Google demonstrates why two popular approaches fail in production: <b>prompt-only reflection</b> (appending prohibitions to <code>RULES.md</code>) lacks runtime enforcement and collapses under cross-repo complexity, while <b>unconstrained full-harness rewriting</b> breaks cross-module invariants and inflates turn budgets (<code>12 → 28</code> turns) at nearly <code>10×</code> the token bill.</p>
+
+      <p>The paper formalizes a clean <b>dual-loop architecture (Equation 1)</b>: inside the inner loop, frozen model $M_\theta$ interacts with sandbox $\mathcal{E}_x$ through four orthogonal Python modules $h = (h_{\text{ctx}}, h_{\text{ctrl}}, h_{\text{act}}, h_{\text{ver}}) \in \mathcal{H}$; outside, a four-stage optimizer maximizes read-only verifier reward $\mathbb{E}[R_x(\tau)]$ subject to expected token budget $\mathbb{E}[C(\tau)] \le B_{\text{tok}}$ (<code>110k</code> tokens/task) and validation gate $G_{\text{val}}(h, h_0) = 1$.</p>
+
+      <figure class="svg-figure">
+        <img src="../workshops/google-self-improving-harnesses/assets/01-dual-loop-architecture.en.svg" alt="Dual-Loop Self-Improving Agent Harness Architecture" loading="lazy">
+        <figcaption>Figure 2: Orthogonal 4-component inner runtime paired with the 4-stage constrained outer self-improvement loop and 4 safeguards against Modes 1–5.</figcaption>
+      </figure>
+
+      <h2>2. Why Prompt-Only Reflection Regressed while Python Lifecycle Hooks Delivered 8×</h2>
+      <p>On SWE-bench Lite (60 issues: <code>sympy/sympy</code> Dev 12, Val 8, Held-out ID 20 + <code>django/django</code> Held-out OOD 20), the 142-line seed harness frequently called <code>finish</code> with empty diffs or untested edits (<code>15.0%</code> unverified cross-repo exits).</p>
+      <ul>
+        <li><b>Failure of Text-Only Reflection (<code>RULES.md</code>):</b> Appending strict text rules forbidding empty/untested exits had no Python guard blocking termination. Under cross-repo <code>django</code> pressure, unverified exits <b>doubled from <code>15.0%</code> to <code>30.0%</code> and held-out accuracy dropped in half from <code>5.0%</code> to <code>2.5%</code> (<code>1/40</code>)</b>.</li>
+        <li><b>Success of Modular Gated Evolution:</b> Evolving one file at a time under Stage-3 gates produced a clean 4-step lineage:
+          <ol>
+            <li><code>context_mgr.py</code> (<b>Accepted</b>): Head-tail compaction of observations older than 2 turns (preserving prefix KV cache) + live turn/edit status footer → <code>5×</code> Dev/Val accuracy lift;</li>
+            <li><code>action_aci.py</code> (<b>Accepted</b>): Windowed file views, truncated shell outputs, and pre-finish empty-diff guard;</li>
+            <li><code>control.py</code> (<b>Rejected by Stage 3!</b>): Raising the turn cap from <code>12</code> to <code>18</code> lifted Dev accuracy, <b>but regressed Val accuracy and breached the <code>110k</code> token ceiling</b>—caught immediately as over-budget overfitting;</li>
+            <li><code>verify.py</code> (<b>Accepted</b>): A <code>pre-stop</code> hook blocking exit unless <code>git diff</code> is non-empty, edited Python files compile cleanly, and post-edit tests pass → <code>40.0%</code> solve rate (<code>16/40</code>) with <code>0.0%</code> unverified exits at <code>46.7k</code> tokens/task.</li>
+          </ol>
+        </li>
+      </ul>
+
+      <h2>3. Zero-Shot Transfer to Gemini 4 Argon: Independent Proof of the Inverse Scaffolding Law</h2>
+      <p>When all four harnesses evolved on <code>Gemini 3.8 Flash</code> were transferred <b>zero-shot (no re-tuning)</b> to the stronger reasoning model <code>Gemini 4 Argon</code>, the ranking inverted dramatically:</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Harness Variant (Evolved on Flash → Zero-Shot on Argon)</th>
+              <th>Flash Held-Out</th>
+              <th>Flash Mean / Solved Cost</th>
+              <th>Argon Zero-Shot</th>
+              <th>Engineering Diagnostic</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><b>1. Seed Harness (142 lines · 12 turns)</b></td>
+              <td><code>5.0%</code> (2/40)</td>
+              <td><code>~116.8k</code> / <code>2,336k</code></td>
+              <td><code>10.0%</code> (4/40)</td>
+              <td>Avoids empty diffs via stronger compliance, but burns 12 uncompacted turns reading files</td>
+            </tr>
+            <tr>
+              <td><b>2. Prompt-Only Reflection (RULES.md)</b></td>
+              <td><code>2.5%</code> (1/40) ↓</td>
+              <td><code>30.0%</code> unverified exits</td>
+              <td><code>15.0%</code> (6/40)</td>
+              <td>Modest gain on stronger model, still lacks compaction and verification hooks</td>
+            </tr>
+            <tr>
+              <td><b>3. Unconstrained Full Rewrite (28 turns)</b></td>
+              <td><code>42.5%</code> (17/40)</td>
+              <td><code>451.6k</code> / <code>1,062.6k</code></td>
+              <td><b><code>30.0%</code> (↓ -12.5pp)</b></td>
+              <td><b>Collapses!</b> Argon's longer reasoning chains compound with 28 uncompacted turns (<code>&gt;269k</code> tok)</td>
+            </tr>
+            <tr>
+              <td><b>4. Modular Gated Evolution (12 turns)</b></td>
+              <td><b><code>40.0%</code> (16/40)</b></td>
+              <td><b><code>46.7k</code> / <code>116.8k</code></b></td>
+              <td><b><code>37.5%</code> (#1 Overall)</b></td>
+              <td><b>Wins both repos zero-shot</b> at <code>64.8k</code> tokens/task (<code>&lt;1/4</code> full-rewrite cost)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>This independently confirms the <b>Inverse Scaffolding Law</b> documented in our <a href="agent-harness-coevolution.en.html">120-Skill Production Audit</a>: <b>heavyweight loops and verbose crutches tuned for weaker models become context poison on stronger reasoning models, whereas compact context, windowed ACI tools, and deterministic code verifiers transfer cleanly across model generations.</b></p>
+
+      <h2>4. Five Failure Modes &amp; Four Mandatory Enterprise Safeguards</h2>
+      <ol>
+        <li><b>Safeguard 1 · Modular Isolation &amp; Integration Merge (vs. Mode 3 Coupling Breakage):</b> Restrict Stage-2 edits to a single module per proposal and validate combined integration merges before deployment.</li>
+        <li><b>Safeguard 2 · Cluster-Bound Small Diffs (vs. Mode 1 Prompt Bloat &amp; Mode 2 Skill Shadowing):</b> Propose patches only for recurring failure clusters (<code>N ≥ 10</code>) under shrinking diff budgets (<code>RRSI</code>), keeping <code>action_aci.py</code> minimal and sharp.</li>
+        <li><b>Safeguard 3 · Stage-3 Line-Execution Coverage + Token Cap:</b> Require <code>&gt;0%</code> runtime execution coverage on patched lines (blocking dead code), held-out Val non-regression, and $\mathbb{E}[C(\tau)] \le B_{\text{tok}}$.</li>
+        <li><b>Safeguard 4 · Read-Only External Verifiers in Hermetic Sandboxes (vs. Modes 4 &amp; 5 Reward Hacking):</b> Mount grading suites, reference tests, and telemetry logs strictly read-only outside the agent workspace so self-modifying code can never tamper with the evaluator.</li>
+      </ol>
+
+      <hr>
+      <p>
+        <b>Interactive Simulator &amp; Open-Source Archive:</b><br>
+        · <a href="../workshops/google-self-improving-harnesses/index.en.html">4-Tab Interactive Self-Improving Harness Simulator (Stage-3 Gate &amp; ROI Sizer)</a><br>
+        · <a href="../workshops/google-self-improving-harnesses/cards.html">7-Card 4:5 Benchmark Visual Deck</a> · <a href="agent-harness-coevolution.en.html">Companion Field Audit: 120-Skill × Frontier Model Co-Evolution</a><br>
+        · Open-source dossier: <a href="https://github.com/turbo998/ai-research-public/tree/main/docs/research/google-self-improving-harnesses" target="_blank" rel="noopener">turbo998/ai-research-public (with deterministic Python verifier)</a><br>
+        ← <a href="../writing.html">Back to all publications</a>
+      </p>
+    </article>
+  </main>
+</body>
+</html>
