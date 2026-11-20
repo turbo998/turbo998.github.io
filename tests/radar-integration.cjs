@@ -6909,6 +6909,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r563File),'utf8');
       assert.ok(txt.includes('2,820.00')&&txt.includes('3,800.00')&&txt.includes('6,620.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('6,310.00')&&txt.includes('95.32%')&&txt.includes('not_measured'),r563File+': contains exact 11-20 R4 R563 echobench+pointtaken+mep+videoworkbench closed-form parameters');
     }
+    // 2026-11-20 Night Round 5 (R564: DuskBotAI/duskbot + Gabriel-Operator/domain-specific-agent-harness-spec + fitzyracing1/system-on-an-agent + Johnson-Durui/ApexCluster) verification
+    const r564PathA=3120.00+40.5*100.00;
+    assert.equal(r564PathA.toFixed(2),'7170.00','11-20 R5 R564 Path A total');
+    const r564PathC=85.00+2.6*100.00;
+    assert.equal(r564PathC.toFixed(2),'345.00','11-20 R5 R564 Path C total');
+    assert.equal((r564PathA-r564PathC).toFixed(2),'6825.00','11-20 R5 R564 savings vs Path A');
+    assert.equal(((r564PathA-r564PathC)/r564PathA*100).toFixed(2),'95.19','11-20 R5 R564 pct savings vs Path A');
+    for(const r564File of ['workshops/github-trending-radar/docs/duskbot-harness-spec-system-on-an-agent-apexcluster-byosub-bot-computers-portable-playbooks-soc-fallback-5vendor-cluster-selection-faq.md','workshops/github-trending-radar/docs/duskbot-harness-spec-system-on-an-agent-apexcluster-byosub-bot-computers-portable-playbooks-soc-fallback-5vendor-cluster-selection-faq.en.md','assets/github-ai-radar-2026-11-20-r5-duskbot-harnessspec-soa-apexcluster.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-20-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r564File),'utf8');
+      assert.ok(txt.includes('3,120.00')&&txt.includes('4,050.00')&&txt.includes('7,170.00')&&txt.includes('85.00')&&txt.includes('260.00')&&txt.includes('345.00')&&txt.includes('6,825.00')&&txt.includes('95.19%')&&txt.includes('not_measured'),r564File+': contains exact 11-20 R5 R564 duskbot+harnessspec+soa+apexcluster closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
