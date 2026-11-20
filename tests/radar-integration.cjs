@@ -6975,6 +6975,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r569File),'utf8');
       assert.ok(txt.includes('2,780.00')&&txt.includes('3,800.00')&&txt.includes('6,580.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('6,270.00')&&txt.includes('95.29%')&&txt.includes('not_measured'),r569File+': contains exact 11-20 R10 R569 mulecreate+characterfactory+holospot+awesome3dcoding closed-form parameters');
     }
+    // 2026-11-20 Night Round 11 (R570 Milestone: tjcrims0nx/OpenMind-Jailbreak-Lab + Chen-Yu-Qing2005/tuomin + whiskerrs/benchmarks + marketcalls/tickpipe) verification
+    const r570PathA=3220.00+41.0*100.00;
+    assert.equal(r570PathA.toFixed(2),'7320.00','11-20 R11 R570 Path A total');
+    const r570PathC=80.00+2.5*100.00;
+    assert.equal(r570PathC.toFixed(2),'330.00','11-20 R11 R570 Path C total');
+    assert.equal((r570PathA-r570PathC).toFixed(2),'6990.00','11-20 R11 R570 savings vs Path A');
+    assert.equal(((r570PathA-r570PathC)/r570PathA*100).toFixed(2),'95.49','11-20 R11 R570 pct savings vs Path A');
+    for(const r570File of ['workshops/github-trending-radar/docs/openmind-jailbreak-lab-tuomin-whiskerrs-benchmarks-tickpipe-guardrail-eval-selection-faq.md','workshops/github-trending-radar/docs/openmind-jailbreak-lab-tuomin-whiskerrs-benchmarks-tickpipe-guardrail-eval-selection-faq.en.md','assets/github-ai-radar-2026-11-20-r11-r570-openmindlab-tuomin-whiskerrs-tickpipe.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-20-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r570File),'utf8');
+      assert.ok(txt.includes('3,220.00')&&txt.includes('4,100.00')&&txt.includes('7,320.00')&&txt.includes('80.00')&&txt.includes('250.00')&&txt.includes('330.00')&&txt.includes('6,990.00')&&txt.includes('95.49%')&&txt.includes('not_measured'),r570File+': contains exact 11-20 R11 R570 openmindlab+tuomin+whiskerrs+tickpipe closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
