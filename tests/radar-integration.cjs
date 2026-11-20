@@ -6861,6 +6861,21 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r559File),'utf8');
       assert.ok(txt.includes('2,920.00')&&txt.includes('3,700.00')&&txt.includes('6,620.00')&&txt.includes('60.00')&&txt.includes('230.00')&&txt.includes('290.00')&&txt.includes('6,330.00')&&txt.includes('95.62%')&&txt.includes('not_measured'),r559File+': contains exact 11-19 R35 R559 nimcap+ballast+starquix+streamclipper closed-form parameters');
     }
+    // 2026-11-20 Raw Evidence & Night Round 1 (R560 Milestone: replit/amuse + apple/creator-studio-doc-format + INK-Q/agy-fast + iamajmeena/neonclipping) verification
+    const rawHtml1120=fs.readFileSync(path.join(__dirname,'..','workshops','github-trending-radar','evidence','trending-daily-2026-11-20-raw.html'),'utf8').replace(/\r\n/g,'\n');
+    assert.equal(hash(rawHtml1120),'4ad2690142e11f6cb280f667b64b746ab4eaf64c97052f922c9287befd37dd09','2026-11-20 raw HTML LF sha256');
+    const rawSearch1120=fs.readFileSync(path.join(__dirname,'..','workshops','github-trending-radar','evidence','search-new-repos-2026-11-20-raw.json'),'utf8').replace(/\r\n/g,'\n');
+    assert.equal(hash(rawSearch1120),'47975935d05944afbb9eac18f93f26c8a71120a1ffeea39591b113477ba29a46','2026-11-20 raw Search API JSON LF sha256');
+    const r560PathA=3180.00+41.0*100.00;
+    assert.equal(r560PathA.toFixed(2),'7280.00','11-20 R1 R560 Path A total');
+    const r560PathC=80.00+2.6*100.00;
+    assert.equal(r560PathC.toFixed(2),'340.00','11-20 R1 R560 Path C total');
+    assert.equal((r560PathA-r560PathC).toFixed(2),'6940.00','11-20 R1 R560 savings vs Path A');
+    assert.equal(((r560PathA-r560PathC)/r560PathA*100).toFixed(2),'95.33','11-20 R1 R560 pct savings vs Path A');
+    for(const r560File of ['workshops/github-trending-radar/docs/amuse-creator-studio-doc-format-agy-fast-neonclipping-selfhosted-vault-agent-apple-keyx-python-mcp-turn-accelerator-audiofirst-clipper-selection-faq.md','workshops/github-trending-radar/docs/amuse-creator-studio-doc-format-agy-fast-neonclipping-selfhosted-vault-agent-apple-keyx-python-mcp-turn-accelerator-audiofirst-clipper-selection-faq.en.md','assets/github-ai-radar-2026-11-20-r1-r560-amuse-keyx-agyfast-neonclipping.svg','assets/github-ai-radar-2026-11-20.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-20-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r560File),'utf8');
+      assert.ok(txt.includes('3,180.00')&&txt.includes('4,100.00')&&txt.includes('7,280.00')&&txt.includes('80.00')&&txt.includes('260.00')&&txt.includes('340.00')&&txt.includes('6,940.00')&&txt.includes('95.33%')&&txt.includes('not_measured'),r560File+': contains exact 11-20 R1 R560 amuse+keyx+agyfast+neonclipping closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
