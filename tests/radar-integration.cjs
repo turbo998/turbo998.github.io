@@ -7096,6 +7096,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r580File),'utf8');
       assert.ok(txt.includes('3,280.00')&&txt.includes('4,100.00')&&txt.includes('7,380.00')&&txt.includes('80.00')&&txt.includes('250.00')&&txt.includes('330.00')&&txt.includes('7,050.00')&&txt.includes('95.53%')&&txt.includes('not_measured'),r580File+': contains exact 11-20 R21 R580 pcblayoutllm+dabblecad+blockbench+realmanstudio closed-form parameters');
     }
+    // 2026-11-20 Night Round 22 (R581: PedroMarinhoDev/ComfyUI-H3-Image-EasyFix + shengdaklp99/ComfyUI-lyw-MA-Loader + AbdulSamad94/clipsmith + recon007jf/Blenda4D) verification
+    const r581PathA=3120.00+39.5*100.00;
+    assert.equal(r581PathA.toFixed(2),'7070.00','11-20 R22 R581 Path A total');
+    const r581PathC=70.00+2.4*100.00;
+    assert.equal(r581PathC.toFixed(2),'310.00','11-20 R22 R581 Path C total');
+    assert.equal((r581PathA-r581PathC).toFixed(2),'6760.00','11-20 R22 R581 savings vs Path A');
+    assert.equal(((r581PathA-r581PathC)/r581PathA*100).toFixed(2),'95.62','11-20 R22 R581 pct savings vs Path A');
+    for(const r581File of ['workshops/github-trending-radar/docs/comfyui-h3-easyfix-lyw-ma-loader-clipsmith-blenda4d-selection-faq.md','workshops/github-trending-radar/docs/comfyui-h3-easyfix-lyw-ma-loader-clipsmith-blenda4d-selection-faq.en.md','assets/github-ai-radar-2026-11-20-r22-r581-h3easyfix-lywmaloader-clipsmith-blenda4d.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-20-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r581File),'utf8');
+      assert.ok(txt.includes('3,120.00')&&txt.includes('3,950.00')&&txt.includes('7,070.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('6,760.00')&&txt.includes('95.62%')&&txt.includes('not_measured'),r581File+': contains exact 11-20 R22 R581 h3easyfix+lywmaloader+clipsmith+blenda4d closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
