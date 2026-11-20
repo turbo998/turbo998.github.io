@@ -7294,6 +7294,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r598File),'utf8');
       assert.ok(txt.includes('3,160.00')&&txt.includes('3,950.00')&&txt.includes('7,110.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('6,800.00')&&txt.includes('95.64%')&&txt.includes('not_measured'),r598File+': contains exact 11-20 R39 R598 museaibackup+agentrules+icodeskill+yumi closed-form parameters');
     }
+    // 2026-11-20 Night Round 40 (R599: keithadler/leanstudio + fabricioctelles/skills + agentsmith-tools/claude-math + ilien-dev/jano) verification
+    const r599PathA=3200.00+40.0*100.00;
+    assert.equal(r599PathA.toFixed(2),'7200.00','11-20 R40 R599 Path A total');
+    const r599PathC=70.00+2.4*100.00;
+    assert.equal(r599PathC.toFixed(2),'310.00','11-20 R40 R599 Path C total');
+    assert.equal((r599PathA-r599PathC).toFixed(2),'6890.00','11-20 R40 R599 savings vs Path A');
+    assert.equal(((r599PathA-r599PathC)/r599PathA*100).toFixed(2),'95.69','11-20 R40 R599 pct savings vs Path A');
+    for(const r599File of ['workshops/github-trending-radar/docs/leanstudio-fabricioctelles-skills-claude-math-jano-selection-faq.md','workshops/github-trending-radar/docs/leanstudio-fabricioctelles-skills-claude-math-jano-selection-faq.en.md','assets/github-ai-radar-2026-11-20-r40-r599-leanstudio-fabricioskills-claudemath-jano.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-20-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r599File),'utf8');
+      assert.ok(txt.includes('3,200.00')&&txt.includes('4,000.00')&&txt.includes('7,200.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('6,890.00')&&txt.includes('95.69%')&&txt.includes('not_measured'),r599File+': contains exact 11-20 R40 R599 leanstudio+fabricioskills+claudemath+jano closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
