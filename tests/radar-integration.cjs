@@ -7019,6 +7019,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r573File),'utf8');
       assert.ok(txt.includes('3,080.00')&&txt.includes('4,000.00')&&txt.includes('7,080.00')&&txt.includes('75.00')&&txt.includes('250.00')&&txt.includes('325.00')&&txt.includes('6,755.00')&&txt.includes('95.41%')&&txt.includes('not_measured'),r573File+': contains exact 11-20 R14 R573 lynote+crbench+punchcutter+klockui closed-form parameters');
     }
+    // 2026-11-20 Night Round 15 (R574: Renakoni/Voicebox + davimatosms/Arara-voice + YanNyeinHtet/EggLab + aituringflow/linger) verification
+    const r574PathA=3120.00+39.5*100.00;
+    assert.equal(r574PathA.toFixed(2),'7070.00','11-20 R15 R574 Path A total');
+    const r574PathC=75.00+2.4*100.00;
+    assert.equal(r574PathC.toFixed(2),'315.00','11-20 R15 R574 Path C total');
+    assert.equal((r574PathA-r574PathC).toFixed(2),'6755.00','11-20 R15 R574 savings vs Path A');
+    assert.equal(((r574PathA-r574PathC)/r574PathA*100).toFixed(2),'95.54','11-20 R15 R574 pct savings vs Path A');
+    for(const r574File of ['workshops/github-trending-radar/docs/voicebox-arara-voice-egglab-linger-ondevice-tts-dictation-selection-faq.md','workshops/github-trending-radar/docs/voicebox-arara-voice-egglab-linger-ondevice-tts-dictation-selection-faq.en.md','assets/github-ai-radar-2026-11-20-r15-r574-voicebox-araravoice-egglab-linger.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-20-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r574File),'utf8');
+      assert.ok(txt.includes('3,120.00')&&txt.includes('3,950.00')&&txt.includes('7,070.00')&&txt.includes('75.00')&&txt.includes('240.00')&&txt.includes('315.00')&&txt.includes('6,755.00')&&txt.includes('95.54%')&&txt.includes('not_measured'),r574File+': contains exact 11-20 R15 R574 voicebox+araravoice+egglab+linger closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
