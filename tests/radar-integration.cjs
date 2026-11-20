@@ -7305,6 +7305,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r599File),'utf8');
       assert.ok(txt.includes('3,200.00')&&txt.includes('4,000.00')&&txt.includes('7,200.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('6,890.00')&&txt.includes('95.69%')&&txt.includes('not_measured'),r599File+': contains exact 11-20 R40 R599 leanstudio+fabricioskills+claudemath+jano closed-form parameters');
     }
+    // 2026-11-20 Night Round 41 (R600 Milestone: trypostit/trypost + lalabase/lalabase + tedix-hq/tedix + TimeLovercc/mojito) verification
+    const r600PathA=3400.00+42.0*100.00;
+    assert.equal(r600PathA.toFixed(2),'7600.00','11-20 R41 R600 Path A total');
+    const r600PathC=80.00+2.5*100.00;
+    assert.equal(r600PathC.toFixed(2),'330.00','11-20 R41 R600 Path C total');
+    assert.equal((r600PathA-r600PathC).toFixed(2),'7270.00','11-20 R41 R600 savings vs Path A');
+    assert.equal(((r600PathA-r600PathC)/r600PathA*100).toFixed(2),'95.66','11-20 R41 R600 pct savings vs Path A');
+    for(const r600File of ['workshops/github-trending-radar/docs/trypost-lalabase-tedix-mojito-selection-faq.md','workshops/github-trending-radar/docs/trypost-lalabase-tedix-mojito-selection-faq.en.md','assets/github-ai-radar-2026-11-20-r41-r600-trypost-lalabase-tedix-mojito.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-20-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r600File),'utf8');
+      assert.ok(txt.includes('3,400.00')&&txt.includes('4,200.00')&&txt.includes('7,600.00')&&txt.includes('80.00')&&txt.includes('250.00')&&txt.includes('330.00')&&txt.includes('7,270.00')&&txt.includes('95.66%')&&txt.includes('not_measured'),r600File+': contains exact 11-20 R41 R600 trypost+lalabase+tedix+mojito closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
