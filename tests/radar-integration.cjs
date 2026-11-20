@@ -7063,6 +7063,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r577File),'utf8');
       assert.ok(txt.includes('3,160.00')&&txt.includes('4,000.00')&&txt.includes('7,160.00')&&txt.includes('75.00')&&txt.includes('240.00')&&txt.includes('315.00')&&txt.includes('6,845.00')&&txt.includes('95.60%')&&txt.includes('not_measured'),r577File+': contains exact 11-20 R18 R577 splatrepair+adudir+editorialtaste+zzaidigitalhuman closed-form parameters');
     }
+    // 2026-11-20 Night Round 19 (R578: StefanCHEN2026/Chinese-Civil-Code-Basic-Rule-Book + Nbill27/academic-writing-skills + lonely-dance-lab/self-media-guide + danvega/beansprout) verification
+    const r578PathA=2980.00+39.0*100.00;
+    assert.equal(r578PathA.toFixed(2),'6880.00','11-20 R19 R578 Path A total');
+    const r578PathC=70.00+2.4*100.00;
+    assert.equal(r578PathC.toFixed(2),'310.00','11-20 R19 R578 Path C total');
+    assert.equal((r578PathA-r578PathC).toFixed(2),'6570.00','11-20 R19 R578 savings vs Path A');
+    assert.equal(((r578PathA-r578PathC)/r578PathA*100).toFixed(2),'95.49','11-20 R19 R578 pct savings vs Path A');
+    for(const r578File of ['workshops/github-trending-radar/docs/civil-code-kb-academic-writing-self-media-beansprout-selection-faq.md','workshops/github-trending-radar/docs/civil-code-kb-academic-writing-self-media-beansprout-selection-faq.en.md','assets/github-ai-radar-2026-11-20-r19-r578-civilcode-academicskills-selfmedia-beansprout.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-20-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r578File),'utf8');
+      assert.ok(txt.includes('2,980.00')&&txt.includes('3,900.00')&&txt.includes('6,880.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('6,570.00')&&txt.includes('95.49%')&&txt.includes('not_measured'),r578File+': contains exact 11-20 R19 R578 civilcode+academicskills+selfmedia+beansprout closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
