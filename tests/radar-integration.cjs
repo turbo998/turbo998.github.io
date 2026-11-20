@@ -7217,6 +7217,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r591File),'utf8');
       assert.ok(txt.includes('3,260.00')&&txt.includes('4,050.00')&&txt.includes('7,310.00')&&txt.includes('75.00')&&txt.includes('240.00')&&txt.includes('315.00')&&txt.includes('6,995.00')&&txt.includes('95.69%')&&txt.includes('not_measured'),r591File+': contains exact 11-20 R32 R591 mcpjam+dex+airclaw+appclaw closed-form parameters');
     }
+    // 2026-11-20 Night Round 33 (R592: desplega-ai/agent-swarm + PerpetualSoftware/pad + rebelytics/one-skill-to-rule-them-all + gesta-run/subpool) verification
+    const r592PathA=3380.00+41.5*100.00;
+    assert.equal(r592PathA.toFixed(2),'7530.00','11-20 R33 R592 Path A total');
+    const r592PathC=80.00+2.5*100.00;
+    assert.equal(r592PathC.toFixed(2),'330.00','11-20 R33 R592 Path C total');
+    assert.equal((r592PathA-r592PathC).toFixed(2),'7200.00','11-20 R33 R592 savings vs Path A');
+    assert.equal(((r592PathA-r592PathC)/r592PathA*100).toFixed(2),'95.62','11-20 R33 R592 pct savings vs Path A');
+    for(const r592File of ['workshops/github-trending-radar/docs/agent-swarm-pad-one-skill-to-rule-them-all-subpool-selection-faq.md','workshops/github-trending-radar/docs/agent-swarm-pad-one-skill-to-rule-them-all-subpool-selection-faq.en.md','assets/github-ai-radar-2026-11-20-r33-r592-agentswarm-pad-taskobserver-subpool.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-20-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r592File),'utf8');
+      assert.ok(txt.includes('3,380.00')&&txt.includes('4,150.00')&&txt.includes('7,530.00')&&txt.includes('80.00')&&txt.includes('250.00')&&txt.includes('330.00')&&txt.includes('7,200.00')&&txt.includes('95.62%')&&txt.includes('not_measured'),r592File+': contains exact 11-20 R33 R592 agentswarm+pad+taskobserver+subpool closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
