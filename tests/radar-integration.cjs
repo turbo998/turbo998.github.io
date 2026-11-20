@@ -7052,6 +7052,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r576File),'utf8');
       assert.ok(txt.includes('3,020.00')&&txt.includes('3,950.00')&&txt.includes('6,970.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('6,660.00')&&txt.includes('95.55%')&&txt.includes('not_measured'),r576File+': contains exact 11-20 R17 R576 archmancer+pilotage+lazymobile+homeport closed-form parameters');
     }
+    // 2026-11-20 Night Round 18 (R577: NicolasDrum/splat-repair + adunext/adudir-open + iamshakibali/editorial-taste + 0xMomo-NGClubs/zzai-digital-human) verification
+    const r577PathA=3160.00+40.0*100.00;
+    assert.equal(r577PathA.toFixed(2),'7160.00','11-20 R18 R577 Path A total');
+    const r577PathC=75.00+2.4*100.00;
+    assert.equal(r577PathC.toFixed(2),'315.00','11-20 R18 R577 Path C total');
+    assert.equal((r577PathA-r577PathC).toFixed(2),'6845.00','11-20 R18 R577 savings vs Path A');
+    assert.equal(((r577PathA-r577PathC)/r577PathA*100).toFixed(2),'95.60','11-20 R18 R577 pct savings vs Path A');
+    for(const r577File of ['workshops/github-trending-radar/docs/splat-repair-adudir-open-editorial-taste-zzai-digital-human-selection-faq.md','workshops/github-trending-radar/docs/splat-repair-adudir-open-editorial-taste-zzai-digital-human-selection-faq.en.md','assets/github-ai-radar-2026-11-20-r18-r577-splatrepair-adudir-editorialtaste-zzaidigitalhuman.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-20-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r577File),'utf8');
+      assert.ok(txt.includes('3,160.00')&&txt.includes('4,000.00')&&txt.includes('7,160.00')&&txt.includes('75.00')&&txt.includes('240.00')&&txt.includes('315.00')&&txt.includes('6,845.00')&&txt.includes('95.60%')&&txt.includes('not_measured'),r577File+': contains exact 11-20 R18 R577 splatrepair+adudir+editorialtaste+zzaidigitalhuman closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
