@@ -7041,6 +7041,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r575File),'utf8');
       assert.ok(txt.includes('3,260.00')&&txt.includes('4,100.00')&&txt.includes('7,360.00')&&txt.includes('80.00')&&txt.includes('250.00')&&txt.includes('330.00')&&txt.includes('7,030.00')&&txt.includes('95.52%')&&txt.includes('not_measured'),r575File+': contains exact 11-20 R16 R575 omnilora+roboticsbench+tauskills+videokb closed-form parameters');
     }
+    // 2026-11-20 Night Round 17 (R576: lehoanganhtai13/archmancer + Ya-zid/pilotage + 0xrnp/lazymobile + ferdousmikdad/Homeport) verification
+    const r576PathA=3020.00+39.5*100.00;
+    assert.equal(r576PathA.toFixed(2),'6970.00','11-20 R17 R576 Path A total');
+    const r576PathC=70.00+2.4*100.00;
+    assert.equal(r576PathC.toFixed(2),'310.00','11-20 R17 R576 Path C total');
+    assert.equal((r576PathA-r576PathC).toFixed(2),'6660.00','11-20 R17 R576 savings vs Path A');
+    assert.equal(((r576PathA-r576PathC)/r576PathA*100).toFixed(2),'95.55','11-20 R17 R576 pct savings vs Path A');
+    for(const r576File of ['workshops/github-trending-radar/docs/archmancer-pilotage-lazymobile-homeport-agent-cockpit-selection-faq.md','workshops/github-trending-radar/docs/archmancer-pilotage-lazymobile-homeport-agent-cockpit-selection-faq.en.md','assets/github-ai-radar-2026-11-20-r17-r576-archmancer-pilotage-lazymobile-homeport.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-20-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r576File),'utf8');
+      assert.ok(txt.includes('3,020.00')&&txt.includes('3,950.00')&&txt.includes('6,970.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('6,660.00')&&txt.includes('95.55%')&&txt.includes('not_measured'),r576File+': contains exact 11-20 R17 R576 archmancer+pilotage+lazymobile+homeport closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
