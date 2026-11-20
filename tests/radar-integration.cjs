@@ -7151,6 +7151,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r585File),'utf8');
       assert.ok(txt.includes('3,260.00')&&txt.includes('4,100.00')&&txt.includes('7,360.00')&&txt.includes('80.00')&&txt.includes('250.00')&&txt.includes('330.00')&&txt.includes('7,030.00')&&txt.includes('95.52%')&&txt.includes('not_measured'),r585File+': contains exact 11-20 R26 R585 zest+dshwechat+3dvideostudio+hydrogenart closed-form parameters');
     }
+    // 2026-11-20 Night Round 27 (R586: SyscallBrain/ratclone + ClaudeIvanovich/iCloud-Photo-Downloader + gerard662/nikon-picture-control-matcher + amadshobi/opencli-plugins) verification
+    const r586PathA=3140.00+39.5*100.00;
+    assert.equal(r586PathA.toFixed(2),'7090.00','11-20 R27 R586 Path A total');
+    const r586PathC=70.00+2.4*100.00;
+    assert.equal(r586PathC.toFixed(2),'310.00','11-20 R27 R586 Path C total');
+    assert.equal((r586PathA-r586PathC).toFixed(2),'6780.00','11-20 R27 R586 savings vs Path A');
+    assert.equal(((r586PathA-r586PathC)/r586PathA*100).toFixed(2),'95.63','11-20 R27 R586 pct savings vs Path A');
+    for(const r586File of ['workshops/github-trending-radar/docs/ratclone-icloud-photo-nikon-matcher-opencli-plugins-selection-faq.md','workshops/github-trending-radar/docs/ratclone-icloud-photo-nikon-matcher-opencli-plugins-selection-faq.en.md','assets/github-ai-radar-2026-11-20-r27-r586-ratclone-icloudphoto-nikonmatcher-opencliplugins.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-20-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r586File),'utf8');
+      assert.ok(txt.includes('3,140.00')&&txt.includes('3,950.00')&&txt.includes('7,090.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('6,780.00')&&txt.includes('95.63%')&&txt.includes('not_measured'),r586File+': contains exact 11-20 R27 R586 ratclone+icloudphoto+nikonmatcher+opencliplugins closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
