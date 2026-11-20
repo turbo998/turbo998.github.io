@@ -7107,6 +7107,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r581File),'utf8');
       assert.ok(txt.includes('3,120.00')&&txt.includes('3,950.00')&&txt.includes('7,070.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('6,760.00')&&txt.includes('95.62%')&&txt.includes('not_measured'),r581File+': contains exact 11-20 R22 R581 h3easyfix+lywmaloader+clipsmith+blenda4d closed-form parameters');
     }
+    // 2026-11-20 Night Round 23 (R582: ppcvote/ultralab-anim-icons + ma1902056219-coder/openpixel + firtman/agentic-mobile + iyansr/gaming-clip) verification
+    const r582PathA=2940.00+38.5*100.00;
+    assert.equal(r582PathA.toFixed(2),'6790.00','11-20 R23 R582 Path A total');
+    const r582PathC=70.00+2.3*100.00;
+    assert.equal(r582PathC.toFixed(2),'300.00','11-20 R23 R582 Path C total');
+    assert.equal((r582PathA-r582PathC).toFixed(2),'6490.00','11-20 R23 R582 savings vs Path A');
+    assert.equal(((r582PathA-r582PathC)/r582PathA*100).toFixed(2),'95.58','11-20 R23 R582 pct savings vs Path A');
+    for(const r582File of ['workshops/github-trending-radar/docs/ultralab-anim-icons-openpixel-agentic-mobile-gaming-clip-selection-faq.md','workshops/github-trending-radar/docs/ultralab-anim-icons-openpixel-agentic-mobile-gaming-clip-selection-faq.en.md','assets/github-ai-radar-2026-11-20-r23-r582-ultralabicons-openpixel-agenticmobile-gamingclip.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-20-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r582File),'utf8');
+      assert.ok(txt.includes('2,940.00')&&txt.includes('3,850.00')&&txt.includes('6,790.00')&&txt.includes('70.00')&&txt.includes('230.00')&&txt.includes('300.00')&&txt.includes('6,490.00')&&txt.includes('95.58%')&&txt.includes('not_measured'),r582File+': contains exact 11-20 R23 R582 ultralabicons+openpixel+agenticmobile+gamingclip closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
