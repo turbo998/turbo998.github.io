@@ -74,6 +74,8 @@ module.exports = function build({root, inventory, readingRecords, archivePages, 
     }));
   }
   const homepageVisualAllow = new Set([
+    'nightly-visual-multimodal-vlm-judge-calibration-position-debias-arena-studio',
+    'nightly-visual-hundredth-workbench-enterprise-visual-ai-roi-architect-copilot-studio',
     'nightly-visual-enterprise-aigc-2026-reference-architecture-maturity-radar-studio',
     'nightly-visual-agentic-storyboard-vlm-qa-self-healing-pipeline',
     'nightly-visual-brand-guardrail-prompt-compiler-c2pa-gateway',

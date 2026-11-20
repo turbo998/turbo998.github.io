@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>企业零信任微隔离（PCI-DSS / SWIFT 核心结算域）：eBPF 东西向身份折叠、Dry-Run 零断流预演与 CISO 合规视频工作台</title>
+  <script type="module" crossorigin src="../../assets/zeroTrustMicrosegmentationEbpfEastWestPolicyBlastVideo-DpaCejbU.js"></script>
+  <link rel="modulepreload" crossorigin href="../../assets/modulepreload-polyfill-B5Qt9EMX.js">
+  <link rel="stylesheet" crossorigin href="../../assets/zeroTrustMicrosegmentationEbpfEastWestPolicyBlastVideo-BeNAiulq.css">
+</head>
+<body>
+  <div class="studio-shell">
+    <header class="topbar">
+      <div>
+        <span class="eyebrow">Domain 5 · Workbench #119 · eBPF SPIFFE Identity Folding (48k → 18 Tiers) + 30-Day Dry-Run Diff + CISO Video</span>
+        <h1>企业零信任微隔离：eBPF 东西向身份折叠、Dry-Run 断流预演与 CISO 视频工作台</h1>
+        <p class="subtitle">对比“eBPF 套接字 SPIFFE 工作负载身份折叠（18ms 60fps）+ 30 天回放 Dry-Run 捕获低频批处理（0.00% 生产断流）+ 横向爆炸半径压至 0.4%”与“5 元组 IP 毛线球及盲目切 Enforce 引发 Sev-1 瘫痪基线”</p>
+      </div>
+      <div class="top-links">
+        <a class="pill-link" href="../../index.html">← 返回实验室首页</a>
+        <a class="pill-link" href="../../research/zero-trust-microsegmentation-ebpf-east-west-policy-blast-video-faq.html">架构选型 FAQ (ZH)</a>
+        <a class="pill-link" href="../../research/zero-trust-microsegmentation-ebpf-east-west-policy-blast-video-faq.en.html">Decision Guide (EN)</a>
+      </div>
+    </header>
+
+    <section class="control-bar" aria-label="零信任微隔离与预演控制栏">
+      <div class="control-group">
+        <label for="scenario-select">核心合规飞地与安全隔离域 (Crown-Jewel Security Enclave)</label>
+        <select id="scenario-select">
+          <option value="pci_dss_cardholder_cde">支付持卡人环境（PCI-DSS v4.0 CDE）· 卡号金库环网与凌晨清算零断流</option>
+          <option value="swift_interbank_settlement">跨境银行清算安全区（SWIFT CSP v2026）· ISO 20022 网关与 AD 动态端口</option>
+          <option value="hybrid_k8s_ransomware_shield">混合云 K8s 勒索软件阻断（EU DORA）· Kubelet 10250 封堵与 Schema 保活</option>
+        </select>
+      </div>
+
+      <div class="control-group">
+        <label>东西向微隔离拓扑与策略下发模式 (Microsegmentation Architecture)</label>
+        <div class="mode-buttons">
+          <button id="mode-ebpf" class="mode-btn active" type="button">
+            eBPF SPIFFE 身份折叠 + 30 天 Dry-Run 预演 + Cilium 环网 (推荐)
+          </button>
+          <button id="mode-naive" class="mode-btn naive" type="button">
+            传统 5 元组 IP 流日志毛线球 + LLM 盲写防火墙直接 Enforce (高故障基线)
+          </button>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <label for="days-slider">Dry-Run 历史流量回放窗口 (eBPF Replay Window): <span id="days-label">30 Days</span></label>
+        <input id="days-slider" type="range" min="1" max="30" step="1" value="30" />
+      </div>
+    </section>
+
+    <section class="kpi-strip" aria-label="核心微隔离与安全合规指标">
+      <div class="kpi-card">
+        <div class="kpi-label">切换 Enforce 生产误拦断流率 (Prod Breakage Rate)</div>
+        <div id="kpi-breakage" class="kpi-value">0.00%</div>
+        <div id="kpi-breakage-sub" class="kpi-sub">100% 捕获凌晨低频清算与动态 RPC 依赖</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">勒索软件横向移动爆炸半径 (Lateral Blast Radius)</div>
+        <div id="kpi-blast" class="kpi-value">0.4%</div>
+        <div id="kpi-blast-sub" class="kpi-sub">Hop-2 即刻阻断 SMB 445 / RDP 3389 / Kubelet</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">拓扑折叠与渲染耗时 (Topology Folding Latency)</div>
+        <div id="kpi-layout" class="kpi-value">18 ms</div>
+        <div id="kpi-layout-sub" class="kpi-sub">48,200 瞬态 Pod IP → 18 个 SPIFFE 身份域</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">未文档化隐式依赖检出率 (Legacy Flow Recall)</div>
+        <div id="kpi-recall" class="kpi-value">100.0%</div>
+        <div id="kpi-recall-sub" class="kpi-sub">Remotion 12s PCI-DSS v4.0 CISO 审计视频 ($0.03)</div>
+      </div>
+    </section>
+
+    <main class="workbench-grid">
+      <section class="panel">
+        <div class="panel-header">
+          <h2 class="panel-title">eBPF SPIFFE 工作负载身份环网 vs 30 天 Dry-Run 隐式依赖抢救与横向渗透阻断画布</h2>
+          <span id="stage-badge" class="badge">SPIFFE mTLS Ring-Fence · 0.00% Prod Outage · 0.4% Blast Radius</span>
+        </div>
+        <canvas id="microseg-canvas" width="820" height="360"></canvas>
+      </section>
+
+      <section class="panel">
+        <div class="panel-header">
+          <h2 class="panel-title">东西向服务调用契约、隐式低频依赖识别与勒索横向阻断清单</h2>
+          <span class="badge">CILIUM TETRAGON AST</span>
+        </div>
+        <table class="data-table" aria-label="东西向流量与微隔离策略表">
+          <thead>
+            <tr>
+              <th>源 → 目的 SPIFFE 工作负载身份</th>
+              <th>协议端口 / 日调用</th>
+              <th>流量性质</th>
+              <th>Dry-Run 策略处置</th>
+            </tr>
+          </thead>
+          <tbody id="flow-table-body"></tbody>
+        </table>
+
+        <div class="panel-header">
+          <h3 class="panel-title">Cilium / Illumio SPIFFE 身份策略 AST 与 Dry-Run 审计契约</h3>
+        </div>
+        <pre id="protocol-code" class="code-box"></pre>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

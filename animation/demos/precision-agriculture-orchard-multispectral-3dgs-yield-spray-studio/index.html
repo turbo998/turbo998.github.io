@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>智慧果园与精准农业数字孪生：五波段辐射定标 NDVI/红边、3DGS 冠层穿透估产与 ISOBUS 变量喷洒工作台</title>
+  <script type="module" crossorigin src="../../assets/precisionAgricultureOrchardMultispectral3dgsYieldSpray-CGbn8HyC.js"></script>
+  <link rel="modulepreload" crossorigin href="../../assets/modulepreload-polyfill-B5Qt9EMX.js">
+  <link rel="stylesheet" crossorigin href="../../assets/precisionAgricultureOrchardMultispectral3dgsYieldSpray-U8JDfOZ-.css">
+</head>
+<body>
+  <div class="studio-shell">
+    <header class="topbar">
+      <div>
+        <span class="eyebrow">Domain 4 · Workbench #118 · Radiometric 5-Band NDVI/NDRE + 45° Oblique 3DGS Fruit Count + ISOBUS VRA</span>
+        <h1>智慧果园与精准农业孪生：五波段定标、3DGS 枝叶穿透估产与变量喷洒工作台</h1>
+        <p class="subtitle">对比“DLS-2 太阳辐射定标（NDVI ±0.012）+ 45° 倾斜 3DGS 下层冠层挂果去重（估产误差 ±2.8%）+ ISOBUS 变量处方图（节药 51.6%）”与“2D 正射漏计 62% 挂果及云影误报基线”</p>
+      </div>
+      <div class="top-links">
+        <a class="pill-link" href="../../index.html">← 返回实验室首页</a>
+        <a class="pill-link" href="../../research/precision-agriculture-orchard-multispectral-3dgs-yield-spray-faq.html">架构选型 FAQ (ZH)</a>
+        <a class="pill-link" href="../../research/precision-agriculture-orchard-multispectral-3dgs-yield-spray-faq.en.html">Decision Guide (EN)</a>
+      </div>
+    </header>
+
+    <section class="control-bar" aria-label="果园遥感与处方图控制栏">
+      <div class="control-group">
+        <label for="scenario-select">高价值果园 / 庄园地块场景 (Orchard / Vineyard Block)</label>
+        <select id="scenario-select">
+          <option value="napa_cabernet_vineyard">酿酒葡萄园（Napa Cabernet 42ha）· 红边定标与果穗 3D 去重估产</option>
+          <option value="washington_honeycrisp_orchard">高密度苹果园（Yakima Honeycrisp 85ha）· 45° 3DGS 冠层穿透数果与钙肥处方</option>
+          <option value="michoacan_hass_avocado">山地牛油果庄园（Hass Avocado 120ha）· RTK 地形仿地与变量喷洒航线</option>
+        </select>
+      </div>
+
+      <div class="control-group">
+        <label>多光谱与三维估产管线模式 (Canopy &amp; Spectral Architecture)</label>
+        <div class="mode-buttons">
+          <button id="mode-3dgs" class="mode-btn active" type="button">
+            DLS-2 五波段定标 + 45° 3DGS 穿透估产 + ISOBUS 处方 (推荐)
+          </button>
+          <button id="mode-naive" class="mode-btn naive" type="button">
+            传统 2D 俯视正射 + 未定标云影漂移 + 扩散脑补挂果 (高漏计基线)
+          </button>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <label for="cloud-slider">局部积云遮光衰减 (Passing Cloud Shadow Attenuation): <span id="cloud-label">35%</span></label>
+        <input id="cloud-slider" type="range" min="0" max="80" step="5" value="35" />
+      </div>
+    </section>
+
+    <section class="kpi-strip" aria-label="核心农业遥感与商业指标">
+      <div class="kpi-card">
+        <div class="kpi-label">云影下 NDVI 辐射定标漂移 (Spectral Drift)</div>
+        <div id="kpi-ndvi" class="kpi-value">±0.012</div>
+        <div id="kpi-ndvi-sub" class="kpi-sub">DLS-2 余弦太阳角 + 标准反射板定标</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">全冠层采收估产误差 (Harvest Yield Error)</div>
+        <div id="kpi-yield" class="kpi-value">±2.8%</div>
+        <div id="kpi-yield-sub" class="kpi-sub">45° 倾斜 3DGS 穿透下层枝叶 + 3D 椭球去重</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">农药 / 叶面肥精准节省率 (VRA Chemical Saved)</div>
+        <div id="kpi-spray" class="kpi-value">51.6%</div>
+        <div id="kpi-spray-sub" class="kpi-sub">行间裸土 0% 停喷 · 红边缺素株 100% 靶向</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">全地块净收益增幅 (Block Net Margin Lift)</div>
+        <div id="kpi-margin" class="kpi-value">+$62,160</div>
+        <div id="kpi-margin-sub" class="kpi-sub">+$1,480/ha · Remotion 10s 农艺师周报视频</div>
+      </div>
+    </section>
+
+    <main class="workbench-grid">
+      <section class="panel">
+        <div class="panel-header">
+          <h2 class="panel-title">五波段 (Red-Edge 730nm / NIR 860nm) 冠层 + 45° 3DGS 下层挂果去重与 ISOBUS 处方图画布</h2>
+          <span id="stage-badge" class="badge">DLS-2 Radiometric Lock · 3DGS Under-Canopy Fruit Count</span>
+        </div>
+        <canvas id="orchard-canvas" width="820" height="360"></canvas>
+      </section>
+
+      <section class="panel">
+        <div class="panel-header">
+          <h2 class="panel-title">单株冠层光谱、3D 挂果数 vs 2D 俯视漏计与 ISOBUS PWM 喷嘴占空比清单</h2>
+          <span class="badge">ISO 11783 TASKXML</span>
+        </div>
+        <table class="data-table" aria-label="单株冠层光谱与挂果统计表">
+          <thead>
+            <tr>
+              <th>果树/藤架 ID</th>
+              <th>NDVI / NDRE</th>
+              <th>3DGS 实测 vs 2D 俯视</th>
+              <th>ISOBUS 喷洒占空比</th>
+            </tr>
+          </thead>
+          <tbody id="tree-table-body"></tbody>
+        </table>
+
+        <div class="panel-header">
+          <h3 class="panel-title">DLS-2 辐射定标、3D 椭球果穗去重与 ISOBUS TaskXML 契约</h3>
+        </div>
+        <pre id="protocol-code" class="code-box"></pre>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
