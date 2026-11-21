@@ -8189,6 +8189,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r679File),'utf8');
       assert.ok(txt.includes('3,930.00')&&txt.includes('4,350.00')&&txt.includes('8,280.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('7,970.00')&&txt.includes('96.26%')&&txt.includes('not_measured'),r679File+': contains exact 11-21 R79 R679 genie+picursorsdk+agentglass+flowctl closed-form parameters');
     }
+    // 2026-11-21 Day Round 80 (R680 Milestone: sveltejs/ai-tools + InditexTech/mcp-server-simulator-ios-idb + ScottRBK/forgetful + elbwalker/walkerOS) verification
+    const r680PathA=3950.00+44.0*100.00;
+    assert.equal(r680PathA.toFixed(2),'8350.00','11-21 R80 R680 Path A total');
+    const r680PathC=70.00+2.4*100.00;
+    assert.equal(r680PathC.toFixed(2),'310.00','11-21 R80 R680 Path C total');
+    assert.equal((r680PathA-r680PathC).toFixed(2),'8040.00','11-21 R80 R680 savings vs Path A');
+    assert.equal(((r680PathA-r680PathC)/r680PathA*100).toFixed(2),'96.29','11-21 R80 R680 pct savings vs Path A');
+    for(const r680File of ['workshops/github-trending-radar/docs/svelte-ai-tools-inditex-ios-idb-forgetful-walkeros-selection-faq.md','workshops/github-trending-radar/docs/svelte-ai-tools-inditex-ios-idb-forgetful-walkeros-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r80-r680-svelteaitools-inditexios-forgetful-walkeros.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r680File),'utf8');
+      assert.ok(txt.includes('3,950.00')&&txt.includes('4,400.00')&&txt.includes('8,350.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,040.00')&&txt.includes('96.29%')&&txt.includes('not_measured'),r680File+': contains exact 11-21 R80 R680 svelteaitools+inditexios+forgetful+walkeros closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
