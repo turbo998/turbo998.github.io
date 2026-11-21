@@ -8541,6 +8541,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r711File),'utf8');
       assert.ok(txt.includes('3,920.00')&&txt.includes('4,350.00')&&txt.includes('8,270.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('7,960.00')&&txt.includes('96.25%')&&txt.includes('not_measured'),r711File+': contains exact 11-21 R111 R711 fasta2a+lucidagents+a2acli+ra2a closed-form parameters');
     }
+    // 2026-11-21 Night Round 112 (R712: bkuan001/halo-record + neatlogs/neatroots + vstorm-co/agentcanvas + Metabuilder-Labs/tokenjam) verification
+    const r712PathA=4030.00+43.5*100.00;
+    assert.equal(r712PathA.toFixed(2),'8380.00','11-21 R112 R712 Path A total');
+    const r712PathC=65.00+2.4*100.00;
+    assert.equal(r712PathC.toFixed(2),'305.00','11-21 R112 R712 Path C total');
+    assert.equal((r712PathA-r712PathC).toFixed(2),'8075.00','11-21 R112 R712 savings vs Path A');
+    assert.equal(((r712PathA-r712PathC)/r712PathA*100).toFixed(2),'96.36','11-21 R112 R712 pct savings vs Path A');
+    for(const r712File of ['workshops/github-trending-radar/docs/halo-record-neatroots-agentcanvas-tokenjam-selection-faq.md','workshops/github-trending-radar/docs/halo-record-neatroots-agentcanvas-tokenjam-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r112-r712-halorecord-neatroots-agentcanvas-tokenjam.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r712File),'utf8');
+      assert.ok(txt.includes('4,030.00')&&txt.includes('4,350.00')&&txt.includes('8,380.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('8,075.00')&&txt.includes('96.36%')&&txt.includes('not_measured'),r712File+': contains exact 11-21 R112 R712 halorecord+neatroots+agentcanvas+tokenjam closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
