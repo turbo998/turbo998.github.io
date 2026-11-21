@@ -8552,6 +8552,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r712File),'utf8');
       assert.ok(txt.includes('4,030.00')&&txt.includes('4,350.00')&&txt.includes('8,380.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('8,075.00')&&txt.includes('96.36%')&&txt.includes('not_measured'),r712File+': contains exact 11-21 R112 R712 halorecord+neatroots+agentcanvas+tokenjam closed-form parameters');
     }
+    // 2026-11-21 Night Round 113 (R713: jd-opensource/joycode-agent + corespeed-io/zypher-agent + vortico/flama + AIpRoBuilder/FlowX) verification
+    const r713PathA=3970.00+43.5*100.00;
+    assert.equal(r713PathA.toFixed(2),'8320.00','11-21 R113 R713 Path A total');
+    const r713PathC=70.00+2.4*100.00;
+    assert.equal(r713PathC.toFixed(2),'310.00','11-21 R113 R713 Path C total');
+    assert.equal((r713PathA-r713PathC).toFixed(2),'8010.00','11-21 R113 R713 savings vs Path A');
+    assert.equal(((r713PathA-r713PathC)/r713PathA*100).toFixed(2),'96.27','11-21 R113 R713 pct savings vs Path A');
+    for(const r713File of ['workshops/github-trending-radar/docs/joycode-agent-zypher-agent-flama-flowx-selection-faq.md','workshops/github-trending-radar/docs/joycode-agent-zypher-agent-flama-flowx-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r113-r713-joycode-zypher-flama-flowx.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r713File),'utf8');
+      assert.ok(txt.includes('3,970.00')&&txt.includes('4,350.00')&&txt.includes('8,320.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,010.00')&&txt.includes('96.27%')&&txt.includes('not_measured'),r713File+': contains exact 11-21 R113 R713 joycode+zypher+flama+flowx closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
