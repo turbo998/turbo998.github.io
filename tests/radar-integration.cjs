@@ -7947,6 +7947,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r657File),'utf8');
       assert.ok(txt.includes('3,840.00')&&txt.includes('4,300.00')&&txt.includes('8,140.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('7,835.00')&&txt.includes('96.25%')&&txt.includes('not_measured'),r657File+': contains exact 11-21 R57 R657 grapheng+deerworkflow+hyperfide+grasp closed-form parameters');
     }
+    // 2026-11-21 Day Round 58 (R658: scenario-labs/blender-plugin + with-pebbly/aseprite-ai-artist + INSANE0777/Awwwards-mcp + Yu-369/VibeCurb) verification
+    const r658PathA=3910.00+43.5*100.00;
+    assert.equal(r658PathA.toFixed(2),'8260.00','11-21 R58 R658 Path A total');
+    const r658PathC=75.00+2.4*100.00;
+    assert.equal(r658PathC.toFixed(2),'315.00','11-21 R58 R658 Path C total');
+    assert.equal((r658PathA-r658PathC).toFixed(2),'7945.00','11-21 R58 R658 savings vs Path A');
+    assert.equal(((r658PathA-r658PathC)/r658PathA*100).toFixed(2),'96.19','11-21 R58 R658 pct savings vs Path A');
+    for(const r658File of ['workshops/github-trending-radar/docs/scenario-blender-aseprite-ai-artist-awwwards-mcp-vibecurb-selection-faq.md','workshops/github-trending-radar/docs/scenario-blender-aseprite-ai-artist-awwwards-mcp-vibecurb-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r58-r658-scenarioblender-aseprite-awwwardsmcp-vibecurb.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r658File),'utf8');
+      assert.ok(txt.includes('3,910.00')&&txt.includes('4,350.00')&&txt.includes('8,260.00')&&txt.includes('75.00')&&txt.includes('240.00')&&txt.includes('315.00')&&txt.includes('7,945.00')&&txt.includes('96.19%')&&txt.includes('not_measured'),r658File+': contains exact 11-21 R58 R658 scenarioblender+aseprite+awwwardsmcp+vibecurb closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
