@@ -7595,6 +7595,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r625File),'utf8');
       assert.ok(txt.includes('3,360.00')&&txt.includes('4,100.00')&&txt.includes('7,460.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('7,155.00')&&txt.includes('95.91%')&&txt.includes('not_measured'),r625File+': contains exact 11-21 R25 R625 scraps+knowledgespace+openintelligence+paperlessdedupe closed-form parameters');
     }
+    // 2026-11-21 Day Round 26 (R626: PrismorSec/prismor + vivekchand/clawmetry + DecapodLabs/decapod + gnt-ai/gnt) verification
+    const r626PathA=3540.00+42.0*100.00;
+    assert.equal(r626PathA.toFixed(2),'7740.00','11-21 R26 R626 Path A total');
+    const r626PathC=70.00+2.4*100.00;
+    assert.equal(r626PathC.toFixed(2),'310.00','11-21 R26 R626 Path C total');
+    assert.equal((r626PathA-r626PathC).toFixed(2),'7430.00','11-21 R26 R626 savings vs Path A');
+    assert.equal(((r626PathA-r626PathC)/r626PathA*100).toFixed(2),'95.99','11-21 R26 R626 pct savings vs Path A');
+    for(const r626File of ['workshops/github-trending-radar/docs/prismor-clawmetry-decapod-gnt-selection-faq.md','workshops/github-trending-radar/docs/prismor-clawmetry-decapod-gnt-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r26-r626-prismor-clawmetry-decapod-gnt.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r626File),'utf8');
+      assert.ok(txt.includes('3,540.00')&&txt.includes('4,200.00')&&txt.includes('7,740.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('7,430.00')&&txt.includes('95.99%')&&txt.includes('not_measured'),r626File+': contains exact 11-21 R26 R626 prismor+clawmetry+decapod+gnt closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
