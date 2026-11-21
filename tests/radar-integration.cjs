@@ -7936,6 +7936,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r656File),'utf8');
       assert.ok(txt.includes('3,860.00')&&txt.includes('4,350.00')&&txt.includes('8,210.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('7,900.00')&&txt.includes('96.22%')&&txt.includes('not_measured'),r656File+': contains exact 11-21 R56 R656 idamcp+x64dbgmcp+aletheore+specharness closed-form parameters');
     }
+    // 2026-11-21 Day Round 57 (R657: codejunkie99/graph-engineering + deerwork-ai/deer-workflow + Sidiora-Labs/hyperfide-oss + cocofhu/grasp) verification
+    const r657PathA=3840.00+43.0*100.00;
+    assert.equal(r657PathA.toFixed(2),'8140.00','11-21 R57 R657 Path A total');
+    const r657PathC=65.00+2.4*100.00;
+    assert.equal(r657PathC.toFixed(2),'305.00','11-21 R57 R657 Path C total');
+    assert.equal((r657PathA-r657PathC).toFixed(2),'7835.00','11-21 R57 R657 savings vs Path A');
+    assert.equal(((r657PathA-r657PathC)/r657PathA*100).toFixed(2),'96.25','11-21 R57 R657 pct savings vs Path A');
+    for(const r657File of ['workshops/github-trending-radar/docs/graph-engineering-deer-workflow-hyperfide-grasp-selection-faq.md','workshops/github-trending-radar/docs/graph-engineering-deer-workflow-hyperfide-grasp-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r57-r657-grapheng-deerworkflow-hyperfide-grasp.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r657File),'utf8');
+      assert.ok(txt.includes('3,840.00')&&txt.includes('4,300.00')&&txt.includes('8,140.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('7,835.00')&&txt.includes('96.25%')&&txt.includes('not_measured'),r657File+': contains exact 11-21 R57 R657 grapheng+deerworkflow+hyperfide+grasp closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
