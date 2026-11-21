@@ -8365,6 +8365,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r695File),'utf8');
       assert.ok(txt.includes('4,030.00')&&txt.includes('4,400.00')&&txt.includes('8,430.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,120.00')&&txt.includes('96.32%')&&txt.includes('not_measured'),r695File+': contains exact 11-21 R95 R695 joysafeter+lokka+dashclaw+arceenac closed-form parameters');
     }
+    // 2026-11-21 Night Round 96 (R696: FootprintAI/Containarium + varun29ankuS/shodh-memory + cr7258/elasticsearch-mcp-server + nicosuave/memex) verification
+    const r696PathA=3950.00+44.0*100.00;
+    assert.equal(r696PathA.toFixed(2),'8350.00','11-21 R96 R696 Path A total');
+    const r696PathC=70.00+2.4*100.00;
+    assert.equal(r696PathC.toFixed(2),'310.00','11-21 R96 R696 Path C total');
+    assert.equal((r696PathA-r696PathC).toFixed(2),'8040.00','11-21 R96 R696 savings vs Path A');
+    assert.equal(((r696PathA-r696PathC)/r696PathA*100).toFixed(2),'96.29','11-21 R96 R696 pct savings vs Path A');
+    for(const r696File of ['workshops/github-trending-radar/docs/containarium-shodh-memory-elasticsearch-mcp-memex-selection-faq.md','workshops/github-trending-radar/docs/containarium-shodh-memory-elasticsearch-mcp-memex-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r96-r696-containarium-shodhmemory-elasticmcp-memex.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r696File),'utf8');
+      assert.ok(txt.includes('3,950.00')&&txt.includes('4,400.00')&&txt.includes('8,350.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,040.00')&&txt.includes('96.29%')&&txt.includes('not_measured'),r696File+': contains exact 11-21 R96 R696 containarium+shodhmemory+elasticmcp+memex closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
