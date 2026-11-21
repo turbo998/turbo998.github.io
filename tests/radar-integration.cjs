@@ -8761,6 +8761,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r731File),'utf8');
       assert.ok(txt.includes('4,030.00')&&txt.includes('4,350.00')&&txt.includes('8,380.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,070.00')&&txt.includes('96.30%')&&txt.includes('not_measured'),r731File+': contains exact 11-21 R131 R731 realestate+legaldb+amazon+kroger closed-form parameters');
     }
+    // 2026-11-21 Night Round 132 (R732: Power-Agent/PowerMCP + yusong652/itasca-mcp + Whfkl/Abaqus-Control-MCP + jagan-shanmugam/open-streetmap-mcp) verification
+    const r732PathA=4040.00+44.0*100.00;
+    assert.equal(r732PathA.toFixed(2),'8440.00','11-21 R132 R732 Path A total');
+    const r732PathC=70.00+2.4*100.00;
+    assert.equal(r732PathC.toFixed(2),'310.00','11-21 R132 R732 Path C total');
+    assert.equal((r732PathA-r732PathC).toFixed(2),'8130.00','11-21 R132 R732 savings vs Path A');
+    assert.equal(((r732PathA-r732PathC)/r732PathA*100).toFixed(2),'96.33','11-21 R132 R732 pct savings vs Path A');
+    for(const r732File of ['workshops/github-trending-radar/docs/powermcp-itasca-mcp-abaqus-control-osm-selection-faq.md','workshops/github-trending-radar/docs/powermcp-itasca-mcp-abaqus-control-osm-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r132-r732-powermcp-itasca-abaqus-osm.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r732File),'utf8');
+      assert.ok(txt.includes('4,040.00')&&txt.includes('4,400.00')&&txt.includes('8,440.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,130.00')&&txt.includes('96.33%')&&txt.includes('not_measured'),r732File+': contains exact 11-21 R132 R732 powermcp+itasca+abaqus+osm closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
