@@ -8233,6 +8233,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r683File),'utf8');
       assert.ok(txt.includes('3,920.00')&&txt.includes('4,350.00')&&txt.includes('8,270.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('7,960.00')&&txt.includes('96.25%')&&txt.includes('not_measured'),r683File+': contains exact 11-21 R83 R683 railwayskills+water+palicoai+ccdevopsskills closed-form parameters');
     }
+    // 2026-11-21 Night Round 84 (R684: arcee-ai/DALM + ATH-MaaS/Marco-DeepResearch + lawglance/lawglance + context-hub/generator) verification
+    const r684PathA=3960.00+44.0*100.00;
+    assert.equal(r684PathA.toFixed(2),'8360.00','11-21 R84 R684 Path A total');
+    const r684PathC=70.00+2.4*100.00;
+    assert.equal(r684PathC.toFixed(2),'310.00','11-21 R84 R684 Path C total');
+    assert.equal((r684PathA-r684PathC).toFixed(2),'8050.00','11-21 R84 R684 savings vs Path A');
+    assert.equal(((r684PathA-r684PathC)/r684PathA*100).toFixed(2),'96.29','11-21 R84 R684 pct savings vs Path A');
+    for(const r684File of ['workshops/github-trending-radar/docs/dalm-marco-deepresearch-lawglance-ctx-generator-selection-faq.md','workshops/github-trending-radar/docs/dalm-marco-deepresearch-lawglance-ctx-generator-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r84-r684-dalm-marcodeepresearch-lawglance-ctxgenerator.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r684File),'utf8');
+      assert.ok(txt.includes('3,960.00')&&txt.includes('4,400.00')&&txt.includes('8,360.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,050.00')&&txt.includes('96.29%')&&txt.includes('not_measured'),r684File+': contains exact 11-21 R84 R684 dalm+marcodeepresearch+lawglance+ctxgenerator closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
