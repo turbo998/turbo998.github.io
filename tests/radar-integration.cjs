@@ -8508,6 +8508,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r708File),'utf8');
       assert.ok(txt.includes('4,040.00')&&txt.includes('4,350.00')&&txt.includes('8,390.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,080.00')&&txt.includes('96.31%')&&txt.includes('not_measured'),r708File+': contains exact 11-21 R108 R708 qanat+bankmcp+tradingdesk+razorpaymcp closed-form parameters');
     }
+    // 2026-11-21 Night Round 109 (R709: georgeguimaraes/arcana + iMoonLab/Hyper-RAG + MangoFisher/TestBrain + damionrashford/RivalSearchMCP) verification
+    const r709PathA=3960.00+43.5*100.00;
+    assert.equal(r709PathA.toFixed(2),'8310.00','11-21 R109 R709 Path A total');
+    const r709PathC=70.00+2.4*100.00;
+    assert.equal(r709PathC.toFixed(2),'310.00','11-21 R109 R709 Path C total');
+    assert.equal((r709PathA-r709PathC).toFixed(2),'8000.00','11-21 R109 R709 savings vs Path A');
+    assert.equal(((r709PathA-r709PathC)/r709PathA*100).toFixed(2),'96.27','11-21 R109 R709 pct savings vs Path A');
+    for(const r709File of ['workshops/github-trending-radar/docs/arcana-hyper-rag-testbrain-rivalsearchmcp-selection-faq.md','workshops/github-trending-radar/docs/arcana-hyper-rag-testbrain-rivalsearchmcp-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r109-r709-arcana-hyperrag-testbrain-rivalsearch.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r709File),'utf8');
+      assert.ok(txt.includes('3,960.00')&&txt.includes('4,350.00')&&txt.includes('8,310.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,000.00')&&txt.includes('96.27%')&&txt.includes('not_measured'),r709File+': contains exact 11-21 R109 R709 arcana+hyperrag+testbrain+rivalsearch closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
