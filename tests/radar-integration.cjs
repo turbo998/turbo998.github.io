@@ -8013,6 +8013,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r663File),'utf8');
       assert.ok(txt.includes('3,820.00')&&txt.includes('4,300.00')&&txt.includes('8,120.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('7,815.00')&&txt.includes('96.24%')&&txt.includes('not_measured'),r663File+': contains exact 11-21 R63 R663 mcpemail+mcpk8sgo+harnss+claudecodetrace closed-form parameters');
     }
+    // 2026-11-21 Day Round 64 (R664: brycewang-stanford/StatsPAI + wp-a/nature-academic-search + Aperivue/medsci-skills + eddyzzl/marvis-risk-agent) verification
+    const r664PathA=4040.00+44.5*100.00;
+    assert.equal(r664PathA.toFixed(2),'8490.00','11-21 R64 R664 Path A total');
+    const r664PathC=70.00+2.4*100.00;
+    assert.equal(r664PathC.toFixed(2),'310.00','11-21 R64 R664 Path C total');
+    assert.equal((r664PathA-r664PathC).toFixed(2),'8180.00','11-21 R64 R664 savings vs Path A');
+    assert.equal(((r664PathA-r664PathC)/r664PathA*100).toFixed(2),'96.35','11-21 R64 R664 pct savings vs Path A');
+    for(const r664File of ['workshops/github-trending-radar/docs/statspai-nature-academic-search-medsci-skills-marvis-risk-selection-faq.md','workshops/github-trending-radar/docs/statspai-nature-academic-search-medsci-skills-marvis-risk-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r64-r664-statspai-naturesearch-medsciskills-marvis.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r664File),'utf8');
+      assert.ok(txt.includes('4,040.00')&&txt.includes('4,450.00')&&txt.includes('8,490.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,180.00')&&txt.includes('96.35%')&&txt.includes('not_measured'),r664File+': contains exact 11-21 R64 R664 statspai+naturesearch+medsciskills+marvis closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
