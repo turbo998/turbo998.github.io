@@ -7903,6 +7903,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r653File),'utf8');
       assert.ok(txt.includes('3,910.00')&&txt.includes('4,350.00')&&txt.includes('8,260.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('7,955.00')&&txt.includes('96.31%')&&txt.includes('not_measured'),r653File+': contains exact 11-21 R53 R653 stopthatshit+longhorizon+fauxnix+mcptoon closed-form parameters');
     }
+    // 2026-11-21 Day Round 54 (R654: Ryze-AI-Adgent/open-seo-mcp-skills + iannuttall/seo + OpenLabs-so/openanalytics + everyinfra/everyinfra-agent-plugins) verification
+    const r654PathA=3980.00+44.0*100.00;
+    assert.equal(r654PathA.toFixed(2),'8380.00','11-21 R54 R654 Path A total');
+    const r654PathC=75.00+2.5*100.00;
+    assert.equal(r654PathC.toFixed(2),'325.00','11-21 R54 R654 Path C total');
+    assert.equal((r654PathA-r654PathC).toFixed(2),'8055.00','11-21 R54 R654 savings vs Path A');
+    assert.equal(((r654PathA-r654PathC)/r654PathA*100).toFixed(2),'96.12','11-21 R54 R654 pct savings vs Path A');
+    for(const r654File of ['workshops/github-trending-radar/docs/open-seo-mcp-seoskill-openanalytics-everyinfra-selection-faq.md','workshops/github-trending-radar/docs/open-seo-mcp-seoskill-openanalytics-everyinfra-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r54-r654-openseomcp-seoskill-openanalytics-everyinfra.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r654File),'utf8');
+      assert.ok(txt.includes('3,980.00')&&txt.includes('4,400.00')&&txt.includes('8,380.00')&&txt.includes('75.00')&&txt.includes('250.00')&&txt.includes('325.00')&&txt.includes('8,055.00')&&txt.includes('96.12%')&&txt.includes('not_measured'),r654File+': contains exact 11-21 R54 R654 openseomcp+seoskill+openanalytics+everyinfra closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
