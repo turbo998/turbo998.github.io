@@ -8728,6 +8728,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r728File),'utf8');
       assert.ok(txt.includes('4,010.00')&&txt.includes('4,350.00')&&txt.includes('8,360.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,050.00')&&txt.includes('96.29%')&&txt.includes('not_measured'),r728File+': contains exact 11-21 R128 R728 dataagent+enrichment+extractor+mcpsurfr closed-form parameters');
     }
+    // 2026-11-21 Night Round 129 (R729: ie3jp/illustrator-mcp-server + sandraschi/inkscape-mcp + ConstantineB6/comfy-pilot + peng-shawn/mermaid-mcp-server) verification
+    const r729PathA=3970.00+43.5*100.00;
+    assert.equal(r729PathA.toFixed(2),'8320.00','11-21 R129 R729 Path A total');
+    const r729PathC=65.00+2.4*100.00;
+    assert.equal(r729PathC.toFixed(2),'305.00','11-21 R129 R729 Path C total');
+    assert.equal((r729PathA-r729PathC).toFixed(2),'8015.00','11-21 R129 R729 savings vs Path A');
+    assert.equal(((r729PathA-r729PathC)/r729PathA*100).toFixed(2),'96.33','11-21 R129 R729 pct savings vs Path A');
+    for(const r729File of ['workshops/github-trending-radar/docs/illustrator-mcp-inkscape-comfy-pilot-mermaid-selection-faq.md','workshops/github-trending-radar/docs/illustrator-mcp-inkscape-comfy-pilot-mermaid-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r129-r729-illustrator-inkscape-comfypilot-mermaid.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r729File),'utf8');
+      assert.ok(txt.includes('3,970.00')&&txt.includes('4,350.00')&&txt.includes('8,320.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('8,015.00')&&txt.includes('96.33%')&&txt.includes('not_measured'),r729File+': contains exact 11-21 R129 R729 illustrator+inkscape+comfypilot+mermaid closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
