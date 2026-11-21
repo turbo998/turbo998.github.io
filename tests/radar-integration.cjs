@@ -7683,6 +7683,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r633File),'utf8');
       assert.ok(txt.includes('3,470.00')&&txt.includes('4,150.00')&&txt.includes('7,620.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('7,315.00')&&txt.includes('96.00%')&&txt.includes('not_measured'),r633File+': contains exact 11-21 R33 R633 models+syrtis+obituary+keyorix closed-form parameters');
     }
+    // 2026-11-21 Day Round 34 (R634: futuregene/future-os + shannonbay/Quarterdeck + swombat/souls-house + dovvnloading/Graphlink) verification
+    const r634PathA=3440.00+41.5*100.00;
+    assert.equal(r634PathA.toFixed(2),'7590.00','11-21 R34 R634 Path A total');
+    const r634PathC=70.00+2.4*100.00;
+    assert.equal(r634PathC.toFixed(2),'310.00','11-21 R34 R634 Path C total');
+    assert.equal((r634PathA-r634PathC).toFixed(2),'7280.00','11-21 R34 R634 savings vs Path A');
+    assert.equal(((r634PathA-r634PathC)/r634PathA*100).toFixed(2),'95.92','11-21 R34 R634 pct savings vs Path A');
+    for(const r634File of ['workshops/github-trending-radar/docs/future-os-quarterdeck-souls-house-graphlink-selection-faq.md','workshops/github-trending-radar/docs/future-os-quarterdeck-souls-house-graphlink-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r34-r634-futureos-quarterdeck-soulshouse-graphlink.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r634File),'utf8');
+      assert.ok(txt.includes('3,440.00')&&txt.includes('4,150.00')&&txt.includes('7,590.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('7,280.00')&&txt.includes('95.92%')&&txt.includes('not_measured'),r634File+': contains exact 11-21 R34 R634 futureos+quarterdeck+soulshouse+graphlink closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
