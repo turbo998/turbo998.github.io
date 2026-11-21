@@ -7474,6 +7474,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r614File),'utf8');
       assert.ok(txt.includes('3,480.00')&&txt.includes('4,200.00')&&txt.includes('7,680.00')&&txt.includes('80.00')&&txt.includes('250.00')&&txt.includes('330.00')&&txt.includes('7,350.00')&&txt.includes('95.70%')&&txt.includes('not_measured'),r614File+': contains exact 11-21 R14 R614 oyabrowser+gomaa+memrain+knovum closed-form parameters');
     }
+    // 2026-11-21 Day Round 15 (R615 Milestone: scaleapi/agentenv-framework + Anton2025-11-06/DRAGON-AI + generalbots/generalbots + IHUI-INF-AI/IHUI-AI) verification
+    const r615PathA=3520.00+42.5*100.00;
+    assert.equal(r615PathA.toFixed(2),'7770.00','11-21 R15 R615 Path A total');
+    const r615PathC=80.00+2.5*100.00;
+    assert.equal(r615PathC.toFixed(2),'330.00','11-21 R15 R615 Path C total');
+    assert.equal((r615PathA-r615PathC).toFixed(2),'7440.00','11-21 R15 R615 savings vs Path A');
+    assert.equal(((r615PathA-r615PathC)/r615PathA*100).toFixed(2),'95.75','11-21 R15 R615 pct savings vs Path A');
+    for(const r615File of ['workshops/github-trending-radar/docs/agentenv-framework-dragon-ai-generalbots-ihui-ai-selection-faq.md','workshops/github-trending-radar/docs/agentenv-framework-dragon-ai-generalbots-ihui-ai-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r15-r615-agentenv-dragonai-generalbots-ihuiai.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r615File),'utf8');
+      assert.ok(txt.includes('3,520.00')&&txt.includes('4,250.00')&&txt.includes('7,770.00')&&txt.includes('80.00')&&txt.includes('250.00')&&txt.includes('330.00')&&txt.includes('7,440.00')&&txt.includes('95.75%')&&txt.includes('not_measured'),r615File+': contains exact 11-21 R15 R615 agentenv+dragonai+generalbots+ihuiai closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
