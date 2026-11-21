@@ -8277,6 +8277,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r687File),'utf8');
       assert.ok(txt.includes('3,970.00')&&txt.includes('4,400.00')&&txt.includes('8,370.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,060.00')&&txt.includes('96.30%')&&txt.includes('not_measured'),r687File+': contains exact 11-21 R87 R687 knowledgeintel+memmesh+memorybench+openapitoskills closed-form parameters');
     }
+    // 2026-11-21 Night Round 88 (R688: gojue/moling + jayminwest/mulch + uwuclxdy/clauth + alvinunreal/lazyskills) verification
+    const r688PathA=3880.00+43.5*100.00;
+    assert.equal(r688PathA.toFixed(2),'8230.00','11-21 R88 R688 Path A total');
+    const r688PathC=65.00+2.4*100.00;
+    assert.equal(r688PathC.toFixed(2),'305.00','11-21 R88 R688 Path C total');
+    assert.equal((r688PathA-r688PathC).toFixed(2),'7925.00','11-21 R88 R688 savings vs Path A');
+    assert.equal(((r688PathA-r688PathC)/r688PathA*100).toFixed(2),'96.29','11-21 R88 R688 pct savings vs Path A');
+    for(const r688File of ['workshops/github-trending-radar/docs/moling-mulch-clauth-lazyskills-selection-faq.md','workshops/github-trending-radar/docs/moling-mulch-clauth-lazyskills-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r88-r688-moling-mulch-clauth-lazyskills.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r688File),'utf8');
+      assert.ok(txt.includes('3,880.00')&&txt.includes('4,350.00')&&txt.includes('8,230.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('7,925.00')&&txt.includes('96.29%')&&txt.includes('not_measured'),r688File+': contains exact 11-21 R88 R688 moling+mulch+clauth+lazyskills closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
