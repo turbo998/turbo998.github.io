@@ -8299,6 +8299,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r689File),'utf8');
       assert.ok(txt.includes('3,910.00')&&txt.includes('4,350.00')&&txt.includes('8,260.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('7,950.00')&&txt.includes('96.25%')&&txt.includes('not_measured'),r689File+': contains exact 11-21 R89 R689 mmedrag+taurimcp+pipali+orimnemos closed-form parameters');
     }
+    // 2026-11-21 Night Round 90 (R690 Milestone: adobe/skills + postmanlabs/postman-mcp-server + volcengine/mcp-server + Azure-Samples/ai-rag-chat-evaluator) verification
+    const r690PathA=4050.00+44.0*100.00;
+    assert.equal(r690PathA.toFixed(2),'8450.00','11-21 R90 R690 Path A total');
+    const r690PathC=70.00+2.4*100.00;
+    assert.equal(r690PathC.toFixed(2),'310.00','11-21 R90 R690 Path C total');
+    assert.equal((r690PathA-r690PathC).toFixed(2),'8140.00','11-21 R90 R690 savings vs Path A');
+    assert.equal(((r690PathA-r690PathC)/r690PathA*100).toFixed(2),'96.33','11-21 R90 R690 pct savings vs Path A');
+    for(const r690File of ['workshops/github-trending-radar/docs/adobe-skills-postman-mcp-volcengine-mcp-azure-rag-eval-selection-faq.md','workshops/github-trending-radar/docs/adobe-skills-postman-mcp-volcengine-mcp-azure-rag-eval-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r90-r690-adobeskills-postmanmcp-volcenginemcp-azurerageval.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r690File),'utf8');
+      assert.ok(txt.includes('4,050.00')&&txt.includes('4,400.00')&&txt.includes('8,450.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,140.00')&&txt.includes('96.33%')&&txt.includes('not_measured'),r690File+': contains exact 11-21 R90 R690 adobeskills+postmanmcp+volcenginemcp+azurerageval closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
