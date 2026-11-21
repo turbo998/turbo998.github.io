@@ -7848,6 +7848,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r648File),'utf8');
       assert.ok(txt.includes('3,740.00')&&txt.includes('4,250.00')&&txt.includes('7,990.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('7,685.00')&&txt.includes('96.18%')&&txt.includes('not_measured'),r648File+': contains exact 11-21 R48 R648 aisysdesign+fdenotebooks+mscookbook+helloagentsys closed-form parameters');
     }
+    // 2026-11-21 Day Round 49 (R649: luqman-v1/9router-go + SeasX/SeasAGI + imkofty/Hermuse + cuihuan/awesome-ai-gateway) verification
+    const r649PathA=3850.00+43.0*100.00;
+    assert.equal(r649PathA.toFixed(2),'8150.00','11-21 R49 R649 Path A total');
+    const r649PathC=65.00+2.4*100.00;
+    assert.equal(r649PathC.toFixed(2),'305.00','11-21 R49 R649 Path C total');
+    assert.equal((r649PathA-r649PathC).toFixed(2),'7845.00','11-21 R49 R649 savings vs Path A');
+    assert.equal(((r649PathA-r649PathC)/r649PathA*100).toFixed(2),'96.26','11-21 R49 R649 pct savings vs Path A');
+    for(const r649File of ['workshops/github-trending-radar/docs/9router-go-seasagi-hermuse-awesome-ai-gateway-selection-faq.md','workshops/github-trending-radar/docs/9router-go-seasagi-hermuse-awesome-ai-gateway-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r49-r649-9routergo-seasagi-hermuse-awesomeaigateway.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r649File),'utf8');
+      assert.ok(txt.includes('3,850.00')&&txt.includes('4,300.00')&&txt.includes('8,150.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('7,845.00')&&txt.includes('96.26%')&&txt.includes('not_measured'),r649File+': contains exact 11-21 R49 R649 9routergo+seasagi+hermuse+awesomeaigateway closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
