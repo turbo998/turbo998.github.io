@@ -7870,6 +7870,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r650File),'utf8');
       assert.ok(txt.includes('3,920.00')&&txt.includes('4,400.00')&&txt.includes('8,320.00')&&txt.includes('80.00')&&txt.includes('250.00')&&txt.includes('330.00')&&txt.includes('7,990.00')&&txt.includes('96.03%')&&txt.includes('not_measured'),r650File+': contains exact 11-21 R50 R650 geosleuth+remotemcp+somarkoxr+ailin1 closed-form parameters');
     }
+    // 2026-11-21 Day Round 51 (R651: aoci-spec/aoci-code + redhat-et/ripwire + 2akouwu/reverify + okf-memory/okf-agent-memory) verification
+    const r651PathA=3880.00+43.5*100.00;
+    assert.equal(r651PathA.toFixed(2),'8230.00','11-21 R51 R651 Path A total');
+    const r651PathC=65.00+2.4*100.00;
+    assert.equal(r651PathC.toFixed(2),'305.00','11-21 R51 R651 Path C total');
+    assert.equal((r651PathA-r651PathC).toFixed(2),'7925.00','11-21 R51 R651 savings vs Path A');
+    assert.equal(((r651PathA-r651PathC)/r651PathA*100).toFixed(2),'96.29','11-21 R51 R651 pct savings vs Path A');
+    for(const r651File of ['workshops/github-trending-radar/docs/aoci-code-ripwire-reverify-okf-agent-memory-selection-faq.md','workshops/github-trending-radar/docs/aoci-code-ripwire-reverify-okf-agent-memory-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r51-r651-aocicode-ripwire-reverify-okfmemory.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r651File),'utf8');
+      assert.ok(txt.includes('3,880.00')&&txt.includes('4,350.00')&&txt.includes('8,230.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('7,925.00')&&txt.includes('96.29%')&&txt.includes('not_measured'),r651File+': contains exact 11-21 R51 R651 aocicode+ripwire+reverify+okfmemory closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
