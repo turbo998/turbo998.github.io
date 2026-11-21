@@ -8673,6 +8673,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r723File),'utf8');
       assert.ok(txt.includes('3,980.00')&&txt.includes('4,300.00')&&txt.includes('8,280.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('7,975.00')&&txt.includes('96.32%')&&txt.includes('not_measured'),r723File+': contains exact 11-21 R123 R723 jinn+1flowbase+plexus+proxify closed-form parameters');
     }
+    // 2026-11-21 Night Round 124 (R724: neuml/txtchat + Oqura-ai/deepdoc + summarizepaper/summarizepaper + laiso/site2pdf) verification
+    const r724PathA=3920.00+44.0*100.00;
+    assert.equal(r724PathA.toFixed(2),'8320.00','11-21 R124 R724 Path A total');
+    const r724PathC=70.00+2.4*100.00;
+    assert.equal(r724PathC.toFixed(2),'310.00','11-21 R124 R724 Path C total');
+    assert.equal((r724PathA-r724PathC).toFixed(2),'8010.00','11-21 R124 R724 savings vs Path A');
+    assert.equal(((r724PathA-r724PathC)/r724PathA*100).toFixed(2),'96.27','11-21 R124 R724 pct savings vs Path A');
+    for(const r724File of ['workshops/github-trending-radar/docs/txtchat-deepdoc-summarizepaper-site2pdf-selection-faq.md','workshops/github-trending-radar/docs/txtchat-deepdoc-summarizepaper-site2pdf-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r124-r724-txtchat-deepdoc-summarizepaper-site2pdf.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r724File),'utf8');
+      assert.ok(txt.includes('3,920.00')&&txt.includes('4,400.00')&&txt.includes('8,320.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,010.00')&&txt.includes('96.27%')&&txt.includes('not_measured'),r724File+': contains exact 11-21 R124 R724 txtchat+deepdoc+summarizepaper+site2pdf closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
