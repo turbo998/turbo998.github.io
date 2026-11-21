@@ -8090,6 +8090,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r670File),'utf8');
       assert.ok(txt.includes('3,970.00')&&txt.includes('4,400.00')&&txt.includes('8,370.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,060.00')&&txt.includes('96.30%')&&txt.includes('not_measured'),r670File+': contains exact 11-21 R70 R670 awsmcpproxy+mapboxmcp+planemcp+dorismcp closed-form parameters');
     }
+    // 2026-11-21 Day Round 71 (R671: nwiizo/tfmcp + modulestf/modulestf + kelos-dev/kelos + hookdeck/hookdeck-cli) verification
+    const r671PathA=3920.00+43.5*100.00;
+    assert.equal(r671PathA.toFixed(2),'8270.00','11-21 R71 R671 Path A total');
+    const r671PathC=70.00+2.4*100.00;
+    assert.equal(r671PathC.toFixed(2),'310.00','11-21 R71 R671 Path C total');
+    assert.equal((r671PathA-r671PathC).toFixed(2),'7960.00','11-21 R71 R671 savings vs Path A');
+    assert.equal(((r671PathA-r671PathC)/r671PathA*100).toFixed(2),'96.25','11-21 R71 R671 pct savings vs Path A');
+    for(const r671File of ['workshops/github-trending-radar/docs/tfmcp-modulestf-kelos-hookdeck-cli-selection-faq.md','workshops/github-trending-radar/docs/tfmcp-modulestf-kelos-hookdeck-cli-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r71-r671-tfmcp-modulestf-kelos-hookdeckcli.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r671File),'utf8');
+      assert.ok(txt.includes('3,920.00')&&txt.includes('4,350.00')&&txt.includes('8,270.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('7,960.00')&&txt.includes('96.25%')&&txt.includes('not_measured'),r671File+': contains exact 11-21 R71 R671 tfmcp+modulestf+kelos+hookdeckcli closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
