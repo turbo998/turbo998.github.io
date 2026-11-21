@@ -7771,6 +7771,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r641File),'utf8');
       assert.ok(txt.includes('3,610.00')&&txt.includes('4,250.00')&&txt.includes('7,860.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('7,550.00')&&txt.includes('96.06%')&&txt.includes('not_measured'),r641File+': contains exact 11-21 R41 R641 carrel+llmwikiv2+adaptiverag+ksor closed-form parameters');
     }
+    // 2026-11-21 Day Round 42 (R642: zj-unicom-ai/UniEmployee + jzjzzzzzzz/agent-me + jaikydota/BullFlow + thomasunise/casecite) verification
+    const r642PathA=3840.00+43.5*100.00;
+    assert.equal(r642PathA.toFixed(2),'8190.00','11-21 R42 R642 Path A total');
+    const r642PathC=80.00+2.5*100.00;
+    assert.equal(r642PathC.toFixed(2),'330.00','11-21 R42 R642 Path C total');
+    assert.equal((r642PathA-r642PathC).toFixed(2),'7860.00','11-21 R42 R642 savings vs Path A');
+    assert.equal(((r642PathA-r642PathC)/r642PathA*100).toFixed(2),'95.97','11-21 R42 R642 pct savings vs Path A');
+    for(const r642File of ['workshops/github-trending-radar/docs/uniemployee-agent-me-bullflow-casecite-selection-faq.md','workshops/github-trending-radar/docs/uniemployee-agent-me-bullflow-casecite-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r42-r642-uniemployee-agentme-bullflow-casecite.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r642File),'utf8');
+      assert.ok(txt.includes('3,840.00')&&txt.includes('4,350.00')&&txt.includes('8,190.00')&&txt.includes('80.00')&&txt.includes('250.00')&&txt.includes('330.00')&&txt.includes('7,860.00')&&txt.includes('95.97%')&&txt.includes('not_measured'),r642File+': contains exact 11-21 R42 R642 uniemployee+agentme+bullflow+casecite closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
