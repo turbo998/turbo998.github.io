@@ -7452,6 +7452,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r612File),'utf8');
       assert.ok(txt.includes('3,340.00')&&txt.includes('4,100.00')&&txt.includes('7,440.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('7,130.00')&&txt.includes('95.83%')&&txt.includes('not_measured'),r612File+': contains exact 11-21 R12 R612 bike4mind+opencraft+agentfootprint+babyseat closed-form parameters');
     }
+    // 2026-11-21 Day Round 13 (R613: Avazbek22/DevProjex + toprakahmetaydogmus/TZeroAlgorithm + nicia-ai/typegraph + memtomem/memtomem) verification
+    const r613PathA=3300.00+41.0*100.00;
+    assert.equal(r613PathA.toFixed(2),'7400.00','11-21 R13 R613 Path A total');
+    const r613PathC=65.00+2.4*100.00;
+    assert.equal(r613PathC.toFixed(2),'305.00','11-21 R13 R613 Path C total');
+    assert.equal((r613PathA-r613PathC).toFixed(2),'7095.00','11-21 R13 R613 savings vs Path A');
+    assert.equal(((r613PathA-r613PathC)/r613PathA*100).toFixed(2),'95.88','11-21 R13 R613 pct savings vs Path A');
+    for(const r613File of ['workshops/github-trending-radar/docs/devprojex-tzero-typegraph-memtomem-selection-faq.md','workshops/github-trending-radar/docs/devprojex-tzero-typegraph-memtomem-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r13-r613-devprojex-tzero-typegraph-memtomem.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r613File),'utf8');
+      assert.ok(txt.includes('3,300.00')&&txt.includes('4,100.00')&&txt.includes('7,400.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('7,095.00')&&txt.includes('95.88%')&&txt.includes('not_measured'),r613File+': contains exact 11-21 R13 R613 devprojex+tzero+typegraph+memtomem closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
