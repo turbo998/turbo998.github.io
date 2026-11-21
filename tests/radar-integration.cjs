@@ -8706,6 +8706,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r726File),'utf8');
       assert.ok(txt.includes('3,960.00')&&txt.includes('4,350.00')&&txt.includes('8,310.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('8,005.00')&&txt.includes('96.33%')&&txt.includes('not_measured'),r726File+': contains exact 11-21 R126 R726 shopify+kingdee+ibmcp+indiastack closed-form parameters');
     }
+    // 2026-11-21 Night Round 127 (R727: SikamikanikoBG/homelab-monitor + dinglebear-ai/unraid + bolivian-peru/os-moda + dddabtc/winremote-mcp) verification
+    const r727PathA=3940.00+43.5*100.00;
+    assert.equal(r727PathA.toFixed(2),'8290.00','11-21 R127 R727 Path A total');
+    const r727PathC=65.00+2.4*100.00;
+    assert.equal(r727PathC.toFixed(2),'305.00','11-21 R127 R727 Path C total');
+    assert.equal((r727PathA-r727PathC).toFixed(2),'7985.00','11-21 R127 R727 savings vs Path A');
+    assert.equal(((r727PathA-r727PathC)/r727PathA*100).toFixed(2),'96.32','11-21 R127 R727 pct savings vs Path A');
+    for(const r727File of ['workshops/github-trending-radar/docs/homelab-monitor-unraid-os-moda-winremote-mcp-selection-faq.md','workshops/github-trending-radar/docs/homelab-monitor-unraid-os-moda-winremote-mcp-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r127-r727-homelab-unraid-osmoda-winremote.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r727File),'utf8');
+      assert.ok(txt.includes('3,940.00')&&txt.includes('4,350.00')&&txt.includes('8,290.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('7,985.00')&&txt.includes('96.32%')&&txt.includes('not_measured'),r727File+': contains exact 11-21 R127 R727 homelab+unraid+osmoda+winremote closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
