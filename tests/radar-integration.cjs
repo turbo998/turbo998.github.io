@@ -7606,6 +7606,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r626File),'utf8');
       assert.ok(txt.includes('3,540.00')&&txt.includes('4,200.00')&&txt.includes('7,740.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('7,430.00')&&txt.includes('95.99%')&&txt.includes('not_measured'),r626File+': contains exact 11-21 R26 R626 prismor+clawmetry+decapod+gnt closed-form parameters');
     }
+    // 2026-11-21 Day Round 27 (R627: smart-mcp-proxy/mcpproxy-go + Dicklesworthstone/fastmcp_rust + fordaaaa/panoply + vicanso/zniff) verification
+    const r627PathA=3410.00+41.5*100.00;
+    assert.equal(r627PathA.toFixed(2),'7560.00','11-21 R27 R627 Path A total');
+    const r627PathC=65.00+2.4*100.00;
+    assert.equal(r627PathC.toFixed(2),'305.00','11-21 R27 R627 Path C total');
+    assert.equal((r627PathA-r627PathC).toFixed(2),'7255.00','11-21 R27 R627 savings vs Path A');
+    assert.equal(((r627PathA-r627PathC)/r627PathA*100).toFixed(2),'95.97','11-21 R27 R627 pct savings vs Path A');
+    for(const r627File of ['workshops/github-trending-radar/docs/mcpproxy-go-fastmcp-rust-panoply-zniff-selection-faq.md','workshops/github-trending-radar/docs/mcpproxy-go-fastmcp-rust-panoply-zniff-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r27-r627-mcpproxygo-fastmcprust-panoply-zniff.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r627File),'utf8');
+      assert.ok(txt.includes('3,410.00')&&txt.includes('4,150.00')&&txt.includes('7,560.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('7,255.00')&&txt.includes('95.97%')&&txt.includes('not_measured'),r627File+': contains exact 11-21 R27 R627 mcpproxygo+fastmcprust+panoply+zniff closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
