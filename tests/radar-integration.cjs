@@ -7331,6 +7331,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r601File),'utf8');
       assert.ok(txt.includes('3,240.00')&&txt.includes('4,150.00')&&txt.includes('7,390.00')&&txt.includes('75.00')&&txt.includes('250.00')&&txt.includes('325.00')&&txt.includes('7,065.00')&&txt.includes('95.60%')&&txt.includes('not_measured'),r601File+': contains exact 11-21 R1 R601 gram+mneme+backenly+flisk closed-form parameters');
     }
+    // 2026-11-21 Day Round 2 (R602: ChronoAIProject/NyxID + ali-ulu/huqan + Rul1an/assay + backblaze-labs/b2-mcp) verification
+    const r602PathA=3120.00+40.0*100.00;
+    assert.equal(r602PathA.toFixed(2),'7120.00','11-21 R2 R602 Path A total');
+    const r602PathC=70.00+2.4*100.00;
+    assert.equal(r602PathC.toFixed(2),'310.00','11-21 R2 R602 Path C total');
+    assert.equal((r602PathA-r602PathC).toFixed(2),'6810.00','11-21 R2 R602 savings vs Path A');
+    assert.equal(((r602PathA-r602PathC)/r602PathA*100).toFixed(2),'95.65','11-21 R2 R602 pct savings vs Path A');
+    for(const r602File of ['workshops/github-trending-radar/docs/nyxid-huqan-assay-b2-mcp-selection-faq.md','workshops/github-trending-radar/docs/nyxid-huqan-assay-b2-mcp-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r2-r602-nyxid-huqan-assay-b2mcp.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r602File),'utf8');
+      assert.ok(txt.includes('3,120.00')&&txt.includes('4,000.00')&&txt.includes('7,120.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('6,810.00')&&txt.includes('95.65%')&&txt.includes('not_measured'),r602File+': contains exact 11-21 R2 R602 nyxid+huqan+assay+b2mcp closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
