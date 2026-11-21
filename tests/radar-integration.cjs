@@ -8618,6 +8618,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r718File),'utf8');
       assert.ok(txt.includes('3,990.00')&&txt.includes('4,350.00')&&txt.includes('8,340.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,030.00')&&txt.includes('96.28%')&&txt.includes('not_measured'),r718File+': contains exact 11-21 R118 R718 hermesoffice+piext+zhin+platypus closed-form parameters');
     }
+    // 2026-11-21 Night Round 119 (R719: piotr-agier/google-drive-mcp + georgeantonopoulos/Basecamp-MCP-Server + Vortiago/mcp-outline + MarcoPorcellato/matryca-plumber) verification
+    const r719PathA=3930.00+43.5*100.00;
+    assert.equal(r719PathA.toFixed(2),'8280.00','11-21 R119 R719 Path A total');
+    const r719PathC=65.00+2.4*100.00;
+    assert.equal(r719PathC.toFixed(2),'305.00','11-21 R119 R719 Path C total');
+    assert.equal((r719PathA-r719PathC).toFixed(2),'7975.00','11-21 R119 R719 savings vs Path A');
+    assert.equal(((r719PathA-r719PathC)/r719PathA*100).toFixed(2),'96.32','11-21 R119 R719 pct savings vs Path A');
+    for(const r719File of ['workshops/github-trending-radar/docs/google-drive-mcp-basecamp-mcp-outline-matryca-plumber-selection-faq.md','workshops/github-trending-radar/docs/google-drive-mcp-basecamp-mcp-outline-matryca-plumber-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r119-r719-gdrivemcp-basecampmcp-outline-matryca.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r719File),'utf8');
+      assert.ok(txt.includes('3,930.00')&&txt.includes('4,350.00')&&txt.includes('8,280.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('7,975.00')&&txt.includes('96.32%')&&txt.includes('not_measured'),r719File+': contains exact 11-21 R119 R719 gdrivemcp+basecampmcp+outline+matryca closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
