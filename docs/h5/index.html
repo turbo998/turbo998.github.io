@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; img-src data:">
+  <title>AI Infra 全景可视化精学馆 (Interactive H5 Learning Center) · turbo998/ai-infra-research</title>
+  <style>
+    :root {
+      --bg: #070b14;
+      --panel: #111827;
+      --card: #1e293b;
+      --border: #334155;
+      --accent: #38bdf8;
+      --green: #34d399;
+      --amber: #fbbf24;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    header {
+      background: rgba(15, 23, 42, 0.96);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 20px;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .topbar {
+      max-width: 1320px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .badge {
+      background: linear-gradient(135deg, #0284c7, #10b981);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 999px;
+    }
+    .nav a, .lang-btn {
+      color: var(--accent);
+      text-decoration: none;
+      background: #0f172a;
+      border: 1px solid var(--border);
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .nav { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+    main { max-width: 1320px; margin: 24px auto; padding: 0 16px 48px; }
+    .hero {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 26px;
+      margin-bottom: 24px;
+    }
+    .hero h1 { margin: 0 0 10px; font-size: 26px; }
+    .hero p { margin: 0; color: #cbd5e1; font-size: 14.5px; }
+    .section-title {
+      font-size: 19px;
+      color: var(--accent);
+      margin: 24px 0 14px;
+      border-left: 4px solid var(--green);
+      padding-left: 12px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+      gap: 18px;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .card .tag {
+      display: inline-block;
+      font-size: 11.5px;
+      font-weight: 700;
+      color: #6ee7b7;
+      background: #064e3b;
+      padding: 3px 9px;
+      border-radius: 999px;
+      margin-bottom: 8px;
+    }
+    .card h3 { margin: 6px 0 10px; font-size: 17px; color: #f8fafc; }
+    .card p { margin: 0 0 14px; font-size: 13.5px; color: #cbd5e1; }
+    .actions { display: flex; gap: 8px; flex-wrap: wrap; }
+    .btn {
+      display: inline-block;
+      background: #0f172a;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 12.5px;
+      font-weight: 700;
+      text-decoration: none;
+    }
+    .btn.primary { background: #0284c7; color: #fff; border-color: #0284c7; }
+    [data-lang="en"] { display: none; }
+    body.en [data-lang="zh"] { display: none; }
+    body.en [data-lang="en"] { display: block; }
+    footer { text-align: center; color: var(--muted); font-size: 12px; padding: 24px; border-top: 1px solid var(--border); }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="topbar">
+      <div>
+        <span class="badge">AI INFRA H5 PANORAMA</span>
+        <strong style="margin-left:8px;" data-lang="zh">云与 AI 基础设施解决方案架构师（SA）交互式 H5 全景精学馆</strong>
+        <strong style="margin-left:8px;" data-lang="en">Cloud &amp; AI Solution Architect Interactive H5 Learning Panorama</strong>
+      </div>
+      <div class="nav">
+        <a href="../README.md">🏠 仓库首页</a>
+        <a href="../full-catalog-zh.md">📚 双语总目录</a>
+        <a href="../h5-academy/index.html">🎓 6册 H5 Academy</a>
+        <a href="ai-infra-learning-hub.html">🔥 7合1全景沙盘</a>
+        <button class="lang-btn" onclick="document.body.classList.toggle('en')">EN / 中文</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div data-lang="zh">
+        <h1>🎓 欢迎来到 AI Infra 交互式 H5 全景精学馆（3分钟看懂结论 · 10分钟吃透手算）</h1>
+        <p>面向企业 <strong>Cloud &amp; AI Solution Architect</strong>，所有 H5 精读页均采用<strong>零外部依赖（Offline CSP）、双端自适应、内联 SVG 动态图表 + 实时可拖动滑块计算器</strong>构建，覆盖 <strong>PD 分离与 KV 带宽、TP/PP/DP/EP 并行切分、NVLink vs. IB/RoCEv2 智算网络、三道水位线 GPU 容量估算、TPM/TPS &amp; Little's Law 换算与 TTFT/TPOT/Goodput 指标体系</strong>。</p>
+      </div>
+      <div data-lang="en">
+        <h1>🎓 AI Infra Interactive H5 Learning Center (3-Min Visual Takeaways · 10-Min Hand-Calculation Labs)</h1>
+        <p>Built for Enterprise <strong>Cloud &amp; AI Solution Architects</strong>. Every H5 study module is 100% self-contained (offline CSP), mobile/desktop responsive, and combines inline SVG diagrams, Roofline/Pareto charts, and live slider calculators across PD Disaggregation, Parallelism, RDMA Networking, and 3-Watermark GPU Capacity Sizing.</p>
+      </div>
+    </section>
+
+    <h2 class="section-title">🔥 核心专题深度交互 H5 精读页（Topic Deep-Dive H5 Labs）</h2>
+    <div class="grid" id="topicGrid">
+      <div class="card">
+        <div>
+          <span class="tag">#396 · PD 分离与 KV 带宽</span>
+          <h3>PD 分离动态 P:D 配比手算、异构 GPU 混搭与 NIXL/Mooncake 跨机 KV 带宽沙盘</h3>
+          <p>实时拖动滑块推演日间 16K RAG（5P:3D）与夜间 4K CoT（2P:6D）配比反转、25% Flex 零重启双模节点、DeepSeek MLA vs. GQA-8 跨机 KV 传输体积与四大开源栈选型。</p>
+        </div>
+        <div class="actions">
+          <a class="btn primary" href="pd-disaggregation-ratio-kv-bandwidth-lab.html">📱 打开交互 H5 精读页</a>
+          <a class="btn" href="../components/pd-disaggregation-elastic-ratio-heterogeneous-gpu-kv-bandwidth-selection-faq.md">📖 中文 FAQ</a>
+          <a class="btn" href="../reports/pd-disaggregation-elastic-ratio-heterogeneous-gpu-kv-bandwidth-selection-cards.html">🃏 7-Card</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div>
+          <span class="tag">#397 · 并行切分与加速</span>
+          <h3>Dense (70B/405B) vs. MoE (671B) 并行切分（TP/PP/DP/EP）与七大推理加速交互沙盘</h3>
+          <p>手算每步 Decode 2L 次 All-Reduce 跨机通信雪崩，对比 TP/PP/Attention DP/Expert EP (DeepEP 双微批乒乓重叠)，动态观测投机解码 (MTP/EAGLE-3) 在 Batch=48 处的黄金关断线。</p>
+        </div>
+        <div class="actions">
+          <a class="btn primary" href="parallelism-tp-pp-dp-ep-moe-sandbox.html">📱 打开交互 H5 精读页</a>
+          <a class="btn" href="../components/dense-vs-moe-tp-pp-dp-ep-parallelism-communication-sizing-selection-faq.md">📖 中文 FAQ</a>
+          <a class="btn" href="../reports/dense-vs-moe-tp-pp-dp-ep-parallelism-communication-sizing-selection-cards.html">🃏 7-Card</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div>
+          <span class="tag">#398 · 智算高速网络</span>
+          <h3>NVLink (Scale-Up) vs. IB/RoCEv2 (Scale-Out)、GPUDirect 零拷贝与 DCQCN/busbw 交互沙盘</h3>
+          <p>直观演示 BIOS 未关 PCIe ACS 导致 P2P 绕行 CPU 降速 72% 的排雷路径、ECN K_min &lt;&lt; PFC XOFF 交换机缓存水线手算、以及 nccl-tests algbw 到 busbw 换算门禁。</p>
+        </div>
+        <div class="actions">
+          <a class="btn primary" href="nvlink-ib-rocev2-gpudirect-network-lab.html">📱 打开交互 H5 精读页</a>
+          <a class="btn" href="../components/scaleup-nvlink-vs-scaleout-ib-rocev2-gpudirect-dcqcn-busbw-sizing-selection-faq.md">📖 中文 FAQ</a>
+          <a class="btn" href="../reports/scaleup-nvlink-vs-scaleout-ib-rocev2-gpudirect-dcqcn-busbw-sizing-selection-cards.html">🃏 7-Card</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div>
+          <span class="tag">#399 · 容量规划与 SLA</span>
+          <h3>三道水位线算卡、TPM/TPS/PTU 换算、Little's Law 并发与五大场景 SLA 终极计算器</h3>
+          <p>一键切换实时语音、代码补全、长文 RAG、深度推理 CoT 与离线批处理五大场景，联动计算 E2EL、B_active 并发 KV 显存、三道水位线卡数与 P80/P20 混合 TCO。</p>
+        </div>
+        <div class="actions">
+          <a class="btn primary" href="gpu-capacity-tpm-tps-ptu-tco-calculator.html">📱 打开交互 H5 精读页</a>
+          <a class="btn" href="../components/enterprise-llm-capacity-planning-tpm-tps-three-watermarks-ptu-tco-sizing-selection-faq.md">📖 中文 FAQ</a>
+          <a class="btn" href="../reports/enterprise-llm-capacity-planning-tpm-tps-three-watermarks-ptu-tco-sizing-selection-cards.html">🃏 7-Card</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div>
+          <span class="tag">#400 · 平台选型与突破雷达</span>
+          <h3>第 400 篇里程碑：PAYGO vs. PTU vs. 自建 K8s 成本拐点、AI Gateway 横评与 2026 突破雷达</h3>
+          <p>实时推演 30% 与 58% 利用率两大 TCO 拐点，对比 Azure APIM、Envoy AI Gateway (K8s GIE EPP)、LiteLLM、Kong 与 Higress，一站式掌握 2026 六大 AI Infra 核心突破。</p>
+        </div>
+        <div class="actions">
+          <a class="btn primary" href="ai-gateway-cloud-ptu-k8s-tco-radar-lab.html">📱 打开交互 H5 精读页</a>
+          <a class="btn" href="../components/enterprise-ai-gateway-cloud-ptu-k8s-tco-breakthrough-radar-selection-faq.md">📖 中文 FAQ</a>
+          <a class="btn" href="../reports/enterprise-ai-gateway-cloud-ptu-k8s-tco-breakthrough-radar-selection-cards.html">🃏 7-Card</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div>
+          <span class="tag">#401 · 128K–1M 超长上下文</span>
+          <h3>128K–1M 超长上下文三级 KV 卸载 (HBM/DRAM/3FS GDS)、2D USP 与 MLA/Hybrid 精算沙盘</h3>
+          <p>直观对比 GQA-8 (167.8GB@1M) vs. DeepSeek MLA (36.0GB) vs. 7:1 Hybrid SSM (4.5GB)，算清 O(S) Pinned DRAM 零拷贝拉回比 O(S^2) 重算快 110~520 倍的数学原理。</p>
+        </div>
+        <div class="actions">
+          <a class="btn primary" href="long-context-tiered-kv-usp-mla-lab.html">📱 打开交互 H5 精读页</a>
+          <a class="btn" href="../components/long-context-tiered-kv-cache-hbm-dram-nvme-usp-mla-sizing-selection-faq.md">📖 中文 FAQ</a>
+          <a class="btn" href="../reports/long-context-tiered-kv-cache-hbm-dram-nvme-usp-mla-sizing-selection-cards.html">🃏 7-Card</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div>
+          <span class="tag">#402 · 单机 HGX vs. NVL72 超节点</span>
+          <h3>单机 8 卡 HGX (H200/B200) vs. 多机 RDMA vs. 机柜超节点 (GB200 NVL72) 选型与液冷 TCO 沙盘</h3>
+          <p>对比 8 卡 NVLink 域 (1.13TB) 与 72 卡铜背板超节点 (13.8TB, 130 TB/s)，实时核查机房单柜供电上限 (10.5kW 风冷 vs. 45kW 分水岭 vs. 132kW DLC) 与单卡 Goodput。</p>
+        </div>
+        <div class="actions">
+          <a class="btn primary" href="hgx-vs-multinode-rdma-vs-nvl72-rack-tco-lab.html">📱 打开交互 H5 精读页</a>
+          <a class="btn" href="../components/single-node-hgx-vs-multinode-rdma-vs-rack-nvl72-tco-goodput-selection-faq.md">📖 中文 FAQ</a>
+          <a class="btn" href="../reports/single-node-hgx-vs-multinode-rdma-vs-rack-nvl72-tco-goodput-selection-cards.html">🃏 7-Card</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div>
+          <span class="tag">#403 · 推理模型 &lt;think&gt; 治理</span>
+          <h3>推理大模型 (DeepSeek-R1/o3) &lt;think&gt; 二次方 KV 风暴手算、三级难度路由与预算治理沙盘</h3>
+          <p>演示输出长度翻 9 倍如何引发 Little's Law 在途并发与序列长度双重乘积效应 (14.4x KV 风暴)，对比硬 max_tokens 腰斩与动态 &lt;/think&gt; 软门控。</p>
+        </div>
+        <div class="actions">
+          <a class="btn primary" href="reasoning-model-thinking-budget-kv-storm-lab.html">📱 打开交互 H5 精读页</a>
+          <a class="btn" href="../components/reasoning-model-thinking-budget-difficulty-router-kv-storm-sizing-selection-faq.md">📖 中文 FAQ</a>
+          <a class="btn" href="../reports/reasoning-model-thinking-budget-difficulty-router-kv-storm-sizing-selection-cards.html">🃏 7-Card</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div>
+          <span class="tag">#404 · 推理引擎与人力 TCO</span>
+          <h3>vLLM V1 vs. SGLang vs. TensorRT-LLM vs. Azure Foundry 全口径 TCO 选型沙盘</h3>
+          <p>把资深 SRE 工程人力成本 ($180K/FTE/年) 纳入总账，寻找 12~16 卡自建 vs. 托管黄金拐点，掌握 SGLang (Agent/MoE) + vLLM V1 (100+模型/异构芯片) 双擎分工。</p>
+        </div>
+        <div class="actions">
+          <a class="btn primary" href="vllm-sglang-trtllm-azure-foundry-serving-lab.html">📱 打开交互 H5 精读页</a>
+          <a class="btn" href="../components/enterprise-inference-serving-vllm-sglang-trtllm-azure-foundry-tco-selection-faq.md">📖 中文 FAQ</a>
+          <a class="btn" href="../reports/enterprise-inference-serving-vllm-sglang-trtllm-azure-foundry-tco-selection-cards.html">🃏 7-Card</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div>
+          <span class="tag">#405 · 跨区容灾与云部署 SKU</span>
+          <h3>Global Standard vs. DataZone vs. PTU vs. 多活 AKS 容灾与 TCO 沙盘</h3>
+          <p>理清 Regional / DataZone (EU/US) / Global Standard / PTU 合规驻留边界，演示 50/50 粘性双活如何消除故障切换时的“冷缓存雪崩”并实现 1.2s RTO。</p>
+        </div>
+        <div class="actions">
+          <a class="btn primary" href="global-standard-datazone-ptu-aks-failover-lab.html">📱 打开交互 H5 精读页</a>
+          <a class="btn" href="../components/enterprise-global-standard-datazone-ptu-multi-region-aks-failover-selection-faq.md">📖 中文 FAQ</a>
+          <a class="btn" href="../reports/enterprise-global-standard-datazone-ptu-multi-region-aks-failover-selection-cards.html">🃏 7-Card</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div>
+          <span class="tag">#406 · 多模型路由与三级缓存</span>
+          <h3>78/22 多模型级联路由与三级缓存网关 (Prompt Cache vs. 语义缓存) 精算沙盘</h3>
+          <p>揭穿裸开余弦语义缓存 8.2% 张冠李戴事故根源，构建 L1 精确哈希 + L2 数字/实体强校验 FAQ 语义缓存 + L3 K8s GIE Prefix KV 路由，省下 82.5% 账单。</p>
+        </div>
+        <div class="actions">
+          <a class="btn primary" href="multi-model-router-prompt-semantic-cache-gateway-lab.html">📱 打开交互 H5 精读页</a>
+          <a class="btn" href="../components/enterprise-multi-model-router-prompt-semantic-cache-gateway-tco-selection-faq.md">📖 中文 FAQ</a>
+          <a class="btn" href="../reports/enterprise-multi-model-router-prompt-semantic-cache-gateway-tco-selection-cards.html">🃏 7-Card</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div>
+          <span class="tag">#407 · 亿级向量 RAG 选型</span>
+          <h3>企业级生产 RAG 检索引擎选型：Azure AI Search vs. Milvus vs. Qdrant vs. pgvector 沙盘</h3>
+          <p>手算 1 亿条 1536d 向量从 896GB (FP32 HNSW) 压缩至 72GB (NVMe DiskANN) 的内存账本，掌握 Pre-Filter ACL 位图与 BM25+向量+重排流水线。</p>
+        </div>
+        <div class="actions">
+          <a class="btn primary" href="rag-azure-ai-search-milvus-qdrant-pgvector-sizer-lab.html">📱 打开交互 H5 精读页</a>
+          <a class="btn" href="../components/enterprise-rag-search-azure-ai-search-milvus-qdrant-pgvector-tco-selection-faq.md">📖 中文 FAQ</a>
+          <a class="btn" href="../reports/enterprise-rag-search-azure-ai-search-milvus-qdrant-pgvector-tco-selection-cards.html">🃏 7-Card</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div>
+          <span class="tag">#408 · 多智能体平台与沙箱</span>
+          <h3>企业级多智能体平台选型：Azure AI Agent Service vs. LangGraph vs. SK/AutoGen 沙盘</h3>
+          <p>破解 5-Agent 群聊广播 11.8x Token 膨胀与交替覆盖 Prefix KV 缓存难题，通过结构化 &lt;800 Tok JSON 交接与按角色粘性路由将完结率推至 99.4%。</p>
+        </div>
+        <div class="actions">
+          <a class="btn primary" href="multi-agent-foundry-langgraph-autogen-aks-tco-lab.html">📱 打开交互 H5 精读页</a>
+          <a class="btn" href="../components/enterprise-multi-agent-platform-foundry-langgraph-autogen-aks-tco-selection-faq.md">📖 中文 FAQ</a>
+          <a class="btn" href="../reports/enterprise-multi-agent-platform-foundry-langgraph-autogen-aks-tco-selection-cards.html">🃏 7-Card</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div>
+          <span class="tag">#409 · 实时语音客服中心</span>
+          <h3>智能语音客服中心选型：Realtime S2S API vs. 级联流式 WebRTC 架构与分钟成本精算沙盘</h3>
+          <p>拆解 435ms 口腔到耳朵 (M2E) 六段延迟瀑布，利用 14% LLM 活跃占空比算出 16 张 H200 支撑 1,000 路并发热线，单价压至 $0.032/min。</p>
+        </div>
+        <div class="actions">
+          <a class="btn primary" href="voice-contact-center-realtime-api-vs-webrtc-tco-lab.html">📱 打开交互 H5 精读页</a>
+          <a class="btn" href="../components/enterprise-voice-contact-center-realtime-api-vs-self-hosted-webrtc-tco-selection-faq.md">📖 中文 FAQ</a>
+          <a class="btn" href="../reports/enterprise-voice-contact-center-realtime-api-vs-self-hosted-webrtc-tco-selection-cards.html">🃏 7-Card</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div>
+          <span class="tag">#410 · 微调中台与 Multi-LoRA</span>
+          <h3>企业大模型微调平台选型：Azure Foundry vs. LLaMA-Factory/Axolotl 与 Multi-LoRA 共池沙盘</h3>
+          <p>手算 Full FT (16Ψ) vs. LoRA vs. QLoRA 显存账本，演示如何用 8 张 H200 Multi-LoRA 共享池替换 40 套独立合并部署的 160 张卡 (-94.4% TCO)。</p>
+        </div>
+        <div class="actions">
+          <a class="btn primary" href="fine-tuning-foundry-vs-llama-factory-axolotl-aks-tco-lab.html">📱 打开交互 H5 精读页</a>
+          <a class="btn" href="../components/enterprise-fine-tuning-platform-azure-foundry-vs-llama-factory-axolotl-aks-tco-selection-faq.md">📖 中文 FAQ</a>
+          <a class="btn" href="../reports/enterprise-fine-tuning-platform-azure-foundry-vs-llama-factory-axolotl-aks-tco-selection-cards.html">🃏 7-Card</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div>
+          <span class="tag">#411 · 多模态文档解析与 OCR</span>
+          <h3>企业多模态文档解析选型：Azure Document Intelligence vs. MinerU/Docling vs. VLM 沙盘</h3>
+          <p>根治 RAG 跨行合并单元格表格错位顽疾，用 82% 版面快筛 + 18% 局部裁剪送 Qwen2.5-VL-7B 输出 HTML rowspan，成本从 $8.20 压至 $0.42/千页。</p>
+        </div>
+        <div class="actions">
+          <a class="btn primary" href="document-ai-azure-doc-intel-vs-mineru-docling-vlm-tco-lab.html">📱 打开交互 H5 精读页</a>
+          <a class="btn" href="../components/enterprise-document-ai-azure-doc-intelligence-vs-mineru-docling-vlm-tco-selection-faq.md">📖 中文 FAQ</a>
+          <a class="btn" href="../reports/enterprise-document-ai-azure-doc-intelligence-vs-mineru-docling-vlm-tco-selection-cards.html">🃏 7-Card</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div>
+          <span class="tag">#412 · 网关配额与部门分账</span>
+          <h3>企业级 AI 网关 Token 配额治理与部门分账：APIM vs. Kong vs. LiteLLM vs. Envoy 沙盘</h3>
+          <p>淘汰失效的 RPM 限流与 max_tokens 死扣，演示两阶段四元组加权 Token 桶与闲时弹性配额借用，将 10 部门共池利用率推至 89.4%。</p>
+        </div>
+        <div class="actions">
+          <a class="btn primary" href="ai-gateway-token-quota-chargeback-apim-kong-litellm-lab.html">📱 打开交互 H5 精读页</a>
+          <a class="btn" href="../components/enterprise-ai-gateway-token-quota-chargeback-apim-kong-litellm-envoy-selection-faq.md">📖 中文 FAQ</a>
+          <a class="btn" href="../reports/enterprise-ai-gateway-token-quota-chargeback-apim-kong-litellm-envoy-selection-cards.html">🃏 7-Card</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div>
+          <span class="tag">#413 · 跨云混合云套利架构</span>
+          <h3>企业跨云与混合云 AI 推理架构：整会话云粘性路由与异构芯片/Spot 套利沙盘</h3>
+          <p>揭穿跨云传 KV ($214/千次流量税) 与逐轮跨云轮询 (缓存跌至 24.5%) 陷阱，用 60/25/15 粘性套利压至 $0.21/1M (-69.1% TCO)。</p>
+        </div>
+        <div class="actions">
+          <a class="btn primary" href="multicloud-hybrid-ai-inference-arbitrage-failover-lab.html">📱 打开交互 H5 精读页</a>
+          <a class="btn" href="../components/enterprise-multicloud-hybrid-ai-inference-arbitrage-failover-architecture-selection-faq.md">📖 中文 FAQ</a>
+          <a class="btn" href="../reports/enterprise-multicloud-hybrid-ai-inference-arbitrage-failover-architecture-selection-cards.html">🃏 7-Card</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div>
+          <span class="tag">#414 · 智能编程平台与 ROI</span>
+          <h3>企业级 AI 智能编程平台选型：GitHub Copilot vs. 双轨 FIM+Agent 池与 ROI 沙盘</h3>
+          <p>手算 2,000 名研发活跃敲键 QPS (仅需 4 张 H200 跑 7B FIM 达 115ms)，结合 Speculative Fast-Apply (1.25s 改 800 行) 兑现 48.2x ROI。</p>
+        </div>
+        <div class="actions">
+          <a class="btn primary" href="ai-coding-platform-copilot-vs-hybrid-fim-agent-roi-lab.html">📱 打开交互 H5 精读页</a>
+          <a class="btn" href="../components/enterprise-ai-coding-platform-github-copilot-vs-hybrid-fim-agent-roi-selection-faq.md">📖 中文 FAQ</a>
+          <a class="btn" href="../reports/enterprise-ai-coding-platform-github-copilot-vs-hybrid-fim-agent-roi-selection-cards.html">🃏 7-Card</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div>
+          <span class="tag">#415 · 海量离线批处理 AI</span>
+          <h3>企业级海量离线批处理 AI 选型：Global Batch API vs. Fabric AI vs. Ray Data + vLLM 沙盘</h3>
+          <p>用免费 SQL 2D 预排序将 Prefix 命中率从 31% 拉升至 96.4%，叠加 B=384 满载 (7,840 tok/s) 与闲时 GPU 收割省 92.9% 账单。</p>
+        </div>
+        <div class="actions">
+          <a class="btn primary" href="batch-ai-global-batch-api-fabric-ray-vllm-tco-lab.html">📱 打开交互 H5 精读页</a>
+          <a class="btn" href="../components/enterprise-batch-ai-pipeline-global-batch-api-fabric-ray-vllm-tco-selection-faq.md">📖 中文 FAQ</a>
+          <a class="btn" href="../reports/enterprise-batch-ai-pipeline-global-batch-api-fabric-ray-vllm-tco-selection-cards.html">🃏 7-Card</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div>
+          <span class="tag">#416 · 安全护栏与隐私脱敏</span>
+          <h3>企业级 AI 安全护栏与敏感数据脱敏：Azure Content Safety vs. Bedrock vs. Llama-Guard 沙盘</h3>
+          <p>网关内联 Presidio 可逆占位符 (12ms) + 与主模型 Prefill 异步投机并发执行，实现 +12ms 零感知护栏与 99.4% 注入拦截。</p>
+        </div>
+        <div class="actions">
+          <a class="btn primary" href="ai-guardrails-content-safety-bedrock-llamaguard-presidio-lab.html">📱 打开交互 H5 精读页</a>
+          <a class="btn" href="../components/enterprise-ai-guardrails-azure-content-safety-bedrock-llamaguard-presidio-tco-selection-faq.md">📖 中文 FAQ</a>
+          <a class="btn" href="../reports/enterprise-ai-guardrails-azure-content-safety-bedrock-llamaguard-presidio-tco-selection-cards.html">🃏 7-Card</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div>
+          <span class="tag">#417 · LLMOps 可观测性中台</span>
+          <h3>企业级大模型可观测性 (LLMOps) 选型：Foundry Tracing vs. LangSmith vs. Arize vs. Langfuse 沙盘</h3>
+          <p>拆解单条 64KB Agent Trace 撑爆传统 APM ($6.84万/月) 陷阱，用 420B 指标入 ClickHouse + 尾部采样存 Blob 省 91.8% 账单。</p>
+        </div>
+        <div class="actions">
+          <a class="btn primary" href="llmops-observability-langfuse-langsmith-arize-foundry-lab.html">📱 打开交互 H5 精读页</a>
+          <a class="btn" href="../components/enterprise-llmops-observability-langfuse-langsmith-arize-foundry-tracing-tco-selection-faq.md">📖 中文 FAQ</a>
+          <a class="btn" href="../reports/enterprise-llmops-observability-langfuse-langsmith-arize-foundry-tracing-tco-selection-cards.html">🃏 7-Card</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div>
+          <span class="tag">#418 · 智能问数与对话式 BI</span>
+          <h3>企业级智能问数与对话式 BI 选型：Fabric Data Agent vs. Databricks Genie vs. Cortex vs. WrenAI 沙盘</h3>
+          <p>终结 500 表裸 DDL 问数 51.4% 准确率与 $250 全表扫描炸弹，基于认证语义层 (DAX/UC/MDL) + SQLGlot 熔断把准确率推至 94.6%。</p>
+        </div>
+        <div class="actions">
+          <a class="btn primary" href="conversational-bi-fabric-iq-databricks-genie-cortex-wrenai-lab.html">📱 打开交互 H5 精读页</a>
+          <a class="btn" href="../components/enterprise-conversational-bi-fabric-data-agent-databricks-genie-cortex-wrenai-selection-faq.md">📖 中文 FAQ</a>
+          <a class="btn" href="../reports/enterprise-conversational-bi-fabric-data-agent-databricks-genie-cortex-wrenai-selection-cards.html">🃏 7-Card</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div>
+          <span class="tag">#419 · 边云协同视频 VLM</span>
+          <h3>企业级多路视频理解与边云协同选型：云端 VLM vs. 边缘 Jetson/L40S + 2x2 时空拼图级联沙盘</h3>
+          <p>用边缘 DeepStream 本地滤除 94% 静默帧 + 2x2 目标框裁剪拼图 (780 Tok) + VLM 终审 6% 事件，省下 97.6% 带宽与 98.8% 成本。</p>
+        </div>
+        <div class="actions">
+          <a class="btn primary" href="edge-cloud-video-vlm-jetson-l40s-cascade-tco-lab.html">📱 打开交互 H5 精读页</a>
+          <a class="btn" href="../components/enterprise-edge-cloud-video-vlm-jetson-l40s-cascade-bandwidth-tco-selection-faq.md">📖 中文 FAQ</a>
+          <a class="btn" href="../reports/enterprise-edge-cloud-video-vlm-jetson-l40s-cascade-bandwidth-tco-selection-cards.html">🃏 7-Card</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div>
+          <span class="tag">#420 · 小模型蒸馏与合成数据</span>
+          <h3>企业级小模型蒸馏与合成数据工厂：Foundry Distillation vs. Bedrock vs. R1 蒸馏工厂沙盘</h3>
+          <p>花 $480 将 25,000 条经验证器提纯的 R1/GPT-4o 轨迹与 Top-64 Logit 蒸馏入 8B 学生，准确率达 95.4%，3.7 小时回本且年省 $112 万。</p>
+        </div>
+        <div class="actions">
+          <a class="btn primary" href="model-distillation-foundry-bedrock-r1-teacher-student-roi-lab.html">📱 打开交互 H5 精读页</a>
+          <a class="btn" href="../components/enterprise-model-distillation-foundry-bedrock-r1-teacher-student-roi-selection-faq.md">📖 中文 FAQ</a>
+          <a class="btn" href="../reports/enterprise-model-distillation-foundry-bedrock-r1-teacher-student-roi-selection-cards.html">🃏 7-Card</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div>
+          <span class="tag">#421 · 客服与 ITSM 智能体</span>
+          <h3>企业级客服与 ITSM 智能体选型：Copilot Studio vs. ServiceNow/Agentforce vs. 82/18 混合沙盘</h3>
+          <p>对内 B2E 办公用 Copilot Studio 享 1,400+ 连接器；对外 300 万次 B2C 客服用前排 82% 分流 + 后排 13% 连接器省 96% 账单。</p>
+        </div>
+        <div class="actions">
+          <a class="btn primary" href="customer-service-copilot-studio-servicenow-agentforce-tco-lab.html">📱 打开交互 H5 精读页</a>
+          <a class="btn" href="../components/enterprise-customer-service-copilot-studio-servicenow-agentforce-custom-tco-selection-faq.md">📖 中文 FAQ</a>
+          <a class="btn" href="../reports/enterprise-customer-service-copilot-studio-servicenow-agentforce-custom-tco-selection-cards.html">🃏 7-Card</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div>
+          <span class="tag">#422 · 主权 AI 与机密计算</span>
+          <h3>企业级私有云与主权 AI 选型：Azure Local vs. NVIDIA AI Enterprise vs. 开源 K8s+Zarf 沙盘</h3>
+          <p>用 Zarf 断网离线包把 21 天驻场缩至 4.5 小时，开启 H200 PPCIE 消除 53.5% PCIe 机密加密税，32 卡 3 年省下 $106 万。</p>
+        </div>
+        <div class="actions">
+          <a class="btn primary" href="sovereign-ai-azure-local-nvidia-aie-k8s-confidential-tco-lab.html">📱 打开交互 H5 精读页</a>
+          <a class="btn" href="../components/enterprise-sovereign-ai-appliance-azure-local-nvidia-aie-k8s-confidential-tco-selection-faq.md">📖 中文 FAQ</a>
+          <a class="btn" href="../reports/enterprise-sovereign-ai-appliance-azure-local-nvidia-aie-k8s-confidential-tco-selection-cards.html">🃏 7-Card</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div>
+          <span class="tag">#423 · MCP 网关与百工具路由</span>
+          <h3>企业级 MCP 工具网关、OAuth 2.1 OBO 与百工具路由：Azure APIM vs. Envoy vs. 延迟发现沙盘</h3>
+          <p>揭穿替换开头 tools 数组摧毁 25K 历史 Prefix KV (跌至 18.5%) 陷阱，用头部固定元工具 + 尾部追加 Top-8 省 94.2% Token。</p>
+        </div>
+        <div class="actions">
+          <a class="btn primary" href="mcp-gateway-apim-envoy-semantic-tool-router-obo-lab.html">📱 打开交互 H5 精读页</a>
+          <a class="btn" href="../components/enterprise-mcp-gateway-apim-envoy-semantic-tool-router-obo-auth-selection-faq.md">📖 中文 FAQ</a>
+          <a class="btn" href="../reports/enterprise-mcp-gateway-apim-envoy-semantic-tool-router-obo-auth-selection-cards.html">🃏 7-Card</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div>
+          <span class="tag">#424 · 智能体长效记忆图谱</span>
+          <h3>企业级智能体长效记忆选型：Mem0/Zep 双时态图谱 vs. Letta vs. Cosmos DB vs. Postgres 沙盘</h3>
+          <p>根治纯向量记忆库遇到用户搬家/改偏好新旧事实打架 (准确率仅 58.4%) 顽疾，用 t_valid/t_invalid 双时态边冲上 94.8%。</p>
+        </div>
+        <div class="actions">
+          <a class="btn primary" href="agent-memory-mem0-zep-cosmosdb-pgvector-tco-lab.html">📱 打开交互 H5 精读页</a>
+          <a class="btn" href="../components/enterprise-agent-memory-mem0-zep-cosmosdb-pgvector-graph-tco-selection-faq.md">📖 中文 FAQ</a>
+          <a class="btn" href="../reports/enterprise-agent-memory-mem0-zep-cosmosdb-pgvector-graph-tco-selection-cards.html">🃏 7-Card</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div>
+          <span class="tag">#425 · 强化学习后训练 RFT/GRPO</span>
+          <h3>企业级大模型强化学习后训练选型：Azure Foundry RFT vs. 自建 veRL (GRPO / RLVR) 沙盘</h3>
+          <p>手算 36Ψ PPO (2,520GB) vs. 18Ψ GRPO (1,260GB) 显存账本，演示 veRL 1.6s 显存内重分片与确定性代码沙箱奖励。</p>
+        </div>
+        <div class="actions">
+          <a class="btn primary" href="rl-post-training-foundry-rft-vs-verl-grpo-aks-tco-lab.html">📱 打开交互 H5 精读页</a>
+          <a class="btn" href="../components/enterprise-rl-post-training-foundry-rft-vs-verl-grpo-dpo-aks-tco-selection-faq.md">📖 中文 FAQ</a>
+          <a class="btn" href="../reports/enterprise-rl-post-training-foundry-rft-vs-verl-grpo-dpo-aks-tco-selection-cards.html">🃏 7-Card</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div>
+          <span class="tag">#426 · 深度研究与投研尽调</span>
+          <h3>企业级深度研究 (Deep Research) 与投研尽调 Agent：并行 Map-Reduce DAG 沙盘</h3>
+          <p>终结单线程串行 40 步 ReAct 滚雪球 (124万 Tok、11.3分钟)，用 8 路隔离窗口子 Agent + Python 财务验算提速 6.2x。</p>
+        </div>
+        <div class="actions">
+          <a class="btn primary" href="financial-deep-research-due-diligence-agent-dag-tco-lab.html">📱 打开交互 H5 精读页</a>
+          <a class="btn" href="../components/enterprise-financial-deep-research-due-diligence-agent-dag-citation-tco-selection-faq.md">📖 中文 FAQ</a>
+          <a class="btn" href="../reports/enterprise-financial-deep-research-due-diligence-agent-dag-citation-tco-selection-cards.html">🃏 7-Card</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div>
+          <span class="tag">#427 · 电商多模态搜索与导购</span>
+          <h3>企业级电商多模态搜索、以图搜图与导购 Agent：62ms 快慢双轨与 Redis 库存锚定沙盘</h3>
+          <p>杜绝同步调 LLM 阻塞主搜索 (-18.5% 转化率)，用离线 VLM 打标 + 62ms 快轨 + 1.5ms Redis 库存锚定使转化率净增 +21.8%。</p>
+        </div>
+        <div class="actions">
+          <a class="btn primary" href="retail-multimodal-search-shopping-agent-milvus-redis-lab.html">📱 打开交互 H5 精读页</a>
+          <a class="btn" href="../components/enterprise-retail-multimodal-search-shopping-agent-redis-milvus-tco-selection-faq.md">📖 中文 FAQ</a>
+          <a class="btn" href="../reports/enterprise-retail-multimodal-search-shopping-agent-redis-milvus-tco-selection-cards.html">🃏 7-Card</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div>
+          <span class="tag">#428 · 浏览器操控与自愈 RPA</span>
+          <h3>企业级浏览器与桌面操控智能体选型：纯视觉 CUA vs. 传统 RPA vs. AXTree+自愈沙盘</h3>
+          <p>将 180K HTML 压缩为 1.8K 无障碍树 (AXTree + SoM)，配合 98% Playwright 确定性回放 + 2% 异常自愈，快 15 倍省 98.5%。</p>
+        </div>
+        <div class="actions">
+          <a class="btn primary" href="browser-computer-use-rpa-playwright-axtree-tco-lab.html">📱 打开交互 H5 精读页</a>
+          <a class="btn" href="../components/enterprise-browser-computer-use-rpa-playwright-axtree-self-healing-tco-selection-faq.md">📖 中文 FAQ</a>
+          <a class="btn" href="../reports/enterprise-browser-computer-use-rpa-playwright-axtree-self-healing-tco-selection-cards.html">🃏 7-Card</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div>
+          <span class="tag">#429 · 智能制造 AOI 与 PHM</span>
+          <h3>企业级智能制造、工业视觉质检 (AOI) 与预测性维护 (PHM) 选型沙盘</h3>
+          <p>用 50 张良品图 PatchCore 解决换线冷启动 (6.8ms 在线剔除)，配合 5% 缓冲滑道 VLM 复判将过杀率从 28.5% 压至 1.2%。</p>
+        </div>
+        <div class="actions">
+          <a class="btn primary" href="industrial-manufacturing-aoi-predictive-maintenance-tco-lab.html">📱 打开交互 H5 精读页</a>
+          <a class="btn" href="../components/enterprise-industrial-manufacturing-aoi-predictive-maintenance-edge-cloud-selection-faq.md">📖 中文 FAQ</a>
+          <a class="btn" href="../reports/enterprise-industrial-manufacturing-aoi-predictive-maintenance-edge-cloud-selection-cards.html">🃏 7-Card</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div>
+          <span class="tag">#430 · AI PC 端云协同卸载</span>
+          <h3>企业级端云协同 (AI PC / NPU Offload) 选型：Apple MLX vs. ONNX QNN/OpenVINO 沙盘</h3>
+          <p>唤醒员工桌上的 2 万台 AI PC / Mac (7.5W NPU) 消化 66.8% 轻量办公与本地 PII 脱敏 (42ms 首字)，每年省下 $160.4 万云端账单。</p>
+        </div>
+        <div class="actions">
+          <a class="btn primary" href="hybrid-edge-cloud-aipc-npu-mlx-onnx-offload-tco-lab.html">📱 打开交互 H5 精读页</a>
+          <a class="btn" href="../components/enterprise-hybrid-edge-cloud-aipc-npu-mlx-onnx-offload-tco-selection-faq.md">📖 中文 FAQ</a>
+          <a class="btn" href="../reports/enterprise-hybrid-edge-cloud-aipc-npu-mlx-onnx-offload-tco-selection-cards.html">🃏 7-Card</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div>
+          <span class="tag">#431 · 法务合同审查与修订</span>
+          <h3>企业级法务合同智能审查与 Word 修订选型：法务 AST + OpenXML 词级最小跨度修订沙盘</h3>
+          <p>用层级法务 AST 交叉引用闭包将跨章毒丸召回率从 68.6% 提至 98.8%，结合词级 OpenXML 修订把律师一键采纳率推至 94.6%。</p>
+        </div>
+        <div class="actions">
+          <a class="btn primary" href="legal-contract-redlining-playbook-openxml-ast-tco-lab.html">📱 打开交互 H5 精读页</a>
+          <a class="btn" href="../components/enterprise-legal-contract-redlining-playbook-openxml-ast-tco-selection-faq.md">📖 中文 FAQ</a>
+          <a class="btn" href="../reports/enterprise-legal-contract-redlining-playbook-openxml-ast-tco-selection-cards.html">🃏 7-Card</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div>
+          <span class="tag">#432 · 智能运维 AIOps 与排障</span>
+          <h3>企业级智能运维 (AIOps) 与根因分析 (RCA) Agent 选型：Azure SRE Agent vs. 拓扑自愈沙盘</h3>
+          <p>将 1,800 条级联告警顺着 OTel 拓扑图折叠为 1 张根因单，配合 3s 自动只读诊断预取与 Runbook 一键点批，MTTR 压至 3.8 分钟。</p>
+        </div>
+        <div class="actions">
+          <a class="btn primary" href="aiops-incident-rca-sre-agent-topology-runbook-lab.html">📱 打开交互 H5 精读页</a>
+          <a class="btn" href="../components/enterprise-aiops-incident-rca-sre-agent-topology-runbook-tco-selection-faq.md">📖 中文 FAQ</a>
+          <a class="btn" href="../reports/enterprise-aiops-incident-rca-sre-agent-topology-runbook-tco-selection-cards.html">🃏 7-Card</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div>
+          <span class="tag">#433 · 医疗语音病历与 ICD-10</span>
+          <h3>企业级医疗环境语音病历 (Ambient Scribe) 与 FHIR/ICD-10 选型：Dragon Copilot vs. 院内私有化沙盘</h3>
+          <p>手算 2,000 名门诊医生全天录音仅需 1 台 8x H200 ($38万/年)，用 RxNorm 药典门禁与本体树检索实现 0.0% 药物剂量差错。</p>
+        </div>
+        <div class="actions">
+          <a class="btn primary" href="healthcare-ambient-scribe-dragon-copilot-fhir-icd10-lab.html">📱 打开交互 H5 精读页</a>
+          <a class="btn" href="../components/enterprise-healthcare-ambient-scribe-dragon-copilot-fhir-icd10-tco-selection-faq.md">📖 中文 FAQ</a>
+          <a class="btn" href="../reports/enterprise-healthcare-ambient-scribe-dragon-copilot-fhir-icd10-tco-selection-cards.html">🃏 7-Card</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div>
+          <span class="tag">#434 · 金融反欺诈与反洗钱 AML</span>
+          <h3>企业级金融实时反欺诈、反洗钱 (AML) 与热温冷三层风控 Agent 选型沙盘</h3>
+          <p>14ms GNN 热路径消化 99.6% 流量，4 张 H200 温路径处理 0.4% 灰区将误冻率压至 0.6%，冷路径 Graph-RAG 12 分钟写完 SAR。</p>
+        </div>
+        <div class="actions">
+          <a class="btn primary" href="financial-fraud-aml-three-tier-hot-warm-cold-agent-lab.html">📱 打开交互 H5 精读页</a>
+          <a class="btn" href="../components/enterprise-financial-fraud-aml-three-tier-hot-warm-cold-agent-tco-selection-faq.md">📖 中文 FAQ</a>
+          <a class="btn" href="../reports/enterprise-financial-fraud-aml-three-tier-hot-warm-cold-agent-tco-selection-cards.html">🃏 7-Card</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div>
+          <span class="tag">#435 · 营销内容生成工厂</span>
+          <h3>企业级多模态营销内容生成工厂 (GenAI Content Studio) 选型：云 API vs. 自建 Flux.1/Wan2.1 沙盘</h3>
+          <p>用 BiRefNet 前景像素锁死 + IC-Light 消除 82% 商品商标变形，开启 xDiT FP8/TeaCache 将 5s 视频从 145s 压至 14.2s (-92.5% TCO)。</p>
+        </div>
+        <div class="actions">
+          <a class="btn primary" href="genai-content-factory-flux-wan-comfyui-vs-cloud-api-lab.html">📱 打开交互 H5 精读页</a>
+          <a class="btn" href="../components/enterprise-genai-content-factory-flux-wan-comfyui-vs-cloud-api-tco-selection-faq.md">📖 中文 FAQ</a>
+          <a class="btn" href="../reports/enterprise-genai-content-factory-flux-wan-comfyui-vs-cloud-api-tco-selection-cards.html">🃏 7-Card</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div>
+          <span class="tag">#436 · Embedding 与重排底座</span>
+          <h3>企业级 Embedding 与 Cross-Encoder Reranker 选型：TEI / Infinity vs. Cohere vs. Azure Semantic 沙盘</h3>
+          <p>用 Rust TEI / Infinity 的一维零填充拼接 (1D Unpadded FlashAttention) 消灭 59% [PAD] 算力浪费，将 Top-50 重排从 168ms 压至 14.2ms。</p>
+        </div>
+        <div class="actions">
+          <a class="btn primary" href="embedding-reranker-tei-infinity-cohere-azure-tco-lab.html">📱 打开交互 H5 精读页</a>
+          <a class="btn" href="../components/enterprise-embedding-reranker-serving-tei-infinity-cohere-azure-tco-selection-faq.md">📖 中文 FAQ</a>
+          <a class="btn" href="../reports/enterprise-embedding-reranker-serving-tei-infinity-cohere-azure-tco-selection-cards.html">🃏 7-Card</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div>
+          <span class="tag">#437 · LLMOps 评测与发布门禁</span>
+          <h3>企业级大模型评测体系 (LLM-as-a-Judge)、CI/CD 黄金门禁与影子灰度选型：Promptfoo vs. 14B 二元量表沙盘</h3>
+          <p>废弃“1~5分主观打分坍缩 (Kappa=0.54)”，用代码断言 + DeBERTa NLI + 14B 专用裁判正反双投 + 5% 生产影子回放达 0.896 一致性、省 95.2%。</p>
+        </div>
+        <div class="actions">
+          <a class="btn primary" href="llm-evaluation-judge-promptfoo-ragas-shadow-canary-lab.html">📱 打开交互 H5 精读页</a>
+          <a class="btn" href="../components/enterprise-llm-evaluation-judge-promptfoo-ragas-shadow-canary-tco-selection-faq.md">📖 中文 FAQ</a>
+          <a class="btn" href="../reports/enterprise-llm-evaluation-judge-promptfoo-ragas-shadow-canary-tco-selection-cards.html">🃏 7-Card</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div>
+          <span class="tag">#438 · DevSecOps 安全与自动修复</span>
+          <h3>企业级 DevSecOps 代码安全审计 (SAST)、CPG 污点降噪与自动修漏洞 Agent 选型沙盘</h3>
+          <p>解决传统 SAST 78% 误报疲劳与纯 LLM 34% 补丁编译失败：CodeQL/Joern 代码属性图切片 + 32B 可达性研判 + 容器沙箱编译测试闭环达 91.8% 采纳率。</p>
+        </div>
+        <div class="actions">
+          <a class="btn primary" href="devsecops-sast-copilot-autofix-codeql-cpg-agent-lab.html">📱 打开交互 H5 精读页</a>
+          <a class="btn" href="../components/enterprise-devsecops-sast-copilot-autofix-codeql-cpg-agent-tco-selection-faq.md">📖 中文 FAQ</a>
+          <a class="btn" href="../reports/enterprise-devsecops-sast-copilot-autofix-codeql-cpg-agent-tco-selection-cards.html">🃏 7-Card</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div>
+          <span class="tag">#439 · 智能供应链与运筹求解</span>
+          <h3>企业级智能供应链控制塔：时序基础模型 (Chronos/LightGBM) + OR-Tools MILP 求解器协同沙盘</h3>
+          <p>杜绝用纯文本大模型直接排产导致的 38% 违反产能/MOQ 硬约束：让大模型提取断供风险与编译约束方程，交由时序模型与运筹求解器算全局最优，年省 $1,210 万。</p>
+        </div>
+        <div class="actions">
+          <a class="btn primary" href="supply-chain-control-tower-chronos-milp-agent-lab.html">📱 打开交互 H5 精读页</a>
+          <a class="btn" href="../components/enterprise-supply-chain-control-tower-chronos-milp-agent-tco-selection-faq.md">📖 中文 FAQ</a>
+          <a class="btn" href="../reports/enterprise-supply-chain-control-tower-chronos-milp-agent-tco-selection-cards.html">🃏 7-Card</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div>
+          <span class="tag">#440 里程碑 · AI FinOps 与算力组合</span>
+          <h3>第 440 篇里程碑：企业级 AI FinOps、K8s GPU 成本分摊与 60/25/15 (RI/PAYGO/Spot) 算力组合沙盘</h3>
+          <p>解决多租户共享 vLLM 池按请求平摊导致的 42% 分账失真：OpenCost + 网关四档硬件权重 Token 归因 + 60/25/15 潮汐采购组合，128卡年省 $248 万。</p>
+        </div>
+        <div class="actions">
+          <a class="btn primary" href="ai-finops-k8s-gpu-opencost-ptu-spot-portfolio-lab.html">📱 打开交互 H5 精读页</a>
+          <a class="btn" href="../components/enterprise-ai-finops-k8s-gpu-opencost-ptu-spot-portfolio-selection-faq.md">📖 中文 FAQ</a>
+          <a class="btn" href="../reports/enterprise-ai-finops-k8s-gpu-opencost-ptu-spot-portfolio-selection-cards.html">🃏 7-Card</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div>
+          <span class="tag">#441 · 全域办公搜索与 ACL 权限下推</span>
+          <h3>企业级全域办公搜索与知识助手选型：M365 Copilot vs. Glean vs. 前置 ACL 混合检索沙盘</h3>
+          <p>解决后置权限过滤导致的 41% 召回饥饿与全员 $30/人/月 席位费过载：用 Roaring Bitmap 前置权限下推 + 20/80 分层授权架构，万人企业年省 $242 万。</p>
+        </div>
+        <div class="actions">
+          <a class="btn primary" href="workplace-search-m365-copilot-glean-hybrid-acl-lab.html">📱 打开交互 H5 精读页</a>
+          <a class="btn" href="../components/enterprise-workplace-search-m365-copilot-glean-hybrid-acl-selection-faq.md">📖 中文 FAQ</a>
+          <a class="btn" href="../reports/enterprise-workplace-search-m365-copilot-glean-hybrid-acl-selection-cards.html">🃏 7-Card</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div>
+          <span class="tag">#442 · 云网自智运维与 Batfish 仿真</span>
+          <h3>企业级云网与通信自智运维 (Autonomous NetOps)：跨层拓扑降噪 + Batfish 形式化仿真沙盘</h3>
+          <p>杜绝大模型直接刷 SSH CLI 引发的 22% 路由黑洞事故：用光层/IP层/容器层拓扑折叠 (99.4%压缩) + Batfish 控制面数学证明 + NETCONF 自动回滚，MTTR 压至 4.2 分钟。</p>
+        </div>
+        <div class="actions">
+          <a class="btn primary" href="telecom-netops-oss-bss-gnn-digital-twin-agent-lab.html">📱 打开交互 H5 精读页</a>
+          <a class="btn" href="../components/enterprise-telecom-netops-oss-bss-gnn-digital-twin-agent-selection-faq.md">📖 中文 FAQ</a>
+          <a class="btn" href="../reports/enterprise-telecom-netops-oss-bss-gnn-digital-twin-agent-selection-cards.html">🃏 7-Card</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div>
+          <span class="tag">#443 · HR 技能图谱与 EEOC 公平审计</span>
+          <h3>企业级 HR 人才技能图谱、盲审招聘与 EEOC 4/5 公平性审计选型沙盘</h3>
+          <p>解决传统 ATS 48% 关键词漏筛与未脱敏大模型评分违反 EU AI Act / NYC LL144 公平性红线：前置人口学盲审 + ESCO 技能本体 + 原文证据矩阵，召回达 94.2%。</p>
+        </div>
+        <div class="actions">
+          <a class="btn primary" href="hr-talent-skills-graph-eeoc-audit-agent-lab.html">📱 打开交互 H5 精读页</a>
+          <a class="btn" href="../components/enterprise-hr-talent-skills-graph-eeoc-audit-agent-selection-faq.md">📖 中文 FAQ</a>
+          <a class="btn" href="../reports/enterprise-hr-talent-skills-graph-eeoc-audit-agent-selection-cards.html">🃏 7-Card</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div>
+          <span class="tag">F-04 · 7大模块合集</span>
+          <h3>AI Infra 全景可视化精学中心 H5（7 大核心模块 + 动态图表 + 实时手算沙盘）</h3>
+          <p>一站式集成 PD 分离、TP/PP/DP/EP、NVLink vs. RDMA `busbw`、三道水位线 GPU 估算器、TPM/TPS &amp; Little's Law、Roofline/帕累托曲线与全目录检索。</p>
+        </div>
+        <div class="actions">
+          <a class="btn primary" href="ai-infra-learning-hub.html">📱 打开中文 H5 中心</a>
+          <a class="btn" href="ai-infra-learning-hub.en.html">🌐 English H5 Hub</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div>
+          <span class="tag">F-05 · 6册系统教程</span>
+          <h3>6 册双语推理工程、智算网络与容量测算 H5 精学馆（H5 Academy 01–06）</h3>
+          <p>分册精修：`01` 指标与生命周期、`02` TPM/TPS 容量、`03` 三道水位线算卡、`04` PD 分离、`05` 并行与加速、`06` RDMA/RoCEv2/NVLink 网络精解。</p>
+        </div>
+        <div class="actions">
+          <a class="btn primary" href="../h5-academy/index.html">🎓 打开 6 册 H5 Academy</a>
+          <a class="btn" href="../inference-sizing-network/README.md">📖 双语手册</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    Provenance: synthetic + anonymized_reported (independently_reproduced=false) · Self-Contained Interactive H5 Panorama · turbo998/ai-infra-research
+  </footer>
+</body>
+</html>
