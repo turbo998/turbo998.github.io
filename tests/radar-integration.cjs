@@ -8420,6 +8420,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r700File),'utf8');
       assert.ok(txt.includes('4,060.00')&&txt.includes('4,400.00')&&txt.includes('8,460.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,150.00')&&txt.includes('96.34%')&&txt.includes('not_measured'),r700File+': contains exact 11-21 R100 R700 cognify+adloop+lada2a+sysknife closed-form parameters');
     }
+    // 2026-11-21 Night Round 101 (R701: GetBusbar/busbar + traceloop/hub + api7/aisix + node9-ai/node9-proxy) verification
+    const r701PathA=4020.00+43.5*100.00;
+    assert.equal(r701PathA.toFixed(2),'8370.00','11-21 R101 R701 Path A total');
+    const r701PathC=70.00+2.4*100.00;
+    assert.equal(r701PathC.toFixed(2),'310.00','11-21 R101 R701 Path C total');
+    assert.equal((r701PathA-r701PathC).toFixed(2),'8060.00','11-21 R101 R701 savings vs Path A');
+    assert.equal(((r701PathA-r701PathC)/r701PathA*100).toFixed(2),'96.30','11-21 R101 R701 pct savings vs Path A');
+    for(const r701File of ['workshops/github-trending-radar/docs/busbar-traceloop-hub-aisix-node9-proxy-selection-faq.md','workshops/github-trending-radar/docs/busbar-traceloop-hub-aisix-node9-proxy-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r101-r701-busbar-traceloophub-aisix-node9proxy.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r701File),'utf8');
+      assert.ok(txt.includes('4,020.00')&&txt.includes('4,350.00')&&txt.includes('8,370.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,060.00')&&txt.includes('96.30%')&&txt.includes('not_measured'),r701File+': contains exact 11-21 R101 R701 busbar+traceloophub+aisix+node9proxy closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
