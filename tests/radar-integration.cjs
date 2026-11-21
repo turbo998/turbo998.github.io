@@ -7639,6 +7639,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r629File),'utf8');
       assert.ok(txt.includes('3,510.00')&&txt.includes('4,200.00')&&txt.includes('7,710.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('7,400.00')&&txt.includes('95.98%')&&txt.includes('not_measured'),r629File+': contains exact 11-21 R29 R629 squirrelscan+zeerp+hwpx+apkscope closed-form parameters');
     }
+    // 2026-11-21 Day Round 30 (R630 Milestone: convex/agent + boommanpro/gaia-workflow-engine + sleep2agi/agent-network + prime-radiant-inc/evener) verification
+    const r630PathA=3640.00+43.0*100.00;
+    assert.equal(r630PathA.toFixed(2),'7940.00','11-21 R30 R630 Path A total');
+    const r630PathC=80.00+2.5*100.00;
+    assert.equal(r630PathC.toFixed(2),'330.00','11-21 R30 R630 Path C total');
+    assert.equal((r630PathA-r630PathC).toFixed(2),'7610.00','11-21 R30 R630 savings vs Path A');
+    assert.equal(((r630PathA-r630PathC)/r630PathA*100).toFixed(2),'95.84','11-21 R30 R630 pct savings vs Path A');
+    for(const r630File of ['workshops/github-trending-radar/docs/convex-agent-gaia-workflow-agent-network-evener-selection-faq.md','workshops/github-trending-radar/docs/convex-agent-gaia-workflow-agent-network-evener-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r30-r630-convexagent-gaia-agentnetwork-evener.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r630File),'utf8');
+      assert.ok(txt.includes('3,640.00')&&txt.includes('4,300.00')&&txt.includes('7,940.00')&&txt.includes('80.00')&&txt.includes('250.00')&&txt.includes('330.00')&&txt.includes('7,610.00')&&txt.includes('95.84%')&&txt.includes('not_measured'),r630File+': contains exact 11-21 R30 R630 convexagent+gaia+agentnetwork+evener closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
