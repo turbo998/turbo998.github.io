@@ -8079,6 +8079,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r669File),'utf8');
       assert.ok(txt.includes('3,850.00')&&txt.includes('4,300.00')&&txt.includes('8,150.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('7,845.00')&&txt.includes('96.26%')&&txt.includes('not_measured'),r669File+': contains exact 11-21 R69 R669 anthropicplayground+aicompany+timagent+vibegame closed-form parameters');
     }
+    // 2026-11-21 Day Round 70 (R670: aws/mcp-proxy-for-aws + mapbox/mcp-server + makeplane/plane-mcp-server + apache/doris-mcp-server) verification
+    const r670PathA=3970.00+44.0*100.00;
+    assert.equal(r670PathA.toFixed(2),'8370.00','11-21 R70 R670 Path A total');
+    const r670PathC=70.00+2.4*100.00;
+    assert.equal(r670PathC.toFixed(2),'310.00','11-21 R70 R670 Path C total');
+    assert.equal((r670PathA-r670PathC).toFixed(2),'8060.00','11-21 R70 R670 savings vs Path A');
+    assert.equal(((r670PathA-r670PathC)/r670PathA*100).toFixed(2),'96.30','11-21 R70 R670 pct savings vs Path A');
+    for(const r670File of ['workshops/github-trending-radar/docs/aws-mcp-proxy-mapbox-mcp-plane-mcp-doris-mcp-selection-faq.md','workshops/github-trending-radar/docs/aws-mcp-proxy-mapbox-mcp-plane-mcp-doris-mcp-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r70-r670-awsmcpproxy-mapboxmcp-planemcp-dorismcp.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r670File),'utf8');
+      assert.ok(txt.includes('3,970.00')&&txt.includes('4,400.00')&&txt.includes('8,370.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,060.00')&&txt.includes('96.30%')&&txt.includes('not_measured'),r670File+': contains exact 11-21 R70 R670 awsmcpproxy+mapboxmcp+planemcp+dorismcp closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
