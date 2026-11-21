@@ -7760,6 +7760,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r640File),'utf8');
       assert.ok(txt.includes('3,720.00')&&txt.includes('4,300.00')&&txt.includes('8,020.00')&&txt.includes('75.00')&&txt.includes('250.00')&&txt.includes('325.00')&&txt.includes('7,695.00')&&txt.includes('95.95%')&&txt.includes('not_measured'),r640File+': contains exact 11-21 R40 R640 respangateway+antirion+privacyfilter+toolport closed-form parameters');
     }
+    // 2026-11-21 Day Round 41 (R641: FengZhenfei/carrel + crow-hq/llm-wiki-v2 + JEen-wang/Adaptive-rag + panaversity/ksor) verification
+    const r641PathA=3610.00+42.5*100.00;
+    assert.equal(r641PathA.toFixed(2),'7860.00','11-21 R41 R641 Path A total');
+    const r641PathC=70.00+2.4*100.00;
+    assert.equal(r641PathC.toFixed(2),'310.00','11-21 R41 R641 Path C total');
+    assert.equal((r641PathA-r641PathC).toFixed(2),'7550.00','11-21 R41 R641 savings vs Path A');
+    assert.equal(((r641PathA-r641PathC)/r641PathA*100).toFixed(2),'96.06','11-21 R41 R641 pct savings vs Path A');
+    for(const r641File of ['workshops/github-trending-radar/docs/carrel-llm-wiki-v2-adaptive-rag-ksor-selection-faq.md','workshops/github-trending-radar/docs/carrel-llm-wiki-v2-adaptive-rag-ksor-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r41-r641-carrel-llmwikiv2-adaptiverag-ksor.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r641File),'utf8');
+      assert.ok(txt.includes('3,610.00')&&txt.includes('4,250.00')&&txt.includes('7,860.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('7,550.00')&&txt.includes('96.06%')&&txt.includes('not_measured'),r641File+': contains exact 11-21 R41 R641 carrel+llmwikiv2+adaptiverag+ksor closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
