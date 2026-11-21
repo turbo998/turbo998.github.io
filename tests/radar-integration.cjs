@@ -7342,6 +7342,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r602File),'utf8');
       assert.ok(txt.includes('3,120.00')&&txt.includes('4,000.00')&&txt.includes('7,120.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('6,810.00')&&txt.includes('95.65%')&&txt.includes('not_measured'),r602File+': contains exact 11-21 R2 R602 nyxid+huqan+assay+b2mcp closed-form parameters');
     }
+    // 2026-11-21 Day Round 3 (R603: solomon2773/nora + zhixuli0406/DuDuClaw + NimbleBrainInc/nimblebrain + ahpio/ahpd) verification
+    const r603PathA=3360.00+42.0*100.00;
+    assert.equal(r603PathA.toFixed(2),'7560.00','11-21 R3 R603 Path A total');
+    const r603PathC=80.00+2.5*100.00;
+    assert.equal(r603PathC.toFixed(2),'330.00','11-21 R3 R603 Path C total');
+    assert.equal((r603PathA-r603PathC).toFixed(2),'7230.00','11-21 R3 R603 savings vs Path A');
+    assert.equal(((r603PathA-r603PathC)/r603PathA*100).toFixed(2),'95.63','11-21 R3 R603 pct savings vs Path A');
+    for(const r603File of ['workshops/github-trending-radar/docs/nora-duduclaw-nimblebrain-ahpd-selection-faq.md','workshops/github-trending-radar/docs/nora-duduclaw-nimblebrain-ahpd-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r3-r603-nora-duduclaw-nimblebrain-ahpd.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r603File),'utf8');
+      assert.ok(txt.includes('3,360.00')&&txt.includes('4,200.00')&&txt.includes('7,560.00')&&txt.includes('80.00')&&txt.includes('250.00')&&txt.includes('330.00')&&txt.includes('7,230.00')&&txt.includes('95.63%')&&txt.includes('not_measured'),r603File+': contains exact 11-21 R3 R603 nora+duduclaw+nimblebrain+ahpd closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
