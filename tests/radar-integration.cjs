@@ -8134,6 +8134,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r674File),'utf8');
       assert.ok(txt.includes('3,860.00')&&txt.includes('4,300.00')&&txt.includes('8,160.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('7,855.00')&&txt.includes('96.26%')&&txt.includes('not_measured'),r674File+': contains exact 11-21 R74 R674 openagentskill+memorymesh+omnisearch+beatdesign closed-form parameters');
     }
+    // 2026-11-21 Day Round 75 (R675: Blave-TW/blave-agent + Bin-Huang/camoufox-cli + enuno/unifi-mcp-server + voska/hass-mcp) verification
+    const r675PathA=3910.00+43.5*100.00;
+    assert.equal(r675PathA.toFixed(2),'8260.00','11-21 R75 R675 Path A total');
+    const r675PathC=70.00+2.4*100.00;
+    assert.equal(r675PathC.toFixed(2),'310.00','11-21 R75 R675 Path C total');
+    assert.equal((r675PathA-r675PathC).toFixed(2),'7950.00','11-21 R75 R675 savings vs Path A');
+    assert.equal(((r675PathA-r675PathC)/r675PathA*100).toFixed(2),'96.25','11-21 R75 R675 pct savings vs Path A');
+    for(const r675File of ['workshops/github-trending-radar/docs/blave-agent-camoufox-cli-unifi-mcp-hass-mcp-selection-faq.md','workshops/github-trending-radar/docs/blave-agent-camoufox-cli-unifi-mcp-hass-mcp-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r75-r675-blaveagent-camoufoxcli-unifimcp-hassmcp.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r675File),'utf8');
+      assert.ok(txt.includes('3,910.00')&&txt.includes('4,350.00')&&txt.includes('8,260.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('7,950.00')&&txt.includes('96.25%')&&txt.includes('not_measured'),r675File+': contains exact 11-21 R75 R675 blaveagent+camoufoxcli+unifimcp+hassmcp closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
