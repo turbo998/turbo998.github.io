@@ -7364,6 +7364,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r604File),'utf8');
       assert.ok(txt.includes('3,280.00')&&txt.includes('4,100.00')&&txt.includes('7,380.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('7,075.00')&&txt.includes('95.87%')&&txt.includes('not_measured'),r604File+': contains exact 11-21 R4 R604 tracemcp+contextstream+cortexdb+pyrite closed-form parameters');
     }
+    // 2026-11-21 Day Round 5 (R605 Milestone: intent-hq/intent + mikeparcewski/wicked-studio + zuiho-kai/bothouse + yanauto/broco) verification
+    const r605PathA=3420.00+42.5*100.00;
+    assert.equal(r605PathA.toFixed(2),'7670.00','11-21 R5 R605 Path A total');
+    const r605PathC=75.00+2.5*100.00;
+    assert.equal(r605PathC.toFixed(2),'325.00','11-21 R5 R605 Path C total');
+    assert.equal((r605PathA-r605PathC).toFixed(2),'7345.00','11-21 R5 R605 savings vs Path A');
+    assert.equal(((r605PathA-r605PathC)/r605PathA*100).toFixed(2),'95.76','11-21 R5 R605 pct savings vs Path A');
+    for(const r605File of ['workshops/github-trending-radar/docs/intent-wicked-studio-bothouse-broco-selection-faq.md','workshops/github-trending-radar/docs/intent-wicked-studio-bothouse-broco-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r5-r605-intent-wickedstudio-bothouse-broco.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r605File),'utf8');
+      assert.ok(txt.includes('3,420.00')&&txt.includes('4,250.00')&&txt.includes('7,670.00')&&txt.includes('75.00')&&txt.includes('250.00')&&txt.includes('325.00')&&txt.includes('7,345.00')&&txt.includes('95.76%')&&txt.includes('not_measured'),r605File+': contains exact 11-21 R5 R605 intent+wickedstudio+bothouse+broco closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
