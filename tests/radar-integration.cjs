@@ -7573,6 +7573,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r623File),'utf8');
       assert.ok(txt.includes('3,490.00')&&txt.includes('4,150.00')&&txt.includes('7,640.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('7,330.00')&&txt.includes('95.94%')&&txt.includes('not_measured'),r623File+': contains exact 11-21 R23 R623 hive+hornhoof+starsling+chatflow closed-form parameters');
     }
+    // 2026-11-21 Day Round 24 (R624: tinylabscom/mvm + Danube-Labs/javv + akya-dev/AyMON + SackOfHacks/ICS-PCAP-Challenges) verification
+    const r624PathA=3580.00+42.0*100.00;
+    assert.equal(r624PathA.toFixed(2),'7780.00','11-21 R24 R624 Path A total');
+    const r624PathC=75.00+2.4*100.00;
+    assert.equal(r624PathC.toFixed(2),'315.00','11-21 R24 R624 Path C total');
+    assert.equal((r624PathA-r624PathC).toFixed(2),'7465.00','11-21 R24 R624 savings vs Path A');
+    assert.equal(((r624PathA-r624PathC)/r624PathA*100).toFixed(2),'95.95','11-21 R24 R624 pct savings vs Path A');
+    for(const r624File of ['workshops/github-trending-radar/docs/mvm-javv-aymon-ics-pcap-challenges-selection-faq.md','workshops/github-trending-radar/docs/mvm-javv-aymon-ics-pcap-challenges-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r24-r624-mvm-javv-aymon-icspcap.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r624File),'utf8');
+      assert.ok(txt.includes('3,580.00')&&txt.includes('4,200.00')&&txt.includes('7,780.00')&&txt.includes('75.00')&&txt.includes('240.00')&&txt.includes('315.00')&&txt.includes('7,465.00')&&txt.includes('95.95%')&&txt.includes('not_measured'),r624File+': contains exact 11-21 R24 R624 mvm+javv+aymon+icspcap closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
