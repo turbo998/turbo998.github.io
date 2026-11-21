@@ -7991,6 +7991,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r661File),'utf8');
       assert.ok(txt.includes('3,940.00')&&txt.includes('4,350.00')&&txt.includes('8,290.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('7,985.00')&&txt.includes('96.32%')&&txt.includes('not_measured'),r661File+': contains exact 11-21 R61 R661 tableaumcp+xeromcp+awslambdamcp+auryn closed-form parameters');
     }
+    // 2026-11-21 Day Round 62 (R662: labsai/EDDI + griddynamics/rosetta + spencermarx/open-code-review + VasiHemanth/tokentelemetry) verification
+    const r662PathA=3960.00+44.0*100.00;
+    assert.equal(r662PathA.toFixed(2),'8360.00','11-21 R62 R662 Path A total');
+    const r662PathC=75.00+2.5*100.00;
+    assert.equal(r662PathC.toFixed(2),'325.00','11-21 R62 R662 Path C total');
+    assert.equal((r662PathA-r662PathC).toFixed(2),'8035.00','11-21 R62 R662 savings vs Path A');
+    assert.equal(((r662PathA-r662PathC)/r662PathA*100).toFixed(2),'96.11','11-21 R62 R662 pct savings vs Path A');
+    for(const r662File of ['workshops/github-trending-radar/docs/eddi-rosetta-open-code-review-tokentelemetry-selection-faq.md','workshops/github-trending-radar/docs/eddi-rosetta-open-code-review-tokentelemetry-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r62-r662-eddi-rosetta-opencode-tokentelemetry.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r662File),'utf8');
+      assert.ok(txt.includes('3,960.00')&&txt.includes('4,400.00')&&txt.includes('8,360.00')&&txt.includes('75.00')&&txt.includes('250.00')&&txt.includes('325.00')&&txt.includes('8,035.00')&&txt.includes('96.11%')&&txt.includes('not_measured'),r662File+': contains exact 11-21 R62 R662 eddi+rosetta+opencode+tokentelemetry closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
