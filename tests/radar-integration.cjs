@@ -7914,6 +7914,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r654File),'utf8');
       assert.ok(txt.includes('3,980.00')&&txt.includes('4,400.00')&&txt.includes('8,380.00')&&txt.includes('75.00')&&txt.includes('250.00')&&txt.includes('325.00')&&txt.includes('8,055.00')&&txt.includes('96.12%')&&txt.includes('not_measured'),r654File+': contains exact 11-21 R54 R654 openseomcp+seoskill+openanalytics+everyinfra closed-form parameters');
     }
+    // 2026-11-21 Day Round 55 (R655: aipoch/open-science + Pinvou/pinvou-agent + vstorm-co/agenticos + harish-gaggar/mcp-server-gateway) verification
+    const r655PathA=4020.00+44.5*100.00;
+    assert.equal(r655PathA.toFixed(2),'8470.00','11-21 R55 R655 Path A total');
+    const r655PathC=80.00+2.5*100.00;
+    assert.equal(r655PathC.toFixed(2),'330.00','11-21 R55 R655 Path C total');
+    assert.equal((r655PathA-r655PathC).toFixed(2),'8140.00','11-21 R55 R655 savings vs Path A');
+    assert.equal(((r655PathA-r655PathC)/r655PathA*100).toFixed(2),'96.10','11-21 R55 R655 pct savings vs Path A');
+    for(const r655File of ['workshops/github-trending-radar/docs/open-science-pinvou-agent-agenticos-mcp-gateway-selection-faq.md','workshops/github-trending-radar/docs/open-science-pinvou-agent-agenticos-mcp-gateway-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r55-r655-openscience-pinvou-agenticos-mcpgateway.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r655File),'utf8');
+      assert.ok(txt.includes('4,020.00')&&txt.includes('4,450.00')&&txt.includes('8,470.00')&&txt.includes('80.00')&&txt.includes('250.00')&&txt.includes('330.00')&&txt.includes('8,140.00')&&txt.includes('96.10%')&&txt.includes('not_measured'),r655File+': contains exact 11-21 R55 R655 openscience+pinvou+agenticos+mcpgateway closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
