@@ -8695,6 +8695,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r725File),'utf8');
       assert.ok(txt.includes('4,080.00')&&txt.includes('4,400.00')&&txt.includes('8,480.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,170.00')&&txt.includes('96.34%')&&txt.includes('not_measured'),r725File+': contains exact 11-21 R125 R725 mangaba+agntcy+adktrading+convrag closed-form parameters');
     }
+    // 2026-11-21 Night Round 126 (R726: GeLi2001/shopify-mcp + adamzhang1987/kingdee-k3cloud-mcp + rcontesti/IB_MCP + rehan1020/MCP-India-Stack) verification
+    const r726PathA=3960.00+43.5*100.00;
+    assert.equal(r726PathA.toFixed(2),'8310.00','11-21 R126 R726 Path A total');
+    const r726PathC=65.00+2.4*100.00;
+    assert.equal(r726PathC.toFixed(2),'305.00','11-21 R126 R726 Path C total');
+    assert.equal((r726PathA-r726PathC).toFixed(2),'8005.00','11-21 R126 R726 savings vs Path A');
+    assert.equal(((r726PathA-r726PathC)/r726PathA*100).toFixed(2),'96.33','11-21 R126 R726 pct savings vs Path A');
+    for(const r726File of ['workshops/github-trending-radar/docs/shopify-mcp-kingdee-k3cloud-ib-mcp-india-stack-selection-faq.md','workshops/github-trending-radar/docs/shopify-mcp-kingdee-k3cloud-ib-mcp-india-stack-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r126-r726-shopify-kingdee-ibmcp-indiastack.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r726File),'utf8');
+      assert.ok(txt.includes('3,960.00')&&txt.includes('4,350.00')&&txt.includes('8,310.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('8,005.00')&&txt.includes('96.33%')&&txt.includes('not_measured'),r726File+': contains exact 11-21 R126 R726 shopify+kingdee+ibmcp+indiastack closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
