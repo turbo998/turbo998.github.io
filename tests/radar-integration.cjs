@@ -8156,6 +8156,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r676File),'utf8');
       assert.ok(txt.includes('3,840.00')&&txt.includes('4,300.00')&&txt.includes('8,140.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('7,835.00')&&txt.includes('96.25%')&&txt.includes('not_measured'),r676File+': contains exact 11-21 R76 R676 dshconfig+kiro2cc+nexpath+taskdog closed-form parameters');
     }
+    // 2026-11-21 Day Round 77 (R677: tumourlove/monolith + cl0nazepamm/3dsmax-mcp + Chrrxs/robloxstudio-mcp + IvanMurzak/Godot-MCP) verification
+    const r677PathA=4010.00+44.0*100.00;
+    assert.equal(r677PathA.toFixed(2),'8410.00','11-21 R77 R677 Path A total');
+    const r677PathC=70.00+2.4*100.00;
+    assert.equal(r677PathC.toFixed(2),'310.00','11-21 R77 R677 Path C total');
+    assert.equal((r677PathA-r677PathC).toFixed(2),'8100.00','11-21 R77 R677 savings vs Path A');
+    assert.equal(((r677PathA-r677PathC)/r677PathA*100).toFixed(2),'96.31','11-21 R77 R677 pct savings vs Path A');
+    for(const r677File of ['workshops/github-trending-radar/docs/monolith-ue5-3dsmax-mcp-robloxstudio-mcp-godot-mcp-selection-faq.md','workshops/github-trending-radar/docs/monolith-ue5-3dsmax-mcp-robloxstudio-mcp-godot-mcp-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r77-r677-monolithue5-3dsmaxmcp-robloxmcp-godotmcp.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r677File),'utf8');
+      assert.ok(txt.includes('4,010.00')&&txt.includes('4,400.00')&&txt.includes('8,410.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,100.00')&&txt.includes('96.31%')&&txt.includes('not_measured'),r677File+': contains exact 11-21 R77 R677 monolithue5+3dsmaxmcp+robloxmcp+godotmcp closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
