@@ -8442,6 +8442,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r702File),'utf8');
       assert.ok(txt.includes('3,890.00')&&txt.includes('4,300.00')&&txt.includes('8,190.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('7,885.00')&&txt.includes('96.28%')&&txt.includes('not_measured'),r702File+': contains exact 11-21 R102 R702 remnic+protocmcp+gograph+sharptools closed-form parameters');
     }
+    // 2026-11-21 Night Round 103 (R703: initializ/forge + MigoXLab/LMeterX + skillsynchq/txcript + sortie-ai/sortie) verification
+    const r703PathA=4010.00+43.5*100.00;
+    assert.equal(r703PathA.toFixed(2),'8360.00','11-21 R103 R703 Path A total');
+    const r703PathC=70.00+2.4*100.00;
+    assert.equal(r703PathC.toFixed(2),'310.00','11-21 R103 R703 Path C total');
+    assert.equal((r703PathA-r703PathC).toFixed(2),'8050.00','11-21 R103 R703 savings vs Path A');
+    assert.equal(((r703PathA-r703PathC)/r703PathA*100).toFixed(2),'96.29','11-21 R103 R703 pct savings vs Path A');
+    for(const r703File of ['workshops/github-trending-radar/docs/forge-lmeterx-txcript-sortie-selection-faq.md','workshops/github-trending-radar/docs/forge-lmeterx-txcript-sortie-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r103-r703-forge-lmeterx-txcript-sortie.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r703File),'utf8');
+      assert.ok(txt.includes('4,010.00')&&txt.includes('4,350.00')&&txt.includes('8,360.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,050.00')&&txt.includes('96.29%')&&txt.includes('not_measured'),r703File+': contains exact 11-21 R103 R703 forge+lmeterx+txcript+sortie closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
