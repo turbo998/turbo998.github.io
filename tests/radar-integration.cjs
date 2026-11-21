@@ -8684,6 +8684,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r724File),'utf8');
       assert.ok(txt.includes('3,920.00')&&txt.includes('4,400.00')&&txt.includes('8,320.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,010.00')&&txt.includes('96.27%')&&txt.includes('not_measured'),r724File+': contains exact 11-21 R124 R724 txtchat+deepdoc+summarizepaper+site2pdf closed-form parameters');
     }
+    // 2026-11-21 Night Round 125 (R725 Milestone: Mangaba-ai/mangaba_ai + agntcy/agentic-apps + kweinmeister/agentic-trading + mfmezger/conversational-agent-langchain) verification
+    const r725PathA=4080.00+44.0*100.00;
+    assert.equal(r725PathA.toFixed(2),'8480.00','11-21 R125 R725 Path A total');
+    const r725PathC=70.00+2.4*100.00;
+    assert.equal(r725PathC.toFixed(2),'310.00','11-21 R125 R725 Path C total');
+    assert.equal((r725PathA-r725PathC).toFixed(2),'8170.00','11-21 R125 R725 savings vs Path A');
+    assert.equal(((r725PathA-r725PathC)/r725PathA*100).toFixed(2),'96.34','11-21 R125 R725 pct savings vs Path A');
+    for(const r725File of ['workshops/github-trending-radar/docs/mangaba-ai-agntcy-apps-agentic-trading-conv-rag-selection-faq.md','workshops/github-trending-radar/docs/mangaba-ai-agntcy-apps-agentic-trading-conv-rag-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r125-r725-mangaba-agntcy-adktrading-convrag.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r725File),'utf8');
+      assert.ok(txt.includes('4,080.00')&&txt.includes('4,400.00')&&txt.includes('8,480.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,170.00')&&txt.includes('96.34%')&&txt.includes('not_measured'),r725File+': contains exact 11-21 R125 R725 mangaba+agntcy+adktrading+convrag closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
