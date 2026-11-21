@@ -8343,6 +8343,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r693File),'utf8');
       assert.ok(txt.includes('3,900.00')&&txt.includes('4,350.00')&&txt.includes('8,250.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('7,945.00')&&txt.includes('96.30%')&&txt.includes('not_measured'),r693File+': contains exact 11-21 R93 R693 dev30+vbsec+charlesmcp+searchconsolemcp closed-form parameters');
     }
+    // 2026-11-21 Night Round 94 (R694: Azure-Samples/ai-hub-gateway-solution-accelerator + atopos31/llmio + bibinprathap/VeritasGraph + TonicAI/tonic_validate) verification
+    const r694PathA=4000.00+44.0*100.00;
+    assert.equal(r694PathA.toFixed(2),'8400.00','11-21 R94 R694 Path A total');
+    const r694PathC=70.00+2.4*100.00;
+    assert.equal(r694PathC.toFixed(2),'310.00','11-21 R94 R694 Path C total');
+    assert.equal((r694PathA-r694PathC).toFixed(2),'8090.00','11-21 R94 R694 savings vs Path A');
+    assert.equal(((r694PathA-r694PathC)/r694PathA*100).toFixed(2),'96.31','11-21 R94 R694 pct savings vs Path A');
+    for(const r694File of ['workshops/github-trending-radar/docs/citadel-gateway-llmio-veritasgraph-tonic-validate-selection-faq.md','workshops/github-trending-radar/docs/citadel-gateway-llmio-veritasgraph-tonic-validate-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r94-r694-citadelgateway-llmio-veritasgraph-tonicvalidate.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r694File),'utf8');
+      assert.ok(txt.includes('4,000.00')&&txt.includes('4,400.00')&&txt.includes('8,400.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,090.00')&&txt.includes('96.31%')&&txt.includes('not_measured'),r694File+': contains exact 11-21 R94 R694 citadelgateway+llmio+veritasgraph+tonicvalidate closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
