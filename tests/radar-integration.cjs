@@ -7804,6 +7804,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r644File),'utf8');
       assert.ok(txt.includes('3,690.00')&&txt.includes('4,250.00')&&txt.includes('7,940.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('7,630.00')&&txt.includes('96.10%')&&txt.includes('not_measured'),r644File+': contains exact 11-21 R44 R644 fastjevcompaction+vibewise+yolorouter+linten closed-form parameters');
     }
+    // 2026-11-21 Day Round 45 (R645 Milestone: Jakeschincariol/youtube-agent-skill + feitangyuan/onetake + EL4CTEO/blender-skills + myccarl/ai-shortVideo-pipeline) verification
+    const r645PathA=3890.00+43.5*100.00;
+    assert.equal(r645PathA.toFixed(2),'8240.00','11-21 R45 R645 Path A total');
+    const r645PathC=80.00+2.5*100.00;
+    assert.equal(r645PathC.toFixed(2),'330.00','11-21 R45 R645 Path C total');
+    assert.equal((r645PathA-r645PathC).toFixed(2),'7910.00','11-21 R45 R645 savings vs Path A');
+    assert.equal(((r645PathA-r645PathC)/r645PathA*100).toFixed(2),'96.00','11-21 R45 R645 pct savings vs Path A');
+    for(const r645File of ['workshops/github-trending-radar/docs/youtube-agent-skill-onetake-blender-skills-short-video-selection-faq.md','workshops/github-trending-radar/docs/youtube-agent-skill-onetake-blender-skills-short-video-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r45-r645-youtubeskill-onetake-blenderskills-shortvideo.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r645File),'utf8');
+      assert.ok(txt.includes('3,890.00')&&txt.includes('4,350.00')&&txt.includes('8,240.00')&&txt.includes('80.00')&&txt.includes('250.00')&&txt.includes('330.00')&&txt.includes('7,910.00')&&txt.includes('96.00%')&&txt.includes('not_measured'),r645File+': contains exact 11-21 R45 R645 youtubeskill+onetake+blenderskills+shortvideo closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
