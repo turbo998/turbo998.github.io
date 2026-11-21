@@ -7584,6 +7584,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r624File),'utf8');
       assert.ok(txt.includes('3,580.00')&&txt.includes('4,200.00')&&txt.includes('7,780.00')&&txt.includes('75.00')&&txt.includes('240.00')&&txt.includes('315.00')&&txt.includes('7,465.00')&&txt.includes('95.95%')&&txt.includes('not_measured'),r624File+': contains exact 11-21 R24 R624 mvm+javv+aymon+icspcap closed-form parameters');
     }
+    // 2026-11-21 Day Round 25 (R625 Milestone: boykush/scraps + AnastasiyaW/knowledge-space + Gunnarguy/OpenIntelligence + rknightion/paperless-ngx-dedupe) verification
+    const r625PathA=3360.00+41.0*100.00;
+    assert.equal(r625PathA.toFixed(2),'7460.00','11-21 R25 R625 Path A total');
+    const r625PathC=65.00+2.4*100.00;
+    assert.equal(r625PathC.toFixed(2),'305.00','11-21 R25 R625 Path C total');
+    assert.equal((r625PathA-r625PathC).toFixed(2),'7155.00','11-21 R25 R625 savings vs Path A');
+    assert.equal(((r625PathA-r625PathC)/r625PathA*100).toFixed(2),'95.91','11-21 R25 R625 pct savings vs Path A');
+    for(const r625File of ['workshops/github-trending-radar/docs/scraps-knowledge-space-openintelligence-paperless-dedupe-selection-faq.md','workshops/github-trending-radar/docs/scraps-knowledge-space-openintelligence-paperless-dedupe-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r25-r625-scraps-knowledgespace-openintelligence-paperlessdedupe.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r625File),'utf8');
+      assert.ok(txt.includes('3,360.00')&&txt.includes('4,100.00')&&txt.includes('7,460.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('7,155.00')&&txt.includes('95.91%')&&txt.includes('not_measured'),r625File+': contains exact 11-21 R25 R625 scraps+knowledgespace+openintelligence+paperlessdedupe closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
