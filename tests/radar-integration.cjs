@@ -8662,6 +8662,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r722File),'utf8');
       assert.ok(txt.includes('4,020.00')&&txt.includes('4,350.00')&&txt.includes('8,370.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,060.00')&&txt.includes('96.30%')&&txt.includes('not_measured'),r722File+': contains exact 11-21 R122 R722 burpmcp+ludusmcp+secagents+lucidity closed-form parameters');
     }
+    // 2026-11-21 Night Round 123 (R723: hristo2612/jinn + taichuy/1flowbase + mcowger/plexus + poixeai/proxify) verification
+    const r723PathA=3980.00+43.0*100.00;
+    assert.equal(r723PathA.toFixed(2),'8280.00','11-21 R123 R723 Path A total');
+    const r723PathC=65.00+2.4*100.00;
+    assert.equal(r723PathC.toFixed(2),'305.00','11-21 R123 R723 Path C total');
+    assert.equal((r723PathA-r723PathC).toFixed(2),'7975.00','11-21 R123 R723 savings vs Path A');
+    assert.equal(((r723PathA-r723PathC)/r723PathA*100).toFixed(2),'96.32','11-21 R123 R723 pct savings vs Path A');
+    for(const r723File of ['workshops/github-trending-radar/docs/jinn-1flowbase-plexus-proxify-selection-faq.md','workshops/github-trending-radar/docs/jinn-1flowbase-plexus-proxify-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r123-r723-jinn-1flowbase-plexus-proxify.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r723File),'utf8');
+      assert.ok(txt.includes('3,980.00')&&txt.includes('4,300.00')&&txt.includes('8,280.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('7,975.00')&&txt.includes('96.32%')&&txt.includes('not_measured'),r723File+': contains exact 11-21 R123 R723 jinn+1flowbase+plexus+proxify closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
