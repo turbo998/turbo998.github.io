@@ -8068,6 +8068,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r668File),'utf8');
       assert.ok(txt.includes('3,830.00')&&txt.includes('4,300.00')&&txt.includes('8,130.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('7,825.00')&&txt.includes('96.25%')&&txt.includes('not_measured'),r668File+': contains exact 11-21 R68 R668 claudeoffice+usagebar+mulmoclaude+yteditor closed-form parameters');
     }
+    // 2026-11-21 Day Round 69 (R669: anthropics/claude-code-playground + CronusL-1141/AI-company + tim-today/tim-agent + tettethu/VibeGame) verification
+    const r669PathA=3850.00+43.0*100.00;
+    assert.equal(r669PathA.toFixed(2),'8150.00','11-21 R69 R669 Path A total');
+    const r669PathC=65.00+2.4*100.00;
+    assert.equal(r669PathC.toFixed(2),'305.00','11-21 R69 R669 Path C total');
+    assert.equal((r669PathA-r669PathC).toFixed(2),'7845.00','11-21 R69 R669 savings vs Path A');
+    assert.equal(((r669PathA-r669PathC)/r669PathA*100).toFixed(2),'96.26','11-21 R69 R669 pct savings vs Path A');
+    for(const r669File of ['workshops/github-trending-radar/docs/anthropic-playground-ai-company-tim-agent-vibegame-selection-faq.md','workshops/github-trending-radar/docs/anthropic-playground-ai-company-tim-agent-vibegame-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r69-r669-anthropicplayground-aicompany-timagent-vibegame.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r669File),'utf8');
+      assert.ok(txt.includes('3,850.00')&&txt.includes('4,300.00')&&txt.includes('8,150.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('7,845.00')&&txt.includes('96.26%')&&txt.includes('not_measured'),r669File+': contains exact 11-21 R69 R669 anthropicplayground+aicompany+timagent+vibegame closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
