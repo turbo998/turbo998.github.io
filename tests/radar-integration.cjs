@@ -8057,6 +8057,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r667File),'utf8');
       assert.ok(txt.includes('3,810.00')&&txt.includes('4,300.00')&&txt.includes('8,110.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('7,805.00')&&txt.includes('96.24%')&&txt.includes('not_measured'),r667File+': contains exact 11-21 R67 R667 mcpflutter+mirroirmcp+homebutler+dailybrief closed-form parameters');
     }
+    // 2026-11-21 Day Round 68 (R668: W17ant/Claude-Office + leeguooooo/claude-code-usage-bar + receptron/mulmoclaude + hassancs91/claude-youtube-editor) verification
+    const r668PathA=3830.00+43.0*100.00;
+    assert.equal(r668PathA.toFixed(2),'8130.00','11-21 R68 R668 Path A total');
+    const r668PathC=65.00+2.4*100.00;
+    assert.equal(r668PathC.toFixed(2),'305.00','11-21 R68 R668 Path C total');
+    assert.equal((r668PathA-r668PathC).toFixed(2),'7825.00','11-21 R68 R668 savings vs Path A');
+    assert.equal(((r668PathA-r668PathC)/r668PathA*100).toFixed(2),'96.25','11-21 R68 R668 pct savings vs Path A');
+    for(const r668File of ['workshops/github-trending-radar/docs/claude-office-usage-bar-mulmoclaude-youtube-editor-selection-faq.md','workshops/github-trending-radar/docs/claude-office-usage-bar-mulmoclaude-youtube-editor-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r68-r668-claudeoffice-usagebar-mulmoclaude-yteditor.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r668File),'utf8');
+      assert.ok(txt.includes('3,830.00')&&txt.includes('4,300.00')&&txt.includes('8,130.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('7,825.00')&&txt.includes('96.25%')&&txt.includes('not_measured'),r668File+': contains exact 11-21 R68 R668 claudeoffice+usagebar+mulmoclaude+yteditor closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
