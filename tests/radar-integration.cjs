@@ -7316,6 +7316,21 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r600File),'utf8');
       assert.ok(txt.includes('3,400.00')&&txt.includes('4,200.00')&&txt.includes('7,600.00')&&txt.includes('80.00')&&txt.includes('250.00')&&txt.includes('330.00')&&txt.includes('7,270.00')&&txt.includes('95.66%')&&txt.includes('not_measured'),r600File+': contains exact 11-20 R41 R600 trypost+lalabase+tedix+mojito closed-form parameters');
     }
+    // 2026-11-21 Raw Evidence & Day Round 1 (R601: speakeasy-api/gram + slow-stack/mneme + backenly/backenly + flisk-sh/flisk) verification
+    const rawHtml1121=fs.readFileSync(path.join(__dirname,'..','workshops','github-trending-radar','evidence','trending-daily-2026-11-21-raw.html'),'utf8').replace(/\r\n/g,'\n');
+    assert.equal(hash(rawHtml1121),'3e8b0eaa13a07a6fc6321617bfab10c784ef34e122538ec13099acad28029692','2026-11-21 raw HTML LF sha256');
+    const rawSearch1121=fs.readFileSync(path.join(__dirname,'..','workshops','github-trending-radar','evidence','search-new-repos-2026-11-21-raw.json'),'utf8').replace(/\r\n/g,'\n');
+    assert.equal(hash(rawSearch1121),'47e08967dae49dbeb6750364ea899e6c4b5a64f51ee12b509c98199cf5b75500','2026-11-21 raw Search API JSON LF sha256');
+    const r601PathA=3240.00+41.5*100.00;
+    assert.equal(r601PathA.toFixed(2),'7390.00','11-21 R1 R601 Path A total');
+    const r601PathC=75.00+2.5*100.00;
+    assert.equal(r601PathC.toFixed(2),'325.00','11-21 R1 R601 Path C total');
+    assert.equal((r601PathA-r601PathC).toFixed(2),'7065.00','11-21 R1 R601 savings vs Path A');
+    assert.equal(((r601PathA-r601PathC)/r601PathA*100).toFixed(2),'95.60','11-21 R1 R601 pct savings vs Path A');
+    for(const r601File of ['workshops/github-trending-radar/docs/gram-mneme-backenly-flisk-selection-faq.md','workshops/github-trending-radar/docs/gram-mneme-backenly-flisk-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r1-r601-gram-mneme-backenly-flisk.svg','assets/github-ai-radar-2026-11-21.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r601File),'utf8');
+      assert.ok(txt.includes('3,240.00')&&txt.includes('4,150.00')&&txt.includes('7,390.00')&&txt.includes('75.00')&&txt.includes('250.00')&&txt.includes('325.00')&&txt.includes('7,065.00')&&txt.includes('95.60%')&&txt.includes('not_measured'),r601File+': contains exact 11-21 R1 R601 gram+mneme+backenly+flisk closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
