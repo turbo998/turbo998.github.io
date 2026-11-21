@@ -8409,6 +8409,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r699File),'utf8');
       assert.ok(txt.includes('3,930.00')&&txt.includes('4,350.00')&&txt.includes('8,280.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('7,970.00')&&txt.includes('96.26%')&&txt.includes('not_measured'),r699File+': contains exact 11-21 R99 R699 ferrogateway+orchestkit+engrim+cdpbridgemcp closed-form parameters');
     }
+    // 2026-11-21 Night Round 100 (R700 Historic Milestone: GenseeAI/cognify + kLOsk/adloop + franzvill/lad + lacs-project/sysknife) verification
+    const r700PathA=4060.00+44.0*100.00;
+    assert.equal(r700PathA.toFixed(2),'8460.00','11-21 R100 R700 Path A total');
+    const r700PathC=70.00+2.4*100.00;
+    assert.equal(r700PathC.toFixed(2),'310.00','11-21 R100 R700 Path C total');
+    assert.equal((r700PathA-r700PathC).toFixed(2),'8150.00','11-21 R100 R700 savings vs Path A');
+    assert.equal(((r700PathA-r700PathC)/r700PathA*100).toFixed(2),'96.34','11-21 R100 R700 pct savings vs Path A');
+    for(const r700File of ['workshops/github-trending-radar/docs/cognify-adloop-lad-a2a-sysknife-selection-faq.md','workshops/github-trending-radar/docs/cognify-adloop-lad-a2a-sysknife-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r100-r700-cognify-adloop-lada2a-sysknife.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r700File),'utf8');
+      assert.ok(txt.includes('4,060.00')&&txt.includes('4,400.00')&&txt.includes('8,460.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,150.00')&&txt.includes('96.34%')&&txt.includes('not_measured'),r700File+': contains exact 11-21 R100 R700 cognify+adloop+lada2a+sysknife closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
