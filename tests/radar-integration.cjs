@@ -7496,6 +7496,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r616File),'utf8');
       assert.ok(txt.includes('3,390.00')&&txt.includes('4,150.00')&&txt.includes('7,540.00')&&txt.includes('75.00')&&txt.includes('240.00')&&txt.includes('315.00')&&txt.includes('7,225.00')&&txt.includes('95.82%')&&txt.includes('not_measured'),r616File+': contains exact 11-21 R16 R616 aidevops+kangentic+omk+rimz closed-form parameters');
     }
+    // 2026-11-21 Day Round 17 (R617: Belkins/ai-dive-deep + hirokawaguchi/open-genai + lbedner/aegis-stack + mrveiss/AutoBot-AI) verification
+    const r617PathA=3460.00+42.0*100.00;
+    assert.equal(r617PathA.toFixed(2),'7660.00','11-21 R17 R617 Path A total');
+    const r617PathC=80.00+2.5*100.00;
+    assert.equal(r617PathC.toFixed(2),'330.00','11-21 R17 R617 Path C total');
+    assert.equal((r617PathA-r617PathC).toFixed(2),'7330.00','11-21 R17 R617 savings vs Path A');
+    assert.equal(((r617PathA-r617PathC)/r617PathA*100).toFixed(2),'95.69','11-21 R17 R617 pct savings vs Path A');
+    for(const r617File of ['workshops/github-trending-radar/docs/ai-dive-deep-open-genai-aegis-stack-autobot-ai-selection-faq.md','workshops/github-trending-radar/docs/ai-dive-deep-open-genai-aegis-stack-autobot-ai-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r17-r617-aidivedeep-opengenai-aegis-autobot.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r617File),'utf8');
+      assert.ok(txt.includes('3,460.00')&&txt.includes('4,200.00')&&txt.includes('7,660.00')&&txt.includes('80.00')&&txt.includes('250.00')&&txt.includes('330.00')&&txt.includes('7,330.00')&&txt.includes('95.69%')&&txt.includes('not_measured'),r617File+': contains exact 11-21 R17 R617 aidivedeep+opengenai+aegis+autobot closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
