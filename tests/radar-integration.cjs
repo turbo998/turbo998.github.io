@@ -7793,6 +7793,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r643File),'utf8');
       assert.ok(txt.includes('3,760.00')&&txt.includes('4,300.00')&&txt.includes('8,060.00')&&txt.includes('75.00')&&txt.includes('250.00')&&txt.includes('325.00')&&txt.includes('7,735.00')&&txt.includes('95.97%')&&txt.includes('not_measured'),r643File+': contains exact 11-21 R43 R643 openfuse+apianything+pomerado+pyidp closed-form parameters');
     }
+    // 2026-11-21 Day Round 44 (R644: tamaratran/fast-jev-compaction + nykooi1/vibe-wise + yolorouter/yolorouter + LintenAI/linten) verification
+    const r644PathA=3690.00+42.5*100.00;
+    assert.equal(r644PathA.toFixed(2),'7940.00','11-21 R44 R644 Path A total');
+    const r644PathC=70.00+2.4*100.00;
+    assert.equal(r644PathC.toFixed(2),'310.00','11-21 R44 R644 Path C total');
+    assert.equal((r644PathA-r644PathC).toFixed(2),'7630.00','11-21 R44 R644 savings vs Path A');
+    assert.equal(((r644PathA-r644PathC)/r644PathA*100).toFixed(2),'96.10','11-21 R44 R644 pct savings vs Path A');
+    for(const r644File of ['workshops/github-trending-radar/docs/fast-jev-compaction-vibe-wise-yolorouter-linten-selection-faq.md','workshops/github-trending-radar/docs/fast-jev-compaction-vibe-wise-yolorouter-linten-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r44-r644-fastjevcompaction-vibewise-yolorouter-linten.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r644File),'utf8');
+      assert.ok(txt.includes('3,690.00')&&txt.includes('4,250.00')&&txt.includes('7,940.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('7,630.00')&&txt.includes('96.10%')&&txt.includes('not_measured'),r644File+': contains exact 11-21 R44 R644 fastjevcompaction+vibewise+yolorouter+linten closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
