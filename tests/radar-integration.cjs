@@ -8805,6 +8805,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r735File),'utf8');
       assert.ok(txt.includes('4,090.00')&&txt.includes('4,400.00')&&txt.includes('8,490.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,180.00')&&txt.includes('96.35%')&&txt.includes('not_measured'),r735File+': contains exact 11-21 R135 R735 openchrome+hitl+fastmcpp+awaken closed-form parameters');
     }
+    // 2026-11-21 Night Round 136 (R736: ElonJask/reqable-mcp + Wholiver/metis-reverse + nikhils4/ui-beats + Nutlope/variate) verification
+    const r736PathA=3950.00+43.5*100.00;
+    assert.equal(r736PathA.toFixed(2),'8300.00','11-21 R136 R736 Path A total');
+    const r736PathC=65.00+2.4*100.00;
+    assert.equal(r736PathC.toFixed(2),'305.00','11-21 R136 R736 Path C total');
+    assert.equal((r736PathA-r736PathC).toFixed(2),'7995.00','11-21 R136 R736 savings vs Path A');
+    assert.equal(((r736PathA-r736PathC)/r736PathA*100).toFixed(2),'96.33','11-21 R136 R736 pct savings vs Path A');
+    for(const r736File of ['workshops/github-trending-radar/docs/reqable-mcp-metis-reverse-ui-beats-variate-selection-faq.md','workshops/github-trending-radar/docs/reqable-mcp-metis-reverse-ui-beats-variate-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r136-r736-reqable-metis-uibeats-variate.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r736File),'utf8');
+      assert.ok(txt.includes('3,950.00')&&txt.includes('4,350.00')&&txt.includes('8,300.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('7,995.00')&&txt.includes('96.33%')&&txt.includes('not_measured'),r736File+': contains exact 11-21 R136 R736 reqable+metis+uibeats+variate closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
