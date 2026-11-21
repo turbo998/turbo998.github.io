@@ -154,7 +154,16 @@ const recentSupplementPages = [
   {path:'workshops/benchmarks/terminal-bench-4-1-cards.en.html',role:'report',title:'Terminal-Bench 4.1 Hardcore Agentic CLI & Systems Engineering Benchmark (EN)',tracks:['benchmarks'],language:{declared:'en'},supplemental:true},
   {path:'workshops/benchmarks/terminal-bench-4-1-cards.zh-CN.html',role:'report',title:'Terminal-Bench 4.1 硬核终端智能体基准深度拆解与 15 模全景榜单 (中文)',tracks:['benchmarks'],language:{declared:'zh-CN'},supplemental:true},
   {path:'workshops/foundry-local/index.html',role:'demo',title:'Microsoft Foundry Local 端侧 AI 运行时架构与交互式选型工作台 (中文)',tracks:['infra'],language:{declared:'zh-CN'},supplemental:true},
-  {path:'workshops/foundry-local/index.en.html',role:'demo',title:'Microsoft Foundry Local Edge AI Runtime Architecture & Interactive Sizer (EN)',tracks:['infra'],language:{declared:'en'},supplemental:true}
+  {path:'workshops/foundry-local/index.en.html',role:'demo',title:'Microsoft Foundry Local Edge AI Runtime Architecture & Interactive Sizer (EN)',tracks:['infra'],language:{declared:'en'},supplemental:true},
+  {path:'docs/h5-academy/index.html',role:'demo',title:'AI Infra 推理与智算网络 H5 可视化精学馆 · 6 册双语交互工作台 (TTFT/TPOT/Goodput · GPU 三水位定容 · PD 分离 · TP/PP/DP/EP · RDMA/RoCEv2/IB/NVLink)',tracks:['infra'],language:{declared:'zh-CN'},supplemental:true},
+  {path:'docs/h5-academy/01-metrics.html',role:'demo',title:'AI Infra H5 精学馆 第 1 册：TTFT / TPOT / Goodput 推理指标与 SLA 权衡实验台',tracks:['infra'],language:{declared:'zh-CN'},supplemental:true},
+  {path:'docs/h5-academy/02-tpm-tps-capacity.html',role:'demo',title:'AI Infra H5 精学馆 第 2 册：TPM / TPS 容量漏斗与并发换算实验台',tracks:['infra'],language:{declared:'zh-CN'},supplemental:true},
+  {path:'docs/h5-academy/03-gpu-sizing.html',role:'demo',title:'AI Infra H5 精学馆 第 3 册：GPU 显存 / 带宽 / 算力三水位定容计算器',tracks:['infra'],language:{declared:'zh-CN'},supplemental:true},
+  {path:'docs/h5-academy/04-pd-disaggregation.html',role:'demo',title:'AI Infra H5 精学馆 第 4 册：Prefill-Decode (PD) 分离架构与 KV 传输仿真台',tracks:['infra'],language:{declared:'zh-CN'},supplemental:true},
+  {path:'docs/h5-academy/05-parallelism-acceleration.html',role:'demo',title:'AI Infra H5 精学馆 第 5 册：TP / PP / DP / EP 分布式并行与量化加速推演台',tracks:['infra'],language:{declared:'zh-CN'},supplemental:true},
+  {path:'docs/h5-academy/06-rdma-roce-nvlink.html',role:'demo',title:'AI Infra H5 精学馆 第 6 册：RDMA / RoCEv2 / InfiniBand / NVLink 智算网络选型台',tracks:['infra'],language:{declared:'zh-CN'},supplemental:true},
+  {path:'docs/h5/ai-infra-learning-hub.html',role:'demo',title:'AI Infra 全景 H5 学习中心 (中文)',tracks:['infra'],language:{declared:'zh-CN'},supplemental:true},
+  {path:'docs/h5/ai-infra-learning-hub.en.html',role:'demo',title:'AI Infra Interactive H5 Learning Hub (EN)',tracks:['infra'],language:{declared:'en'},supplemental:true}
 ];
 const motionPages = hasMotionDemo(root) ? [
   {path:motionDemoRoutes.en,role:'demo',title:'GPT-6.2 Motion Studies',tracks:['animation'],language:{declared:'en'}},
