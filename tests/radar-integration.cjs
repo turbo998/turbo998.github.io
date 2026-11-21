@@ -7705,6 +7705,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r635File),'utf8');
       assert.ok(txt.includes('3,390.00')&&txt.includes('4,100.00')&&txt.includes('7,490.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('7,185.00')&&txt.includes('95.93%')&&txt.includes('not_measured'),r635File+': contains exact 11-21 R35 R635 n24email+wet+n24notion+dshemail closed-form parameters');
     }
+    // 2026-11-21 Day Round 36 (R636: JasonColapietro/suede-creator-skills + melodic-software/claude-code-plugins + zb-ss/servonaut + HikaruEgashira/parsentry) verification
+    const r636PathA=3520.00+42.0*100.00;
+    assert.equal(r636PathA.toFixed(2),'7720.00','11-21 R36 R636 Path A total');
+    const r636PathC=70.00+2.4*100.00;
+    assert.equal(r636PathC.toFixed(2),'310.00','11-21 R36 R636 Path C total');
+    assert.equal((r636PathA-r636PathC).toFixed(2),'7410.00','11-21 R36 R636 savings vs Path A');
+    assert.equal(((r636PathA-r636PathC)/r636PathA*100).toFixed(2),'95.98','11-21 R36 R636 pct savings vs Path A');
+    for(const r636File of ['workshops/github-trending-radar/docs/suede-creator-skills-melodic-plugins-servonaut-parsentry-selection-faq.md','workshops/github-trending-radar/docs/suede-creator-skills-melodic-plugins-servonaut-parsentry-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r36-r636-suedeskills-melodicplugins-servonaut-parsentry.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r636File),'utf8');
+      assert.ok(txt.includes('3,520.00')&&txt.includes('4,200.00')&&txt.includes('7,720.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('7,410.00')&&txt.includes('95.98%')&&txt.includes('not_measured'),r636File+': contains exact 11-21 R36 R636 suedeskills+melodicplugins+servonaut+parsentry closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
