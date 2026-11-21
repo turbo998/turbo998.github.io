@@ -8387,6 +8387,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r697File),'utf8');
       assert.ok(txt.includes('3,890.00')&&txt.includes('4,350.00')&&txt.includes('8,240.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('7,935.00')&&txt.includes('96.30%')&&txt.includes('not_measured'),r697File+': contains exact 11-21 R97 R697 lavern+supercmoskills+agentao+knowledgerag closed-form parameters');
     }
+    // 2026-11-21 Night Round 98 (R698: NVIDIA/NeMo-Relay + dapr/python-sdk + a2aproject/a2a-dotnet + redis-developer/langgraph-redis) verification
+    const r698PathA=4010.00+44.0*100.00;
+    assert.equal(r698PathA.toFixed(2),'8410.00','11-21 R98 R698 Path A total');
+    const r698PathC=70.00+2.4*100.00;
+    assert.equal(r698PathC.toFixed(2),'310.00','11-21 R98 R698 Path C total');
+    assert.equal((r698PathA-r698PathC).toFixed(2),'8100.00','11-21 R98 R698 savings vs Path A');
+    assert.equal(((r698PathA-r698PathC)/r698PathA*100).toFixed(2),'96.31','11-21 R98 R698 pct savings vs Path A');
+    for(const r698File of ['workshops/github-trending-radar/docs/nemo-relay-dapr-python-a2a-dotnet-langgraph-redis-selection-faq.md','workshops/github-trending-radar/docs/nemo-relay-dapr-python-a2a-dotnet-langgraph-redis-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r98-r698-nemorelay-daprpython-a2adotnet-langgraphredis.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r698File),'utf8');
+      assert.ok(txt.includes('4,010.00')&&txt.includes('4,400.00')&&txt.includes('8,410.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,100.00')&&txt.includes('96.31%')&&txt.includes('not_measured'),r698File+': contains exact 11-21 R98 R698 nemorelay+daprpython+a2adotnet+langgraphredis closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
