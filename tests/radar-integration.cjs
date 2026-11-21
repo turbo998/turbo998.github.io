@@ -7694,6 +7694,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r634File),'utf8');
       assert.ok(txt.includes('3,440.00')&&txt.includes('4,150.00')&&txt.includes('7,590.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('7,280.00')&&txt.includes('95.92%')&&txt.includes('not_measured'),r634File+': contains exact 11-21 R34 R634 futureos+quarterdeck+soulshouse+graphlink closed-form parameters');
     }
+    // 2026-11-21 Day Round 35 (R635 Milestone: n24q02m/email + n24q02m/wet + n24q02m/notion + STARDUSTLC666/dsh-email) verification
+    const r635PathA=3390.00+41.0*100.00;
+    assert.equal(r635PathA.toFixed(2),'7490.00','11-21 R35 R635 Path A total');
+    const r635PathC=65.00+2.4*100.00;
+    assert.equal(r635PathC.toFixed(2),'305.00','11-21 R35 R635 Path C total');
+    assert.equal((r635PathA-r635PathC).toFixed(2),'7185.00','11-21 R35 R635 savings vs Path A');
+    assert.equal(((r635PathA-r635PathC)/r635PathA*100).toFixed(2),'95.93','11-21 R35 R635 pct savings vs Path A');
+    for(const r635File of ['workshops/github-trending-radar/docs/n24q02m-email-wet-notion-dsh-email-selection-faq.md','workshops/github-trending-radar/docs/n24q02m-email-wet-notion-dsh-email-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r35-r635-n24email-wet-n24notion-dshemail.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r635File),'utf8');
+      assert.ok(txt.includes('3,390.00')&&txt.includes('4,100.00')&&txt.includes('7,490.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('7,185.00')&&txt.includes('95.93%')&&txt.includes('not_measured'),r635File+': contains exact 11-21 R35 R635 n24email+wet+n24notion+dshemail closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
