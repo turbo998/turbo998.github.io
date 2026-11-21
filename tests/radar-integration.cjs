@@ -7617,6 +7617,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r627File),'utf8');
       assert.ok(txt.includes('3,410.00')&&txt.includes('4,150.00')&&txt.includes('7,560.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('7,255.00')&&txt.includes('95.97%')&&txt.includes('not_measured'),r627File+': contains exact 11-21 R27 R627 mcpproxygo+fastmcprust+panoply+zniff closed-form parameters');
     }
+    // 2026-11-21 Day Round 28 (R628: wlsdks/ontology-atlas + n24q02m/crg + dejuknow/md-redline + AMRITO-KUNDU/llmscribe) verification
+    const r628PathA=3380.00+41.0*100.00;
+    assert.equal(r628PathA.toFixed(2),'7480.00','11-21 R28 R628 Path A total');
+    const r628PathC=65.00+2.4*100.00;
+    assert.equal(r628PathC.toFixed(2),'305.00','11-21 R28 R628 Path C total');
+    assert.equal((r628PathA-r628PathC).toFixed(2),'7175.00','11-21 R28 R628 savings vs Path A');
+    assert.equal(((r628PathA-r628PathC)/r628PathA*100).toFixed(2),'95.92','11-21 R28 R628 pct savings vs Path A');
+    for(const r628File of ['workshops/github-trending-radar/docs/ontology-atlas-crg-md-redline-llmscribe-selection-faq.md','workshops/github-trending-radar/docs/ontology-atlas-crg-md-redline-llmscribe-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r28-r628-ontologyatlas-crg-mdredline-llmscribe.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r628File),'utf8');
+      assert.ok(txt.includes('3,380.00')&&txt.includes('4,100.00')&&txt.includes('7,480.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('7,175.00')&&txt.includes('95.92%')&&txt.includes('not_measured'),r628File+': contains exact 11-21 R28 R628 ontologyatlas+crg+mdredline+llmscribe closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
