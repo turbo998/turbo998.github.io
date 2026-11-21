@@ -8200,6 +8200,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r680File),'utf8');
       assert.ok(txt.includes('3,950.00')&&txt.includes('4,400.00')&&txt.includes('8,350.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,040.00')&&txt.includes('96.29%')&&txt.includes('not_measured'),r680File+': contains exact 11-21 R80 R680 svelteaitools+inditexios+forgetful+walkeros closed-form parameters');
     }
+    // 2026-11-21 Night Round 81 (R681: agntcy/oasf + MiniMax-AI/OpenAgentCore + langfuse/skills + Fergana-Labs/stash) verification
+    const r681PathA=3980.00+44.0*100.00;
+    assert.equal(r681PathA.toFixed(2),'8380.00','11-21 R81 R681 Path A total');
+    const r681PathC=70.00+2.4*100.00;
+    assert.equal(r681PathC.toFixed(2),'310.00','11-21 R81 R681 Path C total');
+    assert.equal((r681PathA-r681PathC).toFixed(2),'8070.00','11-21 R81 R681 savings vs Path A');
+    assert.equal(((r681PathA-r681PathC)/r681PathA*100).toFixed(2),'96.30','11-21 R81 R681 pct savings vs Path A');
+    for(const r681File of ['workshops/github-trending-radar/docs/agntcy-oasf-openagentcore-langfuse-skills-stash-selection-faq.md','workshops/github-trending-radar/docs/agntcy-oasf-openagentcore-langfuse-skills-stash-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r81-r681-oasf-openagentcore-langfuseskills-stash.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r681File),'utf8');
+      assert.ok(txt.includes('3,980.00')&&txt.includes('4,400.00')&&txt.includes('8,380.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,070.00')&&txt.includes('96.30%')&&txt.includes('not_measured'),r681File+': contains exact 11-21 R81 R681 oasf+openagentcore+langfuseskills+stash closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
