@@ -162,6 +162,7 @@ const recentSupplementPages = [
   {path:'docs/h5-academy/04-pd-disaggregation.html',role:'demo',title:'AI Infra H5 精学馆 第 4 册：Prefill-Decode (PD) 分离架构与 KV 传输仿真台',tracks:['infra'],language:{declared:'zh-CN'},supplemental:true},
   {path:'docs/h5-academy/05-parallelism-acceleration.html',role:'demo',title:'AI Infra H5 精学馆 第 5 册：TP / PP / DP / EP 分布式并行与量化加速推演台',tracks:['infra'],language:{declared:'zh-CN'},supplemental:true},
   {path:'docs/h5-academy/06-rdma-roce-nvlink.html',role:'demo',title:'AI Infra H5 精学馆 第 6 册：RDMA / RoCEv2 / InfiniBand / NVLink 智算网络选型台',tracks:['infra'],language:{declared:'zh-CN'},supplemental:true},
+  {path:'docs/h5/index.html',role:'demo',title:'AI Infra 交互式 H5 全景精学馆 · 56 套交互沙盘与 445 篇 SA 架构指南 (#001–#443)',tracks:['infra'],language:{declared:'zh-CN'},supplemental:true},
   {path:'docs/h5/ai-infra-learning-hub.html',role:'demo',title:'AI Infra 全景 H5 学习中心 (中文)',tracks:['infra'],language:{declared:'zh-CN'},supplemental:true},
   {path:'docs/h5/ai-infra-learning-hub.en.html',role:'demo',title:'AI Infra Interactive H5 Learning Hub (EN)',tracks:['infra'],language:{declared:'en'},supplemental:true}
 ];
