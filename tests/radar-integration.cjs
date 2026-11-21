@@ -7628,6 +7628,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r628File),'utf8');
       assert.ok(txt.includes('3,380.00')&&txt.includes('4,100.00')&&txt.includes('7,480.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('7,175.00')&&txt.includes('95.92%')&&txt.includes('not_measured'),r628File+': contains exact 11-21 R28 R628 ontologyatlas+crg+mdredline+llmscribe closed-form parameters');
     }
+    // 2026-11-21 Day Round 29 (R629: squirrelscan/squirrelscan + LilZeeCN/zee-rp + airmang/python-hwpx-automation + suffixing/apkscope) verification
+    const r629PathA=3510.00+42.0*100.00;
+    assert.equal(r629PathA.toFixed(2),'7710.00','11-21 R29 R629 Path A total');
+    const r629PathC=70.00+2.4*100.00;
+    assert.equal(r629PathC.toFixed(2),'310.00','11-21 R29 R629 Path C total');
+    assert.equal((r629PathA-r629PathC).toFixed(2),'7400.00','11-21 R29 R629 savings vs Path A');
+    assert.equal(((r629PathA-r629PathC)/r629PathA*100).toFixed(2),'95.98','11-21 R29 R629 pct savings vs Path A');
+    for(const r629File of ['workshops/github-trending-radar/docs/squirrelscan-zee-rp-python-hwpx-apkscope-selection-faq.md','workshops/github-trending-radar/docs/squirrelscan-zee-rp-python-hwpx-apkscope-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r29-r629-squirrelscan-zeerp-hwpx-apkscope.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r629File),'utf8');
+      assert.ok(txt.includes('3,510.00')&&txt.includes('4,200.00')&&txt.includes('7,710.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('7,400.00')&&txt.includes('95.98%')&&txt.includes('not_measured'),r629File+': contains exact 11-21 R29 R629 squirrelscan+zeerp+hwpx+apkscope closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
