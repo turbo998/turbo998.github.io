@@ -8530,6 +8530,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r710File),'utf8');
       assert.ok(txt.includes('4,090.00')&&txt.includes('4,400.00')&&txt.includes('8,490.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,180.00')&&txt.includes('96.35%')&&txt.includes('not_measured'),r710File+': contains exact 11-21 R110 R710 aamp+aweb+openpact+tma1 closed-form parameters');
     }
+    // 2026-11-21 Night Round 111 (R711: datalayer/fasta2a + daydreamsai/lucid-agents + a2aproject/a2a-cli + qntx-labs/ra2a) verification
+    const r711PathA=3920.00+43.5*100.00;
+    assert.equal(r711PathA.toFixed(2),'8270.00','11-21 R111 R711 Path A total');
+    const r711PathC=70.00+2.4*100.00;
+    assert.equal(r711PathC.toFixed(2),'310.00','11-21 R111 R711 Path C total');
+    assert.equal((r711PathA-r711PathC).toFixed(2),'7960.00','11-21 R111 R711 savings vs Path A');
+    assert.equal(((r711PathA-r711PathC)/r711PathA*100).toFixed(2),'96.25','11-21 R111 R711 pct savings vs Path A');
+    for(const r711File of ['workshops/github-trending-radar/docs/fasta2a-lucid-agents-a2a-cli-ra2a-selection-faq.md','workshops/github-trending-radar/docs/fasta2a-lucid-agents-a2a-cli-ra2a-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r111-r711-fasta2a-lucidagents-a2acli-ra2a.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r711File),'utf8');
+      assert.ok(txt.includes('3,920.00')&&txt.includes('4,350.00')&&txt.includes('8,270.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('7,960.00')&&txt.includes('96.25%')&&txt.includes('not_measured'),r711File+': contains exact 11-21 R111 R711 fasta2a+lucidagents+a2acli+ra2a closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
