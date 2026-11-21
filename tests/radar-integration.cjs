@@ -7881,6 +7881,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r651File),'utf8');
       assert.ok(txt.includes('3,880.00')&&txt.includes('4,350.00')&&txt.includes('8,230.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('7,925.00')&&txt.includes('96.29%')&&txt.includes('not_measured'),r651File+': contains exact 11-21 R51 R651 aocicode+ripwire+reverify+okfmemory closed-form parameters');
     }
+    // 2026-11-21 Day Round 52 (R652: ollaya-dev/ollaya + strands-labs/strands-decider + decionis/agent-safe-pipeline + mrmps/classifier-dev) verification
+    const r652PathA=3950.00+43.5*100.00;
+    assert.equal(r652PathA.toFixed(2),'8300.00','11-21 R52 R652 Path A total');
+    const r652PathC=70.00+2.4*100.00;
+    assert.equal(r652PathC.toFixed(2),'310.00','11-21 R52 R652 Path C total');
+    assert.equal((r652PathA-r652PathC).toFixed(2),'7990.00','11-21 R52 R652 savings vs Path A');
+    assert.equal(((r652PathA-r652PathC)/r652PathA*100).toFixed(2),'96.27','11-21 R52 R652 pct savings vs Path A');
+    for(const r652File of ['workshops/github-trending-radar/docs/ollaya-strands-decider-agent-safe-classifier-dev-selection-faq.md','workshops/github-trending-radar/docs/ollaya-strands-decider-agent-safe-classifier-dev-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r52-r652-ollaya-strandsdecider-agentsafe-classifierdev.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r652File),'utf8');
+      assert.ok(txt.includes('3,950.00')&&txt.includes('4,350.00')&&txt.includes('8,300.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('7,990.00')&&txt.includes('96.27%')&&txt.includes('not_measured'),r652File+': contains exact 11-21 R52 R652 ollaya+strandsdecider+agentsafe+classifierdev closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
