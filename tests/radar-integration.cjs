@@ -8376,6 +8376,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r696File),'utf8');
       assert.ok(txt.includes('3,950.00')&&txt.includes('4,400.00')&&txt.includes('8,350.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,040.00')&&txt.includes('96.29%')&&txt.includes('not_measured'),r696File+': contains exact 11-21 R96 R696 containarium+shodhmemory+elasticmcp+memex closed-form parameters');
     }
+    // 2026-11-21 Night Round 97 (R697: AnttiHero/lavern + SupercmoHQ/superCMO-skills + jin-bo/agentao + lyonzin/knowledge-rag) verification
+    const r697PathA=3890.00+43.5*100.00;
+    assert.equal(r697PathA.toFixed(2),'8240.00','11-21 R97 R697 Path A total');
+    const r697PathC=65.00+2.4*100.00;
+    assert.equal(r697PathC.toFixed(2),'305.00','11-21 R97 R697 Path C total');
+    assert.equal((r697PathA-r697PathC).toFixed(2),'7935.00','11-21 R97 R697 savings vs Path A');
+    assert.equal(((r697PathA-r697PathC)/r697PathA*100).toFixed(2),'96.30','11-21 R97 R697 pct savings vs Path A');
+    for(const r697File of ['workshops/github-trending-radar/docs/lavern-supercmo-skills-agentao-knowledge-rag-selection-faq.md','workshops/github-trending-radar/docs/lavern-supercmo-skills-agentao-knowledge-rag-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r97-r697-lavern-supercmoskills-agentao-knowledgerag.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r697File),'utf8');
+      assert.ok(txt.includes('3,890.00')&&txt.includes('4,350.00')&&txt.includes('8,240.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('7,935.00')&&txt.includes('96.30%')&&txt.includes('not_measured'),r697File+': contains exact 11-21 R97 R697 lavern+supercmoskills+agentao+knowledgerag closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
