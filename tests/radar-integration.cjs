@@ -7661,6 +7661,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r631File),'utf8');
       assert.ok(txt.includes('3,590.00')&&txt.includes('4,250.00')&&txt.includes('7,840.00')&&txt.includes('75.00')&&txt.includes('240.00')&&txt.includes('315.00')&&txt.includes('7,525.00')&&txt.includes('95.98%')&&txt.includes('not_measured'),r631File+': contains exact 11-21 R31 R631 onco+canvasmcp+freecadmcp+chemdraft closed-form parameters');
     }
+    // 2026-11-21 Day Round 32 (R632: Johnson-Durui/Companion-Space + KenKaiii/Roamies + nirholas/three.ws + hehehai/AudioSmith) verification
+    const r632PathA=3680.00+42.5*100.00;
+    assert.equal(r632PathA.toFixed(2),'7930.00','11-21 R32 R632 Path A total');
+    const r632PathC=70.00+2.4*100.00;
+    assert.equal(r632PathC.toFixed(2),'310.00','11-21 R32 R632 Path C total');
+    assert.equal((r632PathA-r632PathC).toFixed(2),'7620.00','11-21 R32 R632 savings vs Path A');
+    assert.equal(((r632PathA-r632PathC)/r632PathA*100).toFixed(2),'96.09','11-21 R32 R632 pct savings vs Path A');
+    for(const r632File of ['workshops/github-trending-radar/docs/companion-space-roamies-three-ws-audiosmith-selection-faq.md','workshops/github-trending-radar/docs/companion-space-roamies-three-ws-audiosmith-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r32-r632-companionspace-roamies-threews-audiosmith.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r632File),'utf8');
+      assert.ok(txt.includes('3,680.00')&&txt.includes('4,250.00')&&txt.includes('7,930.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('7,620.00')&&txt.includes('96.09%')&&txt.includes('not_measured'),r632File+': contains exact 11-21 R32 R632 companionspace+roamies+threews+audiosmith closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
