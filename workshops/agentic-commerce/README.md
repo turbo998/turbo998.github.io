@@ -1,6 +1,6 @@
 # Enterprise Agentic Commerce Lab — 企业智能体商业参考架构与 AI 解决方案架构师决策库
 
-🌐 **语言切换 / Language**: **中文主页 (当前)** | **[English (`README.en.md`)](README.en.md)** | **[📚 SA 决策指南总目录（307 篇双语 FAQ）](https://github.com/turbo998/agentic-commerce-lab/blob/main/docs/index.md)** | **[🚀 交互式架构工作台 (`live-demo.html`)](live-demo.html)** | **[📊 7-Card 基准测试报告 (`benchmark-cards.html`)](benchmark-cards.html)**
+🌐 **语言切换 / Language**: **中文主页 (当前)** | **[English (`README.en.md`)](README.en.md)** | **[📚 SA 决策指南总目录（352 篇双语 FAQ）](https://github.com/turbo998/agentic-commerce-lab/blob/main/docs/index.md)** | **[🚀 交互式架构工作台 (`live-demo.html`)](live-demo.html)** | **[📊 7-Card 基准测试报告 (`benchmark-cards.html`)](benchmark-cards.html)**
 
 > **面向 AI Solution Architect（AI 解决方案架构师）的企业级智能体商业工程参考库**
 > 聚焦**零售电商与多商户编排、智能体支付与加密授权协议（AP2 / Stripe SPT / Visa VIC & TAP / Mastercard / x402）、B2B 采购与 ERP 三单匹配、酒旅航司（OTA / IATA NDC）动态预订、SaaS 用量计费与 FinOps、跨境税务（MoR）/ 外汇清结算与 Visa CE 3.0 拒付抗辩**六大核心领域，提供**可复用的六平面参考架构、平台与协议选型对比矩阵、确定性受托控制面（Fiduciary Control Plane）Python 护栏模块及自包含交互式演示台**。
@@ -23,7 +23,7 @@
 
 | 资产类型 | 中文版入口 | English Entry | 面向架构师的核心演示与评测内容 |
 |---|---|---|---|
-| **旗舰交互式架构工作台** | [`live-demo.html`](live-demo.html) | [`live-demo.en.html`](live-demo.en.html) | Microsoft Web IQ 实时网页接地 + Google AP2 熔断器 + Stripe SPT / x402 双轨结算 + **309 个企业业务场景策略沙盒（含实时搜索筛选）** |
+| **旗舰交互式架构工作台** | [`live-demo.html`](live-demo.html) | [`live-demo.en.html`](live-demo.en.html) | Microsoft Web IQ 实时网页接地 + Google AP2 熔断器 + Stripe SPT / x402 双轨结算 + **354 个企业业务场景策略沙盒（含实时搜索筛选）** |
 | **Web IQ 接地与结算 7-Card 报告** | [`benchmark-cards.html`](benchmark-cards.html) | [`benchmark-cards.en.html`](benchmark-cards.en.html) | 覆盖并行 `passage` 接地（`2.75x` 加速、`7.1x` Token 削减）、DOM 提示词注入 `100%` 拦截与报价逆序一致性（`0.0 pt` 漂移） |
 | **六平面 AI-Native 工作负载评测** | [`reports/agentic-commerce-6plane-bench/index.html`](reports/agentic-commerce-6plane-bench/index.html) | [`report.json`](reports/agentic-commerce-6plane-bench/report.json) | 6 平面确定性控制架构 vs 传统三层 Web 架构在授权越权、重放与目录篡改场景下的对比 |
 | **B2B 企业采购与三单匹配评测** | [`reports/agentic-commerce-enterprise-procurement-bench/index.html`](reports/agentic-commerce-enterprise-procurement-bench/index.html) | [`report.json`](reports/agentic-commerce-enterprise-procurement-bench/report.json) | `PO == GRN == Invoice` 三单匹配、Vickrey 密封竞价 RFQ、BEC 篡改拦截与 `2/10 Net 30` 动态贴现 |
@@ -104,9 +104,23 @@ flowchart TB
 
 ---
 
-## 5. 六大企业业务域与精选 SA 决策指南（全库共 307 篇双语 FAQ）
+## 5. 六大企业业务域与精选 SA 决策指南（全库共 352 篇双语 FAQ）
 
-> 📚 **完整索引入口**：[**中文总目录（307 篇双语 FAQ + 21 份架构蓝图）**](https://github.com/turbo998/agentic-commerce-lab/blob/main/docs/index.md) ｜ [**English Full Catalog (`docs/index.en.md`)**](https://github.com/turbo998/agentic-commerce-lab/blob/main/docs/index.en.md)
+> 📚 **完整索引入口**：[**中文总目录（352 篇双语 FAQ + 21 份架构蓝图）**](https://github.com/turbo998/agentic-commerce-lab/blob/main/docs/index.md) ｜ [**English Full Catalog (`docs/index.en.md`)**](https://github.com/turbo998/agentic-commerce-lab/blob/main/docs/index.en.md)
+
+### 🔥 2026-11-22 夜间多轮研究新增 45 篇主流商业与企业智能体架构选型深潜（Rounds 189–233，累计 352 篇双语指南 · 突破第 350 篇里程碑）
+- **零售电商、视光配镜、社交拼团、汽车后市场与酒旅邮轮/主题乐园（新增 25 篇）**：
+  - [视光配镜、隐形眼镜订阅与渐进多焦点镜片（Warby Parker / Zenni / 1-800 Contacts / VSP）：验光单 OCR 正负号互锁、ARKit ±0.5mm 双瞳距、FTC FCLCA 8个诊所营业小时核验与 VSP+HSA 自动拆单（#352）](https://github.com/turbo998/agentic-commerce-lab/blob/main/docs/ecommerce-optical-eyewear-contact-lens-fclca-pd-tryon-escrow-agent-selection-faq.md) ｜ [主题乐园、滑雪场季卡与优速通动态票务（Disney Lightning Lane / Vail Epic / accesso / Skidata）：首刷闸机生物/RFID 绑定防停车场换人租卡、<=20% OHRC 运力锁与设备故障秒发恢复券（#349）](https://github.com/turbo998/agentic-commerce-lab/blob/main/docs/ota-theme-park-ski-resort-dynamic-ticketing-fastpass-weather-escrow-agent-selection-faq.md)
+  - [社交拼团、社区生鲜团购与阶梯集采（拼多多 / 兴盛优选 / Shopify GroupBuy）：独立卡 PAR 去重防 9个小号假凑团秒退 9单、阶梯全员按最终最低价统一实扣与自提点 BLE 冰柜探头准入（#347）](https://github.com/turbo998/agentic-commerce-lab/blob/main/docs/ecommerce-social-group-buying-community-leader-cold-chain-tiered-rebate-escrow-agent-selection-faq.md) ｜ [礼服奢品与单反镜头共享租赁（Rent the Runway / Nuuly / Lensrentals）：防虚拟空卡骗走 $3,200 镜头、48h 消杀缓冲锁与残值封顶买断（#345）](https://github.com/turbo998/agentic-commerce-lab/blob/main/docs/ecommerce-apparel-camera-gear-rental-turnaround-buffer-deposit-escrow-agent-selection-faq.md)
+  - [汽车零配件车牌转 17 位 VIN 精准适配（ACES/PIES / eBay Motors / 途虎）：防生锈旧件塞新盒退货骗款与再制造旧件押金 Core Charge 托管（#343）](https://github.com/turbo998/agentic-commerce-lab/blob/main/docs/ecommerce-auto-parts-aftermarket-vin-fitment-core-charge-escrow-agent-selection-faq.md) ｜ [邮轮母港联程机票（Fly-Cruise）、岸上观光与船上账单（Royal Caribbean / Amadeus Cruise）：T-6h 航班缓冲、美国 PVSA 沿海法硬锁与公海卫星增量预授权（#342）](https://github.com/turbo998/agentic-commerce-lab/blob/main/docs/ota-cruise-fly-cruise-embarkation-shore-excursion-onboard-folio-escrow-agent-selection-faq.md)
+  - [🏆 第 340 篇里程碑：高化美妆买赠礼包（GWP：Sephora / Ulta / 雅诗兰黛）：ASC 606 发票分摊防退正装白嫖赠品、防生日脚本搬空小样与外置 2ml 试香管免拆封（#340）](https://github.com/turbo998/agentic-commerce-lab/blob/main/docs/ecommerce-beauty-gwp-free-sample-abuse-return-deduction-escrow-agent-selection-faq.md) ｜ [限量球鞋抽签（EQL / Nike SNKRS）与鉴别寄售（StockX / 得物）：PAR+DPBC 清剿 2万工作室傀儡号与扣罚鸽单卖家 15% 自动补差重配（#338）](https://github.com/turbo998/agentic-commerce-lab/blob/main/docs/ecommerce-sneaker-collectible-drop-raffle-authentication-seller-flake-escrow-agent-selection-faq.md)
+  - [宠物电商定期购与兽医处方核验（Chewy / Covetrus）：品种体重剂量红线锁与宠物离世自动免退全额退款（#333）](https://github.com/turbo998/agentic-commerce-lab/blob/main/docs/pet-ecommerce-autoship-vet-rx-verification-weight-dosing-escrow-agent-selection-faq.md) ｜ [🏆 第 330 篇里程碑：鲜花蛋糕纪念日定时达（1-800-Flowers / DoorDash Drive）：出店前 CV 点花枝核验与空调轿车平放专送（#330）](https://github.com/turbo998/agentic-commerce-lab/blob/main/docs/perishable-florist-cake-gifting-timed-delivery-cold-chain-escrow-agent-selection-faq.md)
+- **B2B 模具/展会/周转箱采购、大额分拆支付、云市场 MACC 与跨境欧盟 EPR 环保税（新增 20 篇）**：
+  - [🏆 第 350 篇里程碑：企业 B2B 展会赞助、特装搭建与 Drayage 搬运托管（Cvent / Freeman / Captello / Salesforce）：3秒 ZoomInfo 剔除学生/竞品废扫码、整托地磅单 CWT 对账与 T-30d 早鸟锁水电（#350）](https://github.com/turbo998/agentic-commerce-lab/blob/main/docs/b2b-tradeshow-booth-sponsorship-drayage-lead-retrieval-icp-escrow-agent-selection-faq.md) ｜ [企业 B2B 定制开模与按件摊销结算（SAP FI-AA / Ariba / PPAP）：SAP PIR 拆分 ZTOO 摊销满 10万件自动清零、PPAP Cpk>=1.33 尾款锁与铆接买方铭牌 UCC-1 托管（#348）](https://github.com/turbo998/agentic-commerce-lab/blob/main/docs/b2b-supplier-tooling-mold-amortization-ppap-bailment-escrow-agent-selection-faq.md)
+  - [跨境欧盟 EPR 包装法、WEEE 电子垃圾与电池环保税（德国 LUCID / 法国 Citeo / Amazon EPR）：SKU 包装皮重 BOM 拆分防按整机毛重多交 8倍税、平台代扣去重与 FBA 外箱剥离（#351）](https://github.com/turbo998/agentic-commerce-lab/blob/main/docs/cross-border-epr-packaging-weee-battery-lucid-citeo-ecofee-escrow-agent-selection-faq.md) ｜ [B2B 可循环物流包装与共享托盘池（CHEP / IFCO / SAP LEIH）：月台 RFID 1:1 置换锁、EDI 856 秒停租金与 ISPM-15 熏蒸检疫（#344）](https://github.com/turbo998/agentic-commerce-lab/blob/main/docs/b2b-returnable-transport-packaging-rtp-pallet-pool-deposit-demurrage-escrow-agent-selection-faq.md)
+  - [B2B 软件外包与咨询按交付物 SOW 采购（SAP Fieldglass / Beeline）：核心专家指纹锁防挂名换实习生、跨项目工时防重与 10% 质保留置金（#339）](https://github.com/turbo998/agentic-commerce-lab/blob/main/docs/b2b-sow-services-procurement-milestone-deliverable-retainage-escrow-agent-selection-faq.md) ｜ [B2B 供应商管理库存与寄售结算（VMI / SAP MRKO）：MIGO 201K 实领才转应付、盘亏自动冲抵与 UCC-1 物权隔离（#329）](https://github.com/turbo998/agentic-commerce-lab/blob/main/docs/b2b-vendor-managed-inventory-vmi-consignment-settlement-shrinkage-escrow-agent-selection-faq.md)
+  - [大宗汽车与新能源四轨组合结账（Tesla / Rivian / AutoFi / Plaid）：信用卡定金硬锁 $1,000、金融机构放款锁防假交车与一车一专属 vIBAN（#341）](https://github.com/turbo998/agentic-commerce-lab/blob/main/docs/high-ticket-automotive-luxury-split-tender-deposit-wire-loan-escrow-agent-selection-faq.md) ｜ [全渠道移动收银（SoftPOS / Tap to Pay）：原单 PAR 绑定防内鬼盲退盗刷、禁手输卡号降级与离线 $150 限额（#331）](https://github.com/turbo998/agentic-commerce-lab/blob/main/docs/omnichannel-softpos-tap-to-pay-unlinked-refund-offline-emv-escrow-agent-selection-faq.md)
+  - [B2B SaaS 云市场私密报价与 MACC/EDP 额度消纳（AWS / Azure / Tackle）：CPPO 渠道底价锁、ResolveCustomer 防幽灵订阅与 60m 用量死线（#337）](https://github.com/turbo998/agentic-commerce-lab/blob/main/docs/b2b-saas-cloud-marketplace-private-offer-macc-edp-drawdown-cppo-escrow-agent-selection-faq.md) ｜ [在线考培考试券与不过包退托管（Coursera / Pearson VUE / Guild）：刷题达标才准退、JIT 考前 72h 发券防闲鱼倒卖与 NASBA 50m 学时锁（#346）](https://github.com/turbo998/agentic-commerce-lab/blob/main/docs/edtech-certification-exam-voucher-pass-guarantee-ceu-tuition-escrow-agent-selection-faq.md)
 
 ### 🔥 2026-11-21 白天持续研究新增 78 篇主流商业与企业智能体架构选型深潜（Rounds 111–188，累计 307 篇双语指南 · 突破第 300 篇里程碑）
 - **零售电商导购、全渠道履约、RMN 广告与商品治理（新增 48 篇）**：
@@ -214,7 +228,7 @@ agentic-commerce-lab/
 ├── live-demo.html / live-demo.en.html # 自包含 H5 交互式智能体商业工作台（双语）
 ├── benchmark-cards.html / .en.html   # 7-Card 4:5 视觉基准评测卡片流（双语）
 ├── docs/
-│   ├── index.md / index.en.md        # 307 篇双语 SA 决策指南（FAQ）分类总目录
+│   ├── index.md / index.en.md        # 352 篇双语 SA 决策指南（FAQ）分类总目录
 │   ├── *-faq.md / *-faq.en.md        # 六大企业商业域架构选型、Mermaid 图与核查清单
 │   ├── architecture/                 # 21 份确定性领域状态机与美分守恒规格说明
 │   └── research/                     # 全栈六平面蓝图、Web IQ 竞品矩阵与行业趋势深度报告
@@ -222,13 +236,13 @@ agentic-commerce-lab/
 ├── lab/                              # 零第三方依赖的确定性受托控制面 Python 实现与基准生成器
 ├── src/agentic_commerce/             # Microsoft Web IQ × Agentic Commerce 核心评估引擎
 ├── reports/                          # 密封的基准评测报告包（JSON 数据源 + HTML 视觉卡片）
-└── tests/                            # 覆盖全部协议门禁、美分守恒与幂等恢复的 1,185 项单元测试
+└── tests/                            # 覆盖全部协议门禁、美分守恒与幂等恢复的 1,230 项单元测试
 ```
 
 ### 快速运行与验证（仅依赖 Python 3.11+ 标准库）
 
 ```bash
-# 1. 运行全量确定性单元测试套件（69 个测试模块 / 1,185 项断言）
+# 1. 运行全量确定性单元测试套件（69 个测试模块 / 1,230 项断言）
 python -m unittest discover -s tests
 
 # 2. 运行离线受托结账与幂等重放基线演示（默认无外部网络调用、零真实扣款）
