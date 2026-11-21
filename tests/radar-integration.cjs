@@ -8519,6 +8519,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r709File),'utf8');
       assert.ok(txt.includes('3,960.00')&&txt.includes('4,350.00')&&txt.includes('8,310.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,000.00')&&txt.includes('96.27%')&&txt.includes('not_measured'),r709File+': contains exact 11-21 R109 R709 arcana+hyperrag+testbrain+rivalsearch closed-form parameters');
     }
+    // 2026-11-21 Night Round 110 (R710 Milestone: larksuite/aamp + awebai/aweb + openpactprotocol/openpactprotocol + tma1-ai/tma1) verification
+    const r710PathA=4090.00+44.0*100.00;
+    assert.equal(r710PathA.toFixed(2),'8490.00','11-21 R110 R710 Path A total');
+    const r710PathC=70.00+2.4*100.00;
+    assert.equal(r710PathC.toFixed(2),'310.00','11-21 R110 R710 Path C total');
+    assert.equal((r710PathA-r710PathC).toFixed(2),'8180.00','11-21 R110 R710 savings vs Path A');
+    assert.equal(((r710PathA-r710PathC)/r710PathA*100).toFixed(2),'96.35','11-21 R110 R710 pct savings vs Path A');
+    for(const r710File of ['workshops/github-trending-radar/docs/lark-aamp-aweb-openpact-tma1-selection-faq.md','workshops/github-trending-radar/docs/lark-aamp-aweb-openpact-tma1-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r110-r710-aamp-aweb-openpact-tma1.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r710File),'utf8');
+      assert.ok(txt.includes('4,090.00')&&txt.includes('4,400.00')&&txt.includes('8,490.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,180.00')&&txt.includes('96.35%')&&txt.includes('not_measured'),r710File+': contains exact 11-21 R110 R710 aamp+aweb+openpact+tma1 closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
