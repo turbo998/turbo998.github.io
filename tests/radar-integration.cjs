@@ -7518,6 +7518,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r618File),'utf8');
       assert.ok(txt.includes('3,560.00')&&txt.includes('4,250.00')&&txt.includes('7,810.00')&&txt.includes('75.00')&&txt.includes('240.00')&&txt.includes('315.00')&&txt.includes('7,495.00')&&txt.includes('95.97%')&&txt.includes('not_measured'),r618File+': contains exact 11-21 R18 R618 fojin+twlegalrag+lodedb+cymbalair closed-form parameters');
     }
+    // 2026-11-21 Day Round 19 (R619: harshalgajjar/Reminal + Xustalis/OpenPanda + NMar33/slightly-parallel + WFekik/HermOS-IDE) verification
+    const r619PathA=3320.00+40.5*100.00;
+    assert.equal(r619PathA.toFixed(2),'7370.00','11-21 R19 R619 Path A total');
+    const r619PathC=65.00+2.4*100.00;
+    assert.equal(r619PathC.toFixed(2),'305.00','11-21 R19 R619 Path C total');
+    assert.equal((r619PathA-r619PathC).toFixed(2),'7065.00','11-21 R19 R619 savings vs Path A');
+    assert.equal(((r619PathA-r619PathC)/r619PathA*100).toFixed(2),'95.86','11-21 R19 R619 pct savings vs Path A');
+    for(const r619File of ['workshops/github-trending-radar/docs/reminal-openpanda-slightly-parallel-hermos-ide-selection-faq.md','workshops/github-trending-radar/docs/reminal-openpanda-slightly-parallel-hermos-ide-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r19-r619-reminal-openpanda-slightlyparallel-hermos.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r619File),'utf8');
+      assert.ok(txt.includes('3,320.00')&&txt.includes('4,050.00')&&txt.includes('7,370.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('7,065.00')&&txt.includes('95.86%')&&txt.includes('not_measured'),r619File+': contains exact 11-21 R19 R619 reminal+openpanda+slightlyparallel+hermos closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
