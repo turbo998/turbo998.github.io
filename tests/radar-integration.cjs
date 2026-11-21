@@ -8398,6 +8398,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r698File),'utf8');
       assert.ok(txt.includes('4,010.00')&&txt.includes('4,400.00')&&txt.includes('8,410.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,100.00')&&txt.includes('96.31%')&&txt.includes('not_measured'),r698File+': contains exact 11-21 R98 R698 nemorelay+daprpython+a2adotnet+langgraphredis closed-form parameters');
     }
+    // 2026-11-21 Night Round 99 (R699: ferro-labs/ai-gateway + yonatangross/orchestkit + timgordontg/engrim + Unagi-cq/cdp-bridge-mcp) verification
+    const r699PathA=3930.00+43.5*100.00;
+    assert.equal(r699PathA.toFixed(2),'8280.00','11-21 R99 R699 Path A total');
+    const r699PathC=70.00+2.4*100.00;
+    assert.equal(r699PathC.toFixed(2),'310.00','11-21 R99 R699 Path C total');
+    assert.equal((r699PathA-r699PathC).toFixed(2),'7970.00','11-21 R99 R699 savings vs Path A');
+    assert.equal(((r699PathA-r699PathC)/r699PathA*100).toFixed(2),'96.26','11-21 R99 R699 pct savings vs Path A');
+    for(const r699File of ['workshops/github-trending-radar/docs/ferro-ai-gateway-orchestkit-engrim-cdp-bridge-mcp-selection-faq.md','workshops/github-trending-radar/docs/ferro-ai-gateway-orchestkit-engrim-cdp-bridge-mcp-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r99-r699-ferrogateway-orchestkit-engrim-cdpbridgemcp.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r699File),'utf8');
+      assert.ok(txt.includes('3,930.00')&&txt.includes('4,350.00')&&txt.includes('8,280.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('7,970.00')&&txt.includes('96.26%')&&txt.includes('not_measured'),r699File+': contains exact 11-21 R99 R699 ferrogateway+orchestkit+engrim+cdpbridgemcp closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
