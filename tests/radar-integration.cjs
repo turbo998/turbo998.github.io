@@ -8101,6 +8101,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r671File),'utf8');
       assert.ok(txt.includes('3,920.00')&&txt.includes('4,350.00')&&txt.includes('8,270.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('7,960.00')&&txt.includes('96.25%')&&txt.includes('not_measured'),r671File+': contains exact 11-21 R71 R671 tfmcp+modulestf+kelos+hookdeckcli closed-form parameters');
     }
+    // 2026-11-21 Day Round 72 (R672: openma-ai/open-managed-agents + useagenthq/useagent + Entelligence-AI/agentplay + clay-good/OpenLore) verification
+    const r672PathA=4050.00+44.5*100.00;
+    assert.equal(r672PathA.toFixed(2),'8500.00','11-21 R72 R672 Path A total');
+    const r672PathC=80.00+2.5*100.00;
+    assert.equal(r672PathC.toFixed(2),'330.00','11-21 R72 R672 Path C total');
+    assert.equal((r672PathA-r672PathC).toFixed(2),'8170.00','11-21 R72 R672 savings vs Path A');
+    assert.equal(((r672PathA-r672PathC)/r672PathA*100).toFixed(2),'96.12','11-21 R72 R672 pct savings vs Path A');
+    for(const r672File of ['workshops/github-trending-radar/docs/open-managed-agents-useagent-agentplay-openlore-selection-faq.md','workshops/github-trending-radar/docs/open-managed-agents-useagent-agentplay-openlore-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r72-r672-openma-useagent-agentplay-openlore.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r672File),'utf8');
+      assert.ok(txt.includes('4,050.00')&&txt.includes('4,450.00')&&txt.includes('8,500.00')&&txt.includes('80.00')&&txt.includes('250.00')&&txt.includes('330.00')&&txt.includes('8,170.00')&&txt.includes('96.12%')&&txt.includes('not_measured'),r672File+': contains exact 11-21 R72 R672 openma+useagent+agentplay+openlore closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
