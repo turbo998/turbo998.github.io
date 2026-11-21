@@ -7826,6 +7826,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r646File),'utf8');
       assert.ok(txt.includes('3,650.00')&&txt.includes('4,200.00')&&txt.includes('7,850.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('7,540.00')&&txt.includes('96.05%')&&txt.includes('not_measured'),r646File+': contains exact 11-21 R46 R646 dshmemory+movo+deepseekbot+hermesbotforge closed-form parameters');
     }
+    // 2026-11-21 Day Round 47 (R647: lemomo-ai/lemo-opuscar + zai-org/ZCode + shader-effects-inc/shaders + Vincentwei1021/mg-styles-15) verification
+    const r647PathA=3820.00+43.0*100.00;
+    assert.equal(r647PathA.toFixed(2),'8120.00','11-21 R47 R647 Path A total');
+    const r647PathC=75.00+2.5*100.00;
+    assert.equal(r647PathC.toFixed(2),'325.00','11-21 R47 R647 Path C total');
+    assert.equal((r647PathA-r647PathC).toFixed(2),'7795.00','11-21 R47 R647 savings vs Path A');
+    assert.equal(((r647PathA-r647PathC)/r647PathA*100).toFixed(2),'96.00','11-21 R47 R647 pct savings vs Path A');
+    for(const r647File of ['workshops/github-trending-radar/docs/lemo-opuscar-zcode-shaders-mg-styles-15-selection-faq.md','workshops/github-trending-radar/docs/lemo-opuscar-zcode-shaders-mg-styles-15-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r47-r647-lemoopuscar-zcode-shaders-mgstyles15.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r647File),'utf8');
+      assert.ok(txt.includes('3,820.00')&&txt.includes('4,300.00')&&txt.includes('8,120.00')&&txt.includes('75.00')&&txt.includes('250.00')&&txt.includes('325.00')&&txt.includes('7,795.00')&&txt.includes('96.00%')&&txt.includes('not_measured'),r647File+': contains exact 11-21 R47 R647 lemoopuscar+zcode+shaders+mgstyles15 closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
