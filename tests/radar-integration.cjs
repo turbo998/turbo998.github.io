@@ -8123,6 +8123,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r673File),'utf8');
       assert.ok(txt.includes('3,980.00')&&txt.includes('4,400.00')&&txt.includes('8,380.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,070.00')&&txt.includes('96.30%')&&txt.includes('not_measured'),r673File+': contains exact 11-21 R73 R673 codeguard+openguardrails+durableactors+springboot closed-form parameters');
     }
+    // 2026-11-21 Day Round 74 (R674: Leon-Drq/openagentskill + CheMiguel23/MemoryMesh + spences10/mcp-omnisearch + BeatAPI/BeatDesign) verification
+    const r674PathA=3860.00+43.0*100.00;
+    assert.equal(r674PathA.toFixed(2),'8160.00','11-21 R74 R674 Path A total');
+    const r674PathC=65.00+2.4*100.00;
+    assert.equal(r674PathC.toFixed(2),'305.00','11-21 R74 R674 Path C total');
+    assert.equal((r674PathA-r674PathC).toFixed(2),'7855.00','11-21 R74 R674 savings vs Path A');
+    assert.equal(((r674PathA-r674PathC)/r674PathA*100).toFixed(2),'96.26','11-21 R74 R674 pct savings vs Path A');
+    for(const r674File of ['workshops/github-trending-radar/docs/openagentskill-memorymesh-mcp-omnisearch-beatdesign-selection-faq.md','workshops/github-trending-radar/docs/openagentskill-memorymesh-mcp-omnisearch-beatdesign-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r74-r674-openagentskill-memorymesh-omnisearch-beatdesign.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r674File),'utf8');
+      assert.ok(txt.includes('3,860.00')&&txt.includes('4,300.00')&&txt.includes('8,160.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('7,855.00')&&txt.includes('96.26%')&&txt.includes('not_measured'),r674File+': contains exact 11-21 R74 R674 openagentskill+memorymesh+omnisearch+beatdesign closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
