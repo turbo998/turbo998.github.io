@@ -7551,6 +7551,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r621File),'utf8');
       assert.ok(txt.includes('3,280.00')&&txt.includes('4,050.00')&&txt.includes('7,330.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('7,025.00')&&txt.includes('95.84%')&&txt.includes('not_measured'),r621File+': contains exact 11-21 R21 R621 codemem+tisty+olympus+guaca closed-form parameters');
     }
+    // 2026-11-21 Day Round 22 (R622: Blakeem/Navidrome-MCP + writerslogic/scrivener-mcp + OrygnsCode/discord-mcp + nsozturk/tweetkit-x) verification
+    const r622PathA=3350.00+41.0*100.00;
+    assert.equal(r622PathA.toFixed(2),'7450.00','11-21 R22 R622 Path A total');
+    const r622PathC=65.00+2.4*100.00;
+    assert.equal(r622PathC.toFixed(2),'305.00','11-21 R22 R622 Path C total');
+    assert.equal((r622PathA-r622PathC).toFixed(2),'7145.00','11-21 R22 R622 savings vs Path A');
+    assert.equal(((r622PathA-r622PathC)/r622PathA*100).toFixed(2),'95.91','11-21 R22 R622 pct savings vs Path A');
+    for(const r622File of ['workshops/github-trending-radar/docs/navidrome-scrivener-discord-mcp-tweetkit-x-selection-faq.md','workshops/github-trending-radar/docs/navidrome-scrivener-discord-mcp-tweetkit-x-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r22-r622-navidrome-scrivener-discord-tweetkit.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r622File),'utf8');
+      assert.ok(txt.includes('3,350.00')&&txt.includes('4,100.00')&&txt.includes('7,450.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('7,145.00')&&txt.includes('95.91%')&&txt.includes('not_measured'),r622File+': contains exact 11-21 R22 R622 navidrome+scrivener+discord+tweetkit closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
