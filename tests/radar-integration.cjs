@@ -8002,6 +8002,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r662File),'utf8');
       assert.ok(txt.includes('3,960.00')&&txt.includes('4,400.00')&&txt.includes('8,360.00')&&txt.includes('75.00')&&txt.includes('250.00')&&txt.includes('325.00')&&txt.includes('8,035.00')&&txt.includes('96.11%')&&txt.includes('not_measured'),r662File+': contains exact 11-21 R62 R662 eddi+rosetta+opencode+tokentelemetry closed-form parameters');
     }
+    // 2026-11-21 Day Round 63 (R663: Wh1isper/mcp-email-server + strowk/mcp-k8s-go + OpenSource03/harnss + delexw/claude-code-trace) verification
+    const r663PathA=3820.00+43.0*100.00;
+    assert.equal(r663PathA.toFixed(2),'8120.00','11-21 R63 R663 Path A total');
+    const r663PathC=65.00+2.4*100.00;
+    assert.equal(r663PathC.toFixed(2),'305.00','11-21 R63 R663 Path C total');
+    assert.equal((r663PathA-r663PathC).toFixed(2),'7815.00','11-21 R63 R663 savings vs Path A');
+    assert.equal(((r663PathA-r663PathC)/r663PathA*100).toFixed(2),'96.24','11-21 R63 R663 pct savings vs Path A');
+    for(const r663File of ['workshops/github-trending-radar/docs/mcp-email-server-mcp-k8s-go-harnss-claude-code-trace-selection-faq.md','workshops/github-trending-radar/docs/mcp-email-server-mcp-k8s-go-harnss-claude-code-trace-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r63-r663-mcpemail-mcpk8sgo-harnss-claudecodetrace.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r663File),'utf8');
+      assert.ok(txt.includes('3,820.00')&&txt.includes('4,300.00')&&txt.includes('8,120.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('7,815.00')&&txt.includes('96.24%')&&txt.includes('not_measured'),r663File+': contains exact 11-21 R63 R663 mcpemail+mcpk8sgo+harnss+claudecodetrace closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
