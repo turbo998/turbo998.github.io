@@ -8563,6 +8563,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r713File),'utf8');
       assert.ok(txt.includes('3,970.00')&&txt.includes('4,350.00')&&txt.includes('8,320.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,010.00')&&txt.includes('96.27%')&&txt.includes('not_measured'),r713File+': contains exact 11-21 R113 R713 joycode+zypher+flama+flowx closed-form parameters');
     }
+    // 2026-11-21 Night Round 114 (R714: mattt/emcee + EvalsOne/MCP-connect + C2SAgent/c2sagent + enmanuelmag/agent-harness-kit) verification
+    const r714PathA=3910.00+43.0*100.00;
+    assert.equal(r714PathA.toFixed(2),'8210.00','11-21 R114 R714 Path A total');
+    const r714PathC=65.00+2.4*100.00;
+    assert.equal(r714PathC.toFixed(2),'305.00','11-21 R114 R714 Path C total');
+    assert.equal((r714PathA-r714PathC).toFixed(2),'7905.00','11-21 R114 R714 savings vs Path A');
+    assert.equal(((r714PathA-r714PathC)/r714PathA*100).toFixed(2),'96.29','11-21 R114 R714 pct savings vs Path A');
+    for(const r714File of ['workshops/github-trending-radar/docs/emcee-mcp-connect-c2sagent-agent-harness-kit-selection-faq.md','workshops/github-trending-radar/docs/emcee-mcp-connect-c2sagent-agent-harness-kit-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r114-r714-emcee-mcpconnect-c2sagent-ahk.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r714File),'utf8');
+      assert.ok(txt.includes('3,910.00')&&txt.includes('4,300.00')&&txt.includes('8,210.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('7,905.00')&&txt.includes('96.29%')&&txt.includes('not_measured'),r714File+': contains exact 11-21 R114 R714 emcee+mcpconnect+c2sagent+ahk closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
