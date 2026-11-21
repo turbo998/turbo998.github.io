@@ -7969,6 +7969,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r659File),'utf8');
       assert.ok(txt.includes('3,890.00')&&txt.includes('4,300.00')&&txt.includes('8,190.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('7,880.00')&&txt.includes('96.21%')&&txt.includes('not_measured'),r659File+': contains exact 11-21 R59 R659 novanova+viserys+icode+openvetta closed-form parameters');
     }
+    // 2026-11-21 Day Round 60 (R660: cinderline/northcinder + keptinventory/kept + sv-number/mcp-server + WealthyV/openchatx-mcp) verification
+    const r660PathA=3870.00+43.0*100.00;
+    assert.equal(r660PathA.toFixed(2),'8170.00','11-21 R60 R660 Path A total');
+    const r660PathC=65.00+2.4*100.00;
+    assert.equal(r660PathC.toFixed(2),'305.00','11-21 R60 R660 Path C total');
+    assert.equal((r660PathA-r660PathC).toFixed(2),'7865.00','11-21 R60 R660 savings vs Path A');
+    assert.equal(((r660PathA-r660PathC)/r660PathA*100).toFixed(2),'96.27','11-21 R60 R660 pct savings vs Path A');
+    for(const r660File of ['workshops/github-trending-radar/docs/northcinder-kept-sv-number-openchatx-mcp-selection-faq.md','workshops/github-trending-radar/docs/northcinder-kept-sv-number-openchatx-mcp-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r60-r660-northcinder-kept-svnumber-openchatx.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r660File),'utf8');
+      assert.ok(txt.includes('3,870.00')&&txt.includes('4,300.00')&&txt.includes('8,170.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('7,865.00')&&txt.includes('96.27%')&&txt.includes('not_measured'),r660File+': contains exact 11-21 R60 R660 northcinder+kept+svnumber+openchatx closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
