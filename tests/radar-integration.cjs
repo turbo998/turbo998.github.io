@@ -8629,6 +8629,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r719File),'utf8');
       assert.ok(txt.includes('3,930.00')&&txt.includes('4,350.00')&&txt.includes('8,280.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('7,975.00')&&txt.includes('96.32%')&&txt.includes('not_measured'),r719File+': contains exact 11-21 R119 R719 gdrivemcp+basecampmcp+outline+matryca closed-form parameters');
     }
+    // 2026-11-21 Night Round 120 (R720 Milestone: fancyboi999/Loomic + SankaiAI/TwitCanva-Video-Workflow + neopen/story-shot-agent + Menghuan1918/drawio2go) verification
+    const r720PathA=4100.00+44.0*100.00;
+    assert.equal(r720PathA.toFixed(2),'8500.00','11-21 R120 R720 Path A total');
+    const r720PathC=70.00+2.4*100.00;
+    assert.equal(r720PathC.toFixed(2),'310.00','11-21 R120 R720 Path C total');
+    assert.equal((r720PathA-r720PathC).toFixed(2),'8190.00','11-21 R120 R720 savings vs Path A');
+    assert.equal(((r720PathA-r720PathC)/r720PathA*100).toFixed(2),'96.35','11-21 R120 R720 pct savings vs Path A');
+    for(const r720File of ['workshops/github-trending-radar/docs/loomic-twitcanva-story-shot-agent-drawio2go-selection-faq.md','workshops/github-trending-radar/docs/loomic-twitcanva-story-shot-agent-drawio2go-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r120-r720-loomic-twitcanva-penshot-drawio2go.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r720File),'utf8');
+      assert.ok(txt.includes('4,100.00')&&txt.includes('4,400.00')&&txt.includes('8,500.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,190.00')&&txt.includes('96.35%')&&txt.includes('not_measured'),r720File+': contains exact 11-21 R120 R720 loomic+twitcanva+penshot+drawio2go closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
