@@ -7397,6 +7397,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r607File),'utf8');
       assert.ok(txt.includes('3,320.00')&&txt.includes('4,150.00')&&txt.includes('7,470.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('7,160.00')&&txt.includes('95.85%')&&txt.includes('not_measured'),r607File+': contains exact 11-21 R7 R607 doclingrs+all2md+gno+ragnet closed-form parameters');
     }
+    // 2026-11-21 Day Round 8 (R608: receptron/mulmoterminal + aspectly-labs/Mikka + grunion-ai/weave + wheelgap/wheelgap) verification
+    const r608PathA=3140.00+40.0*100.00;
+    assert.equal(r608PathA.toFixed(2),'7140.00','11-21 R8 R608 Path A total');
+    const r608PathC=65.00+2.4*100.00;
+    assert.equal(r608PathC.toFixed(2),'305.00','11-21 R8 R608 Path C total');
+    assert.equal((r608PathA-r608PathC).toFixed(2),'6835.00','11-21 R8 R608 savings vs Path A');
+    assert.equal(((r608PathA-r608PathC)/r608PathA*100).toFixed(2),'95.73','11-21 R8 R608 pct savings vs Path A');
+    for(const r608File of ['workshops/github-trending-radar/docs/mulmoterminal-mikka-weave-wheelgap-selection-faq.md','workshops/github-trending-radar/docs/mulmoterminal-mikka-weave-wheelgap-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r8-r608-mulmoterminal-mikka-weave-wheelgap.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r608File),'utf8');
+      assert.ok(txt.includes('3,140.00')&&txt.includes('4,000.00')&&txt.includes('7,140.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('6,835.00')&&txt.includes('95.73%')&&txt.includes('not_measured'),r608File+': contains exact 11-21 R8 R608 mulmoterminal+mikka+weave+wheelgap closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
