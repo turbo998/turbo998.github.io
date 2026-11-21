@@ -8607,6 +8607,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r717File),'utf8');
       assert.ok(txt.includes('4,010.00')&&txt.includes('4,350.00')&&txt.includes('8,360.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,050.00')&&txt.includes('96.29%')&&txt.includes('not_measured'),r717File+': contains exact 11-21 R117 R717 arconia+digirunner+bootui+gorag closed-form parameters');
     }
+    // 2026-11-21 Night Round 118 (R718: JuniorXcoder/hermes-virtual-office + TGYD-helige/pi + zhinjs/zhin + willdady/platypus) verification
+    const r718PathA=3990.00+43.5*100.00;
+    assert.equal(r718PathA.toFixed(2),'8340.00','11-21 R118 R718 Path A total');
+    const r718PathC=70.00+2.4*100.00;
+    assert.equal(r718PathC.toFixed(2),'310.00','11-21 R118 R718 Path C total');
+    assert.equal((r718PathA-r718PathC).toFixed(2),'8030.00','11-21 R118 R718 savings vs Path A');
+    assert.equal(((r718PathA-r718PathC)/r718PathA*100).toFixed(2),'96.28','11-21 R118 R718 pct savings vs Path A');
+    for(const r718File of ['workshops/github-trending-radar/docs/hermes-virtual-office-pi-extensions-zhin-platypus-selection-faq.md','workshops/github-trending-radar/docs/hermes-virtual-office-pi-extensions-zhin-platypus-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r118-r718-hermesoffice-piext-zhin-platypus.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r718File),'utf8');
+      assert.ok(txt.includes('3,990.00')&&txt.includes('4,350.00')&&txt.includes('8,340.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,030.00')&&txt.includes('96.28%')&&txt.includes('not_measured'),r718File+': contains exact 11-21 R118 R718 hermesoffice+piext+zhin+platypus closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
