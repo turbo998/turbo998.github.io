@@ -8464,6 +8464,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r704File),'utf8');
       assert.ok(txt.includes('4,050.00')&&txt.includes('4,400.00')&&txt.includes('8,450.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,140.00')&&txt.includes('96.33%')&&txt.includes('not_measured'),r704File+': contains exact 11-21 R104 R704 doorman+bellaopenapi+inferencegw+nyro closed-form parameters');
     }
+    // 2026-11-21 Night Round 105 (R705 Milestone: cisco-ai-defense/a2a-scanner + aipotheosis-labs/gate22 + yaalalabs/agent-kernel + agentevals-dev/agentevals) verification
+    const r705PathA=4080.00+44.0*100.00;
+    assert.equal(r705PathA.toFixed(2),'8480.00','11-21 R105 R705 Path A total');
+    const r705PathC=70.00+2.4*100.00;
+    assert.equal(r705PathC.toFixed(2),'310.00','11-21 R105 R705 Path C total');
+    assert.equal((r705PathA-r705PathC).toFixed(2),'8170.00','11-21 R105 R705 savings vs Path A');
+    assert.equal(((r705PathA-r705PathC)/r705PathA*100).toFixed(2),'96.34','11-21 R105 R705 pct savings vs Path A');
+    for(const r705File of ['workshops/github-trending-radar/docs/a2a-scanner-gate22-agent-kernel-agentevals-selection-faq.md','workshops/github-trending-radar/docs/a2a-scanner-gate22-agent-kernel-agentevals-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r105-r705-a2ascanner-gate22-agentkernel-agentevals.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r705File),'utf8');
+      assert.ok(txt.includes('4,080.00')&&txt.includes('4,400.00')&&txt.includes('8,480.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,170.00')&&txt.includes('96.34%')&&txt.includes('not_measured'),r705File+': contains exact 11-21 R105 R705 a2ascanner+gate22+agentkernel+agentevals closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
