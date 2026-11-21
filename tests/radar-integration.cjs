@@ -8112,6 +8112,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r672File),'utf8');
       assert.ok(txt.includes('4,050.00')&&txt.includes('4,450.00')&&txt.includes('8,500.00')&&txt.includes('80.00')&&txt.includes('250.00')&&txt.includes('330.00')&&txt.includes('8,170.00')&&txt.includes('96.12%')&&txt.includes('not_measured'),r672File+': contains exact 11-21 R72 R672 openma+useagent+agentplay+openlore closed-form parameters');
     }
+    // 2026-11-21 Day Round 73 (R673: cosai-oasis/project-codeguard + openguardrails/openguardrails + TerseAI/durable-actors + rrezartprebreza/spring-boot-skills) verification
+    const r673PathA=3980.00+44.0*100.00;
+    assert.equal(r673PathA.toFixed(2),'8380.00','11-21 R73 R673 Path A total');
+    const r673PathC=70.00+2.4*100.00;
+    assert.equal(r673PathC.toFixed(2),'310.00','11-21 R73 R673 Path C total');
+    assert.equal((r673PathA-r673PathC).toFixed(2),'8070.00','11-21 R73 R673 savings vs Path A');
+    assert.equal(((r673PathA-r673PathC)/r673PathA*100).toFixed(2),'96.30','11-21 R73 R673 pct savings vs Path A');
+    for(const r673File of ['workshops/github-trending-radar/docs/project-codeguard-openguardrails-durable-actors-spring-boot-skills-selection-faq.md','workshops/github-trending-radar/docs/project-codeguard-openguardrails-durable-actors-spring-boot-skills-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r73-r673-codeguard-openguardrails-durableactors-springboot.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r673File),'utf8');
+      assert.ok(txt.includes('3,980.00')&&txt.includes('4,400.00')&&txt.includes('8,380.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,070.00')&&txt.includes('96.30%')&&txt.includes('not_measured'),r673File+': contains exact 11-21 R73 R673 codeguard+openguardrails+durableactors+springboot closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
