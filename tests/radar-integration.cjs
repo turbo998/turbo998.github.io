@@ -8310,6 +8310,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r690File),'utf8');
       assert.ok(txt.includes('4,050.00')&&txt.includes('4,400.00')&&txt.includes('8,450.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,140.00')&&txt.includes('96.33%')&&txt.includes('not_measured'),r690File+': contains exact 11-21 R90 R690 adobeskills+postmanmcp+volcenginemcp+azurerageval closed-form parameters');
     }
+    // 2026-11-21 Night Round 91 (R691: vespaai-playground/NyRAG + zilliztech/vector-graph-rag + zerodha/kite-mcp-server + devaccuracy/ledgerforge) verification
+    const r691PathA=3990.00+44.0*100.00;
+    assert.equal(r691PathA.toFixed(2),'8390.00','11-21 R91 R691 Path A total');
+    const r691PathC=70.00+2.4*100.00;
+    assert.equal(r691PathC.toFixed(2),'310.00','11-21 R91 R691 Path C total');
+    assert.equal((r691PathA-r691PathC).toFixed(2),'8080.00','11-21 R91 R691 savings vs Path A');
+    assert.equal(((r691PathA-r691PathC)/r691PathA*100).toFixed(2),'96.31','11-21 R91 R691 pct savings vs Path A');
+    for(const r691File of ['workshops/github-trending-radar/docs/nyrag-vector-graph-rag-kite-mcp-ledgerforge-selection-faq.md','workshops/github-trending-radar/docs/nyrag-vector-graph-rag-kite-mcp-ledgerforge-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r91-r691-nyrag-vectorgraphrag-kitemcp-ledgerforge.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r691File),'utf8');
+      assert.ok(txt.includes('3,990.00')&&txt.includes('4,400.00')&&txt.includes('8,390.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,080.00')&&txt.includes('96.31%')&&txt.includes('not_measured'),r691File+': contains exact 11-21 R91 R691 nyrag+vectorgraphrag+kitemcp+ledgerforge closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
