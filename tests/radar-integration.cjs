@@ -8321,6 +8321,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r691File),'utf8');
       assert.ok(txt.includes('3,990.00')&&txt.includes('4,400.00')&&txt.includes('8,390.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,080.00')&&txt.includes('96.31%')&&txt.includes('not_measured'),r691File+': contains exact 11-21 R91 R691 nyrag+vectorgraphrag+kitemcp+ledgerforge closed-form parameters');
     }
+    // 2026-11-21 Night Round 92 (R692: danishashko/geo-aeo-tracker + DAWNCR0W/affine-mcp-server + Automata-Labs-team/code-sandbox-mcp + kitlangton/2password) verification
+    const r692PathA=3870.00+43.5*100.00;
+    assert.equal(r692PathA.toFixed(2),'8220.00','11-21 R92 R692 Path A total');
+    const r692PathC=65.00+2.4*100.00;
+    assert.equal(r692PathC.toFixed(2),'305.00','11-21 R92 R692 Path C total');
+    assert.equal((r692PathA-r692PathC).toFixed(2),'7915.00','11-21 R92 R692 savings vs Path A');
+    assert.equal(((r692PathA-r692PathC)/r692PathA*100).toFixed(2),'96.29','11-21 R92 R692 pct savings vs Path A');
+    for(const r692File of ['workshops/github-trending-radar/docs/geo-aeo-tracker-affine-mcp-code-sandbox-mcp-2password-selection-faq.md','workshops/github-trending-radar/docs/geo-aeo-tracker-affine-mcp-code-sandbox-mcp-2password-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r92-r692-geotracker-affinemcp-codesandboxmcp-2password.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r692File),'utf8');
+      assert.ok(txt.includes('3,870.00')&&txt.includes('4,350.00')&&txt.includes('8,220.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('7,915.00')&&txt.includes('96.29%')&&txt.includes('not_measured'),r692File+': contains exact 11-21 R92 R692 geotracker+affinemcp+codesandboxmcp+2password closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
