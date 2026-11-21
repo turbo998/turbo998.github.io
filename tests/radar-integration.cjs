@@ -7529,6 +7529,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r619File),'utf8');
       assert.ok(txt.includes('3,320.00')&&txt.includes('4,050.00')&&txt.includes('7,370.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('7,065.00')&&txt.includes('95.86%')&&txt.includes('not_measured'),r619File+': contains exact 11-21 R19 R619 reminal+openpanda+slightlyparallel+hermos closed-form parameters');
     }
+    // 2026-11-21 Day Round 20 (R620 Milestone: llm4s/llm4s + r-uby-dev/llm + opencrawling/opencrawling + replikativ/proximum) verification
+    const r620PathA=3620.00+43.0*100.00;
+    assert.equal(r620PathA.toFixed(2),'7920.00','11-21 R20 R620 Path A total');
+    const r620PathC=80.00+2.5*100.00;
+    assert.equal(r620PathC.toFixed(2),'330.00','11-21 R20 R620 Path C total');
+    assert.equal((r620PathA-r620PathC).toFixed(2),'7590.00','11-21 R20 R620 savings vs Path A');
+    assert.equal(((r620PathA-r620PathC)/r620PathA*100).toFixed(2),'95.83','11-21 R20 R620 pct savings vs Path A');
+    for(const r620File of ['workshops/github-trending-radar/docs/llm4s-llm-rb-opencrawling-proximum-selection-faq.md','workshops/github-trending-radar/docs/llm4s-llm-rb-opencrawling-proximum-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r20-r620-llm4s-llmrb-opencrawling-proximum.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r620File),'utf8');
+      assert.ok(txt.includes('3,620.00')&&txt.includes('4,300.00')&&txt.includes('7,920.00')&&txt.includes('80.00')&&txt.includes('250.00')&&txt.includes('330.00')&&txt.includes('7,590.00')&&txt.includes('95.83%')&&txt.includes('not_measured'),r620File+': contains exact 11-21 R20 R620 llm4s+llmrb+opencrawling+proximum closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
