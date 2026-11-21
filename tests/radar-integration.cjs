@@ -7892,6 +7892,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r652File),'utf8');
       assert.ok(txt.includes('3,950.00')&&txt.includes('4,350.00')&&txt.includes('8,300.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('7,990.00')&&txt.includes('96.27%')&&txt.includes('not_measured'),r652File+': contains exact 11-21 R52 R652 ollaya+strandsdecider+agentsafe+classifierdev closed-form parameters');
     }
+    // 2026-11-21 Day Round 53 (R653: lennney/stop-that-shit + AMAP-ML/LongHorizon-Harness + 20000419/fauxnix + activeing123/mcptoon) verification
+    const r653PathA=3910.00+43.5*100.00;
+    assert.equal(r653PathA.toFixed(2),'8260.00','11-21 R53 R653 Path A total');
+    const r653PathC=65.00+2.4*100.00;
+    assert.equal(r653PathC.toFixed(2),'305.00','11-21 R53 R653 Path C total');
+    assert.equal((r653PathA-r653PathC).toFixed(2),'7955.00','11-21 R53 R653 savings vs Path A');
+    assert.equal(((r653PathA-r653PathC)/r653PathA*100).toFixed(2),'96.31','11-21 R53 R653 pct savings vs Path A');
+    for(const r653File of ['workshops/github-trending-radar/docs/stop-that-shit-longhorizon-fauxnix-mcptoon-selection-faq.md','workshops/github-trending-radar/docs/stop-that-shit-longhorizon-fauxnix-mcptoon-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r53-r653-stopthatshit-longhorizon-fauxnix-mcptoon.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r653File),'utf8');
+      assert.ok(txt.includes('3,910.00')&&txt.includes('4,350.00')&&txt.includes('8,260.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('7,955.00')&&txt.includes('96.31%')&&txt.includes('not_measured'),r653File+': contains exact 11-21 R53 R653 stopthatshit+longhorizon+fauxnix+mcptoon closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
