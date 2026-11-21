@@ -7980,6 +7980,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r660File),'utf8');
       assert.ok(txt.includes('3,870.00')&&txt.includes('4,300.00')&&txt.includes('8,170.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('7,865.00')&&txt.includes('96.27%')&&txt.includes('not_measured'),r660File+': contains exact 11-21 R60 R660 northcinder+kept+svnumber+openchatx closed-form parameters');
     }
+    // 2026-11-21 Day Round 61 (R661: tableau/tableau-mcp + XeroAPI/xero-mcp-server + awslabs/run-model-context-protocol-servers-with-aws-lambda + FalkorDB/Auryn) verification
+    const r661PathA=3940.00+43.5*100.00;
+    assert.equal(r661PathA.toFixed(2),'8290.00','11-21 R61 R661 Path A total');
+    const r661PathC=65.00+2.4*100.00;
+    assert.equal(r661PathC.toFixed(2),'305.00','11-21 R61 R661 Path C total');
+    assert.equal((r661PathA-r661PathC).toFixed(2),'7985.00','11-21 R61 R661 savings vs Path A');
+    assert.equal(((r661PathA-r661PathC)/r661PathA*100).toFixed(2),'96.32','11-21 R61 R661 pct savings vs Path A');
+    for(const r661File of ['workshops/github-trending-radar/docs/tableau-mcp-xero-mcp-aws-lambda-mcp-falkordb-auryn-selection-faq.md','workshops/github-trending-radar/docs/tableau-mcp-xero-mcp-aws-lambda-mcp-falkordb-auryn-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r61-r661-tableaumcp-xeromcp-awslambdamcp-auryn.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r661File),'utf8');
+      assert.ok(txt.includes('3,940.00')&&txt.includes('4,350.00')&&txt.includes('8,290.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('7,985.00')&&txt.includes('96.32%')&&txt.includes('not_measured'),r661File+': contains exact 11-21 R61 R661 tableaumcp+xeromcp+awslambdamcp+auryn closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
