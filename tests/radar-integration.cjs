@@ -8046,6 +8046,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r666File),'utf8');
       assert.ok(txt.includes('3,880.00')&&txt.includes('4,350.00')&&txt.includes('8,230.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('7,920.00')&&txt.includes('96.23%')&&txt.includes('not_measured'),r666File+': contains exact 11-21 R66 R666 cco+thepair+weftcut+blockrun closed-form parameters');
     }
+    // 2026-11-21 Day Round 67 (R667: Arenukvern/mcp_flutter + jfarcand/mirroir-mcp + Higangssh/homebutler + leiting-eric/DailyBrief) verification
+    const r667PathA=3810.00+43.0*100.00;
+    assert.equal(r667PathA.toFixed(2),'8110.00','11-21 R67 R667 Path A total');
+    const r667PathC=65.00+2.4*100.00;
+    assert.equal(r667PathC.toFixed(2),'305.00','11-21 R67 R667 Path C total');
+    assert.equal((r667PathA-r667PathC).toFixed(2),'7805.00','11-21 R67 R667 savings vs Path A');
+    assert.equal(((r667PathA-r667PathC)/r667PathA*100).toFixed(2),'96.24','11-21 R67 R667 pct savings vs Path A');
+    for(const r667File of ['workshops/github-trending-radar/docs/mcp-flutter-mirroir-mcp-homebutler-dailybrief-selection-faq.md','workshops/github-trending-radar/docs/mcp-flutter-mirroir-mcp-homebutler-dailybrief-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r67-r667-mcpflutter-mirroirmcp-homebutler-dailybrief.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r667File),'utf8');
+      assert.ok(txt.includes('3,810.00')&&txt.includes('4,300.00')&&txt.includes('8,110.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('7,805.00')&&txt.includes('96.24%')&&txt.includes('not_measured'),r667File+': contains exact 11-21 R67 R667 mcpflutter+mirroirmcp+homebutler+dailybrief closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
