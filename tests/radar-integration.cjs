@@ -7815,6 +7815,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r645File),'utf8');
       assert.ok(txt.includes('3,890.00')&&txt.includes('4,350.00')&&txt.includes('8,240.00')&&txt.includes('80.00')&&txt.includes('250.00')&&txt.includes('330.00')&&txt.includes('7,910.00')&&txt.includes('96.00%')&&txt.includes('not_measured'),r645File+': contains exact 11-21 R45 R645 youtubeskill+onetake+blenderskills+shortvideo closed-form parameters');
     }
+    // 2026-11-21 Day Round 46 (R646: FuRongJun-1999/dsh-memory + himovo/movo + rlaope/deepseek-bot + BkashJEE/hermes-bot-forge) verification
+    const r646PathA=3650.00+42.0*100.00;
+    assert.equal(r646PathA.toFixed(2),'7850.00','11-21 R46 R646 Path A total');
+    const r646PathC=70.00+2.4*100.00;
+    assert.equal(r646PathC.toFixed(2),'310.00','11-21 R46 R646 Path C total');
+    assert.equal((r646PathA-r646PathC).toFixed(2),'7540.00','11-21 R46 R646 savings vs Path A');
+    assert.equal(((r646PathA-r646PathC)/r646PathA*100).toFixed(2),'96.05','11-21 R46 R646 pct savings vs Path A');
+    for(const r646File of ['workshops/github-trending-radar/docs/dsh-memory-movo-deepseek-bot-hermes-bot-forge-selection-faq.md','workshops/github-trending-radar/docs/dsh-memory-movo-deepseek-bot-hermes-bot-forge-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r46-r646-dshmemory-movo-deepseekbot-hermesbotforge.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r646File),'utf8');
+      assert.ok(txt.includes('3,650.00')&&txt.includes('4,200.00')&&txt.includes('7,850.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('7,540.00')&&txt.includes('96.05%')&&txt.includes('not_measured'),r646File+': contains exact 11-21 R46 R646 dshmemory+movo+deepseekbot+hermesbotforge closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
