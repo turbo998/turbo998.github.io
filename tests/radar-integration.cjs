@@ -7441,6 +7441,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r611File),'utf8');
       assert.ok(txt.includes('3,260.00')&&txt.includes('4,100.00')&&txt.includes('7,360.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('7,055.00')&&txt.includes('95.86%')&&txt.includes('not_measured'),r611File+': contains exact 11-21 R11 R611 pixelbolt+nestbolt+kalka+dettato closed-form parameters');
     }
+    // 2026-11-21 Day Round 12 (R612: Bike4Mind/bike4mind + opencraft-app/opencraft + footprintjs/agentfootprint + chedim/babyseat) verification
+    const r612PathA=3340.00+41.0*100.00;
+    assert.equal(r612PathA.toFixed(2),'7440.00','11-21 R12 R612 Path A total');
+    const r612PathC=70.00+2.4*100.00;
+    assert.equal(r612PathC.toFixed(2),'310.00','11-21 R12 R612 Path C total');
+    assert.equal((r612PathA-r612PathC).toFixed(2),'7130.00','11-21 R12 R612 savings vs Path A');
+    assert.equal(((r612PathA-r612PathC)/r612PathA*100).toFixed(2),'95.83','11-21 R12 R612 pct savings vs Path A');
+    for(const r612File of ['workshops/github-trending-radar/docs/bike4mind-opencraft-agentfootprint-babyseat-selection-faq.md','workshops/github-trending-radar/docs/bike4mind-opencraft-agentfootprint-babyseat-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r12-r612-bike4mind-opencraft-agentfootprint-babyseat.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r612File),'utf8');
+      assert.ok(txt.includes('3,340.00')&&txt.includes('4,100.00')&&txt.includes('7,440.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('7,130.00')&&txt.includes('95.83%')&&txt.includes('not_measured'),r612File+': contains exact 11-21 R12 R612 bike4mind+opencraft+agentfootprint+babyseat closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
