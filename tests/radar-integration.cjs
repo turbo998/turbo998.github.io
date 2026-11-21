@@ -8574,6 +8574,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r714File),'utf8');
       assert.ok(txt.includes('3,910.00')&&txt.includes('4,300.00')&&txt.includes('8,210.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('7,905.00')&&txt.includes('96.29%')&&txt.includes('not_measured'),r714File+': contains exact 11-21 R114 R714 emcee+mcpconnect+c2sagent+ahk closed-form parameters');
     }
+    // 2026-11-21 Night Round 115 (R715 Milestone: smallnest/langgraphgo + cqzyys/lang-agent + LangGraph-GUI/LangGraph-GUI + lgesuellip/langgraph-whatsapp-agent) verification
+    const r715PathA=4070.00+44.0*100.00;
+    assert.equal(r715PathA.toFixed(2),'8470.00','11-21 R115 R715 Path A total');
+    const r715PathC=70.00+2.4*100.00;
+    assert.equal(r715PathC.toFixed(2),'310.00','11-21 R115 R715 Path C total');
+    assert.equal((r715PathA-r715PathC).toFixed(2),'8160.00','11-21 R115 R715 savings vs Path A');
+    assert.equal(((r715PathA-r715PathC)/r715PathA*100).toFixed(2),'96.34','11-21 R115 R715 pct savings vs Path A');
+    for(const r715File of ['workshops/github-trending-radar/docs/langgraphgo-lang-agent-langgraph-gui-whatsapp-agent-selection-faq.md','workshops/github-trending-radar/docs/langgraphgo-lang-agent-langgraph-gui-whatsapp-agent-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r115-r715-langgraphgo-langagent-langgraphgui-whatsapp.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r715File),'utf8');
+      assert.ok(txt.includes('4,070.00')&&txt.includes('4,400.00')&&txt.includes('8,470.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,160.00')&&txt.includes('96.34%')&&txt.includes('not_measured'),r715File+': contains exact 11-21 R115 R715 langgraphgo+langagent+langgraphgui+whatsapp closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
