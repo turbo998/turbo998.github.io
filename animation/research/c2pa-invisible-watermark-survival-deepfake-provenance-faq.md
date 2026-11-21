@@ -102,7 +102,7 @@ sequenceDiagram
         Registry-->>Client: 18ms 完整恢复原始 C2PA 签名链与模型生成凭证 (99.3% 成功率)
     else 场景 B: 银行 eKYC 实时人脸核身 (防范 OBS 虚拟摄像头换脸)
         Client->>Liveness: 屏幕投射 180ms 随机加密色序并采集面部 ROI 视频流
-        Liveness->>Liveness: 校验鼻梁/角膜 `<33ms` 反射色偏同步性 + 1.2Hz rPPG 血氧脉搏波 (22.0ms)
+        Liveness->>Liveness: 校验鼻梁/角膜 33ms 内反射色偏同步性 + 1.2Hz rPPG 血氧脉搏波 (22.0ms)
         Liveness-->>Client: 42ms 识破并阻断 LivePortrait 虚拟摄像头注入攻击 (99.9% 拦截率)
     end
 ```

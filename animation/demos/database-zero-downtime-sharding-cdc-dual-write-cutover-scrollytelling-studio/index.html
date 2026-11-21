@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>企业核心数据库零停机分片与跨云热迁（Vitess / Citus / Debezium CDC）：64K 桶 Merkle 树增量对账、38ms 原子切流与 CTO 变更评审视频工作台</title>
+  <script type="module" crossorigin src="../../assets/databaseZeroDowntimeShardingCdcDualWriteCutoverScrollytelling-BtX-3x_B.js"></script>
+  <link rel="modulepreload" crossorigin href="../../assets/modulepreload-polyfill-B5Qt9EMX.js">
+  <link rel="stylesheet" crossorigin href="../../assets/databaseZeroDowntimeShardingCdcDualWriteCutoverScrollytelling-DgPWXoPI.css">
+</head>
+<body>
+  <div class="studio-shell">
+    <header class="topbar">
+      <div>
+        <span class="eyebrow">Domain 5 · Workbench #124 · 64K-Bucket Merkle Row-Hash (0 Drift) + 38ms LSN Fencing Flip + Reverse-CDC Rollback</span>
+        <h1>核心数据库零停机分片热迁：Merkle 树对账、38ms 原子切流与 CTO 评审工作台</h1>
+        <p class="subtitle">对比“Debezium LSN 流式 CDC + 64K 桶 Merkle 树无锁哈希对账（45亿行 0 静默错账）+ 38ms 代理层原子切流 + 反向 CDC 逃生舱”与“传统停机 4 小时 Dump/Restore 及未对齐切流脑裂基线”</p>
+      </div>
+      <div class="top-links">
+        <a class="pill-link" href="../../index.html">← 返回实验室首页</a>
+        <a class="pill-link" href="../../research/database-zero-downtime-sharding-cdc-dual-write-cutover-scrollytelling-faq.html">架构选型 FAQ (ZH)</a>
+        <a class="pill-link" href="../../research/database-zero-downtime-sharding-cdc-dual-write-cutover-scrollytelling-faq.en.html">Decision Guide (EN)</a>
+      </div>
+    </header>
+
+    <section class="control-bar" aria-label="数据库零停机分片热迁控制栏">
+      <div class="control-group">
+        <label for="scenario-select">核心 OLTP 账本拆库与跨云迁移场景 (Database Cutover Scenario)</label>
+        <select id="scenario-select">
+          <option value="fintech_core_ledger_16_shards">金融支付核心账本拆库（18TB 单体 PG → 16 分片 · 42,000 TPS · 45亿行）</option>
+          <option value="global_gaming_player_inventory">全球实时网游背包跨云热迁（28TB → 32 全球分片 · 85,000 TPS · 72亿行）</option>
+          <option value="healthcare_ehr_hipaa_cloud_exit">三甲医疗集团 HIS/EHR 平滑去 O（12TB Oracle → 8 分片 · 急诊零停诊）</option>
+        </select>
+      </div>
+
+      <div class="control-group">
+        <label>数据同步对账与流量切换架构 (Migration &amp; Cutover Architecture)</label>
+        <div class="mode-buttons">
+          <button id="mode-merkle" class="mode-btn active" type="button">
+            Debezium CDC + 64K Merkle 树对账 + 38ms LSN 围栏切流 (推荐)
+          </button>
+          <button id="mode-naive" class="mode-btn naive" type="button">
+            传统 4 小时停机维护窗口或仅比对 COUNT(*) 盲目切流 (高错账基线)
+          </button>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <label for="lag-slider">切流前 WAL/Binlog 复制延迟水位 (Pre-Flip CDC Lag): <span id="lag-label">10 ms</span></label>
+        <input id="lag-slider" type="range" min="5" max="200" step="5" value="10" />
+      </div>
+    </section>
+
+    <section class="kpi-strip" aria-label="核心零停机迁移与财务指标">
+      <div class="kpi-card">
+        <div class="kpi-label">写流量冻结切换窗口 (Write Freeze Cutover)</div>
+        <div id="kpi-pause" class="kpi-value">38 ms</div>
+        <div id="kpi-pause-sub" class="kpi-sub">连接池 HOLD_WRITES 排空 LSN 差额后原子翻转</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">45亿行静默数据错账数 (Silent Corrupted Rows)</div>
+        <div id="kpi-drift" class="kpi-value">0 Rows</div>
+        <div id="kpi-drift-sub" class="kpi-sub">64K 桶 Merkle 树捕获 DECIMAL/时区截断并自愈</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">规避停机 GMV 损失 (Downtime Loss Avoided)</div>
+        <div id="kpi-saved" class="kpi-value">+$1,840,000</div>
+        <div id="kpi-saved-sub" class="kpi-sub">告别凌晨 4 小时停服维护公告与违约赔付</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">CTO 变更评审委员会 (CAB) 门禁 (CAB Gate)</div>
+        <div id="kpi-cab" class="kpi-value">APPROVED</div>
+        <div id="kpi-cab-sub" class="kpi-sub">反向 CDC 秒级回滚就绪 · Remotion 12s 演练视频</div>
+      </div>
+    </section>
+
+    <main class="workbench-grid">
+      <section class="panel">
+        <div class="panel-header">
+          <h2 class="panel-title">5 阶段零停机切流状态机 + 64K 桶 Merkle 树行哈希对账与反向 CDC 逃生舱画布</h2>
+          <span id="stage-badge" class="badge">38ms Atomic LSN Flip · 0 Silent Row Drift · Reverse-CDC Armed</span>
+        </div>
+        <canvas id="sharding-canvas" width="820" height="360"></canvas>
+      </section>
+
+      <section class="panel">
+        <div class="panel-header">
+          <h2 class="panel-title">一致性哈希分片路由范围、Merkle 根哈希对账与 CDC 延迟水位表</h2>
+          <span class="badge">64K MERKLE TREE</span>
+        </div>
+        <table class="data-table" aria-label="目标分片对账与复制延迟表">
+          <thead>
+            <tr>
+              <th>目标分片组 ID</th>
+              <th>Key 哈希区间 / 行数</th>
+              <th>Merkle 根哈希 / CDC 延迟</th>
+              <th>无锁对账状态</th>
+            </tr>
+          </thead>
+          <tbody id="shard-table-body"></tbody>
+        </table>
+
+        <div class="panel-header">
+          <h3 class="panel-title">Vitess / VReplication 原子切流状态机与 Merkle 对账契约</h3>
+        </div>
+        <pre id="protocol-code" class="code-box"></pre>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

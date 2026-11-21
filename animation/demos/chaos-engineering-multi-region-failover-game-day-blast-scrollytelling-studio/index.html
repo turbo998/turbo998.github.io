@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>企业多活混沌工程与容灾 Game-Day 演练（AWS FIS / Route53 ARC / DORA）：180ms 自动熔断门禁与 3.8s 无损切流工作台</title>
+    <script type="module" crossorigin src="../../assets/chaosEngineeringMultiRegionFailoverGameDayBlastScrollytelling-BiVzENuJ.js"></script>
+    <link rel="modulepreload" crossorigin href="../../assets/modulepreload-polyfill-B5Qt9EMX.js">
+    <link rel="stylesheet" crossorigin href="../../assets/chaosEngineeringMultiRegionFailoverGameDayBlastScrollytelling-DDecCJT1.css">
+  </head>
+  <body>
+    <div class="studio-shell">
+      <header class="studio-header">
+        <div>
+          <span class="eyebrow">Domain 5 · Workbench #134 · Multi-Region Chaos Game-Day &amp; Route53 ARC Failover Studio</span>
+          <h1>企业多活混沌工程与容灾 Game-Day：180ms 自动熔断门禁、Route53 ARC 3.8s 切流与董事会视频工作台</h1>
+          <p class="subtitle">
+            终结无熔断脚本把混沌演练变成真实生产事故（损失 $1.42M）与 DNS TTL 缓存导致 38.4% 长连接黑洞（RTO 14.5 分钟）：180ms 稳态 SLO 自动熔断门禁 + Route53 ARC 数据面路由控制与 Raft 租约移交（RTO 3.8s，RPO 0.0s）+ 1.56% 单元化爆炸半径锁 + Remotion 12s DORA 合规视频。
+          </p>
+        </div>
+        <div class="header-links">
+          <a class="btn-link" href="../../index.html">← 返回实验室门户</a>
+          <a class="btn-link" href="../../research/chaos-engineering-multi-region-failover-game-day-blast-scrollytelling-faq.html">选型 FAQ (ZH)</a>
+          <a class="btn-link" href="../../research/chaos-engineering-multi-region-failover-game-day-blast-scrollytelling-faq.en.html">Guide (EN)</a>
+        </div>
+      </header>
+
+      <section class="control-bar" aria-label="混沌演练控制台">
+        <div class="control-group">
+          <label for="scenario-select">1. 多活容灾与混沌演练场景 (Multi-Region DR &amp; Chaos Game-Day Scenario)</label>
+          <select id="scenario-select">
+            <option value="us_east_1_az_blackout_payment_core">核心支付清算 us-east-1 整区断网演练（Route53 ARC 3.8s 切流 · DORA 第 26 条）</option>
+            <option value="cross_region_wan_partition_split_brain">跨洋骨干网 45% 丢包灰故障演练（CockroachDB 租约驱逐 · 零脑裂）</option>
+            <option value="gpu_token_gateway_429_retry_storm">多云 AI 推理网关 429 限流风暴演练（自适应熔断与跨区 PTU 溢出）</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label>2. 故障注入与切流架构模式 (Chaos Control &amp; Traffic Failover Architecture)</label>
+          <div class="mode-toggle">
+            <button id="mode-arc" class="mode-btn active" type="button">
+              ✅ Route53 ARC + 180ms SLO 熔断 + 单元隔离
+            </button>
+            <button id="mode-naive" class="mode-btn" type="button">
+              ❌ 传统 DNS 切换 (TTL 300s) + 无熔断手工脚本
+            </button>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label for="intensity-slider">
+            3. 故障注入强度 (Fault Blast Intensity): <span id="intensity-label">80%</span>
+          </label>
+          <input id="intensity-slider" type="range" min="10" max="100" step="5" value="80" />
+        </div>
+      </section>
+
+      <section class="kpi-strip" aria-label="核心容灾指标">
+        <div class="kpi-card">
+          <div class="kpi-label">端到端恢复时间目标 (Effective RTO)</div>
+          <div id="kpi-rto" class="kpi-value">3.8 s</div>
+          <div id="kpi-rto-sub" class="kpi-sub">Route53 ARC + HTTP/2 GoAway 排空</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">数据丢失恢复点目标 (Effective RPO)</div>
+          <div id="kpi-rpo" class="kpi-value">0.0 s</div>
+          <div id="kpi-rpo-sub" class="kpi-sub">3-Region Raft 多数派租约无损移交</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">单元化爆炸半径上限 (Cell Blast Radius)</div>
+          <div id="kpi-blast" class="kpi-value">1.56%</div>
+          <div id="kpi-blast-sub" class="kpi-sub">64 单元隔离 + 180ms 稳态 SLO 自动中止</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">避免演练事故损失 &amp; DORA 视频 (Outage Avoided)</div>
+          <div id="kpi-roi" class="kpi-value">+$1,420,000</div>
+          <div id="kpi-roi-sub" class="kpi-sub">Remotion 12s DORA 第 26 条审计视频 ($0.03)</div>
+        </div>
+      </section>
+
+      <section class="workspace-grid">
+        <div class="panel-card">
+          <div class="panel-title">
+            <h2>三地多活单元切流拓扑、180ms SLO 自动熔断门禁与 Raft 租约移交画布</h2>
+            <span id="stage-badge" class="status-pill good">DORA Art. 26 Certified · RTO 3.8s · RPO 0.0s</span>
+          </div>
+          <canvas id="chaos-canvas" width="820" height="390"></canvas>
+        </div>
+
+        <div class="panel-card">
+          <div class="panel-title">
+            <h2>多区域 Cell 流量排空、p99 延迟与 Raft 共识状态明细表</h2>
+          </div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>区域单元 (Cell ID)</th>
+                <th>角色</th>
+                <th>流量占比</th>
+                <th>p99 延迟</th>
+                <th>Route53 ARC / Raft 状态</th>
+              </tr>
+            </thead>
+            <tbody id="cell-table-body"></tbody>
+          </table>
+
+          <div id="audit-summary" class="audit-box"></div>
+        </div>
+      </section>
+    </div>
+  </body>
+</html>

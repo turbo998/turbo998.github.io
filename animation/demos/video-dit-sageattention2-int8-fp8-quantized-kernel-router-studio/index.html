@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>企业视频 DiT 低比特注意力算子路由器（SageAttention2 INT8 QK^T × FP8 PV + 通道均值消峰 · 第 160 项里程碑工作台！）</title>
+  <script type="module" crossorigin src="../../assets/videoDitSageattention2Int8Fp8QuantizedKernelRouter-2TgzstR7.js"></script>
+  <link rel="modulepreload" crossorigin href="../../assets/modulepreload-polyfill-B5Qt9EMX.js">
+  <link rel="stylesheet" crossorigin href="../../assets/videoDitSageattention2Int8Fp8QuantizedKernelRouter-DSSoCeB1.css">
+</head>
+<body>
+  <div class="studio-shell">
+    <header class="topbar">
+      <div>
+        <span class="eyebrow">Round 371 · 🏆 Historic 160th Workbench Milestone (3+7+30×5) · Domain 1: Video DiT SageAttention2 Kernel Router</span>
+        <h1>视频 DiT 低比特注意力算子路由器（SageAttention2 INT8 × FP8 · 第 160 项历史性里程碑！）</h1>
+        <p class="subtitle">礼赞全仓达成 160（3+7+30×5）座工作台历史性里程碑：攻克 11.8万 Token 视频 DiT 三维注意力占 76.4% 耗时瓶颈，以及裸 INT8/FP8 量化因 RoPE 通道 12× 离群值与 FP22 累加器截断引发的画面偏色（余弦相似度跌至 78.2%），利用 Softmax 平移不变性减去 Key 通道均值（K'=K-μ_K）+ FP22→FP32 双级寄存器提升，达成 2.86× 算子提速（1,178 TFLOPS，余弦保真 99.74%，叠加以 TeaCache 达 6.42× 提速，年省 +$2.64M）。</p>
+      </div>
+      <div class="doc-links">
+        <a href="../../index.html">← 返回实验室首页</a>
+        <a href="../../research/video-dit-sageattention2-int8-fp8-quantized-kernel-router-faq.html">架构师选型 FAQ (ZH)</a>
+        <a href="../../research/video-dit-sageattention2-int8-fp8-quantized-kernel-router-faq.en.html">Architecture FAQ (EN)</a>
+        <a href="../../research/benchmarks/video-dit-sageattention2-int8-fp8-quantized-kernel-router/summary-visual.svg">7-Card Summary SVG</a>
+      </div>
+    </header>
+
+    <section class="control-bar" aria-label="SageAttention2 算子路由控制面">
+      <div class="control-group">
+        <label for="arch-select">目标 GPU Tensor Core 微架构（Target GPU Architecture）</label>
+        <select id="arch-select">
+          <option value="hopper-h100-sxm5">NVIDIA H100 SXM5 (SM90 · WGMMA INT8 QK^T + FP8 E4M3 PV)</option>
+          <option value="ada-l40s-pcie">NVIDIA L40S / RTX 4090 (SM89 Ada · FP22→FP32 双级累加修复)</option>
+          <option value="blackwell-b200-nvl72">NVIDIA B200 Blackwell (SM100 · NVFP4 / INT8 微缩放注意力)</option>
+        </select>
+      </div>
+      <div class="control-group">
+        <label>三维时空注意力算子量化架构（Attention Kernel Strategy）</label>
+        <div class="seg-buttons" role="group">
+          <button type="button" class="seg-btn" data-strategy="bf16-flashattention2">1. BF16 FlashAttention-2 基线 (412 TFLOPS)</button>
+          <button type="button" class="seg-btn" data-strategy="naive-int8-fp8-ptq">2. 裸 INT8/FP8 直接量化 (78.2% 余弦 · 偏色崩溃)</button>
+          <button type="button" class="seg-btn active" data-strategy="sageattention2-smoothk-fp22-promote">3. SageAttention2 均值消峰 + 双级 FP32 (推荐)</button>
+        </div>
+      </div>
+      <div class="control-group">
+        <label for="seq-slider">三维视频时空序列长度（3D Spatiotemporal Tokens）：<span id="seq-label">118,800 Tokens</span></label>
+        <input id="seq-slider" type="range" min="32000" max="192000" step="10800" value="118800" />
+      </div>
+    </section>
+
+    <section class="kpi-strip" aria-label="核心算子吞吐与数值保真指标">
+      <div class="kpi-card">
+        <div class="kpi-label">实测注意力算子吞吐 (Kernel TFLOPS)</div>
+        <div class="kpi-val" id="kpi-tflops">1,178 TFLOPS</div>
+        <div class="kpi-sub" id="kpi-tflops-sub">2.86× 提速 vs BF16 FlashAttention-2 (412 TFLOPS)</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">注意力输出余弦相似度 (Cosine Sim)</div>
+        <div class="kpi-val" id="kpi-cosine">99.74%</div>
+        <div class="kpi-sub" id="kpi-cosine-sub">K'=K-μ_K 消除 94.8% 通道离群动态范围</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">成片峰值信噪比 (Video PSNR)</div>
+        <div class="kpi-val" id="kpi-psnr">39.6 dB</div>
+        <div class="kpi-sub" id="kpi-psnr-sub">对比裸 INT8/FP8 崩溃画面 19.4 dB</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">叠加 TeaCache 正交总加速比</div>
+        <div class="kpi-val" id="kpi-combined">6.42×</div>
+        <div class="kpi-sub" id="kpi-combined-sub">时间步跳步 (TeaCache) × 单步低比特算子正交乘积</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">512卡视频集群年度净省算力</div>
+        <div class="kpi-val" id="kpi-savings">+$2.64M / yr</div>
+        <div class="kpi-sub" id="kpi-savings-sub">吃满 Hopper/Ada/Blackwell 低比特 Tensor Core</div>
+      </div>
+    </section>
+
+    <main class="main-grid">
+      <section class="panel">
+        <h2>Key 张量通道离群值消峰（K - mean(K)）、Warp 级 INT8 QK^T 与 FP8 PV 双级寄存器提升（FP22→FP32）沙盘</h2>
+        <canvas id="sage-canvas" width="880" height="390"></canvas>
+      </section>
+      <section class="panel">
+        <h2>SageAttention2 三阶段算子精度映射、有效 TFLOPS 与数值不变量表</h2>
+        <table class="stage-table">
+          <thead>
+            <tr>
+              <th>注意力核函数内部阶段</th>
+              <th>张量指令精度</th>
+              <th>算子吞吐</th>
+              <th>余弦保真</th>
+              <th>数学等价与硬件护栏</th>
+            </tr>
+          </thead>
+          <tbody id="stage-tbody"></tbody>
+        </table>
+        <div class="code-box" id="sage-manifest-box"></div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

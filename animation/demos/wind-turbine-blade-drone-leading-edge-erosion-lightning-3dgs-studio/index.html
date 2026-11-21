@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>风电 107米叶片无人机巡检孪生：气弹弯曲弧长归算（s=0..107m）、前缘雨蚀 DNV 定级与接闪器烧蚀 3DGS 工作台</title>
+  <script type="module" crossorigin src="../../assets/windTurbineBladeDroneLeadingEdgeErosionLightning3dgs-CK66jdOO.js"></script>
+  <link rel="modulepreload" crossorigin href="../../assets/modulepreload-polyfill-B5Qt9EMX.js">
+  <link rel="stylesheet" crossorigin href="../../assets/windTurbineBladeDroneLeadingEdgeErosionLightning3dgs-CFvcFy7m.css">
+</head>
+<body>
+  <div class="studio-shell">
+    <header class="topbar">
+      <div>
+        <span class="eyebrow">Round 374 · 163rd Curated Workbench · Domain 4: 107m Wind-Turbine Blade LiDAR + 3DGS Inspection Twin</span>
+        <h1>风电 107米叶片无人机巡检孪生：弧长坐标归算、前缘雨蚀 DNV 定级与接闪器 3DGS 工作台</h1>
+        <p class="subtitle">面向 Vestas / Siemens Gamesa / 金风科技 / 明阳智能 15MW 海陆风机：终结 107米纯白叶片在重力与风载下产生 2.6m 弯曲挠度导致纯 GPS 无人机照片出现 ±4.2m 展向定位漂移（高空蜘蛛人找不到裂纹），通过机载 LiDAR 实时拟合叶片中心线弧长积分 s∈[0,107.0m]（定位误差 ±2.4cm）与偏振去反光 3DGS，挽回 +2.35% 年发电量 AEP（百台风场年省 +$1.86M）。</p>
+      </div>
+      <div class="doc-links">
+        <a href="../../index.html">← 返回实验室首页</a>
+        <a href="../../research/wind-turbine-blade-drone-leading-edge-erosion-lightning-3dgs-faq.html">架构师选型 FAQ (ZH)</a>
+        <a href="../../research/wind-turbine-blade-drone-leading-edge-erosion-lightning-3dgs-faq.en.html">Architecture FAQ (EN)</a>
+        <a href="../../research/benchmarks/wind-turbine-blade-drone-leading-edge-erosion-lightning-3dgs/summary-visual.svg">7-Card Summary SVG</a>
+      </div>
+    </header>
+
+    <section class="control-bar" aria-label="风机叶片与弯曲挠度控制面">
+      <div class="control-group">
+        <label for="preset-select">风电场机型与叶片环境工况（Wind Turbine Fleet Profile）</label>
+        <select id="preset-select">
+          <option value="offshore-15mw-107m-blade">15MW 海上风机 107米碳纤叶片（320km/h 叶尖雨蚀与雷击接闪器烧蚀）</option>
+          <option value="onshore-6mw-lightning-ridge">山地高雷暴区 6.5MW 陆上风机（接闪器击穿与后缘结构胶开裂）</option>
+          <option value="desert-sand-erosion-fleet">沙戈荒大基地 8MW 风机（前缘风沙磨穿露玻纤层与 AEP 发电量挽回）</option>
+        </select>
+      </div>
+      <div class="control-group">
+        <label>叶片巡检定位与三维损伤定级架构（Blade Twin Pipeline）</label>
+        <div class="seg-buttons" role="group">
+          <button type="button" class="seg-btn" data-strategy="manual-rope-access">1. 人工蜘蛛人吊绳巡检 (停机 6h/台 · 漏检高危)</button>
+          <button type="button" class="seg-btn" data-strategy="gps-only-2d-drone-stitch">2. 纯 GPS 2D 无人机拼图 (±4.2m 弯曲定位漂移)</button>
+          <button type="button" class="seg-btn active" data-strategy="lidar-arclength-3dgs-dnv-twin">3. LiDAR 弧长归算 + 偏振 3DGS + DNV 定级 (推荐)</button>
+        </div>
+      </div>
+      <div class="control-group">
+        <label for="bend-slider">停机顺桨状态叶尖重力/风载弯曲挠度（Tip Bend）：<span id="bend-label">2.6 m</span></label>
+        <input id="bend-slider" type="range" min="0.8" max="4.2" step="0.2" value="2.6" />
+      </div>
+    </section>
+
+    <section class="kpi-strip" aria-label="核心展向定位与发电量指标">
+      <div class="kpi-card">
+        <div class="kpi-label">叶片展向弧长定位误差 (Span s)</div>
+        <div class="kpi-val" id="kpi-span-err">±2.4 cm</div>
+        <div class="kpi-sub" id="kpi-span-sub">沿弯曲脊线积分 s∈[0,107m] (对比纯GPS ±4.2m)</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">单台风机停机巡检耗时</div>
+        <div class="kpi-val" id="kpi-downtime">28 分钟</div>
+        <div class="kpi-sub" id="kpi-downtime-sub">对比人工吊绳 360 分钟 (-92.2% 停机损失)</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Cat-4 结构开裂/雷击漏检数</div>
+        <div class="kpi-val" id="kpi-misses">0 处漏检</div>
+        <div class="kpi-sub" id="kpi-misses-sub">偏振消除白色胶衣炫光 + 0.3mm 胶缝锁</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">前缘修复挽回年发电量 (AEP)</div>
+        <div class="kpi-val" id="kpi-aep">+2.35% AEP</div>
+        <div class="kpi-sub" id="kpi-aep-sub">消除前缘粗糙度引起的边界层提前转捩</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">百台风电场年度运维与发电净增收</div>
+        <div class="kpi-val" id="kpi-savings">+$1.86M / yr</div>
+        <div class="kpi-sub" id="kpi-savings-sub">防断叶大修 ($680k/片) + 增发电量收益</div>
+      </div>
+    </section>
+
+    <main class="main-grid">
+      <section class="panel">
+        <h2>107米柔性叶片重力弯曲挠度（2.6m）弧长参数化展开、前缘雨蚀（DNV Cat 1–5）与接闪器三维沙盘</h2>
+        <canvas id="blade-canvas" width="880" height="390"></canvas>
+      </section>
+      <section class="panel">
+        <h2>叶片本征坐标系（Span s, Chord c）缺陷台账与 DNVGL-ST-0376 维修处方</h2>
+        <table class="defect-table">
+          <thead>
+            <tr>
+              <th>缺陷编号与损伤类型</th>
+              <th>本征弧长与弦向坐标</th>
+              <th>实测蚀坑深度</th>
+              <th>DNV / IEC 定级与处方</th>
+              <th>年发电损失</th>
+            </tr>
+          </thead>
+          <tbody id="defect-tbody"></tbody>
+        </table>
+        <div class="code-box" id="blade-manifest-box"></div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
