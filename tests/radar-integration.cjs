@@ -7727,6 +7727,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r637File),'utf8');
       assert.ok(txt.includes('3,660.00')&&txt.includes('4,250.00')&&txt.includes('7,910.00')&&txt.includes('75.00')&&txt.includes('240.00')&&txt.includes('315.00')&&txt.includes('7,595.00')&&txt.includes('96.02%')&&txt.includes('not_measured'),r637File+': contains exact 11-21 R37 R637 flapi+covloupe+minga+fpf closed-form parameters');
     }
+    // 2026-11-21 Day Round 38 (R638: lllq-123/phone-for-ai + dcc123456/browser-copilot + PensiveFei/deep-read-summarize + PerryLink/dsh-plugin-guide) verification
+    const r638PathA=3460.00+41.5*100.00;
+    assert.equal(r638PathA.toFixed(2),'7610.00','11-21 R38 R638 Path A total');
+    const r638PathC=65.00+2.4*100.00;
+    assert.equal(r638PathC.toFixed(2),'305.00','11-21 R38 R638 Path C total');
+    assert.equal((r638PathA-r638PathC).toFixed(2),'7305.00','11-21 R38 R638 savings vs Path A');
+    assert.equal(((r638PathA-r638PathC)/r638PathA*100).toFixed(2),'95.99','11-21 R38 R638 pct savings vs Path A');
+    for(const r638File of ['workshops/github-trending-radar/docs/phone-for-ai-browser-copilot-deep-read-dsh-plugin-guide-selection-faq.md','workshops/github-trending-radar/docs/phone-for-ai-browser-copilot-deep-read-dsh-plugin-guide-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r38-r638-phoneforai-browsercopilot-deepread-dshguide.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r638File),'utf8');
+      assert.ok(txt.includes('3,460.00')&&txt.includes('4,150.00')&&txt.includes('7,610.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('7,305.00')&&txt.includes('95.99%')&&txt.includes('not_measured'),r638File+': contains exact 11-21 R38 R638 phoneforai+browsercopilot+deepread+dshguide closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
