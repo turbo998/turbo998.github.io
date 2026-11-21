@@ -8772,6 +8772,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r732File),'utf8');
       assert.ok(txt.includes('4,040.00')&&txt.includes('4,400.00')&&txt.includes('8,440.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,130.00')&&txt.includes('96.33%')&&txt.includes('not_measured'),r732File+': contains exact 11-21 R132 R732 powermcp+itasca+abaqus+osm closed-form parameters');
     }
+    // 2026-11-21 Night Round 133 (R733: Yinglianchun/Serein + savantskie/persistent-ai-memory + cyberchitta/llm-context.py + adhikasp/mcp-git-ingest) verification
+    const r733PathA=3990.00+43.5*100.00;
+    assert.equal(r733PathA.toFixed(2),'8340.00','11-21 R133 R733 Path A total');
+    const r733PathC=65.00+2.4*100.00;
+    assert.equal(r733PathC.toFixed(2),'305.00','11-21 R133 R733 Path C total');
+    assert.equal((r733PathA-r733PathC).toFixed(2),'8035.00','11-21 R133 R733 savings vs Path A');
+    assert.equal(((r733PathA-r733PathC)/r733PathA*100).toFixed(2),'96.34','11-21 R133 R733 pct savings vs Path A');
+    for(const r733File of ['workshops/github-trending-radar/docs/serein-persistent-ai-memory-llm-context-git-ingest-selection-faq.md','workshops/github-trending-radar/docs/serein-persistent-ai-memory-llm-context-git-ingest-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r133-r733-serein-pammemory-llmcontext-gitingest.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r733File),'utf8');
+      assert.ok(txt.includes('3,990.00')&&txt.includes('4,350.00')&&txt.includes('8,340.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('8,035.00')&&txt.includes('96.34%')&&txt.includes('not_measured'),r733File+': contains exact 11-21 R133 R733 serein+pammemory+llmcontext+gitingest closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
