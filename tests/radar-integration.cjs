@@ -7375,6 +7375,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r605File),'utf8');
       assert.ok(txt.includes('3,420.00')&&txt.includes('4,250.00')&&txt.includes('7,670.00')&&txt.includes('75.00')&&txt.includes('250.00')&&txt.includes('325.00')&&txt.includes('7,345.00')&&txt.includes('95.76%')&&txt.includes('not_measured'),r605File+': contains exact 11-21 R5 R605 intent+wickedstudio+bothouse+broco closed-form parameters');
     }
+    // 2026-11-21 Day Round 6 (R606: answerLoops/answerLoops + telekom/sutura + DannylydST/sorftime-seller-agent + jeffreytse/grimoire) verification
+    const r606PathA=3180.00+40.5*100.00;
+    assert.equal(r606PathA.toFixed(2),'7230.00','11-21 R6 R606 Path A total');
+    const r606PathC=70.00+2.4*100.00;
+    assert.equal(r606PathC.toFixed(2),'310.00','11-21 R6 R606 Path C total');
+    assert.equal((r606PathA-r606PathC).toFixed(2),'6920.00','11-21 R6 R606 savings vs Path A');
+    assert.equal(((r606PathA-r606PathC)/r606PathA*100).toFixed(2),'95.71','11-21 R6 R606 pct savings vs Path A');
+    for(const r606File of ['workshops/github-trending-radar/docs/answerloops-sutura-sorftime-grimoire-selection-faq.md','workshops/github-trending-radar/docs/answerloops-sutura-sorftime-grimoire-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r6-r606-answerloops-sutura-sorftime-grimoire.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r606File),'utf8');
+      assert.ok(txt.includes('3,180.00')&&txt.includes('4,050.00')&&txt.includes('7,230.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('6,920.00')&&txt.includes('95.71%')&&txt.includes('not_measured'),r606File+': contains exact 11-21 R6 R606 answerloops+sutura+sorftime+grimoire closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
