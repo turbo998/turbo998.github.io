@@ -7408,6 +7408,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r608File),'utf8');
       assert.ok(txt.includes('3,140.00')&&txt.includes('4,000.00')&&txt.includes('7,140.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('6,835.00')&&txt.includes('95.73%')&&txt.includes('not_measured'),r608File+': contains exact 11-21 R8 R608 mulmoterminal+mikka+weave+wheelgap closed-form parameters');
     }
+    // 2026-11-21 Day Round 9 (R609: piomin/ai-software-factory + lanlan0811/tianshu-mcp + reliant-labs/forge + robhunter/agentdeals) verification
+    const r609PathA=3380.00+41.5*100.00;
+    assert.equal(r609PathA.toFixed(2),'7530.00','11-21 R9 R609 Path A total');
+    const r609PathC=75.00+2.4*100.00;
+    assert.equal(r609PathC.toFixed(2),'315.00','11-21 R9 R609 Path C total');
+    assert.equal((r609PathA-r609PathC).toFixed(2),'7215.00','11-21 R9 R609 savings vs Path A');
+    assert.equal(((r609PathA-r609PathC)/r609PathA*100).toFixed(2),'95.82','11-21 R9 R609 pct savings vs Path A');
+    for(const r609File of ['workshops/github-trending-radar/docs/ai-software-factory-tianshu-mcp-forge-agentdeals-selection-faq.md','workshops/github-trending-radar/docs/ai-software-factory-tianshu-mcp-forge-agentdeals-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r9-r609-aisoftwarefactory-tianshu-forge-agentdeals.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r609File),'utf8');
+      assert.ok(txt.includes('3,380.00')&&txt.includes('4,150.00')&&txt.includes('7,530.00')&&txt.includes('75.00')&&txt.includes('240.00')&&txt.includes('315.00')&&txt.includes('7,215.00')&&txt.includes('95.82%')&&txt.includes('not_measured'),r609File+': contains exact 11-21 R9 R609 aisoftwarefactory+tianshu+forge+agentdeals closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
