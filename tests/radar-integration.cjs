@@ -8255,6 +8255,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r685File),'utf8');
       assert.ok(txt.includes('4,020.00')&&txt.includes('4,400.00')&&txt.includes('8,420.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,110.00')&&txt.includes('96.32%')&&txt.includes('not_measured'),r685File+': contains exact 11-21 R85 R685 gcpagentplatform+vargsdk+showtime+vibelogcli closed-form parameters');
     }
+    // 2026-11-21 Night Round 86 (R686: Azure-Samples/python-ai-agent-frameworks-demos + JetBrains/benjamin-plus-skill + Mng-dev-ai/agentrove + papercomputeco/tapes) verification
+    const r686PathA=3940.00+43.5*100.00;
+    assert.equal(r686PathA.toFixed(2),'8290.00','11-21 R86 R686 Path A total');
+    const r686PathC=65.00+2.4*100.00;
+    assert.equal(r686PathC.toFixed(2),'305.00','11-21 R86 R686 Path C total');
+    assert.equal((r686PathA-r686PathC).toFixed(2),'7985.00','11-21 R86 R686 savings vs Path A');
+    assert.equal(((r686PathA-r686PathC)/r686PathA*100).toFixed(2),'96.32','11-21 R86 R686 pct savings vs Path A');
+    for(const r686File of ['workshops/github-trending-radar/docs/azure-agent-demos-jetbrains-benjamin-agentrove-tapes-selection-faq.md','workshops/github-trending-radar/docs/azure-agent-demos-jetbrains-benjamin-agentrove-tapes-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r86-r686-azuresamples-jetbrainsbenjamin-agentrove-tapes.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r686File),'utf8');
+      assert.ok(txt.includes('3,940.00')&&txt.includes('4,350.00')&&txt.includes('8,290.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('7,985.00')&&txt.includes('96.32%')&&txt.includes('not_measured'),r686File+': contains exact 11-21 R86 R686 azuresamples+jetbrainsbenjamin+agentrove+tapes closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
