@@ -8596,6 +8596,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r716File),'utf8');
       assert.ok(txt.includes('3,940.00')&&txt.includes('4,350.00')&&txt.includes('8,290.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('7,985.00')&&txt.includes('96.32%')&&txt.includes('not_measured'),r716File+': contains exact 11-21 R116 R716 fbadsmcp+redditmcp+egeo+parsedmarc closed-form parameters');
     }
+    // 2026-11-21 Night Round 117 (R717: arconia-io/arconia + TPIsoftwareOSPO/digiRunner-Open-Source + jdubois/boot-ui + wangle201210/go-rag) verification
+    const r717PathA=4010.00+43.5*100.00;
+    assert.equal(r717PathA.toFixed(2),'8360.00','11-21 R117 R717 Path A total');
+    const r717PathC=70.00+2.4*100.00;
+    assert.equal(r717PathC.toFixed(2),'310.00','11-21 R117 R717 Path C total');
+    assert.equal((r717PathA-r717PathC).toFixed(2),'8050.00','11-21 R117 R717 savings vs Path A');
+    assert.equal(((r717PathA-r717PathC)/r717PathA*100).toFixed(2),'96.29','11-21 R117 R717 pct savings vs Path A');
+    for(const r717File of ['workshops/github-trending-radar/docs/arconia-digirunner-boot-ui-go-rag-selection-faq.md','workshops/github-trending-radar/docs/arconia-digirunner-boot-ui-go-rag-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r117-r717-arconia-digirunner-bootui-gorag.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r717File),'utf8');
+      assert.ok(txt.includes('4,010.00')&&txt.includes('4,350.00')&&txt.includes('8,360.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,050.00')&&txt.includes('96.29%')&&txt.includes('not_measured'),r717File+': contains exact 11-21 R117 R717 arconia+digirunner+bootui+gorag closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
