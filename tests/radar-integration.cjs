@@ -7430,6 +7430,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r610File),'utf8');
       assert.ok(txt.includes('3,440.00')&&txt.includes('4,200.00')&&txt.includes('7,640.00')&&txt.includes('75.00')&&txt.includes('250.00')&&txt.includes('325.00')&&txt.includes('7,315.00')&&txt.includes('95.75%')&&txt.includes('not_measured'),r610File+': contains exact 11-21 R10 R610 cotal+agentmailrust+archiehq+chiefofstaff closed-form parameters');
     }
+    // 2026-11-21 Day Round 11 (R611: skulitom/Pixelbolt + skulitom/Nestbolt + leyscore/kalka + kobimusic/dettato) verification
+    const r611PathA=3260.00+41.0*100.00;
+    assert.equal(r611PathA.toFixed(2),'7360.00','11-21 R11 R611 Path A total');
+    const r611PathC=65.00+2.4*100.00;
+    assert.equal(r611PathC.toFixed(2),'305.00','11-21 R11 R611 Path C total');
+    assert.equal((r611PathA-r611PathC).toFixed(2),'7055.00','11-21 R11 R611 savings vs Path A');
+    assert.equal(((r611PathA-r611PathC)/r611PathA*100).toFixed(2),'95.86','11-21 R11 R611 pct savings vs Path A');
+    for(const r611File of ['workshops/github-trending-radar/docs/pixelbolt-nestbolt-kalka-dettato-selection-faq.md','workshops/github-trending-radar/docs/pixelbolt-nestbolt-kalka-dettato-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r11-r611-pixelbolt-nestbolt-kalka-dettato.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r611File),'utf8');
+      assert.ok(txt.includes('3,260.00')&&txt.includes('4,100.00')&&txt.includes('7,360.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('7,055.00')&&txt.includes('95.86%')&&txt.includes('not_measured'),r611File+': contains exact 11-21 R11 R611 pixelbolt+nestbolt+kalka+dettato closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
