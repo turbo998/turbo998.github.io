@@ -8585,6 +8585,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r715File),'utf8');
       assert.ok(txt.includes('4,070.00')&&txt.includes('4,400.00')&&txt.includes('8,470.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,160.00')&&txt.includes('96.34%')&&txt.includes('not_measured'),r715File+': contains exact 11-21 R115 R715 langgraphgo+langagent+langgraphgui+whatsapp closed-form parameters');
     }
+    // 2026-11-21 Night Round 116 (R716: RamsesAguirre777/facebook-ads-library-mcp + dialog-tools/reddit-research-mcp + mverab/eGEOagents + dmarcguardhq/parse-dmarc) verification
+    const r716PathA=3940.00+43.5*100.00;
+    assert.equal(r716PathA.toFixed(2),'8290.00','11-21 R116 R716 Path A total');
+    const r716PathC=65.00+2.4*100.00;
+    assert.equal(r716PathC.toFixed(2),'305.00','11-21 R116 R716 Path C total');
+    assert.equal((r716PathA-r716PathC).toFixed(2),'7985.00','11-21 R116 R716 savings vs Path A');
+    assert.equal(((r716PathA-r716PathC)/r716PathA*100).toFixed(2),'96.32','11-21 R116 R716 pct savings vs Path A');
+    for(const r716File of ['workshops/github-trending-radar/docs/facebook-ads-mcp-reddit-research-egeoagents-parse-dmarc-selection-faq.md','workshops/github-trending-radar/docs/facebook-ads-mcp-reddit-research-egeoagents-parse-dmarc-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r116-r716-fbadsmcp-redditmcp-egeo-parsedmarc.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r716File),'utf8');
+      assert.ok(txt.includes('3,940.00')&&txt.includes('4,350.00')&&txt.includes('8,290.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('7,985.00')&&txt.includes('96.32%')&&txt.includes('not_measured'),r716File+': contains exact 11-21 R116 R716 fbadsmcp+redditmcp+egeo+parsedmarc closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
