@@ -7672,6 +7672,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r632File),'utf8');
       assert.ok(txt.includes('3,680.00')&&txt.includes('4,250.00')&&txt.includes('7,930.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('7,620.00')&&txt.includes('96.09%')&&txt.includes('not_measured'),r632File+': contains exact 11-21 R32 R632 companionspace+roamies+threews+audiosmith closed-form parameters');
     }
+    // 2026-11-21 Day Round 33 (R633: reyamira/models + Nanako0129/Syrtis-Windows + woodfishhhh/obituary + keyorixhq/keyorix) verification
+    const r633PathA=3470.00+41.5*100.00;
+    assert.equal(r633PathA.toFixed(2),'7620.00','11-21 R33 R633 Path A total');
+    const r633PathC=65.00+2.4*100.00;
+    assert.equal(r633PathC.toFixed(2),'305.00','11-21 R33 R633 Path C total');
+    assert.equal((r633PathA-r633PathC).toFixed(2),'7315.00','11-21 R33 R633 savings vs Path A');
+    assert.equal(((r633PathA-r633PathC)/r633PathA*100).toFixed(2),'96.00','11-21 R33 R633 pct savings vs Path A');
+    for(const r633File of ['workshops/github-trending-radar/docs/models-syrtis-windows-obituary-keyorix-selection-faq.md','workshops/github-trending-radar/docs/models-syrtis-windows-obituary-keyorix-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r33-r633-models-syrtis-obituary-keyorix.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r633File),'utf8');
+      assert.ok(txt.includes('3,470.00')&&txt.includes('4,150.00')&&txt.includes('7,620.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('7,315.00')&&txt.includes('96.00%')&&txt.includes('not_measured'),r633File+': contains exact 11-21 R33 R633 models+syrtis+obituary+keyorix closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
