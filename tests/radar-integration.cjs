@@ -7650,6 +7650,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r630File),'utf8');
       assert.ok(txt.includes('3,640.00')&&txt.includes('4,300.00')&&txt.includes('7,940.00')&&txt.includes('80.00')&&txt.includes('250.00')&&txt.includes('330.00')&&txt.includes('7,610.00')&&txt.includes('95.84%')&&txt.includes('not_measured'),r630File+': contains exact 11-21 R30 R630 convexagent+gaia+agentnetwork+evener closed-form parameters');
     }
+    // 2026-11-21 Day Round 31 (R631: judegomila/OnCo + vishalsachdev/canvas-mcp + spkane/freecad-addon-robust-mcp-server + jgassens/ChemDraft) verification
+    const r631PathA=3590.00+42.5*100.00;
+    assert.equal(r631PathA.toFixed(2),'7840.00','11-21 R31 R631 Path A total');
+    const r631PathC=75.00+2.4*100.00;
+    assert.equal(r631PathC.toFixed(2),'315.00','11-21 R31 R631 Path C total');
+    assert.equal((r631PathA-r631PathC).toFixed(2),'7525.00','11-21 R31 R631 savings vs Path A');
+    assert.equal(((r631PathA-r631PathC)/r631PathA*100).toFixed(2),'95.98','11-21 R31 R631 pct savings vs Path A');
+    for(const r631File of ['workshops/github-trending-radar/docs/onco-canvas-mcp-freecad-robust-mcp-chemdraft-selection-faq.md','workshops/github-trending-radar/docs/onco-canvas-mcp-freecad-robust-mcp-chemdraft-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r31-r631-onco-canvasmcp-freecadmcp-chemdraft.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r631File),'utf8');
+      assert.ok(txt.includes('3,590.00')&&txt.includes('4,250.00')&&txt.includes('7,840.00')&&txt.includes('75.00')&&txt.includes('240.00')&&txt.includes('315.00')&&txt.includes('7,525.00')&&txt.includes('95.98%')&&txt.includes('not_measured'),r631File+': contains exact 11-21 R31 R631 onco+canvasmcp+freecadmcp+chemdraft closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
