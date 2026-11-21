@@ -8266,6 +8266,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r686File),'utf8');
       assert.ok(txt.includes('3,940.00')&&txt.includes('4,350.00')&&txt.includes('8,290.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('7,985.00')&&txt.includes('96.32%')&&txt.includes('not_measured'),r686File+': contains exact 11-21 R86 R686 azuresamples+jetbrainsbenjamin+agentrove+tapes closed-form parameters');
     }
+    // 2026-11-21 Night Round 87 (R687: Safiullah-Rahu/knowledge-intelligence + ThinkfleetAI/memmesh + supermemoryai/memorybench + neutree-ai/openapi-to-skills) verification
+    const r687PathA=3970.00+44.0*100.00;
+    assert.equal(r687PathA.toFixed(2),'8370.00','11-21 R87 R687 Path A total');
+    const r687PathC=70.00+2.4*100.00;
+    assert.equal(r687PathC.toFixed(2),'310.00','11-21 R87 R687 Path C total');
+    assert.equal((r687PathA-r687PathC).toFixed(2),'8060.00','11-21 R87 R687 savings vs Path A');
+    assert.equal(((r687PathA-r687PathC)/r687PathA*100).toFixed(2),'96.30','11-21 R87 R687 pct savings vs Path A');
+    for(const r687File of ['workshops/github-trending-radar/docs/knowledge-intelligence-memmesh-memorybench-openapi-to-skills-selection-faq.md','workshops/github-trending-radar/docs/knowledge-intelligence-memmesh-memorybench-openapi-to-skills-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r87-r687-knowledgeintel-memmesh-memorybench-openapitoskills.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r687File),'utf8');
+      assert.ok(txt.includes('3,970.00')&&txt.includes('4,400.00')&&txt.includes('8,370.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,060.00')&&txt.includes('96.30%')&&txt.includes('not_measured'),r687File+': contains exact 11-21 R87 R687 knowledgeintel+memmesh+memorybench+openapitoskills closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
