@@ -7507,6 +7507,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r617File),'utf8');
       assert.ok(txt.includes('3,460.00')&&txt.includes('4,200.00')&&txt.includes('7,660.00')&&txt.includes('80.00')&&txt.includes('250.00')&&txt.includes('330.00')&&txt.includes('7,330.00')&&txt.includes('95.69%')&&txt.includes('not_measured'),r617File+': contains exact 11-21 R17 R617 aidivedeep+opengenai+aegis+autobot closed-form parameters');
     }
+    // 2026-11-21 Day Round 18 (R618: xr843/fojin + aa0101181514/tw-legal-rag + Egoist-Machines/LodeDB + GoogleCloudPlatform/cymbal-air-toolbox-demo) verification
+    const r618PathA=3560.00+42.5*100.00;
+    assert.equal(r618PathA.toFixed(2),'7810.00','11-21 R18 R618 Path A total');
+    const r618PathC=75.00+2.4*100.00;
+    assert.equal(r618PathC.toFixed(2),'315.00','11-21 R18 R618 Path C total');
+    assert.equal((r618PathA-r618PathC).toFixed(2),'7495.00','11-21 R18 R618 savings vs Path A');
+    assert.equal(((r618PathA-r618PathC)/r618PathA*100).toFixed(2),'95.97','11-21 R18 R618 pct savings vs Path A');
+    for(const r618File of ['workshops/github-trending-radar/docs/fojin-tw-legal-rag-lodedb-cymbal-air-selection-faq.md','workshops/github-trending-radar/docs/fojin-tw-legal-rag-lodedb-cymbal-air-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r18-r618-fojin-twlegalrag-lodedb-cymbalair.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r618File),'utf8');
+      assert.ok(txt.includes('3,560.00')&&txt.includes('4,250.00')&&txt.includes('7,810.00')&&txt.includes('75.00')&&txt.includes('240.00')&&txt.includes('315.00')&&txt.includes('7,495.00')&&txt.includes('95.97%')&&txt.includes('not_measured'),r618File+': contains exact 11-21 R18 R618 fojin+twlegalrag+lodedb+cymbalair closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
