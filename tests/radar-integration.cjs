@@ -8486,6 +8486,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r706File),'utf8');
       assert.ok(txt.includes('3,950.00')&&txt.includes('4,350.00')&&txt.includes('8,300.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('7,990.00')&&txt.includes('96.27%')&&txt.includes('not_measured'),r706File+': contains exact 11-21 R106 R706 traccia+chap+memoryforge+sandbase closed-form parameters');
     }
+    // 2026-11-21 Night Round 107 (R707: XGenerationLab/xiyan_mcp_server + call518/MCP-PostgreSQL-Ops + WaHaiLong/KingdeeMCP + gensecaihq/pfsense-mcp-server) verification
+    const r707PathA=3980.00+43.5*100.00;
+    assert.equal(r707PathA.toFixed(2),'8330.00','11-21 R107 R707 Path A total');
+    const r707PathC=70.00+2.4*100.00;
+    assert.equal(r707PathC.toFixed(2),'310.00','11-21 R107 R707 Path C total');
+    assert.equal((r707PathA-r707PathC).toFixed(2),'8020.00','11-21 R107 R707 savings vs Path A');
+    assert.equal(((r707PathA-r707PathC)/r707PathA*100).toFixed(2),'96.28','11-21 R107 R707 pct savings vs Path A');
+    for(const r707File of ['workshops/github-trending-radar/docs/xiyan-sql-mcp-postgresql-ops-kingdeemcp-pfsense-mcp-selection-faq.md','workshops/github-trending-radar/docs/xiyan-sql-mcp-postgresql-ops-kingdeemcp-pfsense-mcp-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r107-r707-xiyansql-pgops-kingdeemcp-pfsensemcp.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r707File),'utf8');
+      assert.ok(txt.includes('3,980.00')&&txt.includes('4,350.00')&&txt.includes('8,330.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,020.00')&&txt.includes('96.28%')&&txt.includes('not_measured'),r707File+': contains exact 11-21 R107 R707 xiyansql+pgops+kingdeemcp+pfsensemcp closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
