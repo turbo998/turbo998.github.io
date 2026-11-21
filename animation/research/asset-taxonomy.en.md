@@ -2,7 +2,7 @@
 
 > 🌐 **Language / 语言**: [中文 (`asset-taxonomy.md`)](asset-taxonomy.md) | **English**
 
-Written from a **Cloud & AI Solution Architect (SA)** perspective, this taxonomy catalogs all **185 interactive visual demonstrations, Blender 4.5 LTS MCP asset pipelines, scientific datasets, bilingual architecture decision guides, and automated verification gates** in `turbo998/generative-visual-lab`. All legacy classical-mechanics and sensor-parameter formula benches have been removed so every asset serves generative visual engineering, controllable multimodal media, 3D/4D world models, or enterprise AIGC production architecture.
+Written from a **Cloud & AI Solution Architect (SA)** perspective, this taxonomy catalogs all **220 interactive visual demonstrations, Blender 4.5 LTS MCP asset pipelines, scientific datasets, bilingual architecture decision guides, and automated verification gates** in `turbo998/generative-visual-lab`. All legacy classical-mechanics and sensor-parameter formula benches have been removed so every asset serves generative visual engineering, controllable multimodal media, 3D/4D world models, or enterprise AIGC production architecture.
 
 ---
 
@@ -12,9 +12,9 @@ Written from a **Cloud & AI Solution Architect (SA)** perspective, this taxonomy
 | --- | --- | --- | --- |
 | **1. Real-Time Procedural & Scientific Scenery** | `demos/feitian/` · `demos/astra-planet/` · `demos/rocket-launch/` | **3 Core WebGL / Canvas 2D Apps**: Hybrid real-time procedural rendering, Blender Cycles offline baking, and NASA MOLA measured altimetry | MIT Original Code + NASA PDS Public Domain Data |
 | **2. Frontier Multimodal, 4D Video & 3D World Model Studios** | `demos/*-director/` · `demos/*-studio/` · `demos/pelican-bicycle-arena/` | **7 Frontier Studios**: AI engineering harness benchmark, programmatic explainer compiler, 4DGS camera control, native AV foley, continuum 3DGS world models, neural relighting, and playable episodic world memory | MIT Original Studios |
-| **3. Enterprise AIGC Production Pipelines & FinOps Workbenches** | `demos/*-workbench/` · `demos/*-studio/` · `demos/*-pipeline/` | **175 Enterprise Architecture Sandboxes**: Infinite Causal Video DiT Tri-Zone KV Cache & 1.65s Streaming Studio (185th Milestone: 3+7+35×5!), Video DiT 3D Sliding Tile Sparse Attention (STA) Router (Historic 180th Milestone!), and Video DiT Tri-Phase CFG-Interval Studio (175th Milestone!) | MIT Original Code + 7-Card Visual Decks |
+| **3. Enterprise AIGC Production Pipelines & FinOps Workbenches** | `demos/*-workbench/` · `demos/*-studio/` · `demos/*-pipeline/` | **210 Enterprise Architecture Sandboxes**: Enterprise Multi-Cloud Visual & Video Unified API Gateway Studio (Historic 220th Milestone: 3+7+42×5!), Enterprise 3D Product Configurator Selection Studio (219th Workbench), and Enterprise AIGC Semantic Cache & Step-Latent Reuse Studio (215th Milestone) | MIT Original Code + 7-Card Visual Decks |
 | **4. Headless Blender 4.5 LTS MCP Pipeline & Binary Assets** | `scripts/blender/` · `demos/*/assets/` · `demos/astra-planet/public/data/` | Headless JSON-RPC daemon, deterministic modeling/baking scripts, `.glb` hard-surface kits, seamless micro-normal maps, and Mars altimetry binaries | MIT Original Scripts & Bakes |
-| **5. Bilingual Deep-Dive Studies & SA Selection FAQs** | `docs/*.md` · `docs/*.en.md` (compiled to `dist/research/*.html`) | **9 Deep-Dive Architecture Studies + 175 Enterprise AIGC Decision FAQs** (370+ paired Chinese & English documents) | MIT Original Bilingual Docs |
+| **5. Bilingual Deep-Dive Studies & SA Selection FAQs** | `docs/*.md` · `docs/*.en.md` (compiled to `dist/research/*.html`) | **9 Deep-Dive Architecture Studies + 210 Enterprise AIGC Decision FAQs** (440+ paired Chinese & English documents) | MIT Original Bilingual Docs |
 | **6. Visual Infographics & Automated Quality Gates** | `docs/evidence/` · `docs/benchmarks/` · `tests/` | Architecture summary SVGs, Cycles reference renders, Vitest unit suites, and Playwright multi-viewport E2E frame/payload gates | Measured & Verified Artifacts |
 
 ---

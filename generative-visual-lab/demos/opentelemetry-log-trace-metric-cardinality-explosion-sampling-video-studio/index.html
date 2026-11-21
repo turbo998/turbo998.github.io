@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>企业可观测性 OpenTelemetry 指标基数爆炸治理、Trace 尾部采样与 Datadog/Prometheus 降本视频工作台</title>
+  <script type="module" crossorigin src="../../assets/opentelemetryLogTraceMetricCardinalityExplosionSamplingVideo-PRq6Pumd.js"></script>
+  <link rel="modulepreload" crossorigin href="../../assets/modulepreload-polyfill-B5Qt9EMX.js">
+  <link rel="stylesheet" crossorigin href="../../assets/opentelemetryLogTraceMetricCardinalityExplosionSamplingVideo-hWYVN9Ek.css">
+</head>
+<body>
+  <div class="studio-shell">
+    <header class="topbar">
+      <div>
+        <span class="eyebrow">Round 375 · 164th Curated Workbench · Domain 5: OpenTelemetry Cardinality Firewall &amp; Tail-Sampling FinOps</span>
+        <h1>企业 OpenTelemetry 指标基数爆炸治理、一致性哈希尾部采样与 FinOps 视频工作台</h1>
+        <p class="subtitle">面向 SRE 与云原生平台架构师（Grafana Alloy / Vector / Chronosphere / Datadog）：终结研发误将 user_id 或未归一化 URL 塞入指标 Label 引发 1,840万时间序列爆炸（月账单暴增至 $410k 且打崩 Prometheus），以及头部 1% 随机采样丢掉 99% 生产故障 Trace 的痛点，通过边缘 OTTL 基数防火墙（削减 -99.8% 序列）与 Trace-ID 一致性哈希尾部采样（100% 捕获 5xx/慢调用，年省 +$3.92M）。</p>
+      </div>
+      <div class="doc-links">
+        <a href="../../index.html">← 返回实验室首页</a>
+        <a href="../../research/opentelemetry-log-trace-metric-cardinality-explosion-sampling-video-faq.html">架构师选型 FAQ (ZH)</a>
+        <a href="../../research/opentelemetry-log-trace-metric-cardinality-explosion-sampling-video-faq.en.html">Architecture FAQ (EN)</a>
+        <a href="../../research/benchmarks/opentelemetry-log-trace-metric-cardinality-explosion-sampling-video/summary-visual.svg">7-Card Summary SVG</a>
+      </div>
+    </header>
+
+    <section class="control-bar" aria-label="OTel 遥测治理控制面">
+      <div class="control-group">
+        <label for="incident-select">企业可观测性账单爆炸与故障盲区场景（Telemetry Incident Profile）</label>
+        <select id="incident-select">
+          <option value="userid-url-metric-bomb">指标基数炸弹（误将 user_id 与原始订单 URL 写入 Metric Label · 1840万序列）</option>
+          <option value="ai-gateway-verbose-prompt-logs">AI 网关全量 Prompt/向量数组日志洪峰（48 TB/天 JSON 日志与脱敏）</option>
+          <option value="microservices-500-mesh-traces">500微服务核心交易链路（尾部采样 100% 锁定 HTTP 5xx 与 >800ms 慢调用）</option>
+        </select>
+      </div>
+      <div class="control-group">
+        <label>OpenTelemetry Collector 治理与采样架构（OTel Pipeline Strategy）</label>
+        <div class="seg-buttons" role="group">
+          <button type="button" class="seg-btn" data-strategy="unfiltered-ingest-all">1. 全量裸写 TSDB ($410k/月 · 1840万序列 OOM)</button>
+          <button type="button" class="seg-btn" data-strategy="naive-head-1pct-sampling">2. 入口 1% 随机头部采样 (漏掉 99% P0 故障!)</button>
+          <button type="button" class="seg-btn active" data-strategy="ottl-cardinality-firewall-tail-sampling">3. 边缘 OTTL 基数防火墙 + 一致性哈希尾部采样 (推荐)</button>
+        </div>
+      </div>
+      <div class="control-group">
+        <label for="span-slider">全集群日均原始 Span / 日志吞吐（Daily Raw Spans）：<span id="span-label">12.0B / day</span></label>
+        <input id="span-slider" type="range" min="4.0" max="36.0" step="2.0" value="12.0" />
+      </div>
+    </section>
+
+    <section class="kpi-strip" aria-label="核心时间序列基数与故障召回指标">
+      <div class="kpi-card">
+        <div class="kpi-label">活跃时间序列基数 (Active Series)</div>
+        <div class="kpi-val" id="kpi-series">38,400</div>
+        <div class="kpi-sub" id="kpi-series-sub">削减 -99.8% (对比爆炸基线 18,400,000)</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">HTTP 5xx 与 p99 慢调用召回率</div>
+        <div class="kpi-val" id="kpi-recall">100.0%</div>
+        <div class="kpi-sub" id="kpi-recall-sub">尾部采样 2.0s 窗口全量保留异常 (头部采样仅 1%)</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">健康成功请求采样压缩率</div>
+        <div class="kpi-val" id="kpi-compress">-86.4%</div>
+        <div class="kpi-sub" id="kpi-compress-sub">HTTP 200 正常链路仅保留 1.5% 代表性样本</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">月度可观测性账单 (Monthly Bill)</div>
+        <div class="kpi-val" id="kpi-bill">$54.0k / mo</div>
+        <div class="kpi-sub" id="kpi-bill-sub">对比未治理全量账单 $410.0k / mo (-86.8%)</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">年度可观测性 SaaS/存储净节省</div>
+        <div class="kpi-val" id="kpi-savings">+$3.92M / yr</div>
+        <div class="kpi-sub" id="kpi-savings-sub">CI/CD PR 自动附上 12s 基数爆炸拦截视频</div>
+      </div>
+    </section>
+
+    <main class="main-grid">
+      <section class="panel">
+        <h2>OTel Collector 边缘 OTTL 指标基数剪枝（18.4M→38.4k）与一致性哈希双层尾部采样（Tail-Based Sampling）沙盘</h2>
+        <canvas id="otel-canvas" width="880" height="390"></canvas>
+      </section>
+      <section class="panel">
+        <h2>OTTL (OpenTelemetry Transformation Language) 治理规则与 FinOps 审计表</h2>
+        <table class="rule-table">
+          <thead>
+            <tr>
+              <th>爆炸指标 / 链路字段</th>
+              <th>治理前原始规模</th>
+              <th>边缘 OTTL 转换与采样规则</th>
+              <th>治理后入库规模</th>
+              <th>FinOps 与 SRE 状态</th>
+            </tr>
+          </thead>
+          <tbody id="rule-tbody"></tbody>
+        </table>
+        <div class="code-box" id="otel-manifest-box"></div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>企业多租户 LoRA / ControlNet 毫秒级热切与统一分页显存池网关（S-LoRA / Punica · 第 135 项里程碑工作台！）</title>
+    <script type="module" crossorigin src="../../assets/loraAdapterHotSwapSLoraMultiTenantVramPagingGateway-Dawez1HN.js"></script>
+    <link rel="modulepreload" crossorigin href="../../assets/modulepreload-polyfill-B5Qt9EMX.js">
+    <link rel="stylesheet" crossorigin href="../../assets/loraAdapterHotSwapSLoraMultiTenantVramPagingGateway-3EoBYFx9.css">
+  </head>
+  <body>
+    <div class="studio-shell">
+      <header class="studio-header">
+        <div>
+          <span class="eyebrow">135TH WORKBENCH MILESTONE (3+7+25×5) · Domain 1 · S-LoRA &amp; Punica Multi-Tenant Hot-Swap Gateway</span>
+          <h1>企业多租户 LoRA 热切网关（第 135 项里程碑！）：S-LoRA 统一显存分页、32 品牌同批推理与 1.8ms 热加载工作台</h1>
+          <p class="subtitle">
+            全仓第 135 项（五大业务域各满 25 项）里程碑：终结“每品牌独立起卡浪费 91% 算力”与“原地 Merge/Unmerge 阻塞 4.8 秒且无法异构合批”痛点，采用 S-LoRA 2MB 统一显存分页池（0.0% 碎片）+ Triton BGMV 算子单次前向并发执行 32 个不同品牌 LoRA（3.94× 吞吐）+ PCIe Gen5 锁页预取（1.8ms 切换，省 88.4% 显卡 = 年省 +$3.84M）。
+          </p>
+        </div>
+        <div class="header-links">
+          <a class="btn-link" href="../../index.html">← 返回实验室门户</a>
+          <a class="btn-link" href="../../research/lora-adapter-hot-swap-s-lora-multi-tenant-vram-paging-gateway-faq.html">选型 FAQ (ZH)</a>
+          <a class="btn-link" href="../../research/lora-adapter-hot-swap-s-lora-multi-tenant-vram-paging-gateway-faq.en.html">Guide (EN)</a>
+        </div>
+      </header>
+
+      <section class="control-bar" aria-label="多租户 LoRA 网关控制台">
+        <div class="control-group">
+          <label for="scenario-select">1. 企业多租户 LoRA 生产场景 (Multi-Tenant Adapter Serving Scenario)</label>
+          <select id="scenario-select">
+            <option value="holding_agency_1200_brand_loras">4A 广告集团 1,200 个品牌专属 LoRA 共享池（Flux.1-dev · 第 135 项里程碑）</option>
+            <option value="ecommerce_sku_ip_adapter_burst">电商大促 5,000 商家商品 LoRA 毫秒级热切（Punica SGMV 48 租户同批）</option>
+            <option value="game_studio_character_controlnet_swarm">游戏与漫剧 640 角色身份 LoRA + 姿态 ControlNet 同批并发（Wan2.1-14B）</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label>2. 多租户适配器服务架构 (Multi-Tenant Adapter Execution Architecture)</label>
+          <div class="mode-toggle">
+            <button id="mode-slora" class="mode-btn active" type="button">
+              ✅ S-LoRA 统一显存分页 + Triton BGMV 异构同批
+            </button>
+            <button id="mode-naive" class="mode-btn" type="button">
+              ❌ 传统原地权重 Merge/Unmerge + 独占 GPU 实例
+            </button>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label for="tenant-slider">
+            3. 单次前向并发租户数 (Co-Batched Distinct LoRAs): <span id="tenant-label">32 Tenants</span>
+          </label>
+          <input id="tenant-slider" type="range" min="4" max="64" step="4" value="32" />
+        </div>
+      </section>
+
+      <section class="kpi-strip" aria-label="核心性能与成本指标">
+        <div class="kpi-card">
+          <div class="kpi-label">LoRA 跨租户热切延迟 (Adapter Hot-Swap Latency)</div>
+          <div id="kpi-swap" class="kpi-value">2.04 ms</div>
+          <div id="kpi-swap-sub" class="kpi-sub">PCIe Gen5 锁页内存异步预取 (零权重解耦阻塞)</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">异构 LoRA 同批吞吐倍率 (BGMV Batch Speedup)</div>
+          <div id="kpi-throughput" class="kpi-value">3.94×</div>
+          <div id="kpi-throughput-sub" class="kpi-sub">共享底座 Y=W0·X + 分路 dY=B_i(A_i·X_i)</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">HBM3 动态秩显存碎片率 (VRAM Fragmentation)</div>
+          <div id="kpi-frag" class="kpi-value">0.0%</div>
+          <div id="kpi-frag-sub" class="kpi-sub">r=16/32/64/128 统一 2MB 物理页表映射</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">集群显卡缩减与年省算力 (Annual GPU FinOps)</div>
+          <div id="kpi-finops" class="kpi-value">+$3,840,000/yr</div>
+          <div id="kpi-finops-sub" class="kpi-sub">1,200 品牌收敛至 8×H100 (省 88.4% 显卡)</div>
+        </div>
+      </section>
+
+      <section class="workspace-grid">
+        <div class="panel-card">
+          <div class="panel-title">
+            <h2>S-LoRA 统一显存页表（KV + 变长秩 LoRA）与 Triton BGMV 异构同批矩阵流向画布</h2>
+            <span id="stage-badge" class="status-pill good">135th Milestone · 0.0% VRAM Frag · 2.04ms Hot-Swap</span>
+          </div>
+          <canvas id="slora-canvas" width="820" height="390"></canvas>
+        </div>
+
+        <div class="panel-card">
+          <div class="panel-title">
+            <h2>同批多租户品牌 LoRA 分页槽位、秩规格与热切延迟明细表</h2>
+          </div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>同批槽位 (Slot)</th>
+                <th>租户品牌与 LoRA 秩</th>
+                <th>显存页数</th>
+                <th>热切延迟</th>
+                <th>算子执行路径</th>
+              </tr>
+            </thead>
+            <tbody id="slot-table-body"></tbody>
+          </table>
+
+          <div id="audit-summary" class="audit-box"></div>
+        </div>
+      </section>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self' data:;"
+    />
+    <title>万卡 AI 智算中心（GB200 NVL72 液冷×RDMA）：CDU 微堵降频、NCCL 慢节点秒级定位与 Goodput 视频工作台（第 105 项里程碑！） · Generative Visual Lab</title>
+    <script type="module" crossorigin src="../../assets/aiFactoryGb200LiquidCoolingRdmaStragglerVisualTwin-BZVC_O2v.js"></script>
+    <link rel="modulepreload" crossorigin href="../../assets/modulepreload-polyfill-B5Qt9EMX.js">
+    <link rel="stylesheet" crossorigin href="../../assets/agenticComfyuiWorkflowCompilerSelfHealingVlmCritic-D9hdwtWy.css">
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="hero-header">
+        <div class="hero-top-row">
+          <span class="domain-pill">DOMAIN 1 · ROUND 316 (105TH WORKBENCH MILESTONE!) · AI FACTORY GB200 NVL72 LIQUID-COOLING &amp; RDMA STRAGGLER VISUAL TWIN</span>
+          <nav class="Quick-links" aria-label="Documentation links">
+            <a href="../../index.html">← 返回门户 (Portal)</a>
+            <a href="../../research/ai-factory-gb200-liquid-cooling-rdma-straggler-visual-twin-faq.html">中文选型指南 FAQ</a>
+            <a href="../../research/ai-factory-gb200-liquid-cooling-rdma-straggler-visual-twin-faq.en.html">English Architecture FAQ</a>
+          </nav>
+        </div>
+        <h1>万卡 AI 智算中心（GB200 NVL72）：液冷 CDU 孪生、RDMA 慢卡秒级定位与 Goodput 视频工作台（第 105 项里程碑！）</h1>
+        <p class="hero-subtitle">
+          面向智算中心（AI Factory）总架构师、大模型基础设施（AI Infra）负责人与 <strong>Cloud &amp; AI Solution Architect</strong>（<strong>全仓第 105 座工作台里程碑：3 + 7 + 19×5 五大业务域完全均衡对齐！</strong>）：在运行 <strong>16,384 张 NVIDIA GB200 NVL72（单柜 132kW 液冷）</strong> 的同步预训练任务时，由于 `AllReduce` 集合通信遵循严格的<strong>“木桶效应”</strong>，哪怕全集群只有 <strong>1 张 GPU 因冷板微通道堵塞达到 88°C 降频，或 1 个 800G RoCEv2/IB 光模块脏污引发 PFC 暂停帧风暴</strong>，其余 <code>16,383 张</code> 正常 GPU 都会被迫空转等待，把集群有效算力率（Goodput）从 <code>96.8%</code> 拖垮至 <code>61.4%</code>！本工作台对比演示 <strong>“3D 机柜 CDU 液冷压差（ΔP）× Rail-Optimized RDMA 轨拓扑 × NCCL 非对称等待矩阵反演（1.4 秒精确定位慢节点）+ 0.3ms GEMM 金丝雀静默损坏（SDC）拦截与热备无缝接管 + Remotion 12 秒编译月省 $1.15M 算力汇报视频”</strong>。
+        </p>
+      </header>
+
+      <section class="controls-bar" aria-label="Interactive AI Factory GB200 NVL72 & RDMA Straggler Twin Controls">
+        <div class="control-block">
+          <span class="control-label">1. 四大万卡智算中心（AI Factory）典型慢节点与故障场景预设 (Cluster Bottleneck Cohort)</span>
+          <div class="button-group" id="preset-buttons">
+            <button type="button" class="preset-btn active" data-preset="gb200-nvl72-cdu-manifold-thermal-throttling">🌡️ GB200 NVL72 液冷冷板微堵降频 (88°C 慢卡 1.4s 定位+热备替换)</button>
+            <button type="button" class="preset-btn" data-preset="rocev2-ib-pfc-head-of-line-nccl-straggler">🌐 800G RoCEv2/IB 光模块脏污与 PFC 死锁风暴 (1.2s 端口隔离)</button>
+            <button type="button" class="preset-btn" data-preset="synchronous-checkpoint-lustre-weka-io-burst">💾 万亿 MoE 24TB Checkpoint 洪峰 (0.8s 异步内存快照 vs 210s 停顿)</button>
+            <button type="button" class="preset-btn" data-preset="silent-data-corruption-sdc-ecc-bad-node-evict">🛡️ 静默数据损坏 SDC / NaN 梯度污染 (0.3ms GEMM 金丝雀拦截)</button>
+          </div>
+        </div>
+
+        <div class="control-block">
+          <span class="control-label">2. 集群可观测性与慢节点自愈架构模式对比 (Observability &amp; Healing Mode)</span>
+          <div class="button-group" id="mode-buttons">
+            <button type="button" class="mode-btn active" data-mode="isometric-rack-cdu-nccl-ring-twin-remotion">
+              ✅ 3D 机柜 CDU 液冷×NCCL 等待矩阵反演 (1.4s 定界 · 96.8% Goodput · 月省 $1.15M)
+            </button>
+            <button type="button" class="mode-btn" data-mode="flat-prometheus-10k-time-series-spaghetti">
+              ❌ 传统 16,384 条扁平 Prometheus 折线图 (78m 人工排障 · 61.4% Goodput 空转)
+            </button>
+          </div>
+        </div>
+
+        <div class="control-block slider-block">
+          <label for="gpu-slider" class="control-label">
+            3. 智算中心同步训练集群规模 (Synchronous Training Cluster Scale): <strong id="gpu-readout">16,384 GPUs · Saves $1154k/Month</strong>
+          </label>
+          <div class="slider-row">
+            <input id="gpu-slider" type="range" min="4" max="32" step="4" value="16" />
+          </div>
+        </div>
+      </section>
+
+      <section class="kpi-grid" aria-label="Key Performance Indicators">
+        <article class="kpi-card">
+          <span class="kpi-tag">CLUSTER EFFECTIVE GOODPUT</span>
+          <strong class="kpi-val" id="kpi-goodput">96.8% (vs 61.4%)</strong>
+          <p class="kpi-desc" id="kpi-goodput-sub">消除“1 颗慢卡拖慢 16,383 张好卡”的木桶效应，提升 +35.4% 有效训练产出</p>
+        </article>
+        <article class="kpi-card">
+          <span class="kpi-tag">STRAGGLER PINPOINT MTTD</span>
+          <strong class="kpi-val" id="kpi-mttd">1.4 sec</strong>
+          <p class="kpi-desc" id="kpi-mttd-sub">通过 NCCL 非对称等待矩阵与 CDU 压差对齐，比 78 分钟人工排障快 3,340 倍</p>
+        </article>
+        <article class="kpi-card">
+          <span class="kpi-tag">RECOVERED GPU HOURS / MO</span>
+          <strong class="kpi-val" id="kpi-saved">412k GPUh ($1154k/mo)</strong>
+          <p class="kpi-desc" id="kpi-saved-sub">每月挽回 41.2 万个 Blackwell GPU 小时空转浪费，直接节省 $1.15M 算力成本</p>
+        </article>
+        <article class="kpi-card">
+          <span class="kpi-tag">LIQUID-COOLING PUE &amp; DENSITY</span>
+          <strong class="kpi-val" id="kpi-pue">PUE 1.09 · 132kW DLC</strong>
+          <p class="kpi-desc" id="kpi-pue-sub">45°C 温水直冷（DLC）机柜级流量与结温联动，Remotion 12s 生成运维周报视频</p>
+        </article>
+      </section>
+
+      <section class="stage-panel" aria-label="Interactive AI Factory GB200 NVL72 Liquid-Cooling & RDMA Straggler Canvas">
+        <div class="stage-header">
+          <div>
+            <span class="stage-badge" id="stage-badge">ROUND 316 (105TH WORKBENCH MILESTONE!) · GB200 NVL72 CDU TWIN + NCCL STRAGGLER PINPOINTER</span>
+            <h2 id="stage-title">NVIDIA GB200 NVL72 液冷机柜（132kW/柜）：CDU 二次侧微通道堵塞降频与 AllReduce 木桶效应诊断（第 105 项里程碑！）</h2>
+          </div>
+          <div class="stage-legend">
+            <span class="legend-item"><i class="dot dot-spot"></i>健康液冷机柜与满速 NVLink 5 托盘 (45°C)</span>
+            <span class="legend-item"><i class="dot dot-trie"></i>In-Flight 热备无缝接管机柜 (Hot-Spare Swap)</span>
+            <span class="legend-item"><i class="dot dot-err"></i>CDU 微堵降频 / 光模块丢包慢节点 (Straggler Rank)</span>
+          </div>
+        </div>
+
+        <div class="canvas-wrapper">
+          <canvas id="aifactory-canvas" width="1240" height="525"></canvas>
+        </div>
+
+        <div class="pipeline-strip">
+          <div class="pipe-step">
+            <span class="step-num">STAGE 01</span>
+            <strong>GB200 NVL72 液冷×NVLink 3D 映射</strong>
+            <p>将每柜 72 颗 GPU 的 DCGM 结温、功率与 CDU 分水歧管压差（ΔP）统一映射至三维机柜坐标</p>
+          </div>
+          <div class="pipe-step">
+            <span class="step-num">STAGE 02</span>
+            <strong>NCCL 等待矩阵慢卡秒级反演</strong>
+            <p>解析 AllReduce 集体通信非对称等待耗时，1.4 秒区分是计算降频还是 Leaf 交换机光模块 PFC 丢包</p>
+          </div>
+          <div class="pipe-step">
+            <span class="step-num">STAGE 03</span>
+            <strong>0.3ms 金丝雀 SDC 拦截与热替换</strong>
+            <p>拦截静默位翻转导致的 NaN 梯度污染，自动唤醒热备节点零中断接管并恢复 96.8% Goodput</p>
+          </div>
+          <div class="pipe-step">
+            <span class="step-num">STAGE 04</span>
+            <strong>Remotion 12s 智算中心高管周报</strong>
+            <p>将集群有效算力率、PUE 能耗与挽回的百万美元算力工时自动合成为 4K 基础设施复盘视频</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="deck-section" aria-label="7-Card 4:5 Benchmark Visual Report">
+        <div class="deck-header">
+          <span class="domain-pill">7-CARD 4:5 VISUAL BENCHMARK REPORT · ROUND 316 (105TH WORKBENCH MILESTONE!)</span>
+          <h2>万卡 AI 智算中心（GB200 NVL72）液冷与 RDMA 慢卡定位数字孪生 7 卡评测报告</h2>
+        </div>
+
+        <div class="cards-grid">
+          <!-- Card 1 -->
+          <article class="bcard" data-card="1">
+            <div class="bcard-top">
+              <span class="bcard-idx">1 / 7 · HANDS-ON · 105TH MILESTONE AI FACTORY</span>
+              <span class="bcard-pill">96.8% Goodput · 1.4s Pinpoint</span>
+            </div>
+            <h3>第 105 座工作台里程碑：1.4 秒揪出拖慢 16,383 张 GPU 的唯一“害群之马”，月省 $1.15M 算力</h3>
+            <p>
+              打通机房液冷 CDU 压差、800G RoCEv2/IB 轨拓扑与 NCCL 集合通信等待矩阵，终结万卡集群“一卡慢、万卡等”噩梦。
+            </p>
+            <div class="bcard-metrics">
+              <div><span>万卡集群有效算力率</span><strong>96.8% vs 61.4%</strong></div>
+              <div><span>慢节点定位耗时</span><strong>1.4s vs 78 min</strong></div>
+              <div><span>单集群月度挽回算力</span><strong>412k GPUh ($1.15M)</strong></div>
+            </div>
+          </article>
+
+          <!-- Card 2 -->
+          <article class="bcard" data-card="2">
+            <div class="bcard-top">
+              <span class="bcard-idx">2 / 7 · SCENARIO · THE 1-IN-16,384 STRAGGLER</span>
+              <span class="bcard-pill">choice · Act automatically</span>
+            </div>
+            <h3>单案深潜：为什么 Rack-14 Tray-07 冷板快接头滤网微堵，会让整座 $500M 智算中心损失 35% 算力？</h3>
+            <p>
+              同步数据并行（DP/TP/PP）每步迭代必须等待最慢 Rank 完成 AllReduce；单卡降频 35% 即等于全集群 16,384 张卡集体降速 35%。
+            </p>
+            <div class="bcard-bars">
+              <div class="bar-row"><span>CDU×NCCL 3D Twin</span><div class="bar-track"><div class="bar-fill" style="width:97%"></div></div><strong>96.8% Goodput (1.4s)</strong></div>
+              <div class="bar-row"><span>Manual CLI Triage</span><div class="bar-track"><div class="bar-fill warn" style="width:61%"></div></div><strong>61.4% Goodput (78m)</strong></div>
+              <div class="bar-row"><span>Unchecked SDC NaN</span><div class="bar-track"><div class="bar-fill danger" style="width:54%"></div></div><strong>54.0% Goodput (Crash)</strong></div>
+            </div>
+          </article>
+
+          <!-- Card 3 -->
+          <article class="bcard" data-card="3">
+            <div class="bcard-top">
+              <span class="bcard-idx">3 / 7 · WHAT I TESTED · 4 AI FACTORY FAILURES</span>
+              <span class="bcard-pill">16,384-GPU Matrix</span>
+            </div>
+            <h3>四大万卡集群高发瓶颈实测：NVL72 冷板微堵 / 800G 光模块 PFC 死锁 / Checkpoint 洪峰 / SDC 静默损坏</h3>
+            <table class="bcard-table">
+              <thead>
+                <tr><th>CLUSTER BOTTLENECK</th><th>GOODPUT</th><th>PINPOINT MTTD</th><th>SAVED GPUh / MO</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>GB200 NVL72 冷板微堵降频</td><td>96.8% (vs 61.4% ✕)</td><td>1.4s (vs 78m)</td><td>412k GPUh ($1.15M)</td></tr>
+                <tr><td>800G 光模块误码 PFC 风暴</td><td>96.2% (vs 58.5% ✕)</td><td>1.2s (vs 95m)</td><td>385k GPUh ($1.08M)</td></tr>
+                <tr><td>24TB MoE Checkpoint 洪峰</td><td>97.4% (vs 68.2% ✕)</td><td>1.1s (vs 64m)</td><td>340k GPUh ($0.95M)</td></tr>
+                <tr><td>HBM3e/ALU 静默损坏 (SDC)</td><td>97.1% (vs 54.0% ✕)</td><td>1.6s (vs 140m)</td><td>520k GPUh ($1.45M)</td></tr>
+              </tbody>
+            </table>
+          </article>
+
+          <!-- Card 4 -->
+          <article class="bcard" data-card="4">
+            <div class="bcard-top">
+              <span class="bcard-idx">4 / 7 · UNDER THE HOOD · NCCL WAIT MATRIX &amp; SDC</span>
+              <span class="bcard-pill">Telemetry Kernel</span>
+            </div>
+            <h3>NCCL 非对称 Barrier 等待时间反演与 0.3ms 确定性 GEMM 金丝雀校验</h3>
+            <pre class="bcard-code"><code>// NCCL Straggler Rank Pinpointer &amp; SDC Canary (Round 316):
+Wait_Skew[r] = Median_Over_Peers(T_enter_barrier[r] - T_enter_barrier[peer]);
+if (Wait_Skew[r] &gt; 8.5ms &amp;&amp; CDU_DeltaP[Rack(r)] &gt; 1.8_bar) Trigger_CDU_Boost_And_Swap(r);
+if (CRC32(FP8_GEMM_Canary(r)) !== GOLDEN_HASH) Cordone_SDC_Node_Before_AllReduce(r);</code></pre>
+            <p class="bcard-foot">通过“其他所有节点都在等谁进入 Barrier”而非仅看吞吐均值，可在单个 Step 内区分慢计算节点与慢网络链路。</p>
+          </article>
+
+          <!-- Card 5 -->
+          <article class="bcard" data-card="5">
+            <div class="bcard-top">
+              <span class="bcard-idx">5 / 7 · ROBUSTNESS CHECK · THERMAL &amp; FABRIC</span>
+              <span class="bcard-pill">Perturbation Test</span>
+            </div>
+            <h3>极端物理与网络耦合故障压测：冷却液气泡空化、光模块亚健康闪断与偶发位翻转</h3>
+            <table class="bcard-table">
+              <thead>
+                <tr><th>COUPLED FAULT</th><th>FLAT PROMETHEUS CHARTS</th><th>3D CDU×RDMA×NCCL TWIN</th><th>VERDICT</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>单托盘快接头微堵导致流量降 38%</td><td>被机柜平均进出水温度掩盖 ✕</td><td>托盘级 ΔP×结温联合告警 1.4s 标红 ✅</td><td>Zero Throttling</td></tr>
+                <tr><td>Leaf-09 单端口 FEC 纠错后仍丢包</td><td>误判为全体 512 张 GPU 变慢 ✕</td><td>Rail-Optimized 轨平面交集 1.2s 锁定端口 ✅</td><td>Auto BGP Drain</td></tr>
+                <tr><td>GPU-2104 FP8 张量核偶发位翻转</td><td>污染全局权重导致 12h 训练作废 ✕</td><td>0.3ms 金丝雀校验在梯度聚合前剔除 ✅</td><td>0 NaN Rollbacks</td></tr>
+              </tbody>
+            </table>
+          </article>
+
+          <!-- Card 6 -->
+          <article class="bcard" data-card="6">
+            <div class="bcard-top">
+              <span class="bcard-idx">6 / 7 · LATENCY &amp; TCO · 1.4S SELF-HEALING LOOP</span>
+              <span class="bcard-pill">$1.15M / Mo Saved</span>
+            </div>
+            <h3>从慢卡发生降频到热备节点零中断接管并生成 12 秒 Remotion 运维复盘视频全链路耗时</h3>
+            <div class="bcard-bars">
+              <div class="bar-row"><span>1. DCGM+CDU+RDMA Poll</span><div class="bar-track"><div class="bar-fill" style="width:14%"></div></div><strong>250 ms</strong></div>
+              <div class="bar-row"><span>2. NCCL Skew Inversion</span><div class="bar-track"><div class="bar-fill" style="width:12%"></div></div><strong>180 ms</strong></div>
+              <div class="bar-row"><span>3. Hot-Spare Rank Swap</span><div class="bar-track"><div class="bar-fill" style="width:24%"></div></div><strong>970 ms (1.4s Total)</strong></div>
+              <div class="bar-row"><span>4. Remotion NOC Video</span><div class="bar-track"><div class="bar-fill" style="width:50%"></div></div><strong>5.4s ($0.05/Clip)</strong></div>
+            </div>
+          </article>
+
+          <!-- Card 7 -->
+          <article class="bcard" data-card="7">
+            <div class="bcard-top">
+              <span class="bcard-idx">7 / 7 · MY TAKE · ARCHITECT VERDICT</span>
+              <span class="bcard-pill">105th Workbench Standard</span>
+            </div>
+            <h3>架构师选型总结：万卡智算中心必须打通“风火水电液冷物理层 + RDMA 网络层 + NCCL 通信层”</h3>
+            <div class="fit-grid">
+              <div class="fit-good">
+                <strong>✅ 强烈推荐采用本混合架构的场景 (Good fit)</strong>
+                <ul>
+                  <li>NVIDIA GB200 NVL72 / H200 / MI325X 千卡至十万卡液冷智算中心运维与客户 SLA 大屏</li>
+                  <li>大模型预训练与强化学习（RLHF）长周期任务的慢节点（Straggler）与 SDC 自动剔除</li>
+                  <li>向算力中心投资方与 AI VP 自动生成周度有效算力率（Goodput）与 PUE 视频简报</li>
+                </ul>
+              </div>
+              <div class="fit-bad">
+                <strong>⛔ 严禁直接采用的场景 (Not for)</strong>
+                <ul>
+                  <li>严禁将机房动环液冷监控（BMS/CDU）与 GPU 集群调度器（Slurm/K8s）物理隔离互不通信</li>
+                  <li>严禁在万卡同步训练中使用同步阻塞式落盘或用未剪枝折线图人工排查慢卡</li>
+                </ul>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+    </div>
+  </body>
+</html>

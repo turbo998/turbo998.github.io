@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>企业支付页 PCI-DSS v4.0.1（Req 6.4.3 / 11.6.1）客户端脚本防篡改、Magecart 侧录阻断与 QSA 审计视频工作台</title>
+  <script type="module" crossorigin src="../../assets/pciDssV4PaymentPageClientSideScriptSriCspTamperVideo-2QM6F6ql.js"></script>
+  <link rel="modulepreload" crossorigin href="../../assets/modulepreload-polyfill-B5Qt9EMX.js">
+  <link rel="stylesheet" crossorigin href="../../assets/pciDssV4PaymentPageClientSideScriptSriCspTamperVideo-C6m2BjQL.css">
+</head>
+<body>
+  <div class="studio-shell">
+    <header class="topbar">
+      <div>
+        <span class="eyebrow">Round 365 · 154th Curated Workbench · Domain 5: PCI-DSS v4.0.1 Req 6.4.3 &amp; 11.6.1 Payment Security</span>
+        <h1>企业收银台 PCI-DSS v4.0.1 脚本防篡改、Magecart 表单侧录 18ms 阻断与 QSA 审计视频工作台</h1>
+        <p class="subtitle">面向全球零售、航司与 SaaS 收银台（Cloudflare Page Shield / Stripe / Adyen）：终结第三方客服/统计脚本被供应链投毒植入 Magecart 窃取 42万张信用卡（罚金 $18.4M）及静态 SRI 哈希锁死导致 38.6% 第三方脚本热更新崩溃，采用边缘代理 SRI 动态签发 + 18ms DOM/sendBeacon 行为防火墙 + Remotion 12s QSA 审计视频。</p>
+      </div>
+      <div class="doc-links">
+        <a href="../../index.html">← 返回实验室首页</a>
+        <a href="../../research/pci-dss-v4-payment-page-client-side-script-sri-csp-tamper-video-faq.html">架构师选型 FAQ (ZH)</a>
+        <a href="../../research/pci-dss-v4-payment-page-client-side-script-sri-csp-tamper-video-faq.en.html">Architecture FAQ (EN)</a>
+        <a href="../../research/benchmarks/pci-dss-v4-payment-page-client-side-script-sri-csp-tamper-video/summary-visual.svg">7-Card Summary SVG</a>
+      </div>
+    </header>
+
+    <section class="control-bar" aria-label="支付页脚本防护控制面">
+      <div class="control-group">
+        <label for="preset-select">企业收银台与支付表单场景（Payment Page Profile）</label>
+        <select id="preset-select">
+          <option value="global-retail-checkout">全球奢侈品与跨境零售收银台（38个第三方营销/风控脚本 · PCI v4.0.1）</option>
+          <option value="airline-ota-booking">国际航司与 OTA 机票支付页（44个归因/3DS 脚本 · 防浮层劫持）</option>
+          <option value="b2b-saas-billing-portal">企业级 SaaS 订阅与账单中心（24个客服/分析脚本 · SAQ A-EP）</option>
+        </select>
+      </div>
+      <div class="control-group">
+        <label>PCI-DSS v4.0.1 Req 6.4.3 / 11.6.1 防护架构（Client-Side Defense）</label>
+        <div class="seg-buttons" role="group">
+          <button type="button" class="seg-btn" data-strategy="unmonitored-gtm-tags">1. GTM 裸奔加载 (7条侧录链 / 4.2天盲区)</button>
+          <button type="button" class="seg-btn" data-strategy="naive-static-sri-only">2. 仅配静态 SRI 哈希 (38.6% 供应商更新报错)</button>
+          <button type="button" class="seg-btn active" data-strategy="csp-edge-sri-behavioral-proxy">3. 边缘代理 SRI + 18ms DOM/Beacon 防火墙 (推荐)</button>
+        </div>
+      </div>
+      <div class="control-group">
+        <label for="script-slider">支付页挂载第三方脚本总数（Third-Party JS Tags）：<span id="script-label">38 个</span></label>
+        <input id="script-slider" type="range" min="12" max="60" step="2" value="38" />
+      </div>
+    </section>
+
+    <section class="kpi-strip" aria-label="核心 PCI-DSS v4.0.1 合规与风控指标">
+      <div class="kpi-card">
+        <div class="kpi-label">Magecart 卡号侧录攻击链</div>
+        <div class="kpi-val" id="kpi-skimmers">0 条</div>
+        <div class="kpi-sub" id="kpi-skimmers-sub">对比裸奔收银台 7 条第四方注入链</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">篡改检测与阻断延迟 (Req 11.6.1)</div>
+        <div class="kpi-val" id="kpi-latency">18 ms</div>
+        <div class="kpi-sub" id="kpi-latency-sub">实时拦截非法 sendBeacon / WebSocket 外发</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">第三方脚本日常更新故障率</div>
+        <div class="kpi-val" id="kpi-broken">0.0%</div>
+        <div class="kpi-sub" id="kpi-broken-sub">边缘代理 AST 校验后自动重签 SRI 哈希</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">QSA 审计台账通过率 (Req 6.4.3)</div>
+        <div class="kpi-val" id="kpi-qsa">100.0%</div>
+        <div class="kpi-sub" id="kpi-qsa-sub">全量脚本业务必要性签名 + 12s 证据视频</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">年度卡号泄露罚金规避净额</div>
+        <div class="kpi-val" id="kpi-savings">+$18.40M</div>
+        <div class="kpi-sub" id="kpi-savings-sub">避免 42万张 PAN/CVV 泄露与卡组吊销</div>
+      </div>
+    </section>
+
+    <main class="main-grid">
+      <section class="panel">
+        <h2>收银台跨源安全 Iframe 隔离、边缘 AST/SRI 代理签发与 18ms DOM/Beacon 侧录阻断拓扑图</h2>
+        <canvas id="pci-canvas" width="880" height="390"></canvas>
+      </section>
+      <section class="panel">
+        <h2>PCI-DSS Req 6.4.3 脚本业务必要性台账与 Req 11.6.1 实时拦截审计流</h2>
+        <table class="script-table">
+          <thead>
+            <tr>
+              <th>脚本资产与供应商域</th>
+              <th>Req 6.4.3 授权台账</th>
+              <th>读取卡号 DOM</th>
+              <th>Req 11.6.1 运行时动作</th>
+            </tr>
+          </thead>
+          <tbody id="script-tbody"></tbody>
+        </table>
+        <div class="code-box" id="qsa-manifest-box"></div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

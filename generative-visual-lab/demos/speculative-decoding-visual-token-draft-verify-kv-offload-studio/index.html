@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>自回归视觉与多模态 Token 投机解码（第 125 = 5³ 项里程碑工作台！）：EAGLE-2 空间树草稿验证与 RDMA KV-Cache 池化工作台</title>
+  <script type="module" crossorigin src="../../assets/speculativeDecodingVisualTokenDraftVerifyKvOffload-CBrYrgu1.js"></script>
+  <link rel="modulepreload" crossorigin href="../../assets/modulepreload-polyfill-B5Qt9EMX.js">
+  <link rel="stylesheet" crossorigin href="../../assets/speculativeDecodingVisualTokenDraftVerifyKvOffload-1vMeK_-b.css">
+</head>
+<body>
+  <div class="studio-shell">
+    <header class="topbar">
+      <div>
+        <span class="eyebrow">Domain 1 · 125th (5³) Milestone Workbench! · EAGLE-2 Visual Draft Tree (3.85× Lossless) + RDMA KV Pool (-64.2% HBM)</span>
+        <h1>多模态与视觉 Token 投机解码（第 125 = 5³ 项里程碑！）：树状草稿验证与 KV 卸载工作台</h1>
+        <p class="subtitle">对比“EAGLE-2 0.8B 空间树投机草稿 + 72B 目标模型单次并行拒绝采样（KL=0.00 数学无损，3.85× 提速）+ 400G RoCEv2 KV 池化卸载（HBM 省 64.2%）”与“逐 Token 串行解码显存带宽瓶颈基线”</p>
+      </div>
+      <div class="top-links">
+        <a class="pill-link" href="../../index.html">← 返回实验室首页</a>
+        <a class="pill-link" href="../../research/speculative-decoding-visual-token-draft-verify-kv-offload-faq.html">架构选型 FAQ (ZH)</a>
+        <a class="pill-link" href="../../research/speculative-decoding-visual-token-draft-verify-kv-offload-faq.en.html">Decision Guide (EN)</a>
+      </div>
+    </header>
+
+    <section class="control-bar" aria-label="视觉与多模态投机解码控制栏">
+      <div class="control-group">
+        <label for="scenario-select">自回归视觉生成与长视频多模态负载 (Multimodal Workload)</label>
+        <select id="scenario-select">
+          <option value="autoregressive_4k_image_patch_gen">自回归 4K 商业视觉 Patch 生成（4,096 视觉 Token · 空间树投机 3.85×）</option>
+          <option value="long_video_128k_vlm_qa_agent">1小时长视频 128K 上下文多轮问答（帧间静默 Patch 驱逐 + RDMA KV 池）</option>
+          <option value="computer_use_gui_action_loop">Computer-Use 桌面 GUI 智能体（92% 静态屏幕瓦片复用 + 动作 AST 投机）</option>
+        </select>
+      </div>
+
+      <div class="control-group">
+        <label>解码引擎与 KV-Cache 内存架构 (Decoding &amp; KV Memory Engine)</label>
+        <div class="mode-buttons">
+          <button id="mode-spec" class="mode-btn active" type="button">
+            EAGLE-2 树状投机验证 (KL=0.00) + 静默 Patch 驱逐 + RDMA KV 池 (推荐)
+          </button>
+          <button id="mode-naive" class="mode-btn naive" type="button">
+            传统逐 Token 串行自回归解码 + 全量帧驻留 HBM3 (显存带宽卡死基线)
+          </button>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <label for="depth-slider">投机草稿树前瞻深度 (Draft Tree Lookahead Depth k): <span id="depth-label">k = 6</span></label>
+        <input id="depth-slider" type="range" min="2" max="8" step="1" value="6" />
+      </div>
+    </section>
+
+    <section class="kpi-strip" aria-label="核心投机解码与显存指标">
+      <div class="kpi-card">
+        <div class="kpi-label">端到端解码无损加速比 (Lossless Speedup)</div>
+        <div id="kpi-speedup" class="kpi-value">3.85×</div>
+        <div id="kpi-speedup-sub" class="kpi-sub">单步验证接收 τ=4.12 Tokens · KL 散度漂移 = 0.00</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">全序列生成总耗时 (End-to-End Decode Time)</div>
+        <div id="kpi-latency" class="kpi-value">12.2 s</div>
+        <div id="kpi-latency-sub" class="kpi-sub">对比传统串行自回归 47.1 秒直降 -74.1%</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">H100 HBM3 KV 显存节省率 (HBM KV Saved)</div>
+        <div id="kpi-kv" class="kpi-value">-64.2%</div>
+        <div id="kpi-kv-sub" class="kpi-sub">静态背景 Patch 合并 + 400G RoCEv2 CXL/DRAM 池</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">单次生成 GPU 算力账单降幅 (FinOps Saved)</div>
+        <div id="kpi-cost" class="kpi-value">-71.4%</div>
+        <div id="kpi-cost-sub" class="kpi-sub">第 125 (5³) 项里程碑 · 单卡并发会话提升 4.6×</div>
+      </div>
+    </section>
+
+    <main class="workbench-grid">
+      <section class="panel">
+        <div class="panel-header">
+          <h2 class="panel-title">EAGLE-2 空间树投机草稿一趟并行验证 (τ=4.12 Tokens/Step) + 400G RoCEv2 分离式 KV 池画布</h2>
+          <span id="stage-badge" class="badge">125th (5³) Milestone · 3.85× Lossless Speedup · KL = 0.00</span>
+        </div>
+        <canvas id="spec-canvas" width="820" height="360"></canvas>
+      </section>
+
+      <section class="panel">
+        <div class="panel-header">
+          <h2 class="panel-title">分阶段草稿树接收长度 (τ)、HBM3 KV 占用与无损拒绝采样状态表</h2>
+          <span class="badge">EXACT REJECTION SAMPLING</span>
+        </div>
+        <table class="data-table" aria-label="视觉投机解码阶段统计表">
+          <thead>
+            <tr>
+              <th>视觉/多模态解码阶段</th>
+              <th>树深 k / 平均接收 τ</th>
+              <th>HBM3 KV 占用</th>
+              <th>数学无损与缓存裁决</th>
+            </tr>
+          </thead>
+          <tbody id="stage-table-body"></tbody>
+        </table>
+
+        <div class="panel-header">
+          <h3 class="panel-title">EAGLE-2 树掩码注意力、无损拒绝采样与 LMCache RDMA 卸载契约</h3>
+        </div>
+        <pre id="protocol-code" class="code-box"></pre>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

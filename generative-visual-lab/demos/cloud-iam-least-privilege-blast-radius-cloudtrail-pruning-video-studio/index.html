@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>企业多云 IAM 最小权限剪枝、PassRole 隐蔽提权链阻断与零断流策略工作台（AWS IAM Access Analyzer / Wiz / Entra）：CloudTrail ∪ 代码 AST 工作台</title>
+    <script type="module" crossorigin src="../../assets/cloudIamLeastPrivilegeBlastRadiusCloudtrailPruningVideo-DjXxvsnH.js"></script>
+    <link rel="modulepreload" crossorigin href="../../assets/modulepreload-polyfill-B5Qt9EMX.js">
+    <link rel="stylesheet" crossorigin href="../../assets/cloudIamLeastPrivilegeBlastRadiusCloudtrailPruningVideo-BBAY9NEE.css">
+  </head>
+  <body>
+    <div class="studio-shell">
+      <header class="studio-header">
+        <div>
+          <span class="eyebrow">Domain 5 · Workbench #149 · Cloud IAM Least-Privilege Pruning, PassRole Escalation Graph &amp; CISO Video Studio</span>
+          <h1>多云 IAM 最小权限剪枝与提权链阻断（AWS / GCP / Wiz）：CloudTrail ∪ 代码 AST 零断流工作台</h1>
+          <p class="subtitle">
+            终结云环境 94.6% 冗余通配符权限（Action: "*"）遗留 iam:PassRole + Lambda 二跳夺取 Root 密钥隐患，以及仅凭短期 CloudTrail 日志盲目删权误杀季度容灾恢复脚本（AccessDenied 事故）：采用“多跳提权攻击图剪枝 + 90天 CloudTrail 实测行为 ∪ 静态代码 SDK AST 调用并集（保留低频容灾权限，0 误杀）+ 14天非阻塞影子策略预演 + Remotion 12s PR 策略评审视频”。
+          </p>
+        </div>
+        <div class="header-links">
+          <a class="btn-link" href="../../index.html">← 返回实验室门户</a>
+          <a class="btn-link" href="../../research/cloud-iam-least-privilege-blast-radius-cloudtrail-pruning-video-faq.html">选型 FAQ (ZH)</a>
+          <a class="btn-link" href="../../research/cloud-iam-least-privilege-blast-radius-cloudtrail-pruning-video-faq.en.html">Guide (EN)</a>
+        </div>
+      </header>
+
+      <section class="control-bar" aria-label="云端 IAM 最小权限控制台">
+        <div class="control-group">
+          <label for="scenario-select">1. 多云身份与智能体权限治理场景 (Cloud IAM &amp; Agent Governance Scenario)</label>
+          <select id="scenario-select">
+            <option value="aws_passrole_lambda_privilege_escalation">云端 CI/CD 角色 iam:PassRole + Lambda 隐蔽提权链剪枝与季度容灾 AST 保护</option>
+            <option value="cross_account_sts_assumerole_k8s_irsa">跨账号 sts:AssumeRole 混淆代理人（Confused Deputy）信任链收紧与 ExternalId 锁</option>
+            <option value="ai_agent_mcp_tool_scoped_session_policy">自主 AI 智能体（Agent / MCP Server）动态会话策略（Session Policy）沙箱降权</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label>2. 权限收敛与防误杀验证架构 (Privilege Pruning &amp; Safety Architecture)</label>
+          <div class="mode-toggle">
+            <button id="mode-union" class="mode-btn active" type="button">
+              ✅ 90d CloudTrail ∪ 代码 AST 并集 + 提权图阻断
+            </button>
+            <button id="mode-naive" class="mode-btn" type="button">
+              ❌ 放任 Action:"*" 通配符 / 仅看 14天日志盲目删权
+            </button>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label for="canary-slider">
+            3. 非阻塞影子策略预演天数 (Shadow Policy Canary Days): <span id="canary-label">14 Days</span>
+          </label>
+          <input id="canary-slider" type="range" min="1" max="30" step="1" value="14" />
+        </div>
+      </section>
+
+      <section class="kpi-strip" aria-label="核心权限收敛指标">
+        <div class="kpi-card">
+          <div class="kpi-label">过度授权冗余剥离率 (Permissions Creep Pruned)</div>
+          <div id="kpi-pruned" class="kpi-value">-94.6%</div>
+          <div id="kpi-pruned-sub" class="kpi-sub">14,200 项通配符权限收敛至 38 项精确 ARN 动作</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">多跳提权路径残留 (Toxic Escalation Paths)</div>
+          <div id="kpi-toxic" class="kpi-value">0 Paths</div>
+          <div id="kpi-toxic-sub" class="kpi-sub">100% 斩断 iam:PassRole + Lambda / EC2 提权跳板</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">低频季度/容灾脚本误杀数 (Broken DR/Cron Jobs)</div>
+          <div id="kpi-broken" class="kpi-value">0 Outages</div>
+          <div id="kpi-broken-sub" class="kpi-sub">静态 boto3/Terraform AST 自动豁免 s3:RestoreObject</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">避免越权泄露与断流损失 (Blast Radius Avoided)</div>
+          <div id="kpi-roi" class="kpi-value">+$4,200,000</div>
+          <div id="kpi-roi-sub" class="kpi-sub">Remotion 12s Terraform IAM PR 审计视频 ($0.02)</div>
+        </div>
+      </section>
+
+      <section class="workspace-grid">
+        <div class="panel-card">
+          <div class="panel-title">
+            <h2>IAM 多跳隐蔽提权攻击图（PassRole → Admin）、CloudTrail ∪ 代码 AST 并集与影子预演画布</h2>
+            <span id="stage-badge" class="status-pill good">Zero-Outage Least Privilege · -94.6% Creep · 0 Escalation Paths</span>
+          </div>
+          <canvas id="iam-canvas" width="820" height="390"></canvas>
+        </div>
+
+        <div class="panel-card">
+          <div class="panel-title">
+            <h2>IAM 角色 / AI 智能体权限压缩比、提权跳板与低频容灾 AST 保护明细表</h2>
+          </div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>身份主体 (Principal)</th>
+                <th>授权数 (前 → 后)</th>
+                <th>提权路径 / 低频容灾 AST 依赖</th>
+                <th>治理状态</th>
+              </tr>
+            </thead>
+            <tbody id="iam-table-body"></tbody>
+          </table>
+
+          <div id="audit-summary" class="audit-box"></div>
+        </div>
+      </section>
+    </div>
+  </body>
+</html>

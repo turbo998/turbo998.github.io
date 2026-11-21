@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>企业 4K 长视频 DiT 分布式序列并行路由器（USP = 机内 Ulysses × 机间 Ring + PipeFusion · 第 140 项里程碑工作台！）</title>
+    <script type="module" crossorigin src="../../assets/videoDitUspUlyssesRingSequenceParallel4kClusterRouter-DF0dimNp.js"></script>
+    <link rel="modulepreload" crossorigin href="../../assets/modulepreload-polyfill-B5Qt9EMX.js">
+    <link rel="stylesheet" crossorigin href="../../assets/videoDitUspUlyssesRingSequenceParallel4kClusterRouter-DtG3dsNO.css">
+  </head>
+  <body>
+    <div class="studio-shell">
+      <header class="studio-header">
+        <div>
+          <span class="eyebrow">140TH WORKBENCH MILESTONE (3+7+26×5)! · Domain 1 · 2D Unified Sequence Parallelism (USP) Video DiT Router</span>
+          <h1>4K 长视频 DiT 序列并行路由器（第 140 项里程碑！）：机内 Ulysses × 机间 Ring 混合并行与 PipeFusion 工作台</h1>
+          <p class="subtitle">
+            礼赞全仓达成 140（3+7+26×5）座工作台历史性里程碑：终结 16万–24万 Token 4K 视频大模型（Wan2.1-14B / HunyuanVideo-13B）单卡 23.6 分钟龟速、纯 Ulysses 受限于注意力头数且跨机 All-to-All 拥塞（46.8% 通信空泡）的痛点，将 All-to-All 锁死在机内 900GB/s NVSwitch（U=8），机间 400G RoCEv2 采用双缓冲 P2P Ring 重叠计算（R=4），实现 89.6% MFU 与 28.4 秒交互级 4K 成片（年省 +$2.94M）。
+          </p>
+        </div>
+        <div class="header-links">
+          <a class="btn-link" href="../../index.html">← 返回实验室门户</a>
+          <a class="btn-link" href="../../research/video-dit-usp-ulysses-ring-sequence-parallel-4k-cluster-router-faq.html">选型 FAQ (ZH)</a>
+          <a class="btn-link" href="../../research/video-dit-usp-ulysses-ring-sequence-parallel-4k-cluster-router-faq.en.html">Guide (EN)</a>
+        </div>
+      </header>
+
+      <section class="control-bar" aria-label="分布式序列并行控制台">
+        <div class="control-group">
+          <label for="scenario-select">1. 4K 视频 DiT 模型与集群规模 (Video DiT &amp; Cluster Topology Scenario)</label>
+          <select id="scenario-select">
+            <option value="wan21_14b_4k_160k_tokens_32gpu">Wan2.1-14B 15秒 4K 广告主片（160k Tokens · 32×H100 U8×R4 · 第 140 项里程碑）</option>
+            <option value="hunyuan_13b_1080p_multi_shot_240k">HunyuanVideo-13B 24万 Token 一镜到底预演（突破 32 头数限制 · 零 OOM）</option>
+            <option value="world_sim_interactive_stream_64gpu">64卡 18B 4D 世界模型实时流式生成（8 节点 U8×R8 线性扩展）</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label>2. 分布式序列并行通信拓扑 (Distributed Sequence-Parallel Topology)</label>
+          <div class="mode-toggle">
+            <button id="mode-usp" class="mode-btn active" type="button">
+              ✅ 2D USP (机内 NVLink Ulysses × 机间 RoCE Ring + PipeFusion)
+            </button>
+            <button id="mode-naive" class="mode-btn" type="button">
+              ❌ 1D 跨机 All-to-All / 传统张量并行 (TP 通信阻塞)
+            </button>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label for="token-slider">
+            3. 三维时空序列 Token 长度 (3D Spatiotemporal Tokens): <span id="token-label">160k Tokens</span>
+          </label>
+          <input id="token-slider" type="range" min="64" max="256" step="16" value="160" />
+        </div>
+      </section>
+
+      <section class="kpi-strip" aria-label="核心并行加速指标">
+        <div class="kpi-card">
+          <div class="kpi-label">50 步端到端 4K 生成耗时 (End-to-End 4K Latency)</div>
+          <div id="kpi-latency" class="kpi-value">28.4 s</div>
+          <div id="kpi-latency-sub" class="kpi-sub">相比单卡 1,420s 提速 50× · 相比 1D 并行快 4.18×</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">集群算力有效利用率 (Cluster MFU)</div>
+          <div id="kpi-mfu" class="kpi-value">89.6%</div>
+          <div id="kpi-mfu-sub" class="kpi-sub">FlashAttention-3 与 P2P Ring 91.8% 重叠</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">跨机网络通信空泡率 (Communication Bubble)</div>
+          <div id="kpi-bubble" class="kpi-value">4.2%</div>
+          <div id="kpi-bubble-sub" class="kpi-sub">All-to-All 100% 限制在机内 900GB/s NVSwitch</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">集群年化算力节省 (Annual Cluster FinOps)</div>
+          <div id="kpi-roi" class="kpi-value">+$2,940,000/yr</div>
+          <div id="kpi-roi-sub" class="kpi-sub">第 140 项工作台里程碑 (3+7+26×5)</div>
+        </div>
+      </section>
+
+      <section class="workspace-grid">
+        <div class="panel-card">
+          <div class="panel-title">
+            <h2>2D USP 进程网格（机内 8-Way Ulysses NVSwitch × 机间 4-Way Ring RoCEv2）与 PipeFusion 流水画布</h2>
+            <span id="stage-badge" class="status-pill good">140th Milestone · 89.6% MFU · 28.4s 4K DiT</span>
+          </div>
+          <canvas id="usp-canvas" width="820" height="390"></canvas>
+        </div>
+
+        <div class="panel-card">
+          <div class="panel-title">
+            <h2>分层通信原语、硬件互连带宽匹配与通信空泡对比表</h2>
+          </div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>并行层级 (Stage)</th>
+                <th>物理互连与通信原语</th>
+                <th>通信空泡</th>
+                <th>架构师设计要点</th>
+              </tr>
+            </thead>
+            <tbody id="usp-table-body"></tbody>
+          </table>
+
+          <div id="audit-summary" class="audit-box"></div>
+        </div>
+      </section>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>企业视频 DiT 免训练时间步缓存与首块残差跳步网关（TeaCache + PAB · 第 155 项里程碑工作台！）</title>
+  <script type="module" crossorigin src="../../assets/videoDitTeacacheFirstBlockResidualStepSkippingFinops-BeIkDniY.js"></script>
+  <link rel="modulepreload" crossorigin href="../../assets/modulepreload-polyfill-B5Qt9EMX.js">
+  <link rel="stylesheet" crossorigin href="../../assets/videoDitTeacacheFirstBlockResidualStepSkippingFinops-C37JEAOH.css">
+</head>
+<body>
+  <div class="studio-shell">
+    <header class="topbar">
+      <div>
+        <span class="eyebrow">Round 366 · 🏆 155th Workbench Milestone (3+7+29×5) · Domain 1: Video DiT TeaCache &amp; PAB Gateway</span>
+        <h1>视频 DiT 免训练时间步缓存与首块残差跳步网关（TeaCache + PAB · 第 155 项里程碑！）</h1>
+        <p class="subtitle">礼赞全仓达成 155（3+7+29×5）座工作台里程碑：终结 Wan2.1-14B / HunyuanVideo 50步全算耗费 148秒，以及等距盲跳步破坏前6步构图与后6步纹理（VBench 暴跌至 68.4%）的痛点，仅探针测量第 1 层 DiT 调制残差 L1 范数并结合 U型首尾护栏与金字塔注意力广播（PAB），实现 3.12× 零训练提速（148s→47.4s，VBench 84.1%，年省 +$1.92M）。</p>
+      </div>
+      <div class="doc-links">
+        <a href="../../index.html">← 返回实验室首页</a>
+        <a href="../../research/video-dit-teacache-first-block-residual-step-skipping-finops-faq.html">架构师选型 FAQ (ZH)</a>
+        <a href="../../research/video-dit-teacache-first-block-residual-step-skipping-finops-faq.en.html">Architecture FAQ (EN)</a>
+        <a href="../../research/benchmarks/video-dit-teacache-first-block-residual-step-skipping-finops/summary-visual.svg">7-Card Summary SVG</a>
+      </div>
+    </header>
+
+    <section class="control-bar" aria-label="TeaCache 跳步网关控制面">
+      <div class="control-group">
+        <label for="model-select">目标视频 / 图像 Diffusion Transformer 模型（DiT Backbone）</label>
+        <select id="model-select">
+          <option value="wan21-14b-1080p">Wan2.1-14B 商业短视频（5秒 1080p · 42层 DiT · 120k Token）</option>
+          <option value="hunyuan-video-13b-720p">HunyuanVideo-13B 电影长镜（5秒 720p · 60层双流+单流 DiT）</option>
+          <option value="flux1-dev-4k-poster">Flux.1-Dev 4K 电商主图批处理（38层 MM-DiT · 16,384 Token）</option>
+        </select>
+      </div>
+      <div class="control-group">
+        <label>50步去噪时间步缓存与跳步架构（Timestep Caching Strategy）</label>
+        <div class="seg-buttons" role="group">
+          <button type="button" class="seg-btn" data-strategy="full-50-step-baseline">1. 50步全量计算基线 (148.0s · 冗余重算)</button>
+          <button type="button" class="seg-btn" data-strategy="uniform-step-skip">2. 等距均匀跳步 Δt=3 (肢体崩坏 · 68.4%)</button>
+          <button type="button" class="seg-btn active" data-strategy="teacache-u-shape-pab-hybrid">3. TeaCache 首块残差门禁 + U型护栏 + PAB (推荐)</button>
+        </div>
+      </div>
+      <div class="control-group">
+        <label for="thresh-slider">TeaCache 累积多项式残差阈值（δ_thresh）：<span id="thresh-label">0.14</span></label>
+        <input id="thresh-slider" type="range" min="0.08" max="0.22" step="0.02" value="0.14" />
+      </div>
+    </section>
+
+    <section class="kpi-strip" aria-label="核心加速比与画质保真指标">
+      <div class="kpi-card">
+        <div class="kpi-label">端到端推理加速比 (Speedup)</div>
+        <div class="kpi-val" id="kpi-speedup">3.12×</div>
+        <div class="kpi-sub" id="kpi-speedup-sub">50步仅执行 18 步全算 (跳过 32 步×41层)</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">单支视频生成延迟 (H100 Latency)</div>
+        <div class="kpi-val" id="kpi-latency">47.4 s</div>
+        <div class="kpi-sub" id="kpi-latency-sub">对比 50步全量基线 148.0 s (-68.0%)</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">VBench 综合画质与运动得分</div>
+        <div class="kpi-val" id="kpi-vbench">84.1%</div>
+        <div class="kpi-sub" id="kpi-vbench-sub">对齐 50步无损基线 84.4% (均匀跳步仅 68.4%)</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">感知特征漂移 (LPIPS Drift)</div>
+        <div class="kpi-val" id="kpi-lpips">0.038</div>
+        <div class="kpi-sub" id="kpi-lpips-sub">U型首6步+尾6步全算锁死构图与细节</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">512卡 H100 集群年度净省算力</div>
+        <div class="kpi-val" id="kpi-savings">+$1.92M / yr</div>
+        <div class="kpi-sub" id="kpi-savings-sub">零蒸馏训练开销 · 即插即用算子网关</div>
+      </div>
+    </section>
+
+    <main class="main-grid">
+      <section class="panel">
+        <h2>50步去噪轨迹 U型变化率曲线（U-Shaped Residual Curve）与 TeaCache 42层 DiT 首块门禁沙盘</h2>
+        <canvas id="teacache-canvas" width="880" height="390"></canvas>
+      </section>
+      <section class="panel">
+        <h2>去噪三阶段首块调制残差（Rel-L1）与金字塔注意力广播（PAB）矩阵</h2>
+        <table class="phase-table">
+          <thead>
+            <tr>
+              <th>去噪演进阶段与步数区间</th>
+              <th>Block-0 Rel-L1</th>
+              <th>全算步数占比</th>
+              <th>网关调度动作</th>
+            </tr>
+          </thead>
+          <tbody id="phase-tbody"></tbody>
+        </table>
+        <div class="code-box" id="teacache-manifest-box"></div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

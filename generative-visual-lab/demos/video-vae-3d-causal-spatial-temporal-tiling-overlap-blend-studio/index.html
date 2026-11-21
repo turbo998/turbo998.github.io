@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>企业 4K 视频 3D 因果 VAE 解码器防显存爆炸（OOM）：时空交叠分块、2帧 FIFO 环存与余弦羽化网关（第 165 项里程碑！）</title>
+  <script type="module" crossorigin src="../../assets/videoVae3dCausalSpatialTemporalTilingOverlapBlend-BhQ9d3Hy.js"></script>
+  <link rel="modulepreload" crossorigin href="../../assets/modulepreload-polyfill-B5Qt9EMX.js">
+  <link rel="stylesheet" crossorigin href="../../assets/videoDitSageattention2Int8Fp8QuantizedKernelRouter-DSSoCeB1.css">
+</head>
+<body>
+  <div class="studio-shell">
+    <header class="topbar">
+      <div>
+        <span class="eyebrow">Round 376 · 🏆 165th Workbench Milestone (3+7+31×5) · Domain 1: 4K Video 3D Causal VAE Tiling Gateway</span>
+        <h1>4K 视频 3D 因果 VAE 解码防 OOM：2帧 FIFO 时序流式缓存与 Hann 空间羽化网关（第 165 项里程碑！）</h1>
+        <p class="subtitle">礼赞全仓达成 165（3+7+31×5）座工作台里程碑：终结视频生成在 99% 进度进入 3D Causal VAE 解码时激活张量暴涨至 94.6 GB 直接打崩 80GB H100，以及无重叠硬切分块引发棋盘格拼缝（24.8 dB）与每 16 帧明暗闪烁的痛点，通过 2帧 Conv3D 因果环形队列（O(1) 时序显存）+ 64px 汉宁窗（Hann）交叠羽化将峰值显存压至 11.8 GB（单张 24GB L4/A10G 即可流畅解码 1080p/4K，年省 +$1.78M）。</p>
+      </div>
+      <div class="doc-links">
+        <a href="../../index.html">← 返回实验室首页</a>
+        <a href="../../research/video-vae-3d-causal-spatial-temporal-tiling-overlap-blend-faq.html">架构师选型 FAQ (ZH)</a>
+        <a href="../../research/video-vae-3d-causal-spatial-temporal-tiling-overlap-blend-faq.en.html">Architecture FAQ (EN)</a>
+        <a href="../../research/benchmarks/video-vae-3d-causal-spatial-temporal-tiling-overlap-blend/summary-visual.svg">7-Card Summary SVG</a>
+      </div>
+    </header>
+
+    <section class="control-bar" aria-label="3D VAE 解码分块控制面">
+      <div class="control-group">
+        <label for="preset-select">目标视频 3D 因果 VAE 解码规格（3D Causal VAE Resolution）</label>
+        <select id="preset-select">
+          <option value="wan21-1080p-81frames">Wan2.1-VAE 1080p 商业成片（1920×1088 × 81帧 · 原始激活 94.6 GB）</option>
+          <option value="hunyuan-4k-129frames">HunyuanVideo-VAE 4K 超清母带（3840×2160 × 129帧 · 原始 284 GB）</option>
+          <option value="cogvideox-720p-241frames">CogVideoX 10秒长镜头（1280×720 × 241帧 · O(1) 恒定帧显存）</option>
+        </select>
+      </div>
+      <div class="control-group">
+        <label>3D Causal VAE 时空解码与拼缝消除架构（VAE Decode Strategy）</label>
+        <div class="seg-buttons" role="group">
+          <button type="button" class="seg-btn" data-strategy="full-tensor-no-tiling">1. 全张量直接解码 (94.6GB · 80GB H100 OOM!)</button>
+          <button type="button" class="seg-btn" data-strategy="disjoint-hard-tiling">2. 无重叠硬切分块 (棋盘格黑线 + 16帧爆闪)</button>
+          <button type="button" class="seg-btn active" data-strategy="causal-fifo-hann-overlap-sync">3. 2帧因果FIFO + 64px Hann羽化 + 全局GN (推荐)</button>
+        </div>
+      </div>
+      <div class="control-group">
+        <label for="halo-slider">空间分块交叠羽化带宽（Spatial Hann Overlap Halo）：<span id="halo-label">64 px</span></label>
+        <input id="halo-slider" type="range" min="32" max="128" step="16" value="64" />
+      </div>
+    </section>
+
+    <section class="kpi-strip" aria-label="核心显存削减与无痕拼接指标">
+      <div class="kpi-card">
+        <div class="kpi-label">VAE 解码峰值激活显存 (Peak VRAM)</div>
+        <div class="kpi-val" id="kpi-vram">11.8 GB</div>
+        <div class="kpi-sub" id="kpi-vram-sub">削减 -87.5% vs 全张量 94.6 GB (24GB卡可跑)</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">分块接缝处信噪比 (Seam PSNR)</div>
+        <div class="kpi-val" id="kpi-psnr">44.6 dB</div>
+        <div class="kpi-sub" id="kpi-psnr-sub">w(x)+w(x-L)=1.0 单位分解无痕融合 (硬切仅 24.8dB)</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">跨时序块亮度跳变 (Temporal Flicker)</div>
+        <div class="kpi-val" id="kpi-flicker">0.00 ΔLuma</div>
+        <div class="kpi-sub" id="kpi-flicker-sub">2帧 CausalConv3D FIFO 缓存数学等价连续流</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">24GB / 48GB 推理卡兼容性</div>
+        <div class="kpi-val" id="kpi-fit">100% 兼容 ✓</div>
+        <div class="kpi-sub" id="kpi-fit-sub">无需独占 80GB H100 即可解码 4K 长视频</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">512卡视频集群年度净省算力</div>
+        <div class="kpi-val" id="kpi-savings">+$1.78M / yr</div>
+        <div class="kpi-sub" id="kpi-savings-sub">彻底根除 99% 进度 VAE OOM 废单重跑</div>
+      </div>
+    </section>
+
+    <main class="main-grid">
+      <section class="panel">
+        <h2>3D 因果卷积 2帧环形队列（Causal FIFO Cache）与空间 512×512 + 64px 汉宁窗（Hann Window）无痕交叠沙盘</h2>
+        <canvas id="vae-canvas" width="880" height="390"></canvas>
+      </section>
+      <section class="panel">
+        <h2>4×8×8 因果上采样三阶段张量尺寸、峰值显存与边界 PSNR 审计表</h2>
+        <table class="stage-table">
+          <thead>
+            <tr>
+              <th>3D VAE 上采样阶段</th>
+              <th>激活张量形状 / 分块</th>
+              <th>峰值显存</th>
+              <th>接缝 PSNR</th>
+              <th>OOM 与视觉伪影判定</th>
+            </tr>
+          </thead>
+          <tbody id="stage-tbody"></tbody>
+        </table>
+        <div class="code-box" id="vae-manifest-box"></div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

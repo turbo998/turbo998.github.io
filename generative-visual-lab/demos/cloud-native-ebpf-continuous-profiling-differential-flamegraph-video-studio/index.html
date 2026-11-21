@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self' data:;"
+    />
+    <title>云原生 eBPF 持续性能剖析（Pyroscope / Parca）：1.8万栈帧红蓝差分火焰图剪枝与 GitHub PR 算力账单视频工作台 · Generative Visual Lab</title>
+    <script type="module" crossorigin src="../../assets/cloudNativeEbpfContinuousProfilingDifferentialFlamegraphVideo-BWed14Cd.js"></script>
+    <link rel="modulepreload" crossorigin href="../../assets/modulepreload-polyfill-B5Qt9EMX.js">
+    <link rel="stylesheet" crossorigin href="../../assets/agenticComfyuiWorkflowCompilerSelfHealingVlmCritic-D9hdwtWy.css">
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="hero-header">
+        <div class="hero-top-row">
+          <span class="domain-pill">DOMAIN 5 · ROUND 325 (114TH WORKBENCH) · CLOUD-NATIVE EBPF CONTINUOUS PROFILING &amp; DIFFERENTIAL FLAMEGRAPH PR VIDEO STUDIO</span>
+          <nav class="Quick-links" aria-label="Documentation links">
+            <a href="../../index.html">← 返回门户 (Portal)</a>
+            <a href="../../research/cloud-native-ebpf-continuous-profiling-differential-flamegraph-video-faq.html">中文选型指南 FAQ</a>
+            <a href="../../research/cloud-native-ebpf-continuous-profiling-differential-flamegraph-video-faq.en.html">English Architecture FAQ</a>
+          </nav>
+        </div>
+        <h1>云原生 eBPF 持续性能剖析：1.8万栈帧红蓝差分火焰图剪枝与 PR 账单视频工作台</h1>
+        <p class="hero-subtitle">
+          面向云原生平台工程（Platform Engineering / SRE）、AI 推理集群优化负责人与 <strong>Cloud &amp; AI Solution Architect</strong>（全仓第 114 项工作台）：当企业在 <strong>12,000 个 Kubernetes 容器与 vLLM 推理节点</strong> 上运行微服务时，为什么某次常规代码发版会让年度云账单莫名暴涨 <code>$3.84M</code>，而传统 APM 链路追踪只能看到“某个接口慢了 200ms”却看不出是哪一行正则表达式或 Python GIL 锁等待吃掉了 CPU？更棘手的是，直接把包含 <code>18,000 个</code> 调用栈方块的原始 SVG 火焰图渲染在浏览器里不仅会卡死在 <code>3 fps</code>，让工程师左右并排肉眼找两版差异更需耗费 <code>65 分钟</code>！本工作台对比演示 <strong>“Linux 内核 eBPF 零侵入全栈剖析（0.8% 极低开销，通吃 On-CPU + Off-CPU 睡眠锁 + 内核态）+ 红蓝差分火焰图剪枝（18,000 帧 24ms 提纯至 5 条退化热点，满帧 60fps）+ Git Blame 行级 FinOps 美元换算 + Remotion 12 秒自动生成 GitHub PR 拦截视频（1.1 分钟定界，年省 $3.84M）”</strong>。
+        </p>
+      </header>
+
+      <section class="controls-bar" aria-label="Interactive Cloud-Native eBPF Differential FlameGraph Controls">
+        <div class="control-block">
+          <span class="control-label">1. 四大云原生微服务与 AI 推理集群典型性能/成本退化场景预设 (eBPF Profiling Cohort)</span>
+          <div class="button-group" id="preset-buttons">
+            <button type="button" class="preset-btn active" data-preset="golang-json-marshal-regex-cpu-regression-pr">🐹 Go 网关循环内未缓存正则与反射序列化 (+28% CPU · 年省 $3.84M)</button>
+            <button type="button" class="preset-btn" data-preset="python-vllm-tokenizer-gil-offcpu-mutex-stall">🐍 Python vLLM 分词器争抢 GIL 锁 Off-CPU 阻塞 (H100 吞吐 +44.6%)</button>
+            <button type="button" class="preset-btn" data-preset="java-jvm-gc-allocation-pressure-safepoint-spike">☕ Java 交易核心临时对象分配风暴触发 GC P99 毛刺 (省内存 42%)</button>
+            <button type="button" class="preset-btn" data-preset="cilium-ebpf-socket-tls-handshake-kernel-tax">🕸️ K8s 服务网格短连接内核态 TLS 握手税审计 (缩容 38% 节点)</button>
+          </div>
+        </div>
+
+        <div class="control-block">
+          <span class="control-label">2. 火焰图渲染引擎与版本对比架构模式切换 (FlameGraph Visualization Mode)</span>
+          <div class="button-group" id="mode-buttons">
+            <button type="button" class="mode-btn active" data-mode="ebpf-red-blue-diff-flamegraph-pruning-remotion">
+              ✅ eBPF 红蓝差分剪枝 (18,000 → 5 条热点 · Canvas 60fps · 1.1m 定界) + PR 视频
+            </button>
+            <button type="button" class="mode-btn" data-mode="dual-unpruned-18k-svg-flamegraphs-manual-diff">
+              ❌ 左右并排两张 18,000 节点未剪枝 SVG 火焰图 (3fps 卡死 · 65m 肉眼找差)
+            </button>
+          </div>
+        </div>
+
+        <div class="control-block slider-block">
+          <label for="pods-slider" class="control-label">
+            3. 生产环境 Kubernetes 微服务/推理容器规模 (Production K8s Pods Scale): <strong id="pods-readout">12,000 K8s Pods · Saves $3,840k/Yr</strong>
+          </label>
+          <div class="slider-row">
+            <input id="pods-slider" type="range" min="4" max="36" step="4" value="12" />
+          </div>
+        </div>
+      </section>
+
+      <section class="kpi-grid" aria-label="Key Performance Indicators">
+        <article class="kpi-card">
+          <span class="kpi-tag">STACK FRAME PRUNING &amp; FPS</span>
+          <strong class="kpi-val" id="kpi-prune">18000 → 5 (60fps)</strong>
+          <p class="kpi-desc" id="kpi-prune-sub">自动折叠 Δ&lt;0.5% 的 17,995 个稳定调用帧，Canvas 2D 虚拟视口 24ms 丝滑缩放</p>
+        </article>
+        <article class="kpi-card">
+          <span class="kpi-tag">ZERO-INSTRUMENTATION OVERHEAD</span>
+          <strong class="kpi-val" id="kpi-overhead">0.8% eBPF CPU</strong>
+          <p class="kpi-desc" id="kpi-overhead-sub">内核级 eBPF 定时采样 DWARF/FramePointer，零代码侵入同时捕获 On-CPU 与 Off-CPU</p>
+        </article>
+        <article class="kpi-card">
+          <span class="kpi-tag">REGRESSION ROOT-CAUSE MTTD</span>
+          <strong class="kpi-val" id="kpi-mttd">1.1 min (vs 65m)</strong>
+          <p class="kpi-desc" id="kpi-mttd-sub">红蓝饱和度直接编码 Canary 退化幅度并绑定 Git Blame 行号，无需左右眼人工找茬</p>
+        </article>
+        <article class="kpi-card">
+          <span class="kpi-tag">AVOIDED CLOUD COMPUTE BILL</span>
+          <strong class="kpi-val" id="kpi-savings">Saves $3,840k/Yr</strong>
+          <p class="kpi-desc" id="kpi-savings-sub">在 PR 合并前将函数级 CPU 暴涨换算为年度美元账单并推送 12s Remotion 拦截视频</p>
+        </article>
+      </section>
+
+      <section class="stage-panel" aria-label="Interactive Cloud-Native eBPF Differential FlameGraph & PR FinOps Canvas">
+        <div class="stage-header">
+          <div>
+            <span class="stage-badge" id="stage-badge">ROUND 325 (114TH WORKBENCH) · EBPF ON/OFF-CPU PROFILER + RED/BLUE DIFFERENTIAL PRUNING + PR FINOPS VIDEO</span>
+            <h2 id="stage-title">Go 核心网关微服务（12,000 Pods）：PR #4812 循环内未缓存 `regexp.MustCompile` 与反射 JSON 序列化引发 +28% CPU 暴涨拦截</h2>
+          </div>
+          <div class="stage-legend">
+            <span class="legend-item"><i class="dot dot-spot"></i>已折叠稳定调用栈子树 (Collapsed Δ&lt;0.5% Noise)</span>
+            <span class="legend-item"><i class="dot dot-trie"></i>User + Kernel + Off-CPU 统一调用栈基座</span>
+            <span class="legend-item"><i class="dot dot-err"></i>Canary 版本暴涨热点栈帧与年度美元浪费告警</span>
+          </div>
+        </div>
+
+        <div class="canvas-wrapper">
+          <canvas id="ebpf-canvas" width="1240" height="525"></canvas>
+        </div>
+
+        <div class="pipeline-strip">
+          <div class="pipe-step">
+            <span class="step-num">STAGE 01</span>
+            <strong>eBPF 全栈零侵入持续采集</strong>
+            <p>DaemonSet 挂载内核 perf_event 与 sched_switch，以 0.8% 开销采集全集群 CPU、锁等待与内存分配</p>
+          </div>
+          <div class="pipe-step">
+            <span class="step-num">STAGE 02</span>
+            <strong>红蓝差分剪枝与 Canvas 渲染</strong>
+            <p>对齐基线与灰度版本调用树，滤除 99.9% 无变化背景噪声，仅保留 Top 5 退化热路径</p>
+          </div>
+          <div class="pipe-step">
+            <span class="step-num">STAGE 03</span>
+            <strong>Git Blame 行级 FinOps 美元映射</strong>
+            <p>结合集群 HPA 副本数与云厂商实例单价，把单个函数的 CPU 增量直接换算为 `+$3.84M/年` 财务影响</p>
+          </div>
+          <div class="pipe-step">
+            <span class="step-num">STAGE 04</span>
+            <strong>Remotion 12s PR 评论区拦截视频</strong>
+            <p>自动将差分火焰图缩放动画、问题代码行 Diff 与成本告警合成为 12 秒 MP4 贴入 GitHub PR</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="deck-section" aria-label="7-Card 4:5 Benchmark Visual Report">
+        <div class="deck-header">
+          <span class="domain-pill">7-CARD 4:5 VISUAL BENCHMARK REPORT · ROUND 325 (114TH WORKBENCH)</span>
+          <h2>云原生 eBPF 持续性能剖析与红蓝差分火焰图剪枝 7 卡评测报告</h2>
+        </div>
+
+        <div class="cards-grid">
+          <!-- Card 1 -->
+          <article class="bcard" data-card="1">
+            <div class="bcard-top">
+              <span class="bcard-idx">1 / 7 · HANDS-ON · EBPF DIFFERENTIAL FLAMEGRAPH</span>
+              <span class="bcard-pill">18,000 → 5 Hot-Paths · -$3.84M/Yr</span>
+            </div>
+            <h3>告别 18,000 个小方块“找茬游戏”：eBPF 红蓝差分剪枝 1.1 分钟揪出每年白烧 $3.84M 的 3 行代码</h3>
+            <p>
+              打通内核级 eBPF 持续剖析、差分火焰图噪声折叠与 GitHub PR 年度云账单（FinOps）视频门禁。
+            </p>
+            <div class="bcard-metrics">
+              <div><span>调用栈噪声剪枝压缩比</span><strong>18,000 → 5 (99.97%)</strong></div>
+              <div><span>性能退化定位耗时</span><strong>1.1 min vs 65 min</strong></div>
+              <div><span>单集群年省云算力账单</span><strong>$2.95M ~ $4.62M/yr</strong></div>
+            </div>
+          </article>
+
+          <!-- Card 2 -->
+          <article class="bcard" data-card="2">
+            <div class="bcard-top">
+              <span class="bcard-idx">2 / 7 · SCENARIO · THE DUAL-FLAMEGRAPH BLINDNESS</span>
+              <span class="bcard-pill">choice · Act automatically</span>
+            </div>
+            <h3>单案深潜：为什么把基线（Baseline）和灰度（Canary）两张原始火焰图并排放在一起，老专家也找不到退化点？</h3>
+            <p>
+              因为某个底层函数 CPU 增加了 6%，会导致它右侧所有兄弟分支的 X 轴位置整体右移错位，两张图视觉拓扑完全对不上。
+            </p>
+            <div class="bcard-bars">
+              <div class="bar-row"><span>Red/Blue Diff + Prune</span><div class="bar-track"><div class="bar-fill" style="width:100%"></div></div><strong>60 fps · 5 Hot-Paths (1.1m)</strong></div>
+              <div class="bar-row"><span>APM Trace Spans Only</span><div class="bar-track"><div class="bar-fill warn" style="width:42%"></div></div><strong>Blind to Line-Level CPU</strong></div>
+              <div class="bar-row"><span>Dual 18k SVG Graphs</span><div class="bar-track"><div class="bar-fill danger" style="width:12%"></div></div><strong>3 fps DOM Freeze · 65m ✕</strong></div>
+            </div>
+          </article>
+
+          <!-- Card 3 -->
+          <article class="bcard" data-card="3">
+            <div class="bcard-top">
+              <span class="bcard-idx">3 / 7 · WHAT I TESTED · 4 CLOUD-NATIVE STACKS</span>
+              <span class="bcard-pill">4-Runtime Matrix</span>
+            </div>
+            <h3>四大生产运行时实测：Go 正则退化 / Python vLLM GIL 锁阻塞 / Java GC 分配风暴 / K8s 内核 TLS 税</h3>
+            <table class="bcard-table">
+              <thead>
+                <tr><th>RUNTIME BOTTLENECK</th><th>PRUNED FRAMES</th><th>MTTD</th><th>CLOUD SAVINGS / YR</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Go 网关循环内正则重编译</td><td>18,000 → 5 (60fps)</td><td>1.1m (vs 65m ✕)</td><td>+$3,840k/yr EKS</td></tr>
+                <tr><td>Python vLLM 分词器 GIL 锁</td><td>22,400 → 4 (60fps)</td><td>1.3m (vs 82m ✕)</td><td>+$4,620k/yr H100</td></tr>
+                <tr><td>Java 交易核心临时对象风暴</td><td>26,000 → 6 (60fps)</td><td>0.9m (vs 74m ✕)</td><td>+$2,950k/yr RAM</td></tr>
+                <tr><td>K8s 服务网格短连接 TLS 税</td><td>19,500 → 5 (60fps)</td><td>1.2m (vs 90m ✕)</td><td>+$3,180k/yr Mesh</td></tr>
+              </tbody>
+            </table>
+          </article>
+
+          <!-- Card 4 -->
+          <article class="bcard" data-card="4">
+            <div class="bcard-top">
+              <span class="bcard-idx">4 / 7 · UNDER THE HOOD · DIFF TREE &amp; FINOPS $</span>
+              <span class="bcard-pill">eBPF &amp; FinOps AST</span>
+            </div>
+            <h3>同构调用树差分归并、低方差子树折叠与函数级年度云成本（$/Yr）映射公式</h3>
+            <pre class="bcard-code"><code>// Differential FlameGraph Pruning &amp; Line-Level FinOps Cost (Round 325):
+Delta_Self_Pct(node) = (Canary_Samples(node) / N_canary) - (Baseline_Samples(node) / N_base);
+Pruned_Tree = Collapse_Subtrees(Merged_Call_Tree, node =&gt; Math.abs( node.Delta_Cumulative_Pct ) &lt; 0.005);
+Annual_Cost_USD(node) = node.Delta_Cumulative_Pct * Cluster_Total_vCPU_Cores * Cost_Per_vCPU_Year;</code></pre>
+            <p class="bcard-foot">保持 基线与灰度拓扑对齐在唯一一棵合并调用树上，用饱和红色编码增长、蓝色编码下降，彻底消除水平错位。</p>
+          </article>
+
+          <!-- Card 5 -->
+          <article class="bcard" data-card="5">
+            <div class="bcard-top">
+              <span class="bcard-idx">5 / 7 · ROBUSTNESS CHECK · OFF-CPU, JIT &amp; STRIP</span>
+              <span class="bcard-pill">Perturbation Test</span>
+            </div>
+            <h3>复杂云原生环境压测：无符号表 Stripped 二进制、Python/C++ 混合栈与锁等待 Off-CPU 盲区</h3>
+            <table class="bcard-table">
+              <thead>
+                <tr><th>PROFILING CHALLENGE</th><th>TRADITIONAL PPROF / APM</th><th>EBPF ON/OFF-CPU DIFF</th><th>VERDICT</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Python 调 C++ 算子时卡在 Mutex 锁等待</td><td>On-CPU 采样器显示耗时为 0 完全漏检 ✕</td><td>eBPF sched_switch 精准捕获 185ms 睡眠栈 ✅</td><td>100% Captured</td></tr>
+                <tr><td>18,000 个栈帧塞进单个网页 SVG 组件</td><td>生成 54,000 个 DOM 节点滚轮卡死 3fps ✕</td><td>Canvas 2D 虚拟视口 + 0.5% 阈值剪枝 60fps ✅</td><td>24ms Render</td></tr>
+                <tr><td>研发只关心功能上线不关心 +8% CPU 涨跌</td><td>忽略文字告警导致月度账单超支 $320k ✕</td><td>PR 评论直接播放“此行代码年烧 $3.8M”视频 ✅</td><td>Fixed Pre-Merge</td></tr>
+              </tbody>
+            </table>
+          </article>
+
+          <!-- Card 6 -->
+          <article class="bcard" data-card="6">
+            <div class="bcard-top">
+              <span class="bcard-idx">6 / 7 · LATENCY &amp; TCO · 24MS DIFF &amp; 12S PR CLIP</span>
+              <span class="bcard-pill">$0.03 / PR Video</span>
+            </div>
+            <h3>从金丝雀（Canary）流量采样到 GitHub PR 评论区自动挂载 12 秒 FinOps 火焰图视频耗时</h3>
+            <div class="bcard-bars">
+              <div class="bar-row"><span>1. eBPF RingBuffer Poll</span><div class="bar-track"><div class="bar-fill" style="width:12%"></div></div><strong>0.8% CPU Overhead</strong></div>
+              <div class="bar-row"><span>2. Tree Diff &amp; Pruning</span><div class="bar-track"><div class="bar-fill" style="width:10%"></div></div><strong>24 ms (18k → 5)</strong></div>
+              <div class="bar-row"><span>3. Git Blame + $ Calc</span><div class="bar-track"><div class="bar-fill" style="width:14%"></div></div><strong>110 ms (Line Match)</strong></div>
+              <div class="bar-row"><span>4. Remotion 12s PR Clip</span><div class="bar-track"><div class="bar-fill" style="width:64%"></div></div><strong>4.8s ($0.03/PR)</strong></div>
+            </div>
+          </article>
+
+          <!-- Card 7 -->
+          <article class="bcard" data-card="7">
+            <div class="bcard-top">
+              <span class="bcard-idx">7 / 7 · MY TAKE · ARCHITECT VERDICT</span>
+              <span class="bcard-pill">Cloud FinOps Standard</span>
+            </div>
+            <h3>架构师选型总结：大规模火焰图可视化必须执行“单树红蓝差分 + 噪声剪枝 + 美元成本翻译”</h3>
+            <div class="fit-grid">
+              <div class="fit-good">
+                <strong>✅ 强烈推荐采用本混合架构的场景 (Good fit)</strong>
+                <ul>
+                  <li>千节点至万节点 Kubernetes 集群、AI 推理网关与高并发交易系统的日常发版门禁</li>
+                  <li>将晦涩的内核/运行时调用栈直接翻译为 CFO 和研发都能看懂的“每行代码年度美元成本”</li>
+                  <li>排查跨用户态、内核态与 Python/C++/CUDA 边界的隐蔽锁等待与序列化瓶颈</li>
+                </ul>
+              </div>
+              <div class="fit-bad">
+                <strong>⛔ 严禁直接采用的场景 (Not for)</strong>
+                <ul>
+                  <li>严禁在浏览器中用数万个独立 `<rect>` SVG 节点直接渲染未剪枝的全量调用栈</li>
+                  <li>严禁让工程师靠肉眼左右来回比对两张独立的静态火焰图寻找几个百分点的退化</li>
+                </ul>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+    </div>
+  </body>
+</html>

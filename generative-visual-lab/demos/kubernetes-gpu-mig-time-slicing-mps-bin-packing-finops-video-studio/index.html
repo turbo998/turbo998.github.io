@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>企业 Kubernetes GPU 算力切分与装箱（NVIDIA MIG × CUDA MPS × K8s DRA）：硬件显存隔离与 FinOps 工作台</title>
+  <script type="module" crossorigin src="../../assets/kubernetesGpuMigTimeSlicingMpsBinPackingFinopsVideo-DUQZTZ1N.js"></script>
+  <link rel="modulepreload" crossorigin href="../../assets/modulepreload-polyfill-B5Qt9EMX.js">
+  <link rel="stylesheet" crossorigin href="../../assets/kubernetesGpuMigTimeSlicingMpsBinPackingFinopsVideo-DaTCFNQX.css">
+</head>
+<body>
+  <div class="studio-shell">
+    <header class="topbar">
+      <div>
+        <span class="eyebrow">Round 370 · 159th Curated Workbench · Domain 5: K8s GPU MIG × CUDA MPS × DRA Bin-Packing FinOps</span>
+        <h1>企业 Kubernetes GPU 切分与装箱：NVIDIA MIG 硬件隔离、CUDA MPS 与 DRA 调度工作台</h1>
+        <p class="subtitle">面向平台工程与 CTO 算力治理（NVIDIA KAI / Run:ai / Volcano）：终结 K8s 整卡独占（nvidia.com/gpu: 1）导致 81.6% H100 算力闲置，以及软件时间片轮转（Time-Slicing）缺乏显存隔离导致单 Pod OOM 拖垮同卡 7 个生产租户（+312ms 尾延迟抖动）的痛点，用 MIG 硬件显存交叉开关隔离 + 同信任域 MPS 紧凑装箱将利用率拉升至 79.6%（256 Pod 仅需 58 张 H100，年省 +$2.86M）。</p>
+      </div>
+      <div class="doc-links">
+        <a href="../../index.html">← 返回实验室首页</a>
+        <a href="../../research/kubernetes-gpu-mig-time-slicing-mps-bin-packing-finops-video-faq.html">架构师选型 FAQ (ZH)</a>
+        <a href="../../research/kubernetes-gpu-mig-time-slicing-mps-bin-packing-finops-video-faq.en.html">Architecture FAQ (EN)</a>
+        <a href="../../research/benchmarks/kubernetes-gpu-mig-time-slicing-mps-bin-packing-finops-video/summary-visual.svg">7-Card Summary SVG</a>
+      </div>
+    </header>
+
+    <section class="control-bar" aria-label="K8s GPU 切分与调度控制面">
+      <div class="control-group">
+        <label for="workload-select">企业 Kubernetes AI 微服务负载画像（Cluster Workload Profile）</label>
+        <select id="workload-select">
+          <option value="multi-tenant-inference-saas">多租户推理微服务集群（256个 Pod：Whisper / BGE / 7B LLM / SAM-2）</option>
+          <option value="visual-pipeline-dag-pods">同团队视觉 AIGC 多阶段流水线（抠图 + 深度 + OCR + 超分串联）</option>
+          <option value="day-sync-night-batch-mixed">潮汐混合集群（白天 1g.10gb 在线推理 + 夜间 4g.40gb 微调重分片）</option>
+        </select>
+      </div>
+      <div class="control-group">
+        <label>Kubernetes GPU 切分与多租户隔离架构（GPU Sharing Architecture）</label>
+        <div class="seg-buttons" role="group">
+          <button type="button" class="seg-btn" data-strategy="whole-gpu-allocation">1. 整卡独占 gpu:1 (18.4%利用率 · 烧256卡)</button>
+          <button type="button" class="seg-btn" data-strategy="naive-time-slicing">2. 软件 Time-Slicing (单Pod OOM 全卡团灭)</button>
+          <button type="button" class="seg-btn active" data-strategy="dra-dynamic-mig-mps-hybrid">3. K8s DRA 动态 MIG 硬件隔离 + MPS (推荐)</button>
+        </div>
+      </div>
+      <div class="control-group">
+        <label for="pod-slider">集群并发推理 Pod 规模（Concurrent Inference Pods）：<span id="pod-label">256 Pods</span></label>
+        <input id="pod-slider" type="range" min="64" max="512" step="32" value="256" />
+      </div>
+    </section>
+
+    <section class="kpi-strip" aria-label="核心 GPU 装箱密度与故障隔离指标">
+      <div class="kpi-card">
+        <div class="kpi-label">所需物理 H100-80GB 卡数</div>
+        <div class="kpi-val" id="kpi-gpus">58 张 H100</div>
+        <div class="kpi-sub" id="kpi-gpus-sub">对比整卡独占 256 张 (削减 -77.3% 机器)</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">集群平均 SM 算力利用率</div>
+        <div class="kpi-val" id="kpi-util">79.6%</div>
+        <div class="kpi-sub" id="kpi-util-sub">对比整卡独占 18.4% (提升 4.3× 密度)</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">跨租户连坐 OOM 崩溃次数</div>
+        <div class="kpi-val" id="kpi-oom">0 次 / 月</div>
+        <div class="kpi-sub" id="kpi-oom-sub">MIG 独立 HBM 控制器与 L2 硬件物理隔离</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">吵闹邻居 p99 尾延迟抖动</div>
+        <div class="kpi-val" id="kpi-jitter">5.8 ms</div>
+        <div class="kpi-sub" id="kpi-jitter-sub">对比 Time-Slicing 上下文切换 +312.0 ms</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">年度 K8s GPU 算力净节省</div>
+        <div class="kpi-val" id="kpi-savings">+$2.86M / yr</div>
+        <div class="kpi-sub" id="kpi-savings-sub">自动回收碎片 + 潮汐 mig-parted 重配置</div>
+      </div>
+    </section>
+
+    <main class="main-grid">
+      <section class="panel">
+        <h2>单张 H100-80GB 内部 7×SM / 8×10GB HBM3 硬件切分（3g.40gb + 2×1g.10gb + 2g.20gb）与 MPS 装箱沙盘</h2>
+        <canvas id="mig-canvas" width="880" height="390"></canvas>
+      </section>
+      <section class="panel">
+        <h2>H100 节点 MIG 实例几何拓扑、Pod 映射与硬件故障隔离表</h2>
+        <table class="slice-table">
+          <thead>
+            <tr>
+              <th>MIG 硬件实例规格</th>
+              <th>承载 Pod / MPS 进程</th>
+              <th>分配显存</th>
+              <th>SM 利用率</th>
+              <th>硬件故障与 QoS 隔离状态</th>
+            </tr>
+          </thead>
+          <tbody id="slice-tbody"></tbody>
+        </table>
+        <div class="code-box" id="dra-manifest-box"></div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

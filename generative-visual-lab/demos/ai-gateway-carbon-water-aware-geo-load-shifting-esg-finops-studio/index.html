@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>企业 AI 网关碳排、水耗（WUE）与跨区 Spot 算力时空平移路由器工作台（第 150 项里程碑！）</title>
+  <script type="module" crossorigin src="../../assets/aiGatewayCarbonWaterAwareGeoLoadShiftingEsgFinops-7vsADtRx.js"></script>
+  <link rel="modulepreload" crossorigin href="../../assets/modulepreload-polyfill-B5Qt9EMX.js">
+  <link rel="stylesheet" crossorigin href="../../assets/aiGatewayCarbonWaterAwareGeoLoadShiftingEsgFinops-DxXFptR9.css">
+</head>
+<body>
+  <div class="studio-shell">
+    <header class="topbar">
+      <div>
+        <span class="eyebrow">Round 361 · 🏆 Historic 150th Workbench Milestone · Domain 1: Green AI Gateway &amp; ESG FinOps</span>
+        <h1>企业 AI 网关碳排（MOER）、水耗（WUE）与跨区 Spot 算力时空平移路由器工作台</h1>
+        <p class="subtitle">实时接入 WattTime / Electricity Maps 5分钟边际碳强（gCO2eq/kWh）与冷却塔水耗（WUE L/kWh）：将 SLA&lt;200ms 实时流量锁定本地边缘，将 78% 异步视频渲染/微调任务零 Egress 调度至北欧/魁北克水电及午间光伏弃电区（碳排 -71.8%、水耗 -78.4%、年省 +$2.48M）。</p>
+      </div>
+      <div class="doc-links">
+        <a href="../../index.html">← 返回实验室首页</a>
+        <a href="../../research/ai-gateway-carbon-water-aware-geo-load-shifting-esg-finops-faq.html">架构师选型 FAQ (ZH)</a>
+        <a href="../../research/ai-gateway-carbon-water-aware-geo-load-shifting-esg-finops-faq.en.html">Architecture FAQ (EN)</a>
+        <a href="../../research/benchmarks/ai-gateway-carbon-water-aware-geo-load-shifting-esg-finops/summary-visual.svg">7-Card Summary SVG</a>
+      </div>
+    </header>
+
+    <section class="control-bar" aria-label="路由器控制面">
+      <div class="control-group">
+        <label for="preset-select">企业多区域 AI 算力负载画像（Workload Preset）</label>
+        <select id="preset-select">
+          <option value="ecommerce-video-batch">大促 120万支短视频与 3D 批量生成（2,048× H100 · 78% 异步）</option>
+          <option value="multimodal-rag-index">全球多模态视觉 RAG 嵌入与 LoRA 集群（1,024× H100 · 84% 异步）</option>
+          <option value="global-hybrid-fleet">跨国实时对话 + 视频渲染混合网关（4,096× H100 · 68% 异步）</option>
+        </select>
+      </div>
+      <div class="control-group">
+        <label>跨区碳水与 Spot 调度架构方案（Routing Strategy）</label>
+        <div class="seg-buttons" role="group">
+          <button type="button" class="seg-btn" data-strategy="pinned-region">1. 单区固定煤电基线 (468 gCO2)</button>
+          <button type="button" class="seg-btn" data-strategy="naive-carbon-only">2. 仅看碳强盲目跨洋迁移 (高水耗/高Egress)</button>
+          <button type="button" class="seg-btn active" data-strategy="sla-carbon-water-spot-router">3. SLA分层+MOER/WUE+零Egress清单 (推荐)</button>
+        </div>
+      </div>
+      <div class="control-group">
+        <label for="batch-slider">可延迟异步批处理占比（Deferrable Batch Share）：<span id="batch-label">78%</span></label>
+        <input id="batch-slider" type="range" min="40" max="92" step="2" value="78" />
+      </div>
+    </section>
+
+    <section class="kpi-strip" aria-label="核心 ESG 与 FinOps 指标">
+      <div class="kpi-card">
+        <div class="kpi-label">Scope 2 边际碳排 (Annual CO2e)</div>
+        <div class="kpi-val" id="kpi-carbon">4,180 tCO2e</div>
+        <div class="kpi-sub" id="kpi-carbon-sub">削减 -71.8% vs 固定煤电区 (14,820t)</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">数据中心蒸发水耗 (Annual WUE)</div>
+        <div class="kpi-val" id="kpi-water">9.2 ML/yr</div>
+        <div class="kpi-sub" id="kpi-water-sub">削减 -78.4% (避开干旱高蒸发区)</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">实时交互延迟 (Sync p99 TTFT)</div>
+        <div class="kpi-val" id="kpi-ttft">138 ms</div>
+        <div class="kpi-sub" id="kpi-ttft-sub">SLA &lt; 200ms 锁定本地边缘</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">跨区流量费 (Cross-Region Egress)</div>
+        <div class="kpi-val" id="kpi-egress">$17.2k / yr</div>
+        <div class="kpi-sub" id="kpi-egress-sub">18KB JSON 清单替代 4.8TB 裸拷贝</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">年度算力与碳配额净收益</div>
+        <div class="kpi-val" id="kpi-savings">+$2.48M / yr</div>
+        <div class="kpi-sub" id="kpi-savings-sub">水电 Spot 套利 + 零欧盟 CSRD 罚金</div>
+      </div>
+    </section>
+
+    <main class="main-grid">
+      <section class="panel">
+        <h2>全球多区域电网边际碳强（MOER gCO2/kWh）、水耗（WUE L/kWh）与 Spot 时空迁移拓扑沙盘</h2>
+        <canvas id="carbon-canvas" width="880" height="390"></canvas>
+      </section>
+      <section class="panel">
+        <h2>区域算力分配矩阵与 GHG Protocol / CSRD 双口径审计存证</h2>
+        <table class="region-table">
+          <thead>
+            <tr>
+              <th>目标区域与电源结构</th>
+              <th>MOER (gCO2/kWh)</th>
+              <th>WUE (L/kWh)</th>
+              <th>Spot ($/h)</th>
+              <th>异步分配</th>
+            </tr>
+          </thead>
+          <tbody id="region-tbody"></tbody>
+        </table>
+        <div class="code-box" id="esg-manifest-box"></div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

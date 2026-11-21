@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>半导体 300mm 晶圆厂洁净室天车（OHT AMHS）与 ISO Class-1 层流微粒 3DGS 数字孪生（TSMC / ASML High-NA EUV / SEMI E84）：吊带防摆与 Q-Time 工作台</title>
+    <script type="module" crossorigin src="../../assets/semiconductorFabCleanroomOhtAmhsIsoClass1Particle3dgsTwin-BkBX4ykT.js"></script>
+    <link rel="modulepreload" crossorigin href="../../assets/modulepreload-polyfill-B5Qt9EMX.js">
+    <link rel="stylesheet" crossorigin href="../../assets/semiconductorFabCleanroomOhtAmhsIsoClass1Particle3dgsTwin-jdYByfhZ.css">
+  </head>
+  <body>
+    <div class="studio-shell">
+      <header class="studio-header">
+        <div>
+          <span class="eyebrow">Domain 4 · Workbench #143 · 300mm Semiconductor Fab OHT AMHS, SEMI E84 Anti-Sway &amp; ISO Class-1 3DGS Twin</span>
+          <h1>300mm 晶圆厂洁净室天车（OHT）与微粒层流孪生（ASML EUV / SEMI E84）：吊带防摆与 Q-Time 工作台</h1>
+          <p class="subtitle">
+            终结 OHT 天车在 3.2m 吊带下落 $120,000 晶圆盒（FOUP）时发生 ±35mm 钟摆晃动触发 SEMI E84 光幕急停、光刻-蚀刻间天车环网死锁导致 Q-Time 超时报废整批 25 片 2nm 晶圆，以及维保龙门架破坏 0.45m/s 垂直层流引发微粒超标：采用输入整形（ZV Input-Shaping）防摆控制（±0.44mm）+ 时空 CBS 零死锁绿波调度（42s 送达）+ ISO Class-1 层流尾流求解器（年省 +$6.84M 报废损失）。
+          </p>
+        </div>
+        <div class="header-links">
+          <a class="btn-link" href="../../index.html">← 返回实验室门户</a>
+          <a class="btn-link" href="../../research/semiconductor-fab-cleanroom-oht-amhs-iso-class1-particle-3dgs-twin-faq.html">选型 FAQ (ZH)</a>
+          <a class="btn-link" href="../../research/semiconductor-fab-cleanroom-oht-amhs-iso-class1-particle-3dgs-twin-faq.en.html">Guide (EN)</a>
+        </div>
+      </header>
+
+      <section class="control-bar" aria-label="晶圆厂天车与洁净室控制台">
+        <div class="control-group">
+          <label for="scenario-select">1. 300mm 晶圆厂光刻区与天车调度场景 (Wafer Fab AMHS Scenario)</label>
+          <select id="scenario-select">
+            <option value="euv_litho_bay_hot_lot_qtime_handoff">2nm High-NA EUV 光刻区 FOUP 3.2m 吊带防摆落料与 Q-Time 绿波锁（SEMI E84）</option>
+            <option value="subfab_gantry_maintenance_iso_class1_wake">EUV 光源吊装维保期间 ISO Class-1 垂直层流（0.45m/s）尾流涡旋防污染预演</option>
+            <option value="interbay_stocker_1400_oht_merge_surge">全厂 1,400 台 OHT 跨区转盘合流防死锁与 VC-E 微震动抑制（≤3.12μm/s）</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label>2. 天车控制与洁净室流场架构 (AMHS Control &amp; Airflow Twin Mode)</label>
+          <div class="mode-toggle">
+            <button id="mode-fab" class="mode-btn active" type="button">
+              ✅ ZV 输入整形防摆 + 时空 CBS 绿波 + ISO Class-1 层流锁
+            </button>
+            <button id="mode-naive" class="mode-btn" type="button">
+              ❌ 贪心最短路调度 + 无整形吊带急刹 + 2D 平面图
+            </button>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label for="decel-slider">
+            3. OHT 天车进站减速度 (OHT Deceleration Rate): <span id="decel-label">2.5 m/s²</span>
+          </label>
+          <input id="decel-slider" type="range" min="1.0" max="3.5" step="0.5" value="2.5" />
+        </div>
+      </section>
+
+      <section class="kpi-strip" aria-label="核心晶圆良率与天车指标">
+        <div class="kpi-card">
+          <div class="kpi-label">FOUP 吊带落料摆幅误差 (SEMI E84 Hoist Sway)</div>
+          <div id="kpi-sway" class="kpi-value">±0.44 mm</div>
+          <div id="kpi-sway-sub" class="kpi-sub">满足 SEMI E84 ≤ ±1.5mm 定位销精度 (零光幕急停)</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Load-Port 洁净度 (ISO Class-1 Particles ≥0.1μm)</div>
+          <div id="kpi-iso" class="kpi-value">2 / m³</div>
+          <div id="kpi-iso-sub" class="kpi-sub">严格符合 ISO 14644-1 Class 1 (≤10 颗/m³)</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">光刻-蚀刻 Hot-Lot 搬运耗时 (Q-Time Transfer)</div>
+          <div id="kpi-qtime" class="kpi-value">42 s</div>
+          <div id="kpi-qtime-sub" class="kpi-sub">时空 CBS 绿波预约 (远低于 90s 光刻胶衰变红线)</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">年化避免晶圆报废损失 (Annual Wafer Scrap Saved)</div>
+          <div id="kpi-roi" class="kpi-value">+$6,840,000/yr</div>
+          <div id="kpi-roi-sub" class="kpi-sub">守护 $120,000/盒 2nm 晶圆良率与机台 OEE</div>
+        </div>
+      </section>
+
+      <section class="workspace-grid">
+        <div class="panel-card">
+          <div class="panel-title">
+            <h2>顶棚 OHT 天车 3.2m 四吊带防摆落料、0.45m/s ULPA 垂直层流与高架华夫格回风地板立面画布</h2>
+            <span id="stage-badge" class="status-pill good">SEMI E84 &amp; ISO Class-1 Certified · ±0.44mm Lock</span>
+          </div>
+          <canvas id="fab-canvas" width="820" height="390"></canvas>
+        </div>
+
+        <div class="panel-card">
+          <div class="panel-title">
+            <h2>SEMI E84 对接精度、Q-Time 关键路径与 ISO Class-1 层流微粒校核表</h2>
+          </div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>洁净区节点</th>
+                <th>机台/天车环路与 SEMI/ISO 规范</th>
+                <th>实测指标</th>
+                <th>联锁状态</th>
+              </tr>
+            </thead>
+            <tbody id="fab-table-body"></tbody>
+          </table>
+
+          <div id="audit-summary" class="audit-box"></div>
+        </div>
+      </section>
+    </div>
+  </body>
+</html>

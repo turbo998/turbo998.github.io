@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>海上风电水下导管架与海缆 ROV 巡检孪生（Ørsted / Subsea7 / Fugro / DNV-RP-B401）：水下折射定标、Jaffe-McGlamery 除浊与牺牲阳极三维体积测算工作台</title>
+  <script type="module" crossorigin src="../../assets/offshoreWindSubseaRovTurbidity3dgsCathodicWeldInspection-ZMimPzB0.js"></script>
+  <link rel="modulepreload" crossorigin href="../../assets/modulepreload-polyfill-B5Qt9EMX.js">
+  <link rel="stylesheet" crossorigin href="../../assets/offshoreWindSubseaRovTurbidity3dgsCathodicWeldInspection-CjUnBgBv.css">
+</head>
+<body>
+  <div class="studio-shell">
+    <header class="topbar">
+      <div>
+        <span class="eyebrow">Domain 4 · Workbench #133 · n=1.333 Refractive 3DGS (±1.6mm) + Jaffe-McGlamery De-Scatter + 1.2MHz SONAR Anode Volume (±1.4%)</span>
+        <h1>海上风电水下 ROV 巡检孪生：水下折射 3DGS、物理除浊与阳极损耗工作台</h1>
+        <p class="subtitle">对比“n=1.333 水下视窗折射定标（±1.6mm）+ Jaffe-McGlamery 后向散射物理剥离（0.0px 假裂纹）+ 1.2MHz 声呐融合测算牺牲阳极体积（±1.4%）”与“空气针孔相机模型失真 ±68mm 及浑水盲拍基线”</p>
+      </div>
+      <div class="top-links">
+        <a class="pill-link" href="../../index.html">← 返回实验室首页</a>
+        <a class="pill-link" href="../../research/offshore-wind-subsea-rov-turbidity-3dgs-cathodic-weld-inspection-faq.html">架构选型 FAQ (ZH)</a>
+        <a class="pill-link" href="../../research/offshore-wind-subsea-rov-turbidity-3dgs-cathodic-weld-inspection-faq.en.html">Decision Guide (EN)</a>
+      </div>
+    </header>
+
+    <section class="control-bar" aria-label="水下 ROV 光学与声呐融合控制栏">
+      <div class="control-group">
+        <label for="scenario-select">海上风电单桩/导管架与海缆巡检场景 (Subsea Asset Scenario)</label>
+        <select id="scenario-select">
+          <option value="north_sea_monopile_anode_b401">海上风电单桩牺牲阳极损耗（DNV-RP-B401 · Al-Zn-In 阳极体积与冲刷坑）</option>
+          <option value="jacket_node_fatigue_weld_mpi">深水导管架 K 型节点疲劳焊缝巡检（DNV-ST-0126 · 650nm 红光还原与零假裂纹）</option>
+          <option value="subsea_hvdc_cable_scour_exposure">跨海 ±525kV HVDC 柔直海缆悬空跨度（Free-Span 涡激振动与抛石声呐融合）</option>
+        </select>
+      </div>
+
+      <div class="control-group">
+        <label>水下相机几何与浑水重建管线 (Underwater Reconstruction Mode)</label>
+        <div class="mode-buttons">
+          <button id="mode-subsea" class="mode-btn active" type="button">
+            n=1.333 折射 3DGS + Jaffe 物理除散射 + 1.2MHz 声呐融合 (推荐)
+          </button>
+          <button id="mode-naive" class="mode-btn naive" type="button">
+            传统空气针孔 SfM (±68mm 畸变) + 浑水海雪雾霾或扩散脑补假裂纹 (高返工基线)
+          </button>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <label for="ntu-slider">海底悬浮泥沙与海雪浊度 (Seawater Turbidity NTU): <span id="ntu-label">18 NTU</span></label>
+        <input id="ntu-slider" type="range" min="2" max="45" step="1" value="18" />
+      </div>
+    </section>
+
+    <section class="kpi-strip" aria-label="核心水下计量与船期节省指标">
+      <div class="kpi-card">
+        <div class="kpi-label">牺牲阳极剩余体积测算误差 (Anode Volume Error)</div>
+        <div id="kpi-vol" class="kpi-value">±1.46%</div>
+        <div id="kpi-vol-sub" class="kpi-sub">满足 DNV-RP-B401 阴极保护剩余寿命精算</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">水下视窗折射三维尺度误差 (Refractive Scale Drift)</div>
+        <div id="kpi-scale" class="kpi-value">±1.6 mm</div>
+        <div id="kpi-scale-sub" class="kpi-sub">校正海水 n=1.333 平口/球罩视窗轴向焦散</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">工程母船驻留船期节省 (ROV Vessel Time Cut)</div>
+        <div id="kpi-vessel" class="kpi-value">-46.5%</div>
+        <div id="kpi-vessel-sub" class="kpi-sub">高浊度潮汐窗口无需停工等待水质变清</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">单航次海工船租净节省 (Campaign Cost Saved)</div>
+        <div id="kpi-saved" class="kpi-value">+$1,120,000</div>
+        <div id="kpi-saved-sub" class="kpi-sub">$35,000/天船租 · Remotion 12s DNV 船级社报告</div>
+      </div>
+    </section>
+
+    <main class="workbench-grid">
+      <section class="panel">
+        <div class="panel-header">
+          <h2 class="panel-title">Jaffe-McGlamery 后向散射剥离 + n=1.333 折射 3DGS 阳极体积与 1.2MHz 泥面冲刷声呐画布</h2>
+          <span id="stage-badge" class="badge">DNV-RP-B401 Certified · ±1.46% Anode Volume · ±1.6mm Scale</span>
+        </div>
+        <canvas id="subsea-canvas" width="820" height="360"></canvas>
+      </section>
+
+      <section class="panel">
+        <div class="panel-header">
+          <h2 class="panel-title">水下构件深度、牺牲阳极消耗率 / 泥面冲刷、Ag/AgCl 电位与 DNV 裁决表</h2>
+          <span class="badge">DNV-RP-B401 &amp; ST-0126</span>
+        </div>
+        <table class="data-table" aria-label="水下风电构件与阴极保护巡检表">
+          <thead>
+            <tr>
+              <th>水下节点 ID (水深)</th>
+              <th>阳极体积损耗 / 冲刷真值</th>
+              <th>保护电位 (mV)</th>
+              <th>DNV 船级社处置结论</th>
+            </tr>
+          </thead>
+          <tbody id="node-table-body"></tbody>
+        </table>
+
+        <div class="panel-header">
+          <h3 class="panel-title">Treibitz-Schechner 折射相机矩阵、Jaffe-McGlamery 除浊与声呐融合契约</h3>
+        </div>
+        <pre id="protocol-code" class="code-box"></pre>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
