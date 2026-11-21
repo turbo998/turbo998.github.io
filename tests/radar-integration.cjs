@@ -7540,6 +7540,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r620File),'utf8');
       assert.ok(txt.includes('3,620.00')&&txt.includes('4,300.00')&&txt.includes('7,920.00')&&txt.includes('80.00')&&txt.includes('250.00')&&txt.includes('330.00')&&txt.includes('7,590.00')&&txt.includes('95.83%')&&txt.includes('not_measured'),r620File+': contains exact 11-21 R20 R620 llm4s+llmrb+opencrawling+proximum closed-form parameters');
     }
+    // 2026-11-21 Day Round 21 (R621: kunickiaj/codemem + rgdevment/Tisty + jamiezigelbaum/Olympus + madebywelch/guaca) verification
+    const r621PathA=3280.00+40.5*100.00;
+    assert.equal(r621PathA.toFixed(2),'7330.00','11-21 R21 R621 Path A total');
+    const r621PathC=65.00+2.4*100.00;
+    assert.equal(r621PathC.toFixed(2),'305.00','11-21 R21 R621 Path C total');
+    assert.equal((r621PathA-r621PathC).toFixed(2),'7025.00','11-21 R21 R621 savings vs Path A');
+    assert.equal(((r621PathA-r621PathC)/r621PathA*100).toFixed(2),'95.84','11-21 R21 R621 pct savings vs Path A');
+    for(const r621File of ['workshops/github-trending-radar/docs/codemem-tisty-olympus-guaca-selection-faq.md','workshops/github-trending-radar/docs/codemem-tisty-olympus-guaca-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r21-r621-codemem-tisty-olympus-guaca.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r621File),'utf8');
+      assert.ok(txt.includes('3,280.00')&&txt.includes('4,050.00')&&txt.includes('7,330.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('7,025.00')&&txt.includes('95.84%')&&txt.includes('not_measured'),r621File+': contains exact 11-21 R21 R621 codemem+tisty+olympus+guaca closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
