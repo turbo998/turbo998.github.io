@@ -8497,6 +8497,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r707File),'utf8');
       assert.ok(txt.includes('3,980.00')&&txt.includes('4,350.00')&&txt.includes('8,330.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,020.00')&&txt.includes('96.28%')&&txt.includes('not_measured'),r707File+': contains exact 11-21 R107 R707 xiyansql+pgops+kingdeemcp+pfsensemcp closed-form parameters');
     }
+    // 2026-11-21 Night Round 108 (R708: fidetolabs/qanat + noskillish/bankmcp + Oft3r/agentic-trading-desk + razorpay/razorpay-mcp-server) verification
+    const r708PathA=4040.00+43.5*100.00;
+    assert.equal(r708PathA.toFixed(2),'8390.00','11-21 R108 R708 Path A total');
+    const r708PathC=70.00+2.4*100.00;
+    assert.equal(r708PathC.toFixed(2),'310.00','11-21 R108 R708 Path C total');
+    assert.equal((r708PathA-r708PathC).toFixed(2),'8080.00','11-21 R108 R708 savings vs Path A');
+    assert.equal(((r708PathA-r708PathC)/r708PathA*100).toFixed(2),'96.31','11-21 R108 R708 pct savings vs Path A');
+    for(const r708File of ['workshops/github-trending-radar/docs/qanat-bankmcp-agentic-trading-desk-razorpay-mcp-selection-faq.md','workshops/github-trending-radar/docs/qanat-bankmcp-agentic-trading-desk-razorpay-mcp-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r108-r708-qanat-bankmcp-tradingdesk-razorpaymcp.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r708File),'utf8');
+      assert.ok(txt.includes('4,040.00')&&txt.includes('4,350.00')&&txt.includes('8,390.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,080.00')&&txt.includes('96.31%')&&txt.includes('not_measured'),r708File+': contains exact 11-21 R108 R708 qanat+bankmcp+tradingdesk+razorpaymcp closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
