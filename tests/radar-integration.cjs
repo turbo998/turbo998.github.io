@@ -8222,6 +8222,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r682File),'utf8');
       assert.ok(txt.includes('3,860.00')&&txt.includes('4,350.00')&&txt.includes('8,210.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('7,905.00')&&txt.includes('96.29%')&&txt.includes('not_measured'),r682File+': contains exact 11-21 R82 R682 laddr+privacyskills+lspkit+lucarne closed-form parameters');
     }
+    // 2026-11-21 Night Round 83 (R683: railwayapp/railway-skills + manthanguptaa/water + palico-ai/palico-ai + akin-ozer/cc-devops-skills) verification
+    const r683PathA=3920.00+43.5*100.00;
+    assert.equal(r683PathA.toFixed(2),'8270.00','11-21 R83 R683 Path A total');
+    const r683PathC=70.00+2.4*100.00;
+    assert.equal(r683PathC.toFixed(2),'310.00','11-21 R83 R683 Path C total');
+    assert.equal((r683PathA-r683PathC).toFixed(2),'7960.00','11-21 R83 R683 savings vs Path A');
+    assert.equal(((r683PathA-r683PathC)/r683PathA*100).toFixed(2),'96.25','11-21 R83 R683 pct savings vs Path A');
+    for(const r683File of ['workshops/github-trending-radar/docs/railway-skills-water-palico-ai-cc-devops-skills-selection-faq.md','workshops/github-trending-radar/docs/railway-skills-water-palico-ai-cc-devops-skills-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r83-r683-railwayskills-water-palicoai-ccdevopsskills.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r683File),'utf8');
+      assert.ok(txt.includes('3,920.00')&&txt.includes('4,350.00')&&txt.includes('8,270.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('7,960.00')&&txt.includes('96.25%')&&txt.includes('not_measured'),r683File+': contains exact 11-21 R83 R683 railwayskills+water+palicoai+ccdevopsskills closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
