@@ -8431,6 +8431,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r701File),'utf8');
       assert.ok(txt.includes('4,020.00')&&txt.includes('4,350.00')&&txt.includes('8,370.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,060.00')&&txt.includes('96.30%')&&txt.includes('not_measured'),r701File+': contains exact 11-21 R101 R701 busbar+traceloophub+aisix+node9proxy closed-form parameters');
     }
+    // 2026-11-21 Night Round 102 (R702: joshuaswarren/remnic + redpanda-data/protoc-gen-go-mcp + ozgurcd/gograph + kooshi/SharpToolsMCP) verification
+    const r702PathA=3890.00+43.0*100.00;
+    assert.equal(r702PathA.toFixed(2),'8190.00','11-21 R102 R702 Path A total');
+    const r702PathC=65.00+2.4*100.00;
+    assert.equal(r702PathC.toFixed(2),'305.00','11-21 R102 R702 Path C total');
+    assert.equal((r702PathA-r702PathC).toFixed(2),'7885.00','11-21 R102 R702 savings vs Path A');
+    assert.equal(((r702PathA-r702PathC)/r702PathA*100).toFixed(2),'96.28','11-21 R102 R702 pct savings vs Path A');
+    for(const r702File of ['workshops/github-trending-radar/docs/remnic-protoc-gen-go-mcp-gograph-sharptoolsmcp-selection-faq.md','workshops/github-trending-radar/docs/remnic-protoc-gen-go-mcp-gograph-sharptoolsmcp-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r102-r702-remnic-protocmcp-gograph-sharptools.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r702File),'utf8');
+      assert.ok(txt.includes('3,890.00')&&txt.includes('4,300.00')&&txt.includes('8,190.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('7,885.00')&&txt.includes('96.28%')&&txt.includes('not_measured'),r702File+': contains exact 11-21 R102 R702 remnic+protocmcp+gograph+sharptools closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
