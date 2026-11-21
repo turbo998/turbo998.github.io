@@ -8640,6 +8640,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r720File),'utf8');
       assert.ok(txt.includes('4,100.00')&&txt.includes('4,400.00')&&txt.includes('8,500.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,190.00')&&txt.includes('96.35%')&&txt.includes('not_measured'),r720File+': contains exact 11-21 R120 R720 loomic+twitcanva+penshot+drawio2go closed-form parameters');
     }
+    // 2026-11-21 Night Round 121 (R721: peintune/runjam + matank001/clodfarm + directionally-local/autopilot + dwmkerr/terminal-ai) verification
+    const r721PathA=3950.00+43.5*100.00;
+    assert.equal(r721PathA.toFixed(2),'8300.00','11-21 R121 R721 Path A total');
+    const r721PathC=65.00+2.4*100.00;
+    assert.equal(r721PathC.toFixed(2),'305.00','11-21 R121 R721 Path C total');
+    assert.equal((r721PathA-r721PathC).toFixed(2),'7995.00','11-21 R121 R721 savings vs Path A');
+    assert.equal(((r721PathA-r721PathC)/r721PathA*100).toFixed(2),'96.33','11-21 R121 R721 pct savings vs Path A');
+    for(const r721File of ['workshops/github-trending-radar/docs/runjam-clodfarm-autopilot-terminal-ai-selection-faq.md','workshops/github-trending-radar/docs/runjam-clodfarm-autopilot-terminal-ai-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r121-r721-runjam-clodfarm-autopilot-terminalai.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r721File),'utf8');
+      assert.ok(txt.includes('3,950.00')&&txt.includes('4,350.00')&&txt.includes('8,300.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('7,995.00')&&txt.includes('96.33%')&&txt.includes('not_measured'),r721File+': contains exact 11-21 R121 R721 runjam+clodfarm+autopilot+terminalai closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
