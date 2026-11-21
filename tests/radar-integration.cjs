@@ -8453,6 +8453,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r703File),'utf8');
       assert.ok(txt.includes('4,010.00')&&txt.includes('4,350.00')&&txt.includes('8,360.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,050.00')&&txt.includes('96.29%')&&txt.includes('not_measured'),r703File+': contains exact 11-21 R103 R703 forge+lmeterx+txcript+sortie closed-form parameters');
     }
+    // 2026-11-21 Night Round 104 (R704: doorman-dev/doorman + LianjiaTech/bella-openapi + inference-gateway/inference-gateway + nyroway/nyro) verification
+    const r704PathA=4050.00+44.0*100.00;
+    assert.equal(r704PathA.toFixed(2),'8450.00','11-21 R104 R704 Path A total');
+    const r704PathC=70.00+2.4*100.00;
+    assert.equal(r704PathC.toFixed(2),'310.00','11-21 R104 R704 Path C total');
+    assert.equal((r704PathA-r704PathC).toFixed(2),'8140.00','11-21 R104 R704 savings vs Path A');
+    assert.equal(((r704PathA-r704PathC)/r704PathA*100).toFixed(2),'96.33','11-21 R104 R704 pct savings vs Path A');
+    for(const r704File of ['workshops/github-trending-radar/docs/doorman-bella-openapi-inference-gateway-nyro-selection-faq.md','workshops/github-trending-radar/docs/doorman-bella-openapi-inference-gateway-nyro-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r104-r704-doorman-bellaopenapi-inferencegw-nyro.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r704File),'utf8');
+      assert.ok(txt.includes('4,050.00')&&txt.includes('4,400.00')&&txt.includes('8,450.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,140.00')&&txt.includes('96.33%')&&txt.includes('not_measured'),r704File+': contains exact 11-21 R104 R704 doorman+bellaopenapi+inferencegw+nyro closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
