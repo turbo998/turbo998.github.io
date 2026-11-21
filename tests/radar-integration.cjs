@@ -8244,6 +8244,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r684File),'utf8');
       assert.ok(txt.includes('3,960.00')&&txt.includes('4,400.00')&&txt.includes('8,360.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,050.00')&&txt.includes('96.29%')&&txt.includes('not_measured'),r684File+': contains exact 11-21 R84 R684 dalm+marcodeepresearch+lawglance+ctxgenerator closed-form parameters');
     }
+    // 2026-11-21 Night Round 85 (R685 Milestone: Google-Cloud-AI/agent-platform + vargHQ/sdk + FavioVazquez/showtime + vibe-log/vibe-log-cli) verification
+    const r685PathA=4020.00+44.0*100.00;
+    assert.equal(r685PathA.toFixed(2),'8420.00','11-21 R85 R685 Path A total');
+    const r685PathC=70.00+2.4*100.00;
+    assert.equal(r685PathC.toFixed(2),'310.00','11-21 R85 R685 Path C total');
+    assert.equal((r685PathA-r685PathC).toFixed(2),'8110.00','11-21 R85 R685 savings vs Path A');
+    assert.equal(((r685PathA-r685PathC)/r685PathA*100).toFixed(2),'96.32','11-21 R85 R685 pct savings vs Path A');
+    for(const r685File of ['workshops/github-trending-radar/docs/gcp-agent-platform-varg-sdk-showtime-vibe-log-cli-selection-faq.md','workshops/github-trending-radar/docs/gcp-agent-platform-varg-sdk-showtime-vibe-log-cli-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r85-r685-gcpagentplatform-vargsdk-showtime-vibelogcli.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r685File),'utf8');
+      assert.ok(txt.includes('4,020.00')&&txt.includes('4,400.00')&&txt.includes('8,420.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,110.00')&&txt.includes('96.32%')&&txt.includes('not_measured'),r685File+': contains exact 11-21 R85 R685 gcpagentplatform+vargsdk+showtime+vibelogcli closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
