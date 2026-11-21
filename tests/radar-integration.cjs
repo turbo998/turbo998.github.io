@@ -8739,6 +8739,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r729File),'utf8');
       assert.ok(txt.includes('3,970.00')&&txt.includes('4,350.00')&&txt.includes('8,320.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('8,015.00')&&txt.includes('96.33%')&&txt.includes('not_measured'),r729File+': contains exact 11-21 R129 R729 illustrator+inkscape+comfypilot+mermaid closed-form parameters');
     }
+    // 2026-11-21 Night Round 130 (R730 Milestone: coco-research/coco + metadist/synaplan-desktop + OdradekAI/bundles-forge + diegosouzapw/awesome-omni-skills) verification
+    const r730PathA=4050.00+44.0*100.00;
+    assert.equal(r730PathA.toFixed(2),'8450.00','11-21 R130 R730 Path A total');
+    const r730PathC=65.00+2.4*100.00;
+    assert.equal(r730PathC.toFixed(2),'305.00','11-21 R130 R730 Path C total');
+    assert.equal((r730PathA-r730PathC).toFixed(2),'8145.00','11-21 R130 R730 savings vs Path A');
+    assert.equal(((r730PathA-r730PathC)/r730PathA*100).toFixed(2),'96.39','11-21 R130 R730 pct savings vs Path A');
+    for(const r730File of ['workshops/github-trending-radar/docs/coco-synaplan-desktop-bundles-forge-omni-skills-selection-faq.md','workshops/github-trending-radar/docs/coco-synaplan-desktop-bundles-forge-omni-skills-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r130-r730-coco-synaplan-bundlesforge-omniskills.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r730File),'utf8');
+      assert.ok(txt.includes('4,050.00')&&txt.includes('4,400.00')&&txt.includes('8,450.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('8,145.00')&&txt.includes('96.39%')&&txt.includes('not_measured'),r730File+': contains exact 11-21 R130 R730 coco+synaplan+bundlesforge+omniskills closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
