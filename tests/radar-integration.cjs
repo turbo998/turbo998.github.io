@@ -8794,6 +8794,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r734File),'utf8');
       assert.ok(txt.includes('3,930.00')&&txt.includes('4,350.00')&&txt.includes('8,280.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('7,975.00')&&txt.includes('96.32%')&&txt.includes('not_measured'),r734File+': contains exact 11-21 R134 R734 obsidian+shockwave+ytdlp+semanticscholar closed-form parameters');
     }
+    // 2026-11-21 Night Round 135 (R735 Milestone: shaun0927/openchrome + KOBA789/human-in-the-loop + 0xeb/fastmcpp + awakenworks/awaken) verification
+    const r735PathA=4090.00+44.0*100.00;
+    assert.equal(r735PathA.toFixed(2),'8490.00','11-21 R135 R735 Path A total');
+    const r735PathC=70.00+2.4*100.00;
+    assert.equal(r735PathC.toFixed(2),'310.00','11-21 R135 R735 Path C total');
+    assert.equal((r735PathA-r735PathC).toFixed(2),'8180.00','11-21 R135 R735 savings vs Path A');
+    assert.equal(((r735PathA-r735PathC)/r735PathA*100).toFixed(2),'96.35','11-21 R135 R735 pct savings vs Path A');
+    for(const r735File of ['workshops/github-trending-radar/docs/openchrome-human-in-the-loop-fastmcpp-awaken-selection-faq.md','workshops/github-trending-radar/docs/openchrome-human-in-the-loop-fastmcpp-awaken-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r135-r735-openchrome-hitl-fastmcpp-awaken.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r735File),'utf8');
+      assert.ok(txt.includes('4,090.00')&&txt.includes('4,400.00')&&txt.includes('8,490.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,180.00')&&txt.includes('96.35%')&&txt.includes('not_measured'),r735File+': contains exact 11-21 R135 R735 openchrome+hitl+fastmcpp+awaken closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
