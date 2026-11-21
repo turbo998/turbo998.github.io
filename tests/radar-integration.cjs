@@ -7463,6 +7463,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r613File),'utf8');
       assert.ok(txt.includes('3,300.00')&&txt.includes('4,100.00')&&txt.includes('7,400.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('7,095.00')&&txt.includes('95.88%')&&txt.includes('not_measured'),r613File+': contains exact 11-21 R13 R613 devprojex+tzero+typegraph+memtomem closed-form parameters');
     }
+    // 2026-11-21 Day Round 14 (R614: OyadotAI/oya-browser + M4F-S/gomaa + timurgaleev/memrain + madebyzan/knovum) verification
+    const r614PathA=3480.00+42.0*100.00;
+    assert.equal(r614PathA.toFixed(2),'7680.00','11-21 R14 R614 Path A total');
+    const r614PathC=80.00+2.5*100.00;
+    assert.equal(r614PathC.toFixed(2),'330.00','11-21 R14 R614 Path C total');
+    assert.equal((r614PathA-r614PathC).toFixed(2),'7350.00','11-21 R14 R614 savings vs Path A');
+    assert.equal(((r614PathA-r614PathC)/r614PathA*100).toFixed(2),'95.70','11-21 R14 R614 pct savings vs Path A');
+    for(const r614File of ['workshops/github-trending-radar/docs/oya-browser-gomaa-memrain-knovum-selection-faq.md','workshops/github-trending-radar/docs/oya-browser-gomaa-memrain-knovum-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r14-r614-oyabrowser-gomaa-memrain-knovum.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r614File),'utf8');
+      assert.ok(txt.includes('3,480.00')&&txt.includes('4,200.00')&&txt.includes('7,680.00')&&txt.includes('80.00')&&txt.includes('250.00')&&txt.includes('330.00')&&txt.includes('7,350.00')&&txt.includes('95.70%')&&txt.includes('not_measured'),r614File+': contains exact 11-21 R14 R614 oyabrowser+gomaa+memrain+knovum closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
