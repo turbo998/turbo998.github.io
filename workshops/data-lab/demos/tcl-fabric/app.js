@@ -697,7 +697,7 @@ FILTER(
         <text x="48" y="190" fill="#6ee7b7" font-size="11" font-family="monospace">fact_sell_out_transactions (6,624 rows)</text>
 
         <rect x="36" y="212" width="284" height="48" rx="8" fill="#090d16" stroke="#334155" />
-        <text x="48" y="233" fill="#f8fafc" font-size="12" font-weight="700">Azure ADLS Gen2 · st-tcl-channel-edi-demo</text>
+        <text x="48" y="233" fill="#f8fafc" font-size="12" font-weight="700">Azure ADLS Gen2 · sttclchanneledidemo</text>
         <text x="48" y="250" fill="#93c5fd" font-size="11" font-family="monospace">Files/external_partner_edi_drop (DFS Shortcut)</text>
 
         <!-- Zero-Copy Shortcut Arrows -->
