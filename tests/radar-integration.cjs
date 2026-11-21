@@ -8024,6 +8024,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r664File),'utf8');
       assert.ok(txt.includes('4,040.00')&&txt.includes('4,450.00')&&txt.includes('8,490.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,180.00')&&txt.includes('96.35%')&&txt.includes('not_measured'),r664File+': contains exact 11-21 R64 R664 statspai+naturesearch+medsciskills+marvis closed-form parameters');
     }
+    // 2026-11-21 Day Round 65 (R665: salitronic/eda-agent + devforth/adminforth + SLEEPYBQ/MemoSync + modelstudioai/cli) verification
+    const r665PathA=3990.00+44.0*100.00;
+    assert.equal(r665PathA.toFixed(2),'8390.00','11-21 R65 R665 Path A total');
+    const r665PathC=75.00+2.5*100.00;
+    assert.equal(r665PathC.toFixed(2),'325.00','11-21 R65 R665 Path C total');
+    assert.equal((r665PathA-r665PathC).toFixed(2),'8065.00','11-21 R65 R665 savings vs Path A');
+    assert.equal(((r665PathA-r665PathC)/r665PathA*100).toFixed(2),'96.13','11-21 R65 R665 pct savings vs Path A');
+    for(const r665File of ['workshops/github-trending-radar/docs/eda-agent-adminforth-memosync-modelstudio-cli-selection-faq.md','workshops/github-trending-radar/docs/eda-agent-adminforth-memosync-modelstudio-cli-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r65-r665-edaagent-adminforth-memosync-bailiancli.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r665File),'utf8');
+      assert.ok(txt.includes('3,990.00')&&txt.includes('4,400.00')&&txt.includes('8,390.00')&&txt.includes('75.00')&&txt.includes('250.00')&&txt.includes('325.00')&&txt.includes('8,065.00')&&txt.includes('96.13%')&&txt.includes('not_measured'),r665File+': contains exact 11-21 R65 R665 edaagent+adminforth+memosync+bailiancli closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
