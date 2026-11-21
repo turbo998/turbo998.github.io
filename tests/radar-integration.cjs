@@ -8145,6 +8145,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r675File),'utf8');
       assert.ok(txt.includes('3,910.00')&&txt.includes('4,350.00')&&txt.includes('8,260.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('7,950.00')&&txt.includes('96.25%')&&txt.includes('not_measured'),r675File+': contains exact 11-21 R75 R675 blaveagent+camoufoxcli+unifimcp+hassmcp closed-form parameters');
     }
+    // 2026-11-21 Day Round 76 (R676: xiajiajun516/dsh-config-manager + TsinHzl/kiro2cc-proxy + hi0001234d/nexpath + Kohei-Wada/taskdog) verification
+    const r676PathA=3840.00+43.0*100.00;
+    assert.equal(r676PathA.toFixed(2),'8140.00','11-21 R76 R676 Path A total');
+    const r676PathC=65.00+2.4*100.00;
+    assert.equal(r676PathC.toFixed(2),'305.00','11-21 R76 R676 Path C total');
+    assert.equal((r676PathA-r676PathC).toFixed(2),'7835.00','11-21 R76 R676 savings vs Path A');
+    assert.equal(((r676PathA-r676PathC)/r676PathA*100).toFixed(2),'96.25','11-21 R76 R676 pct savings vs Path A');
+    for(const r676File of ['workshops/github-trending-radar/docs/dsh-config-manager-kiro2cc-proxy-nexpath-taskdog-selection-faq.md','workshops/github-trending-radar/docs/dsh-config-manager-kiro2cc-proxy-nexpath-taskdog-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r76-r676-dshconfig-kiro2cc-nexpath-taskdog.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r676File),'utf8');
+      assert.ok(txt.includes('3,840.00')&&txt.includes('4,300.00')&&txt.includes('8,140.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('7,835.00')&&txt.includes('96.25%')&&txt.includes('not_measured'),r676File+': contains exact 11-21 R76 R676 dshconfig+kiro2cc+nexpath+taskdog closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
