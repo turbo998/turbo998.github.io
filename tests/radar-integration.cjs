@@ -7386,6 +7386,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r606File),'utf8');
       assert.ok(txt.includes('3,180.00')&&txt.includes('4,050.00')&&txt.includes('7,230.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('6,920.00')&&txt.includes('95.71%')&&txt.includes('not_measured'),r606File+': contains exact 11-21 R6 R606 answerloops+sutura+sorftime+grimoire closed-form parameters');
     }
+    // 2026-11-21 Day Round 7 (R607: docling-project/docling.rs + thomas-villani/all2md + gmickel/gno + MarcelRoozekrans/Rag.NET) verification
+    const r607PathA=3320.00+41.5*100.00;
+    assert.equal(r607PathA.toFixed(2),'7470.00','11-21 R7 R607 Path A total');
+    const r607PathC=70.00+2.4*100.00;
+    assert.equal(r607PathC.toFixed(2),'310.00','11-21 R7 R607 Path C total');
+    assert.equal((r607PathA-r607PathC).toFixed(2),'7160.00','11-21 R7 R607 savings vs Path A');
+    assert.equal(((r607PathA-r607PathC)/r607PathA*100).toFixed(2),'95.85','11-21 R7 R607 pct savings vs Path A');
+    for(const r607File of ['workshops/github-trending-radar/docs/docling-rs-all2md-gno-rag-net-selection-faq.md','workshops/github-trending-radar/docs/docling-rs-all2md-gno-rag-net-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r7-r607-doclingrs-all2md-gno-ragnet.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r607File),'utf8');
+      assert.ok(txt.includes('3,320.00')&&txt.includes('4,150.00')&&txt.includes('7,470.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('7,160.00')&&txt.includes('95.85%')&&txt.includes('not_measured'),r607File+': contains exact 11-21 R7 R607 doclingrs+all2md+gno+ragnet closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
