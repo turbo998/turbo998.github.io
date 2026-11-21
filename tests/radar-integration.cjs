@@ -8178,6 +8178,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r678File),'utf8');
       assert.ok(txt.includes('3,890.00')&&txt.includes('4,350.00')&&txt.includes('8,240.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('7,935.00')&&txt.includes('96.30%')&&txt.includes('not_measured'),r678File+': contains exact 11-21 R78 R678 h1brain+radare2mcp+puterbuilder+jacobian closed-form parameters');
     }
+    // 2026-11-21 Day Round 79 (R679: automagik-si/genie + fitchmultz/pi-cursor-sdk + SirAllap/agentglass + cvhariharan/flowctl) verification
+    const r679PathA=3930.00+43.5*100.00;
+    assert.equal(r679PathA.toFixed(2),'8280.00','11-21 R79 R679 Path A total');
+    const r679PathC=70.00+2.4*100.00;
+    assert.equal(r679PathC.toFixed(2),'310.00','11-21 R79 R679 Path C total');
+    assert.equal((r679PathA-r679PathC).toFixed(2),'7970.00','11-21 R79 R679 savings vs Path A');
+    assert.equal(((r679PathA-r679PathC)/r679PathA*100).toFixed(2),'96.26','11-21 R79 R679 pct savings vs Path A');
+    for(const r679File of ['workshops/github-trending-radar/docs/genie-pi-cursor-sdk-agentglass-flowctl-selection-faq.md','workshops/github-trending-radar/docs/genie-pi-cursor-sdk-agentglass-flowctl-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r79-r679-genie-picursorsdk-agentglass-flowctl.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r679File),'utf8');
+      assert.ok(txt.includes('3,930.00')&&txt.includes('4,350.00')&&txt.includes('8,280.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('7,970.00')&&txt.includes('96.26%')&&txt.includes('not_measured'),r679File+': contains exact 11-21 R79 R679 genie+picursorsdk+agentglass+flowctl closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
