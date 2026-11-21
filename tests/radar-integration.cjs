@@ -7738,6 +7738,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r638File),'utf8');
       assert.ok(txt.includes('3,460.00')&&txt.includes('4,150.00')&&txt.includes('7,610.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('7,305.00')&&txt.includes('95.99%')&&txt.includes('not_measured'),r638File+': contains exact 11-21 R38 R638 phoneforai+browsercopilot+deepread+dshguide closed-form parameters');
     }
+    // 2026-11-21 Day Round 39 (R639: Fazmin/AILearningGuide + Always-On-Intelligence/awesome-always-on-personal-intelligence + abordage/awesome-mcp + Kinprove/genealogy-research-recipes) verification
+    const r639PathA=3580.00+42.0*100.00;
+    assert.equal(r639PathA.toFixed(2),'7780.00','11-21 R39 R639 Path A total');
+    const r639PathC=65.00+2.4*100.00;
+    assert.equal(r639PathC.toFixed(2),'305.00','11-21 R39 R639 Path C total');
+    assert.equal((r639PathA-r639PathC).toFixed(2),'7475.00','11-21 R39 R639 savings vs Path A');
+    assert.equal(((r639PathA-r639PathC)/r639PathA*100).toFixed(2),'96.08','11-21 R39 R639 pct savings vs Path A');
+    for(const r639File of ['workshops/github-trending-radar/docs/ai-learning-guide-always-on-awesome-mcp-genealogy-recipes-selection-faq.md','workshops/github-trending-radar/docs/ai-learning-guide-always-on-awesome-mcp-genealogy-recipes-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r39-r639-ailearningguide-alwayson-awesomcp-kinprove.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r639File),'utf8');
+      assert.ok(txt.includes('3,580.00')&&txt.includes('4,200.00')&&txt.includes('7,780.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('7,475.00')&&txt.includes('96.08%')&&txt.includes('not_measured'),r639File+': contains exact 11-21 R39 R639 ailearningguide+alwayson+awesomemcp+kinprove closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
