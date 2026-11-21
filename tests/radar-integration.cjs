@@ -7925,6 +7925,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r655File),'utf8');
       assert.ok(txt.includes('4,020.00')&&txt.includes('4,450.00')&&txt.includes('8,470.00')&&txt.includes('80.00')&&txt.includes('250.00')&&txt.includes('330.00')&&txt.includes('8,140.00')&&txt.includes('96.10%')&&txt.includes('not_measured'),r655File+': contains exact 11-21 R55 R655 openscience+pinvou+agenticos+mcpgateway closed-form parameters');
     }
+    // 2026-11-21 Day Round 56 (R656: HexRaysSA/ida-mcp + duty1g/x64dbg-mcp-server + Aletheore/Aletheore + MicTx/spec-harness) verification
+    const r656PathA=3860.00+43.5*100.00;
+    assert.equal(r656PathA.toFixed(2),'8210.00','11-21 R56 R656 Path A total');
+    const r656PathC=70.00+2.4*100.00;
+    assert.equal(r656PathC.toFixed(2),'310.00','11-21 R56 R656 Path C total');
+    assert.equal((r656PathA-r656PathC).toFixed(2),'7900.00','11-21 R56 R656 savings vs Path A');
+    assert.equal(((r656PathA-r656PathC)/r656PathA*100).toFixed(2),'96.22','11-21 R56 R656 pct savings vs Path A');
+    for(const r656File of ['workshops/github-trending-radar/docs/ida-mcp-x64dbg-mcp-aletheore-spec-harness-selection-faq.md','workshops/github-trending-radar/docs/ida-mcp-x64dbg-mcp-aletheore-spec-harness-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r56-r656-idamcp-x64dbgmcp-aletheore-specharness.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r656File),'utf8');
+      assert.ok(txt.includes('3,860.00')&&txt.includes('4,350.00')&&txt.includes('8,210.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('7,900.00')&&txt.includes('96.22%')&&txt.includes('not_measured'),r656File+': contains exact 11-21 R56 R656 idamcp+x64dbgmcp+aletheore+specharness closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
