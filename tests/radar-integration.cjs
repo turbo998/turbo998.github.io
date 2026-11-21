@@ -7958,6 +7958,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r658File),'utf8');
       assert.ok(txt.includes('3,910.00')&&txt.includes('4,350.00')&&txt.includes('8,260.00')&&txt.includes('75.00')&&txt.includes('240.00')&&txt.includes('315.00')&&txt.includes('7,945.00')&&txt.includes('96.19%')&&txt.includes('not_measured'),r658File+': contains exact 11-21 R58 R658 scenarioblender+aseprite+awwwardsmcp+vibecurb closed-form parameters');
     }
+    // 2026-11-21 Day Round 59 (R659: Swayingleaves/novanova-studio + rizqinrr/viserys-agent + openJiuwen-ai/iCode + openvetta/open-vetta) verification
+    const r659PathA=3890.00+43.0*100.00;
+    assert.equal(r659PathA.toFixed(2),'8190.00','11-21 R59 R659 Path A total');
+    const r659PathC=70.00+2.4*100.00;
+    assert.equal(r659PathC.toFixed(2),'310.00','11-21 R59 R659 Path C total');
+    assert.equal((r659PathA-r659PathC).toFixed(2),'7880.00','11-21 R59 R659 savings vs Path A');
+    assert.equal(((r659PathA-r659PathC)/r659PathA*100).toFixed(2),'96.21','11-21 R59 R659 pct savings vs Path A');
+    for(const r659File of ['workshops/github-trending-radar/docs/novanova-studio-viserys-agent-icode-open-vetta-selection-faq.md','workshops/github-trending-radar/docs/novanova-studio-viserys-agent-icode-open-vetta-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r59-r659-novanova-viserys-icode-openvetta.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r659File),'utf8');
+      assert.ok(txt.includes('3,890.00')&&txt.includes('4,300.00')&&txt.includes('8,190.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('7,880.00')&&txt.includes('96.21%')&&txt.includes('not_measured'),r659File+': contains exact 11-21 R59 R659 novanova+viserys+icode+openvetta closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
