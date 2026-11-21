@@ -7485,6 +7485,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r615File),'utf8');
       assert.ok(txt.includes('3,520.00')&&txt.includes('4,250.00')&&txt.includes('7,770.00')&&txt.includes('80.00')&&txt.includes('250.00')&&txt.includes('330.00')&&txt.includes('7,440.00')&&txt.includes('95.75%')&&txt.includes('not_measured'),r615File+': contains exact 11-21 R15 R615 agentenv+dragonai+generalbots+ihuiai closed-form parameters');
     }
+    // 2026-11-21 Day Round 16 (R616: marcusquinn/aidevops + Kangentic/kangentic + dmae97/omk + rimio-ai/rimz) verification
+    const r616PathA=3390.00+41.5*100.00;
+    assert.equal(r616PathA.toFixed(2),'7540.00','11-21 R16 R616 Path A total');
+    const r616PathC=75.00+2.4*100.00;
+    assert.equal(r616PathC.toFixed(2),'315.00','11-21 R16 R616 Path C total');
+    assert.equal((r616PathA-r616PathC).toFixed(2),'7225.00','11-21 R16 R616 savings vs Path A');
+    assert.equal(((r616PathA-r616PathC)/r616PathA*100).toFixed(2),'95.82','11-21 R16 R616 pct savings vs Path A');
+    for(const r616File of ['workshops/github-trending-radar/docs/aidevops-kangentic-omk-rimz-selection-faq.md','workshops/github-trending-radar/docs/aidevops-kangentic-omk-rimz-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r16-r616-aidevops-kangentic-omk-rimz.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r616File),'utf8');
+      assert.ok(txt.includes('3,390.00')&&txt.includes('4,150.00')&&txt.includes('7,540.00')&&txt.includes('75.00')&&txt.includes('240.00')&&txt.includes('315.00')&&txt.includes('7,225.00')&&txt.includes('95.82%')&&txt.includes('not_measured'),r616File+': contains exact 11-21 R16 R616 aidevops+kangentic+omk+rimz closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
