@@ -7562,6 +7562,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r622File),'utf8');
       assert.ok(txt.includes('3,350.00')&&txt.includes('4,100.00')&&txt.includes('7,450.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('7,145.00')&&txt.includes('95.91%')&&txt.includes('not_measured'),r622File+': contains exact 11-21 R22 R622 navidrome+scrivener+discord+tweetkit closed-form parameters');
     }
+    // 2026-11-21 Day Round 23 (R623: hivecommons/hive + Invariant0x/hornhoof + starslingdev/skills + GustavoBaranda/chatflow-agent) verification
+    const r623PathA=3490.00+41.5*100.00;
+    assert.equal(r623PathA.toFixed(2),'7640.00','11-21 R23 R623 Path A total');
+    const r623PathC=70.00+2.4*100.00;
+    assert.equal(r623PathC.toFixed(2),'310.00','11-21 R23 R623 Path C total');
+    assert.equal((r623PathA-r623PathC).toFixed(2),'7330.00','11-21 R23 R623 savings vs Path A');
+    assert.equal(((r623PathA-r623PathC)/r623PathA*100).toFixed(2),'95.94','11-21 R23 R623 pct savings vs Path A');
+    for(const r623File of ['workshops/github-trending-radar/docs/hive-hornhoof-starsling-skills-chatflow-agent-selection-faq.md','workshops/github-trending-radar/docs/hive-hornhoof-starsling-skills-chatflow-agent-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r23-r623-hive-hornhoof-starsling-chatflow.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r623File),'utf8');
+      assert.ok(txt.includes('3,490.00')&&txt.includes('4,150.00')&&txt.includes('7,640.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('7,330.00')&&txt.includes('95.94%')&&txt.includes('not_measured'),r623File+': contains exact 11-21 R23 R623 hive+hornhoof+starsling+chatflow closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
