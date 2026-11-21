@@ -7716,6 +7716,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r636File),'utf8');
       assert.ok(txt.includes('3,520.00')&&txt.includes('4,200.00')&&txt.includes('7,720.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('7,410.00')&&txt.includes('95.98%')&&txt.includes('not_measured'),r636File+': contains exact 11-21 R36 R636 suedeskills+melodicplugins+servonaut+parsentry closed-form parameters');
     }
+    // 2026-11-21 Day Round 37 (R637: DataZooDE/flapi + keithrbennett/cov-loupe + jsmestad/minga + ailev/FPF) verification
+    const r637PathA=3660.00+42.5*100.00;
+    assert.equal(r637PathA.toFixed(2),'7910.00','11-21 R37 R637 Path A total');
+    const r637PathC=75.00+2.4*100.00;
+    assert.equal(r637PathC.toFixed(2),'315.00','11-21 R37 R637 Path C total');
+    assert.equal((r637PathA-r637PathC).toFixed(2),'7595.00','11-21 R37 R637 savings vs Path A');
+    assert.equal(((r637PathA-r637PathC)/r637PathA*100).toFixed(2),'96.02','11-21 R37 R637 pct savings vs Path A');
+    for(const r637File of ['workshops/github-trending-radar/docs/flapi-cov-loupe-minga-fpf-selection-faq.md','workshops/github-trending-radar/docs/flapi-cov-loupe-minga-fpf-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r37-r637-flapi-covloupe-minga-fpf.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r637File),'utf8');
+      assert.ok(txt.includes('3,660.00')&&txt.includes('4,250.00')&&txt.includes('7,910.00')&&txt.includes('75.00')&&txt.includes('240.00')&&txt.includes('315.00')&&txt.includes('7,595.00')&&txt.includes('96.02%')&&txt.includes('not_measured'),r637File+': contains exact 11-21 R37 R637 flapi+covloupe+minga+fpf closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
