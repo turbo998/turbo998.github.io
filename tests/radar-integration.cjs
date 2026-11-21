@@ -7859,6 +7859,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r649File),'utf8');
       assert.ok(txt.includes('3,850.00')&&txt.includes('4,300.00')&&txt.includes('8,150.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('7,845.00')&&txt.includes('96.26%')&&txt.includes('not_measured'),r649File+': contains exact 11-21 R49 R649 9routergo+seasagi+hermuse+awesomeaigateway closed-form parameters');
     }
+    // 2026-11-21 Day Round 50 (R650 Milestone: Oldcircle/geo-sleuth + punkpeye/awesome-remote-mcp-servers + SoMarkAI/OXR + ailinone/collective-intelligence) verification
+    const r650PathA=3920.00+44.0*100.00;
+    assert.equal(r650PathA.toFixed(2),'8320.00','11-21 R50 R650 Path A total');
+    const r650PathC=80.00+2.5*100.00;
+    assert.equal(r650PathC.toFixed(2),'330.00','11-21 R50 R650 Path C total');
+    assert.equal((r650PathA-r650PathC).toFixed(2),'7990.00','11-21 R50 R650 savings vs Path A');
+    assert.equal(((r650PathA-r650PathC)/r650PathA*100).toFixed(2),'96.03','11-21 R50 R650 pct savings vs Path A');
+    for(const r650File of ['workshops/github-trending-radar/docs/geo-sleuth-remote-mcp-somark-oxr-collective-intelligence-selection-faq.md','workshops/github-trending-radar/docs/geo-sleuth-remote-mcp-somark-oxr-collective-intelligence-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r50-r650-geosleuth-remotemcp-somarkoxr-ailin1.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r650File),'utf8');
+      assert.ok(txt.includes('3,920.00')&&txt.includes('4,400.00')&&txt.includes('8,320.00')&&txt.includes('80.00')&&txt.includes('250.00')&&txt.includes('330.00')&&txt.includes('7,990.00')&&txt.includes('96.03%')&&txt.includes('not_measured'),r650File+': contains exact 11-21 R50 R650 geosleuth+remotemcp+somarkoxr+ailin1 closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
