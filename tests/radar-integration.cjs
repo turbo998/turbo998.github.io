@@ -7419,6 +7419,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r609File),'utf8');
       assert.ok(txt.includes('3,380.00')&&txt.includes('4,150.00')&&txt.includes('7,530.00')&&txt.includes('75.00')&&txt.includes('240.00')&&txt.includes('315.00')&&txt.includes('7,215.00')&&txt.includes('95.82%')&&txt.includes('not_measured'),r609File+': contains exact 11-21 R9 R609 aisoftwarefactory+tianshu+forge+agentdeals closed-form parameters');
     }
+    // 2026-11-21 Day Round 10 (R610 Milestone: Cotal-AI/Cotal + Dicklesworthstone/mcp_agent_mail_rust + sweatco/archie-hq + evanl666/chiefofstaff) verification
+    const r610PathA=3440.00+42.0*100.00;
+    assert.equal(r610PathA.toFixed(2),'7640.00','11-21 R10 R610 Path A total');
+    const r610PathC=75.00+2.5*100.00;
+    assert.equal(r610PathC.toFixed(2),'325.00','11-21 R10 R610 Path C total');
+    assert.equal((r610PathA-r610PathC).toFixed(2),'7315.00','11-21 R10 R610 savings vs Path A');
+    assert.equal(((r610PathA-r610PathC)/r610PathA*100).toFixed(2),'95.75','11-21 R10 R610 pct savings vs Path A');
+    for(const r610File of ['workshops/github-trending-radar/docs/cotal-mcp-agent-mail-rust-archie-hq-chiefofstaff-selection-faq.md','workshops/github-trending-radar/docs/cotal-mcp-agent-mail-rust-archie-hq-chiefofstaff-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r10-r610-cotal-agentmailrust-archiehq-chiefofstaff.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r610File),'utf8');
+      assert.ok(txt.includes('3,440.00')&&txt.includes('4,200.00')&&txt.includes('7,640.00')&&txt.includes('75.00')&&txt.includes('250.00')&&txt.includes('325.00')&&txt.includes('7,315.00')&&txt.includes('95.75%')&&txt.includes('not_measured'),r610File+': contains exact 11-21 R10 R610 cotal+agentmailrust+archiehq+chiefofstaff closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
