@@ -7749,6 +7749,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r639File),'utf8');
       assert.ok(txt.includes('3,580.00')&&txt.includes('4,200.00')&&txt.includes('7,780.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('7,475.00')&&txt.includes('96.08%')&&txt.includes('not_measured'),r639File+': contains exact 11-21 R39 R639 ailearningguide+alwayson+awesomemcp+kinprove closed-form parameters');
     }
+    // 2026-11-21 Day Round 40 (R640 Milestone: respanai/respan-gateway + eliasbiondo/antirion + packyme/privacy-filter + btsouth/toolport) verification
+    const r640PathA=3720.00+43.0*100.00;
+    assert.equal(r640PathA.toFixed(2),'8020.00','11-21 R40 R640 Path A total');
+    const r640PathC=75.00+2.5*100.00;
+    assert.equal(r640PathC.toFixed(2),'325.00','11-21 R40 R640 Path C total');
+    assert.equal((r640PathA-r640PathC).toFixed(2),'7695.00','11-21 R40 R640 savings vs Path A');
+    assert.equal(((r640PathA-r640PathC)/r640PathA*100).toFixed(2),'95.95','11-21 R40 R640 pct savings vs Path A');
+    for(const r640File of ['workshops/github-trending-radar/docs/respan-gateway-antirion-privacy-filter-toolport-selection-faq.md','workshops/github-trending-radar/docs/respan-gateway-antirion-privacy-filter-toolport-selection-faq.en.md','assets/github-ai-radar-2026-11-21-r40-r640-respangateway-antirion-privacyfilter-toolport.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-21-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r640File),'utf8');
+      assert.ok(txt.includes('3,720.00')&&txt.includes('4,300.00')&&txt.includes('8,020.00')&&txt.includes('75.00')&&txt.includes('250.00')&&txt.includes('325.00')&&txt.includes('7,695.00')&&txt.includes('95.95%')&&txt.includes('not_measured'),r640File+': contains exact 11-21 R40 R640 respangateway+antirion+privacyfilter+toolport closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
