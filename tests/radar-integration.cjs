@@ -9282,6 +9282,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r778File),'utf8');
       assert.ok(txt.includes('4,570.00')&&txt.includes('4,600.00')&&txt.includes('9,170.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('8,865.00')&&txt.includes('96.67%')&&txt.includes('not_measured'),r778File+': contains exact 11-22 R42 R778 mcpmemory+ontology+cairn+procoder closed-form parameters');
     }
+    // 2026-11-22 Night Round 43 (R779: ZSeven-W/dsh-crew + Cassette-Editor/oh-my-cassette + GetBrew/growth-engineer + flyhero/antumi) verification
+    const r779PathA=4450.00+45.0*100.00;
+    assert.equal(r779PathA.toFixed(2),'8950.00','11-22 R43 R779 Path A total');
+    const r779PathC=65.00+2.4*100.00;
+    assert.equal(r779PathC.toFixed(2),'305.00','11-22 R43 R779 Path C total');
+    assert.equal((r779PathA-r779PathC).toFixed(2),'8645.00','11-22 R43 R779 savings vs Path A');
+    assert.equal(((r779PathA-r779PathC)/r779PathA*100).toFixed(2),'96.59','11-22 R43 R779 pct savings vs Path A');
+    for(const r779File of ['workshops/github-trending-radar/docs/dsh-crew-oh-my-cassette-growth-engineer-antumi-selection-faq.md','workshops/github-trending-radar/docs/dsh-crew-oh-my-cassette-growth-engineer-antumi-selection-faq.en.md','assets/github-ai-radar-2026-11-22-r43-r779-dshcrew-cassette-growthengineer-antumi.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-22-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r779File),'utf8');
+      assert.ok(txt.includes('4,450.00')&&txt.includes('4,500.00')&&txt.includes('8,950.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('8,645.00')&&txt.includes('96.59%')&&txt.includes('not_measured'),r779File+': contains exact 11-22 R43 R779 dshcrew+cassette+growthengineer+antumi closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
