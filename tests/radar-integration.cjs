@@ -9084,6 +9084,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r760File),'utf8');
       assert.ok(txt.includes('4,440.00')&&txt.includes('4,600.00')&&txt.includes('9,040.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,730.00')&&txt.includes('96.57%')&&txt.includes('not_measured'),r760File+': contains exact 11-22 R24 R760 gugu+peri+orbi+moneymatter closed-form parameters');
     }
+    // 2026-11-22 Night Round 25 (R761: HamSanders/soundbox + OWWZO/cute-agent + oratis/LISA + aliasmode/aliasmode) verification
+    const r761PathA=4390.00+45.0*100.00;
+    assert.equal(r761PathA.toFixed(2),'8890.00','11-22 R25 R761 Path A total');
+    const r761PathC=70.00+2.4*100.00;
+    assert.equal(r761PathC.toFixed(2),'310.00','11-22 R25 R761 Path C total');
+    assert.equal((r761PathA-r761PathC).toFixed(2),'8580.00','11-22 R25 R761 savings vs Path A');
+    assert.equal(((r761PathA-r761PathC)/r761PathA*100).toFixed(2),'96.51','11-22 R25 R761 pct savings vs Path A');
+    for(const r761File of ['workshops/github-trending-radar/docs/soundbox-cute-agent-lisa-aliasmode-selection-faq.md','workshops/github-trending-radar/docs/soundbox-cute-agent-lisa-aliasmode-selection-faq.en.md','assets/github-ai-radar-2026-11-22-r25-r761-soundbox-cuteagent-lisa-aliasmode.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-22-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r761File),'utf8');
+      assert.ok(txt.includes('4,390.00')&&txt.includes('4,500.00')&&txt.includes('8,890.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,580.00')&&txt.includes('96.51%')&&txt.includes('not_measured'),r761File+': contains exact 11-22 R25 R761 soundbox+cuteagent+lisa+aliasmode closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
