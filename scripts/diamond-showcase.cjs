@@ -7,7 +7,7 @@ const link = (label, url) => ({ label, url });
 function diamondResources(zh) {
   const tclUrl = `workshops/diamond-demos/tcl-fabric/index${zh ? '' : '.en'}.html`;
   const dbxUrl = `workshops/diamond-demos/databricks-fabric/index${zh ? '' : '.en'}.html`;
-  const vkgUrl = `workshops/diamond-demos/viking-cruise/index${zh ? '' : '.en'}.html`;
+  const gtrUrl = `workshops/diamond-demos/travel-retail-ops/index${zh ? '' : '.en'}.html`;
   const hubUrl = zh ? 'zh-diamond.html' : 'diamond.html';
   return [
     {
@@ -17,22 +17,22 @@ function diamondResources(zh) {
       stages: ['architecture', 'evaluation', 'demos', 'resources'],
       badge: ['DIAMOND LIVE DEMO CENTER', 'DIAMOND 企业级实战演示中心'],
       title: [
-        'Diamond Enterprise Live Demos · TCL · Zava · Viking Cruises · Fabric & Databricks',
-        'Diamond 企业级全真演示中心 · TCL · Zava · 维京游轮 · Microsoft Fabric & Databricks'
+        'Diamond Enterprise Live Demos · TCL · Zava · Aether Travel & Retail · Fabric & Databricks',
+        'Diamond 企业级全真演示中心 · TCL · Zava · 寰宇旅购（国际旅行零售） · Microsoft Fabric & Databricks'
       ],
       finding: [
         'Pre-integrated Entra ID OBO/B2B + M365 E5 + Fabric + Databricks · 3 Flagship Industry Cockpits',
         '预集成 Entra ID OBO/B2B + M365 E5 + Fabric + Databricks · 三大行业全真交互驾驶舱'
       ],
       description: [
-        'Solution Architect showcase combining the pre-provisioned Diamond enterprise tenant pattern with three end-to-end customer PoC cockpits (TCL Global Channel IQ on Fabric, Zava Cold-Chain on Databricks × Fabric, and Viking Cruises Phase-2 AI Closed Loop on Azure Databricks) plus a 10-dimension platform selection matrix.',
-        '面向解决方案架构师（SA）的企业级实战演示专区：深度解析预集成的 Diamond 演示环境架构（统一身份透传/B2B 免隐身直连 + 协同办公 + 双湖仓底座），提供 TCL × Fabric、Zava × Databricks × Fabric 与维京游轮 × Databricks 二期 AI 闭环三大端到端交互驾驶舱及双平台选型矩阵。'
+        'Solution Architect showcase combining the pre-provisioned Diamond enterprise tenant pattern with three end-to-end customer PoC cockpits (TCL Global Channel IQ on Fabric, Zava Cold-Chain on Databricks × Fabric, and Aether Global Travel & Retail AI Operations Closed Loop on Azure Databricks) plus a 10-dimension platform selection matrix.',
+        '面向解决方案架构师（SA）的企业级实战演示专区：深度解析预集成的 Diamond 演示环境架构（统一身份透传/B2B 免隐身直连 + 协同办公 + 双湖仓底座），提供 TCL × Fabric、Zava × Databricks × Fabric 与寰宇旅购（国际旅行零售）× Databricks AI 智能运营闭环三大端到端交互驾驶舱及双平台选型矩阵。'
       ],
       links: [
         link(['Open Diamond Demo Center', '进入 Diamond 演示中心'], hubUrl),
         link(['TCL × Microsoft Fabric Demo', 'TCL × Fabric 六幕驾驶舱'], tclUrl),
         link(['Databricks × Fabric Demo', 'Databricks × Fabric 四幕控制台'], dbxUrl),
-        link(['Viking Cruises × Databricks AI Demo', '维京游轮 × Databricks 二期 AI 闭环'], vkgUrl)
+        link(['Travel & Retail × Databricks AI Demo', '寰宇旅购（国际旅行零售）× Databricks AI 闭环'], gtrUrl)
       ]
     },
     {
@@ -85,27 +85,27 @@ function diamondResources(zh) {
       ]
     },
     {
-      id: 'diamond-viking-cruise',
+      id: 'diamond-travel-retail-ops',
       track: 'data-infra',
       featured: true,
       stages: ['architecture', 'evaluation', 'demos', 'resources'],
       badge: ['DIAMOND DEMO 03 / DATABRICKS AI/BI · GENIE · AGENT BRICKS', 'DIAMOND 实战演示 03 / DATABRICKS AI/BI · GENIE · AGENT BRICKS'],
       title: [
-        'Viking Cruises × Azure Databricks · Phase-2 AI Closed-Loop Cockpit',
-        '维京游轮 (Viking Cruises) × Azure Databricks · 二期 AI 经营与服务闭环驾驶舱'
+        'Aether Global Travel & Retail × Azure Databricks · AI Operations Closed-Loop Cockpit',
+        '寰宇旅购 (Aether Global Travel & Retail) × Azure Databricks · 国际旅行零售 AI 运营闭环驾驶舱'
       ],
       finding: [
-        '8 Sailings NCR Waterfall · 96.7% Occ / 66.53% Margin Alert · ¥1.38M Cabin Promo Guardrail · 21V-to-HK Zero-PII',
-        '8 航次净 NCR 瀑布 · 96.7% 满舱 / 66.53% 净利率预警 · ¥138万尾舱安全垫促收 · 21V→香港零明文脱敏'
+        '8 Packages NOR Waterfall · 93.3% Quota / 66.53% Margin Alert · ¥1.38M Quota Promo Guardrail · Cross-Border Zero-PII',
+        '8 大奢旅免税线净营收 NOR 瀑布 · 93.3% 去化 / 66.53% 净利率预警 · ¥138万配额安全垫促收 · 源端零明文脱敏'
       ],
       description: [
-        'Phase-2 AI expansion extending Viking Cruises SWO Phase-1 NCR & Customer Service Lakehouse: China 21V Shanghai HMAC-SHA256 VKG_OID_* zero-PII tokenization into Azure Global HK Databricks (viking_cruise), dual AI/BI Dashboards (8-sailing Gross-to-NCR 4-deduction waterfall & 6-channel True Net NCR ROI), AI/BI Genie NL2SQL root-cause drilldown (VKG-RHI-202609 margin erosion & Telesales Team 2 27.89% deposit dropoff), Agent Bricks full-volume Smart CS QA & T-28 Cabin Promo Supervisor (PASS_GUARDRAIL + ¥1.38M incremental NCR), plus normal-browser corporate B2B SSO, on-demand iframe embedding, and 5-chapter 1080p video theater.',
-        '承接维京游轮一期 NCR 与客服湖仓资产的二期 AI 闭环实战：世纪互联上海 HMAC-SHA256 (VKG_OID_*) 零明文跨境脱敏同步至香港 Azure Databricks (viking_cruise)，贯通原生 AI/BI 经营双看板（8 航次四项扣减瀑布与 6 渠道真实净 NCR ROI）、Genie 自然语言追因（莱茵河满船不赚钱与电销二组 27.89% 弃单卡点）、Agent Bricks 全量会话质检拦截与临期尾舱动态促收督导（严守 ¥29,500 保本红线释放 ¥138.07 万增量净 NCR），并支持正常浏览器免隐身企业主账号直连、页内实机嵌入与 5 章节 1080p 双语字幕实录。'
+        'Production core foundation (Omnichannel Net Operating Revenue NOR settlement domain + Private Concierge & Service domain with regional gateway HMAC-SHA256 GTR_OID_* zero-PII tokenization into Azure Databricks travel_retail_ops) plus six AI operational closed-loop scenarios: dual AI/BI Dashboards (8-package Gross-to-NOR deduction waterfall & 6-channel Net Promo ROI), AI/BI Genie NL2SQL root-cause drilldown (GTR-EUR-202609 margin erosion & Private Concierge Group B 27.89% lock dropoff), Agent Bricks 100% Concierge Compliance QA & T-28 Quota Dynamic Promo Supervisor (PASS_GUARDRAIL above ¥29,500 NOR floor + ¥1.38M incremental NOR), normal-browser corporate B2B SSO, on-demand iframe embedding, and 5-chapter 1080p video theater.',
+        '基于已投产核心底座（全域净营收 NOR 结算域 + 全渠道私域礼宾与客服域，源端网关 HMAC-SHA256 GTR_OID_* 零明文 PII 入湖同步至 Azure Databricks travel_retail_ops）构建六大 AI 智能运营闭环场景：贯通原生 AI/BI 运营双看板（8 大奢旅免税线路净营收扣减瀑布与 6 渠道净营促销比 ROI）、Genie 自然语言即席追因（GTR-EUR-202609 高去化低毛利归因与私域礼宾二组 27.89% 未锁位流失卡点）、Agent Bricks 100% 私域会话合规质检拦截与 T-28 临期配额动态促收督导（严守 ¥29,500 保本 NOR 底线释放 ¥138.07 万增量净营收），并支持正常浏览器免隐身企业主账号直连、页内实机嵌入与 5 章节 1080p 双语字幕实录。'
       ],
       links: [
-        link(['Launch 6-Scenario Databricks Cockpit', '启动维京游轮 × Databricks 驾驶舱'], vkgUrl),
-        link(['🔓 Normal-Browser Live & Iframe Embed', '🔓 正常浏览器直连与页内嵌入'], `${vkgUrl}#act-live`),
-        link(['Agent Bricks QA & Promo Guardrail', 'Agent Bricks 质检与尾舱护栏'], `${vkgUrl}#act-3`)
+        link(['Launch 6-Scenario Travel Retail Cockpit', '启动国际旅行零售 × Databricks 驾驶舱'], gtrUrl),
+        link(['🔓 Normal-Browser Live & Iframe Embed', '🔓 正常浏览器直连与页内嵌入'], `${gtrUrl}#act-live`),
+        link(['Agent Bricks QA & Quota Promo Guardrail', 'Agent Bricks 质检与配额促收护栏'], `${gtrUrl}#act-3`)
       ]
     }
   ];
@@ -240,7 +240,7 @@ function renderDataPageDiamondShowcase(file, zh) {
       <div class="diamond-pill-row">
         <span class="diamond-pill">${t(zh, 'Tenant: Diamond Enterprise (Sanitized Snapshot)', '租户边界：Diamond 企业级单租户（已脱敏快照）')}</span>
         <span class="diamond-pill">Workspace: TCL_Global_Channel_IQ</span>
-        <span class="diamond-pill">Catalogs: zava_retail · viking_cruise</span>
+        <span class="diamond-pill">Catalogs: zava_retail · travel_retail_ops</span>
         <span class="diamond-pill">${t(zh, 'Zero-Copy OneLake & Normal-Browser B2B SSO', 'OneLake 零拷贝与正常浏览器 B2B 免隐身直连')}</span>
       </div>
       ${diamondArchitectureSvg(zh, 'data-page-diamond-arch')}
@@ -253,21 +253,21 @@ function renderDataPageDiamondShowcase(file, zh) {
 function renderDiamondPage(file, zh) {
   const tclUrl = `workshops/diamond-demos/tcl-fabric/index${zh ? '' : '.en'}.html`;
   const dbxUrl = `workshops/diamond-demos/databricks-fabric/index${zh ? '' : '.en'}.html`;
-  const vkgUrl = `workshops/diamond-demos/viking-cruise/index${zh ? '' : '.en'}.html`;
+  const gtrUrl = `workshops/diamond-demos/travel-retail-ops/index${zh ? '' : '.en'}.html`;
   const dataInfraUrl = `studio/${zh ? 'zh-' : ''}data-infra.html#diamond-showcase`;
   const dataLabUrl = `workshops/data-lab/index${zh ? '' : '.en'}.html?lang=${zh ? 'zh-CN' : 'en'}`;
 
   let body = ui.crumb(file, zh, t(zh, 'Diamond Live Demos', 'Diamond 实战演示'));
   body += `<section class="page-hero">
     <div>
-      <p class="eyebrow"><span class="status-dot" aria-hidden="true"></span>${t(zh, 'DIAMOND ENTERPRISE DEMO ENVIRONMENT · TCL · ZAVA · VIKING CRUISES', 'DIAMOND 企业级实战演示环境 · TCL · ZAVA · 维京游轮')}</p>
+      <p class="eyebrow"><span class="status-dot" aria-hidden="true"></span>${t(zh, 'DIAMOND ENTERPRISE DEMO ENVIRONMENT · TCL · ZAVA · AETHER TRAVEL & RETAIL', 'DIAMOND 企业级实战演示环境 · TCL · ZAVA · 寰宇旅购（国际旅行零售）')}</p>
       <h1>${t(zh, 'Diamond Enterprise Live Demo Center', 'Diamond 企业级实战演示中心')}</h1>
-      <p class="lead">${t(zh, 'Interactive, strictly sanitized Solution Architect PoC cockpits built on the Diamond enterprise blueprint: explore TCL Global Channel IQ on Microsoft Fabric, Zava Omnichannel Cold-Chain across Azure Databricks + Fabric OneLake Mirroring, and Viking Cruises Phase-2 AI Closed Loop on Azure Databricks (AI/BI + Genie + Agent Bricks with normal-browser B2B SSO & live embedding).', '面向云与 AI 解决方案架构师（SA）的企业级实战演示中心：基于严格脱敏的 Diamond 预集成企业环境蓝图，提供 TCL 全球智慧渠道（Microsoft Fabric 六幕驾驶舱）、Zava 全渠道生鲜冷链（Databricks × Fabric 零拷贝四幕控制台）与维京游轮二期 AI 经营服务闭环（Databricks AI/BI + Genie + Agent Bricks，支持正常浏览器免隐身直连与页内嵌入）三大端到端交互沙盘及双平台选型矩阵。')}</p>
+      <p class="lead">${t(zh, 'Interactive, strictly sanitized Solution Architect PoC cockpits built on the Diamond enterprise blueprint: explore TCL Global Channel IQ on Microsoft Fabric, Zava Omnichannel Cold-Chain across Azure Databricks + Fabric OneLake Mirroring, and Aether Global Travel & Retail AI Operations Closed Loop on Azure Databricks (AI/BI + Genie + Agent Bricks with normal-browser B2B SSO & live embedding).', '面向云与 AI 解决方案架构师（SA）的企业级实战演示中心：基于严格脱敏的 Diamond 预集成企业环境蓝图，提供 TCL 全球智慧渠道（Microsoft Fabric 六幕驾驶舱）、Zava 全渠道生鲜冷链（Databricks × Fabric 零拷贝四幕控制台）与寰宇旅购国际旅行零售 AI 智能运营闭环（Databricks AI/BI + Genie + Agent Bricks，支持正常浏览器免隐身直连与页内嵌入）三大端到端交互沙盘及双平台选型矩阵。')}</p>
       <div class="actions">
         <a class="button primary" href="${ui.href(file, tclUrl)}">${t(zh, 'Launch Demo 1 · TCL × Microsoft Fabric', '启动演示 1 · TCL × Microsoft Fabric 六幕驾驶舱')} ↗</a>
         <a class="button diamond-cta" href="${ui.href(file, dbxUrl)}">${t(zh, 'Launch Demo 2 · Databricks × Fabric', '启动演示 2 · Databricks × Fabric 四幕控制台')} ↗</a>
-        <a class="button primary" href="${ui.href(file, vkgUrl)}" style="background:linear-gradient(135deg,#9f1239 0%,#be123c 100%);border-color:#e11d48;color:#fff">${t(zh, 'Launch Demo 3 · Viking Cruises × Databricks AI', '启动演示 3 · 维京游轮 × Databricks 二期 AI 闭环')} ↗</a>
-        <a class="button" href="${ui.href(file, `${vkgUrl}#act-live`)}" style="border-color:rgba(16,185,129,.55);background:rgba(16,185,129,.14);font-weight:600">${t(zh, '🔓 Viking Normal-Browser Live & Embed', '🔓 维京正常浏览器直连与嵌入')} ↗</a>
+        <a class="button primary" href="${ui.href(file, gtrUrl)}" style="background:linear-gradient(135deg,#9f1239 0%,#be123c 100%);border-color:#e11d48;color:#fff">${t(zh, 'Launch Demo 3 · Travel & Retail × Databricks AI', '启动演示 3 · 国际旅行零售 × Databricks AI 闭环')} ↗</a>
+        <a class="button" href="${ui.href(file, `${gtrUrl}#act-live`)}" style="border-color:rgba(16,185,129,.55);background:rgba(16,185,129,.14);font-weight:600">${t(zh, '🔓 Travel & Retail Normal-Browser Live & Embed', '🔓 国际旅行零售正常浏览器直连与嵌入')} ↗</a>
         <a class="button" href="${ui.href(file, dataInfraUrl)}">${t(zh, 'Data & Infra Lab Track', '数据与云底座实验室专区')} ↗</a>
       </div>
     </div>
@@ -291,7 +291,7 @@ function renderDiamondPage(file, zh) {
       <div class="diamond-pill-row">
         <span class="diamond-pill">${t(zh, 'Identity: Entra ID OBO + Cross-Tenant B2B + Dynamic RLS/CLS', '身份治理：Entra ID OBO + 跨租户 B2B + 行列级脱敏')}</span>
         <span class="diamond-pill">Fabric Workspace: TCL_Global_Channel_IQ</span>
-        <span class="diamond-pill">Unity Catalogs: zava_retail · viking_cruise</span>
+        <span class="diamond-pill">Unity Catalogs: zava_retail · travel_retail_ops</span>
         <span class="diamond-pill">${t(zh, 'Action Loop: Agent Bricks + Copilot Studio + Write-Back', '业务闭环：Agent Bricks + Copilot Studio + 工单回写')}</span>
       </div>
       ${diamondArchitectureSvg(zh, 'diamond-center-arch')}
@@ -334,7 +334,7 @@ function renderDiamondPage(file, zh) {
   body += ui.section(
     'live-cockpits',
     '02 / INTERACTIVE POC COCKPITS',
-    t(zh, 'Three Flagship Customer PoC Cockpits (TCL · Zava · Viking Cruises)', '三大企业级全真交互驾驶舱（TCL 全球渠道 · Zava 生鲜冷链 · 维京游轮二期 AI）'),
+    t(zh, 'Three Flagship Customer PoC Cockpits (TCL · Zava · Aether Travel & Retail)', '三大企业级全真交互驾驶舱（TCL 全球渠道 · Zava 生鲜冷链 · 寰宇旅购国际旅行零售）'),
     t(zh, 'Click into any standalone cockpit to run step-by-step presenter cues, inspect live DAX / KQL / SQL queries, launch normal-browser cloud sessions, and simulate executive operational decisions.', '点击进入任一独立全真驾驶舱，支持双屏演讲提词器、浏览器内真实数据行级 DAX/KQL/SQL 验算、正常浏览器免隐身云端直连，以及高管审批回写推演。'),
     ui.grid(demoCards)
   );
