@@ -9359,6 +9359,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r785File),'utf8');
       assert.ok(txt.includes('4,630.00')&&txt.includes('4,600.00')&&txt.includes('9,230.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,920.00')&&txt.includes('96.64%')&&txt.includes('not_measured'),r785File+': contains exact 11-22 R49 R785 lnwjud+sodamem+agav+videotonote closed-form parameters');
     }
+    // 2026-11-22 Night Round 50 (R786 Milestone: ddyy/minshop + CWNU-Open-Source-Community/Universal-Code + sevensir888/codex-command-center + bertel2020/HA-Housekeeper) verification
+    const r786PathA=4650.00+46.0*100.00;
+    assert.equal(r786PathA.toFixed(2),'9250.00','11-22 R50 R786 Path A total');
+    const r786PathC=65.00+2.4*100.00;
+    assert.equal(r786PathC.toFixed(2),'305.00','11-22 R50 R786 Path C total');
+    assert.equal((r786PathA-r786PathC).toFixed(2),'8945.00','11-22 R50 R786 savings vs Path A');
+    assert.equal(((r786PathA-r786PathC)/r786PathA*100).toFixed(2),'96.70','11-22 R50 R786 pct savings vs Path A');
+    for(const r786File of ['workshops/github-trending-radar/docs/minshop-universal-code-codex-command-center-ha-housekeeper-selection-faq.md','workshops/github-trending-radar/docs/minshop-universal-code-codex-command-center-ha-housekeeper-selection-faq.en.md','assets/github-ai-radar-2026-11-22-r50-r786-minshop-universalcode-codexcc-hahousekeeper.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-22-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r786File),'utf8');
+      assert.ok(txt.includes('4,650.00')&&txt.includes('4,600.00')&&txt.includes('9,250.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('8,945.00')&&txt.includes('96.70%')&&txt.includes('not_measured'),r786File+': contains exact 11-22 R50 R786 minshop+universalcode+codexcc+hahousekeeper closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
