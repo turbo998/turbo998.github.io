@@ -92,8 +92,13 @@ function perimeter(html, record, file, locale, translated) {
   const className = isRadar ? 'kee-dedicated-nav radar-report-nav' : isDataLab ? 'kee-dedicated-nav kee-data-lab-nav' : 'kee-dedicated-nav';
   const active = isRadar ? 'radar' : 'benchmarks';
   const header = professional.navigation({file, en, className, active, languages, context});
-  const titleText = normalized((/<title[^>]*>([\s\S]*?)<\/title>/i.exec(html)?.[1] || file).replace(/<[^>]+>/g, '').replaceAll('&amp;', '&').replaceAll('&lt;', '<').replaceAll('&gt;', '>').replaceAll('&quot;', '"').replaceAll('&#39;', "'"));
-  const figure = knowledgeFigure(file, !en, {topic, title: titleText}).replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi, '');
+  const {classifyDiagramPolicy, resolvePageArchitectureSpec} = require('./page-architecture-specs.cjs');
+  let figure = '';
+  if (classifyDiagramPolicy(file, html) === 'inject-specific') {
+    const spec = resolvePageArchitectureSpec(file, !en, html);
+    if (!spec) throw new Error(`Missing report architecture spec for ${file}`);
+    figure = knowledgeFigure(file, !en, spec).replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi, '');
+  }
   const navigation = `<!-- kee-report-localization-navigation:start -->${header}<nav aria-label="${en ? 'Report language' : '报告语言'}" style="font:14px/1.5 system-ui,sans-serif;display:flex;flex-wrap:wrap;gap:12px;padding:12px 18px;background:#101a30;color:#eef3ff;width:100%;box-sizing:border-box"><a style="color:#9aabff" href="${relative(file,record.en)}" lang="en" hreflang="en"${en ? ' aria-current="page"' : ''}>EN</a><a style="color:#9aabff" href="${relative(file,record.zh)}" lang="zh-CN" hreflang="zh-CN"${!en ? ' aria-current="page"' : ''}>中文</a><span>${translated ? (en ? 'Translated source report; not an independent reproduction. Metrics and evidence are unchanged.' : '源报告译本；非独立复测。指标与证据保持原样。') : (en ? 'Archived source report; complete language editions above.' : '存档源报告；完整语言版本见上方。')}</span></nav>${figure}${isRadar ? '<div class="radar-report-source">' : ''}<!-- kee-report-localization-navigation:end -->`;
   const out = html.replace(/<\/head>/i, metadata + '</head>').replace(/<body\b[^>]*>/i, '$&' + navigation);
   return isRadar ? out.replace(/<\/body>/i, '<!-- kee-report-localization-navigation:start --></div><!-- kee-report-localization-navigation:end --></body>') : out;

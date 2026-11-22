@@ -8892,6 +8892,7 @@ async function main() {
         await page.$eval('#repo-search',el=>{el.value='';el.dispatchEvent(new Event('input',{bubbles:true}));});
         assert.equal(await page.$$eval('#repo-cards-container .repo-card',els=>els.length),15);
         const initial=await page.$eval('#pipe-inspector',el=>el.textContent);
+        await page.$eval('.pipe-step:nth-child(2)',el=>el.scrollIntoView({block:'center'}));
         await page.click('.pipe-step:nth-child(2)');
         assert.notEqual(await page.$eval('#pipe-inspector',el=>el.textContent),initial);
         await page.$eval('#slider-signal',el=>{el.value='0.70';el.dispatchEvent(new Event('input',{bubbles:true}));});

@@ -357,6 +357,7 @@ Code/evidence: <code>tests/</code> and <code>artifacts/</code>.
 };
 const runtimeEditions = ['animation/index.html','generative-visual-lab/index.html','bilibili-explainers/index.html','voice/index.html','voice/case-study.html','workshops/azure-agent-infra/index.html','workshops/deepinfer-v41-economics/index.html'];
 const englishTerms = {
+  '极致规模与速度：在 Standard_D96as_v7 (5th Gen AMD EPYC Turin + Azure Boost) 上自建 E2B Firecracker 集群，实测 Base 沙箱 108ms 启动、Code-Interpreter 132ms 启动。':'Scale & cold-start latency: Self-hosted E2B Firecracker cluster on Standard_D96as_v7 (5th Gen AMD EPYC Turin + Azure Boost), measured 108ms Base sandbox boot and 132ms Code-Interpreter boot.',
   '5. Cycle #377 工作台':'5. Cycle #377 workbench',
   '🧪 打开 Cycle #377 可复现实验工作台':'🧪 Open the reproducible Cycle #377 workbench',
 'Stage 466 · 522 精选 + 23 风格':'Stage 466 · 522 selections + 23 styles',

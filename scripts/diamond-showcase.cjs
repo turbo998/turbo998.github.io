@@ -15,24 +15,24 @@ function diamondResources(zh) {
       track: 'data-infra',
       featured: true,
       stages: ['architecture', 'evaluation', 'demos', 'resources'],
-      badge: ['DIAMOND LIVE DEMO CENTER', 'DIAMOND 企业级实战演示中心'],
+      badge: ['DIAMOND LIVE DEMO CENTER', 'DIAMOND 企业级参考架构演示中心'],
       title: [
         'Diamond Enterprise Live Demos · TCL · Zava · Aether Travel & Retail · Fabric & Databricks',
-        'Diamond 企业级全真演示中心 · TCL · Zava · 寰宇旅购（国际旅行零售） · Microsoft Fabric & Databricks'
+        'Diamond 企业级参考架构演示中心 · TCL · Zava · 寰宇旅购（国际旅行零售） · Microsoft Fabric & Databricks'
       ],
       finding: [
-        'Pre-integrated Entra ID OBO/B2B + M365 E5 + Fabric + Databricks · 3 Flagship Industry Cockpits',
-        '预集成 Entra ID OBO/B2B + M365 E5 + Fabric + Databricks · 三大行业全真交互驾驶舱'
+        'Pre-integrated Entra ID OBO/B2B + M365 E5 + Fabric + Databricks · 3 Industry Reference Workbenches',
+        '预集成 Entra ID OBO/B2B + M365 E5 + Fabric + Databricks · 三大行业参考架构工作台'
       ],
       description: [
-        'Solution Architect showcase combining the pre-provisioned Diamond enterprise tenant pattern with three end-to-end customer PoC cockpits (TCL Global Channel IQ on Fabric, Zava Cold-Chain on Databricks × Fabric, and Aether Global Travel & Retail AI Operations Closed Loop on Azure Databricks) plus a 10-dimension platform selection matrix.',
-        '面向解决方案架构师（SA）的企业级实战演示专区：深度解析预集成的 Diamond 演示环境架构（统一身份透传/B2B 免隐身直连 + 协同办公 + 双湖仓底座），提供 TCL × Fabric、Zava × Databricks × Fabric 与寰宇旅购（国际旅行零售）× Databricks AI 智能运营闭环三大端到端交互驾驶舱及双平台选型矩阵。'
+        'Solution Architect showcase combining the pre-provisioned Diamond enterprise tenant pattern with three end-to-end customer PoC workbenches (TCL Global Channel IQ on Fabric, Zava Cold-Chain on Databricks × Fabric, and Aether Global Travel & Retail AI Operations on Azure Databricks) plus a 10-dimension platform selection matrix.',
+        '面向解决方案架构师（SA）的企业级参考架构演示专区：拆解预集成的 Diamond 演示环境架构（统一身份透传/B2B 免无痕直连 + 协同办公 + 双湖仓底座），提供 TCL × Fabric、Zava × Databricks × Fabric 与寰宇旅购（国际旅行零售）× Databricks AI 智能运营工作台及双平台选型矩阵。'
       ],
       links: [
         link(['Open Diamond Demo Center', '进入 Diamond 演示中心'], hubUrl),
-        link(['TCL × Microsoft Fabric Demo', 'TCL × Fabric 六幕驾驶舱'], tclUrl),
-        link(['Databricks × Fabric Demo', 'Databricks × Fabric 四幕控制台'], dbxUrl),
-        link(['Travel & Retail × Databricks AI Demo', '寰宇旅购（国际旅行零售）× Databricks AI 闭环'], gtrUrl)
+        link(['TCL × Microsoft Fabric PoC', 'TCL × Fabric 六阶段工作台'], tclUrl),
+        link(['Databricks × Fabric PoC', 'Databricks × Fabric 四阶段控制台'], dbxUrl),
+        link(['Travel & Retail × Databricks AI PoC', '寰宇旅购（国际旅行零售）× Databricks AI 工作台'], gtrUrl)
       ]
     },
     {
@@ -40,23 +40,23 @@ function diamondResources(zh) {
       track: 'data-infra',
       featured: true,
       stages: ['architecture', 'demos', 'resources'],
-      badge: ['DIAMOND DEMO 01 / FABRIC IQ & ONELAKE', 'DIAMOND 实战演示 01 / FABRIC IQ 与 ONELAKE'],
+      badge: ['DIAMOND POC 01 / FABRIC IQ & ONELAKE', 'DIAMOND 参考架构 01 / FABRIC IQ 与 ONELAKE'],
       title: [
-        'TCL Global Channel IQ × Microsoft Fabric · 6-Act Enterprise Cockpit',
-        'TCL 全球智慧渠道 × Microsoft Fabric · 六幕企业级实战驾驶舱'
+        'TCL Global Channel IQ × Microsoft Fabric · 6-Stage Enterprise PoC Workbench',
+        'TCL 全球渠道智能 × Microsoft Fabric · 六阶段参考架构验证工作台'
       ],
       finding: [
         '$135.33M Sell-In · $108.95M OMO Sell-Out · $582K Margin Protected · 15,319 Live Rows',
-        '$135.33M Sell-In · $108.95M 全渠道动销 · 守护 $582K 渠道毛利 · 15,319 行实时验算'
+        '$135.33M Sell-In · $108.95M 全渠道动销 · 保护 $582K 渠道毛利 · 15,319 行实时验算'
       ],
       description: [
         'Global manufacturing & omnichannel scenarios across 36 channel partners: OneLake Zero-Copy Shortcuts across SAP/POS/DTC, Eventhouse KQL Black Friday 2.8x surge & Rotterdam 11-day vessel delay 48h rebalance, Fabric IQ 10-entity Ontology, OMO Soundbar bundle vs price-protection simulator, Vietnam $162.5K channel-stuffing rebate block, Data/Operations Agent write-back, and in-browser DAX/KQL proof console.',
-        '还原跨国制造与全球全渠道真实业务闭环（36 家核心渠道商）：OneLake 零拷贝跨域挂载 SAP/POS/DTC、Eventhouse KQL 秒级捕捉黑五 2.8x 脉冲与鹿特丹港 11 天延误并触发法德 48h 调拨、Fabric IQ 十实体业务本体、OMO 回音壁捆绑对比直接价保挽回 $582K 毛利、拦截越南 $162.5K 压货骗补、Data/Ops Agent 审批回写，以及 15,319 行浏览器端 DAX/KQL 实时核验台。'
+        '覆盖跨国制造与全球全渠道业务链路（36 家核心渠道商）：OneLake 零拷贝跨域挂载 SAP/POS/DTC、Eventhouse KQL 秒级捕捉黑五 2.8x 脉冲与鹿特丹港 11 天延误并触发法德 48h 调拨、Fabric IQ 十实体业务本体、OMO 回音壁捆绑对比直接价保保护 $582K 毛利、拦截越南 $162.5K 压货异动、Data/Ops Agent 审批回写，以及 15,319 行浏览器端 DAX/KQL 实时核验台。'
       ],
       links: [
-        link(['Launch 6-Act Fabric Cockpit', '启动 TCL × Fabric 六幕驾驶舱'], tclUrl),
+        link(['Open 6-Stage Fabric Workbench', '打开 TCL × Fabric 六阶段工作台'], tclUrl),
         link(['Ontology & Margin Simulator', '业务本体与价保推演'], `${tclUrl}#act-4`),
-        link(['Live DAX / KQL Proof Lab', 'DAX / KQL 实时证明台'], `${tclUrl}#act-6`)
+        link(['Live DAX / KQL Proof Lab', 'DAX / KQL 实时核验台'], `${tclUrl}#act-6`)
       ]
     },
     {
@@ -64,24 +64,24 @@ function diamondResources(zh) {
       track: 'data-infra',
       featured: true,
       stages: ['architecture', 'evaluation', 'demos', 'resources'],
-      badge: ['DIAMOND DEMO 02 / DATABRICKS × FABRIC', 'DIAMOND 实战演示 02 / DATABRICKS × FABRIC 协同'],
+      badge: ['DIAMOND POC 02 / DATABRICKS × FABRIC', 'DIAMOND 参考架构 02 / DATABRICKS × FABRIC 协同'],
       title: [
         'Zava Cold-Chain Retail × Azure Databricks & Microsoft Fabric · Zero-Copy Coexistence',
-        'Zava 全渠道生鲜冷链 × Azure Databricks & Microsoft Fabric · 零拷贝双平台协同台'
+        'Zava 全渠道生鲜冷链 × Azure Databricks & Microsoft Fabric · 零拷贝双平台协同工作台'
       ],
       finding: [
         'Unity Catalog 24,024→24,000 Gate · Genie 29.0%→25.9% Root Cause · 0 DBU Direct Lake',
         'Unity Catalog 24,024→24,000 质检 · Genie 追因毛利 29.0%→25.9% · 0 DBU Direct Lake 秒级看数'
       ],
       description: [
-        'End-to-end Lakehouse + SaaS BI coexistence: Unity Catalog Bronze/Silver/Gold quality gate, column lineage & 135****8240 dynamic PII masking, AI/BI Genie root-cause drilldown on Kunshan #2 17.3h cold-chain delay vs Jiaxing #1 1,460 donor cases, Mirrored Azure Databricks Catalog in OneLake with 0 DBU Power BI Direct Lake, Lakebase + Teams closed-loop dispatch, and a 10-dimension Fabric vs Databricks SA battlecard.',
-        '完整演示“Databricks 重度数据工程 + Fabric 全员 BI 与协同闭环”共生范式：Unity Catalog 三层奖牌质检、字段级血缘与 135****8240 动态脱敏、AI/BI Genie 五步追因华东生鲜净利率下滑（定位昆山 2 号仓 17.3h 延误与嘉兴 1 号仓 1,460 箱可调拨库存）、OneLake 零拷贝镜像目录支撑 0 DBU Power BI Direct Lake 秒级看数、Lakebase + Teams 闭环调拨，以及 10 维度双平台选型对战卡。'
+        'End-to-end Lakehouse + SaaS BI coexistence: Unity Catalog Bronze/Silver/Gold quality gate, column lineage & 135****8240 dynamic PII masking, AI/BI Genie root-cause drilldown on Kunshan #2 17.3h cold-chain delay vs Jiaxing #1 1,460 donor cases, Mirrored Azure Databricks Catalog in OneLake with 0 DBU Power BI Direct Lake, Lakebase + Teams dispatch write-back, and a 10-dimension Fabric vs Databricks SA selection matrix.',
+        '演示“Databricks 重度数据工程 + Fabric 全员 BI 与协同回写”互通架构：Unity Catalog 三层奖牌质检、字段级血缘与 135****8240 动态脱敏、AI/BI Genie 五步追因华东生鲜净利率下滑（定位昆山 2 号仓 17.3h 延误与嘉兴 1 号仓 1,460 箱可调拨库存）、OneLake 零拷贝镜像目录支撑 0 DBU Power BI Direct Lake 秒级看数、Lakebase + Teams 调拨回写，以及 10 维度双平台选型矩阵。'
       ],
       links: [
-        link(['Launch 4-Act Coexistence Console', '启动 Databricks × Fabric 四幕控制台'], dbxUrl),
-        link(['🔐 Live Zero-InPrivate Gateway & Video', '🔐 实机免无痕直连与实录'], `${dbxUrl}#act-live`),
+        link(['Open 4-Stage Coexistence Console', '打开 Databricks × Fabric 四阶段控制台'], dbxUrl),
+        link(['Live Zero-InPrivate Gateway & Video', '实机免无痕直连与实录'], `${dbxUrl}#act-live`),
         link(['AI/BI Genie Root-Cause Drilldown', 'AI/BI Genie 五步追因'], `${dbxUrl}#act-2`),
-        link(['10-Dimension SA Battlecard', '10 维度双平台选型对战卡'], `${dbxUrl}#act-4`)
+        link(['10-Dimension SA Selection Matrix', '10 维度双平台选型矩阵'], `${dbxUrl}#act-4`)
       ]
     },
     {
@@ -89,23 +89,23 @@ function diamondResources(zh) {
       track: 'data-infra',
       featured: true,
       stages: ['architecture', 'evaluation', 'demos', 'resources'],
-      badge: ['DIAMOND DEMO 03 / DATABRICKS AI/BI · GENIE · AGENT BRICKS', 'DIAMOND 实战演示 03 / DATABRICKS AI/BI · GENIE · AGENT BRICKS'],
+      badge: ['DIAMOND POC 03 / DATABRICKS AI/BI · GENIE · AGENT BRICKS', 'DIAMOND 参考架构 03 / DATABRICKS AI/BI · GENIE · AGENT BRICKS'],
       title: [
-        'Aether Global Travel & Retail × Azure Databricks · AI Operations Closed-Loop Cockpit',
-        '寰宇旅购 (Aether Global Travel & Retail) × Azure Databricks · 国际旅行零售 AI 运营闭环驾驶舱'
+        'Aether Global Travel & Retail × Azure Databricks · AI Operations Workbench',
+        '寰宇旅购 (Aether Global Travel & Retail) × Azure Databricks · 国际旅行零售 AI 运营工作台'
       ],
       finding: [
         '8 Packages NOR Waterfall · 93.3% Quota / 66.53% Margin Alert · ¥1.38M Quota Promo Guardrail · Cross-Border Zero-PII',
         '8 大奢旅免税线净营收 NOR 瀑布 · 93.3% 去化 / 66.53% 净利率预警 · ¥138万配额安全垫促收 · 源端零明文脱敏'
       ],
       description: [
-        'Production core foundation (Omnichannel Net Operating Revenue NOR settlement domain + Private Concierge & Service domain with regional gateway HMAC-SHA256 GTR_OID_* zero-PII tokenization into Azure Databricks travel_retail_ops) plus six AI operational closed-loop scenarios: dual AI/BI Dashboards (8-package Gross-to-NOR deduction waterfall & 6-channel Net Promo ROI), AI/BI Genie NL2SQL root-cause drilldown (GTR-EUR-202609 margin erosion & Private Concierge Group B 27.89% lock dropoff), Agent Bricks 100% Concierge Compliance QA & T-28 Quota Dynamic Promo Supervisor (PASS_GUARDRAIL above ¥29,500 NOR floor + ¥1.38M incremental NOR), normal-browser corporate B2B SSO, on-demand iframe embedding, and 5-chapter 1080p video theater.',
-        '基于已投产核心底座（全域净营收 NOR 结算域 + 全渠道私域礼宾与客服域，源端网关 HMAC-SHA256 GTR_OID_* 零明文 PII 入湖同步至 Azure Databricks travel_retail_ops）构建六大 AI 智能运营闭环场景：贯通原生 AI/BI 运营双看板（8 大奢旅免税线路净营收扣减瀑布与 6 渠道净营促销比 ROI）、Genie 自然语言即席追因（GTR-EUR-202609 高去化低毛利归因与私域礼宾二组 27.89% 未锁位流失卡点）、Agent Bricks 100% 私域会话合规质检拦截与 T-28 临期配额动态促收督导（严守 ¥29,500 保本 NOR 底线释放 ¥138.07 万增量净营收），并支持正常浏览器免隐身企业主账号直连、页内实机嵌入与 5 章节 1080p 双语字幕实录。'
+        'Production core foundation (Omnichannel Net Operating Revenue NOR settlement domain + Private Concierge & Service domain with regional gateway HMAC-SHA256 GTR_OID_* zero-PII tokenization into Azure Databricks travel_retail_ops) plus six AI operational scenarios: dual AI/BI Dashboards (8-package Gross-to-NOR deduction waterfall & 6-channel Net Promo ROI), AI/BI Genie NL2SQL root-cause drilldown (GTR-EUR-202609 margin erosion & Private Concierge Group B 27.89% lock dropoff), Agent Bricks 100% Concierge Compliance QA & T-28 Quota Dynamic Promo Supervisor (PASS_GUARDRAIL above ¥29,500 NOR floor + ¥1.38M incremental NOR), normal-browser corporate B2B SSO, on-demand iframe embedding, and 5-chapter 1080p video theater.',
+        '基于核心数据底座（全域净营收 NOR 结算域 + 全渠道私域礼宾与客服域，源端网关 HMAC-SHA256 GTR_OID_* 零明文 PII 入湖同步至 Azure Databricks travel_retail_ops）构建六大 AI 智能运营场景：贯通原生 AI/BI 运营双看板（8 大奢旅免税线路净营收扣减瀑布与 6 渠道净营促销比 ROI）、Genie 自然语言即席追因（GTR-EUR-202609 高去化低毛利归因与私域礼宾二组 27.89% 未锁位流失卡点）、Agent Bricks 100% 私域会话合规质检与 T-28 临期配额动态促收策略门禁（守住 ¥29,500 保本 NOR 底线释放 ¥138.07 万增量净营收），并支持正常浏览器免无痕企业主账号直连、页内实机嵌入与 5 章节 1080p 双语字幕实录。'
       ],
       links: [
-        link(['Launch 6-Scenario Travel Retail Cockpit', '启动国际旅行零售 × Databricks 驾驶舱'], gtrUrl),
-        link(['🔓 Normal-Browser Live & Iframe Embed', '🔓 正常浏览器直连与页内嵌入'], `${gtrUrl}#act-live`),
-        link(['Agent Bricks QA & Quota Promo Guardrail', 'Agent Bricks 质检与配额促收护栏'], `${gtrUrl}#act-3`)
+        link(['Open 6-Scenario Travel Retail Workbench', '打开国际旅行零售 × Databricks 工作台'], gtrUrl),
+        link(['Normal-Browser Live & Iframe Embed', '正常浏览器直连与页内嵌入'], `${gtrUrl}#act-live`),
+        link(['Agent Bricks QA & Quota Promo Guardrail', 'Agent Bricks 质检与配额促收门禁'], `${gtrUrl}#act-3`)
       ]
     }
   ];
@@ -115,7 +115,7 @@ function diamondArchitectureSvg(zh, idPrefix = 'diamond-arch') {
   const titleId = `${idPrefix}-title`;
   const descId = `${idPrefix}-desc`;
   return `<svg xmlns="http://www.w3.org/2000/svg" data-knowledge-atlas="data-infra" lang="${zh ? 'zh-CN' : 'en'}" role="img" aria-labelledby="${titleId} ${descId}" viewBox="0 0 1080 356" width="1080" style="width:100%;height:auto;font-family:system-ui,-apple-system,sans-serif">
-  <title id="${titleId}">${t(zh, 'Diamond Enterprise Demo Reference Architecture: Entra ID, M365, Microsoft Fabric, and Azure Databricks', 'Diamond 企业级实战演示环境参考架构：Entra ID、M365、Microsoft Fabric 与 Azure Databricks 协同')}</title>
+  <title id="${titleId}">${t(zh, 'Diamond Enterprise Demo Reference Architecture: Entra ID, M365, Microsoft Fabric, and Azure Databricks', 'Diamond 企业级参考架构演示环境：Entra ID、M365、Microsoft Fabric 与 Azure Databricks 协同')}</title>
   <desc id="${descId}">${t(zh, 'Single-tenant Entra ID OBO identity plane governing Microsoft Fabric OneLake, Azure Databricks Unity Catalog, Zero-Copy Catalog Mirroring, Power BI Direct Lake, and Copilot Studio / Teams operational write-back.', '单租户 Entra ID OBO 统一身份治理平面，贯通 Microsoft Fabric OneLake、Azure Databricks Unity Catalog、零拷贝元数据镜像、Power BI Direct Lake 与 Copilot Studio / Teams 业务闭环回写。')}</desc>
   <rect width="1080" height="356" rx="16" fill="#091426" stroke="#2a476e"/>
   <rect x="24" y="18" width="1032" height="52" rx="10" fill="#102542" stroke="#366296"/>
@@ -143,7 +143,7 @@ function diamondArchitectureSvg(zh, idPrefix = 'diamond-arch') {
   <rect x="728" y="88" width="328" height="178" rx="12" fill="#0e2038" stroke="#2f5685"/>
   <rect x="728" y="88" width="328" height="5" rx="2.5" fill="#a78bfa"/>
   <text x="744" y="114" fill="#c4b5fd" font-size="11.5" font-weight="700">${t(zh, '02C · MICROSOFT FABRIC UNIFIED SAAS', '02C · MICROSOFT FABRIC 一体化智能平台')}</text>
-  <text x="744" y="138" fill="#f4f8ff" font-size="15" font-weight="700">${t(zh, 'Real-Time KQL · Fabric IQ & Direct Lake', '实时智能 · 业务本体与全员经营驾驶舱')}</text>
+  <text x="744" y="138" fill="#f4f8ff" font-size="15" font-weight="700">${t(zh, 'Real-Time KQL · Fabric IQ & Direct Lake', '实时智能 · 业务本体与经营分析平台')}</text>
   <text x="744" y="162" fill="#c6d7eb" font-size="12.5">${t(zh, '• Workspace TCL_Global_Channel_IQ unified F-SKU', '• 工作区 TCL_Global_Channel_IQ 统一容量池')}</text>
   <text x="744" y="184" fill="#c6d7eb" font-size="12.5">${t(zh, '• Eventhouse KQL sub-second surge & port alerts', '• Eventhouse KQL 毫秒级捕捉港口延误与黑五脉冲')}</text>
   <text x="744" y="206" fill="#c6d7eb" font-size="12.5">${t(zh, '• Fabric IQ Ontology binding margin & rebate rules', '• Fabric IQ 业务本体绑定毛利与防压货规则')}</text>
@@ -228,20 +228,20 @@ function renderDataPageDiamondShowcase(file, zh) {
   return `<section id="diamond-showcase" class="diamond-showcase">
     <div class="section-heading">
       <div>
-        <p class="eyebrow">${t(zh, '05 / DIAMOND ENTERPRISE LIVE DEMO SHOWCASE', '05 / DIAMOND 企业级全真演示专区')}</p>
-        <h2>${t(zh, 'Diamond Enterprise Live Demo Showcase (TCL Environment · Microsoft Fabric · Azure Databricks)', 'Diamond 企业级全真演示专区（TCL 演示环境 · Microsoft Fabric · Azure Databricks）')}</h2>
-        <p class="section-intro">${t(zh, 'Built for Cloud & AI Solution Architects: see how a pre-integrated enterprise tenant (Entra ID single-tenant OBO + M365 E5 + Microsoft Fabric + Azure Databricks + Copilot Studio) turns complex cross-cloud architecture into interactive, quantified customer PoCs.', '专为云与 AI 解决方案架构师（SA）打造：展示如何利用预集成的 Diamond 企业级演示环境（Entra ID 单租户身份透传 + M365 E5 + Microsoft Fabric + Azure Databricks + Copilot Studio），将复杂的湖仓协同与实时智能转化为客户一眼看懂的量化业务闭环。')}</p>
+        <p class="eyebrow">${t(zh, '05 / DIAMOND ENTERPRISE LIVE DEMO SHOWCASE', '05 / DIAMOND 企业级参考架构演示专区')}</p>
+        <h2>${t(zh, 'Diamond Enterprise Live Demo Showcase (TCL Environment · Microsoft Fabric · Azure Databricks)', 'Diamond 企业级参考架构演示专区（TCL 演示环境 · Microsoft Fabric · Azure Databricks）')}</h2>
+        <p class="section-intro">${t(zh, 'Built for Cloud & AI Solution Architects: see how a pre-integrated enterprise tenant (Entra ID single-tenant OBO + M365 E5 + Microsoft Fabric + Azure Databricks + Copilot Studio) turns complex cross-cloud architecture into interactive, quantified customer PoCs.', '面向云与 AI 解决方案架构师（SA）：展示如何利用预集成的 Diamond 企业级演示环境（Entra ID 单租户身份透传 + M365 E5 + Microsoft Fabric + Azure Databricks + Copilot Studio），将跨云湖仓协同与实时智能转化为可量化的客户 PoC 验证链路。')}</p>
       </div>
     </div>
     <div class="diamond-arch-box">
-      <p class="eyebrow">${t(zh, 'PRE-INTEGRATED ENTERPRISE DEMO TOPOLOGY · SANITIZED PUBLIC ARCHITECTURE', '预集成企业级全真演示拓扑 · 已脱敏公开参考架构')}</p>
-      <h3>${t(zh, 'Why Solution Architects use the Diamond Environment for Customer PoCs', '为什么架构师使用 Diamond 预集成环境交付客户高管演示？')}</h3>
-      <p class="wb-desc">${t(zh, 'Traditional PoCs stall on cross-service authentication, empty synthetic tables, and disconnected BI slides. The Diamond pattern unifies Entra ID OBO identity, M365 Teams collaboration, Microsoft Fabric (OneLake, Eventhouse KQL, Fabric IQ), and Azure Databricks (Unity Catalog, AI/BI Genie, Lakebase) over real-scale industry datasets.', '传统客户 PoC 往往卡在跨服务鉴权打通难、测试表缺乏真实业务逻辑，以及只展示静态 PPT 截图。Diamond 企业级演示环境预先打通单租户 Entra ID 身份边界、M365 Teams 办公流、Microsoft Fabric 与 Azure Databricks 双底座，让客户在一个连贯故事中亲手验证从源端质检、实时脉冲预警到智能体回写的完整闭环。')}</p>
+      <p class="eyebrow">${t(zh, 'PRE-INTEGRATED ENTERPRISE DEMO TOPOLOGY · SANITIZED PUBLIC ARCHITECTURE', '预集成企业级参考架构拓扑 · 已脱敏公开架构快照')}</p>
+      <h3>${t(zh, 'Why Solution Architects use the Diamond Environment for Customer PoCs', '为什么架构师使用 Diamond 预集成环境交付客户架构验证？')}</h3>
+      <p class="wb-desc">${t(zh, 'Traditional PoCs stall on cross-service authentication, empty synthetic tables, and disconnected BI slides. The Diamond pattern unifies Entra ID OBO identity, M365 Teams collaboration, Microsoft Fabric (OneLake, Eventhouse KQL, Fabric IQ), and Azure Databricks (Unity Catalog, AI/BI Genie, Lakebase) over real-scale industry datasets.', '传统客户 PoC 常受制于跨服务鉴权复杂、测试表缺乏真实业务约束，以及仅展示静态截图。Diamond 企业级演示环境预先打通单租户 Entra ID 身份边界、M365 Teams 协同流、Microsoft Fabric 与 Azure Databricks 双底座，支持在浏览器中连贯验证从源端质检、实时脉冲预警到智能体回写的完整链路。')}</p>
       <div class="diamond-pill-row">
         <span class="diamond-pill">${t(zh, 'Tenant: Diamond Enterprise (Sanitized Snapshot)', '租户边界：Diamond 企业级单租户（已脱敏快照）')}</span>
         <span class="diamond-pill">Workspace: TCL_Global_Channel_IQ</span>
         <span class="diamond-pill">Catalogs: zava_retail · travel_retail_ops</span>
-        <span class="diamond-pill">${t(zh, 'Zero-Copy OneLake & Normal-Browser B2B SSO', 'OneLake 零拷贝与正常浏览器 B2B 免隐身直连')}</span>
+        <span class="diamond-pill">${t(zh, 'Zero-Copy OneLake & Normal-Browser B2B SSO', 'OneLake 零拷贝与正常浏览器 B2B 免无痕直连')}</span>
       </div>
       ${diamondArchitectureSvg(zh, 'data-page-diamond-arch')}
     </div>
@@ -257,24 +257,24 @@ function renderDiamondPage(file, zh) {
   const dataInfraUrl = `studio/${zh ? 'zh-' : ''}data-infra.html#diamond-showcase`;
   const dataLabUrl = `workshops/data-lab/index${zh ? '' : '.en'}.html?lang=${zh ? 'zh-CN' : 'en'}`;
 
-  let body = ui.crumb(file, zh, t(zh, 'Diamond Live Demos', 'Diamond 实战演示'));
+  let body = ui.crumb(file, zh, t(zh, 'Diamond Live Demos', 'Diamond 架构演示'));
   body += `<section class="page-hero">
     <div>
-      <p class="eyebrow"><span class="status-dot" aria-hidden="true"></span>${t(zh, 'DIAMOND ENTERPRISE DEMO ENVIRONMENT · TCL · ZAVA · AETHER TRAVEL & RETAIL', 'DIAMOND 企业级实战演示环境 · TCL · ZAVA · 寰宇旅购（国际旅行零售）')}</p>
-      <h1>${t(zh, 'Diamond Enterprise Live Demo Center', 'Diamond 企业级实战演示中心')}</h1>
-      <p class="lead">${t(zh, 'Interactive, strictly sanitized Solution Architect PoC cockpits built on the Diamond enterprise blueprint: explore TCL Global Channel IQ on Microsoft Fabric, Zava Omnichannel Cold-Chain across Azure Databricks + Fabric OneLake Mirroring, and Aether Global Travel & Retail AI Operations Closed Loop on Azure Databricks (AI/BI + Genie + Agent Bricks with normal-browser B2B SSO & live embedding).', '面向云与 AI 解决方案架构师（SA）的企业级实战演示中心：基于严格脱敏的 Diamond 预集成企业环境蓝图，提供 TCL 全球智慧渠道（Microsoft Fabric 六幕驾驶舱）、Zava 全渠道生鲜冷链（Databricks × Fabric 零拷贝四幕控制台）与寰宇旅购国际旅行零售 AI 智能运营闭环（Databricks AI/BI + Genie + Agent Bricks，支持正常浏览器免隐身直连与页内嵌入）三大端到端交互沙盘及双平台选型矩阵。')}</p>
+      <p class="eyebrow"><span class="status-dot" aria-hidden="true"></span>${t(zh, 'DIAMOND ENTERPRISE DEMO ENVIRONMENT · TCL · ZAVA · AETHER TRAVEL & RETAIL', 'DIAMOND 企业级参考架构演示环境 · TCL · ZAVA · 寰宇旅购（国际旅行零售）')}</p>
+      <h1>${t(zh, 'Diamond Enterprise Live Demo Center', 'Diamond 企业级参考架构演示中心')}</h1>
+      <p class="lead">${t(zh, 'Interactive, strictly sanitized Solution Architect PoC workbenches built on the Diamond enterprise architecture: explore TCL Global Channel IQ on Microsoft Fabric, Zava Omnichannel Cold-Chain across Azure Databricks + Fabric OneLake Mirroring, and Aether Global Travel & Retail AI Operations on Azure Databricks (AI/BI + Genie + Agent Bricks with normal-browser B2B SSO & live embedding).', '面向云与 AI 解决方案架构师（SA）的企业级参考架构演示中心：基于严格脱敏的 Diamond 预集成企业环境，提供 TCL 全球渠道智能（Microsoft Fabric 六阶段工作台）、Zava 全渠道生鲜冷链（Databricks × Fabric 零拷贝四阶段控制台）与寰宇旅购国际旅行零售 AI 智能运营工作台（Databricks AI/BI + Genie + Agent Bricks，支持正常浏览器免无痕直连与页内嵌入）及双平台选型矩阵。')}</p>
       <div class="actions">
-        <a class="button primary" href="${ui.href(file, tclUrl)}">${t(zh, 'Launch Demo 1 · TCL × Microsoft Fabric', '启动演示 1 · TCL × Microsoft Fabric 六幕驾驶舱')} ↗</a>
-        <a class="button diamond-cta" href="${ui.href(file, dbxUrl)}">${t(zh, 'Launch Demo 2 · Databricks × Fabric', '启动演示 2 · Databricks × Fabric 四幕控制台')} ↗</a>
-        <a class="button primary" href="${ui.href(file, gtrUrl)}" style="background:linear-gradient(135deg,#9f1239 0%,#be123c 100%);border-color:#e11d48;color:#fff">${t(zh, 'Launch Demo 3 · Travel & Retail × Databricks AI', '启动演示 3 · 国际旅行零售 × Databricks AI 闭环')} ↗</a>
-        <a class="button" href="${ui.href(file, `${gtrUrl}#act-live`)}" style="border-color:rgba(16,185,129,.55);background:rgba(16,185,129,.14);font-weight:600">${t(zh, '🔓 Travel & Retail Normal-Browser Live & Embed', '🔓 国际旅行零售正常浏览器直连与嵌入')} ↗</a>
+        <a class="button primary" href="${ui.href(file, tclUrl)}">${t(zh, 'Open PoC 1 · TCL × Microsoft Fabric', '打开演示 1 · TCL × Microsoft Fabric 六阶段工作台')} ↗</a>
+        <a class="button diamond-cta" href="${ui.href(file, dbxUrl)}">${t(zh, 'Open PoC 2 · Databricks × Fabric', '打开演示 2 · Databricks × Fabric 四阶段控制台')} ↗</a>
+        <a class="button primary" href="${ui.href(file, gtrUrl)}" style="background:linear-gradient(135deg,#9f1239 0%,#be123c 100%);border-color:#e11d48;color:#fff">${t(zh, 'Open PoC 3 · Travel & Retail × Databricks AI', '打开演示 3 · 国际旅行零售 × Databricks AI 工作台')} ↗</a>
+        <a class="button" href="${ui.href(file, `${gtrUrl}#act-live`)}" style="border-color:rgba(16,185,129,.55);background:rgba(16,185,129,.14);font-weight:600">${t(zh, 'Travel & Retail Normal-Browser Live & Embed', '国际旅行零售正常浏览器直连与嵌入')} ↗</a>
         <a class="button" href="${ui.href(file, dataInfraUrl)}">${t(zh, 'Data & Infra Lab Track', '数据与云底座实验室专区')} ↗</a>
       </div>
     </div>
     <aside class="hero-callout">
       <p class="eyebrow">${t(zh, 'ARCHITECT VALUE PROPOSITION', 'SA 核心交付价值')}</p>
-      <strong>${t(zh, 'One Tenant.<br>Dual Lakehouse.<br>Closed-Loop Action.', '统一租户。<br>双湖仓零拷贝。<br>业务决策闭环。')}</strong>
-      <p>${t(zh, 'Sanitized public snapshot of the Diamond demo architecture—zero tenant credentials or internal IDs, 100% browser-verifiable DAX, KQL, SQL, and FinOps trade-offs.', '公开脱敏版架构快照：彻底剥离租户敏感凭据与内部 ID，100% 在浏览器端还原真实行业数据分布、DAX/KQL/SQL 口径验算与架构选型权衡。')}</p>
+      <strong>${t(zh, 'One Tenant.<br>Dual Lakehouse.<br>Auditable Action.', '统一租户。<br>双湖仓零拷贝。<br>可审计业务回写。')}</strong>
+      <p>${t(zh, 'Sanitized public snapshot of the Diamond demo architecture—zero tenant credentials or internal IDs, 100% browser-verifiable DAX, KQL, SQL, and FinOps trade-offs.', '公开脱敏版架构快照：剥离租户敏感凭据与内部 ID，100% 在浏览器端提供真实行业数据分布、DAX/KQL/SQL 口径验算与架构选型权衡。')}</p>
       <a class="text-link" href="#selection-matrix">${t(zh, 'Jump to Fabric vs Databricks Matrix', '查看 Fabric vs Databricks 选型矩阵')} ↓</a>
     </aside>
   </section>`;
@@ -282,9 +282,9 @@ function renderDiamondPage(file, zh) {
   body += `<section id="environment" class="section">
     <div class="section-heading">
       <div>
-        <p class="eyebrow">01 / DIAMOND ENVIRONMENT BLUEPRINT</p>
-        <h2>${t(zh, 'How the Diamond Enterprise Demo Environment Works', 'Diamond 企业级预集成演示环境：架构原理与 SA 实战方法')}</h2>
-        <p class="section-intro">${t(zh, 'In enterprise architecture engagements, customers rarely run a greenfield single-vendor stack. The Diamond blueprint pre-wires identity (Entra ID OBO & Cross-Tenant B2B), collaboration (M365 E5 Teams/SharePoint), unified SaaS analytics (Microsoft Fabric), and code-first lakehouse AI (Azure Databricks) so Solution Architects can demonstrate both native depth and zero-copy coexistence.', '在大型政企与跨国制造/零售/航旅客户的架构选型中，客户往往同时拥有 SAP/ERP 核心系统、跨境脱敏合规要求以及 Databricks 与 Power BI 混合资产。Diamond 演示环境预先拉通统一身份传递（Entra ID OBO 与跨租户 B2B 免隐身直连）、M365 协同触点、Microsoft Fabric 与 Azure Databricks，帮助 SA 在 15 分钟内完成从“底层数据治理”到“一线业务止损回写”的全链路演示。')}</p>
+        <p class="eyebrow">01 / DIAMOND ENVIRONMENT ARCHITECTURE</p>
+        <h2>${t(zh, 'How the Diamond Enterprise Demo Environment Works', 'Diamond 企业级预集成演示环境：架构拓扑与 SA 验证方法')}</h2>
+        <p class="section-intro">${t(zh, 'In enterprise architecture engagements, customers rarely run a greenfield single-vendor stack. The Diamond architecture pre-wires identity (Entra ID OBO & Cross-Tenant B2B), collaboration (M365 E5 Teams/SharePoint), unified SaaS analytics (Microsoft Fabric), and code-first lakehouse AI (Azure Databricks) so Solution Architects can demonstrate both native depth and zero-copy coexistence.', '在大型企业与跨国制造/零售/航旅客户的架构选型中，客户通常同时运行 SAP/ERP 核心系统、跨境脱敏合规要求以及 Databricks 与 Power BI 混合资产。Diamond 演示环境预先集成统一身份传递（Entra ID OBO 与跨租户 B2B 免无痕直连）、M365 协同触点、Microsoft Fabric 与 Azure Databricks，支持 SA 连贯验证底层数据治理与一线业务审批回写。')}</p>
       </div>
     </div>
     <div class="diamond-arch-box">
@@ -292,7 +292,7 @@ function renderDiamondPage(file, zh) {
         <span class="diamond-pill">${t(zh, 'Identity: Entra ID OBO + Cross-Tenant B2B + Dynamic RLS/CLS', '身份治理：Entra ID OBO + 跨租户 B2B + 行列级脱敏')}</span>
         <span class="diamond-pill">Fabric Workspace: TCL_Global_Channel_IQ</span>
         <span class="diamond-pill">Unity Catalogs: zava_retail · travel_retail_ops</span>
-        <span class="diamond-pill">${t(zh, 'Action Loop: Agent Bricks + Copilot Studio + Write-Back', '业务闭环：Agent Bricks + Copilot Studio + 工单回写')}</span>
+        <span class="diamond-pill">${t(zh, 'Action Loop: Agent Bricks + Copilot Studio + Write-Back', '业务回写：Agent Bricks + Copilot Studio + 工单执行')}</span>
       </div>
       ${diamondArchitectureSvg(zh, 'diamond-center-arch')}
     </div>
@@ -310,7 +310,7 @@ function renderDiamondPage(file, zh) {
     ui.card(file, zh, {
       id: 'center-data-lab-workbench',
       number: 'WORKBENCH-04',
-      badge: ['CROSS-CLOUD DATA BENCHMARK', '跨云数据平台对比沙盘'],
+      badge: ['CROSS-CLOUD DATA BENCHMARK', '跨云数据平台对比工作台'],
       title: [
         'Enterprise Data Lab · Fabric IQ vs Databricks / Snowflake / BigQuery / Redshift',
         '企业级数据实验室 · Fabric IQ 对比 Databricks / Snowflake / BigQuery / Redshift'
@@ -320,8 +320,8 @@ function renderDiamondPage(file, zh) {
         'OneLake 存储经济学 · Direct Lake 时延 · 跨云治理与容灾选型'
       ],
       description: [
-        'Complement the three live industry PoCs with interactive TCO & latency modeling across five cloud data platforms in the Data Lab workbench.',
-        '配合三大行业全真驾驶舱，在 Data Lab 工作台中交互推演五大云数据平台的存储成本、查询时延、流批一体与跨云容灾边界。'
+        'Complement the three industry PoCs with interactive TCO & latency modeling across five cloud data platforms in the Data Lab workbench.',
+        '配合三大行业参考架构工作台，在 Data Lab 中交互推演五大云数据平台的存储成本、查询时延、流批一体与跨云容灾边界。'
       ],
       url: dataLabUrl,
       links: [
@@ -333,9 +333,9 @@ function renderDiamondPage(file, zh) {
 
   body += ui.section(
     'live-cockpits',
-    '02 / INTERACTIVE POC COCKPITS',
-    t(zh, 'Three Flagship Customer PoC Cockpits (TCL · Zava · Aether Travel & Retail)', '三大企业级全真交互驾驶舱（TCL 全球渠道 · Zava 生鲜冷链 · 寰宇旅购国际旅行零售）'),
-    t(zh, 'Click into any standalone cockpit to run step-by-step presenter cues, inspect live DAX / KQL / SQL queries, launch normal-browser cloud sessions, and simulate executive operational decisions.', '点击进入任一独立全真驾驶舱，支持双屏演讲提词器、浏览器内真实数据行级 DAX/KQL/SQL 验算、正常浏览器免隐身云端直连，以及高管审批回写推演。'),
+    '02 / INTERACTIVE POC WORKBENCHES',
+    t(zh, 'Three Enterprise Customer PoC Workbenches (TCL · Zava · Aether Travel & Retail)', '三大企业级参考架构工作台（TCL 全球渠道 · Zava 生鲜冷链 · 寰宇旅购国际旅行零售）'),
+    t(zh, 'Open any standalone workbench to run step-by-step presenter cues, inspect live DAX / KQL / SQL queries, launch normal-browser cloud sessions, and simulate executive operational decisions.', '进入任一独立架构验证工作台，支持双屏提词引导、浏览器内真实数据行级 DAX/KQL/SQL 验算、正常浏览器免无痕云端直连，以及高管审批回写推演。'),
     ui.grid(demoCards)
   );
 
@@ -343,14 +343,14 @@ function renderDiamondPage(file, zh) {
     <div class="section-heading">
       <div>
         <p class="eyebrow">03 / ARCHITECT DECISION GUIDE</p>
-        <h2>${t(zh, 'Microsoft Fabric vs Azure Databricks vs Better-Together Selection Guide', 'Microsoft Fabric vs Azure Databricks vs 零拷贝共生架构选型指南')}</h2>
-        <p class="section-intro">${t(zh, 'Avoid binary "rip-and-replace" pitches: match each customer team and workload to the platform boundary where it delivers the lowest TCO and fastest time-to-action.', '拒绝非黑即白的“推倒重来式”选型：根据客户现有数据团队技能栈、实时流处理需求与全员 BI 覆盖规模，选择最优的原生或零拷贝共生边界。')}</p>
+        <h2>${t(zh, 'Microsoft Fabric vs Azure Databricks vs Better-Together Selection Guide', 'Microsoft Fabric vs Azure Databricks vs 零拷贝互通架构选型指南')}</h2>
+        <p class="section-intro">${t(zh, 'Avoid binary "rip-and-replace" pitches: match each customer team and workload to the platform boundary where it delivers the lowest TCO and fastest time-to-action.', '避免非黑即白的单一平台替换：根据客户现有数据工程技能栈、实时流处理需求与全员 BI 覆盖规模，选择最优的原生或零拷贝互通边界。')}</p>
       </div>
     </div>
     ${diamondMatrixHtml(zh)}
   </section>`;
 
-  return ui.shell(file, zh, t(zh, 'Diamond Live Demos · TCL · Fabric · Databricks', 'Diamond 企业级实战演示中心 · TCL · Fabric · Databricks'), body, {
+  return ui.shell(file, zh, t(zh, 'Diamond Live Demos · TCL · Fabric · Databricks', 'Diamond 企业级参考架构演示中心 · TCL · Fabric · Databricks'), body, {
     active: 1,
     track: 'diamond',
     counterpart: zh ? 'diamond.html' : 'zh-diamond.html'

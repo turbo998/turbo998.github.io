@@ -24,7 +24,7 @@ function readingDestination(value, zh) {
 const read = file => fs.readFileSync(path.join(root, file), 'utf8');
 const write = (file, text) => { fs.mkdirSync(path.dirname(path.join(root, file)), { recursive: true }); fs.writeFileSync(path.join(root, file), text); };
 const topics = {
-  'data-infra': ['Data & Infra Lab', '数据与基础设施实验室', 'Unify lakehouse data. Isolate execution. Optimize FinOps.', '贯通湖仓底座，隔离智能体执行，精算云成本。', 'Diamond Enterprise PoCs (TCL × Microsoft Fabric, Zava × Databricks × Fabric, and Aether Global Travel & Retail × Azure Databricks AI), OneLake Zero-Copy Mirroring, Fabric IQ vs Snowflake/BigQuery/Redshift, Agent Sandbox capacity, and Azure VM FinOps.', '涵盖 Diamond 三大企业级实战演示（TCL × Microsoft Fabric、Zava × Databricks × Fabric 与寰宇旅购国际旅行零售 × Databricks AI 智能运营闭环）、OneLake 与 Fabric IQ 跨云对比、智能体沙箱隔离容量及 Azure VM 成本治理。'],
+  'data-infra': ['Data & Infra Lab', '数据与基础设施实验室', 'Unify lakehouse data. Isolate execution. Optimize FinOps.', '贯通湖仓底座，隔离智能体执行，精算云成本。', 'Diamond Enterprise PoCs (TCL × Microsoft Fabric, Zava × Databricks × Fabric, and Aether Global Travel & Retail × Azure Databricks AI), OneLake Zero-Copy Mirroring, Fabric IQ vs Snowflake/BigQuery/Redshift, Agent Sandbox capacity, and Azure VM FinOps.', '涵盖 Diamond 三大企业级参考架构演示（TCL × Microsoft Fabric、Zava × Databricks × Fabric 与寰宇旅购国际旅行零售 × Databricks AI 智能运营工作台）、OneLake 与 Fabric IQ 跨云对比、智能体沙箱隔离容量及 Azure VM 成本治理。'],
   infra: ['AI Infra', 'AI 基础设施', 'Architect LLM serving, GPU clusters, and agent runtimes.', '构建高吞吐大模型推理、超节点互连与智能体托管底座。', 'Azure six-runtime hosting playbook, LLM engine & Prefill-Decode disaggregation sizers, FP8/NVFP4 MoE parallelism, KV cache tiering, token unit economics, and stateful failover.', '覆盖 Azure 六大智能体托管底座选型、推理引擎与 PD 分离定容、MoE 量化并行、长上下文 KV 分层卸载、单 Token 经济模型及控制面高可用容灾。'],
   commerce: ['Agentic Commerce', '智能体商务', 'Ground product discovery. Scope payment authority.', '让商品检索可信接地，让支付授权受控可审计。', 'Real-time WebIQ passage grounding, delegated payment credentials (Stripe SPT, Visa VIC, x402), step-up authentication, and enterprise checkout orchestration.', '围绕 WebIQ 实时商品接地、受限委托支付凭证（Stripe SPT、Visa VIC、x402）、阶梯强鉴权与可审计结账履约展开架构实践。'],
   voice: ['Voice', '语音', 'Design low-latency, auditable enterprise voice pipelines.', '设计低延迟、可打断、可合规留痕的企业语音智能体。', 'Cascaded ASR-LLM-TTS vs native speech-to-speech trade-offs, full-duplex barge-in, speaker diarization, and WebRTC / WebSocket / SIP contact-center ingress.', '系统拆解级联管线与原生端到端语音模型的选型边界、全双工语义判停、说话人分离，以及 WebRTC / WebSocket / SIP 呼叫中心接入网架构。'],
@@ -70,42 +70,75 @@ const radarPages = ['github-radar.html','zh-github-radar.html','workshops/github
   tracks:['benchmarks'], language:{declared:file.startsWith('zh-')||file.endsWith('/cards.html')?'zh-CN':'en'}, supplemental:true
 }));
 const diamondPages = [
-  {path:'diamond.html',role:'article',title:'Diamond Enterprise Live Demo Center · TCL · Microsoft Fabric · Azure Databricks',tracks:['data-infra'],language:{declared:'en'},supplemental:true},
-  {path:'zh-diamond.html',role:'article',title:'Diamond 企业级实战演示中心 · TCL 演示环境 · Microsoft Fabric · Azure Databricks',tracks:['data-infra'],language:{declared:'zh-CN'},supplemental:true},
-  {path:'workshops/diamond-demos/tcl-fabric/index.en.html',role:'demo',title:'TCL Global Channel IQ × Microsoft Fabric · 6-Act Enterprise Cockpit',tracks:['data-infra'],language:{declared:'en'},supplemental:true},
-  {path:'workshops/diamond-demos/tcl-fabric/index.html',role:'demo',title:'TCL 全球智慧渠道 × Microsoft Fabric · 六幕企业级实战驾驶舱',tracks:['data-infra'],language:{declared:'zh-CN'},supplemental:true},
-  {path:'workshops/diamond-demos/databricks-fabric/index.en.html',role:'demo',title:'Zava Cold-Chain Retail × Azure Databricks & Microsoft Fabric · Zero-Copy Coexistence & Live Gateway Console',tracks:['data-infra'],language:{declared:'en'},supplemental:true},
-  {path:'workshops/diamond-demos/databricks-fabric/index.html',role:'demo',title:'Zava 全渠道生鲜冷链 × Azure Databricks & Microsoft Fabric · 零拷贝双平台协同与实机免无痕直连台',tracks:['data-infra'],language:{declared:'zh-CN'},supplemental:true},
-  {path:'workshops/diamond-demos/travel-retail-ops/index.en.html',role:'demo',title:'Aether Global Travel & Retail × Azure Databricks · AI Operations Closed-Loop Cockpit',tracks:['data-infra'],language:{declared:'en'},supplemental:true},
-  {path:'workshops/diamond-demos/travel-retail-ops/index.html',role:'demo',title:'寰宇旅购 (Aether Global Travel & Retail) × Azure Databricks · 国际旅行零售 AI 运营闭环驾驶舱',tracks:['data-infra'],language:{declared:'zh-CN'},supplemental:true}
+  {path:'diamond.html',role:'article',title:'Diamond Enterprise Demo Center · TCL · Microsoft Fabric · Azure Databricks',tracks:['data-infra'],language:{declared:'en'},supplemental:true},
+  {path:'zh-diamond.html',role:'article',title:'Diamond 企业级参考架构演示中心 · TCL · Microsoft Fabric · Azure Databricks',tracks:['data-infra'],language:{declared:'zh-CN'},supplemental:true},
+  {path:'workshops/diamond-demos/tcl-fabric/index.en.html',role:'demo',title:'TCL Global Channel IQ × Microsoft Fabric · 6-Stage Reference PoC Workbench',tracks:['data-infra'],language:{declared:'en'},supplemental:true},
+  {path:'workshops/diamond-demos/tcl-fabric/index.html',role:'demo',title:'TCL 全球渠道智能 × Microsoft Fabric · 六阶段参考架构验证工作台',tracks:['data-infra'],language:{declared:'zh-CN'},supplemental:true},
+  {path:'workshops/diamond-demos/databricks-fabric/index.en.html',role:'demo',title:'Zava Cold-Chain Retail × Azure Databricks & Microsoft Fabric · Zero-Copy Coexistence Console',tracks:['data-infra'],language:{declared:'en'},supplemental:true},
+  {path:'workshops/diamond-demos/databricks-fabric/index.html',role:'demo',title:'Zava 全渠道生鲜冷链 × Azure Databricks & Microsoft Fabric · 零拷贝协同架构工作台',tracks:['data-infra'],language:{declared:'zh-CN'},supplemental:true},
+  {path:'workshops/diamond-demos/travel-retail-ops/index.en.html',role:'demo',title:'Aether Global Travel & Retail × Azure Databricks · AI Operations Workbench',tracks:['data-infra'],language:{declared:'en'},supplemental:true},
+  {path:'workshops/diamond-demos/travel-retail-ops/index.html',role:'demo',title:'寰宇旅购 (Aether Global Travel & Retail) × Azure Databricks · 国际旅行零售 AI 运营工作台',tracks:['data-infra'],language:{declared:'zh-CN'},supplemental:true}
 ];
-const infraPages = ['benchmark-cards.en.html'].map(name=>({path:'workshops/azure-agent-infra/'+name,role:'report',title:'Azure Agent Sandbox & Runtime FinOps · '+name,tracks:['infra'],language:{declared:'en'},supplemental:true}));
-const dataLabPages = ['index.html','live-demo.html','live-demo.en.html','benchmark-cards.html','benchmark-cards.en.html','demos/diamond-hub.html','demos/diamond-hub.en.html','demos/tcl-fabric/index.html','demos/tcl-fabric/index.en.html','demos/tcl-fabric/playbook.html','demos/tcl-fabric/playbook.en.html','demos/databricks-fabric/index.html','demos/databricks-fabric/index.en.html','demos/databricks-fabric/battlecard.html','demos/databricks-fabric/battlecard.en.html'].map(name=>({path:'workshops/data-lab/'+name,role:name.startsWith('benchmark')?'report':'demo',title:'Enterprise Data Lab · Microsoft Fabric IQ & Cross-Cloud Workbench · '+name,tracks:['data-infra'],language:{declared:name.includes('.en.')?'en':'zh-CN'},supplemental:true}));
-const phase179Pages = ['llm-inference-engine-pd-sizer.html','llm-inference-engine-pd-sizer.en.html','llm-inference-engine-pd-selection-cards.html','llm-inference-engine-pd-selection-cards.zh.html','moe-quantization-parallelism-selection-cards.html','moe-quantization-parallelism-selection-cards.zh.html','ai-storage-checkpoint-kv-offload-selection-cards.html','ai-storage-checkpoint-kv-offload-selection-cards.zh.html','ai-infra-architect-workbench.html','aipc-kev-sft-q8-gguf-cards.html','mi300x-large-moe-bf16-mxfp4-cards.html','clio-industry-harness-cards.html'].map(name=>({path:'workshops/benchmarks/'+name,role:name.includes('cards')?'report':'demo',title:name.includes('moe-quantization-parallelism')?'AI Infra · Large Model & MoE Quantization (FP8/NVFP4) & Parallelism Selection · '+name:name.includes('llm-inference-engine-pd')?'AI Infra · LLM Inference Engine & PD Disaggregation Selection · '+name:name.includes('clio-industry-harness')?'Microsoft Discovery & CLIO · Enterprise R&D Harness 7-Card Report · '+name:name.includes('aipc-kev')?'Edge Routing SLM · Calibrated SFT & Q8_0 GGUF Evaluation · '+name:name.includes('mi300x')?'Azure AMD MI300X · Large Open-Weight MoE BF16 & MXFP4 Benchmark · '+name:'AI Infra · Enterprise Stack & Sandbox Architecture Deck · '+name,tracks:name.includes('aipc-kev')||name.includes('clio-industry-harness')?['benchmarks']:['infra'],language:{declared:name.endsWith('.en.html')||name==='llm-inference-engine-pd-selection-cards.html'||name==='moe-quantization-parallelism-selection-cards.html'||name==='ai-storage-checkpoint-kv-offload-selection-cards.html'?'en':name.endsWith('.zh.html')||name==='llm-inference-engine-pd-sizer.html'?'zh-CN':'und'},supplemental:true}));
+const infraPages = [
+  {path:'workshops/azure-agent-infra/benchmark-cards.en.html',role:'report',title:'Azure Agent Sandbox & Six-Runtime Hosting 7-Card Benchmark Report (EN)',tracks:['infra'],language:{declared:'en'},supplemental:true}
+];
+const dataLabTitleMap = {
+  'index.html': '企业数据实验室 · Microsoft Fabric IQ 与跨云湖仓架构工作台',
+  'live-demo.html': 'Microsoft Fabric vs Databricks 双工作负载对比沙盒',
+  'live-demo.en.html': 'Microsoft Fabric vs Databricks Dual-Workload Comparison Sandbox',
+  'benchmark-cards.html': 'Microsoft Fabric vs Databricks · TPC-DS 与跨云湖仓 7-Card 基准报告',
+  'benchmark-cards.en.html': 'Microsoft Fabric vs Databricks · TPC-DS & Lakehouse 7-Card Benchmark Report',
+  'demos/diamond-hub.html': 'Diamond 企业级数据与智能体演示目录',
+  'demos/diamond-hub.en.html': 'Diamond Enterprise Data & Agent PoC Hub',
+  'demos/tcl-fabric/index.html': 'TCL 全球渠道智能 × Microsoft Fabric 架构演示台',
+  'demos/tcl-fabric/index.en.html': 'TCL Global Channel IQ × Microsoft Fabric PoC Workbench',
+  'demos/tcl-fabric/playbook.html': 'TCL × Microsoft Fabric 参考架构实施指南',
+  'demos/tcl-fabric/playbook.en.html': 'TCL × Microsoft Fabric Reference Architecture Playbook',
+  'demos/databricks-fabric/index.html': 'Zava 冷链 × Azure Databricks 与 Fabric 零拷贝协同工作台',
+  'demos/databricks-fabric/index.en.html': 'Zava Cold-Chain × Azure Databricks & Fabric Zero-Copy Console',
+  'demos/databricks-fabric/battlecard.html': 'Azure Databricks × Microsoft Fabric 十维架构选型矩阵',
+  'demos/databricks-fabric/battlecard.en.html': 'Azure Databricks × Microsoft Fabric 10-Dimension Architecture Selection Matrix'
+};
+const dataLabPages = Object.entries(dataLabTitleMap).map(([name,title])=>({path:'workshops/data-lab/'+name,role:name.startsWith('benchmark')?'report':'demo',title,tracks:['data-infra'],language:{declared:name.includes('.en.')?'en':'zh-CN'},supplemental:true}));
+const phase179TitleMap = {
+  'llm-inference-engine-pd-sizer.html': '大模型推理引擎与 Prefill-Decode 分离容量测算台',
+  'llm-inference-engine-pd-sizer.en.html': 'LLM Inference Engine & Prefill-Decode Disaggregation Sizer',
+  'llm-inference-engine-pd-selection-cards.html': 'LLM Inference Engine & PD Disaggregation Selection · 7-Card Report (EN)',
+  'llm-inference-engine-pd-selection-cards.zh.html': '大模型推理引擎与 PD 分离选型 · 7-Card 基准报告 (中文)',
+  'moe-quantization-parallelism-selection-cards.html': 'Large Model & MoE Quantization (FP8/NVFP4) & Parallelism · 7-Card Report (EN)',
+  'moe-quantization-parallelism-selection-cards.zh.html': 'MoE 量化 (FP8/NVFP4) 与分布式并行选型 · 7-Card 报告 (中文)',
+  'ai-storage-checkpoint-kv-offload-selection-cards.html': 'AI Storage, Checkpoint & KV Offload Selection · 7-Card Report (EN)',
+  'ai-storage-checkpoint-kv-offload-selection-cards.zh.html': 'AI 存储、Checkpoint 与分层 KV 卸载选型 · 7-Card 报告 (中文)',
+  'ai-infra-architect-workbench.html': 'AI 基础设施架构师容量与网络综合工作台',
+  'aipc-kev-sft-q8-gguf-cards.html': 'Edge Routing SLM · Calibrated SFT & Q8_0 GGUF 7-Card Report',
+  'mi300x-large-moe-bf16-mxfp4-cards.html': 'Azure AMD MI300X · Large Open-Weight MoE BF16 & MXFP4 7-Card Report',
+  'clio-industry-harness-cards.html': 'Microsoft Discovery & CLIO · Enterprise R&D Harness 7-Card Report'
+};
+const phase179Pages = Object.entries(phase179TitleMap).map(([name,title])=>({path:'workshops/benchmarks/'+name,role:name.includes('cards')?'report':'demo',title,tracks:name.includes('aipc-kev')||name.includes('clio-industry-harness')?['benchmarks']:['infra'],language:{declared:name.endsWith('.en.html')||name==='llm-inference-engine-pd-selection-cards.html'||name==='moe-quantization-parallelism-selection-cards.html'||name==='ai-storage-checkpoint-kv-offload-selection-cards.html'?'en':name.endsWith('.zh.html')||name==='llm-inference-engine-pd-sizer.html'?'zh-CN':'und'},supplemental:true}));
 const clioHarnessPages = [
-  {path:'workshops/scientific-and-industry-harness-engineering/index.html',role:'demo',title:'Microsoft Discovery & CLIO · Industry Scenario Harness Engineering Workbench',tracks:['benchmarks'],language:{declared:'zh-CN'},supplemental:true},
+  {path:'workshops/scientific-and-industry-harness-engineering/index.html',role:'demo',title:'Microsoft Discovery 与 CLIO · 科学发现与行业 Harness 架构工作台',tracks:['benchmarks'],language:{declared:'zh-CN'},supplemental:true},
   {path:'workshops/scientific-and-industry-harness-engineering/index.en.html',role:'demo',title:'Microsoft Discovery & CLIO · Scientific & Industry Harness Engineering Workbench (EN)',tracks:['benchmarks'],language:{declared:'en'},supplemental:true},
   {path:'workshops/scientific-and-industry-harness-engineering/cards.html',role:'report',title:'Microsoft Discovery & CLIO · Scientific & Industry Harness 7-Card Report (EN)',tracks:['benchmarks'],language:{declared:'en'},supplemental:true},
   {path:'workshops/scientific-and-industry-harness-engineering/cards.zh.html',role:'report',title:'Microsoft Discovery 与 CLIO · 科学发现与行业 Harness 7-Card 报告 (中文)',tracks:['benchmarks'],language:{declared:'zh-CN'},supplemental:true}
 ];
 const harnessFrameworksPages = [
-  {path:'workshops/harness-engineering-frameworks/index.html',role:'demo',title:'Mainstream Agent Harness Engineering Frameworks · DeepSeek DSH × Claude Code × Microsoft HVE Core Interactive Playground',tracks:['benchmarks'],language:{declared:'zh-CN'},supplemental:true},
-  {path:'workshops/harness-engineering-frameworks/index.en.html',role:'demo',title:'Mainstream Agent Harness Engineering Frameworks · DeepSeek DSH × Claude Code × Microsoft HVE Core Workbench (EN)',tracks:['benchmarks'],language:{declared:'en'},supplemental:true},
-  {path:'workshops/harness-engineering-frameworks/cards.html',role:'report',title:'Mainstream Agent Harness Engineering Frameworks · DSH × Claude Code × HVE Core 7-Card Report (EN)',tracks:['benchmarks'],language:{declared:'en'},supplemental:true},
-  {path:'workshops/harness-engineering-frameworks/cards.zh.html',role:'report',title:'主流 Agent Harness Engineering 框架与实现机制深度研究 · DSH × Claude Code × HVE Core 7-Card 报告 (中文)',tracks:['benchmarks'],language:{declared:'zh-CN'},supplemental:true}
+  {path:'workshops/harness-engineering-frameworks/index.html',role:'demo',title:'主流 Agent Harness 框架对比工作台 · DeepSeek DSH × Claude Code × Microsoft HVE Core',tracks:['benchmarks'],language:{declared:'zh-CN'},supplemental:true},
+  {path:'workshops/harness-engineering-frameworks/index.en.html',role:'demo',title:'Agent Harness Engineering Frameworks · DeepSeek DSH × Claude Code × Microsoft HVE Core Workbench (EN)',tracks:['benchmarks'],language:{declared:'en'},supplemental:true},
+  {path:'workshops/harness-engineering-frameworks/cards.html',role:'report',title:'Agent Harness Engineering Frameworks · DSH × Claude Code × HVE Core 7-Card Report (EN)',tracks:['benchmarks'],language:{declared:'en'},supplemental:true},
+  {path:'workshops/harness-engineering-frameworks/cards.zh.html',role:'report',title:'Agent Harness 框架实现机制对比 · DSH × Claude Code × HVE Core 7-Card 报告 (中文)',tracks:['benchmarks'],language:{declared:'zh-CN'},supplemental:true}
 ];
 const harnessCoevolutionPages = [
-  {path:'articles/agent-harness-coevolution.html',role:'article',title:'随模型升级持续演进 Agent Harness：120 个 Skills 审计、上下文悬崖修复与模型协同实战报告',tracks:['benchmarks'],language:{declared:'zh-CN'},supplemental:true},
+  {path:'articles/agent-harness-coevolution.html',role:'article',title:'随模型升级持续演进 Agent Harness：120 个 Skills 审计、上下文悬崖修复与多模型协同评估报告',tracks:['benchmarks'],language:{declared:'zh-CN'},supplemental:true},
   {path:'articles/agent-harness-coevolution.en.html',role:'article',title:'Agent Harness x Frontier Model Co-Evolution: 120-Skill Audit, 12 KB Context Cliff Fix & Multi-Model Routing Report',tracks:['benchmarks'],language:{declared:'en'},supplemental:true},
-  {path:'workshops/agent-harness-coevolution/index.html',role:'demo',title:'Agent Harness × 前沿模型协同演进交互演示工作台 (Gemini 4 Carbon · GPT-6.2 Sol · Grok 4.7)',tracks:['benchmarks'],language:{declared:'zh-CN'},supplemental:true},
-  {path:'workshops/agent-harness-coevolution/index.en.html',role:'demo',title:'Agent Harness x Frontier Model Co-Evolution Interactive Presenter Workbench (Gemini 4 Carbon · GPT-6.2 Sol · Grok 4.7)',tracks:['benchmarks'],language:{declared:'en'},supplemental:true},
-  {path:'workshops/agent-harness-coevolution/cards.zh.html',role:'report',title:'Agent Harness × 前沿模型协同演进 · 120 个 Skills 审计 7-Card 视觉报告 (中文)',tracks:['benchmarks'],language:{declared:'zh-CN'},supplemental:true},
+  {path:'workshops/agent-harness-coevolution/index.html',role:'demo',title:'Agent Harness × 前沿模型协同演进交互工作台 (Gemini 4 Carbon · GPT-6.2 Sol · Grok 4.7)',tracks:['benchmarks'],language:{declared:'zh-CN'},supplemental:true},
+  {path:'workshops/agent-harness-coevolution/index.en.html',role:'demo',title:'Agent Harness x Frontier Model Co-Evolution Workbench (Gemini 4 Carbon · GPT-6.2 Sol · Grok 4.7)',tracks:['benchmarks'],language:{declared:'en'},supplemental:true},
+  {path:'workshops/agent-harness-coevolution/cards.zh.html',role:'report',title:'Agent Harness × 前沿模型协同演进 · 120 个 Skills 审计 7-Card 报告 (中文)',tracks:['benchmarks'],language:{declared:'zh-CN'},supplemental:true},
   {path:'workshops/agent-harness-coevolution/cards.html',role:'report',title:'Agent Harness x Frontier Model Co-Evolution · 120-Skill Audit 7-Card Report (EN)',tracks:['benchmarks'],language:{declared:'en'},supplemental:true},
-  {path:'articles/google-self-improving-harnesses.html',role:'article',title:'Google《Harnesses That Improve Themselves》深度研究：双环门控自进化 Agent Harness 统一架构与 SA 决策指南 (arXiv:2611.22299v1)',tracks:['benchmarks'],language:{declared:'zh-CN'},supplemental:true},
+  {path:'articles/google-self-improving-harnesses.html',role:'article',title:'Google《Harnesses That Improve Themselves》研究：双环门控自演进 Agent Harness 架构与 SA 指南 (arXiv:2611.22299v1)',tracks:['benchmarks'],language:{declared:'zh-CN'},supplemental:true},
   {path:'articles/google-self-improving-harnesses.en.html',role:'article',title:'Google Harnesses That Improve Themselves: Dual-Loop Architecture, Gated Modular Evolution & SA Playbook (arXiv:2611.22299v1)',tracks:['benchmarks'],language:{declared:'en'},supplemental:true},
-  {path:'workshops/google-self-improving-harnesses/index.html',role:'demo',title:'Google《Harnesses That Improve Themselves》4-Tab 自进化交互模拟工作台',tracks:['benchmarks'],language:{declared:'zh-CN'},supplemental:true},
+  {path:'workshops/google-self-improving-harnesses/index.html',role:'demo',title:'Google《Harnesses That Improve Themselves》4-Tab 自演进交互模拟工作台',tracks:['benchmarks'],language:{declared:'zh-CN'},supplemental:true},
   {path:'workshops/google-self-improving-harnesses/index.en.html',role:'demo',title:'Google Harnesses That Improve Themselves · 4-Tab Self-Improving Harness Simulator',tracks:['benchmarks'],language:{declared:'en'},supplemental:true},
-  {path:'workshops/google-self-improving-harnesses/cards.zh.html',role:'report',title:'Google《Harnesses That Improve Themselves》SWE-bench Lite 7-Card 基准视觉报告 (中文)',tracks:['benchmarks'],language:{declared:'zh-CN'},supplemental:true},
+  {path:'workshops/google-self-improving-harnesses/cards.zh.html',role:'report',title:'Google《Harnesses That Improve Themselves》SWE-bench Lite 7-Card 基准报告 (中文)',tracks:['benchmarks'],language:{declared:'zh-CN'},supplemental:true},
   {path:'workshops/google-self-improving-harnesses/cards.html',role:'report',title:'Google Harnesses That Improve Themselves · SWE-bench Lite 7-Card Benchmark Deck (EN)',tracks:['benchmarks'],language:{declared:'en'},supplemental:true}
 ];
 const commerceTrendsPages = ['stripe-collison-7-trends.html','stripe-collison-7-trends.en.html'].map(name=>({path:'workshops/agentic-commerce/'+name,role:'article',title:'Stripe / Collison · Seven Agentic Commerce Trends',tracks:['commerce'],language:{declared:name.includes('.en.')?'en':'zh-CN'},supplemental:true}));
@@ -147,38 +180,38 @@ const gpt62SolPages = [
   {path:'workshops/benchmarks/gpt-6-2-sol-cards.zh-CN.html',role:'report',title:'增补报告 9：GPT-6.2 Sol 全档推理强度实测、校准路由与二十一模型前沿基准报告 (中文)',tracks:['benchmarks'],language:{declared:'zh-CN'},supplemental:true}
 ];
 const recentSupplementPages = [
-  {path:'workshops/benchmarks/mai-image-2-7-cards.html',role:'report',title:'MAI-Image-2.7 Live Multimodal Generation & Commercial Image Editing Benchmark (7-Card Deck)',tracks:['benchmarks'],language:{declared:'en'},supplemental:true},
-  {path:'workshops/benchmarks/mai-image-2-7-cards.en.html',role:'report',title:'MAI-Image-2.7 Live Multimodal Generation & Commercial Image Editing Benchmark (EN)',tracks:['benchmarks'],language:{declared:'en'},supplemental:true},
-  {path:'workshops/benchmarks/mai-image-2-7-cards.zh-CN.html',role:'report',title:'MAI-Image-2.7 实时多模态文生图与商业图像编辑基准评测报告 (中文)',tracks:['benchmarks'],language:{declared:'zh-CN'},supplemental:true},
-  {path:'workshops/benchmarks/mai-image-2-7-commercial-edit-bench.html',role:'demo',title:'MAI-Image-2.7 商业图像编辑与双盲对比实验台 (中文)',tracks:['benchmarks'],language:{declared:'zh-CN'},supplemental:true},
+  {path:'workshops/benchmarks/mai-image-2-7-cards.html',role:'report',title:'MAI-Image-2.7 Multimodal Generation & Commercial Editing Benchmark (7-Card Deck)',tracks:['benchmarks'],language:{declared:'en'},supplemental:true},
+  {path:'workshops/benchmarks/mai-image-2-7-cards.en.html',role:'report',title:'MAI-Image-2.7 Multimodal Generation & Commercial Editing Benchmark (EN)',tracks:['benchmarks'],language:{declared:'en'},supplemental:true},
+  {path:'workshops/benchmarks/mai-image-2-7-cards.zh-CN.html',role:'report',title:'MAI-Image-2.7 多模态文生图与商业图像编辑基准评测报告 (中文)',tracks:['benchmarks'],language:{declared:'zh-CN'},supplemental:true},
+  {path:'workshops/benchmarks/mai-image-2-7-commercial-edit-bench.html',role:'demo',title:'MAI-Image-2.7 商业图像编辑与双盲对比评测工作台 (中文)',tracks:['benchmarks'],language:{declared:'zh-CN'},supplemental:true},
   {path:'workshops/benchmarks/mai-image-2-7-commercial-edit-bench.en.html',role:'demo',title:'MAI-Image-2.7 Commercial Image Editing & Blind A/B Workbench (EN)',tracks:['benchmarks'],language:{declared:'en'},supplemental:true},
-  {path:'workshops/benchmarks/terminal-bench-4-1-cards.html',role:'report',title:'Terminal-Bench 4.1 Hardcore Agentic CLI & Systems Engineering Benchmark (7-Card Deck)',tracks:['benchmarks'],language:{declared:'en'},supplemental:true},
-  {path:'workshops/benchmarks/terminal-bench-4-1-cards.en.html',role:'report',title:'Terminal-Bench 4.1 Hardcore Agentic CLI & Systems Engineering Benchmark (EN)',tracks:['benchmarks'],language:{declared:'en'},supplemental:true},
-  {path:'workshops/benchmarks/terminal-bench-4-1-cards.zh-CN.html',role:'report',title:'Terminal-Bench 4.1 硬核终端智能体基准深度拆解与 15 模全景榜单 (中文)',tracks:['benchmarks'],language:{declared:'zh-CN'},supplemental:true},
-  {path:'workshops/foundry-local/index.html',role:'demo',title:'Microsoft Foundry Local 端侧 AI 运行时架构与交互式选型工作台 (中文)',tracks:['infra'],language:{declared:'zh-CN'},supplemental:true},
-  {path:'workshops/foundry-local/index.en.html',role:'demo',title:'Microsoft Foundry Local Edge AI Runtime Architecture & Interactive Sizer (EN)',tracks:['infra'],language:{declared:'en'},supplemental:true},
-  {path:'docs/h5-academy/index.html',role:'demo',title:'AI Infra 推理与智算网络 H5 可视化精学馆 · 6 册双语交互工作台 (TTFT/TPOT/Goodput · GPU 三水位定容 · PD 分离 · TP/PP/DP/EP · RDMA/RoCEv2/IB/NVLink)',tracks:['infra'],language:{declared:'zh-CN'},supplemental:true},
-  {path:'docs/h5-academy/01-metrics.html',role:'demo',title:'AI Infra H5 精学馆 第 1 册：TTFT / TPOT / Goodput 推理指标与 SLA 权衡实验台',tracks:['infra'],language:{declared:'zh-CN'},supplemental:true},
-  {path:'docs/h5-academy/02-tpm-tps-capacity.html',role:'demo',title:'AI Infra H5 精学馆 第 2 册：TPM / TPS 容量漏斗与并发换算实验台',tracks:['infra'],language:{declared:'zh-CN'},supplemental:true},
-  {path:'docs/h5-academy/03-gpu-sizing.html',role:'demo',title:'AI Infra H5 精学馆 第 3 册：GPU 显存 / 带宽 / 算力三水位定容计算器',tracks:['infra'],language:{declared:'zh-CN'},supplemental:true},
-  {path:'docs/h5-academy/04-pd-disaggregation.html',role:'demo',title:'AI Infra H5 精学馆 第 4 册：Prefill-Decode (PD) 分离架构与 KV 传输仿真台',tracks:['infra'],language:{declared:'zh-CN'},supplemental:true},
-  {path:'docs/h5-academy/05-parallelism-acceleration.html',role:'demo',title:'AI Infra H5 精学馆 第 5 册：TP / PP / DP / EP 分布式并行与量化加速推演台',tracks:['infra'],language:{declared:'zh-CN'},supplemental:true},
-  {path:'docs/h5-academy/06-rdma-roce-nvlink.html',role:'demo',title:'AI Infra H5 精学馆 第 6 册：RDMA / RoCEv2 / InfiniBand / NVLink 智算网络选型台',tracks:['infra'],language:{declared:'zh-CN'},supplemental:true},
-  {path:'docs/h5/index.html',role:'demo',title:'AI Infra 交互式 H5 全景精学馆 · 56 套交互沙盘与 445 篇 SA 架构指南 (#001–#443)',tracks:['infra'],language:{declared:'zh-CN'},supplemental:true},
-  {path:'docs/h5/ai-infra-learning-hub.html',role:'demo',title:'AI Infra 全景 H5 学习中心 (中文)',tracks:['infra'],language:{declared:'zh-CN'},supplemental:true},
-  {path:'docs/h5/ai-infra-learning-hub.en.html',role:'demo',title:'AI Infra Interactive H5 Learning Hub (EN)',tracks:['infra'],language:{declared:'en'},supplemental:true}
+  {path:'workshops/benchmarks/terminal-bench-4-1-cards.html',role:'report',title:'Terminal-Bench 4.1 Agentic CLI & Systems Engineering Benchmark (7-Card Deck)',tracks:['benchmarks'],language:{declared:'en'},supplemental:true},
+  {path:'workshops/benchmarks/terminal-bench-4-1-cards.en.html',role:'report',title:'Terminal-Bench 4.1 Agentic CLI & Systems Engineering Benchmark (EN)',tracks:['benchmarks'],language:{declared:'en'},supplemental:true},
+  {path:'workshops/benchmarks/terminal-bench-4-1-cards.zh-CN.html',role:'report',title:'Terminal-Bench 4.1 终端智能体系统工程基准报告与 15 模型评估 (中文)',tracks:['benchmarks'],language:{declared:'zh-CN'},supplemental:true},
+  {path:'workshops/foundry-local/index.html',role:'demo',title:'Microsoft Foundry Local 端侧 AI 运行时架构与容量测算台 (中文)',tracks:['infra'],language:{declared:'zh-CN'},supplemental:true},
+  {path:'workshops/foundry-local/index.en.html',role:'demo',title:'Microsoft Foundry Local Edge AI Runtime Architecture & Capacity Sizer (EN)',tracks:['infra'],language:{declared:'en'},supplemental:true},
+  {path:'docs/h5-academy/index.html',role:'demo',title:'AI Infra 推理与智算网络 6 册交互式定容实验台 (TTFT/TPOT · GPU 三水位 · PD 分离 · 并行切分 · RDMA/IB)',tracks:['infra'],language:{declared:'zh-CN'},supplemental:true},
+  {path:'docs/h5-academy/01-metrics.html',role:'demo',title:'AI Infra 定容实验台 第 1 册：TTFT / TPOT / Goodput 推理指标与 SLA 权衡',tracks:['infra'],language:{declared:'zh-CN'},supplemental:true},
+  {path:'docs/h5-academy/02-tpm-tps-capacity.html',role:'demo',title:'AI Infra 定容实验台 第 2 册：TPM / TPS 容量漏斗与并发换算',tracks:['infra'],language:{declared:'zh-CN'},supplemental:true},
+  {path:'docs/h5-academy/03-gpu-sizing.html',role:'demo',title:'AI Infra 定容实验台 第 3 册：GPU 显存 / 带宽 / 算力三水位定容计算器',tracks:['infra'],language:{declared:'zh-CN'},supplemental:true},
+  {path:'docs/h5-academy/04-pd-disaggregation.html',role:'demo',title:'AI Infra 定容实验台 第 4 册：Prefill-Decode (PD) 分离架构与 KV 传输仿真台',tracks:['infra'],language:{declared:'zh-CN'},supplemental:true},
+  {path:'docs/h5-academy/05-parallelism-acceleration.html',role:'demo',title:'AI Infra 定容实验台 第 5 册：TP / PP / DP / EP 分布式并行与量化加速推演台',tracks:['infra'],language:{declared:'zh-CN'},supplemental:true},
+  {path:'docs/h5-academy/06-rdma-roce-nvlink.html',role:'demo',title:'AI Infra 定容实验台 第 6 册：RDMA / RoCEv2 / InfiniBand / NVLink 智算网络选型台',tracks:['infra'],language:{declared:'zh-CN'},supplemental:true},
+  {path:'docs/h5/index.html',role:'demo',title:'AI Infra 交互式架构与定容实验中心 · 56 套交互沙盘与 445 篇 SA 架构指南 (#001–#443)',tracks:['infra'],language:{declared:'zh-CN'},supplemental:true},
+  {path:'docs/h5/ai-infra-learning-hub.html',role:'demo',title:'AI Infra 7 合 1 交互式架构与容量推演中心 (中文)',tracks:['infra'],language:{declared:'zh-CN'},supplemental:true},
+  {path:'docs/h5/ai-infra-learning-hub.en.html',role:'demo',title:'AI Infra 7-in-1 Interactive Architecture & Capacity Hub (EN)',tracks:['infra'],language:{declared:'en'},supplemental:true}
 ];
 const motionPages = hasMotionDemo(root) ? [
   {path:motionDemoRoutes.en,role:'demo',title:'GPT-6.2 Motion Studies',tracks:['animation'],language:{declared:'en'}},
   {path:motionDemoRoutes['zh-CN'],role:'demo',title:'GPT-6.2 动势图鉴',tracks:['animation'],language:{declared:'zh-CN'}}
 ] : [];
 const ftePages = [
-  {path:'fte.html',role:'article',title:'Frontier Transformation Engineer (FTE) · Panorama, ~86-Hour Learning Path & Registration Hub',tracks:['general'],language:{declared:'en'},supplemental:true},
-  {path:'zh-fte.html',role:'article',title:'Frontier Transformation Engineer (FTE) 全景介绍 · 86 小时学习路径、6 周 Sprint 与注册入口',tracks:['general'],language:{declared:'zh-CN'},supplemental:true}
+  {path:'fte.html',role:'article',title:'Frontier Transformation Engineer (FTE) · Capability Model, ~86-Hour Curriculum & Enrollment Guide',tracks:['general'],language:{declared:'en'},supplemental:true},
+  {path:'zh-fte.html',role:'article',title:'Frontier Transformation Engineer (FTE) 能力模型 · 86 小时课程体系、6 周交付架构与注册指南',tracks:['general'],language:{declared:'zh-CN'},supplemental:true}
 ];
 const ignite2026Pages = [
-  {path:'ignite-2026/index.html',role:'demo',title:'Microsoft Ignite 2026 解决方案架构师专栏 · 企业智能体全栈全景蓝图（00–06）',tracks:['data-infra'],language:{declared:'zh-CN'},supplemental:true},
-  {path:'ignite-2026/index.en.html',role:'demo',title:'Microsoft Ignite 2026 Solution Architect Column · Enterprise Agentic AI Blueprint (00–06)',tracks:['data-infra'],language:{declared:'en'},supplemental:true},
+  {path:'ignite-2026/index.html',role:'demo',title:'Microsoft Ignite 2026 解决方案架构师专栏 · 企业智能体全栈参考架构（00–06）',tracks:['data-infra'],language:{declared:'zh-CN'},supplemental:true},
+  {path:'ignite-2026/index.en.html',role:'demo',title:'Microsoft Ignite 2026 Solution Architect Column · Enterprise Agentic AI Reference Architecture (00–06)',tracks:['data-infra'],language:{declared:'en'},supplemental:true},
   {path:'ignite-2026/01-copilot-entry.html',role:'demo',title:'01 统一智能体入口（M365 Copilot · Copilot Studio · Work IQ）| Ignite 2026 专栏',tracks:['data-infra'],language:{declared:'zh-CN'},supplemental:true},
   {path:'ignite-2026/01-copilot-entry.en.html',role:'demo',title:'01 Unified Agent Entry (M365 Copilot · Copilot Studio · Work IQ) | Ignite 2026 Column',tracks:['data-infra'],language:{declared:'en'},supplemental:true},
   {path:'ignite-2026/02-web-iq-context.html',role:'demo',title:'02 外部实时世界连接（Web Grounding · Web IQ · MCP 治理）| Ignite 2026 专栏',tracks:['data-infra'],language:{declared:'zh-CN'},supplemental:true},

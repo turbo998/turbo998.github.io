@@ -10,13 +10,16 @@ const {allowedFrames} = require('../scripts/pelican-policy.cjs');
 const readingSimulatorScroll = {
   'workshops/faf-vs-agent-forge/demo-agent-forge-pelican.html': [{selector:'#doc-box',reason:'Preserved simulator document/code artifact inspector; reading manifest dedicated-design exception.'}],
   'workshops/faf-vs-agent-forge/demo-faf-pelican.html': [{selector:'#doc-box',reason:'Preserved simulator document/code artifact inspector; reading manifest dedicated-design exception.'}],
-  'workshops/faf-vs-agent-forge/demo-hve-pelican.html': [{selector:'#artifactContent',reason:'Preserved generated implementation-notes inspector; reading manifest dedicated-design exception.'}]
+  'workshops/faf-vs-agent-forge/demo-hve-pelican.html': [{selector:'#artifactContent',reason:'Preserved generated implementation-notes inspector; reading manifest dedicated-design exception.'}],
+  'workshops/data-lab/demos/tcl-fabric/index.html': [{selector:'#telemetryDrawer',reason:'Interactive live telemetry & KQL trace drawer.'},{selector:'.code-block',reason:'Bounded SQL/KQL/JSON protocol payload inspector.'}],
+  'workshops/diamond-demos/contoso-fabric/index.html': [{selector:'#telemetryDrawer',reason:'Interactive live telemetry & KQL trace drawer.'},{selector:'.code-block',reason:'Bounded SQL/KQL/JSON protocol payload inspector.'}],
+  'workshops/diamond-demos/contoso-fabric/fabric-studio.html': [{selector:'#wsItemsTableCard',reason:'Workspace items explorer pane inside simulated Fabric Studio console.'}]
 };
 const runtimeFragments = Object.fromEntries(['animation', 'generative-visual-lab'].flatMap(directory => ['index.html', 'index.en.html'].map(name => [`${directory}/demos/knowledge-explainer-studio/${name}`, {'tpl-mcp':'xiaozhe-mcp-node-graph','tpl-rag':'xiaozhe-rag-pipeline-flow','tpl-finops':'chimp-deepseek-unit-economics'}])));
 const root = path.join(__dirname, '..');
 const base = process.env.SITE_TEST_URL || 'http://127.0.0.1:8797';
 const output = process.env.SITE_ARTIFACT_DIR || path.join(root, 'site-test-artifacts');
-const currentHtml = execFileSync('git', ['ls-files', '--cached', '--others', '--exclude-standard', '-z', '--', '*.html'], {cwd:root,encoding:'utf8'}).split('\0').filter(f=>f&&!f.startsWith('design-preview/')&&!f.startsWith('site-test-artifacts/')&&!f.endsWith('-raw.html'));
+const currentHtml = execFileSync('git', ['ls-files', '--cached', '--others', '--exclude-standard', '-z', '--', '*.html'], {cwd:root,encoding:'utf8'}).split('\0').filter(f=>f&&!f.startsWith('design-preview/')&&!f.startsWith('site-test-artifacts/')&&!f.startsWith('scripts/clean-baselines/')&&!f.endsWith('-raw.html'));
 const files = [...new Set([...inventory.content.map(p => p.path).filter(p => fs.existsSync(path.join(root, p))), ...production.portalPages, ...currentHtml])];
 const report = { result: 'RUNNING', scope: 'Every baseline HTML plus all current production HTML, including new translations; static references and optional real-browser layout audit', pages: [], missingFiles: [], missingFragments: [], layouts: [], runtimeFailures: [], runtimeFragments: [], externalRedirects: [], errors: [] };
 async function main() {

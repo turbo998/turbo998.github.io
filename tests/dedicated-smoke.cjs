@@ -104,7 +104,7 @@ async function assertPerimeter(page) {
   assert.deepEqual(palette, { background: palette.glass ? 'rgba(16, 26, 48, 0.9)' : 'rgb(16, 26, 48)', text: 'rgb(238, 243, 255)', border: 'rgb(49, 67, 97)', scheme: 'dark', identity: 'rgb(238, 243, 255)', link: 'rgb(154, 171, 255)', position: 'sticky', top: '0px', glass: palette.glass }, 'Sticky Dark Aurora glass perimeter mismatch');
   return palette;
 }
-const strip = s => s.replace(/<!-- kee-dedicated-style:start -->[\s\S]*?<!-- kee-dedicated-style:end -->\n/g, '').replace(/\n<!-- kee-dedicated-navigation:start -->[\s\S]*?<!-- kee-dedicated-navigation:end -->\n/g, '').replace(/<!-- kee-dedicated-report-(open|close):start -->[\s\S]*?<!-- kee-dedicated-report-\1:end -->/g, '').replace(/<body class="kee-dedicated-(?:report-(?:root|text)|cycle377)">/, '<body>').replace('<button id="kee-resource-language"', '<button');
+const strip = s => s.replace(/<!-- kee-dedicated-style:start -->[\s\S]*?<!-- kee-dedicated-style:end -->\n/g, '').replace(/\n<!-- kee-dedicated-navigation:start -->[\s\S]*?<!-- kee-dedicated-navigation:end -->\n/g, '').replace(/<!-- kee-dedicated-report-(open|close):start -->[\s\S]*?<!-- kee-dedicated-report-\1:end -->/g, '').replace(/<body class="kee-dedicated-(?:report-(?:root|text)|cycle377|infra)">/, '<body>').replace('<button id="kee-resource-language"', '<button');
 async function checkCycle377(browser, result) {
   result.cycle377 = { sourceCommit: cycle377Commit, layouts: [], interactions: [], noJavaScript: [], network: [] };
   for (const route of cycle377Paths) {
@@ -297,15 +297,15 @@ async function main() {
         action = await page.evaluate(() => ({ scenario: 'Code-Interpreter sandbox simulation', active: document.querySelector('#tpl_ci').classList.contains('active'), text: document.body.innerText.slice(-3000) }));
         assert(action.active, 'Infra template interaction did not activate');
       } else if (name === 'selector') {
-        action = { scenario: 'Exercise all five disambiguated native selector controls', controls: [] };
-        for (const id of ['sel_observatory_mode', 'sel_smr_reforming_mode', 'sel_lng_membrane_mode', 'sel_sic_gan_mode', 'sel_lh2_zbo_mode']) {
+        action = { scenario: 'Exercise all five SA selector controls', controls: [] };
+        for (const id of ['sel_audience', 'sel_control', 'sel_devteam', 'sel_profile', 'sel_aks_sku']) {
           const value = await page.$eval(`#${id}`, e => e.options[1].value);
           await page.select(`#${id}`, value);
-          const observed = await page.$eval(`#${id}`, e => ({ id: e.id, value: e.value, outputPresent: e.closest('section')?.innerText.length > 0 }));
+          const observed = await page.$eval(`#${id}`, e => ({ id: e.id, value: e.value, outputPresent: e.closest('section,div')?.innerText.length > 0 }));
           assert.equal(observed.value, value, id);
           action.controls.push(observed);
         }
-        assert((await page.$eval('#observatoryOut', e => e.textContent)).length > 0, 'Repaired observatory output missing');
+        assert((await page.$eval('#decisionOutput', e => e.textContent)).length > 0, 'SA decision output missing');
       } else if (name.startsWith('commerce')) {
         await page.waitForSelector('#scenario-tabs button');
         const before = await page.$eval('.app-shell', e => e.textContent);

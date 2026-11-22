@@ -77,10 +77,20 @@ function finalizeSite() {
   const pairs=localeRegistry(), records=[], unresolved=[];
   const {classifyPath}=require('./engineering-tracks.cjs');
   const {knowledgeFigure}=require('./knowledge-atlas.cjs');
+  const {classifyDiagramPolicy, resolvePageArchitectureSpec, cleanSaPageTitle}=require('./page-architecture-specs.cjs');
   const {manifest: reportManifest}=require('./localize-reports.cjs');
   const {files: phase179Files}=require('./phase179-render.cjs');
+  const {owned: dedicatedOwned}=require('./integrate-dedicated.cjs');
+  const {files: camera4dFiles}=require('./integrate-camera4d.cjs');
+  const {files: radarFiles}=require('./integrate-radar.cjs');
+  const {files: dataLabRel}=require('./integrate-data-lab.cjs');
+  const {files: commerceTrendsFiles}=require('./integrate-commerce-trends.cjs');
   const reportOwned=new Set(reportManifest.flatMap(r=>[r.source,r.en,r.zh]));
   const phase179Owned=new Set(phase179Files);
+  const titleLocked=new Set([
+    ...reportOwned, ...phase179Owned, ...dedicatedOwned, ...camera4dFiles, ...radarFiles,
+    ...dataLabRel.map(f=>'workshops/data-lab/'+f), ...commerceTrendsFiles
+  ]);
   const singleEditionSealed=new Set([
     'workshops/benchmarks/ai-cluster-optical-interconnect-selection-cards.html',
     'workshops/benchmarks/rlhf-post-training-infra-selection-cards.html',
@@ -91,15 +101,18 @@ function finalizeSite() {
     'workshops/benchmarks/gpu-cluster-fault-recovery-selection-cards.html',
     'workshops/benchmarks/rocev2-load-balancing-congestion-selection-cards.html'
   ]);
-  for(const file of htmlFiles()) {
-    if(singleEditionSealed.has(file)||(!pairs.has(file)&&/^(?:(?:animation|generative-visual-lab)\/demos\/|h5-academy\/|workshops\/diamond-demos\/contoso-fabric\/)/.test(file)))continue;
+  const docsH5Files=fs.existsSync(path.join(root,'docs/h5'))?fs.readdirSync(path.join(root,'docs/h5')).filter(f=>f.endsWith('.html')).map(f=>'docs/h5/'+f):[];
+  const allTargets=[...new Set([...htmlFiles(),...docsH5Files])];
+  for(const file of allTargets) {
+    if(/^(?:docs\/)?h5-academy\//.test(file))continue;
+    const isAuxiliaryOnly=file.startsWith('docs/h5/')||singleEditionSealed.has(file)||(!pairs.has(file)&&/^(?:(?:animation|generative-visual-lab)\/demos\/|workshops\/diamond-demos\/contoso-fabric\/)/.test(file));
     const absolute=path.join(root,file);let html=fs.readFileSync(absolute,'utf8');
     const motionExhibit=Object.values(motionDemoRoutes).includes(file);
     if(file==='articles/harness-engineering.html'&&!html.includes('agent-harness-coevolution.html')) {
-      html=html.replace(/(<p class="meta">[\s\S]*?<\/p>)/,'$1\n\n  <div class="callout">\n    🔬 <b>2026-11 最新实战续篇（含可视化图表与交互式工作台）</b>：<a href="agent-harness-coevolution.html">《随模型升级持续演进 Agent Harness：120 个 Skills 审计、上下文悬崖修复与模型协同实战报告》</a>（面向 Gemini 4 Carbon · GPT-6.2 Sol · Grok 4.7，附 <a href="../workshops/agent-harness-coevolution/index.html">5-Tab 演示工作台</a> 与 <a href="../workshops/agent-harness-coevolution/cards.zh.html">7 卡汇报集</a>）。\n  </div>');
+      html=html.replace(/(<p class="meta">[\s\S]*?<\/p>)/,'$1\n\n  <div class="callout">\n    <b>2026-11 工程实证续篇（含架构图表与交互工作台）</b>：<a href="agent-harness-coevolution.html">《随模型升级持续演进 Agent Harness：120 个 Skills 审计、上下文悬崖修复与多模型协同评估报告》</a>（面向 Gemini 4 Carbon · GPT-6.2 Sol · Grok 4.7，附 <a href="../workshops/agent-harness-coevolution/index.html">5-Tab 演示工作台</a> 与 <a href="../workshops/agent-harness-coevolution/cards.zh.html">7 卡基准报告</a>）。\n  </div>');
     }
     if(file==='articles/harness-engineering.en.html'&&!html.includes('agent-harness-coevolution.en.html')) {
-      html=html.replace(/(<p class="meta">[\s\S]*?<\/p>)/,'$1\n\n  <div class="callout">\n    🔬 <b>Hands-On Empirical Companion (Nov 2026)</b>: Read <a href="agent-harness-coevolution.en.html"><i>Agent Harness × Frontier Model Co-Evolution: 120-Skill Audit, 12 KB Cliff Fix &amp; Multi-Model Playbook</i></a> (covering Gemini 4 Carbon · GPT-6.2 Sol · Grok 4.7, with the <a href="../workshops/agent-harness-coevolution/index.en.html">5-Tab Presenter Workbench</a> and <a href="../workshops/agent-harness-coevolution/cards.html">7-Card Visual Deck</a>).\n  </div>');
+      html=html.replace(/(<p class="meta">[\s\S]*?<\/p>)/,'$1\n\n  <div class="callout">\n    <b>Empirical Companion (Nov 2026)</b>: Read <a href="agent-harness-coevolution.en.html"><i>Agent Harness × Frontier Model Co-Evolution: 120-Skill Audit, 12 KB Cliff Fix &amp; Multi-Model Playbook</i></a> (covering Gemini 4 Carbon · GPT-6.2 Sol · Grok 4.7, with the <a href="../workshops/agent-harness-coevolution/index.en.html">5-Tab Presenter Workbench</a> and <a href="../workshops/agent-harness-coevolution/cards.html">7-Card Visual Deck</a>).\n  </div>');
     }
     if(file.endsWith('.en.html'))html=html.replace(/(<html\b[^>]*\blang=)["'][^"']*["']/i,'$1"en"');
     if(!/<\/head>/i.test(html)&&/<main\b/i.test(html)){
@@ -107,15 +120,22 @@ function finalizeSite() {
       if(!/<\/body>/i.test(html))html=html.replace(/<\/main>\s*$/i,'</main></body></html>');
     }
     const en=!/<html\b[^>]*lang=["']zh/i.test(html), pair=pairs.get(file);
-    if(!pair)unresolved.push(file);
-    const isReportOrPhase179=(reportOwned.has(file)&&html.includes('<!-- kee-report-localization-navigation:start -->'))||phase179Owned.has(file);
-    if(reportOwned.has(file)&&html.includes('<!-- kee-report-localization-navigation:start -->')) {
-      const title=plain(/<title[^>]*>([\s\S]*?)<\/title>/i.exec(html)?.[1]||file);
-      const fig=knowledgeFigure(file,!en,{topic:classifyPath(file)||'benchmarks',title}).replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi,'');
-      html=html.replace(/<figure class="knowledge-figure" data-knowledge-atlas="[^"]*"[\s\S]*?<\/figure>/,()=>fig);
-      if(!html.includes('.knowledge-graph-wide'))html=html.replace('</style><!-- kee-report-localization:metadata:end -->','.knowledge-graph-wide{display:block}.knowledge-graph-compact{display:none}@media(max-width:600px){.knowledge-graph-wide{display:none}.knowledge-graph-compact{display:block}}</style><!-- kee-report-localization:metadata:end -->');
+    if(!isAuxiliaryOnly&&!pair)unresolved.push(file);
+    const isReport=reportOwned.has(file)&&html.includes('<!-- kee-report-localization-navigation:start -->');
+    const isReportOrPhase179=isReport||phase179Owned.has(file);
+    if(!isReportOrPhase179&&!titleLocked.has(file)&&!/^(?:index|zh|about|zh-about|career|zh-career|skills|zh-skills|fte|zh-fte|diamond|zh-diamond|frontier-ai-studio(?:\.en)?)\.html$|^studio\/|^workshops\/webiq-azure\//.test(file)) {
+      html=html.replace(/<title>([\s\S]*?)<\/title>/i,(_,raw)=>{
+        const cleaned=cleanSaPageTitle(plain(raw),!en);
+        return cleaned?`<title>${cleaned.replaceAll('&','&amp;').replaceAll('<','&lt;')}</title>`:`<title>${raw}</title>`;
+      });
     }
-    if(!isReportOrPhase179)html=html.replace(/(<html\b[^>]*\blang=)["']zh["']/i,'$1"zh-CN"').replace(/<style id="site-remediation-style">[\s\S]*?<\/style>\s*/g,'').replace(/<!-- site-remediation-knowledge:start -->[\s\S]*?<!-- site-remediation-knowledge:end -->\s*/g,'');
+    const policy=classifyDiagramPolicy(file,html);
+    if(!isReportOrPhase179) {
+      html=html.replace(/(<html\b[^>]*\blang=)["']zh["']/i,'$1"zh-CN"').replace(/<style id="site-remediation-style">[\s\S]*?<\/style>\s*/g,'').replace(/<!-- site-remediation-knowledge:start -->[\s\S]*?<!-- site-remediation-knowledge:end -->\s*/g,'');
+      if(policy==='ignite-native'||policy==='omit-deck'||policy==='omit-canvas') {
+        html=html.replace(/<figure class="knowledge-figure" data-knowledge-atlas="[^"]*"[\s\S]*?<\/figure>\s*/g,'');
+      }
+    }
     if(!/<(header|nav)\b[^>]*data-professional-header[^>]*>/.test(html)&&!/class="site-header"/.test(html)&&!isReportOrPhase179) {
       const topic=classifyPath(file);
       const topicTarget=topic==='sa-skills'?`studio/${en?'':'zh-'}index.html#sa-skills`:topic==='general'?`studio/${en?'':'zh-'}index.html`:`studio/${en?'':'zh-'}${topic}.html`;
@@ -134,17 +154,55 @@ function finalizeSite() {
       html=html.replace(header[0],professional.navigation({file,en,className,languages,context}));
     }
     const sealed=/<meta\b[^>]*Content-Security-Policy[^>]*default-src\s+'none'/i.test(html)&&!/<meta\b[^>]*Content-Security-Policy[^>]*script-src/i.test(html);
-    if(sealed)html=html.replace(/<script\b[^>]*\bsrc=["'][^"']*(?:dedicated-navigation|editorial\/search(?:-index)?)\.js["'][^>]*><\/script>/gi,'');
+    const blocksExternalScript=/<meta\b[^>]*Content-Security-Policy[^>]*default-src\s+'none'/i.test(html)&&!/<meta\b[^>]*Content-Security-Policy[^>]*script-src[^"']*'self'/i.test(html);
+    if(blocksExternalScript)html=html.replace(/<script\b[^>]*\bsrc=["'][^"']*(?:dedicated-navigation|editorial\/search(?:-index)?)\.js["'][^>]*><\/script>/gi,'');
     if(header&&!isReportOrPhase179) {
       const styleText=html.includes('dedicated-navigation.css')?search.css():professional.css();
       html=html.replace('</head>',`<style id="site-remediation-style">${styleText}</style></head>`);
-      if(!sealed&&!/src="[^"]*editorial\/search\.js"/.test(html))html=html.replace('</head>',`${search.runtime(file,{lazyIndex:motionExhibit})}</head>`);
+      if(!blocksExternalScript&&!/src="[^"]*editorial\/search\.js"/.test(html))html=html.replace('</head>',`${search.runtime(file,{lazyIndex:motionExhibit})}</head>`);
     }
     if(motionExhibit) {
       const track=professional.relative(file,`studio/${en?'':'zh-'}animation.html`);
       html=html.replace(/(<a class="back" href=")https:\/\/turbo998\.github\.io\/studio\/(?:zh-)?animation\.html#demos"/, `$1${track}#demos"`);
       if(!html.includes('/motion-studies-navigation.js"'))html=html.replace('</head>',`<script src="${professional.relative(file,'assets/editorial/motion-studies-navigation.js')}" defer></script></head>`);
     }
+    // Repair cross-repo relative links imported from sibling research repositories before locale rewriting.
+    if(!isReportOrPhase179)html=html.split(/(<script\b[^>]*>[\s\S]*?<\/script>)/gi).map(part=>{
+      if(/^<script\b/i.test(part))return part;
+      let next=part;
+      if(file.startsWith('ai-infra-h5/')) {
+        next=next.replace(/href="(?:\.\/)?([\w-]+\.html)"/g,(m,name)=>!fs.existsSync(path.join(root,'ai-infra-h5',name))&&fs.existsSync(path.join(root,'docs/h5',name))?`href="../docs/h5/${name}"`:m);
+      }
+      if(file.startsWith('workshops/benchmarks/')) {
+        next=next
+          .replace(/href="\.\.\/components\/([^"]+)"/g,'href="https://github.com/turbo998/ai-infra-research/blob/main/docs/components/$1"')
+          .replace(/href="\.\.\/\.\.\/experiments\/([^"]+)"/g,'href="https://github.com/turbo998/ai-infra-research/blob/main/experiments/$1"')
+          .replace(/href="\.\/rlhf-post-training-sizer\.html"/g,'href="./llm-inference-engine-pd-sizer.html"')
+          .replace(/href="\.\/([^"#?]+-selection-cards\.html)"/g,(m,name)=>fs.existsSync(path.join(root,'workshops/benchmarks',name))?m:`href="https://github.com/turbo998/ai-infra-research/blob/main/docs/reports/${name}"`);
+        if(file.includes('clio-industry-harness-cards')) {
+          next=next
+            .replace(/href="\.\/index\.html"/g,`href="../scientific-and-industry-harness-engineering/${en?'index.en.html':'index.html'}"`)
+            .replace(/href="\.\/cards\.zh\.html"/g,'href="./clio-industry-harness-cards.zh.html"')
+            .replace(/href="\.\/cards\.html"/g,'href="./clio-industry-harness-cards.html"')
+            .replace(/href="\.\/(README(?:\.en)?\.md)"/g,'href="https://github.com/turbo998/benchmark-harness-engineering/blob/main/$1"');
+        }
+      }
+      if(/^(?:animation|generative-visual-lab)\/demos\//.test(file)) {
+        next=next.replace(/href="\.\/(test-report-cards(?:\.en)?\.html)"/g,(m,name)=>fs.existsSync(path.join(path.dirname(absolute),name))?m:`href="${en?'../../index.en.html':'../../index.html'}"`);
+      }
+      if(/^(?:animation|generative-visual-lab)\/research\//.test(file)) {
+        next=next
+          .replace(/href="\.\.\/demos\/gpt-62-motion\/(src\/[^"]+)"/g,'href="https://github.com/turbo998/generative-visual-lab/blob/main/demos/gpt-62-motion/$1"')
+          .replace(/href="\.\.\/demos\/pharmaceutical-fda-opdp-fair-balance-medical-legal-review-video\/index\.html"/g,'href="../demos/pharmaceutical-fda-opdp-fair-balance-medical-legal-review-video-studio/index.html"');
+      }
+      if(file.startsWith('docs/h5/')||file.startsWith('ai-infra-h5/')) {
+        next=next.replace(/href="\.\.\/learning\/([^"]+\.md)"/g,'href="https://github.com/turbo998/ai-infra-research/blob/main/docs/learning/$1"');
+      }
+      if(file.startsWith('workshops/data-lab/reports/')) {
+        next=next.replace(/href="(demos\/[^"]+|index(?:\.en)?\.html|benchmark-cards(?:\.en)?\.html)"/g,'href="../$1"');
+      }
+      return next;
+    }).join('');
     // Localized navigation follows actual edition pairs; scripts and source data remain untouched.
     if(pair&&!isReportOrPhase179)html=html.split(/(<script\b[^>]*>[\s\S]*?<\/script>)/gi).map(part=>/^<script\b/i.test(part)?part:part.replace(/<a\b[^>]*>/gi,tag=>{
       if(/hreflang=|data-nav-en-href=|\bclass="demo-frame"/i.test(tag))return tag;
@@ -156,20 +214,21 @@ function finalizeSite() {
         return `href="${professional.relative(file,en?linked.en:linked.zh)}${url.search}${url.hash}"`;
       });
     })).join('');
-    if(header&&!isReportOrPhase179&&!/class="(?:[^"]*\s)?(?:knowledge-atlas|phase179-knowledge)\b|data-knowledge-atlas=/.test(html)) {
-      const title=plain(/<title[^>]*>([\s\S]*?)<\/title>/i.exec(html)?.[1]||file);
-      const figure=knowledgeFigure(file,!en,{topic:classifyPath(file)||'infra',title});
-      const marker=`<!-- site-remediation-knowledge:start -->${figure}<!-- site-remediation-knowledge:end -->`;
-      if(motionExhibit)html=html.replace('</main>',match=>marker+match);
-      else {
-        const contextEnd=/<div class="professional-context-bar">[\s\S]*?<\/div>/;
-        if(contextEnd.test(html))html=html.replace(contextEnd,match=>match+marker);
-        else html=html.replace(/(<(header|nav)\b[^>]*data-professional-header[^>]*>[\s\S]*?<\/\2>)/,match=>match+marker);
+    if(policy==='inject-specific'&&!isReportOrPhase179) {
+      const spec=resolvePageArchitectureSpec(file,!en,html);
+      if(!spec)throw new Error(`Missing page architecture spec for ${file}`);
+      const figure=knowledgeFigure(file,!en,spec);
+      if(!/class="site-header"/.test(html)&&/<figure class="knowledge-figure" data-knowledge-atlas="[^"]*"[\s\S]*?<\/figure>/.test(html)) {
+        html=html.replace(/<figure class="knowledge-figure" data-knowledge-atlas="[^"]*"[\s\S]*?<\/figure>/,()=>figure);
+      } else if(header&&!/class="(?:[^"]*\s)?(?:knowledge-atlas|phase179-knowledge)\b|data-knowledge-atlas=/.test(html)) {
+        const marker=`<!-- site-remediation-knowledge:start -->${figure}<!-- site-remediation-knowledge:end -->`;
+        if(motionExhibit)html=html.replace('</main>',match=>marker+match);
+        else {
+          const contextEnd=/<div class="professional-context-bar">[\s\S]*?<\/div>/;
+          if(contextEnd.test(html))html=html.replace(contextEnd,match=>match+marker);
+          else html=html.replace(/(<(header|nav)\b[^>]*data-professional-header[^>]*>[\s\S]*?<\/\2>)/,match=>match+marker);
+        }
       }
-    } else if(!isReportOrPhase179&&!/class="site-header"/.test(html)&&!/^ignite-2026\//.test(file)&&/<figure class="knowledge-figure" data-knowledge-atlas="[^"]*"[\s\S]*?<\/figure>/.test(html)) {
-      const title=plain(/<title[^>]*>([\s\S]*?)<\/title>/i.exec(html)?.[1]||file);
-      const figure=knowledgeFigure(file,!en,{topic:classifyPath(file)||'infra',title});
-      html=html.replace(/<figure class="knowledge-figure" data-knowledge-atlas="[^"]*"[\s\S]*?<\/figure>/,()=>figure);
     }
     if(/^studio\/(?:zh-)?archive\.html$/.test(file)) {
       html=html.replace(/<!-- localized-archive:start -->[\s\S]*?<!-- localized-archive:end -->/g,'');
@@ -186,12 +245,12 @@ function finalizeSite() {
     if(/^workshops\/data-lab\/index(?:\.en)?\.html$/.test(file)) {
       html=html.replace(/<!-- kee-diamond-datalab:start -->[\s\S]*?<!-- kee-diamond-datalab:end -->\s*/g,'');
       const diamondBanner = en
-        ? `<!-- kee-diamond-datalab:start --><section id="diamond-datalab-showcase" class="kee-diamond-datalab-banner" style="box-sizing:border-box;width:100%;max-width:min(2880px,calc(100% - 32px));margin:28px auto 40px;padding:24px;border:1px solid #2b4c7e;border-radius:16px;background:linear-gradient(135deg,#0b192e 0%,#102644 100%);color:#e6edf7;font-family:system-ui,-apple-system,Segoe UI,sans-serif"><p style="margin:0 0 6px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#7dd3fc;font-weight:700">DIAMOND ENTERPRISE LIVE DEMO SUITE · TCL · ZAVA · AETHER TRAVEL &amp; RETAIL</p><h2 style="margin:0 0 10px;font-size:clamp(20px,3vw,28px);color:#ffffff">Enterprise Lakehouse &amp; Agentic Operations Live Demos</h2><p style="margin:0 0 18px;color:#cbd5e1;line-height:1.65">Move from platform comparison to runnable Solution Architect customer PoCs in the unified Diamond Enterprise Demo Environment (Entra ID OBO/B2B + M365 + Microsoft Fabric + Azure Databricks + Agent Bricks).</p><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:16px"><article style="padding:18px;border-radius:12px;border:1px solid #31568a;background:rgba(15,31,56,.78)"><strong style="display:block;color:#93c5fd;font-size:12px;margin-bottom:6px">DEMO 01 · MICROSOFT FABRIC NATIVE</strong><h3 style="margin:0 0 8px;font-size:18px;color:#fff">TCL Global Channel IQ × Microsoft Fabric</h3><p style="margin:0 0 12px;font-size:14px;color:#cbd5e1;line-height:1.6">$135.33M Sell-In &amp; $108.95M OMO Sell-Out across 36 global partners, OneLake zero-copy shortcuts, Eventhouse 48h Black Friday stockout rescue, Fabric IQ 10-entity Ontology ($582K margin saved), and Data + Operations Agent write-back.</p><a href="../diamond-demos/tcl-fabric/index.en.html" style="display:inline-block;padding:8px 14px;border-radius:8px;background:#2563eb;color:#fff;text-decoration:none;font-weight:600;font-size:14px">Launch TCL × Fabric Cockpit →</a></article><article style="padding:18px;border-radius:12px;border:1px solid #31568a;background:rgba(15,31,56,.78)"><strong style="display:block;color:#67e8f9;font-size:12px;margin-bottom:6px">DEMO 02 · DATABRICKS × FABRIC ZERO-COPY</strong><h3 style="margin:0 0 8px;font-size:18px;color:#fff">Zava Omnichannel Cold-Chain × Azure Databricks &amp; Fabric</h3><p style="margin:0 0 12px;font-size:14px;color:#cbd5e1;line-height:1.6">Unity Catalog 24,024→24,000 Medallion quality gate, AI/BI Genie root-cause drilldown (Kunshan #2 17.3h cold-chain delay), Mirrored Azure Databricks Catalog in OneLake + 0-DBU Power BI Direct Lake, and 10-dimension SA selection matrix.</p><a href="../diamond-demos/databricks-fabric/index.en.html" style="display:inline-block;padding:8px 14px;border-radius:8px;background:#0284c7;color:#fff;text-decoration:none;font-weight:600;font-size:14px">Launch Databricks × Fabric Console →</a></article><article style="padding:18px;border-radius:12px;border:1px solid #881337;background:rgba(28,16,32,.78)"><strong style="display:block;color:#fda4af;font-size:12px;margin-bottom:6px">DEMO 03 · DATABRICKS AI/BI · GENIE · AGENT BRICKS</strong><h3 style="margin:0 0 8px;font-size:18px;color:#fff">Aether Global Travel &amp; Retail × Azure Databricks AI</h3><p style="margin:0 0 12px;font-size:14px;color:#cbd5e1;line-height:1.6">Regional gateway GTR_OID_* zero-PII tokenization into Azure Databricks (travel_retail_ops), 8-package NOR waterfall (93.3% quota / 66.53% margin alert), Genie NL2SQL, Agent Bricks QA &amp; ¥1.38M Quota Promo Guardrail, plus normal-browser B2B SSO &amp; iframe embed.</p><a href="../diamond-demos/travel-retail-ops/index.en.html" style="display:inline-block;padding:8px 14px;border-radius:8px;background:#be123c;color:#fff;text-decoration:none;font-weight:600;font-size:14px">Launch Travel &amp; Retail × Databricks AI →</a></article></div><p style="margin:16px 0 0;font-size:14px"><a href="../../diamond.html" style="color:#93c5fd;text-decoration:underline;font-weight:600">Open Full Diamond Enterprise Demo Center &amp; Workload Selection Matrix →</a></p></section><!-- kee-diamond-datalab:end -->`
-        : `<!-- kee-diamond-datalab:start --><section id="diamond-datalab-showcase" class="kee-diamond-datalab-banner" style="box-sizing:border-box;width:100%;max-width:min(2880px,calc(100% - 32px));margin:28px auto 40px;padding:24px;border:1px solid #2b4c7e;border-radius:16px;background:linear-gradient(135deg,#0b192e 0%,#102644 100%);color:#e6edf7;font-family:system-ui,-apple-system,Segoe UI,sans-serif"><p style="margin:0 0 6px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#7dd3fc;font-weight:700">DIAMOND 企业级实战演示专区 · TCL · ZAVA · 寰宇旅购（国际旅行零售）</p><h2 style="margin:0 0 10px;font-size:clamp(20px,3vw,28px);color:#ffffff">从平台对比走向可现场演示的企业级湖仓与智能体闭环</h2><p style="margin:0 0 18px;color:#cbd5e1;line-height:1.65">基于预集成的 Diamond 企业级演示环境（统一身份透传/B2B 免隐身直连 + M365 + Microsoft Fabric + Azure Databricks + Agent Bricks），面向架构师提供三套开箱即演的端到端行业实战沙盘。</p><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:16px"><article style="padding:18px;border-radius:12px;border:1px solid #31568a;background:rgba(15,31,56,.78)"><strong style="display:block;color:#93c5fd;font-size:12px;margin-bottom:6px">实战沙盘 01 · MICROSOFT FABRIC 原生全栈</strong><h3 style="margin:0 0 8px;font-size:18px;color:#fff">TCL 全球渠道智能 × Microsoft Fabric</h3><p style="margin:0 0 12px;font-size:14px;color:#cbd5e1;line-height:1.6">覆盖全球 36 家渠道伙伴（$135.33M Sell-In / $108.95M OMO Sell-Out）、OneLake 零拷贝快捷方式、黑五 48 小时断货预警调拨、Fabric IQ 十实体本体推演（挽回 $582K 毛利）与双智能体回写闭环。</p><a href="../diamond-demos/tcl-fabric/index.html" style="display:inline-block;padding:8px 14px;border-radius:8px;background:#2563eb;color:#fff;text-decoration:none;font-weight:600;font-size:14px">打开 TCL × Fabric 6 幕驾驶舱 →</a></article><article style="padding:18px;border-radius:12px;border:1px solid #31568a;background:rgba(15,31,56,.78)"><strong style="display:block;color:#67e8f9;font-size:12px;margin-bottom:6px">实战沙盘 02 · DATABRICKS × FABRIC 零拷贝共存</strong><h3 style="margin:0 0 8px;font-size:18px;color:#fff">Zava 全渠道生鲜冷链 × Azure Databricks &amp; Fabric</h3><p style="margin:0 0 12px;font-size:14px;color:#cbd5e1;line-height:1.6">Unity Catalog 24,024→24,000 质量门禁与动态脱敏、AI/BI Genie 华东生鲜毛利下滑根因追问（昆山 2 号仓 17.3h 延误）、OneLake 零拷贝目录镜像 + 0 DBU Direct Lake 秒级看板与 10 维选型矩阵。</p><a href="../diamond-demos/databricks-fabric/index.html" style="display:inline-block;padding:8px 14px;border-radius:8px;background:#0284c7;color:#fff;text-decoration:none;font-weight:600;font-size:14px">打开 Databricks × Fabric 实战沙盘 →</a></article><article style="padding:18px;border-radius:12px;border:1px solid #881337;background:rgba(28,16,32,.78)"><strong style="display:block;color:#fda4af;font-size:12px;margin-bottom:6px">实战沙盘 03 · DATABRICKS AI/BI · GENIE · AGENT BRICKS</strong><h3 style="margin:0 0 8px;font-size:18px;color:#fff">寰宇旅购（国际旅行零售）× Azure Databricks AI</h3><p style="margin:0 0 12px;font-size:14px;color:#cbd5e1;line-height:1.6">源端网关 GTR_OID_* 零明文令牌化同步至 Databricks (travel_retail_ops)、8 大奢旅免税线路净营收 NOR 瀑布（93.3% 去化 / 66.53% 净利率预警）、Genie 追因、Agent Bricks 质检与 ¥138 万配额促收护栏，支持正常浏览器免隐身直连与嵌入。</p><a href="../diamond-demos/travel-retail-ops/index.html" style="display:inline-block;padding:8px 14px;border-radius:8px;background:#be123c;color:#fff;text-decoration:none;font-weight:600;font-size:14px">打开国际旅行零售 × Databricks 驾驶舱 →</a></article></div><p style="margin:16px 0 0;font-size:14px"><a href="../../zh-diamond.html" style="color:#93c5fd;text-decoration:underline;font-weight:600">进入 Diamond 企业级实战演示中心与双平台选型总览 →</a></p></section><!-- kee-diamond-datalab:end -->`;
+        ? `<!-- kee-diamond-datalab:start --><section id="diamond-datalab-showcase" class="kee-diamond-datalab-banner" style="box-sizing:border-box;width:100%;max-width:min(2880px,calc(100% - 32px));margin:28px auto 40px;padding:24px;border:1px solid #2b4c7e;border-radius:16px;background:linear-gradient(135deg,#0b192e 0%,#102644 100%);color:#e6edf7;font-family:system-ui,-apple-system,Segoe UI,sans-serif"><p style="margin:0 0 6px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#7dd3fc;font-weight:700">DIAMOND ENTERPRISE LIVE DEMO SUITE · TCL · ZAVA · AETHER TRAVEL &amp; RETAIL</p><h2 style="margin:0 0 10px;font-size:clamp(20px,3vw,28px);color:#ffffff">Enterprise Lakehouse &amp; Agentic Operations Reference PoCs</h2><p style="margin:0 0 18px;color:#cbd5e1;line-height:1.65">Move from platform comparison to runnable Solution Architect customer PoCs in the unified Diamond Enterprise Demo Environment (Entra ID OBO/B2B + M365 + Microsoft Fabric + Azure Databricks + Agent Bricks).</p><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:16px"><article style="padding:18px;border-radius:12px;border:1px solid #31568a;background:rgba(15,31,56,.78)"><strong style="display:block;color:#93c5fd;font-size:12px;margin-bottom:6px">POC 01 · MICROSOFT FABRIC NATIVE</strong><h3 style="margin:0 0 8px;font-size:18px;color:#fff">TCL Global Channel IQ × Microsoft Fabric</h3><p style="margin:0 0 12px;font-size:14px;color:#cbd5e1;line-height:1.6">$135.33M Sell-In &amp; $108.95M OMO Sell-Out across 36 global partners, OneLake zero-copy shortcuts, Eventhouse 48h Black Friday stockout rescue, Fabric IQ 10-entity Ontology ($582K margin saved), and Data + Operations Agent write-back.</p><a href="../diamond-demos/tcl-fabric/index.en.html" style="display:inline-block;padding:8px 14px;border-radius:8px;background:#2563eb;color:#fff;text-decoration:none;font-weight:600;font-size:14px">Open TCL × Fabric Workbench →</a></article><article style="padding:18px;border-radius:12px;border:1px solid #31568a;background:rgba(15,31,56,.78)"><strong style="display:block;color:#67e8f9;font-size:12px;margin-bottom:6px">POC 02 · DATABRICKS × FABRIC ZERO-COPY</strong><h3 style="margin:0 0 8px;font-size:18px;color:#fff">Zava Omnichannel Cold-Chain × Azure Databricks &amp; Fabric</h3><p style="margin:0 0 12px;font-size:14px;color:#cbd5e1;line-height:1.6">Unity Catalog 24,024→24,000 Medallion quality gate, AI/BI Genie root-cause drilldown (Kunshan #2 17.3h cold-chain delay), Mirrored Azure Databricks Catalog in OneLake + 0-DBU Power BI Direct Lake, and 10-dimension SA selection matrix.</p><a href="../diamond-demos/databricks-fabric/index.en.html" style="display:inline-block;padding:8px 14px;border-radius:8px;background:#0284c7;color:#fff;text-decoration:none;font-weight:600;font-size:14px">Open Databricks × Fabric Console →</a></article><article style="padding:18px;border-radius:12px;border:1px solid #881337;background:rgba(28,16,32,.78)"><strong style="display:block;color:#fda4af;font-size:12px;margin-bottom:6px">POC 03 · DATABRICKS AI/BI · GENIE · AGENT BRICKS</strong><h3 style="margin:0 0 8px;font-size:18px;color:#fff">Aether Global Travel &amp; Retail × Azure Databricks AI</h3><p style="margin:0 0 12px;font-size:14px;color:#cbd5e1;line-height:1.6">Regional gateway GTR_OID_* zero-PII tokenization into Azure Databricks (travel_retail_ops), 8-package NOR waterfall (93.3% quota / 66.53% margin alert), Genie NL2SQL, Agent Bricks QA &amp; ¥1.38M Quota Promo Guardrail, plus normal-browser B2B SSO &amp; iframe embed.</p><a href="../diamond-demos/travel-retail-ops/index.en.html" style="display:inline-block;padding:8px 14px;border-radius:8px;background:#be123c;color:#fff;text-decoration:none;font-weight:600;font-size:14px">Open Travel &amp; Retail × Databricks AI →</a></article></div><p style="margin:16px 0 0;font-size:14px"><a href="../../diamond.html" style="color:#93c5fd;text-decoration:underline;font-weight:600">Open Diamond Enterprise Demo Center &amp; Workload Selection Matrix →</a></p></section><!-- kee-diamond-datalab:end -->`
+        : `<!-- kee-diamond-datalab:start --><section id="diamond-datalab-showcase" class="kee-diamond-datalab-banner" style="box-sizing:border-box;width:100%;max-width:min(2880px,calc(100% - 32px));margin:28px auto 40px;padding:24px;border:1px solid #2b4c7e;border-radius:16px;background:linear-gradient(135deg,#0b192e 0%,#102644 100%);color:#e6edf7;font-family:system-ui,-apple-system,Segoe UI,sans-serif"><p style="margin:0 0 6px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#7dd3fc;font-weight:700">DIAMOND 企业级参考架构演示专区 · TCL · ZAVA · 寰宇旅购（国际旅行零售）</p><h2 style="margin:0 0 10px;font-size:clamp(20px,3vw,28px);color:#ffffff">企业级湖仓协同与智能体业务回写参考架构</h2><p style="margin:0 0 18px;color:#cbd5e1;line-height:1.65">基于预集成的 Diamond 企业级演示环境（Entra ID OBO/B2B 免无痕直连 + M365 + Microsoft Fabric + Azure Databricks + Agent Bricks），面向解决方案架构师提供三套端到端行业 PoC 验证工作台。</p><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:16px"><article style="padding:18px;border-radius:12px;border:1px solid #31568a;background:rgba(15,31,56,.78)"><strong style="display:block;color:#93c5fd;font-size:12px;margin-bottom:6px">POC 01 · MICROSOFT FABRIC 原生全栈</strong><h3 style="margin:0 0 8px;font-size:18px;color:#fff">TCL 全球渠道智能 × Microsoft Fabric</h3><p style="margin:0 0 12px;font-size:14px;color:#cbd5e1;line-height:1.6">覆盖全球 36 家渠道伙伴（$135.33M Sell-In / $108.95M OMO Sell-Out）、OneLake 零拷贝快捷方式、黑五 48 小时断货预警调拨、Fabric IQ 十实体本体推演（挽回 $582K 毛利）与双智能体回写验证。</p><a href="../diamond-demos/tcl-fabric/index.html" style="display:inline-block;padding:8px 14px;border-radius:8px;background:#2563eb;color:#fff;text-decoration:none;font-weight:600;font-size:14px">打开 TCL × Fabric 架构工作台 →</a></article><article style="padding:18px;border-radius:12px;border:1px solid #31568a;background:rgba(15,31,56,.78)"><strong style="display:block;color:#67e8f9;font-size:12px;margin-bottom:6px">POC 02 · DATABRICKS × FABRIC 零拷贝互通</strong><h3 style="margin:0 0 8px;font-size:18px;color:#fff">Zava 全渠道生鲜冷链 × Azure Databricks &amp; Fabric</h3><p style="margin:0 0 12px;font-size:14px;color:#cbd5e1;line-height:1.6">Unity Catalog 24,024→24,000 质量门禁与动态脱敏、AI/BI Genie 华东生鲜毛利下滑根因追问（昆山 2 号仓 17.3h 延误）、OneLake 零拷贝目录镜像 + 0 DBU Direct Lake 秒级看板与 10 维选型矩阵。</p><a href="../diamond-demos/databricks-fabric/index.html" style="display:inline-block;padding:8px 14px;border-radius:8px;background:#0284c7;color:#fff;text-decoration:none;font-weight:600;font-size:14px">打开 Databricks × Fabric 协同工作台 →</a></article><article style="padding:18px;border-radius:12px;border:1px solid #881337;background:rgba(28,16,32,.78)"><strong style="display:block;color:#fda4af;font-size:12px;margin-bottom:6px">POC 03 · DATABRICKS AI/BI · GENIE · AGENT BRICKS</strong><h3 style="margin:0 0 8px;font-size:18px;color:#fff">寰宇旅购（国际旅行零售）× Azure Databricks AI</h3><p style="margin:0 0 12px;font-size:14px;color:#cbd5e1;line-height:1.6">源端网关 GTR_OID_* 零明文令牌化同步至 Databricks (travel_retail_ops)、8 大奢旅免税线路净营收 NOR 瀑布（93.3% 去化 / 66.53% 净利率预警）、Genie 追因、Agent Bricks 质检与 ¥138 万配额促收策略门禁，支持正常浏览器免无痕直连与嵌入。</p><a href="../diamond-demos/travel-retail-ops/index.html" style="display:inline-block;padding:8px 14px;border-radius:8px;background:#be123c;color:#fff;text-decoration:none;font-weight:600;font-size:14px">打开国际旅行零售 × Databricks 工作台 →</a></article></div><p style="margin:16px 0 0;font-size:14px"><a href="../../zh-diamond.html" style="color:#93c5fd;text-decoration:underline;font-weight:600">进入 Diamond 企业级参考架构演示中心与双平台选型矩阵 →</a></p></section><!-- kee-diamond-datalab:end -->`;
       html=html.replace('</body>',diamondBanner+'</body>');
     }
-    fs.writeFileSync(absolute,html);
-    records.push({path:file,language:en?'en':'zh-CN',counterpart:pair?(en?pair.zh:pair.en):null,sealed,header:!!header||/class="site-header"/.test(html)});
+    if(!isReport)fs.writeFileSync(absolute,html);
+    if(!isAuxiliaryOnly)records.push({path:file,language:en?'en':'zh-CN',counterpart:pair?(en?pair.zh:pair.en):null,sealed,header:!!header||/class="site-header"/.test(html)});
   }
   fs.writeFileSync(path.join(root,'docs/redesign/site-localization.json'),JSON.stringify({records,unresolved},null,2)+'\n');
   console.log(`Finalized ${records.length} pages; ${unresolved.length} unresolved locales`);

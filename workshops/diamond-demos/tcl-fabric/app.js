@@ -678,12 +678,15 @@
       const padR = 20;
       const padT = 22;
       const padB = 34;
-      const maxY = Math.max(...series.map((d) => Math.max(d.actualUnits, d.baselineUnits)), 10) * 1.15;
+      const actualVal = (d) => Number(d.actualUnits ?? d.deUnits ?? 0);
+      const baseVal = (d) => Number(d.baselineUnits ?? d.deBaseline ?? 0);
+      const stampVal = (d) => String(d.timestamp || d.ts || "");
+      const maxY = Math.max(...series.map((d) => Math.max(actualVal(d), baseVal(d))), 10) * 1.15;
       const xAt = (i) => padL + (i / Math.max(series.length - 1, 1)) * (w - padL - padR);
       const yAt = (v) => h - padB - (v / maxY) * (h - padT - padB);
 
-      const ptsBase = series.map((d, i) => `${xAt(i).toFixed(1)},${yAt(d.baselineUnits).toFixed(1)}`).join(" ");
-      const ptsAct = series.map((d, i) => `${xAt(i).toFixed(1)},${yAt(d.actualUnits).toFixed(1)}`).join(" ");
+      const ptsBase = series.map((d, i) => `${xAt(i).toFixed(1)},${yAt(baseVal(d)).toFixed(1)}`).join(" ");
+      const ptsAct = series.map((d, i) => `${xAt(i).toFixed(1)},${yAt(actualVal(d)).toFixed(1)}`).join(" ");
       const areaAct = `${padL},${h - padB} ${ptsAct} ${xAt(series.length - 1).toFixed(1)},${h - padB}`;
 
       document.getElementById("posSurgeSvgWrap").innerHTML = `
@@ -701,8 +704,8 @@
           <polyline fill="none" stroke="#f87171" stroke-width="3" points="${ptsAct}"/>
           <text x="${padL + 8}" y="18" fill="#fca5a5" font-size="11.5" font-weight="700">${T('实测黑五 POS 流速 (峰值 2.8x 暴涨)', 'Live Black Friday POS Velocity (2.8x Surge)')}</text>
           <text x="${w - 210}" y="18" fill="#94a3b8" font-size="11">${T('--- 常规日均基线', '--- Baseline Velocity')}</text>
-          <text x="${padL}" y="${h - 10}" fill="#94a3b8" font-size="10.5">${esc(series[0].timestamp.slice(5, 16))}</text>
-          <text x="${w - padR}" y="${h - 10}" text-anchor="end" fill="#94a3b8" font-size="10.5">${esc(series[series.length - 1].timestamp.slice(5, 16))}</text>
+          <text x="${padL}" y="${h - 10}" fill="#94a3b8" font-size="10.5">${esc(stampVal(series[0]).slice(5, 16))}</text>
+          <text x="${w - padR}" y="${h - 10}" text-anchor="end" fill="#94a3b8" font-size="10.5">${esc(stampVal(series[series.length - 1]).slice(5, 16))}</text>
         </svg>
       `;
     }
@@ -784,11 +787,17 @@
 
     const nodeW = 190;
     const nodeH = 54;
+    const relList = ont.relationships || ont.edges || [];
+    const coordOf = (id) => {
+      if (coords[id]) return coords[id];
+      const found = (ont.entities || []).find((x) => x.id === id);
+      return found ? { x: found.x || 40, y: found.y || 40, color: found.color || "#38bdf8" } : null;
+    };
 
-    const edgesSvg = ont.relationships
+    const edgesSvg = relList
       .map((r) => {
-        const a = coords[r.from];
-        const b = coords[r.to];
+        const a = coordOf(r.from);
+        const b = coordOf(r.to);
         if (!a || !b) return "";
         const x1 = a.x + nodeW / 2;
         const y1 = a.y + nodeH / 2;
@@ -803,15 +812,16 @@
       })
       .join("");
 
-    const nodesSvg = ont.entities
+    const nodesSvg = (ont.entities || [])
       .map((e) => {
-        const c = coords[e.id] || { x: 40, y: 40, color: "#38bdf8" };
+        const c = coordOf(e.id) || { x: 40, y: 40, color: "#38bdf8" };
         const sel = e.id === selectedOntologyId ? "selected" : "";
+        const srcTbl = e.sourceTable || e.backingTable || "";
         return `
         <g class="ont-node ${sel}" onclick="selectOntologyNode('${e.id}')">
           <rect x="${c.x}" y="${c.y}" width="${nodeW}" height="${nodeH}" rx="10" fill="#0f172a" stroke="${c.color}" stroke-width="1.8"/>
           <text x="${c.x + 12}" y="${c.y + 22}" fill="#f8fafc" font-size="12" font-weight="700">${esc(e.label)}</text>
-          <text x="${c.x + 12}" y="${c.y + 40}" fill="#94a3b8" font-size="10" font-family="monospace">${esc(e.sourceTable)}</text>
+          <text x="${c.x + 12}" y="${c.y + 40}" fill="#94a3b8" font-size="10" font-family="monospace">${esc(srcTbl)}</text>
         </g>
       `;
       })
@@ -835,21 +845,25 @@
 
   function renderOntologyInspector() {
     const ont = STATE.ontology;
-    const ent = ont.entities.find((e) => e.id === selectedOntologyId) || ont.entities[0];
-    const rels = ont.relationships.filter((r) => r.from === ent.id || r.to === ent.id);
+    const ent = (ont.entities || []).find((e) => e.id === selectedOntologyId) || ont.entities[0];
+    const relList = ont.relationships || ont.edges || [];
+    const rels = relList.filter((r) => r.from === ent.id || r.to === ent.id);
+    const attrs = ent.attributes || ent.properties || [];
+    const srcTbl = ent.sourceTable || ent.backingTable || "";
+    const pk = ent.key || ent.keyProperty || "";
 
     document.getElementById("ontologyInspector").innerHTML = `
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:6px;">
         <h4 style="margin:0;font-size:15px;">🧬 ${esc(ent.label)} <span class="mono" style="color:var(--text-muted);font-size:12px;">(${esc(ent.id)})</span></h4>
-        <span class="crisis-tag tag-blue">OneLake: ${esc(ent.sourceTable)}</span>
+        <span class="crisis-tag tag-blue">OneLake: ${esc(srcTbl)}</span>
       </div>
       <div style="font-size:12px;color:var(--text-secondary);margin-bottom:10px;">
-        ${T("业务主键", "Primary Key")}: <code class="mono">${esc(ent.key)}</code> · ${T("已绑定属性", "Bound Attributes")}: ${ent.attributes.length}
+        ${T("业务主键", "Primary Key")}: <code class="mono">${esc(pk)}</code> · ${T("已绑定属性", "Bound Attributes")}: ${attrs.length}
       </div>
       <div style="margin-bottom:12px;">
         <div style="font-size:11.5px;color:var(--text-muted);margin-bottom:5px;">${T("语义属性与时序遥测绑定：", "Semantic Attributes & Telemetry Bindings:")}</div>
         <div style="display:flex;flex-wrap:wrap;gap:6px;">
-          ${ent.attributes.map((a) => `<span class="crisis-tag tag-purple mono">${esc(a)}</span>`).join("")}
+          ${attrs.map((a) => `<span class="crisis-tag tag-purple mono">${esc(a)}</span>`).join("")}
         </div>
       </div>
       <div class="sim-panel" style="margin-bottom:10px;">

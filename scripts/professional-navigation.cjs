@@ -6,9 +6,9 @@ const escape = value => String(value).replaceAll('&', '&amp;').replaceAll('"', '
 const relative = (from, to) => path.posix.relative(path.posix.dirname(from), to) || path.posix.basename(to);
 const sections = [
   ['hub', 'studio/index.html', 'studio/zh-index.html', 'Frontier Transformation Engineering Hub', 'Frontier Transformation Engineering Hub'],
-  ['diamond', 'diamond.html', 'zh-diamond.html', 'Diamond Live Demos', 'Diamond 实战演示'],
-  ['benchmarks', 'benchmarks.html', 'zh-benchmarks.html', 'Benchmark & Eval Foundry', '基准评测中心'],
-  ['radar', 'github-radar.html', 'zh-github-radar.html', 'GitHub AI Signal Radar', 'GitHub AI 信号雷达'],
+  ['diamond', 'diamond.html', 'zh-diamond.html', 'Diamond Live Demos', 'Diamond 架构演示'],
+  ['benchmarks', 'benchmarks.html', 'zh-benchmarks.html', 'Benchmarks & Evaluation', '基准评测中心'],
+  ['radar', 'github-radar.html', 'zh-github-radar.html', 'GitHub AI Radar', 'GitHub AI 开源评估'],
   ['routing', 'openrouter.html', 'zh-openrouter.html', 'Model Routing & Telemetry', 'OpenRouter 模型遥测'],
   ['profile', 'about.html', 'zh-about.html', 'Frontier Transformation Engineer', 'Frontier Transformation Engineer']
 ];

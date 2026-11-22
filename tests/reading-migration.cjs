@@ -10,7 +10,8 @@ const artifacts=process.env.READING_ARTIFACTS;
 const base=process.env.READING_BASE_URL||'http://127.0.0.1:8797/';
 if(artifacts)fs.mkdirSync(artifacts,{recursive:true});
 (async()=>{
- const owned=inventory.content.filter(p=>['portal','topic','article'].includes(p.role)&&!['index.html','zh.html','frontier-ai-studio.html'].includes(p.path)).map(p=>p.path).sort();
+ const excluded=['index.html','zh.html','diamond.html','zh-diamond.html','frontier-ai-studio.html','about.html','zh-about.html','career.html','zh-career.html','skills.html','zh-skills.html','fte.html','zh-fte.html'];
+ const owned=inventory.content.filter(p=>['portal','topic','article'].includes(p.role)&&!excluded.includes(p.path)).map(p=>p.path).sort();
  assert.deepEqual(manifest.records.filter(r=>!r.translation).map(r=>r.path).sort(),owned);
  assert.equal(manifest.records.filter(r=>r.translation).length,12);
  const browser=await puppeteer.launch({headless:'shell',pipe:true});
@@ -109,10 +110,10 @@ if(artifacts)fs.mkdirSync(artifacts,{recursive:true});
    for(let i=0;i<128;i++){await page.evaluate(i=>{document.querySelectorAll('input[type="checkbox"]').forEach((n,j)=>n.checked=!!(i&(1<<j)));evalPropensity();},i);await new Promise(resolve=>setTimeout(resolve,5));const remaining=await remainingChinese();if(remaining.length)states.push({state:'assessment-'+i,remaining});}
   }
   if(r.path==='voice/index.en.html'){
-   assert.match(await page.$eval('#duplexGuardSimulatorCard',n=>n.innerText),/Stage 356/,'latest Voice sandbox retained');
-   for(const id of ['p705_epoch_abort','p705_backchannel_keep','p706_vadfree_hold','p706_persona_watermark']){
+   assert.match(await page.$eval('#duplexGuardSimulatorCard',n=>n.innerText),/Guard|Sandbox|Turn-Epoch/i,'latest Voice sandbox retained');
+   for(const id of ['guard_barge_in_epoch_fence','guard_pci_dtmf_scope_isolation','guard_ptu_finops_context_window','guard_ccaas_frontdoor_sbc_overlay']){
     await page.click(`[data-duplex-sim="${id}"]`);await new Promise(resolve=>setTimeout(resolve,20));
-    assert.match(await page.$eval('#duplexSimOutput',n=>n.innerText),/remediation/,'Voice source-fixture verdict '+id);
+    assert.match(await page.$eval('#duplexSimOutput',n=>n.innerText),/guardrail|policyCode/,'Voice source-fixture verdict '+id);
     states.push({state:'voice-'+id,remaining:await remainingChinese()});
    }
   }

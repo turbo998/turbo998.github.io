@@ -606,10 +606,10 @@ const r500WorkbenchEnHtml = `<!DOCTYPE html>
 function stripFinalizedChrome(html) {
   return html
     .replace(/\s*<link rel="stylesheet" href="[^"]*assets\/editorial\/professional-header\.css">\s*/g, '\n')
-    .replace(/\s*<style id="professional-header-style">[\s\S]*?<\/style>\s*/g, '\n')
-    .replace(/\s*<style id="knowledge-atlas-style">[\s\S]*?<\/style>\s*/g, '\n')
-    .replace(/\s*<header class="professional-header" data-professional-header>[\s\S]*?<\/header>\s*/g, '\n')
-    .replace(/\s*<figure class="knowledge-atlas" data-knowledge-atlas="[^"]*">[\s\S]*?<\/figure>\s*/g, '\n')
+    .replace(/\s*<style id="(?:professional-header-style|knowledge-atlas-style|site-remediation-style)">[\s\S]*?<\/style>\s*/g, '\n')
+    .replace(/\s*<(header|nav)\b[^>]*data-professional-header[^>]*>[\s\S]*?<\/\1>\s*/g, '\n')
+    .replace(/\s*<!-- site-remediation-knowledge:start -->[\s\S]*?<!-- site-remediation-knowledge:end -->\s*/g, '\n')
+    .replace(/\s*<figure class="knowledge-(?:atlas|figure)" data-knowledge-atlas="[^"]*">[\s\S]*?<\/figure>\s*/g, '\n')
     .replace(/\s*<script src="[^"]*assets\/editorial\/search-index\.js" defer><\/script>\s*<script src="[^"]*assets\/editorial\/search\.js" defer><\/script>\s*/g, '\n');
 }
 

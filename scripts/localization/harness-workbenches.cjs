@@ -86,7 +86,7 @@ const frameworkReplacements = [
   ['三层渐进式架构：(1) System Prompt + CLAUDE.md 自动命中 Prompt Cache，MCP 工具默认经 ToolSearch 按需延迟加载 Schema；(2) PreCompact 钩子归档全量轨迹 + compact_boundary 自动摘要；(3) Compactor 读取 CLAUDE.md 中的 # Summary instructions 章节定向保留关键状态。', 'Three-tier progressive design: (1) System Prompt + CLAUDE.md hit prompt caching while MCP schemas lazy-load via ToolSearch; (2) PreCompact hooks archive full transcripts before compact_boundary summarization; (3) Compactor honors # Summary instructions in CLAUDE.md.'],
   ['从数学上证明 3K 系统指令在 10K 窗口占 30% 权重，而在 200K 窗口跌至 1.5%（20倍稀释导致必跳步）。因此在严苛 RPI 模式下用阶段间 /clear + .copilot-tracking/ 磁盘 Markdown 工件替代有损 /compact。', 'Quantifies how a 3K system prompt drops from 30% share at 10K context to 1.5% at 200K (20x dilution driving step-skipping). Strict RPI replaces lossy /compact with inter-phase /clear + durable .copilot-tracking/ Markdown handoff ledgers.'],
   ['L5 · 会话事件溯源与持久化恢复 (Session Event Sourcing)', 'L5 · Session Event Sourcing & Crash Recovery'],
-  ['严格遵循 Event Sourcing：SessionEventMap 是唯一事实源，坚持“模型可见必先记入日志 (Model-Visible Means Logged)”。deriveMessages() 是日志的纯函数投影。进程崩溃重启 Resume 时，由 Agent 层自动计算并追加 interruptedTurnClosers 闭合残缺 Turn。', 'Strict event sourcing: SessionEventMap is the single source of truth ("Model-Visible Means Logged"), and deriveMessages() is a pure projection. On crash resume, the agent layer computes and appends interruptedTurnClosers automatically.'],
+  ['严格遵循 Event Sourcing：SessionEventMap 是唯一事实源，坚持“模型可见必先记入日志 (Model-Visible Means Logged)”。deriveMessages() 是日志的纯函数投影。进程崩溃重启 Resume 时，由 Agent 层自动计算并追加 interruptedTurnClosers 闭合残缺 Turn。', 'Strict event sourcing: SessionEventMap is the single source of truth (Model-Visible Means Logged), and deriveMessages() is a pure projection. On crash resume, the agent layer computes and appends interruptedTurnClosers automatically.'],
   ['采用 Dual-Write 双写架构：本地 Claude Code 进程优先写入本地 JSONL 轨迹保证低延迟，同时通过 sessionStore 适配器镜像至云端存储，支持 Serverless 容器跨节点 Resume 与非破坏性 Session Fork。', 'Dual-write durability: streams low-latency local JSONL transcripts while mirroring to cloud storage via sessionStore adapters for cross-container serverless resume and non-destructive session forking.'],
   ['将会话状态外化为 Git 仓库内可读、可 Diff、可人工编辑的 .copilot-tracking/ 五大目录：research/、plans/、details/、changes/、reviews/，实现人机协同白盒化。', 'Externalizes cognitive state into human-auditable, Git-diffable .copilot-tracking/ directories (research/, plans/, details/, changes/, reviews/) for glass-box human-AI collaboration.'],
   ['L6 · 子智能体联邦与多智能体协同 (Subagents & Teams)', 'L6 · Subagent Federation & Multi-Agent Coordination'],
@@ -139,9 +139,9 @@ const frameworkReplacements = [
   ['3. DSH PTC 代码模式 (@deepseek-ai/dsh-tool-executor-ptc · run_code)', '3. DSH PTC Code Mode (@deepseek-ai/dsh-tool-executor-ptc · run_code)'],
   ['x 加速 vs 串行 · ', 'x vs Serial · '],
   ['PTC 配额与上下文净收益核算', 'PTC Quota & Net Context Savings'],
-  ['当前 <code>run_code</code> 最大允许子调用配额：', 'Maximum allowed `run_code` sub-call quota: '],
+  ['当前 <code>run_code</code> 最大允许子调用配额：', 'Maximum allowed <code>run_code</code> sub-call quota: '],
   [' 次</strong> (公式：', ' calls</strong> (formula: '],
-  ['，超出将在第 ', '; exceeding triggers `CODE_RUN_FAILED` circuit-breaker on call #'],
+  ['，超出将在第 ', '; exceeding triggers <code>CODE_RUN_FAILED</code> circuit-breaker on call #'],
   [' 次触发 <code>CODE_RUN_FAILED</code> 死循环熔断)。', ').'],
   ['节省模型往返轮次：从 <strong>', 'Model round-trips reduced from <strong>'],
   [' 步</strong> 降至 <strong>', ' steps</strong> to <strong>'],
@@ -161,10 +161,10 @@ const frameworkReplacements = [
   ['%</strong>（衰减 <strong>', '%</strong> (<strong>'],
   [' 倍</strong>）。此时模型注意力被最近的工具报错与代码 Diff 垄断，大概率直接跳过 Research/Plan。', 'x dilution), causing recent tool errors and diffs to dominate attention and trigger phase-skipping.'],
   ['阶段边界策略 (HVE)', 'Inter-Phase Strategy (HVE)'],
-  ['：在 Research → Plan → Implement → Review 之间执行 <code>/clear</code>，以 <code>', ': Execute `/clear` between Research → Plan → Implement → Review and pass only the `'],
-  [' Tokens</code> 的磁盘 Markdown 台账作为唯一输入，将指令权重恢复至 <strong>', ' token` Markdown tracking artifact, restoring instruction share to <strong>'],
+  ['：在 Research → Plan → Implement → Review 之间执行 <code>/clear</code>，以 <code>', ': Execute <code>/clear</code> between Research → Plan → Implement → Review and pass only the <code>'],
+  [' Tokens</code> 的磁盘 Markdown 台账作为唯一输入，将指令权重恢复至 <strong>', ' token</code> Markdown tracking artifact, restoring instruction share to <strong>'],
   ['阶段内部策略 (DSH / Claude)', 'Intra-Phase Strategy (DSH / Claude)'],
-  ['：在单个实现阶段内部，使用 DSH <code>systemPromptUpdate: \'in-history\'</code> 避免重算首节点前缀（KV Cache 命中率 <strong>94.2% vs 18.5%</strong>），并开启 <code>toolResultPruner</code> 与 Claude <code>ToolSearch</code>。', ': Within an implementation phase, use DSH `systemPromptUpdate: \'in-history\'` to preserve message-0 KV cache (<strong>94.2% vs 18.5%</strong> hit rate) alongside `toolResultPruner` and Claude `ToolSearch`.']
+  ['：在单个实现阶段内部，使用 DSH <code>systemPromptUpdate: \'in-history\'</code> 避免重算首节点前缀（KV Cache 命中率 <strong>94.2% vs 18.5%</strong>），并开启 <code>toolResultPruner</code> 与 Claude <code>ToolSearch</code>。', ': Within an implementation phase, use DSH <code>systemPromptUpdate: \'in-history\'</code> to preserve message-0 KV cache (<strong>94.2% vs 18.5%</strong> hit rate) alongside <code>toolResultPruner</code> and Claude <code>ToolSearch</code>.']
 ];
 
 const scientificReplacements = [

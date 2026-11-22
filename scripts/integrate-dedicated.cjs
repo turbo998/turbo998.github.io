@@ -166,7 +166,7 @@ function main() {
     const source = baseline(r), { html, record } = transform(r, source), dest = path.join(root, r.path), live = fs.existsSync(dest) ? fs.readFileSync(dest, 'utf8') : null;
     if (check) { if (live !== html) throw new Error(`Dedicated integration drift: ${r.path}`); }
     else {
-      if (live !== null && live.replace(/\r/g, '') !== source.replace(/\r/g, '') && !live.includes('kee-dedicated-navigation:start') && !live.includes('kee-report-localization-navigation:start') && !live.includes('demo-language-navigation:start')) throw new Error(`Refusing unrecognized edits: ${r.path}`);
+      if (live !== null && live.replace(/\r/g, '') !== source.replace(/\r/g, '') && !live.includes('kee-dedicated-navigation:start') && !live.includes('kee-report-localization-navigation:start') && !live.includes('demo-language-navigation:start') && !live.includes('data-professional-header')) throw new Error(`Refusing unrecognized edits: ${r.path}`);
       if (live !== html) fs.writeFileSync(dest, html);
     }
     records.push(record);

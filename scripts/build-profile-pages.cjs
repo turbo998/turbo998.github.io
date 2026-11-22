@@ -1,7 +1,7 @@
 'use strict';
 const ui = require('./hub-layout.cjs');
 const {knowledgeFigure} = require('./knowledge-atlas.cjs');
-const node = (title, detail, relation) => ({title, detail, relation});
+const node = (role, title, detail, relation) => ({role, title, detail, relation});
 
 const t = (zh, en, cn) => (zh ? cn : en);
 
@@ -10,7 +10,7 @@ function profileSubnav(file, zh, current) {
     ['about', 'about.html', 'zh-about.html', 'Profile & Executive Bio', '个人简介与核心定位'],
     ['career', 'career.html', 'zh-career.html', 'Career (Microsoft · AWS · ECCOM · Cisco)', '职业履历（微软 · AWS · 华讯 · 思科）'],
     ['skills', 'skills.html', 'zh-skills.html', 'Certifications (AB-100 · AI-103 · GH-300)', '技术认证与著作（AB-100 · AI-103 · GH-300）'],
-    ['fte', 'fte.html', 'zh-fte.html', 'What is FTE · Learning Path & Registration', 'FTE 全景介绍 · 学习路径与注册入口']
+    ['fte', 'fte.html', 'zh-fte.html', 'What is FTE · Learning Path & Registration', 'FTE 体系指南 · 学习路径与注册入口']
   ];
   return `<nav class="section-nav" aria-label="${t(zh, 'Frontier Transformation Engineer sections', 'Frontier Transformation Engineer 栏目导航')}">${tabs
     .map(
@@ -103,10 +103,10 @@ const CAREER_ERAS = [
         ]
       },
       {
-        title: ['Cross-Border Security Matrix & 1,000+ Partner SA Launch', '跨境数据合规安全矩阵与 1,000+ 伙伴架构师赋能'],
+        title: ['Cross-Border Security Matrix & 1,000+ Partner SA Launch', '跨境数据合规安全矩阵与 1,000+ 伙伴架构师培养'],
         body: [
-          'Guided C2G/G2C enterprises through CBDT, US EO 14117, and China MLPS 2.0 compliance; co-authored the GCR Partner Security Matrix; standardized Landing Zone, MSP & MSSP offerings; and led the 3-month "Partner SA Launch" bootcamp enabling 1,000+ partner Solutions Architects (AWS Solution Builder of the Year 2022 · SA of the Quarter 2023).',
-          '护航跨国与出海企业应对数据跨境流动（CBDT）、14117 法案与等保 2.0 合规，联合编写大中华区《合作伙伴安全能力矩阵》，标准化 Landing Zone / MSP / MSSP 交付包；主导为期 3 个月的「Partner SA Launch」赋能超 1,000 名伙伴架构师（获 2022 年度 Solution Builder 与 2023 季度最佳 SA）。'
+          'Guided C2G/G2C enterprises through CBDT, US EO 14117, and China MLPS 2.0 compliance; co-authored the GCR Partner Security Matrix; standardized Landing Zone, MSP & MSSP offerings; and led the 3-month "Partner SA Launch" bootcamp training 1,000+ partner Solutions Architects (AWS Solution Builder of the Year 2022 · SA of the Quarter 2023).',
+          '护航跨国与出海企业应对数据跨境流动（CBDT）、14117 法案与等保 2.0 合规，联合编写大中华区《合作伙伴安全能力矩阵》，标准化 Landing Zone / MSP / MSSP 交付包；主导为期 3 个月的「Partner SA Launch」培养超 1,000 名伙伴架构师（获 2022 年度 Solution Builder 与 2023 季度最佳 SA）。'
         ]
       }
     ]
@@ -355,7 +355,7 @@ function renderAboutPage(file, zh) {
   const kpis = [
     ['14+ yrs', ['Microsoft · AWS · ECCOM · Cisco', '微软 · AWS · 华讯 · 思科'], ['R&D + Cloud CoE + Strategic Partner GTM', '核心研发 + 0到1建团队 + 战略生态']],
     ['30+ / 10+', ['Agentic Offerings / Prod Wins', '智能体联合方案 / 生产标杆'], ['153 designs across 13 industries · $10M+ ACR', '13 大行业 153 套设计 · $10M+ ACR']],
-    ['$28M+', ['AWS Partner Portfolio Scope', 'AWS 战略伙伴与金融生态规模'], ['Lead of Strategic Partner Solutions · 1,000+ SAs', '战略伙伴方案负责人 · 赋能千名 SA']],
+    ['$28M+', ['AWS Partner Portfolio Scope', 'AWS 战略伙伴与金融生态规模'], ['Lead of Strategic Partner Solutions · 1,000+ SAs', '战略伙伴方案负责人 · 培养千名 SA']],
     ['0 → 30', ['ECCOM Cloud CoE Built from Scratch', '华讯 Cloud CoE 从零到一组建'], ['$0 → $2M MSP ARR · GCR Competency Base', '0 到 $2M 云管 ARR · 多项能力认证']],
     ['15+', ['Global Technical Certifications', '全球权威架构与安全认证'], ['AB-100 · AI-103 · GH-300 · AWS×5 · CISSP · CCIE×3', 'AB-100 · AI-103 · GH-300 · AWS×5 · CISSP · CCIE×3']]
   ];
@@ -369,38 +369,54 @@ function renderAboutPage(file, zh) {
     .join('')}</section>`;
 
   body += knowledgeFigure(file, zh, {
-    topic: 'general',
+    topic: 'sa-skills',
     title: [
       'Qi Chen · 14-Year Frontier Transformation & Full-Stack Engineering Trajectory',
-      '陈琪 (Qi Chen) · 14 年全栈云网安全与 Frontier Transformation 演进图谱'
+      '陈琪 (Qi Chen) · 14 年跨栈云网安全与 Frontier Transformation 演进架构'
     ],
     concepts: [
       node(
+        ['SYSTEMS R&D', '系统研发底座'],
         ['Cisco R&D Core (2012–2015)', '思科中国研发中心 (2012–2015)'],
-        ['Cable on SD-WAN Tech Lead · Global Tier-3 · CCIE ×3', 'Cable on SD-WAN 负责人 · 全球三线攻坚 · CCIE ×3'],
+        ['Cable on SD-WAN Tech Lead · Global Tier-3 · CCIE ×3', 'Cable on SD-WAN 负责人 · 全球三线排障 · CCIE ×3'],
         ['builds 0-to-1 Cloud CoE', '沉淀系统工程底座']
       ),
       node(
+        ['0→1 CLOUD COE', '从零建云团队'],
         ['ECCOM 0-to-1 Cloud CoE (2015–2020)', '华讯网络从 0 到 1 建团队 (2015–2020)'],
         ['0 → 30 engineers · $0 → $2M MSP ARR · AWS Competencies', '0→30 人 Cloud CoE · $2M ARR · 核心能力认证'],
-        ['scales hyperscaler ecosystem', '升级云厂商战略生态']
+        ['scales hyperscaler ecosystem', '扩展云厂商战略生态']
       ),
       node(
+        ['PARTNER ECOSYSTEM', '战略伙伴生态'],
         ['AWS Strategic Partner Lead (2020–2025)', 'AWS 战略伙伴方案负责人 (2020–2025)'],
-        ['G2C / C2G / C2C · $16M+ FSI ARR · $28M SPP · GenAI', 'G2C / 出海 C2G · 金融行业负责人 · 千名 SA 赋能'],
-        ['drives Frontier AI transformation', '迈入智能体前沿转型']
+        ['G2C / C2G / C2C · $16M+ FSI ARR · $28M SPP · GenAI', 'G2C / 出海 C2G · 金融行业负责人 · 千名 SA 培养'],
+        ['drives Frontier AI delivery', '进入智能体生产交付']
       ),
       node(
+        ['AGENTIC ENGINEERING', '智能体架构交付'],
         ['Microsoft FTE & GCPS AI SA (2025–Now)', '微软 FTE 与资深 AI 架构师 (2025–至今)'],
         ['30+ Offerings · 45+ Hackathon Agents · HVE · $10M+ ACR', '30+ 智能体方案 · 45+ 黑客松辅导 · HVE · $10M+ ACR'],
-        ['validated by credentials & code', '权威认证与开源闭环']
+        ['validated by credentials & code', '权威认证与开源验证']
       ),
       node(
+        ['CREDENTIALS & LABS', '认证与开源工作台'],
         ['Verified Credentials & Live Assets', '微软三大新认证与开源资产'],
         ['AB-100 · AI-103 · GH-300 · CISSP · 8 Live Labs', 'AB-100 · AI-103 · GH-300 · CISSP · 八大实证工作台'],
         null
       )
-    ]
+    ],
+    takeaways: zh
+      ? [
+          '跨栈工程底色：从思科电信级 SD-WAN 研发到华讯 0→30 人 Cloud CoE，兼具底层网络与云管运维实证经验',
+          '规模化生态架构：在 AWS 与微软累计主导 30+ 联合智能体方案、153 套行业架构设计与 $28M+ 战略伙伴组合',
+          '代码与评测可验：持有 AB-100/AI-103/GH-300/CISSP/CCIE×3 等 15+ 项认证，所有方法论均配套开源工作台'
+        ]
+      : [
+          'Systems-to-AI foundation: spans carrier-grade SD-WAN R&D at Cisco and building a 30-engineer Cloud CoE ($2M ARR) at ECCOM',
+          'Hyperscaler partner scale: led $28M+ AWS partner portfolios and 30+ Microsoft Agentic AI offerings / 153 industry designs',
+          'Verifiable credentials & code: backed by 15+ certifications (AB-100, AI-103, GH-300, CISSP, CCIE×3) and 8 live engineering labs'
+        ]
   });
 
   body += `<section id="fte" class="section">
@@ -534,10 +550,10 @@ function renderAboutPage(file, zh) {
       id: 'proj-fte',
       featured: true,
       number: 'FTE-01',
-      badge: ['FTE PANORAMA & REGISTRATION', 'FTE 全景说明与注册'],
-      title: ['Frontier Transformation Engineer (FTE) Guide, ~86h Learning Path & Registration', 'Frontier Transformation Engineer (FTE) 全景解读、86 小时学习路径与注册入口'],
+      badge: ['FTE ARCHITECTURE & REGISTRATION', 'FTE 体系指南与注册'],
+      title: ['Frontier Transformation Engineer (FTE) Guide, ~86h Learning Path & Registration', 'Frontier Transformation Engineer (FTE) 体系指南、86 小时学习路径与注册入口'],
       finding: ['6 Capability Domains · 3 MS Exams · 6+2 LevelUp Courses · 6-Week FTE Offer Sprint', '六大跨栈能力域 · 三门认证 · 6+2 门实战课 · 6 周标准交付冲刺'],
-      description: ['One-page executive and practitioner guide to the Microsoft Frontier Transformation program, Partner Center attribution steps, course/assessment links, and FDE vs. FTE model comparison.', '一页式梳理 Frontier Transformation 转型飞轮、Partner Center 账号绑定四步法、全部课程与测评直达链接，以及微软 FDE 与伙伴 FTE 协同对比。'],
+      description: ['One-page executive and practitioner guide to the Microsoft Frontier Transformation program, Partner Center attribution steps, course/assessment links, and FDE vs. FTE model comparison.', '系统梳理 Frontier Transformation 五阶交付模型、Partner Center 账号绑定四步法、全部课程与测评直达链接，以及微软 FDE 与伙伴 FTE 协同对比。'],
       url: fteUrl,
       links: [
         {label: ['Open FTE Guide', '打开 FTE 介绍专页'], url: fteUrl},
@@ -548,10 +564,10 @@ function renderAboutPage(file, zh) {
       id: 'proj-diamond',
       featured: true,
       number: 'POC-02',
-      badge: ['DIAMOND ENTERPRISE POCS', 'DIAMOND 企业级全真沙盘'],
-      title: ['Diamond Live Demos: TCL × Microsoft Fabric & Zava × Azure Databricks', 'Diamond 实战演示：TCL × Microsoft Fabric 与 Zava × Databricks 双湖仓驾驶舱'],
-      finding: ['Entra ID OBO · OneLake Zero-Copy Mirroring · Copilot Closed-Loop Write-Back', '单租户身份传递 · OneLake 零拷贝共生 · Copilot 业务决策回写'],
-      description: ['Production-style Solution Architect PoC cockpits demonstrating multi-agent analytics, DAX/KQL/SQL verification, and cross-platform lakehouse coexistence.', '面向企业架构选型与高管汇报的两套全真交互沙盘，完整呈现从实时流摄取、双湖仓零拷贝到一线业务止损闭环。'],
+      badge: ['DIAMOND ENTERPRISE POCS', 'DIAMOND 企业级参考架构'],
+      title: ['Diamond Live Demos: TCL × Microsoft Fabric & Zava × Azure Databricks', 'Diamond 架构演示：TCL × Microsoft Fabric 与 Zava × Databricks 双湖仓工作台'],
+      finding: ['Entra ID OBO · OneLake Zero-Copy Mirroring · Copilot Auditable Write-Back', '单租户身份传递 · OneLake 零拷贝互通 · Copilot 审批回写'],
+      description: ['Production-style Solution Architect PoC workbenches demonstrating multi-agent analytics, DAX/KQL/SQL verification, and cross-platform lakehouse coexistence.', '面向企业架构选型与技术验证的交互工作台，完整呈现从实时流摄取、双湖仓零拷贝到一线业务审批回写。'],
       url: diamondUrl,
       links: [
         {label: ['Open Diamond Center', '进入 Diamond 演示中心'], url: diamondUrl},
@@ -563,8 +579,8 @@ function renderAboutPage(file, zh) {
       number: 'HVE-03',
       badge: ['HARNESS ENGINEERING & BOOTCAMP', 'HARNESS 工程与训练营'],
       title: ['Copilot & HVE-Core Engineering Workshop + Agent Harness Co-Evolution', 'GitHub Copilot & HVE-Core 实战工作坊与 Agent Harness 协同演进'],
-      finding: ['8-Hour / 9-Module Curriculum · 10+ Workshops · 1,000+ Engineers Enabled', '8 小时 9 模块实战课程 · 10+ 场交付 · 赋能 1,000+ 开发者'],
-      description: ['Open-source runbooks, RPI specification workflows, and multi-framework harness benchmarks used in the GCR Partner Frontier Transformation Bootcamp.', '配套微软大中华区合作伙伴 Frontier Transformation Bootcamp 实战讲义、可复现实验手册与主流 Harness 框架实测对比。'],
+      finding: ['8-Hour / 9-Module Curriculum · 10+ Workshops · 1,000+ Engineers Trained', '8 小时 9 模块实验课程 · 10+ 场交付 · 培训 1,000+ 开发者'],
+      description: ['Open-source runbooks, RPI specification workflows, and multi-framework harness benchmarks used in the GCR Partner Frontier Transformation Bootcamp.', '配套微软大中华区合作伙伴 Frontier Transformation Bootcamp 实验手册、RPI 规约工作流与主流 Harness 框架实测对比。'],
       url: `workshops/agent-harness-coevolution/index${zh ? '' : '.en'}.html`,
       links: [
         {label: ['Co-Evolution Workbench', '打开协同演进工作台'], url: `workshops/agent-harness-coevolution/index${zh ? '' : '.en'}.html`},
@@ -576,11 +592,11 @@ function renderAboutPage(file, zh) {
   body += ui.section(
     'projects',
     '04 / REPRESENTATIVE ENGINEERING WORKBENCHES',
-    t(zh, 'From Executive Architecture to Running Code', '从前沿转型方法论到可交互验证的工程资产'),
+    t(zh, 'From Executive Architecture to Running Code', '从参考架构设计到可交互验证的工程资产'),
     t(
       zh,
-      'Explore live workbenches, 7-Card benchmark decks, and open-source partner enablement kits directly in the browser.',
-      '所有架构指南、7-Card 定量基准报告与企业级 PoC 沙盘均可直接在浏览器中交互核验。'
+      'Explore live workbenches, 7-Card benchmark decks, and open-source partner engineering kits directly in the browser.',
+      '所有架构指南、7-Card 定量基准报告与企业级 PoC 工作台均可直接在浏览器中交互核验。'
     ),
     ui.grid(projectCards)
   );
@@ -650,33 +666,48 @@ function renderCareerPage(file, zh) {
   body += profileSubnav(file, zh, 'career');
 
   body += knowledgeFigure(file, zh, {
-    topic: 'general',
+    topic: 'sa-skills',
     title: [
       'Four-Stage Architectural & Leadership Progression (2012 – 2026+)',
-      '四阶段架构视野与团队/生态领导力演进图谱（2012 – 2026+）'
+      '四阶段架构视野与团队/生态工程演进架构（2012 – 2026+）'
     ],
     concepts: [
       node(
+        ['CORE R&D', '核心网研发'],
         ['2012–2015 · Cisco Systems R&D', '2012–2015 · 思科中国研发中心'],
         ['Cable on SD-WAN Tech Lead · Agile R&D · 3x CAP Award', 'Cable on SD-WAN 负责人 · 跨国研发 · 3次成就奖'],
-        ['evolves from R&D to 0→1 builder', '从核心研发走向团队创业']
+        ['evolves from R&D to 0→1 builder', '从核心研发走向团队组建']
       ),
       node(
+        ['CLOUD COE', '云管团队建设'],
         ['2015–2020 · ECCOM Cloud CoE', '2015–2020 · 华讯网络 Cloud CoE'],
         ['Built 0 → 30 team · $0 → $2M ARR · 4 AWS Competencies', '从0到1建30人团队 · $2M ARR · 多项能力认证'],
-        ['scales to GCR strategic partners', '跃升云厂商战略生态']
+        ['scales to GCR strategic partners', '扩展云厂商战略生态']
       ),
       node(
+        ['HYPERSCALER GTM', '双云战略生态'],
         ['2020–2025.11 · AWS GCR Lead', '2020–2025.11 · AWS 战略伙伴方案负责人'],
-        ['Lead of Strategic Partner Solutions · $16M+ FSI · 1,000+ SAs', 'G2C/出海C2G方案负责人 · 金融生态 · 赋能千名SA'],
-        ['pioneers Agentic AI & FTE', '全面引领智能体前沿转型']
+        ['Lead of Strategic Partner Solutions · $16M+ FSI · 1,000+ SAs', 'G2C/出海C2G方案负责人 · 金融生态 · 培养千名SA'],
+        ['drives Agentic AI & FTE', '推进智能体生产落地']
       ),
       node(
+        ['FRONTIER AI SA', '微软智能体架构'],
         ['2025.11–Now · Microsoft GCPS', '2025.11–至今 · 微软 GCPS 资深架构师'],
         ['Frontier Transformation Engineer · 30+ Offerings · $10M+ ACR', 'FTE 导师 · 30+智能体方案 · 153行业设计 · $10M+ ACR'],
         null
       )
-    ]
+    ],
+    takeaways: zh
+      ? [
+          '思科与华讯阶段（2012–2020）：历练电信级 SD-WAN 核心研发并从 0 到 1 组建 30 人 Cloud CoE（$2M ARR）',
+          'AWS 阶段（2020–2025）：负责战略伙伴 G2C/C2G 方案与 $16M+/$28M 金融数字原生组合，发表 6 篇官方博客',
+          '微软阶段（2025–至今）：担任 GCPS 资深 AI 解决方案架构师与 FTE 导师，交付 30+ 联合方案与 45+ 黑客松智能体'
+        ]
+      : [
+          'Cisco & ECCOM (2012–2020): led carrier SD-WAN R&D and built a 30-person Cloud CoE ($2M MSP ARR) from scratch',
+          'AWS GCR (2020–2025): led G2C/C2G Strategic Partner Solutions, $16M+/$28M FSI portfolios, and 6 official architecture blogs',
+          'Microsoft GCPS (2025–Now): driving 30+ Agentic AI offerings, 45+ partner hackathon builds, and $10M+ ACR transformation'
+        ]
   });
 
   body += ui.section(
@@ -789,38 +820,54 @@ function renderSkillsPage(file, zh) {
   body += profileSubnav(file, zh, 'skills');
 
   body += knowledgeFigure(file, zh, {
-    topic: 'general',
+    topic: 'sa-skills',
     title: [
       'Cross-Stack Credential & Capability Architecture',
       '跨栈技术认证与全生命周期工程能力矩阵'
     ],
     concepts: [
       node(
+        ['BUSINESS ARCHITECTURE', '业务架构层'],
         ['Agentic Business Architecture', 'Agentic 业务架构设计'],
-        ['Microsoft AB-100 Expert · Industry Playbooks · PMP', '微软 AB-100 专家认证 · 13行业蓝图 · PMP'],
+        ['Microsoft AB-100 Expert · Industry Playbooks · PMP', '微软 AB-100 专家认证 · 13行业方案 · PMP'],
         ['specifies pro-code agents', '定义智能体工程契约']
       ),
       node(
+        ['AGENTIC RUNTIME', '智能体研发层'],
         ['AI Apps, Agents & RAG', '智能体研发与多模态知识'],
         ['Microsoft AI-103 · Foundry · LangGraph · AWS ML', '微软 AI-103 · Foundry · LangGraph · AWS ML'],
-        ['accelerated via HVE harness', '通过 HVE 超高速交付']
+        ['accelerated via HVE harness', '通过 HVE 规范交付']
       ),
       node(
+        ['HARNESS & DEVOPS', '编码与工程效能'],
         ['Hypervelocity Coding & Harness', 'AI 原生编码与 Harness'],
         ['Microsoft GH-300 GitHub Copilot · HVE-Core · AWS DevOps', '微软 GH-300 · HVE-Core · AWS DevOps Pro'],
         ['secured by zero-trust gates', '纳入零信任合规治理']
       ),
       node(
+        ['ZERO-TRUST SECURITY', '安全与跨境合规'],
         ['Security, Identity & Compliance', '零信任安全与跨境合规'],
         ['CISSP · AWS Security · Entra Agent ID · Agent 365', 'CISSP · AWS 安全专项 · Entra Agent ID · 等保/CBDT'],
         ['runs on resilient cloud infra', '承载于高可靠云网底座']
       ),
       node(
+        ['CLOUD & NETWORK CORE', '多云与核心网络'],
         ['Multi-Cloud, Data & Network Core', '多云湖仓与核心网络底座'],
         ['AWS SA Pro & Big Data · CCIE ×3 (R&S/SP/DC) · OpenStack', 'AWS 架构/大数据 · 三料 CCIE · 红帽 OpenStack'],
         null
       )
-    ]
+    ],
+    takeaways: zh
+      ? [
+          '微软 FTE 三认证完备：同时持有 AB-100（业务架构专家）、AI-103（智能体研发）与 GH-300（GitHub Copilot）',
+          '跨云与安全纵深：叠加 AWS 5 项专业/专项认证、CISSP 信息安全认证与 PMP 项目管理认证',
+          '底层基础设施积淀：持有思科 CCIE ×3（路由交换/运营商/数据中心）并出版云计算与大数据专著 2 部'
+        ]
+      : [
+          'Complete Microsoft FTE credential triad: AB-100 (Business Architect Expert), AI-103 (AI Apps & Agents), and GH-300 (Copilot)',
+          'Multi-cloud & security depth: 5 AWS Pro/Specialty credentials paired with ISC2 CISSP and PMI PMP',
+          'Infrastructure & publications: Triple CCIE (R&S, SP, Data Center), OpenStack admin, and 2 published books on Cloud & Big Data'
+        ]
   });
 
   body += ui.section(
@@ -934,7 +981,7 @@ function renderSkillsPage(file, zh) {
         'Authored 6 production partner architecture case studies on the AWS China Official Blog (2022–2025) and 153 industry Agentic AI blueprints across 13 verticals at Microsoft.',
         '2022–2025 年间在云厂商官方技术博客发表 6 篇合作伙伴生成式 AI 与行业架构标杆实践，并在微软编写覆盖 13 大行业的 153 套企业智能体落地方案。'
       ],
-      links: [{label: ['Benchmark & Eval Foundry', '访问 7-Card 基准评测中心'], url: zh ? 'zh-benchmarks.html' : 'benchmarks.html'}]
+      links: [{label: ['Benchmarks & Evaluation', '访问 7-Card 基准评测中心'], url: zh ? 'zh-benchmarks.html' : 'benchmarks.html'}]
     })
   ];
   // Fix book-cloud finding in EN so ZERO CJK characters appear in English <main>!
@@ -976,19 +1023,19 @@ function renderFtePage(file, zh) {
   const skillsUrl = zh ? 'zh-skills.html' : 'skills.html';
   const hveWorkbench = `workshops/agent-harness-coevolution/index${zh ? '' : '.en'}.html`;
 
-  let body = ui.crumb(file, zh, t(zh, 'Frontier Transformation Engineer (FTE)', 'Frontier Transformation Engineer (FTE) 全景说明'));
+  let body = ui.crumb(file, zh, t(zh, 'Frontier Transformation Engineer (FTE)', 'Frontier Transformation Engineer (FTE) 体系指南'));
 
   body += `<section class="page-hero">
     <div>
       <p class="eyebrow"><span class="status-dot" aria-hidden="true"></span>${t(
         zh,
-        'MICROSOFT FRONTIER TRANSFORMATION PANORAMA · OFFICIAL LEARNING PATH & REGISTRATION',
-        '微软 FRONTIER TRANSFORMATION 全景指南 · 官方学习路径与注册直达入口'
+        'MICROSOFT FRONTIER TRANSFORMATION GUIDE · OFFICIAL LEARNING PATH & REGISTRATION',
+        '微软 FRONTIER TRANSFORMATION 体系指南 · 官方学习路径与注册直达入口'
       )}</p>
       <h1>${t(
         zh,
-        'Frontier Transformation Engineer (FTE) — Panorama, ~86h Learning Path & Registration',
-        '什么是 Frontier Transformation Engineer (FTE)？全景解读、学习路径与注册指南'
+        'Frontier Transformation Engineer (FTE) — Architecture, ~86h Learning Path & Registration',
+        '什么是 Frontier Transformation Engineer (FTE)？能力架构、学习路径与注册指南'
       )}</h1>
       <p class="lead">${t(
         zh,
@@ -1049,38 +1096,54 @@ function renderFtePage(file, zh) {
     .join('')}</section>`;
 
   body += knowledgeFigure(file, zh, {
-    topic: 'general',
+    topic: 'sa-skills',
     title: [
-      'Frontier Transformation 5-Stage Value Flywheel & Partner Progression',
-      'Frontier Transformation 五阶段业务价值闭环与伙伴能力演进图谱'
+      'Frontier Transformation 5-Stage Delivery Model & Partner Progression',
+      'Frontier Transformation 五阶段交付架构与合作伙伴能力进阶路径'
     ],
     concepts: [
       node(
+        ['STAGE 01 · ALIGN', '阶段 01 · 战略对齐'],
         ['01 Business Vision · ALIGN', '01 业务愿景 · ALIGN 对齐'],
-        ['Anchor CxO KPIs · 5–10 quantifiable AI outcomes', '锚定高管业务战略 · 识别 5–10 个可量化结果'],
-        ['shapes cross-stack blueprint', '驱动跨栈方案设计']
+        ['Anchor CxO KPIs · 5–10 quantifiable AI outcomes', '锚定高管业务指标 · 识别 5–10 个可量化目标'],
+        ['shapes cross-stack architecture', '定义跨栈方案边界']
       ),
       node(
-        ['02 Solution Design · SKILL', '02 方案设计 · SKILL 赋能'],
+        ['STAGE 02 · SKILL', '阶段 02 · 能力认证'],
+        ['02 Solution Design · SKILL', '02 方案设计 · SKILL 认证'],
         ['FTE 6 Domains · AB-100 / AI-103 / GH-300 + LevelUp', 'FTE 六大能力域 · 三大认证 + LevelUp 实训'],
-        ['builds working agents fast', '超高速工程构建原型']
+        ['builds working agents fast', '构建可验证原型']
       ),
       node(
+        ['STAGE 03 · PROVE', '阶段 03 · 原型交付'],
         ['03 Agentic Engineering · PROVE', '03 智能体工程 · PROVE 验证'],
-        ['Microsoft IQ · Foundry · GitHub Copilot & HVE-Core', 'Microsoft IQ · Foundry · Copilot & HVE 敏捷交付'],
+        ['Microsoft IQ · Foundry · GitHub Copilot & HVE-Core', 'Microsoft IQ · Foundry · Copilot & HVE 工程交付'],
         ['enforces zero-trust landing', '通过零信任安全门禁']
       ),
       node(
+        ['STAGE 04 · PACKAGE', '阶段 04 · 标准封装'],
         ['04 Governed Scale · PACKAGE', '04 可信规模化 · PACKAGE 封装'],
         ['Entra Agent ID · Agent 365 · 6-Wk #FrontierFTEOffer', 'Entra Agent ID · Agent 365 · 6周标准商业包'],
-        ['compounds enterprise value', '沉淀持续复利飞轮']
+        ['expands managed operations', '扩展托管与卓越中心']
       ),
       node(
-        ['05 Value Expansion · SCALE', '05 价值扩展 · SCALE 扩张'],
+        ['STAGE 05 · SCALE', '阶段 05 · 规模运营'],
+        ['05 Value Expansion · SCALE', '05 价值扩展 · SCALE 扩展'],
         ['Frontier CoE · Managed Services · Specialization', 'Frontier CoE · 托管运营服务 · 高阶专项认证'],
         null
       )
-    ]
+    ],
+    takeaways: zh
+      ? [
+          '六大跨栈能力域：融合高管业务价值定义、Microsoft IQ 数据接地、Foundry 多智能体研发、HVE 规范编码与零信任治理',
+          '~86 小时认证路径：要求完成 GH-300、AI-103、AB-100 三门考试及 6 门 LevelUp 必修实验课（测评 ≥80%）',
+          '4–6 周标准商业交付：通过 Partner Center 双向账号关联计入伙伴组织能力分，支撑上架 #FrontierFTEOffer 冲刺包'
+        ]
+      : [
+          'Six cross-stack domains: unites CxO KPI framing, Microsoft IQ grounding, Foundry agents, HVE coding, and Entra Agent ID governance',
+          '~86-hour verified path: combines GH-300, AI-103, and AB-100 exams with 6 required LevelUp labs (≥80% assessment)',
+          '4–6 week commercial sprint: links Learn + Skilling Hub to Partner Center to publish repeatable #FrontierFTEOffer engagements'
+        ]
   });
 
   // Section 01: Why Frontier Transformation & Frontier Partner Flywheel
@@ -1680,7 +1743,7 @@ function renderFtePage(file, zh) {
     ui.card(file, zh, {
       id: 'cta-skilling-hub',
       number: 'CTA-04',
-      badge: ['PARTNER SKILLING HUB', '伙伴赋能平台账号'],
+      badge: ['PARTNER SKILLING HUB', '伙伴实训平台账号'],
       title: ['Partner Skilling Hub Sign-Up & Catalog', 'Partner Skilling Hub 账号注册与课程大厅'],
       finding: ['Use your company work email so learning records sync to Partner Center', '请使用企业工作邮箱注册以确保学习记录可归属公司'],
       description: [
@@ -1738,7 +1801,7 @@ function renderFtePage(file, zh) {
       `<p class="source-note">${t(
         zh,
         'Program references synthesized from the Microsoft Partner Frontier Transformation Panorama briefing and official LevelUp / Microsoft Learn portals. Exam availability, transition rules (such as AI-102 acceptance), and partner program terms are governed by official Microsoft Partner Center & Microsoft Learn documentation.',
-        '本页内容提炼自《微软 Frontier Transformation 全景》伙伴赋能简报及 LevelUp / Microsoft Learn 官方门户；具体考试过渡期规则（如 AI-102 衔接政策）与合作伙伴项目条款以 Microsoft Partner Center 及 Microsoft Learn 最新官方说明为准。'
+        '本页内容提炼自《微软 Frontier Transformation》合作伙伴体系简报及 LevelUp / Microsoft Learn 官方门户；具体考试过渡期规则（如 AI-102 衔接政策）与合作伙伴项目条款以 Microsoft Partner Center 及 Microsoft Learn 最新官方说明为准。'
       )} · <a href="${ui.href(file, aboutUrl)}">${t(zh, 'Return to Qi Chen’s FTE Profile', '返回陈琪个人主页简介')}</a></p>`
   );
 
@@ -1748,7 +1811,7 @@ function renderFtePage(file, zh) {
     t(
       zh,
       'Frontier Transformation Engineer (FTE) · Learning Path & Registration',
-      'Frontier Transformation Engineer (FTE) 全景介绍 · 学习路径与注册入口'
+      'Frontier Transformation Engineer (FTE) 体系指南 · 学习路径与注册入口'
     ),
     body,
     {active: 5, context: false}

@@ -5,6 +5,7 @@ const assert=require('node:assert/strict');
 const puppeteer=require('puppeteer');
 const root=path.resolve(__dirname,'..');
 const manifest=require('../docs/redesign/site-localization.json');
+const {classifyDiagramPolicy}=require('../scripts/page-architecture-specs.cjs');
 const index=JSON.parse(fs.readFileSync(path.join(root,'assets/editorial/search-index.js'),'utf8').replace(/^window\.ENGINEERING_SEARCH_INDEX\s*=\s*/,'').replace(/;\s*$/,''));
 const output=process.env.SITE_ARTIFACT_DIR||path.join(root,'site-test-artifacts');
 (async()=>{
@@ -15,12 +16,21 @@ const output=process.env.SITE_ARTIFACT_DIR||path.join(root,'site-test-artifacts'
   const parser=await browser.newPage();
   for(const row of manifest.records){
    const html=fs.readFileSync(path.join(root,row.path),'utf8');
+   const policy=classifyDiagramPolicy(row.path,html);
    const state=await parser.evaluate(html=>{
     const doc=new DOMParser().parseFromString(html,'text/html');const header=doc.querySelector('.site-header,[data-professional-header]');
-    return {lang:doc.documentElement.lang,header:!!header,search:!!header?.querySelector('input[type=search]'),diagram:!!doc.querySelector('[data-knowledge-atlas],.phase179-knowledge,.knowledge-atlas'),switches:[...doc.querySelectorAll('.professional-controls a[hreflang],.language-link')].map(a=>({language:a.hreflang,href:a.getAttribute('href')})),externalResources:[...doc.querySelectorAll('script[src],link[rel=stylesheet]')].map(e=>e.getAttribute('src')||e.getAttribute('href')),csp:doc.querySelector('meta[http-equiv="Content-Security-Policy"]')?.content};
+    const atlasText=[...doc.querySelectorAll('[data-knowledge-atlas]')].map(e=>e.textContent).join(' ');
+    return {lang:doc.documentElement.lang,header:!!header,search:!!header?.querySelector('input[type=search]'),diagram:!!doc.querySelector('[data-knowledge-atlas],.phase179-knowledge,.knowledge-atlas'),injectedFigure:!!doc.querySelector('figure.knowledge-figure'),igniteBoard:!!doc.querySelector('.ms-arch-board[data-knowledge-atlas]'),atlasText,switches:[...doc.querySelectorAll('.professional-controls a[hreflang],.language-link')].map(a=>({language:a.hreflang,href:a.getAttribute('href')})),externalResources:[...doc.querySelectorAll('script[src],link[rel=stylesheet]')].map(e=>e.getAttribute('src')||e.getAttribute('href')),csp:doc.querySelector('meta[http-equiv="Content-Security-Policy"]')?.content};
    },html);
    assert(state.header&&state.search,row.path+' shared header and search');
-   assert(state.diagram,row.path+' overall architecture diagram');
+   if(policy==='omit-deck'||policy==='omit-canvas'){
+    assert(!state.diagram,`${row.path} (${policy}) must omit redundant top diagram`);
+   }else if(policy==='ignite-native'){
+    assert(state.igniteBoard&&!state.injectedFigure,`${row.path} (ignite-native) must keep native board without redundant figure`);
+   }else{
+    assert(state.diagram,`${row.path} (${policy}) must render architecture summary diagram`);
+    assert(!/上下文锚定|问题与范围|机制与边界|自左向右从/.test(state.atlasText),`${row.path} must not contain generic methodology filler`);
+   }
    assert.equal(state.lang,row.language,row.path+' declaration');
    assert(fs.existsSync(path.join(root,row.counterpart)),row.path+' existing counterpart');
    const opposite=row.language==='en'?'zh-CN':'en';
