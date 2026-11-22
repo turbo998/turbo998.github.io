@@ -9117,6 +9117,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r763File),'utf8');
       assert.ok(txt.includes('4,580.00')&&txt.includes('4,600.00')&&txt.includes('9,180.00')&&txt.includes('75.00')&&txt.includes('250.00')&&txt.includes('325.00')&&txt.includes('8,855.00')&&txt.includes('96.46%')&&txt.includes('not_measured'),r763File+': contains exact 11-22 R27 R763 accounted+ifclite+3dnewera+rvtmcp closed-form parameters');
     }
+    // 2026-11-22 Night Round 28 (R764: marcusquinn/aidevops + INK-Q/agy-fast + savannahfeder/agentbox + eduwxyz/tucano) verification
+    const r764PathA=4460.00+46.0*100.00;
+    assert.equal(r764PathA.toFixed(2),'9060.00','11-22 R28 R764 Path A total');
+    const r764PathC=70.00+2.4*100.00;
+    assert.equal(r764PathC.toFixed(2),'310.00','11-22 R28 R764 Path C total');
+    assert.equal((r764PathA-r764PathC).toFixed(2),'8750.00','11-22 R28 R764 savings vs Path A');
+    assert.equal(((r764PathA-r764PathC)/r764PathA*100).toFixed(2),'96.58','11-22 R28 R764 pct savings vs Path A');
+    for(const r764File of ['workshops/github-trending-radar/docs/aidevops-agy-fast-agentbox-tucano-selection-faq.md','workshops/github-trending-radar/docs/aidevops-agy-fast-agentbox-tucano-selection-faq.en.md','assets/github-ai-radar-2026-11-22-r28-r764-aidevops-agyfast-agentbox-tucano.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-22-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r764File),'utf8');
+      assert.ok(txt.includes('4,460.00')&&txt.includes('4,600.00')&&txt.includes('9,060.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,750.00')&&txt.includes('96.58%')&&txt.includes('not_measured'),r764File+': contains exact 11-22 R28 R764 aidevops+agyfast+agentbox+tucano closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
