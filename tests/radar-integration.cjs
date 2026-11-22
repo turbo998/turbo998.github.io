@@ -9271,6 +9271,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r777File),'utf8');
       assert.ok(txt.includes('4,590.00')&&txt.includes('4,600.00')&&txt.includes('9,190.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,880.00')&&txt.includes('96.63%')&&txt.includes('not_measured'),r777File+': contains exact 11-22 R41 R777 levelrail+termiusmcp+bicho+srelens closed-form parameters');
     }
+    // 2026-11-22 Night Round 42 (R778: fellowgeek/mcp-memory + gura105/operational-ontology + xcosmosbox/Cairn + azrtydxb/procoder) verification
+    const r778PathA=4570.00+46.0*100.00;
+    assert.equal(r778PathA.toFixed(2),'9170.00','11-22 R42 R778 Path A total');
+    const r778PathC=65.00+2.4*100.00;
+    assert.equal(r778PathC.toFixed(2),'305.00','11-22 R42 R778 Path C total');
+    assert.equal((r778PathA-r778PathC).toFixed(2),'8865.00','11-22 R42 R778 savings vs Path A');
+    assert.equal(((r778PathA-r778PathC)/r778PathA*100).toFixed(2),'96.67','11-22 R42 R778 pct savings vs Path A');
+    for(const r778File of ['workshops/github-trending-radar/docs/mcp-memory-okf-operational-ontology-cairn-procoder-selection-faq.md','workshops/github-trending-radar/docs/mcp-memory-okf-operational-ontology-cairn-procoder-selection-faq.en.md','assets/github-ai-radar-2026-11-22-r42-r778-mcpmemory-ontology-cairn-procoder.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-22-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r778File),'utf8');
+      assert.ok(txt.includes('4,570.00')&&txt.includes('4,600.00')&&txt.includes('9,170.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('8,865.00')&&txt.includes('96.67%')&&txt.includes('not_measured'),r778File+': contains exact 11-22 R42 R778 mcpmemory+ontology+cairn+procoder closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
