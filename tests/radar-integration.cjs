@@ -9370,6 +9370,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r786File),'utf8');
       assert.ok(txt.includes('4,650.00')&&txt.includes('4,600.00')&&txt.includes('9,250.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('8,945.00')&&txt.includes('96.70%')&&txt.includes('not_measured'),r786File+': contains exact 11-22 R50 R786 minshop+universalcode+codexcc+hahousekeeper closed-form parameters');
     }
+    // 2026-11-22 Night Round 51 (R787: Faixiang/Moodle-MCP + Vladimir-Human/ru-marketplace-mcp + OtoDock/oto-dock + PythonnotJava/RemindAI) verification
+    const r787PathA=4540.00+45.0*100.00;
+    assert.equal(r787PathA.toFixed(2),'9040.00','11-22 R51 R787 Path A total');
+    const r787PathC=65.00+2.4*100.00;
+    assert.equal(r787PathC.toFixed(2),'305.00','11-22 R51 R787 Path C total');
+    assert.equal((r787PathA-r787PathC).toFixed(2),'8735.00','11-22 R51 R787 savings vs Path A');
+    assert.equal(((r787PathA-r787PathC)/r787PathA*100).toFixed(2),'96.63','11-22 R51 R787 pct savings vs Path A');
+    for(const r787File of ['workshops/github-trending-radar/docs/moodle-mcp-ru-marketplace-mcp-oto-dock-remindai-selection-faq.md','workshops/github-trending-radar/docs/moodle-mcp-ru-marketplace-mcp-oto-dock-remindai-selection-faq.en.md','assets/github-ai-radar-2026-11-22-r51-r787-moodlemcp-rumarketplace-otodock-remindai.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-22-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r787File),'utf8');
+      assert.ok(txt.includes('4,540.00')&&txt.includes('4,500.00')&&txt.includes('9,040.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('8,735.00')&&txt.includes('96.63%')&&txt.includes('not_measured'),r787File+': contains exact 11-22 R51 R787 moodlemcp+rumarketplace+otodock+remindai closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
