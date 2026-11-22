@@ -8952,6 +8952,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r748File),'utf8');
       assert.ok(txt.includes('4,160.00')&&txt.includes('4,450.00')&&txt.includes('8,610.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,300.00')&&txt.includes('96.40%')&&txt.includes('not_measured'),r748File+': contains exact 11-22 R12 R748 orbit+ccrouter+tomc+opikmcp closed-form parameters');
     }
+    // 2026-11-22 Night Round 13 (R749: openwong2kim/wmux + BlackBeltTechnology/pi-agent-dashboard + cortexkit/aft + the-snowpear/omp-studio) verification
+    const r749PathA=4190.00+44.5*100.00;
+    assert.equal(r749PathA.toFixed(2),'8640.00','11-22 R13 R749 Path A total');
+    const r749PathC=70.00+2.4*100.00;
+    assert.equal(r749PathC.toFixed(2),'310.00','11-22 R13 R749 Path C total');
+    assert.equal((r749PathA-r749PathC).toFixed(2),'8330.00','11-22 R13 R749 savings vs Path A');
+    assert.equal(((r749PathA-r749PathC)/r749PathA*100).toFixed(2),'96.41','11-22 R13 R749 pct savings vs Path A');
+    for(const r749File of ['workshops/github-trending-radar/docs/wmux-pi-agent-dashboard-aft-omp-studio-selection-faq.md','workshops/github-trending-radar/docs/wmux-pi-agent-dashboard-aft-omp-studio-selection-faq.en.md','assets/github-ai-radar-2026-11-22-r13-r749-wmux-pidashboard-aft-ompstudio.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-22-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r749File),'utf8');
+      assert.ok(txt.includes('4,190.00')&&txt.includes('4,450.00')&&txt.includes('8,640.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,330.00')&&txt.includes('96.41%')&&txt.includes('not_measured'),r749File+': contains exact 11-22 R13 R749 wmux+pidashboard+aft+ompstudio closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
