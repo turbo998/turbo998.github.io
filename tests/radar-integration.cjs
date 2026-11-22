@@ -9139,6 +9139,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r765File),'utf8');
       assert.ok(txt.includes('4,640.00')&&txt.includes('4,600.00')&&txt.includes('9,240.00')&&txt.includes('75.00')&&txt.includes('250.00')&&txt.includes('325.00')&&txt.includes('8,915.00')&&txt.includes('96.48%')&&txt.includes('not_measured'),r765File+': contains exact 11-22 R29 R765 stockscreener+statspai+pysad+equibles closed-form parameters');
     }
+    // 2026-11-22 Night Round 30 (R766: KyaniteLabs/kinocut + agent-labs-dev/fastbrowse + amirfish1/claude-command-center + EternalNight996/memory-eternal) verification
+    const r766PathA=4410.00+45.0*100.00;
+    assert.equal(r766PathA.toFixed(2),'8910.00','11-22 R30 R766 Path A total');
+    const r766PathC=70.00+2.4*100.00;
+    assert.equal(r766PathC.toFixed(2),'310.00','11-22 R30 R766 Path C total');
+    assert.equal((r766PathA-r766PathC).toFixed(2),'8600.00','11-22 R30 R766 savings vs Path A');
+    assert.equal(((r766PathA-r766PathC)/r766PathA*100).toFixed(2),'96.52','11-22 R30 R766 pct savings vs Path A');
+    for(const r766File of ['workshops/github-trending-radar/docs/kinocut-fastbrowse-claude-command-center-memory-eternal-selection-faq.md','workshops/github-trending-radar/docs/kinocut-fastbrowse-claude-command-center-memory-eternal-selection-faq.en.md','assets/github-ai-radar-2026-11-22-r30-r766-kinocut-fastbrowse-ccc-memoryeternal.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-22-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r766File),'utf8');
+      assert.ok(txt.includes('4,410.00')&&txt.includes('4,500.00')&&txt.includes('8,910.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,600.00')&&txt.includes('96.52%')&&txt.includes('not_measured'),r766File+': contains exact 11-22 R30 R766 kinocut+fastbrowse+ccc+memoryeternal closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
