@@ -9161,6 +9161,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r767File),'utf8');
       assert.ok(txt.includes('4,350.00')&&txt.includes('4,500.00')&&txt.includes('8,850.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,540.00')&&txt.includes('96.50%')&&txt.includes('not_measured'),r767File+': contains exact 11-22 R31 R767 logicpromcp+pad+nodepilot+sandbase closed-form parameters');
     }
+    // 2026-11-22 Night Round 32 (R768: tolkonepiu/best-of-mcp-servers + wlsdks/ontology-atlas + HiveForensics-AI/knolo-core + Goldziher/basemind) verification
+    const r768PathA=4310.00+44.0*100.00;
+    assert.equal(r768PathA.toFixed(2),'8710.00','11-22 R32 R768 Path A total');
+    const r768PathC=65.00+2.4*100.00;
+    assert.equal(r768PathC.toFixed(2),'305.00','11-22 R32 R768 Path C total');
+    assert.equal((r768PathA-r768PathC).toFixed(2),'8405.00','11-22 R32 R768 savings vs Path A');
+    assert.equal(((r768PathA-r768PathC)/r768PathA*100).toFixed(2),'96.50','11-22 R32 R768 pct savings vs Path A');
+    for(const r768File of ['workshops/github-trending-radar/docs/best-of-mcp-ontology-atlas-knolo-core-basemind-selection-faq.md','workshops/github-trending-radar/docs/best-of-mcp-ontology-atlas-knolo-core-basemind-selection-faq.en.md','assets/github-ai-radar-2026-11-22-r32-r768-bestofmcp-ontologyatlas-knolo-basemind.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-22-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r768File),'utf8');
+      assert.ok(txt.includes('4,310.00')&&txt.includes('4,400.00')&&txt.includes('8,710.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('8,405.00')&&txt.includes('96.50%')&&txt.includes('not_measured'),r768File+': contains exact 11-22 R32 R768 bestofmcp+ontologyatlas+knolo+basemind closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
