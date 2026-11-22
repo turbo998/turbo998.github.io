@@ -9348,6 +9348,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r784File),'utf8');
       assert.ok(txt.includes('4,490.00')&&txt.includes('4,500.00')&&txt.includes('8,990.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('8,685.00')&&txt.includes('96.61%')&&txt.includes('not_measured'),r784File+': contains exact 11-22 R48 R784 cohort+notifkit+pcbskill+aftereffects closed-form parameters');
     }
+    // 2026-11-22 Night Round 49 (R785 Milestone: engasnm111/lnwjud + SodaMem/SodaMem + prapaa-ai/agav + like-attract/video-to-note) verification
+    const r785PathA=4630.00+46.0*100.00;
+    assert.equal(r785PathA.toFixed(2),'9230.00','11-22 R49 R785 Path A total');
+    const r785PathC=70.00+2.4*100.00;
+    assert.equal(r785PathC.toFixed(2),'310.00','11-22 R49 R785 Path C total');
+    assert.equal((r785PathA-r785PathC).toFixed(2),'8920.00','11-22 R49 R785 savings vs Path A');
+    assert.equal(((r785PathA-r785PathC)/r785PathA*100).toFixed(2),'96.64','11-22 R49 R785 pct savings vs Path A');
+    for(const r785File of ['workshops/github-trending-radar/docs/lnwjud-sodamem-agav-video-to-note-selection-faq.md','workshops/github-trending-radar/docs/lnwjud-sodamem-agav-video-to-note-selection-faq.en.md','assets/github-ai-radar-2026-11-22-r49-r785-lnwjud-sodamem-agav-videotonote.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-22-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r785File),'utf8');
+      assert.ok(txt.includes('4,630.00')&&txt.includes('4,600.00')&&txt.includes('9,230.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,920.00')&&txt.includes('96.64%')&&txt.includes('not_measured'),r785File+': contains exact 11-22 R49 R785 lnwjud+sodamem+agav+videotonote closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
