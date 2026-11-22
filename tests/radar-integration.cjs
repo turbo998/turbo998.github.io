@@ -8864,6 +8864,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r740File),'utf8');
       assert.ok(txt.includes('4,250.00')&&txt.includes('4,550.00')&&txt.includes('8,800.00')&&txt.includes('75.00')&&txt.includes('250.00')&&txt.includes('325.00')&&txt.includes('8,475.00')&&txt.includes('96.31%')&&txt.includes('not_measured'),r740File+': contains exact 11-22 R4 R740 ai4ai+talkto+diderot+bridgeanything closed-form parameters');
     }
+    // 2026-11-22 Night Round 5 (R741: langchain-ai/design-agent + ddkbs/sketchy + ZSeven-W/codex-openpencil + krispuckett/rounds) verification
+    const r741PathA=4080.00+44.0*100.00;
+    assert.equal(r741PathA.toFixed(2),'8480.00','11-22 R5 R741 Path A total');
+    const r741PathC=70.00+2.4*100.00;
+    assert.equal(r741PathC.toFixed(2),'310.00','11-22 R5 R741 Path C total');
+    assert.equal((r741PathA-r741PathC).toFixed(2),'8170.00','11-22 R5 R741 savings vs Path A');
+    assert.equal(((r741PathA-r741PathC)/r741PathA*100).toFixed(2),'96.34','11-22 R5 R741 pct savings vs Path A');
+    for(const r741File of ['workshops/github-trending-radar/docs/design-agent-sketchy-codex-openpencil-rounds-selection-faq.md','workshops/github-trending-radar/docs/design-agent-sketchy-codex-openpencil-rounds-selection-faq.en.md','assets/github-ai-radar-2026-11-22-r5-r741-designagent-sketchy-openpencil-rounds.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-22-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r741File),'utf8');
+      assert.ok(txt.includes('4,080.00')&&txt.includes('4,400.00')&&txt.includes('8,480.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,170.00')&&txt.includes('96.34%')&&txt.includes('not_measured'),r741File+': contains exact 11-22 R5 R741 designagent+sketchy+openpencil+rounds closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
