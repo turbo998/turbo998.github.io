@@ -9172,6 +9172,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r768File),'utf8');
       assert.ok(txt.includes('4,310.00')&&txt.includes('4,400.00')&&txt.includes('8,710.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('8,405.00')&&txt.includes('96.50%')&&txt.includes('not_measured'),r768File+': contains exact 11-22 R32 R768 bestofmcp+ontologyatlas+knolo+basemind closed-form parameters');
     }
+    // 2026-11-22 Night Round 33 (R769: benseverndev-oss/goldenmatch + trahloff/Aldine + malloydata/publisher + JSv4/Docxodus) verification
+    const r769PathA=4500.00+46.0*100.00;
+    assert.equal(r769PathA.toFixed(2),'9100.00','11-22 R33 R769 Path A total');
+    const r769PathC=75.00+2.5*100.00;
+    assert.equal(r769PathC.toFixed(2),'325.00','11-22 R33 R769 Path C total');
+    assert.equal((r769PathA-r769PathC).toFixed(2),'8775.00','11-22 R33 R769 savings vs Path A');
+    assert.equal(((r769PathA-r769PathC)/r769PathA*100).toFixed(2),'96.43','11-22 R33 R769 pct savings vs Path A');
+    for(const r769File of ['workshops/github-trending-radar/docs/goldenmatch-malloy-publisher-docxodus-aldine-selection-faq.md','workshops/github-trending-radar/docs/goldenmatch-malloy-publisher-docxodus-aldine-selection-faq.en.md','assets/github-ai-radar-2026-11-22-r33-r769-goldenmatch-malloy-docxodus-aldine.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-22-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r769File),'utf8');
+      assert.ok(txt.includes('4,500.00')&&txt.includes('4,600.00')&&txt.includes('9,100.00')&&txt.includes('75.00')&&txt.includes('250.00')&&txt.includes('325.00')&&txt.includes('8,775.00')&&txt.includes('96.43%')&&txt.includes('not_measured'),r769File+': contains exact 11-22 R33 R769 goldenmatch+malloy+docxodus+aldine closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
