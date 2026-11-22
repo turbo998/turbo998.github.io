@@ -211,7 +211,7 @@ const recentSupplementPages = [
   {path:'docs/h5-academy/04-pd-disaggregation.html',role:'demo',title:'AI Infra 定容实验台 第 4 册：Prefill-Decode (PD) 分离架构与 KV 传输仿真台',tracks:['infra'],language:{declared:'zh-CN'},supplemental:true},
   {path:'docs/h5-academy/05-parallelism-acceleration.html',role:'demo',title:'AI Infra 定容实验台 第 5 册：TP / PP / DP / EP 分布式并行与量化加速推演台',tracks:['infra'],language:{declared:'zh-CN'},supplemental:true},
   {path:'docs/h5-academy/06-rdma-roce-nvlink.html',role:'demo',title:'AI Infra 定容实验台 第 6 册：RDMA / RoCEv2 / InfiniBand / NVLink 智算网络选型台',tracks:['infra'],language:{declared:'zh-CN'},supplemental:true},
-  {path:'docs/h5/index.html',role:'demo',title:'AI Infra 交互式架构与定容实验中心 · 56 套交互沙盘与 445 篇 SA 架构指南 (#001–#443)',tracks:['infra'],language:{declared:'zh-CN'},supplemental:true},
+  {path:'docs/h5/index.html',role:'demo',title:'AI Infra 交互式架构与定容实验中心 · 120 套交互沙盘与 509 篇 SA 架构指南 (#001–#507)',tracks:['infra'],language:{declared:'zh-CN'},supplemental:true},
   {path:'docs/h5/ai-infra-learning-hub.html',role:'demo',title:'AI Infra 7 合 1 交互式架构与容量推演中心 (中文)',tracks:['infra'],language:{declared:'zh-CN'},supplemental:true},
   {path:'docs/h5/ai-infra-learning-hub.en.html',role:'demo',title:'AI Infra 7-in-1 Interactive Architecture & Capacity Hub (EN)',tracks:['infra'],language:{declared:'en'},supplemental:true}
 ];

@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; img-src data:;" />
+  <title>智算网络 NVLink vs. InfiniBand vs. RoCEv2、GPUDirect 零拷贝与 algbw/busbw 交互沙盘 (#446)</title>
+  <style>
+    :root { --bg: #0b1120; --card: #111827; --border: #334155; --text: #f8fafc; --muted: #94a3b8; --accent: #38bdf8; --green: #10b981; --amber: #f59e0b; --red: #ef4444; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'PingFang SC', 'Microsoft YaHei', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; padding: 20px; max-width: 1260px; margin: 0 auto; }
+    .topbar { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px; padding-bottom: 14px; border-bottom: 1px solid var(--border); margin-bottom: 18px; }
+    .nav a, .lang-btn { color: var(--accent); text-decoration: none; background: #0f172a; border: 1px solid var(--border); padding: 6px 12px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; display: inline-block; margin-right: 6px; }
+    .hero { background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); border: 1px solid var(--border); border-left: 5px solid var(--accent); border-radius: 14px; padding: 20px 24px; margin-bottom: 18px; }
+    .hero h1 { font-size: 23px; margin-bottom: 8px; }
+    .hero p { font-size: 14px; color: #cbd5e1; }
+    .kpi-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 18px; }
+    .kpi { background: #1e293b; border: 1px solid var(--border); border-radius: 10px; padding: 14px; text-align: center; }
+    .kpi .val { font-size: 21px; font-weight: 800; color: var(--green); }
+    .kpi .lbl { font-size: 12px; color: var(--muted); margin-top: 4px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(520px, 1fr)); gap: 18px; margin-bottom: 18px; }
+    @media (max-width: 680px) { .grid { grid-template-columns: 1fr; } }
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 18px; }
+    .card h2 { font-size: 17px; color: var(--accent); margin-bottom: 12px; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+    .formula { background: #0f172a; border-left: 4px solid var(--green); padding: 10px 14px; border-radius: 8px; font-family: Consolas, monospace; font-size: 12.5px; color: #6ee7b7; margin-bottom: 12px; overflow-x: auto; }
+    label { display: flex; justify-content: space-between; font-size: 13px; color: #cbd5e1; margin: 10px 0 4px; }
+    input[type="range"], select { width: 100%; accent-color: var(--accent); }
+    select { background: #0f172a; color: var(--text); border: 1px solid var(--border); padding: 8px 10px; border-radius: 8px; font-size: 13px; }
+    svg { width: 100%; height: auto; display: block; background: #0f172a; border: 1px solid var(--border); border-radius: 10px; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 10px; }
+    th, td { border-bottom: 1px solid var(--border); padding: 9px 8px; text-align: left; }
+    th { color: var(--accent); background: rgba(15, 23, 42, 0.7); }
+    [data-lang="en"] { display: none; }
+    body.en [data-lang="zh"] { display: none; }
+    body.en [data-lang="en"] { display: block; }
+    footer { text-align: center; color: var(--muted); font-size: 12px; padding: 18px 0; border-top: 1px solid var(--border); }
+  </style>
+<style id="site-remediation-style">/* Embedded by integrate-dedicated.cjs so sealed report CSP remains unchanged. */
+.kee-dedicated-nav {
+  all: initial; box-sizing: border-box; position: relative; display: flex;
+  flex-wrap: wrap; align-items: center; gap: 6px 14px; width: 100%;
+  padding: 12px 18px; margin: 0 0 16px; border: 1px solid #314361;
+  background: #101A30; color: #EEF3FF; font: 13px/1.5 system-ui, sans-serif;
+  text-align: left; isolation: isolate; color-scheme: dark;
+}
+.kee-dedicated-nav a {
+  all: revert; box-sizing: border-box; display: inline-block; padding: 4px 0;
+  color: #9AABFF; background: transparent; font: inherit; text-decoration: underline;
+  text-underline-offset: 3px; border: 0; border-radius: 0; box-shadow: none;
+}
+.kee-dedicated-nav a:focus-visible { outline: 3px solid #56DDCD; outline-offset: 3px; }
+.kee-dedicated-nav .kee-dedicated-identity { font-weight: 700; color: #EEF3FF; }
+.kee-dedicated-nav .kee-dedicated-language {
+  all: revert; display: block; flex-basis: 100%; color: #ADBBD1; font: 12px/1.5 system-ui, sans-serif;
+}
+.kee-dedicated-native-link { display: block; padding: 22px; color: #1858a8; background: #f8fafc; font: 15px/1.6 system-ui, sans-serif; }
+.kee-dedicated-native-link a { color: #1858a8; text-decoration: underline; }
+@media print { .kee-dedicated-nav { display: none; } }
+
+/* Professional primary navigation: long section names reflow, never scroll inside the header. */
+[data-professional-header]{box-sizing:border-box;display:grid!important;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:18px!important;width:100%;max-width:none;height:auto!important;min-height:0!important;padding:18px 24px!important;margin:0 0 16px;position:relative;overflow:visible!important;background:#101A30;color:#EEF3FF;border:1px solid #314361;font:13px/1.5 system-ui,sans-serif;isolation:isolate;color-scheme:dark}
+[data-professional-header] *{box-sizing:border-box;min-width:0;max-height:none}
+[data-professional-header] a{font:inherit;text-decoration:none;color:#9AABFF;overflow-wrap:anywhere;white-space:normal}
+[data-professional-header] .professional-identity{font-weight:750;color:#EEF3FF;white-space:nowrap;font-size:14px;margin:0}
+[data-professional-header] .professional-primary{display:grid;grid-template-columns:1.45fr repeat(5,minmax(0,1fr));gap:6px;align-items:stretch;min-width:0}
+@media(max-width:960px) and (min-width:601px){[data-professional-header] .professional-primary{gap:5px}[data-professional-header] .professional-primary a{padding:8px 6px;font-size:11.5px}}
+[data-professional-header] .professional-primary a{display:flex;align-items:center;justify-content:center;padding:10px 9px;border:1px solid #314361;border-radius:12px;background:#172440;text-align:center;line-height:1.4;min-height:44px}
+[data-professional-header] .professional-primary a[aria-current=page]{background:#23375a;border-color:#56DDCD;color:#56DDCD}
+[data-professional-header] .professional-controls{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:4px;font-size:12px;margin:0;position:static}
+[data-professional-header] .professional-controls>a{display:flex;align-items:center;justify-content:center;padding:8px;min-height:40px;min-width:32px;border-radius:10px}
+[data-professional-header] .professional-context{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px 18px;padding-top:12px;border-top:1px solid #314361;font-size:12px;color:#ADBBD1;min-width:0;line-height:1.6}
+[data-professional-header] .professional-context>*{min-width:0;overflow-wrap:anywhere}
+[data-professional-header] .professional-context .kee-dedicated-language{flex-basis:100%;color:#ADBBD1}
+[data-professional-header] a:focus-visible{outline:3px solid #56DDCD;outline-offset:3px}
+[data-professional-header] a:hover{text-decoration:underline}
+[data-professional-header][data-perimeter-theme=light],:root[data-theme=light] .reading-header[data-professional-header]{background:#fff;color:#172440;border-color:#d4deee;color-scheme:light}
+[data-professional-header][data-perimeter-theme=light] a,:root[data-theme=light] .reading-header[data-professional-header] a{color:#3752a0}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a,:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a{background:#edf2ff;border-color:#d4deee}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a[aria-current],:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a[aria-current]{background:#dff6f0;color:#127b72;border-color:#127b72}
+@media(max-width:1150px){[data-professional-header]{grid-template-columns:minmax(0,1fr) auto;gap:12px!important}[data-professional-header] .professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header] .professional-controls{grid-column:2;grid-row:1}}
+@media(max-width:600px){[data-professional-header]{padding:14px 16px!important;gap:12px!important}[data-professional-header] .professional-primary{grid-template-columns:repeat(2,minmax(0,1fr))}[data-professional-header] .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:13px}[data-professional-header] .professional-controls{gap:0}[data-professional-header] .professional-controls>a{padding:6px;min-width:28px}}
+@media print{[data-professional-header]{display:none!important}}
+
+html{scroll-padding-top:164px}@media(max-width:600px){html{scroll-padding-top:260px}}.reading-header,.kee-dedicated-nav,[data-professional-header]{position:sticky;top:0;z-index:1000;-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
+
+:root{--search-bg:#101a30;--search-soft:#172440;--search-ink:#eef3ff;--search-muted:#adbbd1;--search-line:#293956;--search-accent:#9aabff;--header-offset:144px}
+:root[data-reading-shell][data-theme=light],[data-perimeter-theme=light]{--search-bg:#fff;--search-soft:#e8eefb;--search-ink:#17233e;--search-muted:#4c5e7c;--search-line:#d5ddec;--search-accent:#354ec8}
+html{scroll-padding-top:var(--header-offset,108px)!important}
+.site-search,.site-search *{box-sizing:border-box!important;font-family:"Segoe UI",sans-serif;letter-spacing:normal;text-transform:none}
+.site-search{position:relative;display:flex;align-items:center;gap:5px;min-width:0;width:230px;max-width:100%;margin:0!important;padding:0!important;line-height:1.4;border:1px solid var(--search-line);border-radius:9px;background:var(--search-soft);color:var(--search-ink);isolation:isolate}
+.site-search input[type=search]{display:block;flex:1;min-width:0;width:100%;height:42px;margin:0;padding:9px 8px!important;font-size:12px!important;line-height:1.5;border:0!important;border-radius:9px;background:transparent!important;color:var(--search-ink)!important;box-shadow:none!important;appearance:none}
+.site-search input::placeholder{color:var(--search-muted);opacity:1}.site-search input:focus-visible{outline:2px solid var(--search-accent);outline-offset:2px}
+.site-search kbd{font:11px Consolas,monospace;color:var(--search-muted);padding:1px 5px;border:1px solid var(--search-line);border-radius:4px}
+.site-search button[type=submit]{flex:none;width:38px;min-width:38px;height:42px;min-height:42px;padding:0;margin:0;border:0;border-radius:8px;background:transparent;color:var(--search-accent);font-size:24px;cursor:pointer;box-shadow:none}
+.search-label,.search-status{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.site-search .search-results{position:absolute;top:calc(100% + 10px);right:0;z-index:1100;width:min(480px,calc(100vw - 32px));max-height:min(560px,65vh);overflow-y:auto;border:1px solid var(--search-line);border-radius:12px;background:var(--search-bg);color:var(--search-ink);padding:10px;box-shadow:0 12px 32px #0005;text-align:left}
+.site-search .search-results[hidden]{display:none!important}.search-results .search-group{margin:8px 6px 4px;font:11px/1.5 Consolas,monospace;color:var(--search-muted)}
+.site-search .search-results a{display:block!important;padding:10px!important;margin:3px 0!important;border:1px solid transparent!important;border-radius:7px;background:transparent;color:var(--search-ink)!important;font-size:13px!important;text-decoration:none!important;white-space:normal;overflow-wrap:anywhere;text-align:left!important;line-height:1.5!important}
+.site-search .search-results a[aria-selected=true],.site-search .search-results a:hover{border-color:var(--search-accent)!important;background:var(--search-soft)}
+.search-results a small{display:block;font-size:10px;color:var(--search-muted);margin-top:4px}.search-results p{margin:10px;font-size:13px;color:var(--search-muted)}
+.search-archive-summary{padding:20px;border:1px solid var(--search-line);border-radius:10px;background:var(--search-bg);color:var(--search-ink);margin:24px 0}.search-archive-summary h2{font-size:24px;margin:0 0 12px}.search-archive-summary li{margin:12px 0}.search-archive-summary a{color:var(--search-accent)}
+[data-professional-header]{position:sticky!important;top:0!important;z-index:1000!important;background:var(--search-bg)!important;--header-glass:rgba(16,26,48,.9);grid-template-columns:auto minmax(0,1fr) 230px auto!important}
+[data-professional-header][data-perimeter-theme=light],:root[data-reading-shell][data-theme=light] [data-professional-header]{--header-glass:rgba(255,255,255,.94)}
+[data-professional-header] .professional-mobile{display:none}.professional-mobile summary{min-width:38px;min-height:42px;display:grid;place-items:center;cursor:pointer;list-style:none}.professional-mobile summary::-webkit-details-marker{display:none}
+[data-professional-header] .professional-context{display:none}
+.professional-context-bar{padding:12px 24px;border-bottom:1px solid var(--search-line);background:var(--search-bg);color:var(--search-muted);font:12px/1.6 "Segoe UI",sans-serif;display:flex;flex-wrap:wrap;gap:8px 18px;overflow-wrap:anywhere}.professional-context-bar a{color:var(--search-accent)}
+@supports((backdrop-filter:blur(16px)) or (-webkit-backdrop-filter:blur(16px))){.site-header,[data-professional-header]{background:var(--header-glass)!important;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}}
+@media(max-width:1250px) and (min-width:701px){.header-inner{grid-template-columns:minmax(0,1fr) 230px auto!important;padding:12px 0;gap:12px!important}.desktop-nav{grid-row:2;grid-column:1/-1}.header-inner>.site-search{grid-column:2;grid-row:1}.header-inner>.controls{grid-column:3;grid-row:1}[data-professional-header]{grid-template-columns:minmax(0,1fr) 230px auto!important;gap:12px!important}[data-professional-header]>.professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header]>.site-search{grid-column:2;grid-row:1}[data-professional-header]>.professional-controls{grid-column:3;grid-row:1}:root{--header-offset:184px}}
+@media(max-width:700px){.header-inner{grid-template-columns:minmax(0,1fr) auto!important;padding:10px 0;gap:8px!important}.header-inner>.site-search{grid-row:2;grid-column:1/-1;width:100%}.header-inner>.controls{grid-column:2;grid-row:1}.site-search .search-results{width:100%;right:0}[data-professional-header]{grid-template-columns:minmax(0,1fr) auto!important;padding:10px 16px!important;gap:8px!important}[data-professional-header]>.professional-primary{display:none!important}[data-professional-header]>.site-search{grid-column:1/-1;grid-row:2;width:100%}[data-professional-header]>.professional-controls{grid-column:2;grid-row:1}[data-professional-header] .professional-mobile{display:block}[data-professional-header] .professional-mobile[open]>.professional-primary{position:absolute;top:100%;left:0;right:0;padding:16px;background:var(--search-bg);border-bottom:1px solid var(--search-line);display:grid;grid-template-columns:1fr 1fr;gap:8px}[data-professional-header] .professional-mobile .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:12px!important}:root{--header-offset:136px}}
+@media(prefers-reduced-transparency:reduce){.site-header,[data-professional-header]{background:var(--search-bg)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}}
+@media print{.site-search,.professional-context-bar{display:none!important}}
+
+@media(min-width:1251px){.header-inner{display:grid!important;grid-template-columns:auto minmax(0,1fr) 230px auto!important;gap:18px!important}.header-inner .desktop-nav{min-width:0}}
+
+html:has(.kee-dedicated-app-root){height:auto!important;overflow-x:hidden!important;overflow-y:auto!important}
+html:has([data-professional-header]),html:has(.site-header){max-width:100%!important;overflow-x:clip!important;overflow-y:visible!important}
+body:has([data-professional-header]),body:has(.site-header){height:auto!important;max-width:100%!important;overflow-x:clip!important;overflow-y:visible!important;padding-top:0!important}
+.table-scroll{overflow-y:visible!important;max-height:none!important}
+@media screen and (max-width:932px){body:has(>[data-professional-header])>.card,body:has(>[data-professional-header])>.deck-header{max-width:calc(100vw - 24px)!important;box-sizing:border-box!important}body:has(>[data-professional-header])>.card{zoom:min(1,calc((100vw - 24px)/900))}}
+.demo-language-navigation{display:none!important}
+.stage-column,.telemetry-panel,.scene-pill,#timeline-slider{min-width:0}
+@media(max-width:1180px){.workspace,.template-tabs{grid-template-columns:minmax(0,1fr)!important}}
+
+.in-arena-frame .professional-context-bar,.in-arena-frame [data-knowledge-atlas]{display:none!important}
+.knowledge-graph-wide{display:block}.knowledge-graph-compact{display:none}@media(max-width:600px){.knowledge-graph-wide{display:none}.knowledge-graph-compact{display:block}}
+</style></head>
+<body><nav class="kee-dedicated-nav" data-professional-header><a class="professional-identity reading-brand kee-dedicated-identity identity" href="../../zh.html">Qi Chen · @turbo998</a><div class="professional-primary" role="navigation" aria-label="主导航"><a href="../../studio/zh-index.html" data-section="hub" data-nav-en-href="../../studio/index.html" data-nav-zh-href="../../studio/zh-index.html" data-nav-en-label="Frontier Transformation Engineering Hub" data-nav-zh-label="Frontier Transformation Engineering Hub" aria-current="page">Frontier Transformation Engineering Hub</a><a href="../../zh-diamond.html" data-section="diamond" data-nav-en-href="../../diamond.html" data-nav-zh-href="../../zh-diamond.html" data-nav-en-label="Diamond Live Demos" data-nav-zh-label="Diamond 架构演示">Diamond 架构演示</a><a href="../../zh-benchmarks.html" data-section="benchmarks" data-nav-en-href="../../benchmarks.html" data-nav-zh-href="../../zh-benchmarks.html" data-nav-en-label="Benchmarks &amp; Evaluation" data-nav-zh-label="基准评测中心">基准评测中心</a><a href="../../zh-github-radar.html" data-section="radar" data-nav-en-href="../../github-radar.html" data-nav-zh-href="../../zh-github-radar.html" data-nav-en-label="GitHub AI Radar" data-nav-zh-label="GitHub AI 开源评估">GitHub AI 开源评估</a><a href="../../zh-openrouter.html" data-section="routing" data-nav-en-href="../../openrouter.html" data-nav-zh-href="../../zh-openrouter.html" data-nav-en-label="Model Routing &amp; Telemetry" data-nav-zh-label="OpenRouter 模型遥测">OpenRouter 模型遥测</a><a href="../../zh-about.html" data-section="profile" data-nav-en-href="../../about.html" data-nav-zh-href="../../zh-about.html" data-nav-en-label="Frontier Transformation Engineer" data-nav-zh-label="Frontier Transformation Engineer">Frontier Transformation Engineer</a></div><form class="site-search" role="search" action="../../studio/zh-archive.html" method="get" data-search-root="../../index.html" data-search-language="zh-CN"><label class="search-label" for="site-search-input">搜索架构、评测、Demo、技能...</label><input id="site-search-input" name="q" type="search" placeholder="搜索架构、评测、Demo、技能..." autocomplete="off" spellcheck="false" aria-keyshortcuts="/ Control+k Meta+k"><kbd aria-hidden="true">/</kbd><button type="submit" aria-label="搜索全部内容">⌕</button><div class="search-results" id="site-search-results" hidden></div><span class="search-status" role="status" aria-live="polite"></span></form><div class="reading-controls professional-controls" aria-label="网站语言与外观"><a href="ai-network-nvlink-infiniband-rocev2-gpudirect-busbw-lab.html?lang=en" hreflang="en" lang="en">EN</a><a href="ai-network-nvlink-infiniband-rocev2-gpudirect-busbw-lab.html?lang=zh-CN" hreflang="zh-CN" lang="zh-CN">中文</a><details class="professional-mobile"><summary aria-label="打开主导航">☰</summary><div class="professional-primary" role="navigation" aria-label="移动主导航"><a href="../../studio/zh-index.html" data-section="hub" data-nav-en-href="../../studio/index.html" data-nav-zh-href="../../studio/zh-index.html" data-nav-en-label="Frontier Transformation Engineering Hub" data-nav-zh-label="Frontier Transformation Engineering Hub" aria-current="page">Frontier Transformation Engineering Hub</a><a href="../../zh-diamond.html" data-section="diamond" data-nav-en-href="../../diamond.html" data-nav-zh-href="../../zh-diamond.html" data-nav-en-label="Diamond Live Demos" data-nav-zh-label="Diamond 架构演示">Diamond 架构演示</a><a href="../../zh-benchmarks.html" data-section="benchmarks" data-nav-en-href="../../benchmarks.html" data-nav-zh-href="../../zh-benchmarks.html" data-nav-en-label="Benchmarks &amp; Evaluation" data-nav-zh-label="基准评测中心">基准评测中心</a><a href="../../zh-github-radar.html" data-section="radar" data-nav-en-href="../../github-radar.html" data-nav-zh-href="../../zh-github-radar.html" data-nav-en-label="GitHub AI Radar" data-nav-zh-label="GitHub AI 开源评估">GitHub AI 开源评估</a><a href="../../zh-openrouter.html" data-section="routing" data-nav-en-href="../../openrouter.html" data-nav-zh-href="../../zh-openrouter.html" data-nav-en-label="Model Routing &amp; Telemetry" data-nav-zh-label="OpenRouter 模型遥测">OpenRouter 模型遥测</a><a href="../../zh-about.html" data-section="profile" data-nav-en-href="../../about.html" data-nav-zh-href="../../zh-about.html" data-nav-en-label="Frontier Transformation Engineer" data-nav-zh-label="Frontier Transformation Engineer">Frontier Transformation Engineer</a></div></details><a data-reading-theme="light" href="?theme=light" aria-label="浅色主题">☀</a><a data-reading-theme="dark" href="?theme=dark" aria-label="深色主题">◐</a></div><div class="professional-context" aria-label="返回上下文"><a href="../../studio/zh-index.html">← 工程枢纽</a> · <a href="../../studio/zh-index.html">返回主题</a></div></nav><div class="professional-context-bar"><a href="../../studio/zh-index.html">← 工程枢纽</a> · <a class="reading-context" href="../../studio/zh-index.html">返回主题</a></div><!-- site-remediation-knowledge:start --><figure class="knowledge-figure" data-knowledge-atlas="infra" style="margin:20px auto;width:100%;max-width:min(2880px,100%);padding:0 clamp(0px,1.2vw,20px);box-sizing:border-box"><style>.knowledge-graph-wide{display:block!important}.knowledge-graph-compact{display:none!important}@media(max-width:600px){.knowledge-graph-wide{display:none!important}.knowledge-graph-compact{display:block!important}}</style><svg xmlns="http://www.w3.org/2000/svg" lang="zh-CN" class="knowledge-graph-compact" role="img" aria-labelledby="knowledge-2c4b25ca8d58-compact-title knowledge-2c4b25ca8d58-compact-desc" viewBox="0 0 360 977" width="360" style="width:100%;height:auto;max-width:560px;margin:0 auto;font-family:system-ui,sans-serif"><title id="knowledge-2c4b25ca8d58-compact-title">智算网络 NVLink vs. InfiniBand vs. RoCEv2、GPUDirect 零拷贝与 algbw/busbw 交互…</title><desc id="knowledge-2c4b25ca8d58-compact-desc">搜索架构、评测、Demo、技能...: 搜索架构、评测、Demo、技能... · 跨机智算网络架构与 BIOS/流控配置档位 · 集合通信原语类型 (Collective Primitive) → 容量与成本推演 → All-Reduce: busbw = algbw * [ 2 *…: All-Reduce: busbw = algbw * [ 2 * (N - 1) / N ] &amp;nbsp;|&amp;nbsp; All-to-All: busbw = a… → 四档架构对比 → 200 Gbps: Tier 4: 400G InfiniBand NDR (原生 Credit + AR 自适应路由 + SHARPv3 · 97.6% 线速) vs ⚠ Tier 2… → 性价比拐点筛选 → Tier 3: 真实硬件总线带宽 busbw: 47.6 GB/s (95.2%) · NCCL 表观算法带宽 algbw: 25.4 GB/s · algbw -&gt; busbw 换…</desc><rect width="360" height="977" rx="16" fill="#081525" stroke="#284566"/><rect x="16" y="14" width="256" height="22" rx="11" fill="#112844" stroke="#2d5a88"/><text x="28" y="29" fill="#56ddcd" font-size="11.5" font-weight="700"><tspan x="28" dy="0">参考架构与控制数据面 · 竖屏</tspan></text><text x="20" y="58" fill="#eef5ff" font-size="17" font-weight="700"><tspan x="20" dy="0">智算网络 NVLink vs.</tspan><tspan x="20" dy="23.799999999999997">InfiniBand vs. RoCEv2、</tspan><tspan x="20" dy="23.799999999999997">GPUDirect 零拷贝与</tspan><tspan x="20" dy="23.799999999999997">algbw/busbw 交互…</tspan></text><text x="20" y="156" fill="#a9b8ce" font-size="12" font-weight="400"><tspan x="20" dy="0">模块拓扑与协议契约摘要 · 详见正文指标与</tspan><tspan x="20" dy="16.799999999999997">代码</tspan></text><g data-concept="1"><rect x="16" y="198" width="328" height="172" rx="12" fill="#0e2036" stroke="#38597d"/><rect x="16" y="198" width="328" height="4" rx="2" fill="#38bdf8"/><text x="30" y="221" fill="#38bdf8" font-size="11.5" font-weight="700"><tspan x="30" dy="0">01 · 负载与输入边界</tspan></text><text x="30" y="244" fill="#f0f6ff" font-size="16" font-weight="700"><tspan x="30" dy="0">搜索架构、评测、Demo、技能</tspan><tspan x="30" dy="22.4">...</tspan></text><text x="30" y="294" fill="#c4d5e8" font-size="12.5" font-weight="400"><tspan x="30" dy="0">搜索架构、评测、Demo、技能... ·</tspan><tspan x="30" dy="17.5">跨机智算网络架构与 BIOS/流控配置</tspan><tspan x="30" dy="17.5">档位 · 集合通信原语类型</tspan><tspan x="30" dy="17.5">(Collective Primitive)</tspan></text></g><g data-relationship="容量与成本推演"><path d="M34 372 V410" fill="none" stroke="#56ddcd" stroke-width="2.2"/><path d="M29 404 L34 411 L39 404" fill="none" stroke="#56ddcd" stroke-width="2.2"/><text x="50" y="394" fill="#8eeadf" font-size="12" font-weight="600"><tspan x="50" dy="0">01→02 容量与成本推演</tspan></text></g><g data-concept="2"><rect x="16" y="416" width="328" height="153" rx="12" fill="#122842" stroke="#38597d"/><rect x="16" y="416" width="328" height="4" rx="2" fill="#34d399"/><text x="30" y="439" fill="#34d399" font-size="11.5" font-weight="700"><tspan x="30" dy="0">02 · 定容与核算模型</tspan></text><text x="30" y="462" fill="#f0f6ff" font-size="16" font-weight="700"><tspan x="30" dy="0">All-Reduce: busbw = algbw</tspan><tspan x="30" dy="22.4">* [ 2 *…</tspan></text><text x="30" y="512" fill="#c4d5e8" font-size="12.5" font-weight="400"><tspan x="30" dy="0">All-Reduce: busbw = algbw * [ 2</tspan><tspan x="30" dy="17.5">* (N - 1) / N ] &amp;nbsp;|&amp;nbsp;</tspan><tspan x="30" dy="17.5">All-to-All: busbw = a…</tspan></text></g><g data-relationship="四档架构对比"><path d="M34 571 V609" fill="none" stroke="#56ddcd" stroke-width="2.2"/><path d="M29 603 L34 610 L39 603" fill="none" stroke="#56ddcd" stroke-width="2.2"/><text x="50" y="593" fill="#8eeadf" font-size="12" font-weight="600"><tspan x="50" dy="0">02→03 四档架构对比</tspan></text></g><g data-concept="3"><rect x="16" y="615" width="328" height="149" rx="12" fill="#0e2036" stroke="#38597d"/><rect x="16" y="615" width="328" height="4" rx="2" fill="#a78bfa"/><text x="30" y="638" fill="#a78bfa" font-size="11.5" font-weight="700"><tspan x="30" dy="0">03 · 候选架构对标</tspan></text><text x="30" y="661" fill="#f0f6ff" font-size="16" font-weight="700"><tspan x="30" dy="0">200 Gbps</tspan></text><text x="30" y="688" fill="#c4d5e8" font-size="12.5" font-weight="400"><tspan x="30" dy="0">Tier 4: 400G InfiniBand NDR (原</tspan><tspan x="30" dy="17.5">生 Credit + AR 自适应路由 +</tspan><tspan x="30" dy="17.5">SHARPv3 · 97.6% 线速) vs ⚠ Tier</tspan><tspan x="30" dy="17.5">2…</tspan></text></g><g data-relationship="性价比拐点筛选"><path d="M34 766 V804" fill="none" stroke="#56ddcd" stroke-width="2.2"/><path d="M29 798 L34 805 L39 798" fill="none" stroke="#56ddcd" stroke-width="2.2"/><text x="50" y="788" fill="#8eeadf" font-size="12" font-weight="600"><tspan x="50" dy="0">03→04 性价比拐点筛选</tspan></text></g><g data-concept="4"><rect x="16" y="810" width="328" height="149" rx="12" fill="#122842" stroke="#38597d"/><rect x="16" y="810" width="328" height="4" rx="2" fill="#f59e0b"/><text x="30" y="833" fill="#f59e0b" font-size="11.5" font-weight="700"><tspan x="30" dy="0">04 · 推荐生产落地</tspan></text><text x="30" y="856" fill="#f0f6ff" font-size="16" font-weight="700"><tspan x="30" dy="0">Tier 3</tspan></text><text x="30" y="883" fill="#c4d5e8" font-size="12.5" font-weight="400"><tspan x="30" dy="0">真实硬件总线带宽 busbw: 47.6</tspan><tspan x="30" dy="17.5">GB/s (95.2%) · NCCL 表观算法带宽</tspan><tspan x="30" dy="17.5">algbw: 25.4 GB/s · algbw -&gt;</tspan><tspan x="30" dy="17.5">busbw 换…</tspan></text></g></svg><svg xmlns="http://www.w3.org/2000/svg" lang="zh-CN" class="knowledge-graph-wide" role="img" aria-labelledby="knowledge-2c4b25ca8d58-title knowledge-2c4b25ca8d58-desc" viewBox="0 0 1360 420" width="1360" style="width:100%;height:auto;margin:0 auto;font-family:system-ui,sans-serif"><title id="knowledge-2c4b25ca8d58-title">智算网络 NVLink vs. InfiniBand vs. RoCEv2、GPUDirect 零拷贝与 algbw/busbw 交互…</title><desc id="knowledge-2c4b25ca8d58-desc">搜索架构、评测、Demo、技能...: 搜索架构、评测、Demo、技能... · 跨机智算网络架构与 BIOS/流控配置档位 · 集合通信原语类型 (Collective Primitive) → 容量与成本推演 → All-Reduce: busbw = algbw * [ 2 *…: All-Reduce: busbw = algbw * [ 2 * (N - 1) / N ] &amp;nbsp;|&amp;nbsp; All-to-All: busbw = a… → 四档架构对比 → 200 Gbps: Tier 4: 400G InfiniBand NDR (原生 Credit + AR 自适应路由 + SHARPv3 · 97.6% 线速) vs ⚠ Tier 2… → 性价比拐点筛选 → Tier 3: 真实硬件总线带宽 busbw: 47.6 GB/s (95.2%) · NCCL 表观算法带宽 algbw: 25.4 GB/s · algbw -&gt; busbw 换…</desc><rect width="1360" height="420" rx="16" fill="#081525" stroke="#284566"/><rect x="24" y="16" width="308" height="24" rx="12" fill="#102742" stroke="#2d5a88"/><text x="38" y="32" fill="#56ddcd" font-size="11.5" font-weight="700"><tspan x="38" dy="0">参考架构与关键指标摘要 · 解决方案架构视图</tspan></text><rect x="926" y="16" width="196" height="24" rx="12" fill="#0d2238" stroke="#254b6e"/><text x="940" y="32" fill="#7ce8d8" font-size="11.5" font-weight="600"><tspan x="940" dy="0">──▶ 数据面与协议契约</tspan></text><rect x="1132" y="16" width="204" height="24" rx="12" fill="#15203c" stroke="#3b4278"/><text x="1146" y="32" fill="#c4b5fd" font-size="11.5" font-weight="600"><tspan x="1146" dy="0">◆ 架构决策与验收基准</tspan></text><text x="24" y="62" fill="#f2f7ff" font-size="18" font-weight="700"><tspan x="24" dy="0">智算网络 NVLink vs. InfiniBand vs. RoCEv2、GPUDirect 零拷贝与 algbw/busbw 交互…</tspan></text><g data-concept="1"><rect x="24" y="81" width="310" height="182" rx="12" fill="#0d1e34" stroke="#335277" stroke-width="1.2"/><rect x="24" y="81" width="310" height="5" rx="2.5" fill="#38bdf8"/><rect x="34" y="94" width="290" height="22" rx="6" fill="#081424" stroke="#223b59"/><text x="40" y="109" fill="#38bdf8" font-size="11.5" font-weight="700"><tspan x="40" dy="0">01 · 负载与输入边界</tspan></text><text x="36" y="135" fill="#f4f8ff" font-size="13.5" font-weight="700"><tspan x="36" dy="0">搜索架构、评测、Demo、技能...</tspan></text><path d="M36 150 H322" stroke="#233b57" stroke-width="1"/><text x="36" y="168" fill="#c5d6e8" font-size="12" font-weight="400"><tspan x="36" dy="0">搜索架构、评测、Demo、技能... · 跨机智算网</tspan><tspan x="36" dy="16.799999999999997">络架构与 BIOS/流控配置档位 · 集合通信原语</tspan><tspan x="36" dy="16.799999999999997">类型 (Collective Primitive)</tspan></text></g><g data-relationship="容量与成本推演"><path d="M336 172 H354" fill="none" stroke="#56ddcd" stroke-width="2.4"/><path d="M348 167 L355 172 L348 177" fill="none" stroke="#56ddcd" stroke-width="2.4"/><rect x="24" y="271" width="310" height="30" rx="8" fill="#0b2239" stroke="#2b5b6c"/><text x="34" y="290" fill="#7ce8d8" font-size="11.5" font-weight="600"><tspan x="34" dy="0">01→02 容量与成本推演</tspan></text></g><g data-concept="2"><rect x="358" y="81" width="310" height="182" rx="12" fill="#112640" stroke="#335277" stroke-width="1.2"/><rect x="358" y="81" width="310" height="5" rx="2.5" fill="#34d399"/><rect x="368" y="94" width="290" height="22" rx="6" fill="#081424" stroke="#223b59"/><text x="374" y="109" fill="#34d399" font-size="11.5" font-weight="700"><tspan x="374" dy="0">02 · 定容与核算模型</tspan></text><text x="370" y="135" fill="#f4f8ff" font-size="13.5" font-weight="700"><tspan x="370" dy="0">All-Reduce: busbw = algbw * [ 2 *…</tspan></text><path d="M370 150 H656" stroke="#233b57" stroke-width="1"/><text x="370" y="168" fill="#c5d6e8" font-size="12" font-weight="400"><tspan x="370" dy="0">All-Reduce: busbw = algbw * [ 2 * (N - 1)</tspan><tspan x="370" dy="16.799999999999997">/ N ] &amp;nbsp;|&amp;nbsp; All-to-All: busbw =</tspan><tspan x="370" dy="16.799999999999997">a…</tspan></text></g><g data-relationship="四档架构对比"><path d="M670 172 H688" fill="none" stroke="#56ddcd" stroke-width="2.4"/><path d="M682 167 L689 172 L682 177" fill="none" stroke="#56ddcd" stroke-width="2.4"/><rect x="358" y="271" width="310" height="30" rx="8" fill="#0b2239" stroke="#2b5b6c"/><text x="368" y="290" fill="#7ce8d8" font-size="11.5" font-weight="600"><tspan x="368" dy="0">02→03 四档架构对比</tspan></text></g><g data-concept="3"><rect x="692" y="81" width="310" height="182" rx="12" fill="#0d1e34" stroke="#335277" stroke-width="1.2"/><rect x="692" y="81" width="310" height="5" rx="2.5" fill="#a78bfa"/><rect x="702" y="94" width="290" height="22" rx="6" fill="#081424" stroke="#223b59"/><text x="708" y="109" fill="#a78bfa" font-size="11.5" font-weight="700"><tspan x="708" dy="0">03 · 候选架构对标</tspan></text><text x="704" y="135" fill="#f4f8ff" font-size="13.5" font-weight="700"><tspan x="704" dy="0">200 Gbps</tspan></text><path d="M704 150 H990" stroke="#233b57" stroke-width="1"/><text x="704" y="168" fill="#c5d6e8" font-size="12" font-weight="400"><tspan x="704" dy="0">Tier 4: 400G InfiniBand NDR (原生 Credit +</tspan><tspan x="704" dy="16.799999999999997">AR 自适应路由 + SHARPv3 · 97.6% 线速) vs</tspan><tspan x="704" dy="16.799999999999997">⚠ Tier 2…</tspan></text></g><g data-relationship="性价比拐点筛选"><path d="M1004 172 H1022" fill="none" stroke="#56ddcd" stroke-width="2.4"/><path d="M1016 167 L1023 172 L1016 177" fill="none" stroke="#56ddcd" stroke-width="2.4"/><rect x="692" y="271" width="310" height="30" rx="8" fill="#0b2239" stroke="#2b5b6c"/><text x="702" y="290" fill="#7ce8d8" font-size="11.5" font-weight="600"><tspan x="702" dy="0">03→04 性价比拐点筛选</tspan></text></g><g data-concept="4"><rect x="1026" y="81" width="310" height="182" rx="12" fill="#112640" stroke="#335277" stroke-width="1.2"/><rect x="1026" y="81" width="310" height="5" rx="2.5" fill="#f59e0b"/><rect x="1036" y="94" width="290" height="22" rx="6" fill="#081424" stroke="#223b59"/><text x="1042" y="109" fill="#f59e0b" font-size="11.5" font-weight="700"><tspan x="1042" dy="0">04 · 推荐生产落地</tspan></text><text x="1038" y="135" fill="#f4f8ff" font-size="13.5" font-weight="700"><tspan x="1038" dy="0">Tier 3</tspan></text><path d="M1038 150 H1324" stroke="#233b57" stroke-width="1"/><text x="1038" y="168" fill="#c5d6e8" font-size="12" font-weight="400"><tspan x="1038" dy="0">真实硬件总线带宽 busbw: 47.6 GB/s (95.2%)</tspan><tspan x="1038" dy="16.799999999999997">· NCCL 表观算法带宽 algbw: 25.4 GB/s ·</tspan><tspan x="1038" dy="16.799999999999997">algbw -&gt; busbw 换…</tspan></text></g><rect x="1026" y="271" width="310" height="30" rx="8" fill="#0e2538" stroke="#2e5470"/><text x="1036" y="290" fill="#93c5fd" font-size="11.5" font-weight="600"><tspan x="1036" dy="0">04 输出 · 验收指标与审计闭环</tspan></text><g data-takeaway="1"><rect x="24" y="315" width="426" height="89" rx="10" fill="#0b1a2e" stroke="#284466"/><rect x="24" y="327" width="4" height="65" rx="2" fill="#38bdf8"/><text x="38" y="339" fill="#38bdf8" font-size="11.5" font-weight="700"><tspan x="38" dy="0">01 · 核心量化指标</tspan></text><text x="38" y="357" fill="#d5e4f5" font-size="12" font-weight="400"><tspan x="38" dy="0">真实硬件总线带宽 busbw: 47.6 GB/s (95.2%)；NCCL 表观</tspan><tspan x="38" dy="16.799999999999997">算法带宽 algbw: 25.4 GB/s</tspan></text></g><g data-takeaway="2"><rect x="467" y="315" width="426" height="89" rx="10" fill="#0b1a2e" stroke="#284466"/><rect x="467" y="327" width="4" height="65" rx="2" fill="#a78bfa"/><text x="481" y="339" fill="#a78bfa" font-size="11.5" font-weight="700"><tspan x="481" dy="0">02 · 成本与效率收益</tspan></text><text x="481" y="357" fill="#d5e4f5" font-size="12" font-weight="400"><tspan x="481" dy="0">algbw -&gt; busbw 换算系数: 1.875x (2(N-1)/N)；</tspan><tspan x="481" dy="16.799999999999997">GPUDirect PCIe 拓扑状态: PIX 零拷贝直通</tspan></text></g><g data-takeaway="3"><rect x="910" y="315" width="426" height="89" rx="10" fill="#0b1a2e" stroke="#284466"/><rect x="910" y="327" width="4" height="65" rx="2" fill="#34d399"/><text x="924" y="339" fill="#34d399" font-size="11.5" font-weight="700"><tspan x="924" dy="0">03 · 交互定容验证</tspan></text><text x="924" y="357" fill="#d5e4f5" font-size="12" font-weight="400"><tspan x="924" dy="0">3 分钟核心结论 ：① Scale-Up (`NVLink 900~1800</tspan><tspan x="924" dy="16.799999999999997">GB/s`, ` =1024卡 大训练首选 InfiniBand NDR/XDR (`AR</tspan><tspan x="924" dy="16.799999999999997">+ SHAR…</tspan></text></g></svg><figcaption style="font:13px/1.6 system-ui,sans-serif;margin:10px auto 0;max-width:100%;color:#9fb2ca;overflow-wrap:anywhere">本页参考架构摘要：展示核心组件边界、阶段间协议契约与底部三项工程选型结论。</figcaption></figure><!-- site-remediation-knowledge:end --><div class="topbar">
+    <div class="nav">
+      <a href="./index.html">← 🎓 AI Infra 全景精学馆</a>
+      <a href="https://github.com/turbo998/ai-infra-research/blob/main/docs/components/enterprise-ai-network-nvlink-infiniband-rocev2-gpudirect-busbw-sizing-selection-faq.md">📖 中文 FAQ</a>
+      <a href="https://github.com/turbo998/ai-infra-research/blob/main/docs/components/enterprise-ai-network-nvlink-infiniband-rocev2-gpudirect-busbw-sizing-selection-faq.en.md">🌐 English FAQ</a>
+      <a href="https://github.com/turbo998/ai-infra-research/blob/main/docs/reports/enterprise-ai-network-nvlink-infiniband-rocev2-gpudirect-busbw-sizing-selection-cards.html">🃏 7-Card 评测卡</a>
+    </div>
+    <button class="lang-btn" onclick="document.body.classList.toggle('en')">EN / 中文</button>
+  </div>
+
+  <section class="hero">
+    <div data-lang="zh">
+      <h1>🌐 智算高速互联网络选型：`NVLink` vs. `InfiniBand` vs. `RoCEv2`、`GPUDirect RDMA` 与 `algbw/busbw` 手算沙盘 (#446)</h1>
+      <p><strong>3 分钟核心结论</strong>：① <strong>Scale-Up (`NVLink 900~1800 GB/s`, `&lt;1us`)</strong> 与 <strong>Scale-Out (`400G/800G RDMA 50~100 GB/s`, `2~5us`)</strong> 相差 `18 倍`，严禁混用；② BIOS 未关 <code>PCIe ACS</code> 会导致 `GPUDirect RDMA` 退化为 CPU 绕行，使 400G `busbw` 从 `47.6 GB/s` 暴跌至 <strong>`11.2 GB/s (22.4% 线速)`</strong>；③ <code>&lt;=512~1024卡</code> 首选 <strong>AI 以太网 RoCEv2 (`Rail + DCQCN + DLB`, `47.6 GB/s`, 省 36% CapEx)</strong>，<code>&gt;=1024卡</code> 大训练首选 <strong>InfiniBand NDR/XDR (`AR + SHARPv3`, `algbw 38.6 GB/s`)</strong>！</p>
+    </div>
+    <div data-lang="en">
+      <h1>🌐 Enterprise AI Interconnect Lab: `NVLink` vs. `InfiniBand` vs. `RoCEv2`, `GPUDirect RDMA` &amp; `algbw/busbw` Calculator (#446)</h1>
+      <p><strong>3-Min Executive Takeaway</strong>: (1) Leaving BIOS <code>PCIe ACS</code> enabled breaks GPUDirect P2P DMA and collapses 400G `busbw` to <strong>11.2 GB/s (22.4%)</strong>. (2) Choose <strong>AI Ethernet RoCEv2 (`Rail + DCQCN + DLB`, `47.6 GB/s`, `-36% CapEx`)</strong> for `&lt;=512–1,024 GPUs`, and <strong>InfiniBand NDR/XDR (`AR + SHARPv3`, `48.8 GB/s`)</strong> for `&gt;=1,024-GPU` training.</p>
+    </div>
+  </section>
+
+  <div class="kpi-row">
+    <div class="kpi"><div class="val" id="kpiBusbw">47.6 GB/s (95.2%)</div><div class="lbl">真实硬件总线带宽 busbw</div></div>
+    <div class="kpi"><div class="val" id="kpiAlgbw">25.4 GB/s</div><div class="lbl">NCCL 表观算法带宽 algbw</div></div>
+    <div class="kpi"><div class="val" id="kpiFactor">1.875x (2(N-1)/N)</div><div class="lbl">algbw -&gt; busbw 换算系数</div></div>
+    <div class="kpi"><div class="val" id="kpiPath">PIX 零拷贝直通</div><div class="lbl">GPUDirect PCIe 拓扑状态</div></div>
+    <div class="kpi"><div class="val" id="kpiP99">178 us</div><div class="lbl">MoE P99 All-to-All 尾延迟</div></div>
+    <div class="kpi"><div class="val" id="kpiCapex">$2,650 / GPU</div><div class="lbl">折合单卡网络硬件 CapEx</div></div>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <h2>🎛️ 交互式 `nccl-tests` (`algbw` / `busbw`) 与 GPUDirect 排雷计算器</h2>
+      <div class="formula">
+        All-Reduce: busbw = algbw * [ 2 * (N - 1) / N ] &nbsp;|&nbsp; All-to-All: busbw = algbw * [ (N - 1) / N ]<br/>
+        ECN Watermark Rule: K_min (150 KB) &lt;&lt; K_max (800 KB) &lt; PFC_XOFF (1,500 KB)
+      </div>
+
+      <label><span>1. 跨机智算网络架构与 BIOS/流控配置档位</span></label>
+      <select id="tierSel">
+        <option value="tier3" selected>🏆 Tier 3: 400G AI 以太网 RoCEv2 (Rail 拓扑 + GPUDirect + DCQCN + DLB · 95.2% 线速)</option>
+        <option value="tier4">🏆 Tier 4: 400G InfiniBand NDR (原生 Credit + AR 自适应路由 + SHARPv3 · 97.6% 线速)</option>
+        <option value="tier2">⚠️ Tier 2: 标准 400G RoCEv2 + 静态五元组 ECMP + 裸开 PFC (哈希碰撞 · 63.0% 线速)</option>
+        <option value="tier1">⛔ Tier 1: 400G RoCEv2 + BIOS PCIe ACS 未关 / 缺 peermem (CPU 内存绕行 · 22.4% 线速)</option>
+      </select>
+
+      <label><span>2. 集合通信原语类型 (Collective Primitive)</span></label>
+      <select id="collSel">
+        <option value="allreduce" selected>All-Reduce (训练梯度同步 / 跨卡 TP 规约 · 系数 2(N-1)/N)</option>
+        <option value="alltoall">All-to-All (MoE 专家并行 DeepEP Dispatch/Combine · 系数 (N-1)/N)</option>
+      </select>
+
+      <label><span>3. 参与集合通信的总 GPU 数 ($N$)</span><strong id="nVal">16 GPUs</strong></label>
+      <input type="range" id="nSlider" min="8" max="256" step="8" value="16" />
+
+      <label><span>4. 单卡网卡物理速率规格</span></label>
+      <select id="nicSel">
+        <option value="50" selected>400 Gbps (单卡理论单向线速 = 50.0 GB/s)</option>
+        <option value="100">800 Gbps / 双轨 400G (单卡理论单向线速 = 100.0 GB/s)</option>
+        <option value="25">200 Gbps (单卡理论单向线速 = 25.0 GB/s)</option>
+      </select>
+    </div>
+
+    <div class="card">
+      <h2>📊 实时动态图表：GPUDirect 零拷贝 vs. CPU 绕行路径 &amp; 四档网络 `busbw` 对决</h2>
+      <svg viewBox="0 0 580 340">
+        <text x="16" y="24" fill="#f8fafc" font-size="12.5" font-weight="700">1. GPUDirect RDMA 零拷贝路径 vs. PCIe ACS 开启时的 CPU 绕行降速路径</text>
+        <rect x="16" y="36" width="150" height="58" rx="8" fill="#1e293b" stroke="#38bdf8"/>
+        <text x="28" y="58" fill="#38bdf8" font-size="11.5" font-weight="700">🖥️ GPU HBM3e</text>
+        <text x="28" y="78" fill="#cbd5e1" font-size="10.5">4.8 TB/s 显存</text>
+
+        <rect x="206" y="36" width="168" height="58" rx="8" fill="#1e293b" stroke="#10b981" id="boxSwitch"/>
+        <text x="218" y="58" fill="#34d399" font-size="11.5" font-weight="700" id="txtSwitchTitle">⚡ PCIe Gen5 Switch (PIX)</text>
+        <text x="218" y="78" fill="#6ee7b7" font-size="10.5" id="txtSwitchSub">ACS 关闭 · P2P DMA 直通</text>
+
+        <rect x="414" y="36" width="150" height="58" rx="8" fill="#1e293b" stroke="#38bdf8"/>
+        <text x="426" y="58" fill="#38bdf8" font-size="11.5" font-weight="700">🔌 400G RDMA NIC</text>
+        <text x="426" y="78" fill="#cbd5e1" font-size="10.5" id="txtNicRate">实测 47.6 GB/s</text>
+
+        <line x1="166" y1="65" x2="206" y2="65" stroke="#10b981" stroke-width="3"/>
+        <line x1="374" y1="65" x2="414" y2="65" stroke="#10b981" stroke-width="3"/>
+
+        <text x="16" y="124" fill="#f8fafc" font-size="12.5" font-weight="700">2. 四档 400G 智算网络实测总线带宽 (busbw GB/s · 验收红线 45.0 GB/s)</text>
+        <!-- Acceptance line at 45 GB/s -->
+        <line x1="505" y1="132" x2="505" y2="256" stroke="#fbbf24" stroke-width="2" stroke-dasharray="4 3"/>
+        <text x="435" y="272" fill="#fbbf24" font-size="10.5" font-weight="700">▲ Day-0 验收门禁: 90% 线速 (45 GB/s)</text>
+
+        <text x="16" y="152" fill="#fca5a5" font-size="11.5">Tier 1 PCIe ACS 开启 (CPU 绕行)</text>
+        <rect x="245" y="138" width="64" height="18" rx="4" fill="#ef4444"/>
+        <text x="316" y="152" fill="#fca5a5" font-size="11" font-weight="700">11.2 GB/s (22.4% ✕)</text>
+
+        <text x="16" y="184" fill="#fde68a" font-size="11.5">Tier 2 静态 ECMP + 裸 PFC</text>
+        <rect x="245" y="170" width="180" height="18" rx="4" fill="#f59e0b"/>
+        <text x="432" y="184" fill="#fde68a" font-size="11" font-weight="700">31.5 GB/s (63.0% ✕)</text>
+
+        <text x="16" y="216" fill="#6ee7b7" font-size="11.5" font-weight="700">Tier 3 AI 以太网 RoCEv2 (DLB) 🏆</text>
+        <rect x="245" y="202" width="272" height="18" rx="4" fill="#10b981"/>
+        <text x="522" y="216" fill="#34d399" font-size="11" font-weight="800">47.6 GB/s 🏆</text>
+
+        <text x="16" y="248" fill="#93c5fd" font-size="11.5" font-weight="700">Tier 4 InfiniBand NDR (SHARP) 🏆</text>
+        <rect x="245" y="234" width="280" height="18" rx="4" fill="#3b82f6"/>
+        <text x="528" y="248" fill="#93c5fd" font-size="11" font-weight="800">48.8 GB/s 🏆</text>
+
+        <text x="16" y="298" fill="#f8fafc" font-size="12" font-weight="700">3. 交换机无损队列水线黄金比例：ECN 早标记降速 (150KB) &lt;&lt; PFC 兜底刹车 (1,500KB)</text>
+        <rect x="16" y="308" width="548" height="20" rx="4" fill="#1e293b" stroke="#334155"/>
+        <rect x="16" y="308" width="120" height="20" fill="#10b981"/>
+        <rect x="136" y="308" width="240" height="20" fill="#f59e0b"/>
+        <rect x="376" y="308" width="188" height="20" fill="#ef4444"/>
+        <text x="24" y="322" fill="#070b14" font-size="10.5" font-weight="800">正常零拥塞 (&lt;150KB)</text>
+        <text x="155" y="322" fill="#070b14" font-size="10.5" font-weight="800">ECN 打标 + DCQCN 平滑降速区 (150~800KB)</text>
+        <text x="390" y="322" fill="#fff" font-size="10.5" font-weight="800">PFC XOFF Headroom (1.5MB)</text>
+      </svg>
+    </div>
+  </div>
+
+  <footer>
+    Provenance: synthetic + anonymized_reported (independently_reproduced=false) · Self-Contained Interactive H5 Study Lab · turbo998/ai-infra-research
+  </footer>
+
+  <script>
+    function update() {
+      const tier = document.getElementById('tierSel').value;
+      const coll = document.getElementById('collSel').value;
+      const n = parseInt(document.getElementById('nSlider').value, 10);
+      const nicLine = parseFloat(document.getElementById('nicSel').value);
+
+      document.getElementById('nVal').textContent = n + ' GPUs';
+
+      const eff = tier === 'tier1' ? 0.224 : (tier === 'tier2' ? 0.630 : (tier === 'tier3' ? 0.952 : 0.976));
+      const busbw = nicLine * eff;
+      const factor = coll === 'allreduce' ? (2.0 * (n - 1) / n) : ((n - 1) / n);
+      let algbw = busbw / factor;
+      if (tier === 'tier4' && coll === 'allreduce') {
+        algbw = busbw / 1.26; // SHARPv3 in-network reduction boost
+      }
+
+      const p99 = tier === 'tier1' ? '1,420 us ✕' : (tier === 'tier2' ? '485 us ✕' : (tier === 'tier3' ? '178 us ✓' : '132 us 🏆'));
+      const capex = tier === 'tier4' ? '$4,150 / GPU' : (tier === 'tier3' ? '$2,650 / GPU' : '$2,400 / GPU');
+
+      document.getElementById('kpiBusbw').textContent = busbw.toFixed(1) + ' GB/s (' + (eff * 100).toFixed(1) + '%)';
+      document.getElementById('kpiAlgbw').textContent = algbw.toFixed(1) + ' GB/s';
+      document.getElementById('kpiFactor').textContent = factor.toFixed(3) + 'x';
+      document.getElementById('kpiPath').textContent = tier === 'tier1' ? '⛔ NODE/SYS CPU 绕行' : '✅ PIX 零拷贝直通';
+      document.getElementById('kpiP99').textContent = p99;
+      document.getElementById('kpiCapex').textContent = capex;
+
+      document.getElementById('txtSwitchTitle').textContent = tier === 'tier1' ? '⛔ PCIe ACS 开启 (拦截 P2P)' : '⚡ PCIe Gen5 Switch (PIX)';
+      document.getElementById('txtSwitchSub').textContent = tier === 'tier1' ? '被迫绕行 CPU 主存 · 降速 77%!' : 'ACS 关闭 · P2P DMA 直通';
+      document.getElementById('txtNicRate').textContent = '实测 ' + busbw.toFixed(1) + ' GB/s';
+    }
+    ['tierSel', 'collSel', 'nSlider', 'nicSel'].forEach(id => {
+      document.getElementById(id).addEventListener('input', update);
+      document.getElementById(id).addEventListener('change', update);
+    });
+    update();
+  </script>
+</body>
+</html>

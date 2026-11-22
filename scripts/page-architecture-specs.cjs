@@ -97,10 +97,12 @@ function resolvePageArchitectureSpec(file, zh, htmlOrOpts = '') {
 
 function cleanSaPageTitle(rawTitle, zh) {
   let t = String(rawTitle || '')
-    .replace(/[🔥💎🚀🎯📌🧭📊🛠️🏆💡🔬🔐🔓⚡✨🌟]/gu, '')
+    .replace(/[🔥💎🚀🎯📌🧭📊🛠️🏆💡🔬🔐🔓⚡✨🌟🎨]/gu, '')
     .replace(/\(\s*\d+(?:st|nd|rd|th)\s+(?:Workbench|Milestone)[^)]*\)/gi, '')
     .replace(/（第\s*\d+\s*项[^）]*）/g, '')
     .replace(/重磅[：:·\s]*/g, '')
+    .replace(/大满贯里程碑/g, '里程碑')
+    .replace(/大满贯总控圣经|总控圣经/g, '总控参考架构')
     .replace(/硬核/g, '工程级')
     .replace(/神仙打架/g, '多模型对比')
     .replace(/一图流战果/g, '架构评测摘要')

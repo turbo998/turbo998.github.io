@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; img-src data:;" />
+  <title>企业 AI 吞吐容量 (TPM/TPS/PTU) 换算、Little's Law 并发与五大场景 SLA 交互沙盘 (#448)</title>
+  <style>
+    :root { --bg: #0b1120; --card: #111827; --border: #334155; --text: #f8fafc; --muted: #94a3b8; --accent: #38bdf8; --green: #10b981; --amber: #f59e0b; --red: #ef4444; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'PingFang SC', 'Microsoft YaHei', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; padding: 20px; max-width: 1260px; margin: 0 auto; }
+    .topbar { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px; padding-bottom: 14px; border-bottom: 1px solid var(--border); margin-bottom: 18px; }
+    .nav a, .lang-btn { color: var(--accent); text-decoration: none; background: #0f172a; border: 1px solid var(--border); padding: 6px 12px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; display: inline-block; margin-right: 6px; }
+    .hero { background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); border: 1px solid var(--border); border-left: 5px solid var(--accent); border-radius: 14px; padding: 20px 24px; margin-bottom: 18px; }
+    .hero h1 { font-size: 23px; margin-bottom: 8px; }
+    .hero p { font-size: 14px; color: #cbd5e1; }
+    .kpi-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 18px; }
+    .kpi { background: #1e293b; border: 1px solid var(--border); border-radius: 10px; padding: 14px; text-align: center; }
+    .kpi .val { font-size: 20px; font-weight: 800; color: var(--green); }
+    .kpi .lbl { font-size: 12px; color: var(--muted); margin-top: 4px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(520px, 1fr)); gap: 18px; margin-bottom: 18px; }
+    @media (max-width: 680px) { .grid { grid-template-columns: 1fr; } }
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 18px; }
+    .card h2 { font-size: 17px; color: var(--accent); margin-bottom: 12px; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+    .formula { background: #0f172a; border-left: 4px solid var(--green); padding: 10px 14px; border-radius: 8px; font-family: Consolas, monospace; font-size: 12.5px; color: #6ee7b7; margin-bottom: 12px; overflow-x: auto; }
+    label { display: flex; justify-content: space-between; font-size: 13px; color: #cbd5e1; margin: 10px 0 4px; }
+    input[type="range"], select { width: 100%; accent-color: var(--accent); }
+    select { background: #0f172a; color: var(--text); border: 1px solid var(--border); padding: 8px 10px; border-radius: 8px; font-size: 13px; }
+    svg { width: 100%; height: auto; display: block; background: #0f172a; border: 1px solid var(--border); border-radius: 10px; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 10px; }
+    th, td { border-bottom: 1px solid var(--border); padding: 9px 8px; text-align: left; }
+    th { color: var(--accent); background: rgba(15, 23, 42, 0.7); }
+    [data-lang="en"] { display: none; }
+    body.en [data-lang="zh"] { display: none; }
+    body.en [data-lang="en"] { display: block; }
+    footer { text-align: center; color: var(--muted); font-size: 12px; padding: 18px 0; border-top: 1px solid var(--border); }
+  </style>
+<style id="site-remediation-style">/* Embedded by integrate-dedicated.cjs so sealed report CSP remains unchanged. */
+.kee-dedicated-nav {
+  all: initial; box-sizing: border-box; position: relative; display: flex;
+  flex-wrap: wrap; align-items: center; gap: 6px 14px; width: 100%;
+  padding: 12px 18px; margin: 0 0 16px; border: 1px solid #314361;
+  background: #101A30; color: #EEF3FF; font: 13px/1.5 system-ui, sans-serif;
+  text-align: left; isolation: isolate; color-scheme: dark;
+}
+.kee-dedicated-nav a {
+  all: revert; box-sizing: border-box; display: inline-block; padding: 4px 0;
+  color: #9AABFF; background: transparent; font: inherit; text-decoration: underline;
+  text-underline-offset: 3px; border: 0; border-radius: 0; box-shadow: none;
+}
+.kee-dedicated-nav a:focus-visible { outline: 3px solid #56DDCD; outline-offset: 3px; }
+.kee-dedicated-nav .kee-dedicated-identity { font-weight: 700; color: #EEF3FF; }
+.kee-dedicated-nav .kee-dedicated-language {
+  all: revert; display: block; flex-basis: 100%; color: #ADBBD1; font: 12px/1.5 system-ui, sans-serif;
+}
+.kee-dedicated-native-link { display: block; padding: 22px; color: #1858a8; background: #f8fafc; font: 15px/1.6 system-ui, sans-serif; }
+.kee-dedicated-native-link a { color: #1858a8; text-decoration: underline; }
+@media print { .kee-dedicated-nav { display: none; } }
+
+/* Professional primary navigation: long section names reflow, never scroll inside the header. */
+[data-professional-header]{box-sizing:border-box;display:grid!important;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:18px!important;width:100%;max-width:none;height:auto!important;min-height:0!important;padding:18px 24px!important;margin:0 0 16px;position:relative;overflow:visible!important;background:#101A30;color:#EEF3FF;border:1px solid #314361;font:13px/1.5 system-ui,sans-serif;isolation:isolate;color-scheme:dark}
+[data-professional-header] *{box-sizing:border-box;min-width:0;max-height:none}
+[data-professional-header] a{font:inherit;text-decoration:none;color:#9AABFF;overflow-wrap:anywhere;white-space:normal}
+[data-professional-header] .professional-identity{font-weight:750;color:#EEF3FF;white-space:nowrap;font-size:14px;margin:0}
+[data-professional-header] .professional-primary{display:grid;grid-template-columns:1.45fr repeat(5,minmax(0,1fr));gap:6px;align-items:stretch;min-width:0}
+@media(max-width:960px) and (min-width:601px){[data-professional-header] .professional-primary{gap:5px}[data-professional-header] .professional-primary a{padding:8px 6px;font-size:11.5px}}
+[data-professional-header] .professional-primary a{display:flex;align-items:center;justify-content:center;padding:10px 9px;border:1px solid #314361;border-radius:12px;background:#172440;text-align:center;line-height:1.4;min-height:44px}
+[data-professional-header] .professional-primary a[aria-current=page]{background:#23375a;border-color:#56DDCD;color:#56DDCD}
+[data-professional-header] .professional-controls{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:4px;font-size:12px;margin:0;position:static}
+[data-professional-header] .professional-controls>a{display:flex;align-items:center;justify-content:center;padding:8px;min-height:40px;min-width:32px;border-radius:10px}
+[data-professional-header] .professional-context{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px 18px;padding-top:12px;border-top:1px solid #314361;font-size:12px;color:#ADBBD1;min-width:0;line-height:1.6}
+[data-professional-header] .professional-context>*{min-width:0;overflow-wrap:anywhere}
+[data-professional-header] .professional-context .kee-dedicated-language{flex-basis:100%;color:#ADBBD1}
+[data-professional-header] a:focus-visible{outline:3px solid #56DDCD;outline-offset:3px}
+[data-professional-header] a:hover{text-decoration:underline}
+[data-professional-header][data-perimeter-theme=light],:root[data-theme=light] .reading-header[data-professional-header]{background:#fff;color:#172440;border-color:#d4deee;color-scheme:light}
+[data-professional-header][data-perimeter-theme=light] a,:root[data-theme=light] .reading-header[data-professional-header] a{color:#3752a0}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a,:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a{background:#edf2ff;border-color:#d4deee}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a[aria-current],:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a[aria-current]{background:#dff6f0;color:#127b72;border-color:#127b72}
+@media(max-width:1150px){[data-professional-header]{grid-template-columns:minmax(0,1fr) auto;gap:12px!important}[data-professional-header] .professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header] .professional-controls{grid-column:2;grid-row:1}}
+@media(max-width:600px){[data-professional-header]{padding:14px 16px!important;gap:12px!important}[data-professional-header] .professional-primary{grid-template-columns:repeat(2,minmax(0,1fr))}[data-professional-header] .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:13px}[data-professional-header] .professional-controls{gap:0}[data-professional-header] .professional-controls>a{padding:6px;min-width:28px}}
+@media print{[data-professional-header]{display:none!important}}
+
+html{scroll-padding-top:164px}@media(max-width:600px){html{scroll-padding-top:260px}}.reading-header,.kee-dedicated-nav,[data-professional-header]{position:sticky;top:0;z-index:1000;-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
+
+:root{--search-bg:#101a30;--search-soft:#172440;--search-ink:#eef3ff;--search-muted:#adbbd1;--search-line:#293956;--search-accent:#9aabff;--header-offset:144px}
+:root[data-reading-shell][data-theme=light],[data-perimeter-theme=light]{--search-bg:#fff;--search-soft:#e8eefb;--search-ink:#17233e;--search-muted:#4c5e7c;--search-line:#d5ddec;--search-accent:#354ec8}
+html{scroll-padding-top:var(--header-offset,108px)!important}
+.site-search,.site-search *{box-sizing:border-box!important;font-family:"Segoe UI",sans-serif;letter-spacing:normal;text-transform:none}
+.site-search{position:relative;display:flex;align-items:center;gap:5px;min-width:0;width:230px;max-width:100%;margin:0!important;padding:0!important;line-height:1.4;border:1px solid var(--search-line);border-radius:9px;background:var(--search-soft);color:var(--search-ink);isolation:isolate}
+.site-search input[type=search]{display:block;flex:1;min-width:0;width:100%;height:42px;margin:0;padding:9px 8px!important;font-size:12px!important;line-height:1.5;border:0!important;border-radius:9px;background:transparent!important;color:var(--search-ink)!important;box-shadow:none!important;appearance:none}
+.site-search input::placeholder{color:var(--search-muted);opacity:1}.site-search input:focus-visible{outline:2px solid var(--search-accent);outline-offset:2px}
+.site-search kbd{font:11px Consolas,monospace;color:var(--search-muted);padding:1px 5px;border:1px solid var(--search-line);border-radius:4px}
+.site-search button[type=submit]{flex:none;width:38px;min-width:38px;height:42px;min-height:42px;padding:0;margin:0;border:0;border-radius:8px;background:transparent;color:var(--search-accent);font-size:24px;cursor:pointer;box-shadow:none}
+.search-label,.search-status{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.site-search .search-results{position:absolute;top:calc(100% + 10px);right:0;z-index:1100;width:min(480px,calc(100vw - 32px));max-height:min(560px,65vh);overflow-y:auto;border:1px solid var(--search-line);border-radius:12px;background:var(--search-bg);color:var(--search-ink);padding:10px;box-shadow:0 12px 32px #0005;text-align:left}
+.site-search .search-results[hidden]{display:none!important}.search-results .search-group{margin:8px 6px 4px;font:11px/1.5 Consolas,monospace;color:var(--search-muted)}
+.site-search .search-results a{display:block!important;padding:10px!important;margin:3px 0!important;border:1px solid transparent!important;border-radius:7px;background:transparent;color:var(--search-ink)!important;font-size:13px!important;text-decoration:none!important;white-space:normal;overflow-wrap:anywhere;text-align:left!important;line-height:1.5!important}
+.site-search .search-results a[aria-selected=true],.site-search .search-results a:hover{border-color:var(--search-accent)!important;background:var(--search-soft)}
+.search-results a small{display:block;font-size:10px;color:var(--search-muted);margin-top:4px}.search-results p{margin:10px;font-size:13px;color:var(--search-muted)}
+.search-archive-summary{padding:20px;border:1px solid var(--search-line);border-radius:10px;background:var(--search-bg);color:var(--search-ink);margin:24px 0}.search-archive-summary h2{font-size:24px;margin:0 0 12px}.search-archive-summary li{margin:12px 0}.search-archive-summary a{color:var(--search-accent)}
+[data-professional-header]{position:sticky!important;top:0!important;z-index:1000!important;background:var(--search-bg)!important;--header-glass:rgba(16,26,48,.9);grid-template-columns:auto minmax(0,1fr) 230px auto!important}
+[data-professional-header][data-perimeter-theme=light],:root[data-reading-shell][data-theme=light] [data-professional-header]{--header-glass:rgba(255,255,255,.94)}
+[data-professional-header] .professional-mobile{display:none}.professional-mobile summary{min-width:38px;min-height:42px;display:grid;place-items:center;cursor:pointer;list-style:none}.professional-mobile summary::-webkit-details-marker{display:none}
+[data-professional-header] .professional-context{display:none}
+.professional-context-bar{padding:12px 24px;border-bottom:1px solid var(--search-line);background:var(--search-bg);color:var(--search-muted);font:12px/1.6 "Segoe UI",sans-serif;display:flex;flex-wrap:wrap;gap:8px 18px;overflow-wrap:anywhere}.professional-context-bar a{color:var(--search-accent)}
+@supports((backdrop-filter:blur(16px)) or (-webkit-backdrop-filter:blur(16px))){.site-header,[data-professional-header]{background:var(--header-glass)!important;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}}
+@media(max-width:1250px) and (min-width:701px){.header-inner{grid-template-columns:minmax(0,1fr) 230px auto!important;padding:12px 0;gap:12px!important}.desktop-nav{grid-row:2;grid-column:1/-1}.header-inner>.site-search{grid-column:2;grid-row:1}.header-inner>.controls{grid-column:3;grid-row:1}[data-professional-header]{grid-template-columns:minmax(0,1fr) 230px auto!important;gap:12px!important}[data-professional-header]>.professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header]>.site-search{grid-column:2;grid-row:1}[data-professional-header]>.professional-controls{grid-column:3;grid-row:1}:root{--header-offset:184px}}
+@media(max-width:700px){.header-inner{grid-template-columns:minmax(0,1fr) auto!important;padding:10px 0;gap:8px!important}.header-inner>.site-search{grid-row:2;grid-column:1/-1;width:100%}.header-inner>.controls{grid-column:2;grid-row:1}.site-search .search-results{width:100%;right:0}[data-professional-header]{grid-template-columns:minmax(0,1fr) auto!important;padding:10px 16px!important;gap:8px!important}[data-professional-header]>.professional-primary{display:none!important}[data-professional-header]>.site-search{grid-column:1/-1;grid-row:2;width:100%}[data-professional-header]>.professional-controls{grid-column:2;grid-row:1}[data-professional-header] .professional-mobile{display:block}[data-professional-header] .professional-mobile[open]>.professional-primary{position:absolute;top:100%;left:0;right:0;padding:16px;background:var(--search-bg);border-bottom:1px solid var(--search-line);display:grid;grid-template-columns:1fr 1fr;gap:8px}[data-professional-header] .professional-mobile .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:12px!important}:root{--header-offset:136px}}
+@media(prefers-reduced-transparency:reduce){.site-header,[data-professional-header]{background:var(--search-bg)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}}
+@media print{.site-search,.professional-context-bar{display:none!important}}
+
+@media(min-width:1251px){.header-inner{display:grid!important;grid-template-columns:auto minmax(0,1fr) 230px auto!important;gap:18px!important}.header-inner .desktop-nav{min-width:0}}
+
+html:has(.kee-dedicated-app-root){height:auto!important;overflow-x:hidden!important;overflow-y:auto!important}
+html:has([data-professional-header]),html:has(.site-header){max-width:100%!important;overflow-x:clip!important;overflow-y:visible!important}
+body:has([data-professional-header]),body:has(.site-header){height:auto!important;max-width:100%!important;overflow-x:clip!important;overflow-y:visible!important;padding-top:0!important}
+.table-scroll{overflow-y:visible!important;max-height:none!important}
+@media screen and (max-width:932px){body:has(>[data-professional-header])>.card,body:has(>[data-professional-header])>.deck-header{max-width:calc(100vw - 24px)!important;box-sizing:border-box!important}body:has(>[data-professional-header])>.card{zoom:min(1,calc((100vw - 24px)/900))}}
+.demo-language-navigation{display:none!important}
+.stage-column,.telemetry-panel,.scene-pill,#timeline-slider{min-width:0}
+@media(max-width:1180px){.workspace,.template-tabs{grid-template-columns:minmax(0,1fr)!important}}
+
+.in-arena-frame .professional-context-bar,.in-arena-frame [data-knowledge-atlas]{display:none!important}
+.knowledge-graph-wide{display:block}.knowledge-graph-compact{display:none}@media(max-width:600px){.knowledge-graph-wide{display:none}.knowledge-graph-compact{display:block}}
+</style></head>
+<body><nav class="kee-dedicated-nav" data-professional-header><a class="professional-identity reading-brand kee-dedicated-identity identity" href="../../zh.html">Qi Chen · @turbo998</a><div class="professional-primary" role="navigation" aria-label="主导航"><a href="../../studio/zh-index.html" data-section="hub" data-nav-en-href="../../studio/index.html" data-nav-zh-href="../../studio/zh-index.html" data-nav-en-label="Frontier Transformation Engineering Hub" data-nav-zh-label="Frontier Transformation Engineering Hub" aria-current="page">Frontier Transformation Engineering Hub</a><a href="../../zh-diamond.html" data-section="diamond" data-nav-en-href="../../diamond.html" data-nav-zh-href="../../zh-diamond.html" data-nav-en-label="Diamond Live Demos" data-nav-zh-label="Diamond 架构演示">Diamond 架构演示</a><a href="../../zh-benchmarks.html" data-section="benchmarks" data-nav-en-href="../../benchmarks.html" data-nav-zh-href="../../zh-benchmarks.html" data-nav-en-label="Benchmarks &amp; Evaluation" data-nav-zh-label="基准评测中心">基准评测中心</a><a href="../../zh-github-radar.html" data-section="radar" data-nav-en-href="../../github-radar.html" data-nav-zh-href="../../zh-github-radar.html" data-nav-en-label="GitHub AI Radar" data-nav-zh-label="GitHub AI 开源评估">GitHub AI 开源评估</a><a href="../../zh-openrouter.html" data-section="routing" data-nav-en-href="../../openrouter.html" data-nav-zh-href="../../zh-openrouter.html" data-nav-en-label="Model Routing &amp; Telemetry" data-nav-zh-label="OpenRouter 模型遥测">OpenRouter 模型遥测</a><a href="../../zh-about.html" data-section="profile" data-nav-en-href="../../about.html" data-nav-zh-href="../../zh-about.html" data-nav-en-label="Frontier Transformation Engineer" data-nav-zh-label="Frontier Transformation Engineer">Frontier Transformation Engineer</a></div><form class="site-search" role="search" action="../../studio/zh-archive.html" method="get" data-search-root="../../index.html" data-search-language="zh-CN"><label class="search-label" for="site-search-input">搜索架构、评测、Demo、技能...</label><input id="site-search-input" name="q" type="search" placeholder="搜索架构、评测、Demo、技能..." autocomplete="off" spellcheck="false" aria-keyshortcuts="/ Control+k Meta+k"><kbd aria-hidden="true">/</kbd><button type="submit" aria-label="搜索全部内容">⌕</button><div class="search-results" id="site-search-results" hidden></div><span class="search-status" role="status" aria-live="polite"></span></form><div class="reading-controls professional-controls" aria-label="网站语言与外观"><a href="tpm-tps-littles-law-ttft-tpot-goodput-sla-calculator-lab.html?lang=en" hreflang="en" lang="en">EN</a><a href="tpm-tps-littles-law-ttft-tpot-goodput-sla-calculator-lab.html?lang=zh-CN" hreflang="zh-CN" lang="zh-CN">中文</a><details class="professional-mobile"><summary aria-label="打开主导航">☰</summary><div class="professional-primary" role="navigation" aria-label="移动主导航"><a href="../../studio/zh-index.html" data-section="hub" data-nav-en-href="../../studio/index.html" data-nav-zh-href="../../studio/zh-index.html" data-nav-en-label="Frontier Transformation Engineering Hub" data-nav-zh-label="Frontier Transformation Engineering Hub" aria-current="page">Frontier Transformation Engineering Hub</a><a href="../../zh-diamond.html" data-section="diamond" data-nav-en-href="../../diamond.html" data-nav-zh-href="../../zh-diamond.html" data-nav-en-label="Diamond Live Demos" data-nav-zh-label="Diamond 架构演示">Diamond 架构演示</a><a href="../../zh-benchmarks.html" data-section="benchmarks" data-nav-en-href="../../benchmarks.html" data-nav-zh-href="../../zh-benchmarks.html" data-nav-en-label="Benchmarks &amp; Evaluation" data-nav-zh-label="基准评测中心">基准评测中心</a><a href="../../zh-github-radar.html" data-section="radar" data-nav-en-href="../../github-radar.html" data-nav-zh-href="../../zh-github-radar.html" data-nav-en-label="GitHub AI Radar" data-nav-zh-label="GitHub AI 开源评估">GitHub AI 开源评估</a><a href="../../zh-openrouter.html" data-section="routing" data-nav-en-href="../../openrouter.html" data-nav-zh-href="../../zh-openrouter.html" data-nav-en-label="Model Routing &amp; Telemetry" data-nav-zh-label="OpenRouter 模型遥测">OpenRouter 模型遥测</a><a href="../../zh-about.html" data-section="profile" data-nav-en-href="../../about.html" data-nav-zh-href="../../zh-about.html" data-nav-en-label="Frontier Transformation Engineer" data-nav-zh-label="Frontier Transformation Engineer">Frontier Transformation Engineer</a></div></details><a data-reading-theme="light" href="?theme=light" aria-label="浅色主题">☀</a><a data-reading-theme="dark" href="?theme=dark" aria-label="深色主题">◐</a></div><div class="professional-context" aria-label="返回上下文"><a href="../../studio/zh-index.html">← 工程枢纽</a> · <a href="../../studio/zh-index.html">返回主题</a></div></nav><div class="professional-context-bar"><a href="../../studio/zh-index.html">← 工程枢纽</a> · <a class="reading-context" href="../../studio/zh-index.html">返回主题</a></div><!-- site-remediation-knowledge:start --><figure class="knowledge-figure" data-knowledge-atlas="infra" style="margin:20px auto;width:100%;max-width:min(2880px,100%);padding:0 clamp(0px,1.2vw,20px);box-sizing:border-box"><style>.knowledge-graph-wide{display:block!important}.knowledge-graph-compact{display:none!important}@media(max-width:600px){.knowledge-graph-wide{display:none!important}.knowledge-graph-compact{display:block!important}}</style><svg xmlns="http://www.w3.org/2000/svg" lang="zh-CN" class="knowledge-graph-compact" role="img" aria-labelledby="knowledge-06c3b61e5690-compact-title knowledge-06c3b61e5690-compact-desc" viewBox="0 0 360 977" width="360" style="width:100%;height:auto;max-width:560px;margin:0 auto;font-family:system-ui,sans-serif"><title id="knowledge-06c3b61e5690-compact-title">企业 AI 吞吐容量 (TPM/TPS/PTU) 换算、Little's Law 并发与五大场景 SLA 交互沙盘 (#448)</title><desc id="knowledge-06c3b61e5690-compact-desc">搜索架构、评测、Demo、技能...: 搜索架构、评测、Demo、技能... · 业务场景预设（自动带入对应 SLA 门禁） · 企业日活跃用户数 ($\text{DAU}$) 50,000 人 → 容量与成本推演 → Peak_RPS = (DAU * Turns * 4.8) /…: Peak_RPS = (DAU * Turns * 4.8) / 86400 &amp;nbsp;|&amp;nbsp; E2EL = TTFT + (N_out - 1) * TP… → 四档架构对比 → 1. 实时语音对话: 1. 实时语音对话 (Voice Agent): = 55 tok/s/单次 &gt;60ms 步间卡顿即导致 TTS 音频断流破音 vs 2. IDE 代码补全 (Tab… → 性价比拐点筛选 → 5. 离线批处理: 早高峰请求到达率 Peak RPS: 50.0 RPS (3,000 RPM) · 10.5M In + 1.5M Out: 12.0M 原始 TPM · PTU 等…</desc><rect width="360" height="977" rx="16" fill="#081525" stroke="#284566"/><rect x="16" y="14" width="256" height="22" rx="11" fill="#112844" stroke="#2d5a88"/><text x="28" y="29" fill="#56ddcd" font-size="11.5" font-weight="700"><tspan x="28" dy="0">参考架构与控制数据面 · 竖屏</tspan></text><text x="20" y="58" fill="#eef5ff" font-size="17" font-weight="700"><tspan x="20" dy="0">企业 AI 吞吐容量</tspan><tspan x="20" dy="23.799999999999997">(TPM/TPS/PTU) 换算、</tspan><tspan x="20" dy="23.799999999999997">Little's Law 并发与五大场</tspan><tspan x="20" dy="23.799999999999997">景 SLA 交互沙盘 (#448)</tspan></text><text x="20" y="156" fill="#a9b8ce" font-size="12" font-weight="400"><tspan x="20" dy="0">模块拓扑与协议契约摘要 · 详见正文指标与</tspan><tspan x="20" dy="16.799999999999997">代码</tspan></text><g data-concept="1"><rect x="16" y="198" width="328" height="172" rx="12" fill="#0e2036" stroke="#38597d"/><rect x="16" y="198" width="328" height="4" rx="2" fill="#38bdf8"/><text x="30" y="221" fill="#38bdf8" font-size="11.5" font-weight="700"><tspan x="30" dy="0">01 · 负载与输入边界</tspan></text><text x="30" y="244" fill="#f0f6ff" font-size="16" font-weight="700"><tspan x="30" dy="0">搜索架构、评测、Demo、技能</tspan><tspan x="30" dy="22.4">...</tspan></text><text x="30" y="294" fill="#c4d5e8" font-size="12.5" font-weight="400"><tspan x="30" dy="0">搜索架构、评测、Demo、技能... ·</tspan><tspan x="30" dy="17.5">业务场景预设（自动带入对应 SLA</tspan><tspan x="30" dy="17.5">门禁） · 企业日活跃用户数</tspan><tspan x="30" dy="17.5">($\text{DAU}$) 50,000 人</tspan></text></g><g data-relationship="容量与成本推演"><path d="M34 372 V410" fill="none" stroke="#56ddcd" stroke-width="2.2"/><path d="M29 404 L34 411 L39 404" fill="none" stroke="#56ddcd" stroke-width="2.2"/><text x="50" y="394" fill="#8eeadf" font-size="12" font-weight="600"><tspan x="50" dy="0">01→02 容量与成本推演</tspan></text></g><g data-concept="2"><rect x="16" y="416" width="328" height="153" rx="12" fill="#122842" stroke="#38597d"/><rect x="16" y="416" width="328" height="4" rx="2" fill="#34d399"/><text x="30" y="439" fill="#34d399" font-size="11.5" font-weight="700"><tspan x="30" dy="0">02 · 定容与核算模型</tspan></text><text x="30" y="462" fill="#f0f6ff" font-size="16" font-weight="700"><tspan x="30" dy="0">Peak_RPS = (DAU * Turns *</tspan><tspan x="30" dy="22.4">4.8) /…</tspan></text><text x="30" y="512" fill="#c4d5e8" font-size="12.5" font-weight="400"><tspan x="30" dy="0">Peak_RPS = (DAU * Turns * 4.8) /</tspan><tspan x="30" dy="17.5">86400 &amp;nbsp;|&amp;nbsp; E2EL = TTFT</tspan><tspan x="30" dy="17.5">+ (N_out - 1) * TP…</tspan></text></g><g data-relationship="四档架构对比"><path d="M34 571 V609" fill="none" stroke="#56ddcd" stroke-width="2.2"/><path d="M29 603 L34 610 L39 603" fill="none" stroke="#56ddcd" stroke-width="2.2"/><text x="50" y="593" fill="#8eeadf" font-size="12" font-weight="600"><tspan x="50" dy="0">02→03 四档架构对比</tspan></text></g><g data-concept="3"><rect x="16" y="615" width="328" height="149" rx="12" fill="#0e2036" stroke="#38597d"/><rect x="16" y="615" width="328" height="4" rx="2" fill="#a78bfa"/><text x="30" y="638" fill="#a78bfa" font-size="11.5" font-weight="700"><tspan x="30" dy="0">03 · 候选架构对标</tspan></text><text x="30" y="661" fill="#f0f6ff" font-size="16" font-weight="700"><tspan x="30" dy="0">1. 实时语音对话</tspan></text><text x="30" y="688" fill="#c4d5e8" font-size="12.5" font-weight="400"><tspan x="30" dy="0">1. 实时语音对话 (Voice Agent): =</tspan><tspan x="30" dy="17.5">55 tok/s/单次 &gt;60ms 步间卡顿即</tspan><tspan x="30" dy="17.5">导致 TTS 音频断流破音 vs 2. IDE</tspan><tspan x="30" dy="17.5">代码补全 (Tab…</tspan></text></g><g data-relationship="性价比拐点筛选"><path d="M34 766 V804" fill="none" stroke="#56ddcd" stroke-width="2.2"/><path d="M29 798 L34 805 L39 798" fill="none" stroke="#56ddcd" stroke-width="2.2"/><text x="50" y="788" fill="#8eeadf" font-size="12" font-weight="600"><tspan x="50" dy="0">03→04 性价比拐点筛选</tspan></text></g><g data-concept="4"><rect x="16" y="810" width="328" height="149" rx="12" fill="#122842" stroke="#38597d"/><rect x="16" y="810" width="328" height="4" rx="2" fill="#f59e0b"/><text x="30" y="833" fill="#f59e0b" font-size="11.5" font-weight="700"><tspan x="30" dy="0">04 · 推荐生产落地</tspan></text><text x="30" y="856" fill="#f0f6ff" font-size="16" font-weight="700"><tspan x="30" dy="0">5. 离线批处理</tspan></text><text x="30" y="883" fill="#c4d5e8" font-size="12.5" font-weight="400"><tspan x="30" dy="0">早高峰请求到达率 Peak RPS: 50.0</tspan><tspan x="30" dy="17.5">RPS (3,000 RPM) · 10.5M In +</tspan><tspan x="30" dy="17.5">1.5M Out: 12.0M 原始 TPM · PTU</tspan><tspan x="30" dy="17.5">等…</tspan></text></g></svg><svg xmlns="http://www.w3.org/2000/svg" lang="zh-CN" class="knowledge-graph-wide" role="img" aria-labelledby="knowledge-06c3b61e5690-title knowledge-06c3b61e5690-desc" viewBox="0 0 1360 420" width="1360" style="width:100%;height:auto;margin:0 auto;font-family:system-ui,sans-serif"><title id="knowledge-06c3b61e5690-title">企业 AI 吞吐容量 (TPM/TPS/PTU) 换算、Little's Law 并发与五大场景 SLA 交互沙盘 (#448)</title><desc id="knowledge-06c3b61e5690-desc">搜索架构、评测、Demo、技能...: 搜索架构、评测、Demo、技能... · 业务场景预设（自动带入对应 SLA 门禁） · 企业日活跃用户数 ($\text{DAU}$) 50,000 人 → 容量与成本推演 → Peak_RPS = (DAU * Turns * 4.8) /…: Peak_RPS = (DAU * Turns * 4.8) / 86400 &amp;nbsp;|&amp;nbsp; E2EL = TTFT + (N_out - 1) * TP… → 四档架构对比 → 1. 实时语音对话: 1. 实时语音对话 (Voice Agent): = 55 tok/s/单次 &gt;60ms 步间卡顿即导致 TTS 音频断流破音 vs 2. IDE 代码补全 (Tab… → 性价比拐点筛选 → 5. 离线批处理: 早高峰请求到达率 Peak RPS: 50.0 RPS (3,000 RPM) · 10.5M In + 1.5M Out: 12.0M 原始 TPM · PTU 等…</desc><rect width="1360" height="420" rx="16" fill="#081525" stroke="#284566"/><rect x="24" y="16" width="308" height="24" rx="12" fill="#102742" stroke="#2d5a88"/><text x="38" y="32" fill="#56ddcd" font-size="11.5" font-weight="700"><tspan x="38" dy="0">参考架构与关键指标摘要 · 解决方案架构视图</tspan></text><rect x="926" y="16" width="196" height="24" rx="12" fill="#0d2238" stroke="#254b6e"/><text x="940" y="32" fill="#7ce8d8" font-size="11.5" font-weight="600"><tspan x="940" dy="0">──▶ 数据面与协议契约</tspan></text><rect x="1132" y="16" width="204" height="24" rx="12" fill="#15203c" stroke="#3b4278"/><text x="1146" y="32" fill="#c4b5fd" font-size="11.5" font-weight="600"><tspan x="1146" dy="0">◆ 架构决策与验收基准</tspan></text><text x="24" y="62" fill="#f2f7ff" font-size="18" font-weight="700"><tspan x="24" dy="0">企业 AI 吞吐容量 (TPM/TPS/PTU) 换算、Little's Law 并发与五大场景 SLA 交互沙盘 (#448)</tspan></text><g data-concept="1"><rect x="24" y="81" width="310" height="182" rx="12" fill="#0d1e34" stroke="#335277" stroke-width="1.2"/><rect x="24" y="81" width="310" height="5" rx="2.5" fill="#38bdf8"/><rect x="34" y="94" width="290" height="22" rx="6" fill="#081424" stroke="#223b59"/><text x="40" y="109" fill="#38bdf8" font-size="11.5" font-weight="700"><tspan x="40" dy="0">01 · 负载与输入边界</tspan></text><text x="36" y="135" fill="#f4f8ff" font-size="13.5" font-weight="700"><tspan x="36" dy="0">搜索架构、评测、Demo、技能...</tspan></text><path d="M36 150 H322" stroke="#233b57" stroke-width="1"/><text x="36" y="168" fill="#c5d6e8" font-size="12" font-weight="400"><tspan x="36" dy="0">搜索架构、评测、Demo、技能... · 业务场景预</tspan><tspan x="36" dy="16.799999999999997">设（自动带入对应 SLA 门禁） · 企业日活跃用</tspan><tspan x="36" dy="16.799999999999997">户数 ($\text{DAU}$) 50,000 人</tspan></text></g><g data-relationship="容量与成本推演"><path d="M336 172 H354" fill="none" stroke="#56ddcd" stroke-width="2.4"/><path d="M348 167 L355 172 L348 177" fill="none" stroke="#56ddcd" stroke-width="2.4"/><rect x="24" y="271" width="310" height="30" rx="8" fill="#0b2239" stroke="#2b5b6c"/><text x="34" y="290" fill="#7ce8d8" font-size="11.5" font-weight="600"><tspan x="34" dy="0">01→02 容量与成本推演</tspan></text></g><g data-concept="2"><rect x="358" y="81" width="310" height="182" rx="12" fill="#112640" stroke="#335277" stroke-width="1.2"/><rect x="358" y="81" width="310" height="5" rx="2.5" fill="#34d399"/><rect x="368" y="94" width="290" height="22" rx="6" fill="#081424" stroke="#223b59"/><text x="374" y="109" fill="#34d399" font-size="11.5" font-weight="700"><tspan x="374" dy="0">02 · 定容与核算模型</tspan></text><text x="370" y="135" fill="#f4f8ff" font-size="13.5" font-weight="700"><tspan x="370" dy="0">Peak_RPS = (DAU * Turns * 4.8) /…</tspan></text><path d="M370 150 H656" stroke="#233b57" stroke-width="1"/><text x="370" y="168" fill="#c5d6e8" font-size="12" font-weight="400"><tspan x="370" dy="0">Peak_RPS = (DAU * Turns * 4.8) / 86400</tspan><tspan x="370" dy="16.799999999999997">&amp;nbsp;|&amp;nbsp; E2EL = TTFT + (N_out - 1) *</tspan><tspan x="370" dy="16.799999999999997">TP…</tspan></text></g><g data-relationship="四档架构对比"><path d="M670 172 H688" fill="none" stroke="#56ddcd" stroke-width="2.4"/><path d="M682 167 L689 172 L682 177" fill="none" stroke="#56ddcd" stroke-width="2.4"/><rect x="358" y="271" width="310" height="30" rx="8" fill="#0b2239" stroke="#2b5b6c"/><text x="368" y="290" fill="#7ce8d8" font-size="11.5" font-weight="600"><tspan x="368" dy="0">02→03 四档架构对比</tspan></text></g><g data-concept="3"><rect x="692" y="81" width="310" height="182" rx="12" fill="#0d1e34" stroke="#335277" stroke-width="1.2"/><rect x="692" y="81" width="310" height="5" rx="2.5" fill="#a78bfa"/><rect x="702" y="94" width="290" height="22" rx="6" fill="#081424" stroke="#223b59"/><text x="708" y="109" fill="#a78bfa" font-size="11.5" font-weight="700"><tspan x="708" dy="0">03 · 候选架构对标</tspan></text><text x="704" y="135" fill="#f4f8ff" font-size="13.5" font-weight="700"><tspan x="704" dy="0">1. 实时语音对话</tspan></text><path d="M704 150 H990" stroke="#233b57" stroke-width="1"/><text x="704" y="168" fill="#c5d6e8" font-size="12" font-weight="400"><tspan x="704" dy="0">1. 实时语音对话 (Voice Agent): = 55 tok/s/</tspan><tspan x="704" dy="16.799999999999997">单次 &gt;60ms 步间卡顿即导致 TTS 音频断流破音</tspan><tspan x="704" dy="16.799999999999997">vs 2. IDE 代码补全 (Tab…</tspan></text></g><g data-relationship="性价比拐点筛选"><path d="M1004 172 H1022" fill="none" stroke="#56ddcd" stroke-width="2.4"/><path d="M1016 167 L1023 172 L1016 177" fill="none" stroke="#56ddcd" stroke-width="2.4"/><rect x="692" y="271" width="310" height="30" rx="8" fill="#0b2239" stroke="#2b5b6c"/><text x="702" y="290" fill="#7ce8d8" font-size="11.5" font-weight="600"><tspan x="702" dy="0">03→04 性价比拐点筛选</tspan></text></g><g data-concept="4"><rect x="1026" y="81" width="310" height="182" rx="12" fill="#112640" stroke="#335277" stroke-width="1.2"/><rect x="1026" y="81" width="310" height="5" rx="2.5" fill="#f59e0b"/><rect x="1036" y="94" width="290" height="22" rx="6" fill="#081424" stroke="#223b59"/><text x="1042" y="109" fill="#f59e0b" font-size="11.5" font-weight="700"><tspan x="1042" dy="0">04 · 推荐生产落地</tspan></text><text x="1038" y="135" fill="#f4f8ff" font-size="13.5" font-weight="700"><tspan x="1038" dy="0">5. 离线批处理</tspan></text><path d="M1038 150 H1324" stroke="#233b57" stroke-width="1"/><text x="1038" y="168" fill="#c5d6e8" font-size="12" font-weight="400"><tspan x="1038" dy="0">早高峰请求到达率 Peak RPS: 50.0 RPS (3,000</tspan><tspan x="1038" dy="16.799999999999997">RPM) · 10.5M In + 1.5M Out: 12.0M 原始</tspan><tspan x="1038" dy="16.799999999999997">TPM · PTU 等…</tspan></text></g><rect x="1026" y="271" width="310" height="30" rx="8" fill="#0e2538" stroke="#2e5470"/><text x="1036" y="290" fill="#93c5fd" font-size="11.5" font-weight="600"><tspan x="1036" dy="0">04 输出 · 验收指标与审计闭环</tspan></text><g data-takeaway="1"><rect x="24" y="315" width="426" height="89" rx="10" fill="#0b1a2e" stroke="#284466"/><rect x="24" y="327" width="4" height="65" rx="2" fill="#38bdf8"/><text x="38" y="339" fill="#38bdf8" font-size="11.5" font-weight="700"><tspan x="38" dy="0">01 · 核心量化指标</tspan></text><text x="38" y="357" fill="#d5e4f5" font-size="12" font-weight="400"><tspan x="38" dy="0">早高峰请求到达率 Peak RPS: 50.0 RPS (3,000 RPM)；</tspan><tspan x="38" dy="16.799999999999997">10.5M In + 1.5M Out: 12.0M 原始 TPM</tspan></text></g><g data-takeaway="2"><rect x="467" y="315" width="426" height="89" rx="10" fill="#0b1a2e" stroke="#284466"/><rect x="467" y="327" width="4" height="65" rx="2" fill="#a78bfa"/><text x="481" y="339" fill="#a78bfa" font-size="11.5" font-weight="700"><tspan x="481" dy="0">02 · 成本与效率收益</tspan></text><text x="481" y="357" fill="#d5e4f5" font-size="12" font-weight="400"><tspan x="481" dy="0">PTU 等效 TPM (含缓存抵扣): 12.8M 加权 TPM；单次请求</tspan><tspan x="481" dy="16.799999999999997">端到端耗时 E2EL: 8.78 秒</tspan></text></g><g data-takeaway="3"><rect x="910" y="315" width="426" height="89" rx="10" fill="#0b1a2e" stroke="#284466"/><rect x="910" y="327" width="4" height="65" rx="2" fill="#34d399"/><text x="924" y="339" fill="#34d399" font-size="11.5" font-weight="700"><tspan x="924" dy="0">03 · 交互定容验证</tspan></text><text x="924" y="357" fill="#d5e4f5" font-size="12" font-weight="400"><tspan x="924" dy="0">3 分钟核心结论 ：① 单用户流式 TPS $= 1/\text{TPOT}$</tspan><tspan x="924" dy="16.799999999999997">， 集群总输出 TPS $= \text{RPS}\times</tspan><tspan x="924" dy="16.799999999999997">\bar{N}_{\text{out}…</tspan></text></g></svg><figcaption style="font:13px/1.6 system-ui,sans-serif;margin:10px auto 0;max-width:100%;color:#9fb2ca;overflow-wrap:anywhere">本页参考架构摘要：展示核心组件边界、阶段间协议契约与底部三项工程选型结论。</figcaption></figure><!-- site-remediation-knowledge:end --><div class="topbar">
+    <div class="nav">
+      <a href="./index.html">← 🎓 AI Infra 全景精学馆</a>
+      <a href="https://github.com/turbo998/ai-infra-research/blob/main/docs/components/enterprise-tpm-tps-littles-law-ttft-tpot-goodput-sla-sizing-selection-faq.md">📖 中文 FAQ</a>
+      <a href="https://github.com/turbo998/ai-infra-research/blob/main/docs/components/enterprise-tpm-tps-littles-law-ttft-tpot-goodput-sla-sizing-selection-faq.en.md">🌐 English FAQ</a>
+      <a href="https://github.com/turbo998/ai-infra-research/blob/main/docs/reports/enterprise-tpm-tps-littles-law-ttft-tpot-goodput-sla-sizing-selection-cards.html">🃏 7-Card 评测卡</a>
+    </div>
+    <button class="lang-btn" onclick="document.body.classList.toggle('en')">EN / 中文</button>
+  </div>
+
+  <section class="hero">
+    <div data-lang="zh">
+      <h1>📊 企业 AI 吞吐容量 (`TPM / TPS / PTU`) 精确换算、`Little's Law` 并发反推与五大场景 SLA 沙盘 (#448)</h1>
+      <p><strong>3 分钟核心结论</strong>：① <strong>单用户流式 TPS $= 1/\text{TPOT}$</strong>，<strong>集群总输出 TPS $= \text{RPS}\times \bar{N}_{\text{out}} = B_{\text{active}}/\text{TPOT}$</strong>，<strong>云端 PTU 等效加权 TPM $= \text{TPM}_{\text{in}}(1-\eta) + 5\times\text{TPM}_{\text{out}}$</strong>；② <strong>Little's Law ($B_{\text{active}} = \text{RPS}_{\text{peak}}\times [\text{TTFT}+(\bar{N}_{\text{out}}-1)\text{TPOT}]$)</strong> 决定峰值同时驻留显存的会话槽位数；③ 采用 <strong>`P80` 预留基座 (吃满缓存抵扣) + `P20` 峰值溢出 PAYGO</strong>，将早高峰 `429` 限流从 `64.2%` 归零并省下 <strong>`68.5%` 月度账单 (`$98.4K` vs. `$312K`)</strong>！</p>
+    </div>
+    <div data-lang="en">
+      <h1>📊 Enterprise `TPM / TPS / PTU` Conversion, `Little's Law` Concurrency &amp; 5-Scenario SLA Lab (#448)</h1>
+      <p><strong>3-Min Executive Takeaway</strong>: (1) Distinguish Per-User TPS ($1/\text{TPOT}$), System TPS ($\text{RPS}\times \bar{N}_{\text{out}}$), and Output-Weighted PTU TPM ($\text{TPM}_{\text{in}}(1-\eta) + 5\cdot\text{TPM}_{\text{out}}$). (2) Size active KV concurrency via Little's Law ($B_{\text{active}} = \text{RPS}_{\text{peak}} \times \text{E2EL}$). (3) Combine `P80` prefix-deducted PTU/GPU base with `P20` serverless burst to achieve <strong>0.0% HTTP 429 throttling</strong> and <strong>save 68.5% ($98.4K/mo vs. $312K/mo)</strong>.</p>
+    </div>
+  </section>
+
+  <div class="kpi-row">
+    <div class="kpi"><div class="val" id="kpiRps">50.0 RPS (3,000 RPM)</div><div class="lbl">早高峰请求到达率 Peak RPS</div></div>
+    <div class="kpi"><div class="val" id="kpiRawTpm">12.0M 原始 TPM</div><div class="lbl">10.5M In + 1.5M Out</div></div>
+    <div class="kpi"><div class="val" id="kpiWtpm">12.8M 加权 TPM</div><div class="lbl">PTU 等效 TPM (含缓存抵扣)</div></div>
+    <div class="kpi"><div class="val" id="kpiE2el">8.78 秒</div><div class="lbl">单次请求端到端耗时 E2EL</div></div>
+    <div class="kpi"><div class="val" id="kpiBactive">440 并发槽位</div><div class="lbl">Little's Law 峰值活跃 KV 槽位</div></div>
+    <div class="kpi"><div class="val" id="kpiBill">$98,400 / 月 (-68.5%)</div><div class="lbl">Tier 4 P80+P20 月度总账单</div></div>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <h2>🎛️ 交互式 `DAU -> Peak RPS -> TPM/TPS/PTU -> Little's Law` 全链路计算器</h2>
+      <div class="formula">
+        Peak_RPS = (DAU * Turns * 4.8) / 86400 &nbsp;|&nbsp; E2EL = TTFT + (N_out - 1) * TPOT<br/>
+        B_active = Peak_RPS * E2EL &nbsp;|&nbsp; Weighted_TPM = TPM_in * (1 - eta_cache) + 5 * TPM_out
+      </div>
+
+      <label><span>1. 业务场景预设（自动带入对应 SLA 门禁）</span></label>
+      <select id="scenSel">
+        <option value="rag" selected>企业知识库与办公助手 (RAG Chat · SLA: TTFT&lt;=800ms, P99 ITL&lt;=25ms)</option>
+        <option value="voice">实时语音客服 (Voice Agent · SLA: TTFT&lt;=250ms, P99 ITL&lt;=18ms)</option>
+        <option value="fim">IDE 代码补全 (Tab FIM · SLA: TTFT&lt;=150ms, P99 ITL&lt;=12ms)</option>
+        <option value="cot">深度推理 Agent (CoT / R1 · SLA: TTFT&lt;=1500ms, P99 ITL&lt;=20ms)</option>
+      </select>
+
+      <label><span>2. 企业日活跃用户数 ($\text{DAU}$)</span><strong id="dauVal">50,000 人</strong></label>
+      <input type="range" id="dauSlider" min="5000" max="200000" step="5000" value="50000" />
+
+      <label><span>3. 平均每次输入长度 ($\bar{N}_{\text{in}}$)</span><strong id="inVal">3,500 Tokens</strong></label>
+      <input type="range" id="inSlider" min="500" max="16000" step="500" value="3500" />
+
+      <label><span>4. 平均每次输出长度 ($\bar{N}_{\text{out}}$，CoT 可拉至 2500+)</span><strong id="outVal">500 Tokens</strong></label>
+      <input type="range" id="outSlider" min="100" max="4000" step="100" value="500" />
+
+      <label><span>5. 前缀缓存命中率 ($\eta_{\text{cache}}$，抵扣输入 PTU/算力)</span><strong id="cacheVal">50%</strong></label>
+      <input type="range" id="cacheSlider" min="0" max="90" step="10" value="50" />
+    </div>
+
+    <div class="card">
+      <h2>📊 实时动态图表：单次请求生命周期拆解 &amp; 四档定容方案月账单对决</h2>
+      <svg viewBox="0 0 580 340">
+        <text x="16" y="24" fill="#f8fafc" font-size="12.5" font-weight="700" id="e2eTitle">1. 单次请求端到端生命周期 (E2EL = TTFT + (N_out - 1) × TPOT)</text>
+        <rect x="16" y="36" width="548" height="32" rx="6" fill="#1e293b" stroke="#334155"/>
+        <rect id="barTtft" x="16" y="36" width="90" height="32" fill="#f59e0b"/>
+        <rect id="barDecode" x="106" y="36" width="458" height="32" fill="#10b981"/>
+        <text x="24" y="56" fill="#070b14" font-size="11" font-weight="800" id="txtTtft">TTFT: 0.80s</text>
+        <text x="120" y="56" fill="#070b14" font-size="11" font-weight="800" id="txtDecode">Streaming Decode (N_out-1 步): 7.98s (单用户 62.5 tok/s)</text>
+
+        <text x="16" y="98" fill="#f8fafc" font-size="12.5" font-weight="700">2. 四档吞吐与容量采购方案月度账单与早高峰 429 限流率对比</text>
+        <text x="16" y="126" fill="#fca5a5" font-size="11.5">Tier 1 原始 TPM 1:1 相加 (64.2% 429 限流 ✕)</text>
+        <rect x="275" y="112" width="185" height="18" rx="4" fill="#ef4444"/>
+        <text x="468" y="126" fill="#fca5a5" font-size="11" font-weight="700" id="b1Txt">$218,000/月</text>
+
+        <text x="16" y="158" fill="#fde68a" font-size="11.5">Tier 2 P100 峰值全买 PTU (夜间闲置浪费 ✕)</text>
+        <rect x="275" y="144" width="265" height="18" rx="4" fill="#f59e0b"/>
+        <text x="468" y="158" fill="#070b14" font-size="11" font-weight="800" id="b2Txt">$312,000/月</text>
+
+        <text x="16" y="190" fill="#93c5fd" font-size="11.5">Tier 3 Little's Law + 5x 输出加权 TPM</text>
+        <rect x="275" y="176" width="124" height="18" rx="4" fill="#3b82f6"/>
+        <text x="406" y="190" fill="#93c5fd" font-size="11" font-weight="700" id="b3Txt">$146,000/月</text>
+
+        <text x="16" y="222" fill="#6ee7b7" font-size="11.5" font-weight="700">Tier 4 P80 基座(缓存抵扣) + P20 溢出 🏆</text>
+        <rect x="275" y="208" width="84" height="18" rx="4" fill="#10b981"/>
+        <text x="366" y="222" fill="#34d399" font-size="11.5" font-weight="800" id="b4Txt">$98,400/月 (-68.5% 🏆)</text>
+
+        <rect x="16" y="248" width="548" height="76" rx="8" fill="#1e293b" stroke="#38bdf8"/>
+        <text x="28" y="272" fill="#38bdf8" font-size="12" font-weight="700" id="llAlertTitle">💡 Little's Law 并发预警：当前同时在途会话 B_active = 440 路</text>
+        <text x="28" y="294" fill="#cbd5e1" font-size="11.5" id="llAlertSub">试着把“输出长度”拖到 2,500 (模拟 DeepSeek-R1 思维链)，观测 E2EL 与在途并发槽位如何翻 5 倍！</text>
+        <text x="28" y="314" fill="#6ee7b7" font-size="11.5" id="llAlertSla">当前场景 SLA 门禁：P95 TTFT &lt;= 800 ms | P99 ITL &lt;= 25 ms | 单用户 &gt;= 40 tok/s</text>
+      </svg>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>📊 五大企业 AI 业务场景核心评估指标（`TTFT / TPOT / ITL / E2EL / Goodput`）基准矩阵</h2>
+    <table>
+      <thead>
+        <tr><th>业务场景</th><th>首字延迟 P95 TTFT</th><th>步间尾延迟 P99 ITL</th><th>单用户流式速率</th><th>为什么不能只看平均 TPOT？</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>1. 实时语音对话 (Voice Agent)</strong></td><td><code>&lt;= 250 ms</code></td><td><code>&lt;= 18 ms</code></td><td><code>&gt;= 55 tok/s</code></td><td>单次 &gt;60ms 步间卡顿即导致 TTS 音频断流破音</td></tr>
+        <tr><td><strong>2. IDE 代码补全 (Tab FIM)</strong></td><td><code>&lt;= 150 ms</code></td><td><code>&lt;= 12 ms</code></td><td><code>&gt;= 80 tok/s</code></td><td>程序员敲键间隔仅 150~200ms，慢于 350ms 即被废弃</td></tr>
+        <tr><td><strong>3. 企业知识助手 (RAG Chat)</strong></td><td><code>&lt;= 800 ms</code></td><td><code>&lt;= 25 ms</code></td><td><code>&gt;= 40 tok/s</code></td><td>长输入混部抢占会造成打字机界面周期性冻结</td></tr>
+        <tr><td><strong>4. 深度推理 (CoT / R1 Agent)</strong></td><td><code>&lt;= 1,500 ms</code></td><td><code>&lt;= 20 ms</code></td><td><code>&gt;= 50 tok/s</code></td><td>输出长达 2K~4K，TPOT 慢 10ms 会使总耗时多出 40 秒</td></tr>
+        <tr><td><strong>5. 离线批处理 (Batch Pipeline)</strong></td><td><code>&lt;= 30,000 ms</code></td><td><code>&lt;= 100 ms</code></td><td>不敏感</td><td>考核全集群每小时总达标 Token 吞吐与 $/1M 成本</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <footer>
+    Provenance: synthetic + anonymized_reported (independently_reproduced=false) · Self-Contained Interactive H5 Study Lab · turbo998/ai-infra-research
+  </footer>
+
+  <script>
+    function update() {
+      const scen = document.getElementById('scenSel').value;
+      const dau = parseInt(document.getElementById('dauSlider').value, 10);
+      const nin = parseInt(document.getElementById('inSlider').value, 10);
+      const nout = parseInt(document.getElementById('outSlider').value, 10);
+      const cache = parseInt(document.getElementById('cacheSlider').value, 10);
+
+      document.getElementById('dauVal').textContent = dau.toLocaleString() + ' 人';
+      document.getElementById('inVal').textContent = nin.toLocaleString() + ' Tokens';
+      document.getElementById('outVal').textContent = nout.toLocaleString() + ' Tokens';
+      document.getElementById('cacheVal').textContent = cache + '%';
+
+      const ttftS = scen === 'fim' ? 0.14 : (scen === 'voice' ? 0.22 : (scen === 'cot' ? 1.20 : 0.80));
+      const tpotMs = scen === 'fim' ? 11.0 : (scen === 'voice' ? 14.0 : 16.0);
+      const rps = (dau * 18.0 * 4.8) / 86400.0;
+      const inTpmM = (rps * nin * 60.0) / 1e6;
+      const outTpmM = (rps * nout * 60.0) / 1e6;
+      const rawTpmM = inTpmM + outTpmM;
+      const wTpmM = inTpmM * (1.0 - cache / 100.0) + 5.0 * outTpmM;
+
+      const decSec = ((nout - 1) * tpotMs) / 1000.0;
+      const e2el = ttftS + decSec;
+      const bActive = Math.ceil(rps * e2el);
+
+      const scale = wTpmM / 12.75;
+      const b1 = Math.round(218000 * scale);
+      const b2 = Math.round(312000 * scale);
+      const b3 = Math.round(146000 * scale);
+      const b4 = Math.round(98400 * scale);
+
+      document.getElementById('kpiRps').textContent = rps.toFixed(1) + ' RPS (' + Math.round(rps * 60).toLocaleString() + ' RPM)';
+      document.getElementById('kpiRawTpm').textContent = rawTpmM.toFixed(1) + 'M 原始 TPM';
+      document.getElementById('kpiWtpm').textContent = wTpmM.toFixed(1) + 'M 加权 TPM';
+      document.getElementById('kpiE2el').textContent = e2el.toFixed(2) + ' 秒';
+      document.getElementById('kpiBactive').textContent = bActive.toLocaleString() + ' 并发槽位';
+      document.getElementById('kpiBill').textContent = '$' + b4.toLocaleString() + ' / 月';
+
+      const wTtft = Math.max(65, Math.min(220, Math.round((ttftS / e2el) * 548)));
+      const wDec = 548 - wTtft;
+      document.getElementById('barTtft').setAttribute('width', wTtft);
+      document.getElementById('barDecode').setAttribute('x', 16 + wTtft);
+      document.getElementById('barDecode').setAttribute('width', wDec);
+      document.getElementById('txtTtft').textContent = 'TTFT: ' + ttftS.toFixed(2) + 's';
+      document.getElementById('txtDecode').setAttribute('x', 24 + wTtft);
+      document.getElementById('txtDecode').textContent = 'Decode: ' + decSec.toFixed(2) + 's (' + (1000 / tpotMs).toFixed(1) + ' tok/s)';
+
+      document.getElementById('b1Txt').textContent = '$' + b1.toLocaleString() + '/月';
+      document.getElementById('b2Txt').textContent = '$' + b2.toLocaleString() + '/月';
+      document.getElementById('b3Txt').textContent = '$' + b3.toLocaleString() + '/月';
+      document.getElementById('b4Txt').textContent = '$' + b4.toLocaleString() + '/月 (-68.5% 🏆)';
+      document.getElementById('llAlertTitle').textContent = '💡 Little\'s Law 并发槽位：峰值同时在途 B_active = ' + bActive.toLocaleString() + ' 路 (E2EL = ' + e2el.toFixed(2) + 's)';
+    }
+    ['scenSel', 'dauSlider', 'inSlider', 'outSlider', 'cacheSlider'].forEach(id => {
+      document.getElementById(id).addEventListener('input', update);
+      document.getElementById(id).addEventListener('change', update);
+    });
+    update();
+  </script>
+</body>
+</html>
