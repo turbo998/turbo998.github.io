@@ -8816,6 +8816,21 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r736File),'utf8');
       assert.ok(txt.includes('3,950.00')&&txt.includes('4,350.00')&&txt.includes('8,300.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('7,995.00')&&txt.includes('96.33%')&&txt.includes('not_measured'),r736File+': contains exact 11-21 R136 R736 reqable+metis+uibeats+variate closed-form parameters');
     }
+    // 2026-11-22 Raw Evidence & Night Round 1 (R737: EL4CTEO/fast-anything + sybil-solutions/skill-distill + w01fb0ss/PiBot + JimLiu/open-artifact) verification
+    const rawHtml1122=fs.readFileSync(path.join(__dirname,'..','workshops','github-trending-radar','evidence','trending-daily-2026-11-22-raw.html'),'utf8').replace(/\r\n/g,'\n');
+    assert.equal(hash(rawHtml1122),'fa7d56d4d6bbabc9e62641806b9c7daf2a6a3e3501c93916e5c12c61c54bfb72','2026-11-22 raw HTML LF sha256');
+    const rawSearch1122=fs.readFileSync(path.join(__dirname,'..','workshops','github-trending-radar','evidence','search-new-repos-2026-11-22-raw.json'),'utf8').replace(/\r\n/g,'\n');
+    assert.equal(hash(rawSearch1122),'d4fc4927347b4c77adfda2e844fad561116fb80fdfb163cc1357c9a12666f4f7','2026-11-22 raw Search API JSON LF sha256');
+    const r737PathA=4120.00+44.5*100.00;
+    assert.equal(r737PathA.toFixed(2),'8570.00','11-22 R1 R737 Path A total');
+    const r737PathC=70.00+2.4*100.00;
+    assert.equal(r737PathC.toFixed(2),'310.00','11-22 R1 R737 Path C total');
+    assert.equal((r737PathA-r737PathC).toFixed(2),'8260.00','11-22 R1 R737 savings vs Path A');
+    assert.equal(((r737PathA-r737PathC)/r737PathA*100).toFixed(2),'96.38','11-22 R1 R737 pct savings vs Path A');
+    for(const r737File of ['workshops/github-trending-radar/docs/fast-anything-skill-distill-pibot-open-artifact-selection-faq.md','workshops/github-trending-radar/docs/fast-anything-skill-distill-pibot-open-artifact-selection-faq.en.md','assets/github-ai-radar-2026-11-22-r1-r737-fastanything-skilldistill-pibot-openartifact.svg','assets/github-ai-radar-2026-11-22.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-22-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r737File),'utf8');
+      assert.ok(txt.includes('4,120.00')&&txt.includes('4,450.00')&&txt.includes('8,570.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,260.00')&&txt.includes('96.38%')&&txt.includes('not_measured'),r737File+': contains exact 11-22 R1 R737 fastanything+skilldistill+pibot+openartifact closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
