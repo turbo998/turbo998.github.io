@@ -9183,6 +9183,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r769File),'utf8');
       assert.ok(txt.includes('4,500.00')&&txt.includes('4,600.00')&&txt.includes('9,100.00')&&txt.includes('75.00')&&txt.includes('250.00')&&txt.includes('325.00')&&txt.includes('8,775.00')&&txt.includes('96.43%')&&txt.includes('not_measured'),r769File+': contains exact 11-22 R33 R769 goldenmatch+malloy+docxodus+aldine closed-form parameters');
     }
+    // 2026-11-22 Night Round 34 (R770 Milestone: J3n5en/EnsoCode + ldbumble/taskuary + chenhg5/myco + godwit-email/godwit) verification
+    const r770PathA=4370.00+45.0*100.00;
+    assert.equal(r770PathA.toFixed(2),'8870.00','11-22 R34 R770 Path A total');
+    const r770PathC=70.00+2.4*100.00;
+    assert.equal(r770PathC.toFixed(2),'310.00','11-22 R34 R770 Path C total');
+    assert.equal((r770PathA-r770PathC).toFixed(2),'8560.00','11-22 R34 R770 savings vs Path A');
+    assert.equal(((r770PathA-r770PathC)/r770PathA*100).toFixed(2),'96.51','11-22 R34 R770 pct savings vs Path A');
+    for(const r770File of ['workshops/github-trending-radar/docs/ensocode-taskuary-myco-godwit-selection-faq.md','workshops/github-trending-radar/docs/ensocode-taskuary-myco-godwit-selection-faq.en.md','assets/github-ai-radar-2026-11-22-r34-r770-ensocode-taskuary-myco-godwit.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-22-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r770File),'utf8');
+      assert.ok(txt.includes('4,370.00')&&txt.includes('4,500.00')&&txt.includes('8,870.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,560.00')&&txt.includes('96.51%')&&txt.includes('not_measured'),r770File+': contains exact 11-22 R34 R770 ensocode+taskuary+myco+godwit closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
