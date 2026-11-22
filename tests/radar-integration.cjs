@@ -9194,6 +9194,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r770File),'utf8');
       assert.ok(txt.includes('4,370.00')&&txt.includes('4,500.00')&&txt.includes('8,870.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,560.00')&&txt.includes('96.51%')&&txt.includes('not_measured'),r770File+': contains exact 11-22 R34 R770 ensocode+taskuary+myco+godwit closed-form parameters');
     }
+    // 2026-11-22 Night Round 35 (R771: Averyy/pcbparts-mcp + bardesss/arr-mcp + membaseai/membase + ypollak2/llm-router) verification
+    const r771PathA=4290.00+44.0*100.00;
+    assert.equal(r771PathA.toFixed(2),'8690.00','11-22 R35 R771 Path A total');
+    const r771PathC=65.00+2.4*100.00;
+    assert.equal(r771PathC.toFixed(2),'305.00','11-22 R35 R771 Path C total');
+    assert.equal((r771PathA-r771PathC).toFixed(2),'8385.00','11-22 R35 R771 savings vs Path A');
+    assert.equal(((r771PathA-r771PathC)/r771PathA*100).toFixed(2),'96.49','11-22 R35 R771 pct savings vs Path A');
+    for(const r771File of ['workshops/github-trending-radar/docs/pcbparts-mcp-arr-mcp-membase-llm-router-selection-faq.md','workshops/github-trending-radar/docs/pcbparts-mcp-arr-mcp-membase-llm-router-selection-faq.en.md','assets/github-ai-radar-2026-11-22-r35-r771-pcbparts-arrmcp-membase-llmrouter.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-22-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r771File),'utf8');
+      assert.ok(txt.includes('4,290.00')&&txt.includes('4,400.00')&&txt.includes('8,690.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('8,385.00')&&txt.includes('96.49%')&&txt.includes('not_measured'),r771File+': contains exact 11-22 R35 R771 pcbparts+arrmcp+membase+llmrouter closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
