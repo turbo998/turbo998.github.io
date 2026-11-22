@@ -9007,6 +9007,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r753File),'utf8');
       assert.ok(txt.includes('4,280.00')&&txt.includes('4,500.00')&&txt.includes('8,780.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,470.00')&&txt.includes('96.47%')&&txt.includes('not_measured'),r753File+': contains exact 11-22 R17 R753 synalinks+floe+bitrouter+yfinancemcp closed-form parameters');
     }
+    // 2026-11-22 Night Round 18 (R754: cbcoutinho/nextcloud-mcp-server + wiresage/mikrotik-mcp + mastergo-design/mastergo-magic-mcp + atom2ueki/mcp-server-synology) verification
+    const r754PathA=4360.00+46.0*100.00;
+    assert.equal(r754PathA.toFixed(2),'8960.00','11-22 R18 R754 Path A total');
+    const r754PathC=75.00+2.5*100.00;
+    assert.equal(r754PathC.toFixed(2),'325.00','11-22 R18 R754 Path C total');
+    assert.equal((r754PathA-r754PathC).toFixed(2),'8635.00','11-22 R18 R754 savings vs Path A');
+    assert.equal(((r754PathA-r754PathC)/r754PathA*100).toFixed(2),'96.37','11-22 R18 R754 pct savings vs Path A');
+    for(const r754File of ['workshops/github-trending-radar/docs/nextcloud-mcp-mikrotik-mcp-mastergo-magic-synology-selection-faq.md','workshops/github-trending-radar/docs/nextcloud-mcp-mikrotik-mcp-mastergo-magic-synology-selection-faq.en.md','assets/github-ai-radar-2026-11-22-r18-r754-nextcloud-mikrotik-mastergo-synology.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-22-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r754File),'utf8');
+      assert.ok(txt.includes('4,360.00')&&txt.includes('4,600.00')&&txt.includes('8,960.00')&&txt.includes('75.00')&&txt.includes('250.00')&&txt.includes('325.00')&&txt.includes('8,635.00')&&txt.includes('96.37%')&&txt.includes('not_measured'),r754File+': contains exact 11-22 R18 R754 nextcloud+mikrotik+mastergo+synology closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
