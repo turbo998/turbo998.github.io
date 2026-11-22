@@ -9337,6 +9337,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r783File),'utf8');
       assert.ok(txt.includes('4,560.00')&&txt.includes('4,600.00')&&txt.includes('9,160.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,850.00')&&txt.includes('96.62%')&&txt.includes('not_measured'),r783File+': contains exact 11-22 R47 R783 isocast+envoy+limoni+cadagenthub closed-form parameters');
     }
+    // 2026-11-22 Night Round 48 (R784: congchuanling-dot/Cohort + devkitshq/notifkit + daishuge/pcb-skill + kumoproductions/mcp-aftereffects) verification
+    const r784PathA=4490.00+45.0*100.00;
+    assert.equal(r784PathA.toFixed(2),'8990.00','11-22 R48 R784 Path A total');
+    const r784PathC=65.00+2.4*100.00;
+    assert.equal(r784PathC.toFixed(2),'305.00','11-22 R48 R784 Path C total');
+    assert.equal((r784PathA-r784PathC).toFixed(2),'8685.00','11-22 R48 R784 savings vs Path A');
+    assert.equal(((r784PathA-r784PathC)/r784PathA*100).toFixed(2),'96.61','11-22 R48 R784 pct savings vs Path A');
+    for(const r784File of ['workshops/github-trending-radar/docs/cohort-notifkit-pcb-skill-mcp-aftereffects-selection-faq.md','workshops/github-trending-radar/docs/cohort-notifkit-pcb-skill-mcp-aftereffects-selection-faq.en.md','assets/github-ai-radar-2026-11-22-r48-r784-cohort-notifkit-pcbskill-aftereffects.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-22-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r784File),'utf8');
+      assert.ok(txt.includes('4,490.00')&&txt.includes('4,500.00')&&txt.includes('8,990.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('8,685.00')&&txt.includes('96.61%')&&txt.includes('not_measured'),r784File+': contains exact 11-22 R48 R784 cohort+notifkit+pcbskill+aftereffects closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
