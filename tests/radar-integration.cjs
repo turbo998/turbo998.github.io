@@ -9227,6 +9227,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r773File),'utf8');
       assert.ok(txt.includes('4,480.00')&&txt.includes('4,500.00')&&txt.includes('8,980.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('8,675.00')&&txt.includes('96.60%')&&txt.includes('not_measured'),r773File+': contains exact 11-22 R37 R773 mebular+codebasememory+jevreview+tokenscope closed-form parameters');
     }
+    // 2026-11-22 Night Round 38 (R774: scarletkc/Hatoba + icesixgod/codex-trajectory + akira-init1/ChannelTerm + Hoylon/peerbridge-mcp) verification
+    const r774PathA=4420.00+45.0*100.00;
+    assert.equal(r774PathA.toFixed(2),'8920.00','11-22 R38 R774 Path A total');
+    const r774PathC=65.00+2.4*100.00;
+    assert.equal(r774PathC.toFixed(2),'305.00','11-22 R38 R774 Path C total');
+    assert.equal((r774PathA-r774PathC).toFixed(2),'8615.00','11-22 R38 R774 savings vs Path A');
+    assert.equal(((r774PathA-r774PathC)/r774PathA*100).toFixed(2),'96.58','11-22 R38 R774 pct savings vs Path A');
+    for(const r774File of ['workshops/github-trending-radar/docs/hatoba-codex-trajectory-channelterm-peerbridge-mcp-selection-faq.md','workshops/github-trending-radar/docs/hatoba-codex-trajectory-channelterm-peerbridge-mcp-selection-faq.en.md','assets/github-ai-radar-2026-11-22-r38-r774-hatoba-codextrajectory-channelterm-peerbridge.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-22-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r774File),'utf8');
+      assert.ok(txt.includes('4,420.00')&&txt.includes('4,500.00')&&txt.includes('8,920.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('8,615.00')&&txt.includes('96.58%')&&txt.includes('not_measured'),r774File+': contains exact 11-22 R38 R774 hatoba+codextrajectory+channelterm+peerbridge closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
