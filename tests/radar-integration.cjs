@@ -8941,6 +8941,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r747File),'utf8');
       assert.ok(txt.includes('4,280.00')&&txt.includes('4,550.00')&&txt.includes('8,830.00')&&txt.includes('70.00')&&txt.includes('250.00')&&txt.includes('320.00')&&txt.includes('8,510.00')&&txt.includes('96.38%')&&txt.includes('not_measured'),r747File+': contains exact 11-22 R11 R747 claudegrc+owaspmemguard+zeroid+netboxmcp closed-form parameters');
     }
+    // 2026-11-22 Night Round 12 (R748: schmitech/orbit + finch-xu/cc-router + ZipengWu365/TOMC + comet-ml/opik-mcp) verification
+    const r748PathA=4160.00+44.5*100.00;
+    assert.equal(r748PathA.toFixed(2),'8610.00','11-22 R12 R748 Path A total');
+    const r748PathC=70.00+2.4*100.00;
+    assert.equal(r748PathC.toFixed(2),'310.00','11-22 R12 R748 Path C total');
+    assert.equal((r748PathA-r748PathC).toFixed(2),'8300.00','11-22 R12 R748 savings vs Path A');
+    assert.equal(((r748PathA-r748PathC)/r748PathA*100).toFixed(2),'96.40','11-22 R12 R748 pct savings vs Path A');
+    for(const r748File of ['workshops/github-trending-radar/docs/orbit-cc-router-tomc-opik-mcp-selection-faq.md','workshops/github-trending-radar/docs/orbit-cc-router-tomc-opik-mcp-selection-faq.en.md','assets/github-ai-radar-2026-11-22-r12-r748-orbit-ccrouter-tomc-opikmcp.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-22-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r748File),'utf8');
+      assert.ok(txt.includes('4,160.00')&&txt.includes('4,450.00')&&txt.includes('8,610.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,300.00')&&txt.includes('96.40%')&&txt.includes('not_measured'),r748File+': contains exact 11-22 R12 R748 orbit+ccrouter+tomc+opikmcp closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
