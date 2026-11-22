@@ -8842,6 +8842,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r738File),'utf8');
       assert.ok(txt.includes('4,180.00')&&txt.includes('4,500.00')&&txt.includes('8,680.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,370.00')&&txt.includes('96.43%')&&txt.includes('not_measured'),r738File+': contains exact 11-22 R2 R738 agenticdetections+traxagent+xhub+enterplace closed-form parameters');
     }
+    // 2026-11-22 Night Round 3 (R739: pritamux/gridlines + imuratalpay/ui-diff + avivgerz-hue/unslop + avivgerz-hue/ghost-qa) verification
+    const r739PathA=3980.00+44.0*100.00;
+    assert.equal(r739PathA.toFixed(2),'8380.00','11-22 R3 R739 Path A total');
+    const r739PathC=65.00+2.4*100.00;
+    assert.equal(r739PathC.toFixed(2),'305.00','11-22 R3 R739 Path C total');
+    assert.equal((r739PathA-r739PathC).toFixed(2),'8075.00','11-22 R3 R739 savings vs Path A');
+    assert.equal(((r739PathA-r739PathC)/r739PathA*100).toFixed(2),'96.36','11-22 R3 R739 pct savings vs Path A');
+    for(const r739File of ['workshops/github-trending-radar/docs/gridlines-ui-diff-unslop-ghost-qa-selection-faq.md','workshops/github-trending-radar/docs/gridlines-ui-diff-unslop-ghost-qa-selection-faq.en.md','assets/github-ai-radar-2026-11-22-r3-r739-gridlines-uidiff-unslop-ghostqa.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-22-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r739File),'utf8');
+      assert.ok(txt.includes('3,980.00')&&txt.includes('4,400.00')&&txt.includes('8,380.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('8,075.00')&&txt.includes('96.36%')&&txt.includes('not_measured'),r739File+': contains exact 11-22 R3 R739 gridlines+uidiff+unslop+ghostqa closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
