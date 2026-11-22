@@ -9018,6 +9018,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r754File),'utf8');
       assert.ok(txt.includes('4,360.00')&&txt.includes('4,600.00')&&txt.includes('8,960.00')&&txt.includes('75.00')&&txt.includes('250.00')&&txt.includes('325.00')&&txt.includes('8,635.00')&&txt.includes('96.37%')&&txt.includes('not_measured'),r754File+': contains exact 11-22 R18 R754 nextcloud+mikrotik+mastergo+synology closed-form parameters');
     }
+    // 2026-11-22 Night Round 19 (R755 Milestone: kazupon/gunshi + stephenleo/cship + robcerda/monarch-mcp-server + logiscape/mcp-sdk-php) verification
+    const r755PathA=4220.00+44.0*100.00;
+    assert.equal(r755PathA.toFixed(2),'8620.00','11-22 R19 R755 Path A total');
+    const r755PathC=65.00+2.4*100.00;
+    assert.equal(r755PathC.toFixed(2),'305.00','11-22 R19 R755 Path C total');
+    assert.equal((r755PathA-r755PathC).toFixed(2),'8315.00','11-22 R19 R755 savings vs Path A');
+    assert.equal(((r755PathA-r755PathC)/r755PathA*100).toFixed(2),'96.46','11-22 R19 R755 pct savings vs Path A');
+    for(const r755File of ['workshops/github-trending-radar/docs/gunshi-cship-monarch-mcp-php-sdk-selection-faq.md','workshops/github-trending-radar/docs/gunshi-cship-monarch-mcp-php-sdk-selection-faq.en.md','assets/github-ai-radar-2026-11-22-r19-r755-gunshi-cship-monarch-phpmcp.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-22-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r755File),'utf8');
+      assert.ok(txt.includes('4,220.00')&&txt.includes('4,400.00')&&txt.includes('8,620.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('8,315.00')&&txt.includes('96.46%')&&txt.includes('not_measured'),r755File+': contains exact 11-22 R19 R755 gunshi+cship+monarch+phpmcp closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
