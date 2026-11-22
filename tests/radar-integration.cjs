@@ -9095,6 +9095,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r761File),'utf8');
       assert.ok(txt.includes('4,390.00')&&txt.includes('4,500.00')&&txt.includes('8,890.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,580.00')&&txt.includes('96.51%')&&txt.includes('not_measured'),r761File+': contains exact 11-22 R25 R761 soundbox+cuteagent+lisa+aliasmode closed-form parameters');
     }
+    // 2026-11-22 Night Round 26 (R762: FalkorDB/Auryn + huggingface/pwc-cli + ClickHouse/loom + SigNoz/signoz-mcp-server) verification
+    const r762PathA=4520.00+46.0*100.00;
+    assert.equal(r762PathA.toFixed(2),'9120.00','11-22 R26 R762 Path A total');
+    const r762PathC=75.00+2.5*100.00;
+    assert.equal(r762PathC.toFixed(2),'325.00','11-22 R26 R762 Path C total');
+    assert.equal((r762PathA-r762PathC).toFixed(2),'8795.00','11-22 R26 R762 savings vs Path A');
+    assert.equal(((r762PathA-r762PathC)/r762PathA*100).toFixed(2),'96.44','11-22 R26 R762 pct savings vs Path A');
+    for(const r762File of ['workshops/github-trending-radar/docs/falkordb-auryn-huggingface-pwc-clickhouse-loom-signoz-mcp-selection-faq.md','workshops/github-trending-radar/docs/falkordb-auryn-huggingface-pwc-clickhouse-loom-signoz-mcp-selection-faq.en.md','assets/github-ai-radar-2026-11-22-r26-r762-auryn-pwc-loom-signoz.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-22-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r762File),'utf8');
+      assert.ok(txt.includes('4,520.00')&&txt.includes('4,600.00')&&txt.includes('9,120.00')&&txt.includes('75.00')&&txt.includes('250.00')&&txt.includes('325.00')&&txt.includes('8,795.00')&&txt.includes('96.44%')&&txt.includes('not_measured'),r762File+': contains exact 11-22 R26 R762 auryn+pwc+loom+signoz closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
