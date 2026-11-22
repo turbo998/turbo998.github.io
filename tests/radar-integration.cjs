@@ -8930,6 +8930,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r746File),'utf8');
       assert.ok(txt.includes('4,220.00')&&txt.includes('4,500.00')&&txt.includes('8,720.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,410.00')&&txt.includes('96.44%')&&txt.includes('not_measured'),r746File+': contains exact 11-22 R10 R746 pbicli+dbmcp+oraclemcp+perfstudio closed-form parameters');
     }
+    // 2026-11-22 Night Round 11 (R747: GRCEngClub/claude-grc-engineering + OWASP/www-project-agent-memory-guard + highflame-ai/zeroid + netboxlabs/netbox-mcp-server) verification
+    const r747PathA=4280.00+45.5*100.00;
+    assert.equal(r747PathA.toFixed(2),'8830.00','11-22 R11 R747 Path A total');
+    const r747PathC=70.00+2.5*100.00;
+    assert.equal(r747PathC.toFixed(2),'320.00','11-22 R11 R747 Path C total');
+    assert.equal((r747PathA-r747PathC).toFixed(2),'8510.00','11-22 R11 R747 savings vs Path A');
+    assert.equal(((r747PathA-r747PathC)/r747PathA*100).toFixed(2),'96.38','11-22 R11 R747 pct savings vs Path A');
+    for(const r747File of ['workshops/github-trending-radar/docs/claude-grc-owasp-memory-guard-zeroid-netbox-mcp-selection-faq.md','workshops/github-trending-radar/docs/claude-grc-owasp-memory-guard-zeroid-netbox-mcp-selection-faq.en.md','assets/github-ai-radar-2026-11-22-r11-r747-claudegrc-owaspmemguard-zeroid-netboxmcp.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-22-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r747File),'utf8');
+      assert.ok(txt.includes('4,280.00')&&txt.includes('4,550.00')&&txt.includes('8,830.00')&&txt.includes('70.00')&&txt.includes('250.00')&&txt.includes('320.00')&&txt.includes('8,510.00')&&txt.includes('96.38%')&&txt.includes('not_measured'),r747File+': contains exact 11-22 R11 R747 claudegrc+owaspmemguard+zeroid+netboxmcp closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
