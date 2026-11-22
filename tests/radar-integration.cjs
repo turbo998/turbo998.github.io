@@ -9205,6 +9205,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r771File),'utf8');
       assert.ok(txt.includes('4,290.00')&&txt.includes('4,400.00')&&txt.includes('8,690.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('8,385.00')&&txt.includes('96.49%')&&txt.includes('not_measured'),r771File+': contains exact 11-22 R35 R771 pcbparts+arrmcp+membase+llmrouter closed-form parameters');
     }
+    // 2026-11-22 Night Round 36 (R772: tribgames/mixdog + lemonadesaltbagel/veil + AGGIB/Stroq + DobermanCore/Doberman-Core) verification
+    const r772PathA=4550.00+46.0*100.00;
+    assert.equal(r772PathA.toFixed(2),'9150.00','11-22 R36 R772 Path A total');
+    const r772PathC=70.00+2.4*100.00;
+    assert.equal(r772PathC.toFixed(2),'310.00','11-22 R36 R772 Path C total');
+    assert.equal((r772PathA-r772PathC).toFixed(2),'8840.00','11-22 R36 R772 savings vs Path A');
+    assert.equal(((r772PathA-r772PathC)/r772PathA*100).toFixed(2),'96.61','11-22 R36 R772 pct savings vs Path A');
+    for(const r772File of ['workshops/github-trending-radar/docs/mixdog-veil-stroq-doberman-core-selection-faq.md','workshops/github-trending-radar/docs/mixdog-veil-stroq-doberman-core-selection-faq.en.md','assets/github-ai-radar-2026-11-22-r36-r772-mixdog-veil-stroq-doberman.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-22-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r772File),'utf8');
+      assert.ok(txt.includes('4,550.00')&&txt.includes('4,600.00')&&txt.includes('9,150.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,840.00')&&txt.includes('96.61%')&&txt.includes('not_measured'),r772File+': contains exact 11-22 R36 R772 mixdog+veil+stroq+doberman closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
