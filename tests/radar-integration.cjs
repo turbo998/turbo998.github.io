@@ -9249,6 +9249,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r775File),'utf8');
       assert.ok(txt.includes('4,610.00')&&txt.includes('4,600.00')&&txt.includes('9,210.00')&&txt.includes('75.00')&&txt.includes('250.00')&&txt.includes('325.00')&&txt.includes('8,885.00')&&txt.includes('96.47%')&&txt.includes('not_measured'),r775File+': contains exact 11-22 R39 R775 fastapiadmin+aide+sloppy+designstudio closed-form parameters');
     }
+    // 2026-11-22 Night Round 40 (R776: memoket/memoket-kite + brekkylab/backlot + guardana/guardana + antiburn/antiburn) verification
+    const r776PathA=4530.00+45.0*100.00;
+    assert.equal(r776PathA.toFixed(2),'9030.00','11-22 R40 R776 Path A total');
+    const r776PathC=65.00+2.4*100.00;
+    assert.equal(r776PathC.toFixed(2),'305.00','11-22 R40 R776 Path C total');
+    assert.equal((r776PathA-r776PathC).toFixed(2),'8725.00','11-22 R40 R776 savings vs Path A');
+    assert.equal(((r776PathA-r776PathC)/r776PathA*100).toFixed(2),'96.62','11-22 R40 R776 pct savings vs Path A');
+    for(const r776File of ['workshops/github-trending-radar/docs/memoket-kite-backlot-guardana-antiburn-selection-faq.md','workshops/github-trending-radar/docs/memoket-kite-backlot-guardana-antiburn-selection-faq.en.md','assets/github-ai-radar-2026-11-22-r40-r776-kite-backlot-guardana-antiburn.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-22-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r776File),'utf8');
+      assert.ok(txt.includes('4,530.00')&&txt.includes('4,500.00')&&txt.includes('9,030.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('8,725.00')&&txt.includes('96.62%')&&txt.includes('not_measured'),r776File+': contains exact 11-22 R40 R776 kite+backlot+guardana+antiburn closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
