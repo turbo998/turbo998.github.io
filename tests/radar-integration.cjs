@@ -8875,6 +8875,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r741File),'utf8');
       assert.ok(txt.includes('4,080.00')&&txt.includes('4,400.00')&&txt.includes('8,480.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,170.00')&&txt.includes('96.34%')&&txt.includes('not_measured'),r741File+': contains exact 11-22 R5 R741 designagent+sketchy+openpencil+rounds closed-form parameters');
     }
+    // 2026-11-22 Night Round 6 (R742: VoltAgent/official-mcp-servers + lemonadesaltbagel/crab + JialaoLiu/dsh-baton + MaxonT/aisync) verification
+    const r742PathA=4150.00+44.5*100.00;
+    assert.equal(r742PathA.toFixed(2),'8600.00','11-22 R6 R742 Path A total');
+    const r742PathC=70.00+2.4*100.00;
+    assert.equal(r742PathC.toFixed(2),'310.00','11-22 R6 R742 Path C total');
+    assert.equal((r742PathA-r742PathC).toFixed(2),'8290.00','11-22 R6 R742 savings vs Path A');
+    assert.equal(((r742PathA-r742PathC)/r742PathA*100).toFixed(2),'96.40','11-22 R6 R742 pct savings vs Path A');
+    for(const r742File of ['workshops/github-trending-radar/docs/official-mcp-servers-crab-dsh-baton-aisync-selection-faq.md','workshops/github-trending-radar/docs/official-mcp-servers-crab-dsh-baton-aisync-selection-faq.en.md','assets/github-ai-radar-2026-11-22-r6-r742-officialmcp-crab-dshbaton-aisync.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-22-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r742File),'utf8');
+      assert.ok(txt.includes('4,150.00')&&txt.includes('4,450.00')&&txt.includes('8,600.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,290.00')&&txt.includes('96.40%')&&txt.includes('not_measured'),r742File+': contains exact 11-22 R6 R742 officialmcp+crab+dshbaton+aisync closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
