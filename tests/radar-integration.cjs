@@ -8963,6 +8963,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r749File),'utf8');
       assert.ok(txt.includes('4,190.00')&&txt.includes('4,450.00')&&txt.includes('8,640.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,330.00')&&txt.includes('96.41%')&&txt.includes('not_measured'),r749File+': contains exact 11-22 R13 R749 wmux+pidashboard+aft+ompstudio closed-form parameters');
     }
+    // 2026-11-22 Night Round 14 (R750 Historic Milestone: buildswithpaul/Frappe_Assistant_Core + yuque/yuque-mcp-server + VictoriaMetrics/mcp-victoriametrics + sparkgeo/geo-mcp-servers) verification
+    const r750PathA=4300.00+46.0*100.00;
+    assert.equal(r750PathA.toFixed(2),'8900.00','11-22 R14 R750 Path A total');
+    const r750PathC=75.00+2.5*100.00;
+    assert.equal(r750PathC.toFixed(2),'325.00','11-22 R14 R750 Path C total');
+    assert.equal((r750PathA-r750PathC).toFixed(2),'8575.00','11-22 R14 R750 savings vs Path A');
+    assert.equal(((r750PathA-r750PathC)/r750PathA*100).toFixed(2),'96.35','11-22 R14 R750 pct savings vs Path A');
+    for(const r750File of ['workshops/github-trending-radar/docs/frappe-assistant-yuque-mcp-victoriametrics-geo-mcp-selection-faq.md','workshops/github-trending-radar/docs/frappe-assistant-yuque-mcp-victoriametrics-geo-mcp-selection-faq.en.md','assets/github-ai-radar-2026-11-22-r14-r750-frappe-yuquemcp-victoriametrics-geomcp.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-22-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r750File),'utf8');
+      assert.ok(txt.includes('4,300.00')&&txt.includes('4,600.00')&&txt.includes('8,900.00')&&txt.includes('75.00')&&txt.includes('250.00')&&txt.includes('325.00')&&txt.includes('8,575.00')&&txt.includes('96.35%')&&txt.includes('not_measured'),r750File+': contains exact 11-22 R14 R750 frappe+yuquemcp+victoriametrics+geomcp closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
