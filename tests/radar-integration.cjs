@@ -9073,6 +9073,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r759File),'utf8');
       assert.ok(txt.includes('4,340.00')&&txt.includes('4,500.00')&&txt.includes('8,840.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,530.00')&&txt.includes('96.49%')&&txt.includes('not_measured'),r759File+': contains exact 11-22 R23 R759 life+sutando+hga+guaardvark closed-form parameters');
     }
+    // 2026-11-22 Night Round 24 (R760 Milestone: GUYI-AI/gugu + KonghaYao/peri + orbi-build/orbi + letehaha/moneymatter) verification
+    const r760PathA=4440.00+46.0*100.00;
+    assert.equal(r760PathA.toFixed(2),'9040.00','11-22 R24 R760 Path A total');
+    const r760PathC=70.00+2.4*100.00;
+    assert.equal(r760PathC.toFixed(2),'310.00','11-22 R24 R760 Path C total');
+    assert.equal((r760PathA-r760PathC).toFixed(2),'8730.00','11-22 R24 R760 savings vs Path A');
+    assert.equal(((r760PathA-r760PathC)/r760PathA*100).toFixed(2),'96.57','11-22 R24 R760 pct savings vs Path A');
+    for(const r760File of ['workshops/github-trending-radar/docs/gugu-peri-orbi-moneymatter-selection-faq.md','workshops/github-trending-radar/docs/gugu-peri-orbi-moneymatter-selection-faq.en.md','assets/github-ai-radar-2026-11-22-r24-r760-gugu-peri-orbi-moneymatter.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-22-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r760File),'utf8');
+      assert.ok(txt.includes('4,440.00')&&txt.includes('4,600.00')&&txt.includes('9,040.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,730.00')&&txt.includes('96.57%')&&txt.includes('not_measured'),r760File+': contains exact 11-22 R24 R760 gugu+peri+orbi+moneymatter closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
