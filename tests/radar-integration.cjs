@@ -8919,6 +8919,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r745File),'utf8');
       assert.ok(txt.includes('4,050.00')&&txt.includes('4,400.00')&&txt.includes('8,450.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('8,145.00')&&txt.includes('96.39%')&&txt.includes('not_measured'),r745File+': contains exact 11-22 R9 R745 mnemos+familiarmemory+secondbrain+aigateways closed-form parameters');
     }
+    // 2026-11-22 Night Round 10 (R746: MinaSaad1/pbi-cli + FreePeak/db-mcp-server + oracle/mcp + erikdarlingdata/PerformanceStudio) verification
+    const r746PathA=4220.00+45.0*100.00;
+    assert.equal(r746PathA.toFixed(2),'8720.00','11-22 R10 R746 Path A total');
+    const r746PathC=70.00+2.4*100.00;
+    assert.equal(r746PathC.toFixed(2),'310.00','11-22 R10 R746 Path C total');
+    assert.equal((r746PathA-r746PathC).toFixed(2),'8410.00','11-22 R10 R746 savings vs Path A');
+    assert.equal(((r746PathA-r746PathC)/r746PathA*100).toFixed(2),'96.44','11-22 R10 R746 pct savings vs Path A');
+    for(const r746File of ['workshops/github-trending-radar/docs/pbi-cli-db-mcp-oracle-mcp-performance-studio-selection-faq.md','workshops/github-trending-radar/docs/pbi-cli-db-mcp-oracle-mcp-performance-studio-selection-faq.en.md','assets/github-ai-radar-2026-11-22-r10-r746-pbicli-dbmcp-oraclemcp-perfstudio.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-22-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r746File),'utf8');
+      assert.ok(txt.includes('4,220.00')&&txt.includes('4,500.00')&&txt.includes('8,720.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,410.00')&&txt.includes('96.44%')&&txt.includes('not_measured'),r746File+': contains exact 11-22 R10 R746 pbicli+dbmcp+oraclemcp+perfstudio closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
