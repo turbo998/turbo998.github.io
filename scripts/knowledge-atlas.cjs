@@ -10,7 +10,7 @@ const blueprints = {
   'data-infra': [
     node(['Enterprise sources & ingestion','企业源系统与实时摄取'], ['ERP / POS / IoT · Eventhouse KQL · Change feeds','ERP / POS / 航运流 · Eventhouse KQL · 变更捕获'], ['grounds open lakehouse','汇入开放湖仓底座']),
     node(['OneLake & Databricks Mirroring','OneLake 与 Databricks 零拷贝共生'], ['Shared Delta Parquet · Unity Catalog · 0-DBU Direct Lake','共享 Delta Parquet · Unity Catalog · 0 DBU 秒级 BI'], ['binds business ontology','注入业务语义本体']),
-    node(['Fabric IQ & Cross-Cloud Choice','Fabric IQ 与跨云平台选型'], ['TCL & Zava PoCs · vs Snowflake / BigQuery / Redshift','TCL 与 Zava 实战沙盘 · 对比 Snowflake / BigQuery'], ['isolates agent execution','进入隔离执行层']),
+    node(['Fabric IQ & Cross-Cloud Choice','Fabric IQ 与跨云平台选型'], ['Consumer Electronics & Zava PoCs · vs Snowflake / BigQuery / Redshift','消费电子全球运营与 Zava 实战沙盘 · 对比 Snowflake / BigQuery'], ['isolates agent execution','进入隔离执行层']),
     node(['Isolated agent sandboxes','企业级智能体隔离沙箱'], ['ACA Dynamic Sessions · AKS MicroVM · E2B VMSS','ACA 动态会话 · AKS MicroVM · E2B 弹性沙箱'], ['governs unit economics','闭环容量与成本治理']),
     node(['Cloud & Session FinOps','云基础设施与单会话 FinOps'], ['Capacity pooling · VM modernization · TCO verification','F-SKU 容量池化 · VM 跨代升级 · TCO 定量核验'], null)
   ],

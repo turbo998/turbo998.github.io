@@ -1,6 +1,10 @@
-/* Contoso Global Channel IQ × Microsoft Fabric — Interactive H5 Application */
+/* Consumer Electronics Global Operations × Microsoft Fabric — Interactive H5 Application */
 (function () {
   "use strict";
+
+  const IS_EN =
+    (document.documentElement.lang || "").toLowerCase().startsWith("en") ||
+    window.__CE_LANG__ === "en";
 
   const ACT_ORDER = [
     "tab-overview",
@@ -11,7 +15,22 @@
     "tab-lab",
   ];
 
-  const ACT_CUES = {
+  const HASH_TO_TAB = {
+    "#act-1": "tab-overview",
+    "#act-2": "tab-onelake",
+    "#act-3": "tab-realtime",
+    "#act-4": "tab-ontology",
+    "#act-5": "tab-agents",
+    "#act-6": "tab-lab",
+    "#tab-overview": "tab-overview",
+    "#tab-onelake": "tab-onelake",
+    "#tab-realtime": "tab-realtime",
+    "#tab-ontology": "tab-ontology",
+    "#tab-agents": "tab-agents",
+    "#tab-lab": "tab-lab",
+  };
+
+  const ACT_CUES_ZH = {
     "tab-overview": {
       label: "ACT 1 · 业务开场话术 (3分钟)",
       script:
@@ -56,7 +75,54 @@
     },
   };
 
-  const AGENT_PRESETS = [
+  const ACT_CUES_EN = {
+    "tab-overview": {
+      label: "ACT 1 · EXECUTIVE OPENER (3 MIN)",
+      script:
+        "\"A 3.23-week global inventory average looks healthy on paper, yet drilling across 36 overseas distributors and omnichannel KAs exposes severe polarization: Germany Black Friday C855 stock is down to 0.82 weeks, LATAM/MEA prior-gen P745 exceeds 13 weeks with $766.7K price-protection liability, and Vietnam's distributor stuffed EOQ wholesale quota to claim a $162.5K rebate.\"",
+      fabricTip:
+        "💡 Dual-Screen Tip: Show the three crisis cards & 36-partner matrix here while displaying the 16 deployed assets in Contoso_Global_Channel_IQ on Fabric Studio.",
+    },
+    "tab-onelake": {
+      label: "ACT 2 · ONELAKE ZERO-COPY SHORTCUTS (4 MIN)",
+      script:
+        "\"Overseas partner EDI 852 snapshots and retail POS streams traditionally sit in external ADLS zones or regional silos. With OneLake Shortcuts, HQ mounts external partner tables with zero ETL copying so SQL, Spark, DirectLake, and Fabric IQ Ontology share a single Delta Parquet truth.\"",
+      fabricTip:
+        "💡 Dual-Screen Tip: Open lh_contoso_global_channel in Fabric Studio to highlight the shortcut-linked fact_channel_inventory_weekly table.",
+    },
+    "tab-realtime": {
+      label: "ACT 3 · REAL-TIME INTELLIGENCE & REBALANCING (5 MIN)",
+      script:
+        "\"Weekly spreadsheets wouldn't catch Germany's stockout until Monday. Eventhouse detects a 2.8x Black Friday BOPIS surge pushing DE01 WOS to 0.86w while vessel OCEAN-AURORA-V42 slips 11 days at Rotterdam. A KQL function pairs identical EU-spec surplus in Lyon FR01 (7.1w) for 48-hour road rescue.\"",
+      fabricTip:
+        "💡 Interactive Action: Click '⚡ Recalculate via Eventhouse KQL' to run fn_CrossBorderRebalanceCandidates() and pair 6 European transfers.",
+    },
+    "tab-ontology": {
+      label: "ACT 4 · FABRIC IQ ONTOLOGY & GUARDRAILS (6 MIN)",
+      script:
+        "\"Generic LLMs fail channel operations because they don't know 60-day price-protection clauses or stretch-rebate rules. Fabric IQ Ontology binds 10 entities, live TimeSeries telemetry, and 3 declarative rules: blocking a $766.7K MSRP cut in favor of a Q85H soundbar bundle (saving $582K) and freezing $162.5K in EOQ channel stuffing.\"",
+      fabricTip:
+        "💡 Interactive Action: Click ChannelPartner in the graph to inspect dual static + TimeSeries bindings, then drag the price-protection sliders below.",
+    },
+    "tab-agents": {
+      label: "ACT 5 · DUAL AGENTS & CLOSED-LOOP WRITEBACK (5 MIN)",
+      script:
+        "\"Left: Fabric Data Agent answers executive questions across OneLake SQL/DAX and Eventhouse KQL. Right: Operations Agent prescribes a 350-unit Lyon-to-Frankfurt 75C855 transfer — one click triggers pl_contoso_rebalance_orchestrator and appends the order back into OneLake Delta.\"",
+      fabricTip:
+        "💡 Finale Action: Run Q1 on Data Agent, then click '🚀 Approve & Trigger Cloud Fabric Pipeline' to watch the live dispatch ledger update.",
+    },
+    "tab-lab": {
+      label: "LIVE PROOF · ARCHITECT DEEP-DIVE LAB (OPTIONAL)",
+      script:
+        "\"Data & IT architects can edit any DirectLake DAX or Eventhouse KQL query right here, execute it live, and inspect raw REST payloads and latencies inside the slide-over telemetry drawer.\"",
+      fabricTip:
+        "💡 Architecture Highlight: DirectLake evaluates 19 governed channel finance measures directly over OneLake Parquet with zero scheduled import lag.",
+    },
+  };
+
+  const ACT_CUES = IS_EN ? ACT_CUES_EN : ACT_CUES_ZH;
+
+  const AGENT_PRESETS_ZH = [
     {
       id: "q1",
       title: "🇩🇪 高管追问 1：欧洲黑五哪些代理商和旗舰机型濒临断货？海运补货能赶上吗？",
@@ -128,10 +194,86 @@ ORDER BY [NetSellInUSD] DESC`,
     },
   ];
 
+  const AGENT_PRESETS_EN = [
+    {
+      id: "q1",
+      title: "🇩🇪 Exec Q1: Which European partners and flagship SKUs face Black Friday stockouts, and can ocean freight arrive in time?",
+      engine: "kql",
+      query:
+        "ChannelInventoryTelemetry | summarize arg_max(Timestamp, *) by DistributorId, ProductId | where Region == 'Europe' and DynamicWOS < 1.5 | project DistributorId, DistributorName, Country, ProductId, OnHandUnits, HourlyBurnRate, DynamicWOS, RecommendedAction | order by DynamicWOS asc",
+      synthesis:
+        "Correlating **Eventhouse inventory telemetry** with **Port congestion alerts**:\n1. **Critical Stockout Zone**: German Tier-1 distributor `EuroTech DE01` is down to **0.82w WOS** on `CSO-85C855` (98 units) and **0.86w WOS** on `CSO-75C855` (185 units), followed by `RheinMarkt DE02` (1.04w) and Netherlands `Benelux NL01` (1.14w).\n2. **Ocean Replenishment Blocked**: Container vessel `OCEAN-AURORA-V42` (1,850 flagship C855 units worth $2.68M) faces an **11-day delay** at Rotterdam (congestion index 8.9) and will miss Black Friday.\n3. **Prescribed Action**: Dispatch 350 units of 75C855 + 180 units of 85C855 via 48-hour road freight from Lyon `AlpenElectro FR01` (matching `EU_CE_230V` spec, **7.1w WOS**), protecting **$1,079,470** in Black Friday revenue.",
+    },
+    {
+      id: "q2",
+      title: "🇲🇽 Exec Q2: Where is prior-gen 2025 P745 stock most aged, and what price-protection payout would a 15% MSRP cut trigger?",
+      engine: "dax",
+      query: `EVALUATE
+TOPN(
+  8,
+  SUMMARIZECOLUMNS(
+    'dim_distributors'[DistributorId],
+    'dim_distributors'[DistributorName],
+    'dim_distributors'[Country],
+    'dim_products'[ProductId],
+    "LatestStockUSD", [Latest Channel Inventory USD],
+    "AvgWOS", [Avg Channel Weeks of Supply],
+    "PriceProtectionUSD", [Price Protection Exposure USD]
+  ),
+  [Price Protection Exposure USD], DESC
+)`,
+      synthesis:
+        "Evaluating **OneLake EDI 852 partner snapshots** against **Ontology Rule 2 (Price Protection Guardrail)**:\n1. **Global Liability**: Aged 2025 `65P745 / 55P745` inventory carries **$766,697.60** in contractual price-protection exposure.\n2. **Top Aging Hotspots**: Mexico `Andes Hogar MX02` (**14.19w WOS**, **$90,842** exposure), Brazil `BrasilSul BR02` (**13.51w WOS**, **$84,128**), and Saudi Arabia `GulfStar SA01` (**12.89w WOS**, **$69,714**).\n3. **Ontology Prescription**: Hold official P745 MSRP unchanged to trigger **$0 price-protection liability**, and launch a **`CSO-SB-Q85H` Dolby Atmos Soundbar OMO Co-Op Bundle + $25/unit store associate spiff**, preserving >75% of net margin.",
+    },
+    {
+      id: "q3",
+      title: "🇻🇳 Exec Q3: Did any distributor engage in end-of-quarter channel stuffing to game tiered stretch rebates?",
+      engine: "dax",
+      query: `EVALUATE
+FILTER(
+  SELECTCOLUMNS(
+    'fact_rebate_claims',
+    "ClaimId", 'fact_rebate_claims'[ClaimId],
+    "DistributorId", 'fact_rebate_claims'[DistributorId],
+    "ProductId", 'fact_rebate_claims'[ProductId],
+    "ClaimedUSD", 'fact_rebate_claims'[ClaimedAmountUSD],
+    "SellInAttainmentPct", 'fact_rebate_claims'[SellInAttainmentPct],
+    "SellThroughPct", 'fact_rebate_claims'[SellThroughRatioPct],
+    "PartnerWOS", 'fact_rebate_claims'[LatestPartnerWOS],
+    "Status", 'fact_rebate_claims'[ClaimStatus]
+  ),
+  [PartnerWOS] > 10
+)`,
+      synthesis:
+        "Cross-auditing **SAP S/4HANA Sell-In orders × OneLake Shortcut POS Sell-Out** under **Ontology Rule 3**:\n1. **Flagged Claim `CLM-2026Q4-VN01`**: Vietnam Tier-1 distributor `Mekong Star Trading VN01` filed for the top-tier 8.5% stretch rebate (**$162,500.00**) on `CSO-65C655`.\n2. **Evidence Chain**: Wholesale Sell-In hit **104.5%** of quota, but retail POS Sell-Through is only **41.2%**, swelling channel WOS to **13.8 weeks** — classic EOQ channel stuffing.\n3. **Automated Guardrail**: Claim status is set to `Blocked by Ontology Rule`, freezing **$162,500** until verified POS Sell-Through recovers to ≥70%.",
+    },
+    {
+      id: "q4",
+      title: "🌐 Exec Q4: Compare wholesale Sell-In, omnichannel Sell-Out GMV, and channel WOS polarization across all 5 regions.",
+      engine: "dax",
+      query: `EVALUATE
+SUMMARIZECOLUMNS(
+  'dim_subsidiaries'[Region],
+  "NetSellInUSD", [Total Net Sell-In USD],
+  "RetailSellOutGMV", [Total Retail Sell-Out GMV USD],
+  "LatestStockUSD", [Latest Channel Inventory USD],
+  "AvgWOS", [Avg Channel Weeks of Supply],
+  "PriceProtectionUSD", [Price Protection Exposure USD]
+)
+ORDER BY [NetSellInUSD] DESC`,
+      synthesis:
+        "Aggregating live from **DirectLake Semantic Model `sm_contoso_global_channel_iq`**:\n1. **Global Totals**: Net wholesale Sell-In **$135.33M**, omnichannel retail Sell-Out GMV **$108.95M** (including BOPIS store pickup), and **$47.49M** in latest channel inventory.\n2. **Regional Action Map**: North America leads sell-through velocity (83.1% at 2.58w WOS); Europe faces acute Black Friday Mini-LED shortages requiring cross-border transfers; LATAM and APAC require non-MSRP soundbar bundle clearance and rebate governance.",
+    },
+  ];
+
+  const AGENT_PRESETS = IS_EN ? AGENT_PRESETS_EN : AGENT_PRESETS_ZH;
+
   const LAB_PRESETS = {
     dax: [
       {
-        name: "1. 全局核心经营与风控 7 大 DAX 指标实时核验",
+        name: IS_EN
+          ? "1. Global 7 Core Channel & Risk KPIs (DirectLake DAX)"
+          : "1. 全局核心经营与风控 7 大 DAX 指标实时核验",
         query: `EVALUATE
 ROW(
     "NetSellInUSD", [Total Net Sell-In USD],
@@ -144,7 +286,9 @@ ROW(
 )`,
       },
       {
-        name: "2. 五大海外大区 Sell-In vs Sell-Out 与价保敞口穿透",
+        name: IS_EN
+          ? "2. Five Global Regions Sell-In vs Sell-Out & Price Protection"
+          : "2. 五大海外大区 Sell-In vs Sell-Out 与价保敞口穿透",
         query: `EVALUATE
 SUMMARIZECOLUMNS(
   'dim_subsidiaries'[Region],
@@ -157,7 +301,9 @@ SUMMARIZECOLUMNS(
 ORDER BY [NetSellInUSD] DESC`,
       },
       {
-        name: "3. 渠道阶梯返利审计异常单据穿透 (WOS > 10)",
+        name: IS_EN
+          ? "3. Tiered Rebate Audit Hold Claims (Partner WOS > 10)"
+          : "3. 渠道阶梯返利审计异常单据穿透 (WOS > 10)",
         query: `EVALUATE
 FILTER(
   'fact_rebate_claims',
@@ -167,22 +313,120 @@ FILTER(
     ],
     kql: [
       {
-        name: "1. 欧陆 48h 跨国调拨自动配对函数 fn_CrossBorderRebalanceCandidates()",
+        name: IS_EN
+          ? "1. 48h EU Cross-Border Rebalance Pairing fn_CrossBorderRebalanceCandidates()"
+          : "1. 欧陆 48h 跨国调拨自动配对函数 fn_CrossBorderRebalanceCandidates()",
         query: "fn_CrossBorderRebalanceCandidates()",
       },
       {
-        name: "2. 全球紧急断货与老品积压实时告警函数 fn_CriticalChannelAnomalies()",
+        name: IS_EN
+          ? "2. Global Critical Stockouts & Aging Anomalies fn_CriticalChannelAnomalies()"
+          : "2. 全球紧急断货与老品积压实时告警函数 fn_CriticalChannelAnomalies()",
         query: "fn_CriticalChannelAnomalies() | take 15",
       },
       {
-        name: "3. 鹿特丹港与全球海运货轮延误实时流 (DelayDays >= 5)",
+        name: IS_EN
+          ? "3. Rotterdam & Global Ocean Vessel Delay Stream (DelayDays >= 5)"
+          : "3. 鹿特丹港与全球海运货轮延误实时流 (DelayDays >= 5)",
         query:
           "PortAndLogisticsAlerts | where DelayDays >= 5 | project AlertTimestamp, ShipmentId, VesselCode, OriginPort, DestinationPort, AffectedProductId, AffectedUnits, CargoValueUSD, DelayDays, PortCongestionIndex, Severity | order by DelayDays desc",
       },
     ],
   };
 
-  const IS_LOCAL_GATEWAY = /^(localhost|127\.0\.0\.1)$/.test(window.location.hostname);
+  const ONTOLOGY_ENTITY_EN = {
+    OverseasSubsidiary: {
+      sub: "Regional Sales Subsidiary",
+      engine: "OneLake Delta",
+      sample: "SUB-EU-DE (Frankfurt Hub) · Primary Port of Rotterdam · Serving DACH & Benelux",
+    },
+    ChannelPartner: {
+      sub: "Tier-1 Distributor & OMO KA",
+      engine: "OneLake + TimeSeries Dual Binding",
+      sample: "DIST-EU-DE01 (EuroTech DE) · Live DynamicWOS=0.86w · $8.5M credit · 60-day price protection cap",
+    },
+    SmartProduct: {
+      sub: "Global Smart TV / Appliance / Soundbar SKU",
+      engine: "OneLake Delta",
+      sample: "CSO-75C855 (2026 Flagship QD-Mini LED, EU_CE_230V) vs CSO-65P745 (2025 Prior-Gen price-protected)",
+    },
+    ChannelInventorySnapshot: {
+      sub: "Weekly Partner EDI 852 Snapshot",
+      engine: "Zero-Copy OneLake Shortcut",
+      sample: "Zero-copy mounted from Contoso_Partner_EDI_Portal_Zone · Exposes $766,697.60 price-protection risk",
+    },
+    OmoPromotion: {
+      sub: "Omnichannel OMO Campaign",
+      engine: "OneLake Delta",
+      sample: "PROMO-EU-BF26 (Black Friday OMO 2.8x surge) · PROMO-LATAM-P745CLR (Q85H soundbar bundle clearance)",
+    },
+    SellOutRetailTransaction: {
+      sub: "Omnichannel Retail POS Sell-Out",
+      engine: "Zero-Copy OneLake Shortcut",
+      sample: "Unifies brick-and-mortar POS, DTC web, and BOPIS store pickup · $108.95M retail GMV",
+    },
+    SellInWholesaleOrder: {
+      sub: "HQ Wholesale Sell-In Order (ERP)",
+      engine: "OneLake Delta",
+      sample: "SAP S/4HANA wholesale billing · $135.33M global net Sell-In revenue",
+    },
+    OceanContainerShipment: {
+      sub: "Ocean & Rail Inbound Container",
+      engine: "OneLake Delta",
+      sample: "OCEAN-AURORA-V42 delayed 11 days at Rotterdam · Impacts 1,850 C855 flagship units ($2.68M)",
+    },
+    PartnerRebateClaim: {
+      sub: "Partner Rebate & Price-Prot Claim",
+      engine: "OneLake Delta",
+      sample: "CLM-2026Q4-VN01 ($162,500) · 104.5% Sell-In quota vs 41.2% Sell-Through · Frozen by Ontology Rule 3",
+    },
+    CrossBorderStockTransfer: {
+      sub: "48h Cross-Border Emergency Transfer",
+      engine: "OneLake Closed-Loop Writeback",
+      sample: "XFER-IQ-9001: Lyon FR01 -> Frankfurt DE01 road freight of 350× 75C855 · Protects $629,650 revenue",
+    },
+  };
+
+  const ONTOLOGY_RULE_EN = {
+    rule_stockout_emergency: {
+      name: "Rule 1 · Promo Stockout & Cross-Border Rebalance Guardrail",
+      impact: "Protects $1,619,170 in Black Friday at-risk revenue",
+      action:
+        "Auto-matches same-region EU_CE_230V surplus partners (WOS > 6.0w), generates 48h road transfer orders, and throttles local ad spend in stockout zones.",
+    },
+    rule_prior_gen_price_protection: {
+      name: "Rule 2 · Prior-Gen Price Protection Exposure Guardrail",
+      impact: "Avoids $766,697.60 in retroactive contractual price-protection payouts",
+      action:
+        "Blocks direct wholesale/MSRP cuts on 65P745/55P745; pivots to 'Buy TV + Q85H Soundbar OMO Co-Op Bundle + $25/unit store associate spiff'.",
+    },
+    rule_eoq_channel_stuffing: {
+      name: "Rule 3 · EOQ Channel Stuffing Stretch-Rebate Hold",
+      impact: "Freezes $162,500.00 anomalous stretch rebate claim (DIST-APAC-VN01)",
+      action:
+        "Places finance rebate settlement on audit hold until verified retail POS Sell-Through recovers to >= 70%.",
+    },
+  };
+
+  const FABRIC_ITEM_DESC_EN = {
+    lh_contoso_global_channel: "Primary Lakehouse: 9 ERP/logistics/finance Delta tables + 3 zero-copy cross-zone Shortcuts",
+    lh_partner_edi_portal: "External Partner Isolation Zone: EDI 852 weekly stock (3,456 rows) & OMO POS sell-out (6,624 rows)",
+    eh_contoso_channel_pulse: "Real-Time Intelligence Eventhouse hosting Black Friday POS surges, DynamicWOS & port alerts",
+    kql_contoso_channel_pulse: "Real-Time KQL DB: 1,028 streaming events + 2 cross-border rebalance KQL functions",
+    rtd_contoso_channel_command_center: "5-tile Real-Time Channel Wallboard: stockout rank, OMO velocity, port delays & FR-DE pairing",
+    sm_contoso_global_channel_iq: "DirectLake zero-import Semantic Model: 11 tables, 15 relationships & 19 channel finance DAX KPIs",
+    ont_contoso_global_channel_network: "Fabric IQ TMDL Ontology: 10 entities, 13 graph edges, TimeSeries dual binding & 3 guardrails",
+    ont_contoso_global_channel_network_graph: "Native Property Graph materialized from Ontology for multi-hop supply-chain attribution",
+    da_contoso_channel_copilot: "Conversational Data Agent across OneLake SQL + Eventhouse KQL with validated few-shots",
+    ops_contoso_autonomous_channel_guard: "Ontology-grounded Operations Agent patrolling stockouts, price protection & stuffing rebates",
+    ops_contoso_realtime_pos_pulse_guard: "Eventhouse-grounded Operations Agent catching minute-level Black Friday surges & vessel delays",
+    pl_contoso_rebalance_orchestrator: "Closed-loop orchestration Data Pipeline invoking PySpark to write transfers back to OneLake",
+    nb_contoso_rebalance_execution: "PySpark write-back Notebook appending XFER-AUTO records into fact_inter_warehouse_transfers",
+  };
+
+  const IS_LOCAL_GATEWAY =
+    window.__LIVE_FABRIC_GATEWAY__ === true ||
+    new URLSearchParams(window.location.search).get("gateway") === "1";
 
   let STATE = window.__INITIAL_BUNDLE__ || null;
   let currentTab = "tab-overview";
@@ -356,7 +600,7 @@ FILTER(
     const pills = document.getElementById("engineStatusPills");
 
     if (live.connected) {
-      badge.textContent = "LIVE · Diamond 云端实时在线";
+      badge.textContent = IS_EN ? "LIVE · Cloud Connected" : "LIVE · Diamond 云端实时在线";
       badge.style.background = "rgba(16, 185, 129, 0.2)";
       const daxMs = live.engines?.directLakeDax?.latencyMs || "--";
       const kqlMs = live.engines?.eventhouseKql?.latencyMs || "--";
@@ -364,21 +608,25 @@ FILTER(
       pills.innerHTML = `
         <span class="engine-pill"><span class="dot"></span> DirectLake DAX · <strong>${daxMs}ms</strong></span>
         <span class="engine-pill"><span class="dot"></span> Eventhouse KQL · <strong>${kqlMs}ms</strong></span>
-        <span class="engine-pill"><span class="dot"></span> Fabric Items · <strong>${fabCount} 在线</strong></span>
+        <span class="engine-pill"><span class="dot"></span> Fabric Items · <strong>${fabCount} ${IS_EN ? "Online" : "在线"}</strong></span>
       `;
     } else {
-      badge.textContent = "SNAPSHOT · 本地高保真缓存模式";
+      badge.textContent = IS_EN ? "SNAPSHOT · High-Fidelity Cached Mode" : "SNAPSHOT · 本地高保真缓存模式";
       badge.style.background = "rgba(245, 158, 11, 0.22)";
       pills.innerHTML = `
-        <span class="engine-pill"><span class="dot warn"></span> DirectLake (缓存就绪)</span>
-        <span class="engine-pill"><span class="dot warn"></span> Eventhouse (缓存就绪)</span>
+        <span class="engine-pill"><span class="dot warn"></span> DirectLake (${IS_EN ? "Snapshot Ready" : "缓存就绪"})</span>
+        <span class="engine-pill"><span class="dot warn"></span> Eventhouse (${IS_EN ? "Snapshot Ready" : "缓存就绪"})</span>
       `;
     }
 
     const logList = document.getElementById("telemetryLogList");
     const logs = live.telemetryLog || [];
     if (!logs.length) {
-      logList.innerHTML = `<div class="sim-panel">暂无实时请求记录，请点击顶部「⚡ 实时同步 Fabric 云端」。</div>`;
+      logList.innerHTML = `<div class="sim-panel">${
+        IS_EN
+          ? 'No live telemetry calls yet — click "⚡ Live Sync Fabric Cloud" at the top.'
+          : '暂无实时请求记录，请点击顶部「⚡ 实时同步 Fabric 云端」。'
+      }</div>`;
     } else {
       logList.innerHTML = logs
         .map(
@@ -409,44 +657,83 @@ FILTER(
     const ppExp = liveRow["[PriceProtExposureUSD]"] ?? k.priceProtectionExposureUSD;
     const blockedReb = liveRow["[BlockedRebateUSD]"] ?? k.blockedStuffingRebateUSD;
 
-    const cards = [
-      {
-        cls: "teal",
-        label: "全球总部批发净出货 (Sell-In)",
-        val: fmtUSD(sellIn, true),
-        foot: `精确值 ${fmtUSD(sellIn)} · SAP S/4HANA`,
-      },
-      {
-        cls: "teal",
-        label: "全渠道终端实销 GMV (OMO Sell-Out)",
-        val: fmtUSD(sellOut, true),
-        foot: `动销转化率 ${((sellOut / sellIn) * 100).toFixed(1)}% · OneLake Shortcut`,
-      },
-      {
-        cls: "",
-        label: "全球 36 家渠道在库总货值",
-        val: fmtUSD(stockVal, true),
-        foot: `最新 EDI 852 快照 (${fmtUSD(stockVal)})`,
-      },
-      {
-        cls: "danger",
-        label: "平均库存周转天数 (WOS)",
-        val: `${Number(avgWos).toFixed(2)} 周`,
-        foot: `极化告警: 德国 0.82w 断货 vs 墨西哥 14.2w 积压`,
-      },
-      {
-        cls: "amber",
-        label: "2025 老品 P745 价保风险敞口",
-        val: fmtUSD(ppExp, true),
-        foot: `精确值 ${fmtUSD(ppExp)} · 60天合同价保`,
-      },
-      {
-        cls: "purple",
-        label: "Ontology 拦截异常压货返利",
-        val: fmtUSD(blockedReb, true),
-        foot: `冻结越南 VN01 冲量骗补 (${fmtUSD(blockedReb)})`,
-      },
-    ];
+    const cards = IS_EN
+      ? [
+          {
+            cls: "teal",
+            label: "Global HQ Net Wholesale (Sell-In)",
+            val: fmtUSD(sellIn, true),
+            foot: `Exact ${fmtUSD(sellIn)} · SAP S/4HANA`,
+          },
+          {
+            cls: "teal",
+            label: "Omnichannel Retail GMV (OMO Sell-Out)",
+            val: fmtUSD(sellOut, true),
+            foot: `Sell-through ${((sellOut / sellIn) * 100).toFixed(1)}% · OneLake Shortcut`,
+          },
+          {
+            cls: "",
+            label: "36-Partner Channel Inventory Value",
+            val: fmtUSD(stockVal, true),
+            foot: `Latest EDI 852 snapshot (${fmtUSD(stockVal)})`,
+          },
+          {
+            cls: "danger",
+            label: "Avg Weeks of Supply (WOS)",
+            val: `${Number(avgWos).toFixed(2)} wks`,
+            foot: `Polarized: DE 0.82w stockout vs MX 14.2w aging`,
+          },
+          {
+            cls: "amber",
+            label: "2025 P745 Price-Protection Exposure",
+            val: fmtUSD(ppExp, true),
+            foot: `Exact ${fmtUSD(ppExp)} · 60-day contract cap`,
+          },
+          {
+            cls: "purple",
+            label: "Ontology Blocked Stuffing Rebates",
+            val: fmtUSD(blockedReb, true),
+            foot: `Frozen VN01 EOQ stuffing claim (${fmtUSD(blockedReb)})`,
+          },
+        ]
+      : [
+          {
+            cls: "teal",
+            label: "全球总部批发净出货 (Sell-In)",
+            val: fmtUSD(sellIn, true),
+            foot: `精确值 ${fmtUSD(sellIn)} · SAP S/4HANA`,
+          },
+          {
+            cls: "teal",
+            label: "全渠道终端实销 GMV (OMO Sell-Out)",
+            val: fmtUSD(sellOut, true),
+            foot: `动销转化率 ${((sellOut / sellIn) * 100).toFixed(1)}% · OneLake Shortcut`,
+          },
+          {
+            cls: "",
+            label: "全球 36 家渠道在库总货值",
+            val: fmtUSD(stockVal, true),
+            foot: `最新 EDI 852 快照 (${fmtUSD(stockVal)})`,
+          },
+          {
+            cls: "danger",
+            label: "平均库存周转天数 (WOS)",
+            val: `${Number(avgWos).toFixed(2)} 周`,
+            foot: `极化告警: 德国 0.82w 断货 vs 墨西哥 14.2w 积压`,
+          },
+          {
+            cls: "amber",
+            label: "2025 老品 P745 价保风险敞口",
+            val: fmtUSD(ppExp, true),
+            foot: `精确值 ${fmtUSD(ppExp)} · 60天合同价保`,
+          },
+          {
+            cls: "purple",
+            label: "Ontology 拦截异常压货返利",
+            val: fmtUSD(blockedReb, true),
+            foot: `冻结越南 VN01 冲量骗补 (${fmtUSD(blockedReb)})`,
+          },
+        ];
 
     document.getElementById("kpiGrid").innerHTML = cards
       .map(
@@ -485,7 +772,7 @@ FILTER(
       rowsSvg += `
         <g transform="translate(0, ${y})">
           <text x="${padL - 12}" y="14" text-anchor="end" fill="#f8fafc" font-size="12.5" font-weight="700">${esc(r.region)}</text>
-          <text x="${padL - 12}" y="29" text-anchor="end" fill="#94a3b8" font-size="10.5">${r.partnerCount} 家代理商/KA</text>
+          <text x="${padL - 12}" y="29" text-anchor="end" fill="#94a3b8" font-size="10.5">${r.partnerCount} ${IS_EN ? "Partners / KAs" : "家代理商/KA"}</text>
 
           <rect x="${padL}" y="2" width="${wIn.toFixed(1)}" height="13" rx="4" fill="#38bdf8" opacity="0.9" />
           <text x="${padL + wIn + 6}" y="12.5" fill="#bae6fd" font-size="11" font-family="monospace">${fmtUSD(r.sellInUSD, true)} Sell-In</text>
@@ -494,8 +781,8 @@ FILTER(
           <text x="${padL + wOut + 6}" y="29.5" fill="#a7f3d0" font-size="11" font-family="monospace">${fmtUSD(r.sellOutUSD, true)} Sell-Out (${r.sellThroughPct}%)</text>
 
           <rect x="${W - padR + 28}" y="4" width="158" height="28" rx="6" fill="rgba(15,23,42,0.9)" stroke="${wosColor}" stroke-opacity="0.55" />
-          <text x="${W - padR + 36}" y="17" fill="#e2e8f0" font-size="10.5">均 WOS <tspan font-weight="700" fill="${wosColor}">${r.avgWos}w</tspan> (${r.minWos}~${r.maxWos}w)</text>
-          <text x="${W - padR + 36}" y="29" fill="#94a3b8" font-size="9.8">BOPIS 自提占比: ${r.omoClickCollectSharePct}%</text>
+          <text x="${W - padR + 36}" y="17" fill="#e2e8f0" font-size="10.5">${IS_EN ? "Avg WOS" : "均 WOS"} <tspan font-weight="700" fill="${wosColor}">${r.avgWos}w</tspan> (${r.minWos}~${r.maxWos}w)</text>
+          <text x="${W - padR + 36}" y="29" fill="#94a3b8" font-size="9.8">${IS_EN ? "BOPIS Pickup:" : "BOPIS 自提占比:"} ${r.omoClickCollectSharePct}%</text>
         </g>
       `;
     });
@@ -504,10 +791,10 @@ FILTER(
       <svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Regional Sell-In vs Sell-Out">
         <g transform="translate(${padL}, 16)">
           <rect x="0" y="-9" width="12" height="10" rx="2" fill="#38bdf8" />
-          <text x="17" y="0" fill="#cbd5e1" font-size="11.5">总部批发净出货 (Sell-In USD)</text>
+          <text x="17" y="0" fill="#cbd5e1" font-size="11.5">${IS_EN ? "HQ Wholesale (Sell-In USD)" : "总部批发净出货 (Sell-In USD)"}</text>
           <rect x="210" y="-9" width="12" height="10" rx="2" fill="#10b981" />
-          <text x="227" y="0" fill="#cbd5e1" font-size="11.5">全渠道终端实销 (OMO Sell-Out GMV)</text>
-          <text x="${W - padL - padR + 30}" y="0" fill="#cbd5e1" font-size="11.5">周转极化区间 (Min~Max WOS)</text>
+          <text x="227" y="0" fill="#cbd5e1" font-size="11.5">${IS_EN ? "Omnichannel Retail (OMO Sell-Out GMV)" : "全渠道终端实销 (OMO Sell-Out GMV)"}</text>
+          <text x="${W - padL - padR + 30}" y="0" fill="#cbd5e1" font-size="11.5">${IS_EN ? "WOS Spread (Min~Max)" : "周转极化区间 (Min~Max WOS)"}</text>
         </g>
         ${rowsSvg}
       </svg>
@@ -536,7 +823,11 @@ FILTER(
           })
           .join("")}
         <div class="sim-panel" style="margin-top:6px;font-size:12px;color:var(--text-secondary);">
-          💡 <strong>OMO 混合归因价值</strong>：线上短视频/社媒领券引流至 RheinMarkt、Northwind Tech、VerdeBrasil 门店自提（BOPIS）占总实销台数超 <strong>18%</strong>。若不打通线上营销与线下代理商库存，极易出现“广告越投越猛、门店早已断货”的错配。
+          ${
+            IS_EN
+              ? '💡 <strong>OMO Attribution Value</strong>: Social/short-video vouchers driving BOPIS store pickup at RheinMarkt, Northwind Tech &amp; VerdeBrasil exceed <strong>18%</strong> of total unit sell-out. Connecting digital campaigns with partner store stock prevents pouring ad spend into stocked-out stores.'
+              : '💡 <strong>OMO 混合归因价值</strong>：线上短视频/社媒领券引流至 RheinMarkt、Northwind Tech、VerdeBrasil 门店自提（BOPIS）占总实销台数超 <strong>18%</strong>。若不打通线上营销与线下代理商库存，极易出现“广告越投越猛、门店早已断货”的错配。'
+          }
         </div>
       </div>
     `;
@@ -547,12 +838,19 @@ FILTER(
     const stFilter = document.getElementById("filterStatus").value;
     const q = document.getElementById("searchPartner").value.trim().toLowerCase();
 
-    const statusBadge = {
-      CRITICAL_STOCKOUT: `<span class="crisis-tag tag-red">🔴 断货告急</span>`,
-      AGING_OVERSTOCK: `<span class="crisis-tag tag-amber">🟠 老品价保预警</span>`,
-      DONOR_SURPLUS: `<span class="crisis-tag tag-green">🟢 欧陆可调出仓</span>`,
-      HEALTHY: `<span class="crisis-tag tag-blue">🔵 周转健康</span>`,
-    };
+    const statusBadge = IS_EN
+      ? {
+          CRITICAL_STOCKOUT: `<span class="crisis-tag tag-red">🔴 Stockout Alert</span>`,
+          AGING_OVERSTOCK: `<span class="crisis-tag tag-amber">🟠 Aging Price-Prot</span>`,
+          DONOR_SURPLUS: `<span class="crisis-tag tag-green">🟢 EU Donor Surplus</span>`,
+          HEALTHY: `<span class="crisis-tag tag-blue">🔵 Healthy Turn</span>`,
+        }
+      : {
+          CRITICAL_STOCKOUT: `<span class="crisis-tag tag-red">🔴 断货告急</span>`,
+          AGING_OVERSTOCK: `<span class="crisis-tag tag-amber">🟠 老品价保预警</span>`,
+          DONOR_SURPLUS: `<span class="crisis-tag tag-green">🟢 欧陆可调出仓</span>`,
+          HEALTHY: `<span class="crisis-tag tag-blue">🔵 周转健康</span>`,
+        };
 
     const filtered = (STATE.partnersMatrix || []).filter((p) => {
       if (regFilter !== "ALL" && p.region !== regFilter) return false;
@@ -615,15 +913,15 @@ FILTER(
 
         <!-- Left External Zone -->
         <rect x="18" y="22" width="320" height="256" rx="14" fill="url(#gradExt)" stroke="#f59e0b" stroke-opacity="0.55" />
-        <text x="36" y="50" fill="#fcd34d" font-size="13.5" font-weight="700">外部隔离域 · Contoso_Partner_EDI_Portal_Zone</text>
-        <text x="36" y="69" fill="#94a3b8" font-size="11">模拟 36 家海外国代 EDI 852 与零售商 POS 独立租户/存储</text>
+        <text x="36" y="50" fill="#fcd34d" font-size="13.5" font-weight="700">${IS_EN ? "External Zone · Contoso_Partner_EDI_Portal_Zone" : "外部隔离域 · Contoso_Partner_EDI_Portal_Zone"}</text>
+        <text x="36" y="69" fill="#94a3b8" font-size="11">${IS_EN ? "36 overseas partner EDI 852 & retail POS isolated tenant storage" : "模拟 36 家海外国代 EDI 852 与零售商 POS 独立租户/存储"}</text>
 
         <rect x="36" y="88" width="284" height="52" rx="8" fill="#090d16" stroke="#334155" />
-        <text x="48" y="110" fill="#f8fafc" font-size="12" font-weight="700">lh_partner_edi_portal · EDI 852 周库存</text>
+        <text x="48" y="110" fill="#f8fafc" font-size="12" font-weight="700">${IS_EN ? "lh_partner_edi_portal · EDI 852 Weekly Stock" : "lh_partner_edi_portal · EDI 852 周库存"}</text>
         <text x="48" y="128" fill="#6ee7b7" font-size="11" font-family="monospace">fact_channel_inventory_weekly (3,456 rows)</text>
 
         <rect x="36" y="150" width="284" height="52" rx="8" fill="#090d16" stroke="#334155" />
-        <text x="48" y="172" fill="#f8fafc" font-size="12" font-weight="700">lh_partner_edi_portal · 全渠道 POS 实销</text>
+        <text x="48" y="172" fill="#f8fafc" font-size="12" font-weight="700">${IS_EN ? "lh_partner_edi_portal · OMO POS Sell-Out" : "lh_partner_edi_portal · 全渠道 POS 实销"}</text>
         <text x="48" y="190" fill="#6ee7b7" font-size="11" font-family="monospace">fact_sell_out_transactions (6,624 rows)</text>
 
         <rect x="36" y="212" width="284" height="48" rx="8" fill="#090d16" stroke="#334155" />
@@ -635,20 +933,20 @@ FILTER(
         <path d="M 338 176 L 455 176" stroke="#10b981" stroke-width="2.5" stroke-dasharray="6 4" marker-end="url(#arrowGreen)" />
         <path d="M 338 236 L 455 215" stroke="#38bdf8" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#arrowCyan)" />
         <rect x="352" y="76" width="94" height="24" rx="6" fill="rgba(16,185,129,0.2)" stroke="#10b981" />
-        <text x="399" y="92" text-anchor="middle" fill="#6ee7b7" font-size="10.5" font-weight="700">Zero-Copy 0复制</text>
+        <text x="399" y="92" text-anchor="middle" fill="#6ee7b7" font-size="10.5" font-weight="700">${IS_EN ? "Zero-Copy 0 ETL" : "Zero-Copy 0复制"}</text>
 
         <!-- Center Main OneLake Hub -->
         <rect x="460" y="22" width="340" height="256" rx="14" fill="url(#gradMain)" stroke="#38bdf8" stroke-opacity="0.7" />
-        <text x="478" y="50" fill="#7dd3fc" font-size="13.5" font-weight="700">总部主湖仓 · lh_contoso_global_channel (OneLake)</text>
-        <text x="478" y="69" fill="#cbd5e1" font-size="11">统一 V-Order Delta Parquet 开放格式 · 单一可信数据源</text>
+        <text x="478" y="50" fill="#7dd3fc" font-size="13.5" font-weight="700">${IS_EN ? "HQ Core Lakehouse · lh_contoso_global_channel" : "总部主湖仓 · lh_contoso_global_channel (OneLake)"}</text>
+        <text x="478" y="69" fill="#cbd5e1" font-size="11">${IS_EN ? "Unified V-Order Delta Parquet · Single Source of Truth" : "统一 V-Order Delta Parquet 开放格式 · 单一可信数据源"}</text>
 
         <rect x="478" y="86" width="304" height="76" rx="8" fill="rgba(7,11,20,0.85)" stroke="#38bdf8" stroke-opacity="0.4" />
-        <text x="492" y="108" fill="#fff" font-size="12" font-weight="700">总部原生 Delta 表 (9 张核心表)</text>
+        <text x="492" y="108" fill="#fff" font-size="12" font-weight="700">${IS_EN ? "HQ Native Delta Tables (9 Core Tables)" : "总部原生 Delta 表 (9 张核心表)"}</text>
         <text x="492" y="126" fill="#94a3b8" font-size="11">dim_subsidiaries · dim_distributors · dim_products</text>
         <text x="492" y="144" fill="#94a3b8" font-size="11">fact_sell_in_orders · ocean_shipments · rebate_claims</text>
 
         <rect x="478" y="174" width="304" height="86" rx="8" fill="rgba(7,11,20,0.85)" stroke="#10b981" stroke-opacity="0.5" />
-        <text x="492" y="196" fill="#6ee7b7" font-size="12" font-weight="700">OneLake Shortcuts 零拷贝虚拟挂载 (3 项)</text>
+        <text x="492" y="196" fill="#6ee7b7" font-size="12" font-weight="700">${IS_EN ? "OneLake Shortcuts Virtual Mounts (3 Items)" : "OneLake Shortcuts 零拷贝虚拟挂载 (3 项)"}</text>
         <text x="492" y="215" fill="#e2e8f0" font-size="11">🔗 Tables/fact_channel_inventory_weekly</text>
         <text x="492" y="233" fill="#e2e8f0" font-size="11">🔗 Tables/fact_sell_out_transactions</text>
         <text x="492" y="250" fill="#93c5fd" font-size="10.5">🔗 Files/external_partner_edi_raw (ADLS Gen2)</text>
@@ -660,55 +958,73 @@ FILTER(
         <path d="M 800 230 L 858 250" stroke="#38bdf8" stroke-width="2" marker-end="url(#arrowCyan)" />
 
         <rect x="864" y="28" width="296" height="54" rx="9" fill="#11192c" stroke="#38bdf8" stroke-opacity="0.5" />
-        <text x="880" y="50" fill="#7dd3fc" font-size="12" font-weight="700">1. DirectLake 语义模型 (sm_contoso_global_channel_iq)</text>
-        <text x="880" y="68" fill="#94a3b8" font-size="11">零导入直读 Parquet · 19 个渠道财务 DAX 度量值</text>
+        <text x="880" y="50" fill="#7dd3fc" font-size="12" font-weight="700">${IS_EN ? "1. DirectLake Model (sm_contoso_global_channel_iq)" : "1. DirectLake 语义模型 (sm_contoso_global_channel_iq)"}</text>
+        <text x="880" y="68" fill="#94a3b8" font-size="11">${IS_EN ? "Zero-import Parquet · 19 governed channel DAX KPIs" : "零导入直读 Parquet · 19 个渠道财务 DAX 度量值"}</text>
 
         <rect x="864" y="94" width="296" height="54" rx="9" fill="#11192c" stroke="#a855f7" stroke-opacity="0.6" />
         <text x="880" y="116" fill="#d8b4fe" font-size="12" font-weight="700">2. Fabric IQ Ontology (ont_contoso_global_channel)</text>
-        <text x="880" y="134" fill="#94a3b8" font-size="11">10 实体 + 13 关系图谱 + TimeSeries 时序双绑定</text>
+        <text x="880" y="134" fill="#94a3b8" font-size="11">${IS_EN ? "10 entities + 13 edges + TimeSeries dual binding" : "10 实体 + 13 关系图谱 + TimeSeries 时序双绑定"}</text>
 
         <rect x="864" y="160" width="296" height="54" rx="9" fill="#11192c" stroke="#10b981" stroke-opacity="0.6" />
-        <text x="880" y="182" fill="#6ee7b7" font-size="12" font-weight="700">3. Eventhouse 实时流 (eh_contoso_channel_pulse)</text>
-        <text x="880" y="200" fill="#94a3b8" font-size="11">分钟级黑五 POS 脉冲 + 跨国调拨 KQL 配对函数</text>
+        <text x="880" y="182" fill="#6ee7b7" font-size="12" font-weight="700">${IS_EN ? "3. Eventhouse Stream (eh_contoso_channel_pulse)" : "3. Eventhouse 实时流 (eh_contoso_channel_pulse)"}</text>
+        <text x="880" y="200" fill="#94a3b8" font-size="11">${IS_EN ? "5-min Black Friday POS surge + KQL rebalance pairing" : "分钟级黑五 POS 脉冲 + 跨国调拨 KQL 配对函数"}</text>
 
         <rect x="864" y="226" width="296" height="54" rx="9" fill="#11192c" stroke="#f43f5e" stroke-opacity="0.6" />
-        <text x="880" y="248" fill="#fda4af" font-size="12" font-weight="700">4. Fabric IQ 双智能体 + PySpark 闭环回写</text>
-        <text x="880" y="266" fill="#94a3b8" font-size="11">DataAgent 问答 + OperationsAgent 触发调拨回写</text>
+        <text x="880" y="248" fill="#fda4af" font-size="12" font-weight="700">${IS_EN ? "4. Dual Agents + PySpark Closed-Loop Writeback" : "4. Fabric IQ 双智能体 + PySpark 闭环回写"}</text>
+        <text x="880" y="266" fill="#94a3b8" font-size="11">${IS_EN ? "DataAgent Q&A + OperationsAgent transfer writeback" : "DataAgent 问答 + OperationsAgent 触发调拨回写"}</text>
       </svg>
     `;
 
     document.getElementById("fabricItemsTableBody").innerHTML = (STATE.fabricItems || [])
-      .map(
-        (it) => `
+      .map((it) => {
+        const descText = IS_EN ? FABRIC_ITEM_DESC_EN[it.name] || it.desc : it.desc;
+        return `
       <tr>
         <td><span class="crisis-tag tag-blue">${esc(it.layer)}</span></td>
         <td class="mono" style="font-weight:700;color:#fff;">${esc(it.name)}</td>
         <td>${esc(it.type)}</td>
         <td class="mono" style="color:var(--text-muted);">${esc(it.id || "-")}</td>
-        <td>${esc(it.desc)}</td>
-        <td><a class="btn btn-sm" href="${esc(it.url)}" target="_blank" rel="noopener">打开 ↗</a></td>
+        <td>${esc(descText)}</td>
+        <td><a class="btn btn-sm" href="${esc(it.url)}" target="_blank" rel="noopener">${IS_EN ? "Open ↗" : "打开 ↗"}</a></td>
       </tr>
-    `
-      )
+    `;
+      })
       .join("");
 
     const counts = m.tableRowCounts || {};
-    const sourceMeta = {
-      dim_subsidiaries: "OneLake 主湖仓 Delta 表",
-      dim_products: "OneLake 主湖仓 Delta 表",
-      dim_distributors: "OneLake 主湖仓 Delta 表",
-      dim_promotions: "OneLake 主湖仓 Delta 表",
-      fact_channel_inventory_weekly: "🔗 OneLake Shortcut (跨区 EDI 852)",
-      fact_sell_in_orders: "OneLake 主湖仓 Delta 表 (SAP ERP)",
-      fact_sell_out_transactions: "🔗 OneLake Shortcut (全渠道 POS)",
-      fact_ocean_shipments: "OneLake 主湖仓 Delta 表 (海运/班列)",
-      fact_rebate_claims: "OneLake 主湖仓 Delta 表 (财务返利)",
-      fact_inter_warehouse_transfers: "OneLake 闭环回写 Delta 表",
-      fact_inventory_telemetry: "OneLake + Ontology TimeSeries 源",
-      PosSellOutRealtime: "⚡ Eventhouse KQL 实时脉冲流",
-      ChannelInventoryTelemetry: "⚡ Eventhouse KQL 动态 WOS 流",
-      PortAndLogisticsAlerts: "⚡ Eventhouse KQL 港口拥堵流",
-    };
+    const sourceMeta = IS_EN
+      ? {
+          dim_subsidiaries: "OneLake Core Delta Table",
+          dim_products: "OneLake Core Delta Table",
+          dim_distributors: "OneLake Core Delta Table",
+          dim_promotions: "OneLake Core Delta Table",
+          fact_channel_inventory_weekly: "🔗 OneLake Shortcut (Partner EDI 852)",
+          fact_sell_in_orders: "OneLake Core Delta Table (SAP ERP)",
+          fact_sell_out_transactions: "🔗 OneLake Shortcut (Omnichannel POS)",
+          fact_ocean_shipments: "OneLake Core Delta Table (Ocean/Rail)",
+          fact_rebate_claims: "OneLake Core Delta Table (Finance Rebates)",
+          fact_inter_warehouse_transfers: "OneLake Closed-Loop Writeback Delta",
+          fact_inventory_telemetry: "OneLake + Ontology TimeSeries Backing",
+          PosSellOutRealtime: "⚡ Eventhouse KQL Streaming Pulse",
+          ChannelInventoryTelemetry: "⚡ Eventhouse KQL Dynamic WOS Stream",
+          PortAndLogisticsAlerts: "⚡ Eventhouse KQL Port Congestion Stream",
+        }
+      : {
+          dim_subsidiaries: "OneLake 主湖仓 Delta 表",
+          dim_products: "OneLake 主湖仓 Delta 表",
+          dim_distributors: "OneLake 主湖仓 Delta 表",
+          dim_promotions: "OneLake 主湖仓 Delta 表",
+          fact_channel_inventory_weekly: "🔗 OneLake Shortcut (跨区 EDI 852)",
+          fact_sell_in_orders: "OneLake 主湖仓 Delta 表 (SAP ERP)",
+          fact_sell_out_transactions: "🔗 OneLake Shortcut (全渠道 POS)",
+          fact_ocean_shipments: "OneLake 主湖仓 Delta 表 (海运/班列)",
+          fact_rebate_claims: "OneLake 主湖仓 Delta 表 (财务返利)",
+          fact_inter_warehouse_transfers: "OneLake 闭环回写 Delta 表",
+          fact_inventory_telemetry: "OneLake + Ontology TimeSeries 源",
+          PosSellOutRealtime: "⚡ Eventhouse KQL 实时脉冲流",
+          ChannelInventoryTelemetry: "⚡ Eventhouse KQL 动态 WOS 流",
+          PortAndLogisticsAlerts: "⚡ Eventhouse KQL 港口拥堵流",
+        };
 
     document.getElementById("rowCountTableBody").innerHTML = Object.entries(counts)
       .map(
@@ -750,11 +1066,11 @@ FILTER(
           <path d="${linePath((d) => d.deUnits)}" fill="none" stroke="#f43f5e" stroke-width="3" />
           <g transform="translate(${padL + 8}, 14)">
             <line x1="0" y1="-4" x2="18" y2="-4" stroke="#f43f5e" stroke-width="3" />
-            <text x="24" y="0" fill="#fda4af" font-size="11" font-weight="700">德国 DE01+DE02 实销脉冲 (2.8x 暴涨)</text>
+            <text x="24" y="0" fill="#fda4af" font-size="11" font-weight="700">${IS_EN ? "DE01+DE02 POS Surge (2.8x Spike)" : "德国 DE01+DE02 实销脉冲 (2.8x 暴涨)"}</text>
             <line x1="245" y1="-4" x2="263" y2="-4" stroke="#10b981" stroke-width="2.4" />
-            <text x="269" y="0" fill="#6ee7b7" font-size="11">法国 FR01 实销</text>
+            <text x="269" y="0" fill="#6ee7b7" font-size="11">${IS_EN ? "France FR01 POS" : "法国 FR01 实销"}</text>
             <line x1="380" y1="-4" x2="398" y2="-4" stroke="#64748b" stroke-width="2" stroke-dasharray="4 3" />
-            <text x="404" y="0" fill="#94a3b8" font-size="11">德国常规基线</text>
+            <text x="404" y="0" fill="#94a3b8" font-size="11">${IS_EN ? "Germany Baseline" : "德国常规基线"}</text>
           </g>
           <text x="${padL}" y="${H - 10}" fill="#94a3b8" font-size="10.5">${esc(pos[0].ts.slice(5, 16))}</text>
           <text x="${W - padR}" y="${H - 10}" text-anchor="end" fill="#94a3b8" font-size="10.5">${esc(pos[pos.length - 1].ts.slice(5, 16))}</text>
@@ -784,7 +1100,7 @@ FILTER(
         <svg viewBox="0 0 ${W} ${H}">
           <rect x="${padL}" y="${yGuard}" width="${W - padL - padR}" height="${H - padB - yGuard}" fill="rgba(239,68,68,0.10)" />
           <line x1="${padL}" y1="${yGuard}" x2="${W - padR}" y2="${yGuard}" stroke="#ef4444" stroke-width="1.6" stroke-dasharray="6 4" />
-          <text x="${W - padR - 6}" y="${yGuard - 5}" text-anchor="end" fill="#fca5a5" font-size="10.5" font-weight="700">Ontology 断货红线 WOS = 1.5w</text>
+          <text x="${W - padR - 6}" y="${yGuard - 5}" text-anchor="end" fill="#fca5a5" font-size="10.5" font-weight="700">${IS_EN ? "Ontology Stockout Guardrail WOS = 1.5w" : "Ontology 断货红线 WOS = 1.5w"}</text>
           <line x1="${padL}" y1="${H - padB}" x2="${W - padR}" y2="${H - padB}" stroke="#334155" />
 
           <path d="${pathFor("fr01Wos")}" fill="none" stroke="#10b981" stroke-width="2.6" />
@@ -792,9 +1108,9 @@ FILTER(
           <path d="${pathFor("de01Wos")}" fill="none" stroke="#f43f5e" stroke-width="3" />
 
           <g transform="translate(${padL + 8}, 14)">
-            <text x="0" y="0" fill="#6ee7b7" font-size="11" font-weight="700">● 法国 FR01 (~7.1w 富余)</text>
-            <text x="175" y="0" fill="#fcd34d" font-size="11" font-weight="700">● 德国 DE02 (1.04w 告急)</text>
-            <text x="355" y="0" fill="#fda4af" font-size="11" font-weight="700">● 德国 DE01 (0.86w 濒临断货)</text>
+            <text x="0" y="0" fill="#6ee7b7" font-size="11" font-weight="700">${IS_EN ? "● France FR01 (~7.1w Surplus)" : "● 法国 FR01 (~7.1w 富余)"}</text>
+            <text x="175" y="0" fill="#fcd34d" font-size="11" font-weight="700">${IS_EN ? "● Germany DE02 (1.04w Low)" : "● 德国 DE02 (1.04w 告急)"}</text>
+            <text x="355" y="0" fill="#fda4af" font-size="11" font-weight="700">${IS_EN ? "● Germany DE01 (0.86w Critical)" : "● 德国 DE01 (0.86w 濒临断货)"}</text>
           </g>
           <text x="${padL}" y="${H - 10}" fill="#94a3b8" font-size="10.5">${esc(wos[0].ts.slice(5, 16))}</text>
           <text x="${W - padR}" y="${H - 10}" text-anchor="end" fill="#94a3b8" font-size="10.5">${esc(wos[wos.length - 1].ts.slice(5, 16))}</text>
@@ -812,12 +1128,12 @@ FILTER(
         <div class="sim-panel" style="border-color:${isCrit ? "rgba(239,68,68,0.5)" : "var(--border-subtle)"};">
           <div style="display:flex;justify-content:space-between;align-items:center;">
             <strong class="mono" style="color:${isCrit ? "#fca5a5" : "#fcd34d"};">${esc(a.ShipmentId)} · ${esc(a.VesselCode)}</strong>
-            <span class="crisis-tag ${isCrit ? "tag-red" : "tag-amber"}">延误 +${esc(a.DelayDays)} 天</span>
+            <span class="crisis-tag ${isCrit ? "tag-red" : "tag-amber"}">${IS_EN ? `Delay +${esc(a.DelayDays)}d` : `延误 +${esc(a.DelayDays)} 天`}</span>
           </div>
           <div style="font-size:12px;margin:4px 0;color:#fff;">
-            ${esc(a.OriginPort)} → <strong>${esc(a.DestinationPort)}</strong> · 影响 <code>${esc(a.AffectedProductId)}</code> (${fmtInt(a.AffectedUnits)} 台 / ${fmtUSD(a.CargoValueUSD, true)})
+            ${esc(a.OriginPort)} → <strong>${esc(a.DestinationPort)}</strong> · ${IS_EN ? "Impacts" : "影响"} <code>${esc(a.AffectedProductId)}</code> (${fmtInt(a.AffectedUnits)} ${IS_EN ? "units" : "台"} / ${fmtUSD(a.CargoValueUSD, true)})
           </div>
-          <div style="font-size:11.5px;color:var(--text-muted);">${esc(a.StatusMessage)} (拥堵指数 ${esc(a.PortCongestionIndex)})</div>
+          <div style="font-size:11.5px;color:var(--text-muted);">${esc(a.StatusMessage)} (${IS_EN ? "Congestion Index" : "拥堵指数"} ${esc(a.PortCongestionIndex)})</div>
         </div>
       `;
       })
@@ -825,19 +1141,20 @@ FILTER(
   }
 
   function renderRebalancePairs(pairs) {
+    const unitLbl = IS_EN ? "u" : "台";
     document.getElementById("rebalancePairsBody").innerHTML = pairs
       .map(
         (p) => `
       <tr>
         <td class="mono" style="font-weight:700;color:#d8b4fe;">${esc(p.productId)}</td>
         <td><strong>${esc(p.shortagePartnerId)}</strong> · ${esc(p.shortageCountry)}<div style="font-size:11px;color:var(--text-muted);">${esc(p.shortagePartnerName || "")}</div></td>
-        <td class="num mono" style="color:#fca5a5;">${fmtInt(p.shortageUnits)} 台 / <strong>${p.shortageWos}w</strong></td>
+        <td class="num mono" style="color:#fca5a5;">${fmtInt(p.shortageUnits)} ${unitLbl} / <strong>${p.shortageWos}w</strong></td>
         <td><strong>${esc(p.donorPartnerId)}</strong> · ${esc(p.donorCountry)}<div style="font-size:11px;color:var(--text-muted);">${esc(p.donorPartnerName || "")}</div></td>
-        <td class="num mono" style="color:#6ee7b7;">${fmtInt(p.donorUnits)} 台 / <strong>${p.donorWos}w</strong></td>
-        <td class="num mono"><strong>${fmtInt(p.suggestedTransferUnits)} 台</strong></td>
+        <td class="num mono" style="color:#6ee7b7;">${fmtInt(p.donorUnits)} ${unitLbl} / <strong>${p.donorWos}w</strong></td>
+        <td class="num mono"><strong>${fmtInt(p.suggestedTransferUnits)} ${unitLbl}</strong></td>
         <td>
           <button class="btn btn-sm btn-brand" onclick="prefillAndJumpDispatch('${esc(p.donorPartnerId)}','${esc(p.shortagePartnerId)}','${esc(p.productId)}',${Number(p.suggestedTransferUnits || 250)})">
-            去派单 →
+            ${IS_EN ? "Dispatch →" : "去派单 →"}
           </button>
         </td>
       </tr>
@@ -868,19 +1185,20 @@ FILTER(
     document.getElementById("ontologyRulesGrid").innerHTML = rules
       .map((r) => {
         const tagCls = r.severity === "CRITICAL" ? "tag-red" : r.severity === "HIGH" ? "tag-amber" : "tag-purple";
+        const enRule = IS_EN ? ONTOLOGY_RULE_EN[r.id] : null;
         return `
         <div class="crisis-card">
           <div>
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
-              <span class="crisis-tag ${tagCls}">${esc(r.severity)} · 命中 ${r.hitCount} 处</span>
+              <span class="crisis-tag ${tagCls}">${esc(r.severity)} · ${IS_EN ? `${r.hitCount} Hits` : `命中 ${r.hitCount} 处`}</span>
               <span class="mono" style="font-size:11px;color:var(--text-muted);">${esc(r.entity)}</span>
             </div>
-            <h4 style="font-size:14px;margin-bottom:6px;color:#fff;">${esc(r.name)}</h4>
+            <h4 style="font-size:14px;margin-bottom:6px;color:#fff;">${esc(enRule ? enRule.name : r.name)}</h4>
             <div class="code-block" style="margin-bottom:8px;padding:6px 9px;">IF ${esc(r.condition)}</div>
-            <p style="font-size:12px;color:var(--text-secondary);">${esc(r.action)}</p>
+            <p style="font-size:12px;color:var(--text-secondary);">${esc(enRule ? enRule.action : r.action)}</p>
           </div>
           <div style="font-size:12px;font-weight:700;color:#6ee7b7;padding-top:6px;border-top:1px solid var(--border-subtle);">
-            💰 商业价值：${esc(r.financialImpact)}
+            💰 ${IS_EN ? "Business Impact:" : "商业价值："}${esc(enRule ? enRule.impact : r.financialImpact)}
           </div>
         </div>
       `;
@@ -942,6 +1260,7 @@ FILTER(
       .map((n) => {
         const isSel = n.id === selectedOntologyEntityId;
         const hasTs = n.timeSeriesProperties && n.timeSeriesProperties.length > 0;
+        const subText = IS_EN && ONTOLOGY_ENTITY_EN[n.id] ? ONTOLOGY_ENTITY_EN[n.id].sub : n.cnLabel;
         return `
         <g class="ont-node" onclick="selectOntologyNode('${esc(n.id)}')" transform="translate(${n.x}, ${n.y})">
           <rect x="-92" y="-28" width="184" height="56" rx="11"
@@ -949,7 +1268,7 @@ FILTER(
                 stroke="${n.color}"
                 stroke-width="${isSel ? 3 : 1.6}" />
           <text x="0" y="-6" text-anchor="middle" fill="#fff" font-size="11.5" font-weight="700">${esc(n.label)}</text>
-          <text x="0" y="11" text-anchor="middle" fill="#cbd5e1" font-size="10">${esc(n.cnLabel)}</text>
+          <text x="0" y="11" text-anchor="middle" fill="#cbd5e1" font-size="10">${esc(subText)}</text>
           ${
             hasTs
               ? `<rect x="44" y="-37" width="54" height="16" rx="8" fill="#e60012" /><text x="71" y="-26" text-anchor="middle" fill="#fff" font-size="9" font-weight="700">TimeSeries</text>`
@@ -977,15 +1296,28 @@ FILTER(
   function renderOntologyInspector() {
     const ont = STATE.ontology;
     const ent = ont.entities.find((e) => e.id === selectedOntologyEntityId) || ont.entities[1];
-    document.getElementById("ontNodeTitle").textContent = `🔍 实体：${ent.label} (${ent.cnLabel})`;
-    document.getElementById("ontNodeSub").textContent = `主键: ${ent.keyProperty} · 承载引擎: ${ent.sourceEngine} · 规模: ${fmtInt(ent.rowCount)} 行`;
+    const enEnt = IS_EN ? ONTOLOGY_ENTITY_EN[ent.id] : null;
+    const subLbl = enEnt ? enEnt.sub : ent.cnLabel;
+    const engineLbl = enEnt ? enEnt.engine : ent.sourceEngine;
+    const sampleLbl = enEnt ? enEnt.sample : ent.sampleHighlight;
+
+    document.getElementById("ontNodeTitle").textContent = IS_EN
+      ? `🔍 Entity: ${ent.label} (${subLbl})`
+      : `🔍 实体：${ent.label} (${subLbl})`;
+    document.getElementById("ontNodeSub").textContent = IS_EN
+      ? `Primary Key: ${ent.keyProperty} · Backing Engine: ${engineLbl} · Rows: ${fmtInt(ent.rowCount)}`
+      : `主键: ${ent.keyProperty} · 承载引擎: ${engineLbl} · 规模: ${fmtInt(ent.rowCount)} 行`;
 
     const rels = ont.edges.filter((e) => e.from === ent.id || e.to === ent.id);
     const tsHtml =
       ent.timeSeriesProperties && ent.timeSeriesProperties.length
         ? `
       <div class="sim-panel" style="border-color:rgba(244,63,94,0.5);margin-bottom:10px;">
-        <div style="font-weight:700;color:#fda4af;margin-bottom:5px;">⚡ 新版 Ontology 动态时序属性绑定 (TimeSeries Binding)</div>
+        <div style="font-weight:700;color:#fda4af;margin-bottom:5px;">${
+          IS_EN
+            ? "⚡ Ontology Dynamic TimeSeries Property Binding"
+            : "⚡ 新版 Ontology 动态时序属性绑定 (TimeSeries Binding)"
+        }</div>
         ${ent.timeSeriesProperties.map((p) => `<div class="mono" style="color:#fecdd3;margin:2px 0;">• ${esc(p)}</div>`).join("")}
       </div>
     `
@@ -993,18 +1325,24 @@ FILTER(
 
     document.getElementById("ontNodeDetails").innerHTML = `
       <div class="sim-panel" style="margin-bottom:10px;">
-        <div style="font-size:12px;color:var(--text-muted);">OneLake 物理绑定源表 (` + "`EntityDataBinding`" + `)</div>
+        <div style="font-size:12px;color:var(--text-muted);">${
+          IS_EN ? "OneLake Physical Backing Table (`EntityDataBinding`)" : "OneLake 物理绑定源表 (`EntityDataBinding`)"
+        }</div>
         <div class="mono" style="font-size:13px;color:#6ee7b7;font-weight:700;margin-top:2px;">${esc(ent.backingTable)}</div>
       </div>
       ${tsHtml}
       <div class="sim-panel" style="margin-bottom:10px;">
-        <div style="font-weight:700;margin-bottom:5px;font-size:12.5px;">静态主数据/事实属性 (${ent.properties.length} 项)</div>
+        <div style="font-weight:700;margin-bottom:5px;font-size:12.5px;">${
+          IS_EN ? `Static Master / Fact Properties (${ent.properties.length})` : `静态主数据/事实属性 (${ent.properties.length} 项)`
+        }</div>
         <div style="display:flex;flex-wrap:wrap;gap:6px;">
           ${ent.properties.map((p) => `<span class="crisis-tag tag-blue mono">${esc(p)}</span>`).join("")}
         </div>
       </div>
       <div class="sim-panel" style="margin-bottom:10px;">
-        <div style="font-weight:700;margin-bottom:5px;font-size:12.5px;">关联图谱边 (${rels.length} 条关系)</div>
+        <div style="font-weight:700;margin-bottom:5px;font-size:12.5px;">${
+          IS_EN ? `Connected Graph Edges (${rels.length} Relationships)` : `关联图谱边 (${rels.length} 条关系)`
+        }</div>
         ${rels
           .map(
             (r) =>
@@ -1013,8 +1351,10 @@ FILTER(
           .join("")}
       </div>
       <div class="sim-panel" style="border-color:rgba(56,189,248,0.45);">
-        <div style="font-weight:700;color:#7dd3fc;margin-bottom:3px;font-size:12px;">📌 Contoso 业务数据样本洞察</div>
-        <div style="font-size:12.5px;">${esc(ent.sampleHighlight)}</div>
+        <div style="font-weight:700;color:#7dd3fc;margin-bottom:3px;font-size:12px;">${
+          IS_EN ? "📌 Consumer Electronics Operational Sample" : "📌 消费电子全球渠道数据样本洞察"
+        }</div>
+        <div style="font-size:12.5px;">${esc(sampleLbl)}</div>
       </div>
     `;
   }
@@ -1024,9 +1364,9 @@ FILTER(
     const bundleSub = Number(document.getElementById("rngBundleSub").value);
     const spiff = Number(document.getElementById("rngSpiff").value);
 
-    document.getElementById("lblMsrpCut").textContent = `${cutPct}% 官宣降幅`;
-    document.getElementById("lblBundleSub").textContent = `$${bundleSub} / 台`;
-    document.getElementById("lblSpiff").textContent = `$${spiff} / 台`;
+    document.getElementById("lblMsrpCut").textContent = IS_EN ? `${cutPct}% MSRP Cut` : `${cutPct}% 官宣降幅`;
+    document.getElementById("lblBundleSub").textContent = IS_EN ? `$${bundleSub} / unit` : `$${bundleSub} / 台`;
+    document.getElementById("lblSpiff").textContent = IS_EN ? `$${spiff} / unit` : `$${spiff} / 台`;
 
     // Calibrated so 15% MSRP cut matches our exact $766,697.60 PriceProtectionExposureUSD across protected stock!
     const protectedStockValue = 766697.6 / 0.15;
@@ -1036,7 +1376,24 @@ FILTER(
     const planBCost = targetClearUnits * (bundleSub + spiff) - soundbarAttachCrossMargin;
     const netSaved = planALiability - planBCost;
 
-    document.getElementById("priceProtectionSimResult").innerHTML = `
+    document.getElementById("priceProtectionSimResult").innerHTML = IS_EN
+      ? `
+      <div class="sim-panel" style="border-color:rgba(239,68,68,0.5);">
+        <div style="font-size:12px;color:#fca5a5;font-weight:700;">⛔ Plan A: Direct P745 MSRP Cut (${cutPct}%)</div>
+        <div style="font-size:21px;font-weight:800;color:#f87171;margin:6px 0;" class="mono">-${fmtUSD(planALiability)}</div>
+        <div style="font-size:11.5px;color:var(--text-muted);">
+          Triggers 60-day contractual price-protection clauses across all unsold partner stock, eroding gross margin immediately.
+        </div>
+      </div>
+      <div class="sim-panel" style="border-color:rgba(16,185,129,0.55);">
+        <div style="font-size:12px;color:#6ee7b7;font-weight:700;">✅ Plan B: Ontology Q85H OMO Bundle Clearance</div>
+        <div style="font-size:21px;font-weight:800;color:#34d399;margin:6px 0;" class="mono">-${fmtUSD(Math.max(0, planBCost))}</div>
+        <div style="font-size:11.5px;color:var(--text-secondary);">
+          Holds TV MSRP unchanged for <strong>$0 price-protection payout</strong>, adds Q85H soundbar attach margin, and <strong>preserves ${fmtUSD(netSaved)} net margin</strong> vs Plan A!
+        </div>
+      </div>
+    `
+      : `
       <div class="sim-panel" style="border-color:rgba(239,68,68,0.5);">
         <div style="font-size:12px;color:#fca5a5;font-weight:700;">⛔ 方案 A：直接下调 P745 指导价 (${cutPct}%)</div>
         <div style="font-size:21px;font-weight:800;color:#f87171;margin:6px 0;" class="mono">-${fmtUSD(planALiability)}</div>
@@ -1072,9 +1429,13 @@ FILTER(
     const p = AGENT_PRESETS.find((x) => x.id === presetId);
     if (!p) return;
     const box = document.getElementById("agentResponseContainer");
-    box.innerHTML = `<div style="color:#7dd3fc;">⏳ 正在通过 <code>da_contoso_channel_copilot</code> 路由并向 Diamond 云端 (${p.engine.toUpperCase()}) 实时查询证据表...</div>`;
+    box.innerHTML = `<div style="color:#7dd3fc;">${
+      IS_EN
+        ? `⏳ Routing through <code>da_contoso_channel_copilot</code> and querying Fabric (${p.engine.toUpperCase()}) evidence tables...`
+        : `⏳ 正在通过 <code>da_contoso_channel_copilot</code> 路由并向 Diamond 云端 (${p.engine.toUpperCase()}) 实时查询证据表...`
+    }</div>`;
 
-    let liveMeta = "📦 云端实采快照沙盘";
+    let liveMeta = IS_EN ? "📦 Verified Cloud Snapshot Sandbox" : "📦 云端实采快照沙盘";
     let rowsHtml = "";
     if (IS_LOCAL_GATEWAY) {
       try {
@@ -1085,14 +1446,18 @@ FILTER(
         });
         const data = await resp.json();
         if (data.ok) {
-          liveMeta = `LIVE 云端实测 · ${data.engine} · 耗时 ${data.latencyMs} ms · 返回 ${data.rowCount} 行`;
+          liveMeta = IS_EN
+            ? `LIVE Cloud Query · ${data.engine} · ${data.latencyMs} ms · ${data.rowCount} rows`
+            : `LIVE 云端实测 · ${data.engine} · 耗时 ${data.latencyMs} ms · 返回 ${data.rowCount} 行`;
           rowsHtml = buildMiniTableHtml(data.rows.slice(0, 6));
         }
       } catch (_) {}
     }
     if (!rowsHtml) {
       const simRows = evaluateQueryOffline(p.engine, p.query);
-      liveMeta = `📦 云端实采快照引擎 · ${p.engine.toUpperCase()} · 返回 ${simRows.length} 行`;
+      liveMeta = IS_EN
+        ? `📦 Verified Cloud Snapshot · ${p.engine.toUpperCase()} · ${simRows.length} rows`
+        : `📦 云端实采快照引擎 · ${p.engine.toUpperCase()} · 返回 ${simRows.length} 行`;
       rowsHtml = buildMiniTableHtml(simRows.slice(0, 6));
     }
 
@@ -1108,7 +1473,11 @@ FILTER(
       </div>
       <div style="font-size:13px;line-height:1.65;margin-bottom:12px;color:#f8fafc;">${formattedSynthesis}</div>
       <details open>
-        <summary style="cursor:pointer;font-size:12px;color:#7dd3fc;margin-bottom:6px;">查看底层自动生成的 ${p.engine.toUpperCase()} 语句与云端实时返回证据表</summary>
+        <summary style="cursor:pointer;font-size:12px;color:#7dd3fc;margin-bottom:6px;">${
+          IS_EN
+            ? `Inspect generated ${p.engine.toUpperCase()} query & returned cloud evidence rows`
+            : `查看底层自动生成的 ${p.engine.toUpperCase()} 语句与云端实时返回证据表`
+        }</summary>
         <div class="code-block" style="margin-bottom:8px;">${esc(p.query)}</div>
         ${rowsHtml}
       </details>
@@ -1116,7 +1485,9 @@ FILTER(
   };
 
   function buildMiniTableHtml(rows) {
-    if (!rows || !rows.length) return `<div style="font-size:12px;color:var(--text-muted);">无返回行</div>`;
+    if (!rows || !rows.length) {
+      return `<div style="font-size:12px;color:var(--text-muted);">${IS_EN ? "No rows returned" : "无返回行"}</div>`;
+    }
     const cols = Object.keys(rows[0]);
     return `
       <div class="table-wrap">
@@ -1145,7 +1516,9 @@ FILTER(
     const cost = units * 34;
     const rev = units * retail;
     const net = units * margin - cost;
-    document.getElementById("dispEstimateText").textContent = `预计 48h 陆运费: ${fmtUSD(cost)} · 护航黑五营收: ${fmtUSD(rev)} · 净保毛利: ${fmtUSD(net)}`;
+    document.getElementById("dispEstimateText").textContent = IS_EN
+      ? `Est. 48h Road Freight: ${fmtUSD(cost)} · Protected Revenue: ${fmtUSD(rev)} · Net Margin Saved: ${fmtUSD(net)}`
+      : `预计 48h 陆运费: ${fmtUSD(cost)} · 护航黑五营收: ${fmtUSD(rev)} · 净保毛利: ${fmtUSD(net)}`;
   }
 
   function renderTransfersTable() {
@@ -1156,21 +1529,23 @@ FILTER(
         const pending = String(t.TransferStatus).includes("Pending");
         const running = String(t.TransferStatus).includes("Dispatched");
         const badge = pending
-          ? `<span class="crisis-tag tag-amber">⏳ 待高管审批</span>`
+          ? `<span class="crisis-tag tag-amber">${IS_EN ? "⏳ Pending Exec Approval" : "⏳ 待高管审批"}</span>`
           : running
-          ? `<span class="crisis-tag tag-green">🚀 云端已派发在途</span>`
-          : `<span class="crisis-tag tag-blue">✅ 历史已完成</span>`;
+          ? `<span class="crisis-tag tag-green">${IS_EN ? "🚀 Dispatched In Transit" : "🚀 云端已派发在途"}</span>`
+          : `<span class="crisis-tag tag-blue">${IS_EN ? "✅ Completed" : "✅ 历史已完成"}</span>`;
         return `
         <tr>
           <td class="mono" style="font-weight:700;color:#7dd3fc;">${esc(t.TransferId)}</td>
           <td><strong>${esc(t.SourceEntityId)}</strong> → <strong>${esc(t.TargetDistributorId)}</strong></td>
-          <td class="mono">${esc(t.ProductId)} · <strong>${esc(t.TransferUnits)}台</strong></td>
+          <td class="mono">${esc(t.ProductId)} · <strong>${esc(t.TransferUnits)}${IS_EN ? "u" : "台"}</strong></td>
           <td class="num mono">${fmtUSD(t.ProtectedRevenueUSD)} / <span style="color:#6ee7b7;">+${fmtUSD(t.NetMarginSavedUSD)}</span></td>
           <td>${badge}</td>
           <td>
             ${
               pending
-                ? `<button class="btn btn-sm btn-brand" onclick="approveRecommendedTransfer('${esc(t.TransferId)}','${esc(t.SourceEntityId)}','${esc(t.TargetDistributorId)}','${esc(t.ProductId)}',${Number(t.TransferUnits)})">批准执行</button>`
+                ? `<button class="btn btn-sm btn-brand" onclick="approveRecommendedTransfer('${esc(t.TransferId)}','${esc(t.SourceEntityId)}','${esc(t.TargetDistributorId)}','${esc(t.ProductId)}',${Number(t.TransferUnits)})">${
+                    IS_EN ? "Approve" : "批准执行"
+                  }</button>`
                 : `<span class="mono" style="color:var(--text-muted);">-</span>`
             }
           </td>
@@ -1194,7 +1569,11 @@ FILTER(
     const statusBox = document.getElementById("dispatchStatusBox");
     statusBox.style.display = "block";
     statusBox.className = "sim-panel";
-    statusBox.innerHTML = `<span style="color:#7dd3fc;">⏳ 正在向 Diamond Fabric 发送 Job Scheduler 请求启动管道 <code>pl_contoso_rebalance_orchestrator</code>...</span>`;
+    statusBox.innerHTML = `<span style="color:#7dd3fc;">${
+      IS_EN
+        ? "⏳ Submitting Job Scheduler request to start pipeline <code>pl_contoso_rebalance_orchestrator</code>..."
+        : "⏳ 正在向 Diamond Fabric 发送 Job Scheduler 请求启动管道 <code>pl_contoso_rebalance_orchestrator</code>..."
+    }</span>`;
 
     if (IS_LOCAL_GATEWAY) {
       try {
@@ -1214,11 +1593,17 @@ FILTER(
         statusBox.style.borderColor = "rgba(16,185,129,0.6)";
         statusBox.innerHTML = `
           <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
-            <strong style="color:#6ee7b7;">✅ 已触发云端闭环管道 <code>${esc(res.pipelineName)}</code> (HTTP ${res.fabricHttpStatus || 202} · ${res.latencyMs}ms)</strong>
-            <a class="btn btn-sm btn-primary" href="${esc(res.jobMonitorUrl)}" target="_blank" rel="noopener">在 Fabric 查看管道运行 ↗</a>
+            <strong style="color:#6ee7b7;">✅ ${
+              IS_EN ? "Triggered cloud closed-loop pipeline" : "已触发云端闭环管道"
+            } <code>${esc(res.pipelineName)}</code> (HTTP ${res.fabricHttpStatus || 202} · ${res.latencyMs}ms)</strong>
+            <a class="btn btn-sm btn-primary" href="${esc(res.jobMonitorUrl)}" target="_blank" rel="noopener">${
+          IS_EN ? "View Run in Fabric ↗" : "在 Fabric 查看管道运行 ↗"
+        }</a>
           </div>
           <div class="mono" style="font-size:11.5px;color:#cbd5e1;margin-top:5px;">
-            JobInstanceId: ${esc(res.jobInstanceId)} · 调拨单号: ${esc(res.transferRecord?.TransferId)} · 正在驱动 PySpark 回写 OneLake!
+            JobInstanceId: ${esc(res.jobInstanceId)} · TransferId: ${esc(res.transferRecord?.TransferId)} · ${
+          IS_EN ? "PySpark Delta writeback active!" : "正在驱动 PySpark 回写 OneLake!"
+        }
           </div>
         `;
         return;
@@ -1250,13 +1635,22 @@ FILTER(
     ];
     renderTransfersTable();
     statusBox.style.borderColor = "rgba(16,185,129,0.6)";
+    const studioHref = IS_EN ? "./fabric-studio.en.html?view=pipeline" : "./fabric-studio.html?view=pipeline";
     statusBox.innerHTML = `
       <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
-        <strong style="color:#6ee7b7;">✅ 调拨单已生成并派发 <code>pl_contoso_rebalance_orchestrator</code> (在线沙盘演示模式)</strong>
-        <a class="btn btn-sm btn-primary" href="./fabric-studio.html?view=pipeline" target="_blank" rel="noopener">在背后 Fabric 工作台查看监控 ↗</a>
+        <strong style="color:#6ee7b7;">✅ ${
+          IS_EN
+            ? "Transfer order created & dispatched to <code>pl_contoso_rebalance_orchestrator</code> (Interactive Sandbox)"
+            : "调拨单已生成并派发 <code>pl_contoso_rebalance_orchestrator</code> (在线沙盘演示模式)"
+        }</strong>
+        <a class="btn btn-sm btn-primary" href="${studioHref}" target="_blank" rel="noopener">${
+      IS_EN ? "Inspect in Fabric Studio ↗" : "在背后 Fabric 工作台查看监控 ↗"
+    }</a>
       </div>
       <div class="mono" style="font-size:11.5px;color:#cbd5e1;margin-top:5px;">
-        JobInstanceId: ${esc(simJobId)} · 调拨单号: ${esc(xferId)} · 台账已同步更新为云端已派发在途!
+        JobInstanceId: ${esc(simJobId)} · TransferId: ${esc(xferId)} · ${
+      IS_EN ? "Ledger updated to Dispatched - In Transit!" : "台账已同步更新为云端已派发在途!"
+    }
       </div>
     `;
   }
@@ -1277,7 +1671,9 @@ FILTER(
     const query = document.getElementById("labQueryInput").value.trim();
     const meta = document.getElementById("labMetaBar");
     const wrap = document.getElementById("labResultTableWrap");
-    meta.innerHTML = `<span style="color:#7dd3fc;">⏳ 正在执行 ${eng.toUpperCase()} 查询...</span>`;
+    meta.innerHTML = `<span style="color:#7dd3fc;">${
+      IS_EN ? `⏳ Executing ${eng.toUpperCase()} query...` : `⏳ 正在执行 ${eng.toUpperCase()} 查询...`
+    }</span>`;
     wrap.innerHTML = "";
     if (IS_LOCAL_GATEWAY) {
       try {
@@ -1288,17 +1684,32 @@ FILTER(
         });
         const res = await resp.json();
         if (!res.ok) {
-          meta.innerHTML = `<span style="color:#fca5a5;">❌ 查询返回错误：${esc(res.error)}</span>`;
+          meta.innerHTML = `<span style="color:#fca5a5;">❌ ${IS_EN ? "Query error:" : "查询返回错误："}${esc(res.error)}</span>`;
           return;
         }
-        meta.innerHTML = `<span style="color:#6ee7b7;font-weight:700;">✅ 云端执行成功 · 引擎: ${esc(res.engine)} · 往返耗时: ${res.latencyMs} ms · 行数: ${res.rowCount}</span>`;
+        meta.innerHTML = `<span style="color:#6ee7b7;font-weight:700;">✅ ${
+          IS_EN
+            ? `Cloud execution succeeded · Engine: ${esc(res.engine)} · Latency: ${res.latencyMs} ms · Rows: ${res.rowCount}`
+            : `云端执行成功 · 引擎: ${esc(res.engine)} · 往返耗时: ${res.latencyMs} ms · 行数: ${res.rowCount}`
+        }</span>`;
         wrap.innerHTML = buildMiniTableHtml(res.rows.slice(0, 30));
         return;
       } catch (_) {}
     }
     const simRows = evaluateQueryOffline(eng, query);
-    meta.innerHTML = `<span style="color:#6ee7b7;font-weight:700;">✅ 云端实采快照核验完成 · 引擎: ${esc(eng.toUpperCase())} · 行数: ${simRows.length}</span>`;
+    meta.innerHTML = `<span style="color:#6ee7b7;font-weight:700;">✅ ${
+      IS_EN
+        ? `Verified Cloud Snapshot · Engine: ${esc(eng.toUpperCase())} · Rows: ${simRows.length}`
+        : `云端实采快照核验完成 · 引擎: ${esc(eng.toUpperCase())} · 行数: ${simRows.length}`
+    }</span>`;
     wrap.innerHTML = buildMiniTableHtml(simRows.slice(0, 30));
+  }
+
+  function applyHashTab() {
+    const h = (window.location.hash || "").toLowerCase();
+    if (HASH_TO_TAB[h]) {
+      switchTab(HASH_TO_TAB[h]);
+    }
   }
 
   // Wire Event Listeners & Bootstrap
@@ -1314,7 +1725,13 @@ FILTER(
 
     document.getElementById("btnToggleCue").addEventListener("click", (e) => {
       showCue = !showCue;
-      e.currentTarget.textContent = showCue ? "🎙️ 提词器: 开" : "🎙️ 提词器: 关";
+      e.currentTarget.textContent = IS_EN
+        ? showCue
+          ? "🎙️ Cue: ON"
+          : "🎙️ Cue: OFF"
+        : showCue
+        ? "🎙️ 提词器: 开"
+        : "🎙️ 提词器: 关";
       updateCueBanner();
     });
 
@@ -1332,7 +1749,7 @@ FILTER(
     document.getElementById("btnLiveSync").addEventListener("click", async (e) => {
       const btn = e.currentTarget;
       const orig = btn.textContent;
-      btn.textContent = "⏳ 云端同步中...";
+      btn.textContent = IS_EN ? "⏳ Syncing..." : "⏳ 云端同步中...";
       btn.disabled = true;
       if (IS_LOCAL_GATEWAY) {
         try {
@@ -1352,7 +1769,9 @@ FILTER(
 
     document.getElementById("btnRefreshLiveKql").addEventListener("click", async () => {
       const banner = document.getElementById("liveKqlBanner");
-      banner.textContent = "⏳ 正在请求 Eventhouse KQL 函数 fn_CrossBorderRebalanceCandidates()...";
+      banner.textContent = IS_EN
+        ? "⏳ Invoking Eventhouse KQL function fn_CrossBorderRebalanceCandidates()..."
+        : "⏳ 正在请求 Eventhouse KQL 函数 fn_CrossBorderRebalanceCandidates()...";
       if (IS_LOCAL_GATEWAY) {
         try {
           const r = await fetch("/api/fabric/query", {
@@ -1362,7 +1781,9 @@ FILTER(
           });
           const data = await r.json();
           if (data.ok && data.rows.length) {
-            banner.textContent = `✅ Eventhouse 实时重算完成 (${data.latencyMs} ms)，共锁定 ${data.rowCount} 组欧规跨国调拨配对！`;
+            banner.textContent = IS_EN
+              ? `✅ Eventhouse KQL recalculated (${data.latencyMs} ms) — ${data.rowCount} EU rebalance pairs matched!`
+              : `✅ Eventhouse 实时重算完成 (${data.latencyMs} ms)，共锁定 ${data.rowCount} 组欧规跨国调拨配对！`;
             const mapped = data.rows.map((x) => ({
               productId: x.ProductId,
               shortagePartnerId: x.TargetPartnerId || x.ShortagePartnerId,
@@ -1384,7 +1805,9 @@ FILTER(
         } catch (_) {}
       }
       const pairs = STATE.rebalancePairs || [];
-      banner.textContent = `✅ Eventhouse 云端快照配对核验完成，共锁定 ${pairs.length} 组欧规跨国调拨配对！`;
+      banner.textContent = IS_EN
+        ? `✅ Eventhouse cloud snapshot verified — ${pairs.length} EU cross-border rebalance pairs matched!`
+        : `✅ Eventhouse 云端快照配对核验完成，共锁定 ${pairs.length} 组欧规跨国调拨配对！`;
       renderRebalancePairs(pairs);
     });
 
@@ -1418,6 +1841,8 @@ FILTER(
       if (item) document.getElementById("labQueryInput").value = item.query;
     });
     document.getElementById("btnRunLabQuery").addEventListener("click", runLabQuery);
+
+    window.addEventListener("hashchange", applyHashTab);
   }
 
   function renderAll() {
@@ -1431,6 +1856,7 @@ FILTER(
     renderAgentsTab();
     populateLabPresets();
     askDataAgent("q1");
+    applyHashTab();
   }
 
   async function init() {

@@ -549,7 +549,7 @@ function renderAboutPage(file, zh) {
       featured: true,
       number: 'POC-02',
       badge: ['DIAMOND ENTERPRISE POCS', 'DIAMOND 企业级全真沙盘'],
-      title: ['Diamond Live Demos: TCL × Microsoft Fabric & Zava × Azure Databricks', 'Diamond 实战演示：TCL × Microsoft Fabric 与 Zava × Databricks 双湖仓驾驶舱'],
+      title: ['Diamond Live Demos: Consumer Electronics Global Ops × Fabric & Zava × Databricks', 'Diamond 实战演示：消费电子全球运营 × Fabric 与 Zava × Databricks 双湖仓驾驶舱'],
       finding: ['Entra ID OBO · OneLake Zero-Copy Mirroring · Copilot Closed-Loop Write-Back', '单租户身份传递 · OneLake 零拷贝共生 · Copilot 业务决策回写'],
       description: ['Production-style Solution Architect PoC cockpits demonstrating multi-agent analytics, DAX/KQL/SQL verification, and cross-platform lakehouse coexistence.', '面向企业架构选型与高管汇报的两套全真交互沙盘，完整呈现从实时流摄取、双湖仓零拷贝到一线业务止损闭环。'],
       url: diamondUrl,

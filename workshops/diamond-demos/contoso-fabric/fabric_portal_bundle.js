@@ -2,8 +2,8 @@ window.__FABRIC_PORTAL_BUNDLE__ = {
   "cloudLive": true,
   "syncedAt": "2026-11-19 15:15:10 UTC",
   "meta": {
-    "tenantAdmin": "admin@diax48186730.onmicrosoft.com",
-    "subscriptionId": "838b5df6-b588-4207-86de-661c84ce5895",
+    "tenantAdmin": "admin@contoso-ce-demo.onmicrosoft.com",
+    "subscriptionId": "00000000-0000-0000-0000-000000000000",
     "resourceGroup": "rg-contoso-fabric-demo",
     "location": "centralus",
     "capacityName": "fccontosochanneliq01",

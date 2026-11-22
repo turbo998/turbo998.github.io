@@ -1,7 +1,7 @@
 # 🔬 Data Lab — 企业级 Data & AI 平台架构选型与 Diamond 实战沙盘实验室
 
 > **语言版本 / Language**: **🇨🇳 中文 (`README.md`)** | **[🇬🇧 English (`README.en.md`)](README.en.md)**  
-> **⚡ 快捷入口 / Quick Access**: **[💎 Diamond 企业级演示中心](demos/diamond-hub.html)** · **[📺 TCL × Fabric 6幕指挥舱](demos/tcl-fabric/index.html)** · **[🛒 Zava × Databricks & Fabric 沙盘](demos/databricks-fabric/index.html)** · **[⚔️ Databricks vs Fabric 10维战卡](demos/databricks-fabric/battlecard.html)** · **[🧭 五云交互选型与 TCO 工作台](index.html)** · **[📊 7-Card 基准测试报告](benchmark-cards.html)**
+> **⚡ 快捷入口 / Quick Access**: **[💎 Diamond 企业级演示中心](demos/diamond-hub.html)** · **[📺 消费电子全球运营 × Fabric 6幕指挥舱](demos/contoso-fabric/index.html)** · **[🛒 Zava × Databricks & Fabric 沙盘](demos/databricks-fabric/index.html)** · **[⚔️ Databricks vs Fabric 10维战卡](demos/databricks-fabric/battlecard.html)** · **[🧭 五云交互选型与 TCO 工作台](index.html)** · **[📊 7-Card 基准测试报告](benchmark-cards.html)**
 
 面向 **AI Solution Architect (SA)** 的企业级数据与智能平台选型实验室：深度对标 **Microsoft Fabric**（OneLake · Direct Lake · Eventhouse · Fabric IQ Ontology）与 **Azure Databricks**、**Snowflake**、**GCP BigQuery**、**AWS Lakehouse**，提供 **2套全脱敏企业级交互实战沙盘 (Diamond Enterprise Demo Suite)**、**`174` 篇（双语 `348` 篇）企业架构选型 FAQ** 及 **密封可复现基准测试套件 (🏆 历史性第 `180 = 180°` 项半圆周整十企业本体闭环仿真里程碑 (`91.03ms` = `16,386 / 180`!)、路由矩阵均值历史首次跌破 `<102.0ms` 达 `101.7ms` (`74,872 / 736`!)、`735 / 736 = 99.86%` 历史最高准确率、整二十数 `520` 项自动执行、三连一 `1,110,000,000` (`1.11 Billion`!) 向量库以 `$5,340/月` SSD DiskANN 替代 `$135,600/月` `9.40 TB` DRAM（历史首次向量内存单月净省突破 `$130,000/月` 达 `$130,260/月`!）、四次方完全平方数 `625 = 5⁴ = 25²` 次违规拦截（守护 `+$29.60M`!）、单月总 TCO 净省历史首次突破 `-$680,000/月` 达 `-$683,440/月` (`-97.1%` vs `$703,700/月`!)、精确 `1,600K` (`1.60M = 40²×10³`!) EPS、年创收 `+$136.0M/年`、守护二进制十次方级 `$102.40M = 2¹⁰×$100K` SLA、`294 = 6×7²` 号 SVG、`364 / 364` 单测全绿)**。
 
@@ -11,8 +11,8 @@
 
 | 核心资产 | 面向角色与实战用途 | 在线/本地入口 |
 | :--- | :--- | :--- |
-| **💎 Diamond 企业级实战演示中心** | 统一汇聚 TCL × Fabric 与 Zava × Databricks & Fabric 双旗舰沙盘、双屏逐字稿与客户画像选型路由 | [`demos/diamond-hub.html`](demos/diamond-hub.html) · [English](demos/diamond-hub.en.html) |
-| **📺 TCL 海外渠道智能 × Fabric (6 幕指挥舱)** | OneLake 零拷贝挂载 EDI 852 + Eventhouse 港口预警 + Fabric IQ 本体护栏 + 云端 Pipeline 调拨闭环 | [`demos/tcl-fabric/index.html`](demos/tcl-fabric/index.html) · [双屏讲稿](demos/tcl-fabric/playbook.html) |
+| **💎 Diamond 企业级实战演示中心** | 统一汇聚消费电子全球运营 × Fabric 与 Zava × Databricks & Fabric 双旗舰沙盘、双屏逐字稿与客户画像选型路由 | [`demos/diamond-hub.html`](demos/diamond-hub.html) · [English](demos/diamond-hub.en.html) |
+| **📺 消费电子厂商全球业务运营 × Fabric (6 幕指挥舱)** | OneLake 零拷贝挂载 EDI 852 + Eventhouse 港口预警 + Fabric IQ 本体护栏 + 云端 Pipeline 调拨闭环 | [`demos/contoso-fabric/index.html`](demos/contoso-fabric/index.html) · [双屏讲稿](demos/contoso-fabric/playbook.html) |
 | **🛒 Zava 全渠道生鲜 × Databricks & Fabric** | Unity Catalog 动态脱敏 (`mask_cn_phone`) + AI/BI Genie 5 轮毛利异动归因 + Mirrored UC Direct Lake | [`demos/databricks-fabric/index.html`](demos/databricks-fabric/index.html) · [10维战卡](demos/databricks-fabric/battlecard.html) |
 | **🧭 Data Lab 五云选型与 TCO 仿真工作台** | 六维竞对评分罗盘、500 用户动态 TCO 计算器、Fabric IQ 行业本体与越界熔断交互仿真 | [`index.html`](index.html) · [English](index.en.html) |
 | **📊 7-Card 4:5 视觉基准测试报告** | 严格基于 `reports/report.json` 生成的 7 卡纵向评测卡组（🏆 `R286` · 历史性第 `180=180°` 项半圆周本体仿真 `91.03ms`! · 首次破 `<102ms` 达 `101.7ms` 路由均值! · 三连一 `1.11B` 向量首次省破 `$130K/月`! · 四次方 `625=5⁴=25²` 拦截! · 首次破 `-$680K/月` 净省 `-$683,440/月`! · `294=6×7²` SVG · `174` 篇 FAQ=`348` 文档 · `364` 单测 · `DL-23` 显式边界标注） | [`benchmark-cards.html`](benchmark-cards.html) · [English](benchmark-cards.en.html) |
@@ -43,14 +43,14 @@
 
 ---
 
-## 三、💎 Diamond 企业级实战演示专区（TCL × Fabric & Zava × Databricks）
+## 三、💎 Diamond 企业级实战演示专区（消费电子全球运营 × Fabric & Zava × Databricks）
 
 为客户高管交流与架构工作坊打造的 **100% 脱敏双旗舰交互演示套件**：
 
-1. **📺 TCL 海外多级渠道智能 × Microsoft Fabric（6 幕作战指挥舱）**
+1. **📺 消费电子厂商全球业务运营 × Microsoft Fabric（6 幕作战指挥舱）**
    - **架构链路**：`OneLake Shortcuts (零拷贝挂载外部代理商 EDI 852)` → `Silver/Gold Lakehouse & Warehouse` → `Eventhouse KQL (港口延误与门店 POS 秒级监控)` → `Fabric IQ Ontology (10 实体 + 价保条款护栏)` → `Data Agent + Operations Agent + Data Factory Pipeline`。
    - **量化业务价值**：法→德 48h 调拨护航 **`$629.7K`** 黑五营收；声霸卡捆绑替代全网降价净省 **`$582.1K`** 毛利；自动冻结越南渠道季度末压货异常返利 **`$162.5K`**。
-   - **入口**：[启动 6 幕指挥舱 (`demos/tcl-fabric/index.html`)](demos/tcl-fabric/index.html) · [双屏逐字稿手册 (`demos/tcl-fabric/playbook.html`)](demos/tcl-fabric/playbook.html)
+   - **入口**：[启动 6 幕指挥舱 (`demos/contoso-fabric/index.html`)](demos/contoso-fabric/index.html) · [双屏逐字稿手册 (`demos/contoso-fabric/playbook.html`)](demos/contoso-fabric/playbook.html)
 
 2. **🛒 Zava 全渠道生鲜零售 × Azure Databricks & Microsoft Fabric（4 幕零拷贝共生沙盘）**
    - **架构链路**：`Lakeflow Declarative Pipelines (自动隔离 24 条脏数据)` → `Unity Catalog (mask_cn_phone 动态脱敏 + YAML Metric View)` → `AI/BI Genie 5 轮连环归因` → `Mirrored Unity Catalog in OneLake` → `Power BI Direct Lake`。

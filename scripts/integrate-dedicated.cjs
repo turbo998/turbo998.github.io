@@ -13,12 +13,15 @@ const sourceOverrides = Object.fromEntries(['benchmark-cards.html', 'demo.html',
   commit: cycle377Commit,
   reason: 'Published Azure Agent Infra SA source; preserve its clean SA content, evidence and native selector/demo links.'
 }]));
+const commerceCommit = '5808400f164a8d8d5736ccd0204221f34e6d0bf4';
+const securityCommit = '2c6b9d6c709d60ea790f44bcde3db3b56c386708';
+const voiceCommit = '3bdac3d4db9a0cec264ee42b59bbef8a7f87364b';
 Object.assign(sourceOverrides, Object.fromEntries([
   'voice/deck.html', 'voice/benchmark-cards.html',
   'workshops/agentic-commerce/live-demo.html', 'workshops/agentic-commerce/live-demo.en.html',
   'workshops/agentic-commerce/benchmark-cards.html', 'workshops/agentic-commerce/benchmark-cards.en.html',
   'workshops/ai-security/benchmark-cards.html', 'workshops/ai-security/benchmark-cards.en.html'
-].map(file => [file, { commit: file.startsWith('workshops/agentic-commerce/') ? '209aea9a1db92c816927df71a9242526b44925c1' : '3bdac3d4db9a0cec264ee42b59bbef8a7f87364b', reason: 'Preserve the latest published Voice, Commerce and Security source content, controls and protected report data.' }])));
+].map(file => [file, { commit: file.startsWith('workshops/agentic-commerce/') ? commerceCommit : file.startsWith('workshops/ai-security/') ? securityCommit : voiceCommit, reason: 'Preserve the latest published Voice, Commerce and Security source content, controls and protected report data.' }])));
 const supplementalOwned = [
   { contentId: 'cycle377-infra-report-en', path: infraPath('benchmark-cards.en.html'), role: 'report', tracks: ['infra'], language: { declared: 'en' }, bilingualAssociations: [] }
 ];
@@ -103,8 +106,9 @@ function transform(r, source) {
     }
   }
   if (/agentic-commerce\/live-demo(?:\.en)?\.html$/.test(r.path)) {
-    html = html.replaceAll('null / "" / []', String.raw`null / \"\" / []`).replaceAll('null/""/[]', String.raw`null/\"\"/[]`);
-    changes.push('Repaired two unescaped quote pairs in the original bilingual response-label dictionary so native scenario JavaScript parses; labels and data unchanged.');
+    html = html.replace(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi, (full, attrs, body) => `<script${attrs}>${body.replace(/<code>[^<+\r\n]*<\/code>/g, m => m.replace(/(?<!\\)"/g, '\\"'))}</script>`);
+    extra += '@media(max-width:720px){.sa-sandbox-grid,.workbench,.scenario-tabs{grid-template-columns:minmax(0,1fr)!important}.sa-explorer-filter,.app-shell,.app-shell *,.finops-box,.control-row,label,select,input,pre,code,table{min-width:0!important;max-width:100%;box-sizing:border-box}.control-row label,.panel-header{flex-wrap:wrap}.finops-box,label,code,td,th{overflow-wrap:anywhere;word-break:break-word}pre{overflow-x:auto}}';
+    changes.push('Repaired unescaped quote pairs inside inline code tags in the original bilingual scenario dictionary so native JavaScript parses, and constrained .sa-sandbox-grid mobile column minima; labels and data unchanged.');
   }
   if (r.path === 'workshops/azure-agent-infra/selector.html') {
     changes.push('Loaded clean SA-scoped Azure Agent Runtime & Sandbox Sizer baseline.');
@@ -166,7 +170,7 @@ function main() {
     const source = baseline(r), { html, record } = transform(r, source), dest = path.join(root, r.path), live = fs.existsSync(dest) ? fs.readFileSync(dest, 'utf8') : null;
     if (check) { if (live !== html) throw new Error(`Dedicated integration drift: ${r.path}`); }
     else {
-      if (live !== null && live.replace(/\r/g, '') !== source.replace(/\r/g, '') && !live.includes('kee-dedicated-navigation:start') && !live.includes('kee-report-localization-navigation:start') && !live.includes('demo-language-navigation:start')) throw new Error(`Refusing unrecognized edits: ${r.path}`);
+      if (live !== null && live.replace(/\r/g, '') !== source.replace(/\r/g, '') && !live.includes('kee-dedicated-navigation:start') && !live.includes('kee-report-localization-navigation:start') && !live.includes('demo-language-navigation:start') && !live.includes('data-professional-header')) throw new Error(`Refusing unrecognized edits: ${r.path}`);
       if (live !== html) fs.writeFileSync(dest, html);
     }
     records.push(record);

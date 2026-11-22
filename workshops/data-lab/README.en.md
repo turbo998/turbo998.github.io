@@ -1,7 +1,7 @@
 # 🔬 Data Lab — Enterprise Data & AI Architecture Selection & Diamond Live Demo Lab
 
 > **Language / 语言切换**: **[🇨🇳 中文 (`README.md`)](README.md)** | **🇬🇧 English (`README.en.md`)**  
-> **⚡ Quick Access**: **[💎 Diamond Enterprise Demo Hub](demos/diamond-hub.en.html)** · **[📺 TCL × Fabric 6-Act Cockpit](demos/tcl-fabric/index.en.html)** · **[🛒 Zava × Databricks & Fabric Demo](demos/databricks-fabric/index.en.html)** · **[⚔️ Databricks vs Fabric 10-Dim Battlecard](demos/databricks-fabric/battlecard.en.html)** · **[🧭 5-Cloud TCO & Sim Workbench](index.en.html)** · **[📊 7-Card Benchmark Deck](benchmark-cards.en.html)**
+> **⚡ Quick Access**: **[💎 Diamond Enterprise Demo Hub](demos/diamond-hub.en.html)** · **[📺 Consumer Electronics × Fabric 6-Act Cockpit](demos/contoso-fabric/index.en.html)** · **[🛒 Zava × Databricks & Fabric Demo](demos/databricks-fabric/index.en.html)** · **[⚔️ Databricks vs Fabric 10-Dim Battlecard](demos/databricks-fabric/battlecard.en.html)** · **[🧭 5-Cloud TCO & Sim Workbench](index.en.html)** · **[📊 7-Card Benchmark Deck](benchmark-cards.en.html)**
 
 An **AI Solution Architect (SA)** evaluation and live-demo lab comparing **Microsoft Fabric** (OneLake · Direct Lake · Eventhouse · Fabric IQ Ontology) with **Azure Databricks**, **Snowflake**, **GCP BigQuery**, and **AWS Lakehouse** — featuring **2 fully sanitized executive live demos (Diamond Enterprise Demo Suite)**, **`174` (`348` bilingual docs) enterprise architecture selection FAQs**, and a **sealed reproducible benchmark suite (🏆 Historic `180th = 180°` Half-Circle Ontology Simulation Milestone (`91.03ms` = `16,386 / 180`!), Historic First Sub-102.0ms Routing Matrix Mean `101.7ms` (`74,872 / 736`!), `735 / 736 = 99.86%` Record Accuracy, Exact `520` Auto-Act Cases, Triple-One `1.11 Billion` (`1,110M`!) Vectors at `$5,340/mo` SSD DiskANN vs `$135,600/mo` `9.40 TB` DRAM — Historic First Time Saving `>$130,000/mo` on Vector DRAM Alone (`$130,260/mo`!), Fourth-Power & Perfect-Square `625 = 5⁴ = 25²` Blocked Violations (`+$29.60M` Protected!), Historic First Time Breaking `>-$680,000/mo` Saved at `-$683,440/mo` (`-97.1%` vs `$703,700/mo`!), Exact `1,600K` (`1.60M = 40²×10³`!) EPS, `+$136.0M/yr` Gained, `$102.40M = 2¹⁰×$100K` SLA, SVG `#294 = 6×7²`, Round `R286`, `364 / 364` unit tests passing)**.
 
@@ -11,8 +11,8 @@ An **AI Solution Architect (SA)** evaluation and live-demo lab comparing **Micro
 
 | Deliverable | SA Role & Capability | Launch Link |
 | :--- | :--- | :--- |
-| **💎 Diamond Enterprise Demo Hub** | Unified executive portal for TCL × Fabric and Zava × Databricks & Fabric sandboxes, speaker scripts, and scenario routing | [`demos/diamond-hub.en.html`](demos/diamond-hub.en.html) · [中文](demos/diamond-hub.html) |
-| **📺 TCL Global Channel IQ × Fabric (6-Act Cockpit)** | Zero-copy OneLake EDI 852 Shortcuts + Eventhouse port-delay KQL + Fabric IQ Ontology guardrails + pipeline write-back | [`demos/tcl-fabric/index.en.html`](demos/tcl-fabric/index.en.html) · [SA Playbook](demos/tcl-fabric/playbook.en.html) |
+| **💎 Diamond Enterprise Demo Hub** | Unified executive portal for Consumer Electronics × Fabric and Zava × Databricks & Fabric sandboxes, speaker scripts, and scenario routing | [`demos/diamond-hub.en.html`](demos/diamond-hub.en.html) · [中文](demos/diamond-hub.html) |
+| **📺 Consumer Electronics Global Operations × Fabric (6-Act Cockpit)** | Zero-copy OneLake EDI 852 Shortcuts + Eventhouse port-delay KQL + Fabric IQ Ontology guardrails + pipeline write-back | [`demos/contoso-fabric/index.en.html`](demos/contoso-fabric/index.en.html) · [SA Playbook](demos/contoso-fabric/playbook.en.html) |
 | **🛒 Zava Omnichannel Retail × Databricks & Fabric** | Unity Catalog dynamic PII masking + 5-turn AI/BI Genie margin root-cause drilldown + Mirrored UC Direct Lake | [`demos/databricks-fabric/index.en.html`](demos/databricks-fabric/index.en.html) · [10-Dim Battlecard](demos/databricks-fabric/battlecard.en.html) |
 | **🧭 5-Cloud Competitive & TCO Workbench** | 6-dimension platform scorecard, 500-viewer interactive TCO calculator, and Fabric IQ Ontology guardrail simulator | [`index.en.html`](index.en.html) · [中文](index.html) |
 | **📊 7-Card 4:5 Visual Benchmark Deck** | Self-contained 7-card evaluation deck generated from sealed `reports/report.json` (🏆 `R286` Historic `180th=180°` Half-Circle Sim `91.03ms`! · First Sub-102ms Route `101.7ms`! · Triple-One `1.11B` Vectors Saving `$130.3K/mo` (`>$130K`!) · `625=5⁴=25²` Blocks · First `>-$680K/mo` Saved (`-$683,440/mo`) · `294=6×7²` SVG · `174` FAQs=`348` Docs · `364` Tests · explicit `DL-23` miss) | [`benchmark-cards.en.html`](benchmark-cards.en.html) · [中文](benchmark-cards.html) |
@@ -43,12 +43,12 @@ Every FAQ follows a crisp Solution Architect structure (Executive Summary, Archi
 
 ---
 
-## 3. 💎 Diamond Enterprise Demo Showcase (TCL × Fabric & Zava × Databricks)
+## 3. 💎 Diamond Enterprise Demo Showcase (Consumer Electronics Global Ops × Fabric & Zava × Databricks)
 
-1. **📺 TCL Global Channel IQ × Microsoft Fabric (6-Act Command Cockpit)**
+1. **📺 Consumer Electronics Global Operations × Microsoft Fabric (6-Act Command Cockpit)**
    - **Architecture Flow**: `OneLake Shortcuts (Partner EDI 852)` → `Lakehouse & Warehouse` → `Eventhouse KQL` → `Fabric IQ Ontology (10 Entities + Contract Rules)` → `Data Agent + Operations Agent + Dispatch Pipeline`.
    - **Quantified Outcome**: Protects **`$629.7K`** EU Black Friday GMV via 48h France→Germany rebalance, saves **`$582.1K`** margin via soundbar bundle vs MSRP cut, and blocks **`$162.5K`** channel-stuffing rebate claims.
-   - **Links**: [Launch 6-Act Cockpit](demos/tcl-fabric/index.en.html) · [Dual-Screen SA Playbook](demos/tcl-fabric/playbook.en.html)
+   - **Links**: [Launch 6-Act Cockpit](demos/contoso-fabric/index.en.html) · [Dual-Screen SA Playbook](demos/contoso-fabric/playbook.en.html)
 
 2. **🛒 Zava Omnichannel Retail × Azure Databricks & Microsoft Fabric (4-Act Coexistence Workbench)**
    - **Architecture Flow**: `Lakeflow Declarative Pipelines (24 dirty rows quarantined)` → `Unity Catalog (mask_cn_phone CLS + YAML Metric View)` → `5-Turn AI/BI Genie` → `Mirrored Unity Catalog in OneLake` → `Power BI Direct Lake`.
