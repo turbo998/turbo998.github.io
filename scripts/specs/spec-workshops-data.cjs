@@ -24,7 +24,7 @@ const DATA_SPECS = {
     'Diamond 企业级架构演示总台 · 统一 Entra 身份、Fabric、Databricks 与 M365 协同架构',
     [
       s('IDENTITY & TENANT', '统一身份与演示租户层', 'Entra ID OBO / B2B & Row-Level Personas', 'Entra 身份透传、B2B 直连与多角色数据隔离', 'Single tenant hosting HQ executive, regional director & cold-chain ops personas with live RLS', '单套企业级环境支持总部高管、大区负责人与一线运营多角色切换及行级数据脱敏核验', 'routes scenarios', '分发三大行业沙盘'),
-      s('SCENARIO 01 · FABRIC', '场景一 · 全栈原生湖仓', 'TCL Global Channel IQ ($135M Sell-In)', 'TCL 全球渠道控制塔（OneLake + Eventhouse + IQ）', 'SAP/POS/shipping ingestion, 48h stockout KQL alert, 10-entity Ontology & Operations Agent', '融合进销存与海运遥测、实时断货预警、十实体业务本体推演与双智能体自动调拨回写', 'coexists with', '衔接双平台零拷贝场景'),
+      s('SCENARIO 01 · FABRIC', '场景一 · 全栈原生湖仓', 'Consumer Electronics Channel IQ ($135M Sell-In)', '消费电子全球渠道控制塔（OneLake + Eventhouse + IQ）', 'SAP/POS/shipping ingestion, 48h stockout KQL alert, 10-entity Ontology & Operations Agent', '融合进销存与海运遥测、实时断货预警、十实体业务本体推演与双智能体自动调拨回写', 'coexists with', '衔接双平台零拷贝场景'),
       s('SCENARIO 02 · HYBRID', '场景二 · 双平台零拷贝共生', 'Zava Cold-Chain (Databricks × Fabric)', 'Zava 生鲜冷链（Unity Catalog 镜像 + Direct Lake）', 'Databricks Medallion 24,024→24,000 quality gate + Genie root cause + 0-DBU Power BI Direct Lake', 'Databricks 完成冷链清洗与异常追因，经目录镜像直供 Fabric 零计算开销秒级消费', 'extends to AI ops', '拓展至脱敏智能运营'),
       s('SCENARIO 03 · AI OPS', '场景三 · 隐私脱敏与智能体护栏', 'Aether Travel Retail (Genie + Agent Bricks)', '寰宇国际旅购（源端零明文网关 + 促销配额护栏）', 'Edge GTR_OID_* tokenization, NOR margin waterfall, Genie NL2SQL & ¥1.38M promo guardrail', '源端网关完成旅客敏感信息不可逆令牌化，支撑航线净营收分析与促销预算硬护栏审批')
     ],
@@ -34,10 +34,10 @@ const DATA_SPECS = {
       ['Production-Grade Identity & PII Hygiene', '在演示阶段即落实生产级身份透传与脱敏规范', 'Uses Entra OBO, dynamic data masking, and gateway tokenization rather than hardcoded admin keys.', '全程展示按用户身份收敛的数据可见范围与跨境/隐私令牌化方案，直接回应安全架构师质询。']
     ]
   ),
-  'workshops/diamond-demos/tcl-fabric/index': entry(
+  'workshops/diamond-demos/contoso-fabric/index': entry(
     'data-infra',
-    'TCL Global Channel IQ × Microsoft Fabric · OneLake, Eventhouse KQL, Fabric IQ Ontology & Dual Agents',
-    'TCL 全球全渠道经营控制塔 · OneLake 零拷贝、Eventhouse 实时预警、Fabric IQ 本体与双智能体协同',
+    'Consumer Electronics Global Operations × Microsoft Fabric · OneLake, Eventhouse KQL, Fabric IQ Ontology & Dual Agents',
+    '消费电子全球全渠道经营控制塔 · OneLake 零拷贝、Eventhouse 实时预警、Fabric IQ 本体与双智能体协同',
     [
       s('INGEST & ONELAKE', '全渠道接入与零拷贝存储', 'SAP Sell-In + 36 Partner POS + AIS Telemetry', '全球进销存（$135.33M）与海运流汇聚 OneLake', 'Zero-copy shortcuts unify distributor ERP, OMO retail Sell-Out ($108.95M) & vessel ETA streams', '通过零拷贝快捷方式打通 36 家海外渠道进销存与集装箱船期流，消除多区数据孤岛', 'streams KQL alerts', '触发实时流式预警'),
       s('REAL-TIME IQ', '实时流计算与断货侦测', 'Eventhouse KQL & Activator (48h Rescue)', 'Eventhouse 毫秒级库存消耗监控与黑五断货预警', 'Detects North America Black Friday velocity spike & port delay 48h before shelf stockout', '实时比对门店动销斜率与到港延误，提前 48 小时锁定北美大屏机型黑五断货敞口', 'grounds ontology', '映射业务语义本体'),
@@ -50,10 +50,10 @@ const DATA_SPECS = {
       ['Closed-Loop Action With Explicit Approval Gate', '分析结论直连可审计的业务审批与系统回写', 'Operations Agent drafts executable transfer orders in Teams while preserving human authorization.', '从异常告警直接生成带损益测算的调拨工单草案，兼顾分钟级响应速度与财务授权合规。']
     ]
   ),
-  'workshops/data-lab/demos/tcl-fabric/playbook': entry(
+  'workshops/data-lab/demos/contoso-fabric/playbook': entry(
     'data-infra',
-    'TCL × Microsoft Fabric Dual-Screen SA Playbook · Presenter Script, Architecture Checkpoints & Objection Handling',
-    'TCL × Microsoft Fabric 双屏演示手册 · 角色切换节奏、架构核验检查点与客户质询应答',
+    'Consumer Electronics × Microsoft Fabric Dual-Screen SA Playbook · Presenter Script, Checkpoints & Q&A',
+    '消费电子全球运营 × Microsoft Fabric 双屏演示手册 · 角色切换节奏、架构核验检查点与客户质询应答',
     [
       s('SCREEN A · BUSINESS', '左屏 · 业务高管叙事流', 'HQ Executive → NA Regional GM Journey', '全球经营总览到北美黑五断货救援的业务视角', 'Anchors on $135.33M Sell-In, OMO Sell-Out gap & $582K Black Friday margin rescue story', '从全球渠道库存健康度切入，聚焦北美大促断货风险与跨仓调拨挽回毛利的业务闭环', 'synchronizes with', '双屏同步映射底层机制'),
       s('SCREEN B · PLATFORM', '右屏 · 平台架构核验流', 'OneLake · Eventhouse · Ontology · Direct Lake', '逐幕对照底层存储、KQL 流处理与语义本体实现', 'Shows live Delta tables, KQL query latency, 10-entity graph lineage & RLS persona switching', '实时展示底层零拷贝表结构、流式规则触发、本体关系血缘及不同角色的行级权限过滤效果', 'addresses CTO Q&A', '回应技术负责人深潜'),
@@ -143,13 +143,14 @@ const DATA_SPECS = {
     [
       ['Reusable Across Retail, CPG & Manufacturing', '一套渠道本体方法论适配多行业分销网络', 'Channel sell-in/sell-out + rebate + transit ETA patterns generalize across B2B2C industries.', '进销存对账、在途船期联动与阶梯返利核算模型可直接迁移至家电、快消与工业品分销场景。'],
       ['Bridge Business Pain Directly to Technical Boundaries', '确保业务痛点与平台技术选型一一闭环对应', 'Every architectural layer justifies its existence via a concrete operational bottleneck.', '拒绝堆砌组件名词，每一层平台能力均紧扣具体的数据滞后、口径冲突或运维割裂痛点。'],
-      ['Actionable Post-Workshop Handoff', '演示结束即可直接衔接客户数据盘点与定容', 'Equips partner engineers with concrete source-table and SKU-sizing checklists.', '为合作伙伴工程师提供现成的数据源盘点清单与容量评估抓手，缩短售前转交付周期。']
+      ['Actionable Post-Workshop Handoff', '演示结束即可直接衔接客户数据盘点与定容', 'Equips partner engineers with concrete source-table and SKU-sizing checklists.', '为合作伙伴工程师提供现成的数据源盘点清单与容量评估工具，缩短售前转交付周期。']
     ]
   )
 };
 
 DATA_SPECS['workshops/data-lab/live-demo'] = DATA_SPECS['workshops/data-lab/index'];
-DATA_SPECS['workshops/data-lab/demos/tcl-fabric/index'] = DATA_SPECS['workshops/diamond-demos/tcl-fabric/index'];
+DATA_SPECS['workshops/data-lab/demos/contoso-fabric/index'] = DATA_SPECS['workshops/diamond-demos/contoso-fabric/index'];
+DATA_SPECS['workshops/data-lab/demos/contoso-fabric/fabric-studio'] = DATA_SPECS['workshops/diamond-demos/contoso-fabric/fabric-studio'];
 DATA_SPECS['workshops/data-lab/demos/databricks-fabric/index'] = DATA_SPECS['workshops/diamond-demos/databricks-fabric/index'];
 
 module.exports = { DATA_SPECS };

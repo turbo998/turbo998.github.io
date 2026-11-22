@@ -10,7 +10,7 @@ const blueprints = {
   'data-infra': [
     node(['STREAM INGEST', '实时流式摄取'], ['Enterprise sources & ingestion','企业源系统与实时摄取'], ['ERP / POS / IoT · Eventhouse KQL · Change feeds','ERP / POS / 航运流 · Eventhouse KQL · 变更捕获'], ['grounds open lakehouse','汇入开放湖仓底座']),
     node(['OPEN LAKEHOUSE', '开放湖仓底座'], ['OneLake & Databricks Mirroring','OneLake 与 Databricks 零拷贝互通'], ['Shared Delta Parquet · Unity Catalog · 0-DBU Direct Lake','共享 Delta Parquet · Unity Catalog · 0 DBU Direct Lake'], ['binds business ontology','绑定业务语义本体']),
-    node(['SEMANTIC ONTOLOGY', '业务语义本体'], ['Fabric IQ & Cross-Cloud Selection','Fabric IQ 与跨云平台选型'], ['TCL & Zava reference architectures · vs Snowflake / BigQuery','TCL 与 Zava 参考架构 · 对比 Snowflake / BigQuery'], ['isolates agent execution','进入隔离执行沙箱']),
+    node(['SEMANTIC ONTOLOGY', '业务语义本体'], ['Fabric IQ & Cross-Cloud Selection','Fabric IQ 与跨云平台选型'], ['Consumer Electronics & Zava reference architectures · vs Snowflake / BigQuery','消费电子全球运营与 Zava 参考架构 · 对比 Snowflake / BigQuery'], ['isolates agent execution','进入隔离执行沙箱']),
     node(['ISOLATED SANDBOX', '隔离执行沙箱'], ['Isolated agent sandboxes','企业级智能体隔离沙箱'], ['ACA Dynamic Sessions · AKS Kata · E2B VMSS','ACA 动态会话 · AKS Kata · E2B 弹性沙箱'], ['governs unit economics','量化容量与成本治理']),
     node(['CAPACITY FINOPS', '容量与成本治理'], ['Cloud & Session FinOps','云基础设施与单会话 FinOps'], ['F-SKU capacity pooling · VM modernization · TCO audit','F-SKU 容量池化 · VM 跨代升级 · TCO 定量核验'], null)
   ],

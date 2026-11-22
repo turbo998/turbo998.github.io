@@ -24,7 +24,7 @@ function readingDestination(value, zh) {
 const read = file => fs.readFileSync(path.join(root, file), 'utf8');
 const write = (file, text) => { fs.mkdirSync(path.dirname(path.join(root, file)), { recursive: true }); fs.writeFileSync(path.join(root, file), text); };
 const topics = {
-  'data-infra': ['Data & Infra Lab', '数据与基础设施实验室', 'Unify lakehouse data. Isolate execution. Optimize FinOps.', '贯通湖仓底座，隔离智能体执行，精算云成本。', 'Diamond Enterprise PoCs (TCL × Microsoft Fabric, Zava × Databricks × Fabric, and Aether Global Travel & Retail × Azure Databricks AI), OneLake Zero-Copy Mirroring, Fabric IQ vs Snowflake/BigQuery/Redshift, Agent Sandbox capacity, and Azure VM FinOps.', '涵盖 Diamond 三大企业级参考架构演示（TCL × Microsoft Fabric、Zava × Databricks × Fabric 与寰宇旅购国际旅行零售 × Databricks AI 智能运营工作台）、OneLake 与 Fabric IQ 跨云对比、智能体沙箱隔离容量及 Azure VM 成本治理。'],
+  'data-infra': ['Data & Infra Lab', '数据与基础设施实验室', 'Unify lakehouse data. Isolate execution. Optimize FinOps.', '贯通湖仓底座，隔离智能体执行，精算云成本。', 'Diamond Enterprise PoCs (Consumer Electronics Global Ops × Microsoft Fabric, Zava × Databricks × Fabric, and Aether Global Travel & Retail × Azure Databricks AI), OneLake Zero-Copy Mirroring, Fabric IQ vs Snowflake/BigQuery/Redshift, Agent Sandbox capacity, and Azure VM FinOps.', '涵盖 Diamond 三大企业级参考架构演示（消费电子厂商全球业务运营 × Microsoft Fabric、Zava × Databricks × Fabric 与寰宇旅购国际旅行零售 × Databricks AI 智能运营工作台）、OneLake 与 Fabric IQ 跨云对比、智能体沙箱隔离容量及 Azure VM 成本治理。'],
   infra: ['AI Infra', 'AI 基础设施', 'Architect LLM serving, GPU clusters, and agent runtimes.', '构建高吞吐大模型推理、超节点互连与智能体托管底座。', 'Azure six-runtime hosting playbook, LLM engine & Prefill-Decode disaggregation sizers, FP8/NVFP4 MoE parallelism, KV cache tiering, token unit economics, and stateful failover.', '覆盖 Azure 六大智能体托管底座选型、推理引擎与 PD 分离定容、MoE 量化并行、长上下文 KV 分层卸载、单 Token 经济模型及控制面高可用容灾。'],
   commerce: ['Agentic Commerce', '智能体商务', 'Ground product discovery. Scope payment authority.', '让商品检索可信接地，让支付授权受控可审计。', 'Real-time WebIQ passage grounding, delegated payment credentials (Stripe SPT, Visa VIC, x402), step-up authentication, and enterprise checkout orchestration.', '围绕 WebIQ 实时商品接地、受限委托支付凭证（Stripe SPT、Visa VIC、x402）、阶梯强鉴权与可审计结账履约展开架构实践。'],
   voice: ['Voice', '语音', 'Design low-latency, auditable enterprise voice pipelines.', '设计低延迟、可打断、可合规留痕的企业语音智能体。', 'Cascaded ASR-LLM-TTS vs native speech-to-speech trade-offs, full-duplex barge-in, speaker diarization, and WebRTC / WebSocket / SIP contact-center ingress.', '系统拆解级联管线与原生端到端语音模型的选型边界、全双工语义判停、说话人分离，以及 WebRTC / WebSocket / SIP 呼叫中心接入网架构。'],
@@ -70,10 +70,14 @@ const radarPages = ['github-radar.html','zh-github-radar.html','workshops/github
   tracks:['benchmarks'], language:{declared:file.startsWith('zh-')||file.endsWith('/cards.html')?'zh-CN':'en'}, supplemental:true
 }));
 const diamondPages = [
-  {path:'diamond.html',role:'article',title:'Diamond Enterprise Demo Center · TCL · Microsoft Fabric · Azure Databricks',tracks:['data-infra'],language:{declared:'en'},supplemental:true},
-  {path:'zh-diamond.html',role:'article',title:'Diamond 企业级参考架构演示中心 · TCL · Microsoft Fabric · Azure Databricks',tracks:['data-infra'],language:{declared:'zh-CN'},supplemental:true},
-  {path:'workshops/diamond-demos/tcl-fabric/index.en.html',role:'demo',title:'TCL Global Channel IQ × Microsoft Fabric · 6-Stage Reference PoC Workbench',tracks:['data-infra'],language:{declared:'en'},supplemental:true},
-  {path:'workshops/diamond-demos/tcl-fabric/index.html',role:'demo',title:'TCL 全球渠道智能 × Microsoft Fabric · 六阶段参考架构验证工作台',tracks:['data-infra'],language:{declared:'zh-CN'},supplemental:true},
+  {path:'diamond.html',role:'article',title:'Diamond Enterprise Demo Center · Consumer Electronics Global Ops · Microsoft Fabric · Azure Databricks',tracks:['data-infra'],language:{declared:'en'},supplemental:true},
+  {path:'zh-diamond.html',role:'article',title:'Diamond 企业级参考架构演示中心 · 消费电子全球运营 · Microsoft Fabric · Azure Databricks',tracks:['data-infra'],language:{declared:'zh-CN'},supplemental:true},
+  {path:'workshops/diamond-demos/contoso-fabric/index.en.html',role:'demo',title:'Consumer Electronics Global Operations × Microsoft Fabric · 6-Stage Reference PoC Workbench',tracks:['data-infra'],language:{declared:'en'},supplemental:true},
+  {path:'workshops/diamond-demos/contoso-fabric/index.html',role:'demo',title:'消费电子厂商全球业务运营 × Microsoft Fabric · 六阶段参考架构验证工作台',tracks:['data-infra'],language:{declared:'zh-CN'},supplemental:true},
+  {path:'workshops/diamond-demos/contoso-fabric/fabric-studio.en.html',role:'demo',title:'Consumer Electronics Global Operations × Microsoft Fabric · Fabric Studio Artifact Explorer',tracks:['data-infra'],language:{declared:'en'},supplemental:true},
+  {path:'workshops/diamond-demos/contoso-fabric/fabric-studio.html',role:'demo',title:'消费电子厂商全球业务运营 × Microsoft Fabric · Fabric Studio 平台架构台',tracks:['data-infra'],language:{declared:'zh-CN'},supplemental:true},
+  {path:'workshops/diamond-demos/contoso-fabric/playbook.en.html',role:'article',title:'Consumer Electronics Global Operations × Microsoft Fabric · Dual-Screen SA Playbook',tracks:['data-infra'],language:{declared:'en'},supplemental:true},
+  {path:'workshops/diamond-demos/contoso-fabric/playbook.html',role:'article',title:'消费电子厂商全球业务运营 × Microsoft Fabric · 双屏架构演示指南',tracks:['data-infra'],language:{declared:'zh-CN'},supplemental:true},
   {path:'workshops/diamond-demos/databricks-fabric/index.en.html',role:'demo',title:'Zava Cold-Chain Retail × Azure Databricks & Microsoft Fabric · Zero-Copy Coexistence Console',tracks:['data-infra'],language:{declared:'en'},supplemental:true},
   {path:'workshops/diamond-demos/databricks-fabric/index.html',role:'demo',title:'Zava 全渠道生鲜冷链 × Azure Databricks & Microsoft Fabric · 零拷贝协同架构工作台',tracks:['data-infra'],language:{declared:'zh-CN'},supplemental:true},
   {path:'workshops/diamond-demos/travel-retail-ops/index.en.html',role:'demo',title:'Aether Global Travel & Retail × Azure Databricks · AI Operations Workbench',tracks:['data-infra'],language:{declared:'en'},supplemental:true},
@@ -90,10 +94,12 @@ const dataLabTitleMap = {
   'benchmark-cards.en.html': 'Microsoft Fabric vs Databricks · TPC-DS & Lakehouse 7-Card Benchmark Report',
   'demos/diamond-hub.html': 'Diamond 企业级数据与智能体演示目录',
   'demos/diamond-hub.en.html': 'Diamond Enterprise Data & Agent PoC Hub',
-  'demos/tcl-fabric/index.html': 'TCL 全球渠道智能 × Microsoft Fabric 架构演示台',
-  'demos/tcl-fabric/index.en.html': 'TCL Global Channel IQ × Microsoft Fabric PoC Workbench',
-  'demos/tcl-fabric/playbook.html': 'TCL × Microsoft Fabric 参考架构实施指南',
-  'demos/tcl-fabric/playbook.en.html': 'TCL × Microsoft Fabric Reference Architecture Playbook',
+  'demos/contoso-fabric/index.html': '消费电子全球运营 × Microsoft Fabric 架构演示台',
+  'demos/contoso-fabric/index.en.html': 'Consumer Electronics Global Operations × Microsoft Fabric PoC Workbench',
+  'demos/contoso-fabric/fabric-studio.html': '消费电子全球运营 × Microsoft Fabric 平台架构台',
+  'demos/contoso-fabric/fabric-studio.en.html': 'Consumer Electronics Global Operations × Microsoft Fabric Studio Explorer',
+  'demos/contoso-fabric/playbook.html': '消费电子全球运营 × Microsoft Fabric 参考架构实施指南',
+  'demos/contoso-fabric/playbook.en.html': 'Consumer Electronics Global Operations × Microsoft Fabric Reference Architecture Playbook',
   'demos/databricks-fabric/index.html': 'Zava 冷链 × Azure Databricks 与 Fabric 零拷贝协同工作台',
   'demos/databricks-fabric/index.en.html': 'Zava Cold-Chain × Azure Databricks & Fabric Zero-Copy Console',
   'demos/databricks-fabric/battlecard.html': 'Azure Databricks × Microsoft Fabric 十维架构选型矩阵',
@@ -180,6 +186,14 @@ const gpt62SolPages = [
   {path:'workshops/benchmarks/gpt-6-2-sol-cards.zh-CN.html',role:'report',title:'增补报告 9：GPT-6.2 Sol 全档推理强度实测、校准路由与二十一模型前沿基准报告 (中文)',tracks:['benchmarks'],language:{declared:'zh-CN'},supplemental:true}
 ];
 const recentSupplementPages = [
+  {path:'voice/voxcpm2-vs-azure-speech.html',role:'demo',title:'VoxCPM2 与企业语音模型对比：FSQ 声学架构与选型基准',tracks:['voice'],language:{declared:'zh-CN'},supplemental:true},
+  {path:'voice/voxcpm2-vs-azure-speech.en.html',role:'demo',title:'VoxCPM2 vs. Azure Speech: Acoustic Architecture & TTS Benchmark',tracks:['voice'],language:{declared:'en'},supplemental:true},
+  {path:'voice/voxcpm2-benchmark-cards.html',role:'report',title:'VoxCPM2 vs. Azure Speech: Acoustic Architecture & TTS Benchmark (7-Card Deck)',tracks:['voice','benchmarks'],language:{declared:'en'},supplemental:true},
+  {path:'voice/voxcpm2-benchmark-cards.en.html',role:'report',title:'VoxCPM2 vs. Azure Speech: Acoustic Architecture & TTS Benchmark (EN Deck)',tracks:['voice','benchmarks'],language:{declared:'en'},supplemental:true},
+  {path:'voice/voxcpm2-benchmark-cards.zh-CN.html',role:'report',title:'VoxCPM2 与企业语音模型对比：FSQ 声学架构与选型基准（7 卡报告）',tracks:['voice','benchmarks'],language:{declared:'zh-CN'},supplemental:true},
+  {path:'workshops/benchmarks/voxcpm2-vs-azure-speech-cards.html',role:'report',title:'VoxCPM2 vs. Azure Speech: Acoustic Architecture & TTS Benchmark (7-Card Deck)',tracks:['benchmarks','voice'],language:{declared:'en'},supplemental:true},
+  {path:'workshops/benchmarks/voxcpm2-vs-azure-speech-cards.en.html',role:'report',title:'VoxCPM2 vs. Azure Speech: Acoustic Architecture & TTS Benchmark (EN Deck)',tracks:['benchmarks','voice'],language:{declared:'en'},supplemental:true},
+  {path:'workshops/benchmarks/voxcpm2-vs-azure-speech-cards.zh-CN.html',role:'report',title:'VoxCPM2 与企业语音模型对比：FSQ 声学架构与选型基准（7 卡报告）',tracks:['benchmarks','voice'],language:{declared:'zh-CN'},supplemental:true},
   {path:'workshops/benchmarks/mai-image-2-7-cards.html',role:'report',title:'MAI-Image-2.7 Multimodal Generation & Commercial Editing Benchmark (7-Card Deck)',tracks:['benchmarks'],language:{declared:'en'},supplemental:true},
   {path:'workshops/benchmarks/mai-image-2-7-cards.en.html',role:'report',title:'MAI-Image-2.7 Multimodal Generation & Commercial Editing Benchmark (EN)',tracks:['benchmarks'],language:{declared:'en'},supplemental:true},
   {path:'workshops/benchmarks/mai-image-2-7-cards.zh-CN.html',role:'report',title:'MAI-Image-2.7 多模态文生图与商业图像编辑基准评测报告 (中文)',tracks:['benchmarks'],language:{declared:'zh-CN'},supplemental:true},

@@ -12,20 +12,43 @@ const dataPath = path.join(__dirname, 'localization', 'reports-translations.json
 const bases = [...new Set(sourcePaths.map(p => p.replace(/\.en\.html$/, '.html')))];
 const manifest = bases.map(source => ({ source, en: source.replace(/\.html$/, '.en.html'), zh: source.replace(/\.html$/, '.zh-CN.html'), kind: 'report' }));
 const sourceCache = new Map();
+const nativeBilingualPins = {
+  'workshops/agentic-commerce/benchmark-cards': '5808400f164a8d8d5736ccd0204221f34e6d0bf4',
+  'workshops/ai-security/benchmark-cards': '2c6b9d6c709d60ea790f44bcde3db3b56c386708'
+};
+const nativeBilingualPrefixes = [
+  'workshops/agentic-commerce/benchmark-cards',
+  'workshops/ai-security/benchmark-cards',
+  'workshops/data-lab/benchmark-cards'
+];
+const isNativeBilingual = file => nativeBilingualPrefixes.some(prefix => file.startsWith(prefix));
 function readSource(file) {
-  if (file.startsWith('workshops/github-trending-radar/')) {
-    if (!sourceCache.has(file)) sourceCache.set(file, cleanPerimeter(fs.readFileSync(path.join(root, file), 'utf8').replace(/\r\n/g, '\n')));
-    return sourceCache.get(file);
+  if (!sourceCache.has(file)) {
+    const cleanFile = path.join(root, 'scripts/clean-baselines', file);
+    const pinPrefix = Object.keys(nativeBilingualPins).find(prefix => file.startsWith(prefix));
+    if (fs.existsSync(cleanFile)) {
+      sourceCache.set(file, cleanPerimeter(fs.readFileSync(cleanFile, 'utf8').replace(/\r\n/g, '\n')));
+    } else if (pinPrefix) {
+      const raw = execFileSync('git', ['show', `${nativeBilingualPins[pinPrefix]}:${file}`], { cwd: root, maxBuffer: 20 * 1024 * 1024 }).toString('utf8');
+      const dedicated = require('./integrate-dedicated.cjs');
+      const route = dedicated.owned.find(entry => entry.path === file);
+      sourceCache.set(file, route ? dedicated.transform(route, raw).html : raw);
+    } else if (file.startsWith('workshops/github-trending-radar/')) {
+      sourceCache.set(file, cleanPerimeter(fs.readFileSync(path.join(root, file), 'utf8').replace(/\r\n/g, '\n')));
+    } else {
+      sourceCache.set(file, execFileSync('git', ['show', `${baseline}:${file}`], { cwd: root, maxBuffer: 20 * 1024 * 1024 }).toString('utf8'));
+    }
   }
-  if (!sourceCache.has(file)) sourceCache.set(file, execFileSync('git', ['show', `${baseline}:${file}`], { cwd: root, maxBuffer: 20 * 1024 * 1024 }).toString('utf8'));
   return sourceCache.get(file);
 }
 function cleanPerimeter(html) {
   return html.replace(/<!-- kee-(?:dedicated|professional|report-localization)-navigation:start -->[\s\S]*?<!-- kee-(?:dedicated|professional|report-localization)-navigation:end -->/g, '')
     .replace(/<!-- kee-report-localization:metadata:start -->[\s\S]*?<!-- kee-report-localization:metadata:end -->/g, '')
-    .replace(/<!-- site-remediation-knowledge:start -->[\s\S]*?<!-- site-remediation-knowledge:end -->/g, '')
-    .replace(/<!-- kee-data-lab:(?:style|navigation|runtime):start -->[\s\S]*?<!-- kee-data-lab:(?:style|navigation|runtime):end -->/g, '')
-    .replace(/<!-- radar-(?:report-style|report-nav|report-open|report-close):start -->[\s\S]*?<!-- radar-(?:report-style|report-nav|report-open|report-close):end -->/g, '');
+    .replace(/<!-- site-remediation-knowledge:start -->[\s\S]*?<!-- site-remediation-knowledge:end -->\s*/g, '')
+    .replace(/<!-- kee-data-lab:(?:style|navigation|runtime):start -->[\s\S]*?<!-- kee-data-lab:(?:style|navigation|runtime):end -->\s*/g, '')
+    .replace(/<!-- radar-(?:report-style|report-nav|report-open|report-close):start -->[\s\S]*?<!-- radar-(?:report-style|report-nav|report-open|report-close):end -->/g, '')
+    .replace(/<style id="site-remediation-style">[\s\S]*?<\/style>\s*/g, '')
+    .replace(/<(header|nav)\b[^>]*\bdata-professional-header\b[^>]*>[\s\S]*?<\/\1>\s*(?:<div class="professional-context-bar">[\s\S]*?<\/div>\s*)?/g, '');
 }
 // Keep source tags, whitespace, code/data, scripts and all chart geometry byte-for-byte.
 const tokenPattern = /<!--[\s\S]*?-->|<(script|style)\b[^>]*>[\s\S]*?<\/\1\s*>|<[^>]*>|[^<]+/gi;
@@ -107,10 +130,11 @@ function render(record, locale, dictionaries) {
   const file = record[locale === 'en' ? 'en' : 'zh'];
   const originalFile = locale === 'en' && sourcePaths.includes(record.en) ? record.en : record.source;
   let html = cleanPerimeter(readSource(originalFile));
-  html = translate(html, locale, dictionaries).replace(/(<html\b[^>]*\blang=)["'][^"']*["']/i, `$1"${locale}"`);
+  if (!isNativeBilingual(originalFile)) html = translate(html, locale, dictionaries);
+  html = html.replace(/(<html\b[^>]*\blang=)["'][^"']*["']/i, `$1"${locale}"`);
   // Legacy locale buttons only translated a subset of the page. Native links select a complete static edition.
   html = html.replace(/<button\b([^>]*\bdata-lang=["'](en|zh-CN|zh-TW)["'][^>]*)>[\s\S]*?<\/button>/gi, (_, attrs, lang) => `<a ${attrs.replace(/\b(?:data-lang|type|id)=["'][^"']*["']/g, '')} href="${relative(file,lang === 'en' ? record.en : record.zh)}">${lang === 'en' ? 'EN' : '中文'}</a>`);
-  return perimeter(html, record, file, locale, true);
+  return perimeter(html, record, file, locale, !isNativeBilingual(originalFile));
 }
 function loadDictionaries() {
   const authored = JSON.parse(fs.readFileSync(dataPath, 'utf8'));
@@ -128,6 +152,7 @@ function auditTranslations(dictionaries = loadDictionaries()) {
   }
   for (const record of manifest) for (const locale of ['en', 'zh-CN']) {
     const original = locale === 'en' && sourcePaths.includes(record.en) ? record.en : record.source;
+    if (isNativeBilingual(original)) continue;
     for (const source of textSegments(readSource(original))) {
       const needs = locale === 'en' ? /[\u3400-\u9fff]/.test(source) : /[A-Za-z]/.test(source) && !/[\u3400-\u9fff]/.test(source);
       if (needs && dictionaries[locale]?.[source] === undefined) missing.push({ file: original, locale, source });
@@ -152,5 +177,5 @@ function buildReports({ write = true } = {}) {
   }
   return { baseline, manifest, outputs };
 }
-module.exports = { root, baseline, sourcePaths, manifest, readSource, cleanPerimeter, mapText, normalized, textSegments, translate, render, loadDictionaries, auditTranslations, buildReports };
+module.exports = { root, baseline, sourcePaths, manifest, isNativeBilingual, readSource, cleanPerimeter, mapText, normalized, textSegments, translate, render, loadDictionaries, auditTranslations, buildReports };
 if (require.main === module) console.log(`Localized ${buildReports().manifest.length} report families (EN + zh-CN).`);

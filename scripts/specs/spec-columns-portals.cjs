@@ -94,7 +94,7 @@ const SPECS = {
     ],
     [
       ['Control Plane vs Data Plane Clarity', '控制面与数据面解耦', 'Separates identity/policy orchestration from high-throughput lakehouse and GPU planes.', '清晰划分身份策略控制面与高吞吐湖仓存储、GPU 推理数据面边界。'],
-      ['Runnable Customer PoCs', '面向客户的端到端验证', 'Validates reference architectures through TCL, Zava, Travel Retail, and Voice PoCs.', '通过零售渠道、冷链生鲜、国际旅购与出海硬件语音等真实场景验证。'],
+      ['Runnable Customer PoCs', '面向客户的端到端验证', 'Validates reference architectures through Consumer Electronics, Zava, Travel Retail, and Voice PoCs.', '通过消费电子渠道、冷链生鲜、国际旅购与出海硬件语音等真实场景验证。'],
       ['Quantified SLA & TCO Trade-offs', '量化延迟与成本权衡', 'Documents P99 latency bounds, sandbox density, and DBU/CU/GPU unit economics.', '提供明确的 P99 时延边界、并发沙箱密度及算力/容量单元成本账本。']
     ]
   ),

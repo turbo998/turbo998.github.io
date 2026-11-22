@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'" />
+<link rel="alternate" hreflang="en" href="voxcpm2-benchmark-cards.en.html" />
+<link rel="alternate" hreflang="zh-CN" href="voxcpm2-benchmark-cards.zh-CN.html" />
+<title>VoxCPM2 与企业语音模型对比：FSQ 声学架构与选型基准 — Qi Chen</title>
+<meta name="description" content="清华 OpenBMB VoxCPM2 (2B) 与 Microsoft Azure AI Speech 声学架构审计、11 组 48kHz 波形 Welch FFT 实测与企业选型 7 卡基准报告。" />
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #eef2f6;
+    color: #0f172a;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
+    padding: 0 0 64px;
+    -webkit-font-smoothing: antialiased;
+  }
+  .deck-toolbar {
+    width: min(900px, calc(100% - 24px));
+    margin: 16px auto 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-radius: 12px;
+    padding: 12px 18px;
+    font-size: 13px;
+  }
+  .deck-toolbar-links { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+  .deck-toolbar a {
+    color: #1d4ed8;
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .deck-toolbar a:hover { text-decoration: underline; }
+  .lang-switch {
+    display: inline-flex;
+    gap: 6px;
+    align-items: center;
+    background: #f1f5f9;
+    padding: 4px 10px;
+    border-radius: 999px;
+    border: 1px solid #cbd5e1;
+  }
+  .lang-switch a[aria-current="page"] {
+    color: #0f172a;
+    font-weight: 800;
+    pointer-events: none;
+  }
+  .deck { width: min(900px, calc(100% - 24px)); margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 32px; }
+  .card {
+    width: 100%;
+    max-width: 900px;
+    min-height: 1125px;
+    background: #ffffff;
+    border-radius: 14px;
+    box-shadow: 0 12px 32px -8px rgba(15, 23, 42, 0.08), 0 2px 6px rgba(15, 23, 42, 0.04);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid #e2e8f0;
+  }
+  .card-accent-bar {
+    height: 5px;
+    width: 100%;
+    background: linear-gradient(90deg, #0284c7 0%, #2563eb 50%, #0d9488 100%);
+    flex-shrink: 0;
+  }
+  .card-inner { padding: 42px 46px 34px; display: flex; flex-direction: column; flex: 1; }
+  .card-header { margin-bottom: 22px; }
+  .card-eyebrow {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: #0284c7;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .card-headline {
+    font-size: 29px;
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: #0f172a;
+    margin-bottom: 10px;
+  }
+  .grad-text {
+    background: linear-gradient(90deg, #0284c7, #2563eb);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .card-subtitle { font-size: 15px; color: #475569; line-height: 1.5; }
+  .card-canvas { flex: 1; display: flex; flex-direction: column; gap: 15px; justify-content: space-between; }
+  .wb-frame {
+    border: 1px solid #cbd5e1;
+    border-radius: 12px;
+    background: #f8fafc;
+    overflow: hidden;
+  }
+  .wb-topbar {
+    padding: 10px 16px;
+    background: #f1f5f9;
+    border-bottom: 1px solid #e2e8f0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: #334155;
+  }
+  .wb-status {
+    background: #dcfce7;
+    color: #166534;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 11.5px;
+    font-weight: 700;
+  }
+  .wb-grid {
+    display: grid;
+    grid-template-columns: 220px 1fr 270px;
+    gap: 12px;
+    padding: 14px;
+  }
+  .wb-col {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .wb-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #64748b;
+  }
+  .wb-scen-list { list-style: none; display: flex; flex-direction: column; gap: 5px; font-size: 12px; color: #334155; }
+  .wb-scen-list li { padding: 5px 8px; border-radius: 5px; background: #f8fafc; border: 1px solid #f1f5f9; }
+  .wb-scen-list li.active { background: #eff6ff; color: #1d4ed8; font-weight: 700; border-color: #bfdbfe; }
+  .wb-note { font-size: 11.5px; color: #475569; line-height: 1.45; background: #f8fafc; padding: 8px; border-radius: 6px; border: 1px solid #e2e8f0; }
+  .pill-row { display: flex; flex-wrap: wrap; gap: 6px; }
+  .metric-pill {
+    font-size: 11px;
+    font-weight: 600;
+    background: #f1f5f9;
+    color: #1e293b;
+    padding: 4px 8px;
+    border-radius: 6px;
+    border: 1px solid #cbd5e1;
+  }
+  .quote-box {
+    background: #f8fafc;
+    border-left: 4px solid #0284c7;
+    padding: 13px 16px;
+    border-radius: 0 8px 8px 0;
+    font-size: 13.5px;
+    color: #1e293b;
+    line-height: 1.5;
+  }
+  .dec-stack { display: flex; flex-direction: column; gap: 12px; }
+  .dec-card {
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 14px 16px;
+    background: #ffffff;
+  }
+  .dec-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 6px; flex-wrap: wrap; }
+  .dec-field { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 12px; font-weight: 700; color: #334155; }
+  .type-tag {
+    font-size: 10.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 2px 7px;
+    border-radius: 4px;
+    background: #e0f2fe;
+    color: #0369a1;
+    margin-left: 6px;
+  }
+  .act-pill { font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 999px; }
+  .act-auto { background: #dcfce7; color: #166534; }
+  .act-confirm { background: #fef3c7; color: #92400e; }
+  .act-human { background: #fee2e2; color: #991b1b; }
+  .dec-q { font-size: 13px; color: #475569; margin-bottom: 4px; }
+  .dec-ans { font-size: 14px; font-weight: 700; color: #0f172a; margin-bottom: 8px; }
+  .bar-rows { display: flex; flex-direction: column; gap: 5px; }
+  .bar-row { display: grid; grid-template-columns: 195px 1fr 56px; align-items: center; gap: 8px; font-size: 11.5px; color: #334155; }
+  .bar-track { height: 8px; background: #e2e8f0; border-radius: 999px; overflow: hidden; }
+  .bar-fill { height: 100%; background: #0284c7; border-radius: 999px; }
+  .bar-fill-muted { height: 100%; background: #94a3b8; border-radius: 999px; }
+  .bar-fill-warn { height: 100%; background: #ef4444; border-radius: 999px; }
+  .clean-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+  .clean-table th {
+    text-align: left;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #64748b;
+    padding: 9px 8px;
+    border-bottom: 2px solid #cbd5e1;
+  }
+  .clean-table td { padding: 9px 8px; border-bottom: 1px solid #e2e8f0; vertical-align: top; line-height: 1.4; }
+  .clean-table .num-col { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .miss-mark { color: #dc2626; font-weight: 800; margin-left: 4px; }
+  .rob-main { font-weight: 700; color: #0f172a; }
+  .rob-sub { font-size: 11.5px; color: #64748b; margin-top: 2px; }
+  .code-block {
+    background: #0f172a;
+    color: #e2e8f0;
+    padding: 16px 18px;
+    border-radius: 10px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 12px;
+    line-height: 1.5;
+    white-space: pre-wrap;
+    word-break: break-word;
+    border: 1px solid #1e293b;
+  }
+  .flow-arrow { text-align: center; font-size: 13px; font-weight: 700; color: #0284c7; letter-spacing: 0.04em; }
+  .hl-key { color: #7dd3fc; }
+  .hl-val { color: #86efac; }
+  .hl-warn { color: #fcd34d; }
+  .lat-list { display: flex; flex-direction: column; gap: 18px; padding: 8px 0; }
+  .lat-group { display: flex; flex-direction: column; gap: 7px; }
+  .lat-title { font-size: 13.5px; font-weight: 700; color: #0f172a; }
+  .lat-row { display: grid; grid-template-columns: 165px 1fr 86px; align-items: center; gap: 10px; font-size: 12.5px; }
+  .lat-tag { color: #475569; font-weight: 600; }
+  .lat-track { background: #f1f5f9; border-radius: 6px; height: 18px; overflow: hidden; border: 1px solid #e2e8f0; }
+  .lat-bar { height: 100%; border-radius: 5px; }
+  .lat-blue { background: #3b82f6; }
+  .lat-gray { background: #cbd5e1; }
+  .lat-val { text-align: right; font-variant-numeric: tabular-nums; color: #0f172a; }
+  .fit-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .fit-card { border-radius: 12px; padding: 18px 20px; border: 1px solid; }
+  .fit-good { background: #f0fdf4; border-color: #86efac; }
+  .fit-bad { background: #fef2f2; border-color: #fecaca; }
+  .fit-head { font-size: 15px; font-weight: 800; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+  .fit-good .fit-head { color: #166534; }
+  .fit-bad .fit-head { color: #991b1b; }
+  .fit-badge-ok { background: #166534; color: #ffffff; font-size: 10.5px; padding: 2px 7px; border-radius: 4px; text-transform: uppercase; }
+  .fit-badge-no { background: #991b1b; color: #ffffff; font-size: 10.5px; padding: 2px 7px; border-radius: 4px; text-transform: uppercase; }
+  .fit-card ul { padding-left: 18px; display: flex; flex-direction: column; gap: 9px; font-size: 13px; line-height: 1.48; color: #1e293b; }
+  .callout-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .callout-box {
+    background: #f8fafc;
+    border: 1px solid #cbd5e1;
+    border-radius: 10px;
+    padding: 13px 16px;
+    font-size: 13px;
+    line-height: 1.5;
+    color: #334155;
+  }
+  .callout-box strong { color: #0f172a; }
+  .dark-footer-box {
+    background: #0f172a;
+    color: #cbd5e1;
+    border-radius: 10px;
+    padding: 16px 20px;
+    font-size: 12.5px;
+    line-height: 1.55;
+  }
+  .dark-repo { color: #7dd3fc; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; margin-top: 6px; font-size: 12px; }
+  .card-footer {
+    margin-top: 20px;
+    padding-top: 14px;
+    border-top: 1px solid #e2e8f0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    color: #64748b;
+  }
+  details.raw-deck-data {
+    width: min(900px, calc(100% - 24px));
+    margin: 28px auto 0;
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 12.5px;
+  }
+  details.raw-deck-data summary { cursor: pointer; font-weight: 700; color: #334155; }
+  details.raw-deck-data pre {
+    margin-top: 12px;
+    background: #0f172a;
+    color: #e2e8f0;
+    padding: 14px;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-size: 11.5px;
+    line-height: 1.45;
+  }
+  @media (max-width: 820px) {
+    .card { min-height: auto; }
+    .card-inner { padding: 24px 16px; }
+    .card-headline { font-size: 21px; }
+    .wb-grid, .fit-grid, .callout-grid { grid-template-columns: 1fr; }
+    .bar-row, .lat-row { grid-template-columns: 118px 1fr 56px; font-size: 11px; }
+    .clean-table { display: block; overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch; font-size: 11.5px; }
+    .clean-table .sc-col, .clean-table .num-col { white-space: normal; }
+    .code-block { font-size: 11px; padding: 12px; }
+  }
+</style>
+<style id="site-remediation-style">/* Embedded by integrate-dedicated.cjs so sealed report CSP remains unchanged. */
+.kee-dedicated-nav {
+  all: initial; box-sizing: border-box; position: relative; display: flex;
+  flex-wrap: wrap; align-items: center; gap: 6px 14px; width: 100%;
+  padding: 12px 18px; margin: 0 0 16px; border: 1px solid #314361;
+  background: #101A30; color: #EEF3FF; font: 13px/1.5 system-ui, sans-serif;
+  text-align: left; isolation: isolate; color-scheme: dark;
+}
+.kee-dedicated-nav a {
+  all: revert; box-sizing: border-box; display: inline-block; padding: 4px 0;
+  color: #9AABFF; background: transparent; font: inherit; text-decoration: underline;
+  text-underline-offset: 3px; border: 0; border-radius: 0; box-shadow: none;
+}
+.kee-dedicated-nav a:focus-visible { outline: 3px solid #56DDCD; outline-offset: 3px; }
+.kee-dedicated-nav .kee-dedicated-identity { font-weight: 700; color: #EEF3FF; }
+.kee-dedicated-nav .kee-dedicated-language {
+  all: revert; display: block; flex-basis: 100%; color: #ADBBD1; font: 12px/1.5 system-ui, sans-serif;
+}
+.kee-dedicated-native-link { display: block; padding: 22px; color: #1858a8; background: #f8fafc; font: 15px/1.6 system-ui, sans-serif; }
+.kee-dedicated-native-link a { color: #1858a8; text-decoration: underline; }
+@media print { .kee-dedicated-nav { display: none; } }
+
+/* Professional primary navigation: long section names reflow, never scroll inside the header. */
+[data-professional-header]{box-sizing:border-box;display:grid!important;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:18px!important;width:100%;max-width:none;height:auto!important;min-height:0!important;padding:18px 24px!important;margin:0 0 16px;position:relative;overflow:visible!important;background:#101A30;color:#EEF3FF;border:1px solid #314361;font:13px/1.5 system-ui,sans-serif;isolation:isolate;color-scheme:dark}
+[data-professional-header] *{box-sizing:border-box;min-width:0;max-height:none}
+[data-professional-header] a{font:inherit;text-decoration:none;color:#9AABFF;overflow-wrap:anywhere;white-space:normal}
+[data-professional-header] .professional-identity{font-weight:750;color:#EEF3FF;white-space:nowrap;font-size:14px;margin:0}
+[data-professional-header] .professional-primary{display:grid;grid-template-columns:1.45fr repeat(5,minmax(0,1fr));gap:6px;align-items:stretch;min-width:0}
+@media(max-width:960px) and (min-width:601px){[data-professional-header] .professional-primary{gap:5px}[data-professional-header] .professional-primary a{padding:8px 6px;font-size:11.5px}}
+[data-professional-header] .professional-primary a{display:flex;align-items:center;justify-content:center;padding:10px 9px;border:1px solid #314361;border-radius:12px;background:#172440;text-align:center;line-height:1.4;min-height:44px}
+[data-professional-header] .professional-primary a[aria-current=page]{background:#23375a;border-color:#56DDCD;color:#56DDCD}
+[data-professional-header] .professional-controls{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:4px;font-size:12px;margin:0;position:static}
+[data-professional-header] .professional-controls>a{display:flex;align-items:center;justify-content:center;padding:8px;min-height:40px;min-width:32px;border-radius:10px}
+[data-professional-header] .professional-context{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px 18px;padding-top:12px;border-top:1px solid #314361;font-size:12px;color:#ADBBD1;min-width:0;line-height:1.6}
+[data-professional-header] .professional-context>*{min-width:0;overflow-wrap:anywhere}
+[data-professional-header] .professional-context .kee-dedicated-language{flex-basis:100%;color:#ADBBD1}
+[data-professional-header] a:focus-visible{outline:3px solid #56DDCD;outline-offset:3px}
+[data-professional-header] a:hover{text-decoration:underline}
+[data-professional-header][data-perimeter-theme=light],:root[data-theme=light] .reading-header[data-professional-header]{background:#fff;color:#172440;border-color:#d4deee;color-scheme:light}
+[data-professional-header][data-perimeter-theme=light] a,:root[data-theme=light] .reading-header[data-professional-header] a{color:#3752a0}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a,:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a{background:#edf2ff;border-color:#d4deee}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a[aria-current],:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a[aria-current]{background:#dff6f0;color:#127b72;border-color:#127b72}
+@media(max-width:1150px){[data-professional-header]{grid-template-columns:minmax(0,1fr) auto;gap:12px!important}[data-professional-header] .professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header] .professional-controls{grid-column:2;grid-row:1}}
+@media(max-width:600px){[data-professional-header]{padding:14px 16px!important;gap:12px!important}[data-professional-header] .professional-primary{grid-template-columns:repeat(2,minmax(0,1fr))}[data-professional-header] .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:13px}[data-professional-header] .professional-controls{gap:0}[data-professional-header] .professional-controls>a{padding:6px;min-width:28px}}
+@media print{[data-professional-header]{display:none!important}}
+
+html{scroll-padding-top:164px}@media(max-width:600px){html{scroll-padding-top:260px}}.reading-header,.kee-dedicated-nav,[data-professional-header]{position:sticky;top:0;z-index:1000;-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
+
+:root{--search-bg:#101a30;--search-soft:#172440;--search-ink:#eef3ff;--search-muted:#adbbd1;--search-line:#293956;--search-accent:#9aabff;--header-offset:144px}
+:root[data-reading-shell][data-theme=light],[data-perimeter-theme=light]{--search-bg:#fff;--search-soft:#e8eefb;--search-ink:#17233e;--search-muted:#4c5e7c;--search-line:#d5ddec;--search-accent:#354ec8}
+html{scroll-padding-top:var(--header-offset,108px)!important}
+.site-search,.site-search *{box-sizing:border-box!important;font-family:"Segoe UI",sans-serif;letter-spacing:normal;text-transform:none}
+.site-search{position:relative;display:flex;align-items:center;gap:5px;min-width:0;width:230px;max-width:100%;margin:0!important;padding:0!important;line-height:1.4;border:1px solid var(--search-line);border-radius:9px;background:var(--search-soft);color:var(--search-ink);isolation:isolate}
+.site-search input[type=search]{display:block;flex:1;min-width:0;width:100%;height:42px;margin:0;padding:9px 8px!important;font-size:12px!important;line-height:1.5;border:0!important;border-radius:9px;background:transparent!important;color:var(--search-ink)!important;box-shadow:none!important;appearance:none}
+.site-search input::placeholder{color:var(--search-muted);opacity:1}.site-search input:focus-visible{outline:2px solid var(--search-accent);outline-offset:2px}
+.site-search kbd{font:11px Consolas,monospace;color:var(--search-muted);padding:1px 5px;border:1px solid var(--search-line);border-radius:4px}
+.site-search button[type=submit]{flex:none;width:38px;min-width:38px;height:42px;min-height:42px;padding:0;margin:0;border:0;border-radius:8px;background:transparent;color:var(--search-accent);font-size:24px;cursor:pointer;box-shadow:none}
+.search-label,.search-status{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.site-search .search-results{position:absolute;top:calc(100% + 10px);right:0;z-index:1100;width:min(480px,calc(100vw - 32px));max-height:min(560px,65vh);overflow-y:auto;border:1px solid var(--search-line);border-radius:12px;background:var(--search-bg);color:var(--search-ink);padding:10px;box-shadow:0 12px 32px #0005;text-align:left}
+.site-search .search-results[hidden]{display:none!important}.search-results .search-group{margin:8px 6px 4px;font:11px/1.5 Consolas,monospace;color:var(--search-muted)}
+.site-search .search-results a{display:block!important;padding:10px!important;margin:3px 0!important;border:1px solid transparent!important;border-radius:7px;background:transparent;color:var(--search-ink)!important;font-size:13px!important;text-decoration:none!important;white-space:normal;overflow-wrap:anywhere;text-align:left!important;line-height:1.5!important}
+.site-search .search-results a[aria-selected=true],.site-search .search-results a:hover{border-color:var(--search-accent)!important;background:var(--search-soft)}
+.search-results a small{display:block;font-size:10px;color:var(--search-muted);margin-top:4px}.search-results p{margin:10px;font-size:13px;color:var(--search-muted)}
+.search-archive-summary{padding:20px;border:1px solid var(--search-line);border-radius:10px;background:var(--search-bg);color:var(--search-ink);margin:24px 0}.search-archive-summary h2{font-size:24px;margin:0 0 12px}.search-archive-summary li{margin:12px 0}.search-archive-summary a{color:var(--search-accent)}
+[data-professional-header]{position:sticky!important;top:0!important;z-index:1000!important;background:var(--search-bg)!important;--header-glass:rgba(16,26,48,.9);grid-template-columns:auto minmax(0,1fr) 230px auto!important}
+[data-professional-header][data-perimeter-theme=light],:root[data-reading-shell][data-theme=light] [data-professional-header]{--header-glass:rgba(255,255,255,.94)}
+[data-professional-header] .professional-mobile{display:none}.professional-mobile summary{min-width:38px;min-height:42px;display:grid;place-items:center;cursor:pointer;list-style:none}.professional-mobile summary::-webkit-details-marker{display:none}
+[data-professional-header] .professional-context{display:none}
+.professional-context-bar{padding:12px 24px;border-bottom:1px solid var(--search-line);background:var(--search-bg);color:var(--search-muted);font:12px/1.6 "Segoe UI",sans-serif;display:flex;flex-wrap:wrap;gap:8px 18px;overflow-wrap:anywhere}.professional-context-bar a{color:var(--search-accent)}
+@supports((backdrop-filter:blur(16px)) or (-webkit-backdrop-filter:blur(16px))){.site-header,[data-professional-header]{background:var(--header-glass)!important;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}}
+@media(max-width:1250px) and (min-width:701px){.header-inner{grid-template-columns:minmax(0,1fr) 230px auto!important;padding:12px 0;gap:12px!important}.desktop-nav{grid-row:2;grid-column:1/-1}.header-inner>.site-search{grid-column:2;grid-row:1}.header-inner>.controls{grid-column:3;grid-row:1}[data-professional-header]{grid-template-columns:minmax(0,1fr) 230px auto!important;gap:12px!important}[data-professional-header]>.professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header]>.site-search{grid-column:2;grid-row:1}[data-professional-header]>.professional-controls{grid-column:3;grid-row:1}:root{--header-offset:184px}}
+@media(max-width:700px){.header-inner{grid-template-columns:minmax(0,1fr) auto!important;padding:10px 0;gap:8px!important}.header-inner>.site-search{grid-row:2;grid-column:1/-1;width:100%}.header-inner>.controls{grid-column:2;grid-row:1}.site-search .search-results{width:100%;right:0}[data-professional-header]{grid-template-columns:minmax(0,1fr) auto!important;padding:10px 16px!important;gap:8px!important}[data-professional-header]>.professional-primary{display:none!important}[data-professional-header]>.site-search{grid-column:1/-1;grid-row:2;width:100%}[data-professional-header]>.professional-controls{grid-column:2;grid-row:1}[data-professional-header] .professional-mobile{display:block}[data-professional-header] .professional-mobile[open]>.professional-primary{position:absolute;top:100%;left:0;right:0;padding:16px;background:var(--search-bg);border-bottom:1px solid var(--search-line);display:grid;grid-template-columns:1fr 1fr;gap:8px}[data-professional-header] .professional-mobile .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:12px!important}:root{--header-offset:136px}}
+@media(prefers-reduced-transparency:reduce){.site-header,[data-professional-header]{background:var(--search-bg)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}}
+@media print{.site-search,.professional-context-bar{display:none!important}}
+
+@media(min-width:1251px){.header-inner{display:grid!important;grid-template-columns:auto minmax(0,1fr) 230px auto!important;gap:18px!important}.header-inner .desktop-nav{min-width:0}}
+
+html:has(.kee-dedicated-app-root){height:auto!important;overflow-x:hidden!important;overflow-y:auto!important}
+body:has([data-professional-header]){height:auto!important;overflow-x:clip!important;overflow-y:visible!important;padding-top:0!important}
+.demo-language-navigation{display:none!important}
+.stage-column,.telemetry-panel,.scene-pill,#timeline-slider{min-width:0}
+@media(max-width:1180px){.workspace,.template-tabs{grid-template-columns:minmax(0,1fr)!important}}
+
+.in-arena-frame .professional-context-bar,.in-arena-frame [data-knowledge-atlas]{display:none!important}
+.knowledge-graph-wide{display:block}.knowledge-graph-compact{display:none}@media(max-width:600px){.knowledge-graph-wide{display:none}.knowledge-graph-compact{display:block}}
+</style></head>
+<body><nav class="kee-dedicated-nav" data-professional-header><a class="professional-identity reading-brand kee-dedicated-identity identity" href="../zh.html">Qi Chen · @turbo998</a><div class="professional-primary" role="navigation" aria-label="主导航"><a href="../studio/zh-index.html" data-section="hub" data-nav-en-href="../studio/index.html" data-nav-zh-href="../studio/zh-index.html" data-nav-en-label="Frontier Transformation Engineering Hub" data-nav-zh-label="Frontier Transformation Engineering Hub">Frontier Transformation Engineering Hub</a><a href="../zh-diamond.html" data-section="diamond" data-nav-en-href="../diamond.html" data-nav-zh-href="../zh-diamond.html" data-nav-en-label="Diamond Live Demos" data-nav-zh-label="Diamond 实战演示">Diamond 实战演示</a><a href="../zh-benchmarks.html" data-section="benchmarks" data-nav-en-href="../benchmarks.html" data-nav-zh-href="../zh-benchmarks.html" data-nav-en-label="Benchmark &amp; Eval Foundry" data-nav-zh-label="基准评测中心" aria-current="page">基准评测中心</a><a href="../zh-github-radar.html" data-section="radar" data-nav-en-href="../github-radar.html" data-nav-zh-href="../zh-github-radar.html" data-nav-en-label="GitHub AI Signal Radar" data-nav-zh-label="GitHub AI 信号雷达">GitHub AI 信号雷达</a><a href="../zh-openrouter.html" data-section="routing" data-nav-en-href="../openrouter.html" data-nav-zh-href="../zh-openrouter.html" data-nav-en-label="Model Routing &amp; Telemetry" data-nav-zh-label="OpenRouter 模型遥测">OpenRouter 模型遥测</a><a href="../zh-about.html" data-section="profile" data-nav-en-href="../about.html" data-nav-zh-href="../zh-about.html" data-nav-en-label="Frontier Transformation Engineer" data-nav-zh-label="Frontier Transformation Engineer">Frontier Transformation Engineer</a></div><form class="site-search" role="search" action="../studio/zh-archive.html" method="get" data-search-root="../index.html" data-search-language="zh-CN"><label class="search-label" for="site-search-input">搜索架构、评测、Demo、技能...</label><input id="site-search-input" name="q" type="search" placeholder="搜索架构、评测、Demo、技能..." autocomplete="off" spellcheck="false" aria-keyshortcuts="/ Control+k Meta+k"><kbd aria-hidden="true">/</kbd><button type="submit" aria-label="搜索全部内容">⌕</button><div class="search-results" id="site-search-results" hidden></div><span class="search-status" role="status" aria-live="polite"></span></form><div class="reading-controls professional-controls" aria-label="网站语言与外观"><a href="voxcpm2-benchmark-cards.en.html" data-reading-language hreflang="en" lang="en">EN</a><a href="voxcpm2-benchmark-cards.zh-CN.html" hreflang="zh-CN" lang="zh-CN" aria-current="page">中文</a><details class="professional-mobile"><summary aria-label="打开主导航">☰</summary><div class="professional-primary" role="navigation" aria-label="移动主导航"><a href="../studio/zh-index.html" data-section="hub" data-nav-en-href="../studio/index.html" data-nav-zh-href="../studio/zh-index.html" data-nav-en-label="Frontier Transformation Engineering Hub" data-nav-zh-label="Frontier Transformation Engineering Hub">Frontier Transformation Engineering Hub</a><a href="../zh-diamond.html" data-section="diamond" data-nav-en-href="../diamond.html" data-nav-zh-href="../zh-diamond.html" data-nav-en-label="Diamond Live Demos" data-nav-zh-label="Diamond 实战演示">Diamond 实战演示</a><a href="../zh-benchmarks.html" data-section="benchmarks" data-nav-en-href="../benchmarks.html" data-nav-zh-href="../zh-benchmarks.html" data-nav-en-label="Benchmark &amp; Eval Foundry" data-nav-zh-label="基准评测中心" aria-current="page">基准评测中心</a><a href="../zh-github-radar.html" data-section="radar" data-nav-en-href="../github-radar.html" data-nav-zh-href="../zh-github-radar.html" data-nav-en-label="GitHub AI Signal Radar" data-nav-zh-label="GitHub AI 信号雷达">GitHub AI 信号雷达</a><a href="../zh-openrouter.html" data-section="routing" data-nav-en-href="../openrouter.html" data-nav-zh-href="../zh-openrouter.html" data-nav-en-label="Model Routing &amp; Telemetry" data-nav-zh-label="OpenRouter 模型遥测">OpenRouter 模型遥测</a><a href="../zh-about.html" data-section="profile" data-nav-en-href="../about.html" data-nav-zh-href="../zh-about.html" data-nav-en-label="Frontier Transformation Engineer" data-nav-zh-label="Frontier Transformation Engineer">Frontier Transformation Engineer</a></div></details><a data-reading-theme="light" href="voxcpm2-benchmark-cards.zh-CN.html?theme=light" aria-label="浅色主题">☀</a><a data-reading-theme="dark" href="voxcpm2-benchmark-cards.zh-CN.html?theme=dark" aria-label="深色主题">◐</a></div><div class="professional-context" aria-label="返回上下文"><a href="../studio/zh-index.html">← 工程枢纽</a> · <a href="../studio/zh-voice.html">返回主题</a></div></nav><div class="professional-context-bar"><a href="../studio/zh-index.html">← 工程枢纽</a> · <a class="reading-context" href="../studio/zh-voice.html">返回主题</a></div>
+  <div class="deck-toolbar" role="navigation" aria-label="基准报告导航">
+    <div class="deck-toolbar-links">
+      <a href="../zh-benchmarks.html">← 返回基准评测中心</a>
+      <span>·</span>
+      <a href="../studio/zh-voice.html">语音工程专题</a>
+      <span>·</span>
+      <a href="voxcpm2-vs-azure-speech.html">双轨声学架构与交互式 TCO 测算台 →</a>
+    </div>
+    <div class="lang-switch" aria-label="语言切换">
+      <a href="voxcpm2-benchmark-cards.en.html" hreflang="en" lang="en">EN</a>
+      <span>/</span>
+      <a href="voxcpm2-benchmark-cards.zh-CN.html" hreflang="zh-CN" lang="zh-CN" aria-current="page">中文</a>
+    </div>
+  </div>
+
+  <main class="deck">
+    <!-- CARD 1 -->
+    <article class="report-card card" id="card-1">
+      <div class="card-accent-bar"></div>
+      <div class="card-inner">
+        <header class="card-header">
+          <div class="card-eyebrow">1 / 7 · HANDS-ON · 语音合成与声音克隆基准</div>
+          <h1 class="card-headline">22/24 语种零样本克隆音色相似度第 1，<span class="grad-text">与企业级 Azure Speech 形成双轨互补</span></h1>
+          <p class="card-subtitle">基于 OpenBMB VoxCPM2 (2B, arXiv:2606.06928) 源码逐行审计、11 组 48kHz 官方无损 WAV 的 1024 点 Welch FFT 频谱实测与主流商用云对标。</p>
+        </header>
+        <div class="card-canvas">
+          <div class="wb-frame">
+            <div class="wb-topbar">
+              <span>OpenBMB VoxCPM2 (2B) vs. Azure AI Speech · 2026-11 密封评测台</span>
+              <span class="wb-status">11 组 WAV 实测锁定 · SHA-256</span>
+            </div>
+            <div class="wb-grid">
+              <div class="wb-col">
+                <div class="wb-label">评测场景矩阵</div>
+                <ul class="wb-scen-list">
+                  <li class="active">S01 · 16k->48k 频谱超分实测</li>
+                  <li>S02 · 耳语/气声 FSQ 残差消融</li>
+                  <li>S03 · 24 语种零样本克隆 SIM</li>
+                  <li>S04 · Seed-TTS 绕口令长难句</li>
+                  <li>S05 · SSML / Viseme / 时长锁死</li>
+                  <li>S06 · vLLM-Omni 延迟与 TCO 拐点</li>
+                </ul>
+                <div class="wb-note">门限规则：>=0.80 自动路由 (Act automatically) · 0.55–0.79 人工确认/外挂护栏 (Confirm) · <0.55 / 合规缺失 转交确定性云控制面 (Send to a human)。</div>
+              </div>
+              <div class="wb-col">
+                <div class="wb-label">结构化路由契约输入</div>
+                <div class="wb-note" style="font-family:ui-monospace,Consolas,monospace;font-size:11px;">{
+  "model": "openbmb/VoxCPM2 (2B, Apache-2.0)",
+  "backbone": "MiniCPM-4 28L + 8L RALM + LocDiT",
+  "bottleneck": "Internal FSQ(dim=512, scale=9)",
+  "codec": "AudioVAE V2 (16kHz in -> 48kHz out)",
+  "patch_step": "6.25 Hz (160 ms exact multiple)",
+  "enterprise_baseline": "Azure DragonHDOmni"
+}</div>
+                <div class="wb-label" style="margin-top:4px;">核心实测与公开指标</div>
+                <div class="pill-row">
+                  <span class="metric-pill">42,802 Stars · Apache-2.0</span>
+                  <span class="metric-pill">48 kHz · 17.7 kHz BW (measured)</span>
+                  <span class="metric-pill">EN SIM: 85.4% vs 61.3% 11Labs</span>
+                  <span class="metric-pill">Seed-TTS ZH: 0.97% CER</span>
+                  <span class="metric-pill">vLLM-Omni: RTF 0.13 (~135ms)</span>
+                  <span class="metric-pill">Whisper SDR: 50.88 dB</span>
+                </div>
+              </div>
+              <div class="wb-col">
+                <div class="wb-label">核心架构门禁判定</div>
+                <div class="wb-note">
+                  <strong>创意有声内容与私有音色克隆</strong><br/>
+                  <span class="act-pill act-auto" style="display:inline-block;margin:4px 0;">Act automatically · 0.89</span><br/>
+                  月产 >25M 字符部署 VoxCPM2 + vLLM-Omni，TCO 节省 60%–85%。
+                </div>
+                <div class="wb-note">
+                  <strong>金融政务 IVR 与 3D 数字人口型</strong><br/>
+                  <span class="act-pill act-human" style="display:inline-block;margin:4px 0;">Send to a human / Azure · 0.18</span><br/>
+                  无 SSML、无 Viseme、无内置防伪水印，必须路由至 Azure AI Speech。
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="callout-box">
+            <strong>核心工程发现（祛除社区简化叙事）：</strong>
+            VoxCPM2 确实移除了外部离散 RVQ 编解码器，但源码 voxcpm2.py:258 揭示其 TSLM 出口仍内置可微标量量化瓶颈 FSQ (round(tanh(x)*9)/9, dim=512) 稳定长句自回归；高自然度的关键在于 LocEnc -> RALM 的未量化连续残差旁路。
+          </div>
+        </div>
+        <footer class="card-footer">
+          <span><strong>VoxCPM2 与企业语音模型对比：FSQ 声学架构与选型基准</strong> · measured + reported</span>
+          <span>1 / 7</span>
+        </footer>
+      </div>
+    </article>
+
+    <!-- CARD 2 -->
+    <article class="report-card card" id="card-2">
+      <div class="card-accent-bar"></div>
+      <div class="card-inner">
+        <header class="card-header">
+          <div class="card-eyebrow">2 / 7 · SCENARIO: 48KHZ 超分声学与耳语克隆取证</div>
+          <h2 class="card-headline">16kHz 编码输入实现 48kHz 超分直出：16–24kHz 能量提升 +44.4 dB</h2>
+          <p class="card-subtitle">对 style_prompt1.wav (24kHz 输入) 与 style_result1_1.wav (48kHz 耳语克隆输出) 执行 1024 点 Hann 窗 Welch PSD 实测。</p>
+        </header>
+        <div class="card-canvas">
+          <div class="quote-box">取证问题：参考音频在送入 AudioVAE V2 编码器前被强制重采样至 16kHz（8kHz 奈奎斯特硬截断），解码输出的 48kHz 波形究竟是简单插值伪超分，还是具备真实高频泛音与气声包络？</div>
+          <div class="dec-stack">
+            <div class="dec-card">
+              <div class="dec-top">
+                <div><span class="dec-field">f01_neural_bandwidth_extension</span><span class="type-tag">score</span></div>
+                <span class="act-pill act-auto">Act automatically · 0.96</span>
+              </div>
+              <div class="dec-q">16–24 kHz 棚级高频段平均功率谱密度与 -52 dB 有效带宽上限 (measured)</div>
+              <div class="dec-ans">style_result1_1.wav 实测有效带宽 17,672 Hz (-47.64 dB vs VoxCPM1.5 -92.08 dB)</div>
+              <div class="bar-rows">
+                <div class="bar-row"><span>VoxCPM2 Whisper (17.67 kHz)</span><div class="bar-track"><div class="bar-fill" style="width:73.6%"></div></div><strong>73.6%</strong></div>
+                <div class="bar-row"><span>Input Prompt 24k (11.63 kHz)</span><div class="bar-track"><div class="bar-fill-muted" style="width:48.4%"></div></div><strong>48.4%</strong></div>
+                <div class="bar-row"><span>VoxCPM1.5 44.1k (10.03 kHz)</span><div class="bar-track"><div class="bar-fill-warn" style="width:41.8%"></div></div><strong>41.8%</strong></div>
+              </div>
+            </div>
+
+            <div class="dec-card">
+              <div class="dec-top">
+                <div><span class="dec-field">f02_isolated_reference_timbre</span><span class="type-tag">choice</span></div>
+                <span class="act-pill act-auto">Act automatically · 0.854</span>
+              </div>
+              <div class="dec-q">[103, ref_feats, 104] 结构解耦槽位能否在不串味的前提下跨情绪/跨方言克隆？</div>
+              <div class="dec-ans">验证通过：平静普通话参考音零样本生成耳语 (20.8% 气声帧) 与四川话 (17.39 kHz BW)</div>
+              <div class="bar-rows">
+                <div class="bar-row"><span>VoxCPM2 EN Zero-Shot SIM</span><div class="bar-track"><div class="bar-fill" style="width:85.4%"></div></div><strong>85.4%</strong></div>
+                <div class="bar-row"><span>Fish Audio S2 (4B) SIM</span><div class="bar-track"><div class="bar-fill-muted" style="width:79.7%"></div></div><strong>79.7%</strong></div>
+                <div class="bar-row"><span>ElevenLabs Multilingual SIM</span><div class="bar-track"><div class="bar-fill-muted" style="width:61.3%"></div></div><strong>61.3%</strong></div>
+              </div>
+            </div>
+
+            <div class="dec-card">
+              <div class="dec-top">
+                <div><span class="dec-field">f03_frame_exact_dubbing_lock</span><span class="type-tag">noul</span></div>
+                <span class="act-pill act-human">Send to a human · 0.16</span>
+              </div>
+              <div class="dec-q">能否用于要求毫秒级时长锁死或 0.1ms 3D 数字人口型对齐的同步管线？</div>
+              <div class="dec-ans">NOUL — 全部 9 组 VoxCPM2 波形时长严格受限于 N × 0.160s 整数倍，无原生 Viseme 流</div>
+              <div class="bar-rows">
+                <div class="bar-row"><span>Route to Azure Viseme / Index2</span><div class="bar-track"><div class="bar-fill-warn" style="width:84.0%"></div></div><strong>84.0%</strong></div>
+                <div class="bar-row"><span>Sub-160ms frame lock support</span><div class="bar-track"><div class="bar-fill-muted" style="width:16.0%"></div></div><strong>16.0%</strong></div>
+              </div>
+            </div>
+          </div>
+          <div class="callout-box">
+            <strong>带宽占比刻度说明（零伪造坐标）：</strong>
+            首张卡片进度条严格按 48kHz 采样率奈奎斯特上限 (24,000 Hz = 100%) 线性映射：17,672 / 24,000 = 73.6%，11,625 / 24,000 = 48.4%，10,034 / 24,000 = 41.8%。
+          </div>
+        </div>
+        <footer class="card-footer">
+          <span><strong>VoxCPM2 与企业语音模型对比：FSQ 声学架构与选型基准</strong> · measured (11-WAV Welch PSD)</span>
+          <span>2 / 7</span>
+        </footer>
+      </div>
+    </article>
+
+    <!-- CARD 3 -->
+    <article class="report-card card" id="card-3">
+      <div class="card-accent-bar"></div>
+      <div class="card-inner">
+        <header class="card-header">
+          <div class="card-eyebrow">3 / 7 · WHAT I TESTED · 全维度记分卡</div>
+          <h2 class="card-headline">8 项声学与生产控制门禁：5 项达标，3 项触发确定性路由回退</h2>
+          <p class="card-subtitle">结合本地 11 组 WAV 物理信号取证 (measured) 与 Seed-TTS / Minimax-MLS / InstructTTSEval 官方基准 (reported)。</p>
+        </header>
+        <div class="card-canvas">
+          <table class="clean-table">
+            <thead>
+              <tr>
+                <th>测试维度</th>
+                <th>评估指标 / 门禁任务</th>
+                <th>VOXCPM2 实测/报告结果</th>
+                <th>路由动作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>A01 · 48kHz Super-Res</strong></td>
+                <td>16kHz 输入下耳语/哭腔有效带宽 (measured)</td>
+                <td>17.67 kHz (whisper) · 17.58 kHz (grief) · +44.4 dB</td>
+                <td><span class="act-pill act-auto">Act automatically</span></td>
+              </tr>
+              <tr>
+                <td><strong>A02 · Zero-Shot SIM</strong></td>
+                <td>Minimax-MLS 24 语种音色相似度 (reported)</td>
+                <td>#1 in 22/24 langs (EN 85.4%, ZH 82.5%, FI 89.0%)</td>
+                <td><span class="act-pill act-auto">Act automatically</span></td>
+              </tr>
+              <tr>
+                <td><strong>A03 · Clean ZH / EN</strong></td>
+                <td>Seed-TTS 标准集与 30 语种内测吐字率 (reported)</td>
+                <td>0.97% ZH CER (0.92% int.) · 1.84% EN WER · 1.68% avg</td>
+                <td><span class="act-pill act-auto">Act automatically</span></td>
+              </tr>
+              <tr>
+                <td><strong>A04 · SEA Low-Resource</strong></td>
+                <td>缅/老/柬小语种合成可懂度 vs Fish S2 (reported)</td>
+                <td>1.42% MY / 1.90% LO / 2.05% KM (vs 75%-87% Fish)</td>
+                <td><span class="act-pill act-auto">Act automatically</span></td>
+              </tr>
+              <tr>
+                <td><strong>A05 · Voice Design</strong></td>
+                <td>InstructTTSEval 纯文本捏声线指令遵循 (reported)</td>
+                <td>EN 84.2 APS / 83.2 DSD / 71.4 RP (#1); 1-3 retries</td>
+                <td><span class="act-pill act-confirm">Confirm</span></td>
+              </tr>
+              <tr>
+                <td><strong>A06 · Hard Tongue-Twister</strong></td>
+                <td>Seed-TTS test-Hard 生僻字绕口令 CER (reported)</td>
+                <td>8.13% CER (trails CosyVoice3 5.83% &amp; v1.5 7.74%)<span class="miss-mark">✕</span></td>
+                <td><span class="act-pill act-confirm">Confirm</span></td>
+              </tr>
+              <tr>
+                <td><strong>A07 · Zero-Shot AR / HI / YUE</strong></td>
+                <td>Minimax-MLS 阿语/印地语/零样本粤语 WER (reported)</td>
+                <td>AR 13.05% · HI 19.70% · YUE 38.58% CER<span class="miss-mark">✕</span></td>
+                <td><span class="act-pill act-human">Send to a human</span></td>
+              </tr>
+              <tr>
+                <td><strong>A08 · SSML / Viseme / SLA</strong></td>
+                <td>金融数字强控、0.1ms 口型同步与原生水印</td>
+                <td>None (N x 160ms patch floor; no retry in stream)<span class="miss-mark">✕</span></td>
+                <td><span class="act-pill act-human">Send to a human</span></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="callout-grid">
+            <div class="callout-box">
+              <strong>门限路由原则：</strong>
+              高相似度克隆与东南亚本地化具备生产级直通能力；Voice Design 与绕口令需配合 ASR 自动质检重抽 (1–3 次)。
+            </div>
+            <div class="callout-box">
+              <strong>失分项根因剖析 (✕)：</strong>
+              6.25Hz 粗粒度连续自回归牺牲了生僻字逐音素硬对齐精度，且无 W3C SSML 解析层，必须由 Azure AI Speech 承接确定性金融/数字人流量。
+            </div>
+          </div>
+        </div>
+        <footer class="card-footer">
+          <span><strong>VoxCPM2 与企业语音模型对比：FSQ 声学架构与选型基准</strong> · measured + reported</span>
+          <span>3 / 7</span>
+        </footer>
+      </div>
+    </article>
+
+    <!-- CARD 4 -->
+    <article class="report-card card" id="card-4">
+      <div class="card-accent-bar"></div>
+      <div class="card-inner">
+        <header class="card-header">
+          <div class="card-eyebrow">4 / 7 · UNDER THE HOOD · 源码协议与确定性频谱验证器</div>
+          <h2 class="card-headline">内置 FSQ(dim=512, s=9) 半离散锚点 + 非对称 3× 超分声码器契约</h2>
+          <p class="card-subtitle">上方为 OpenBMB/VoxCPM 核心前向与流式限制源码契约，下方为纯 Python 1024 点 Welch FFT 确定性验证输出。</p>
+        </header>
+        <div class="card-canvas knowledge-atlas">
+          <pre class="code-block"><span class="hl-key"># src/voxcpm/model/voxcpm2.py (lines 258, 345, 667) &amp; audiovae_v2.py</span>
+<span class="hl-key">ref_wave_16k</span> = torchaudio.functional.resample(ref_wav, orig_sr, <span class="hl-val">16000</span>)
+<span class="hl-key">z_25hz</span>       = audio_vae_v2.encode(ref_wave_16k)          <span class="hl-val"># hop=640 -&gt; 25 Hz, dim=64</span>
+<span class="hl-key">patches</span>      = patchify(z_25hz, patch_size=<span class="hl-val">4</span>)             <span class="hl-val"># 6.25 Hz (160 ms / step)</span>
+<span class="hl-key">seq_input</span>    = concat([<span class="hl-val">103</span>, loc_enc(ref_patches), <span class="hl-val">104</span>], text_tokens)
+
+<span class="hl-key">h_tslm</span>       = base_lm_28L(seq_input)
+<span class="hl-warn">h_fsq</span>        = torch.round(torch.tanh(proj(h_tslm)) * <span class="hl-val">9</span>) / <span class="hl-val">9</span>  <span class="hl-warn"># Internal FSQ(512, s=9)</span>
+<span class="hl-key">h_ralm</span>       = residual_lm_8L(h_fsq + loc_enc_unquantized_bypass)
+<span class="hl-key">pred_patch</span>   = loc_dit.sample_cfm(h_ralm, steps=<span class="hl-val">10</span>, cfg_value=<span class="hl-val">2.0</span>)
+<span class="hl-key">pcm_48k</span>      = streaming_vae_decoder.decode(pred_patch)   <span class="hl-val"># strides [8,6,5,2,2,2]=1920 -&gt; 48 kHz</span>
+<span class="hl-warn">if streaming: retry_badcase = False</span>                       <span class="hl-warn"># Anti-babble retry disabled in stream!</span></pre>
+          <div class="flow-arrow">↓ 输入 run_benchmark.py (1024 点 Hann 窗 Welch PSD + 20ms ZCR 消融验证器) ↓</div>
+          <pre class="code-block"><span class="hl-val">&lt;answer&gt;</span> {
+  <span class="hl-key">"source_sha256"</span>: <span class="hl-val">"c2349f63044c35cf..."</span>,
+  <span class="hl-key">"patch_grid_forensics"</span>: {
+    <span class="hl-key">"voxcpm2_48khz_samples_checked"</span>: <span class="hl-val">9</span>,
+    <span class="hl-key">"durations_s"</span>: [<span class="hl-val">2.88, 4.32, 7.36, 9.12, 12.0, 12.64, 20.64, 25.6</span>],
+    <span class="hl-key">"exact_160ms_integer_multiples"</span>: <span class="hl-val">"9 / 9 (100%)"</span>
+  },
+  <span class="hl-key">"style_result1_1_whisper_48k"</span>: {
+    <span class="hl-key">"band_16_24khz_db"</span>: <span class="hl-val">-47.64</span>, <span class="hl-key">"vs_voxcpm15_db"</span>: <span class="hl-val">"+44.44 dB"</span>, <span class="hl-key">"effective_bw_hz"</span>: <span class="hl-val">17672</span>,
+    <span class="hl-key">"whisper_sdr_discrete_only_db"</span>: <span class="hl-warn">16.12</span>, <span class="hl-key">"whisper_sdr_fsq_continuous_db"</span>: <span class="hl-val">50.88</span>
+  }
+} <span class="hl-val">&lt;/answer&gt;</span></pre>
+          <div class="callout-box">
+            <strong>为什么需要企业级双轨网关封装：</strong>
+            由于 streaming=True 硬编码关闭了 retry_badcase，生产上线必须在外层网关实时计算已生成 Patch 数与输入字符比 (patch_text_ratio)，一旦触发重复拖音立即熔断并切换至 Azure Speech。
+          </div>
+        </div>
+        <footer class="card-footer">
+          <span><strong>VoxCPM2 与企业语音模型对比：FSQ 声学架构与选型基准</strong> · measured</span>
+          <span>4 / 7</span>
+        </footer>
+      </div>
+    </article>
+
+    <!-- CARD 5 -->
+    <article class="report-card card" id="card-5">
+      <div class="card-accent-bar"></div>
+      <div class="card-inner">
+        <header class="card-header">
+          <div class="card-eyebrow">5 / 7 · ROBUSTNESS CHECK · 量化消融与工况扰动检验</div>
+          <h2 class="card-headline">切断连续残差使耳语信噪比暴跌 34.8 dB；绕口令与小语种呈显著分化</h2>
+          <p class="card-subtitle">对比 FSQ+连续残差流 vs 纯离散量化瓶颈 (measured)，以及标准语料 vs 高难绕口令/跨语系零样本扰动 (reported)。</p>
+        </header>
+        <div class="card-canvas">
+          <table class="clean-table">
+            <thead>
+              <tr>
+                <th>消融/扰动测试项</th>
+                <th class="num-col">基线 (FSQ+残差 / 标准)</th>
+                <th class="num-col">扰动 (纯离散 / 高难)</th>
+                <th class="num-col">变化量</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <div class="rob-main">R01 · style_result1_1.wav Whisper Frames (ZCR &gt; 0.16)</div>
+                  <div class="rob-sub">耳语/换气帧 SDR：FSQ+连续残差 vs 无残差固定码本 (measured)</div>
+                </td>
+                <td class="num-col">50.88 dB</td>
+                <td class="num-col">16.12 dB</td>
+                <td class="num-col">-34.76 dB</td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="rob-main">R02 · style_result1_1.wav Breath vs. Voiced Gap</div>
+                  <div class="rob-sub">纯离散瓶颈下元音帧 (23.25 dB) 与耳语帧 (16.12 dB) 落差 (measured)</div>
+                </td>
+                <td class="num-col">23.25 dB</td>
+                <td class="num-col">16.12 dB</td>
+                <td class="num-col">-7.13 dB</td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="rob-main">R03 · dongbei.wav Dialect Breath Frames</div>
+                  <div class="rob-sub">东北方言高动态呼吸帧 (18.4% 占比) 量化消融对比 (measured)</div>
+                </td>
+                <td class="num-col">39.95 dB</td>
+                <td class="num-col">5.20 dB</td>
+                <td class="num-col">-34.75 dB</td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="rob-main">R04 · vd_acoustic_asmr.wav Close-Mic ASMR</div>
+                  <div class="rob-sub">近麦 ASMR 连续流匹配残差恢复度检验 (measured)</div>
+                </td>
+                <td class="num-col">55.74 dB</td>
+                <td class="num-col">21.05 dB</td>
+                <td class="num-col">-34.69 dB</td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="rob-main">R05 · Seed-TTS test-ZH -&gt; test-Hard Perturbation</div>
+                  <div class="rob-sub">标准中文切换到生僻字/绕口令长难句的错字率跳升 (reported)</div>
+                </td>
+                <td class="num-col">0.97%</td>
+                <td class="num-col">8.13%</td>
+                <td class="num-col">+7.16 pt</td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="rob-main">R06 · Burmese (SEA) -&gt; Zero-Shot Arabic Regime</div>
+                  <div class="rob-sub">东南亚优势语种 vs 阿语零样本跨语族错误率对比 (reported)</div>
+                </td>
+                <td class="num-col">1.42%</td>
+                <td class="num-col">13.05%</td>
+                <td class="num-col">+11.63 pt</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="callout-box">
+            <strong>信号级物理解释：</strong>
+            固定网格离散量化器在低幅值、高过零率 (ZCR > 0.16) 的耳语和吸气段损失最为惨重（比元音段多跌 5.90–7.13 dB，即使 INT8 离散量化亦存在 >14.6 dB 底噪差距）；VoxCPM2 的未量化残差直通链路正是保留“真人呼吸感”的物理核心。
+          </div>
+        </div>
+        <footer class="card-footer">
+          <span><strong>VoxCPM2 与企业语音模型对比：FSQ 声学架构与选型基准</strong> · measured + reported</span>
+          <span>5 / 7</span>
+        </footer>
+      </div>
+    </article>
+
+    <!-- CARD 6 -->
+    <article class="report-card card" id="card-6">
+      <div class="card-accent-bar"></div>
+      <div class="card-inner">
+        <header class="card-header">
+          <div class="card-eyebrow">6 / 7 · LATENCY · 流式首包与推理引擎吞吐缩放</div>
+          <h2 class="card-headline">vLLM-Omni 将单卡推理提速 2.31 倍 (RTF 0.13)，30 秒音频耗时降至 3.9 秒</h2>
+          <p class="card-subtitle">NVIDIA RTX 4090 端到端合成耗时对比：vLLM-Omni / Nano-vLLM (蓝色, RTF 0.13) vs 原生 PyTorch Eager (灰色, RTF 0.30)，统一 10,000 ms 满刻度。</p>
+        </header>
+        <div class="card-canvas">
+          <div class="lat-list">
+            <div class="lat-group">
+              <div class="lat-title">首包 + 1 秒短指令播报 (TTFA ~135 ms vs ~225 ms)</div>
+              <div class="lat-row">
+                <span class="lat-tag">vLLM-Omni (RTF 0.13)</span>
+                <div class="lat-track"><div class="lat-bar lat-blue" style="width:2.7%"></div></div>
+                <strong class="lat-val">265 ms</strong>
+              </div>
+              <div class="lat-row">
+                <span class="lat-tag">PyTorch Eager (0.30)</span>
+                <div class="lat-track"><div class="lat-bar lat-gray" style="width:5.3%"></div></div>
+                <strong class="lat-val">525 ms</strong>
+              </div>
+            </div>
+
+            <div class="lat-group">
+              <div class="lat-title">5 秒对话回复合成 (31 个 160ms Patch)</div>
+              <div class="lat-row">
+                <span class="lat-tag">vLLM-Omni (RTF 0.13)</span>
+                <div class="lat-track"><div class="lat-bar lat-blue" style="width:6.5%"></div></div>
+                <strong class="lat-val">650 ms</strong>
+              </div>
+              <div class="lat-row">
+                <span class="lat-tag">PyTorch Eager (0.30)</span>
+                <div class="lat-track"><div class="lat-bar lat-gray" style="width:15.0%"></div></div>
+                <strong class="lat-val">1500 ms</strong>
+              </div>
+            </div>
+
+            <div class="lat-group">
+              <div class="lat-title">15 秒播客段落生成 (94 个 160ms Patch)</div>
+              <div class="lat-row">
+                <span class="lat-tag">vLLM-Omni (RTF 0.13)</span>
+                <div class="lat-track"><div class="lat-bar lat-blue" style="width:19.5%"></div></div>
+                <strong class="lat-val">1950 ms</strong>
+              </div>
+              <div class="lat-row">
+                <span class="lat-tag">PyTorch Eager (0.30)</span>
+                <div class="lat-track"><div class="lat-bar lat-gray" style="width:45.0%"></div></div>
+                <strong class="lat-val">4500 ms</strong>
+              </div>
+            </div>
+
+            <div class="lat-group">
+              <div class="lat-title">30 秒有声书长音频合成 (188 个 160ms Patch)</div>
+              <div class="lat-row">
+                <span class="lat-tag">vLLM-Omni (RTF 0.13)</span>
+                <div class="lat-track"><div class="lat-bar lat-blue" style="width:39.0%"></div></div>
+                <strong class="lat-val">3900 ms</strong>
+              </div>
+              <div class="lat-row">
+                <span class="lat-tag">PyTorch Eager (0.30)</span>
+                <div class="lat-track"><div class="lat-bar lat-gray" style="width:90.0%"></div></div>
+                <strong class="lat-val">9000 ms</strong>
+              </div>
+            </div>
+          </div>
+          <div class="callout-box">
+            <strong>跨平台首包延迟阶梯与边缘硬件边界 (reported)：</strong>
+            双工电话超低延迟仍由 Cartesia Sonic 3.6 (~55 ms) 与 ElevenLabs Flash v2.5 (~75 ms) 领跑；VoxCPM2 受限于 160ms 首帧物理窗口，4090 + vLLM-Omni 首包约 ~135 ms（H100 高并发批处理调度约 ~230 ms），优于 Azure DragonHDOmni (~260 ms)；但 Apple M4 Pro (GGUF Q8_0) 实测 RTF 为 1.76（慢于实时），不适合无独显端侧实时流式。
+          </div>
+        </div>
+        <footer class="card-footer">
+          <span><strong>VoxCPM2 与企业语音模型对比：FSQ 声学架构与选型基准</strong> · reported (OpenBMB / Azure / Cartesia)</span>
+          <span>6 / 7</span>
+        </footer>
+      </div>
+    </article>
+
+    <!-- CARD 7 -->
+    <article class="report-card card" id="card-7">
+      <div class="card-accent-bar"></div>
+      <div class="card-inner">
+        <header class="card-header">
+          <div class="card-eyebrow">7 / 7 · MY TAKE · 架构师适用边界与投产就绪度</div>
+          <h2 class="card-headline">月产超 2,500 万字符创意克隆首选 VoxCPM2；金融合规与口型同步坚守 Azure</h2>
+          <p class="card-subtitle">企业生产环境推荐采用“前置策略路由 + 双轨语音引擎 + 强制隐形水印”参考架构。</p>
+        </header>
+        <div class="card-canvas">
+          <div class="fit-grid">
+            <div class="fit-card fit-good">
+              <div class="fit-head"><span class="fit-badge-ok">PASS</span><span>Good fit · 推荐采用 VoxCPM2 场景</span></div>
+              <ul>
+                <li>高表现力播客、有声书与游戏 NPC 配音：48kHz 原生超分 (17.7 kHz BW) 自然保留耳语、哭腔、笑声与跨方言韵律。</li>
+                <li>数据不出域私有声音资产克隆：Apache-2.0 宽松商用许可，5–10 分钟语料即可完成 LoRA 专属声线微调。</li>
+                <li>东南亚多语种出海本地化：缅甸语 (1.42%)、老挝语 (1.90%)、柬埔寨语 (2.05%) 可懂度显著优于同级开源模型。</li>
+                <li>月产 >2,500 万字符稳态降本：单卡 vLLM-Omni 较 Azure HD 降低 60%–85% 成本（8.5 亿字符/月规模可由 ~$12.8k/月降至 ~$3.2k/月）。</li>
+              </ul>
+            </div>
+
+            <div class="fit-card fit-bad">
+              <div class="fit-head"><span class="fit-badge-no">BOUNDARY</span><span>Not for · 应选用 Azure Speech 等场景</span></div>
+              <ul>
+                <li>金融/医疗/政务强合规交易播报：无 SSML <phoneme> / <say-as> 与热更新词典，生僻字绕口令 CER 达 8.13%，须用 Azure Speech。</li>
+                <li>3D 数字人实时口型同步与影视卡帧译制：输出严格量化在 N × 160ms 且无 Viseme 流，应选用 Azure 0.1ms Viseme 或 IndexTTS-2。</li>
+                <li>超低延迟 (<90ms) 全双工电话语音打断：首包受 160ms Patch 限制 (~135ms)，低于 90ms 预算宜选 Cartesia Sonic 3.6。</li>
+                <li>无外挂防伪治理的对外开放克隆接口：开放权重无内置水印与活体声纹门禁，上线必须串联活体校验与 AudioSeal + C2PA 水印。</li>
+              </ul>
+            </div>
+          </div>
+          <div class="dark-footer-box">
+            <p>数据溯源与合规声明：11 组官方 WAV 频谱与消融指标为本地确定性实测 (measured, SHA-256: c2349f63044c35cf)；多语种榜单与引擎延迟引自 OpenBMB VoxCPM2 技术报告 (arXiv:2606.06928, Apache-2.0) 与厂商官方文档 (reported)。零伪造坐标。</p>
+            <p class="dark-repo">github.com/turbo998/voice-agent-lab · turbo998.github.io/voice/voxcpm2-vs-azure-speech.html</p>
+          </div>
+        </div>
+        <footer class="card-footer">
+          <span><strong>VoxCPM2 与企业语音模型对比：FSQ 声学架构与选型基准</strong> · Apache-2.0 / Commercial Cloud Audit</span>
+          <span>7 / 7</span>
+        </footer>
+      </div>
+    </article>
+  </main>
+
+  <details class="raw-deck-data">
+    <summary>查看密封卡片原始 JSON 数据 (Exact card deck data)</summary>
+    <pre>{
+  &quot;benchmark_id&quot;: &quot;voxcpm2-vs-azure-speech-2026-11&quot;,
+  &quot;title&quot;: &quot;VoxCPM2 与企业语音模型对比：FSQ 声学架构与选型基准&quot;,
+  &quot;provenance&quot;: {
+    &quot;acoustic_fft_11wav&quot;: &quot;measured (11 official WAVs, 1024-pt Hann Welch PSD, SHA-256 c2349f63044c35cf)&quot;,
+    &quot;quantization_ablation&quot;: &quot;measured (style_result1_1.wav, dongbei.wav, vd_acoustic_asmr.wav)&quot;,
+    &quot;public_leaderboards_and_rtf&quot;: &quot;reported (OpenBMB/VoxCPM arXiv:2606.06928, Seed-TTS-eval, Minimax-MLS-test, Azure AI Speech docs)&quot;
+  },
+  &quot;cards&quot;: [
+    {
+      &quot;card&quot;: &quot;1 / 7&quot;,
+      &quot;eyebrow&quot;: &quot;HANDS-ON · 语音合成与声音克隆评测&quot;,
+      &quot;headline&quot;: &quot;22/24 语种零样本音色克隆第 1 (85.4% SIM)，与企业级 Azure Speech 形成双轨互补&quot;,
+      &quot;metrics&quot;: [
+        &quot;42,802 GitHub Stars · Apache-2.0&quot;,
+        &quot;48 kHz AudioVAE V2 (17.7 kHz BW)&quot;,
+        &quot;Seed-TTS: 0.97% ZH / 1.84% EN / 8.13% Hard&quot;,
+        &quot;vLLM-Omni RTF 0.13 (~135 ms TTFA)&quot;,
+        &quot;Whisper SDR: 50.88 dB (FSQ + Residual)&quot;,
+        &quot;TCO Break-Even: ~25M chars/mo vs PAYG&quot;
+      ]
+    },
+    {
+      &quot;card&quot;: &quot;2 / 7&quot;,
+      &quot;eyebrow&quot;: &quot;SCENARIO: 48KHZ 超分声学与耳语克隆&quot;,
+      &quot;headline&quot;: &quot;16kHz 降采样输入实现 48kHz 超分直出：高频空气感较前代提升 +44.4 dB&quot;,
+      &quot;samples_audited&quot;: [
+        &quot;style_prompt1.wav (24kHz)&quot;,
+        &quot;style_result1_1.wav (48kHz)&quot;,
+        &quot;voxcpm_example.wav (44.1kHz)&quot;
+      ]
+    },
+    {
+      &quot;card&quot;: &quot;3 / 7&quot;,
+      &quot;eyebrow&quot;: &quot;WHAT I TESTED · 全量评测矩阵&quot;,
+      &quot;headline&quot;: &quot;8 项声学、多语种与企业控制实测：克隆与东南亚语领先，绕口令与确定性控制存短板&quot;
+    },
+    {
+      &quot;card&quot;: &quot;4 / 7&quot;,
+      &quot;eyebrow&quot;: &quot;UNDER THE HOOD · 源码协议与频谱验证&quot;,
+      &quot;headline&quot;: &quot;并非零量化：TSLM 内置 FSQ(512, s=9) 锚点，配合未量化残差流恢复气声&quot;
+    },
+    {
+      &quot;card&quot;: &quot;5 / 7&quot;,
+      &quot;eyebrow&quot;: &quot;ROBUSTNESS CHECK · 消融与边界扰动&quot;,
+      &quot;headline&quot;: &quot;纯离散瓶颈下耳语信噪比恶化 34.8 dB；流式开启强制关闭防崩坏重试&quot;
+    },
+    {
+      &quot;card&quot;: &quot;6 / 7&quot;,
+      &quot;eyebrow&quot;: &quot;LATENCY · 流式延迟与吞吐阶梯&quot;,
+      &quot;headline&quot;: &quot;vLLM-Omni 将单卡生成提速 2.31 倍 (RTF 0.13 vs 0.30)，30 秒音频耗时降至 3.9 秒&quot;,
+      &quot;scale_max_ms&quot;: 10000
+    },
+    {
+      &quot;card&quot;: &quot;7 / 7&quot;,
+      &quot;eyebrow&quot;: &quot;MY TAKE · 架构师选型结论&quot;,
+      &quot;headline&quot;: &quot;月产超 2,500 万字符创意配音首选私有化 VoxCPM2；金融 IVR 与数字人口型坚守 Azure Speech&quot;
+    }
+  ]
+}</pre>
+  </details>
+</body>
+</html>

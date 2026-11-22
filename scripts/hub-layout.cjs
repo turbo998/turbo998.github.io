@@ -21,7 +21,7 @@ const primary = [
 function context(file, zh, active) {
   const items = [...tracks, ['sa-skills','SA Skill & HVE Library','SA Skill 与 HVE 技能库']];
   const diamondHref = href(file, zh ? 'zh-diamond.html' : 'diamond.html');
-  const diamondItem = `<a class="context-diamond" href="${diamondHref}"${active==='diamond'?' aria-current="page"':''}><span>00</span>${esc(zh?'Diamond 架构演示 (TCL · Fabric · Databricks)':'Diamond Demos (TCL · Fabric · Databricks)')}</a>`;
+  const diamondItem = `<a class="context-diamond" href="${diamondHref}"${active==='diamond'?' aria-current="page"':''}><span>00</span>${esc(zh?'Diamond 架构演示 (消费电子 · Fabric · Databricks)':'Diamond Demos (Consumer Electronics · Fabric · Databricks)')}</a>`;
   return `<div class="context-bar"><p class="context-label">${zh?'工程赛道 / 快速导航':'ENGINEERING TRACKS / QUICK ACCESS'}</p><nav class="context-nav" aria-label="${zh?'Hub 工程赛道':'Hub engineering tracks'}">${diamondItem}${items.map(([id,en,cn],i)=>`<a href="${href(file,id==='sa-skills'?`studio/${zh?'zh-':''}index.html#sa-skills`:`studio/${zh?'zh-':''}${id}.html`)}"${active===id?' aria-current="page"':''}><span>${String(i+1).padStart(2,'0')}</span>${esc(zh?cn:en)}</a>`).join('')}</nav></div>`;
 }
 function crumb(file, zh, label) {

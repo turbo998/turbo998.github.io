@@ -11,7 +11,9 @@ const NATIVE_INLINE = new Set([
   'workshops/benchmarks/ai-infra-architect-workbench.html',
   'workshops/benchmarks/ai-infra-architect-workbench.en.html',
   'workshops/webiq-azure/index.html',
-  'workshops/webiq-azure/index.en.html'
+  'workshops/webiq-azure/index.en.html',
+  'voice/voxcpm2-vs-azure-speech.html',
+  'voice/voxcpm2-vs-azure-speech.en.html'
 ]);
 
 const OMIT_CANVAS_EXACT = new Set([
@@ -21,8 +23,7 @@ const OMIT_CANVAS_EXACT = new Set([
   'game/demos/wanan-midnight/index.html', 'game/demos/wanan-midnight/index.en.html',
   'animation/demos/pelican-arena.html', 'animation/demos/pelican-arena.en.html',
   'generative-visual-lab/demos/pelican-arena.html', 'generative-visual-lab/demos/pelican-arena.en.html',
-  'workshops/faf-vs-agent-forge/pelican-arena.html', 'workshops/faf-vs-agent-forge/pelican-arena.en.html',
-  'workshops/diamond-demos/contoso-fabric/index.html'
+  'workshops/faf-vs-agent-forge/pelican-arena.html', 'workshops/faf-vs-agent-forge/pelican-arena.en.html'
 ]);
 
 const path = require('node:path');

@@ -2,7 +2,7 @@
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
-const { root, baseline, manifest, sourcePaths, readSource, mapText, textSegments, cleanPerimeter, normalized, render, loadDictionaries, buildReports } = require('../scripts/localize-reports.cjs');
+const { root, baseline, manifest, sourcePaths, isNativeBilingual, readSource, mapText, textSegments, cleanPerimeter, normalized, render, loadDictionaries, buildReports } = require('../scripts/localize-reports.cjs');
 const dictionaries = loadDictionaries();
 const numbers = s => (s.match(/\d+(?:[.,]\d+)*/g) || []);
 const styles = s => [...cleanPerimeter(s).matchAll(/<style\b[^>]*>[\s\S]*?<\/style>/gi)].map(m => m[0]);
@@ -32,9 +32,11 @@ function staticChecks() {
       assert(output.includes(`hreflang="en"`) && output.includes(`hreflang="zh-CN"`), `${file}: missing exact counterpart links`);
       assert(output.includes('independently_reproduced=false'), `${file}: missing translation provenance`);
       assert(output.includes(`<html lang="${locale}"`) || new RegExp(`<html[^>]*lang="${locale}"`).test(output));
-      for (const text of textSegments(source)) {
-        const needs = locale === 'en' ? /[\u3400-\u9fff]/.test(text) : /[A-Za-z]/.test(text) && !/[\u3400-\u9fff]/.test(text);
-        if (needs && dictionaries[locale][text] === undefined) gaps.push({ file, text });
+      if (!isNativeBilingual(originalFile)) {
+        for (const text of textSegments(source)) {
+          const needs = locale === 'en' ? /[\u3400-\u9fff]/.test(text) : /[A-Za-z]/.test(text) && !/[\u3400-\u9fff]/.test(text);
+          if (needs && dictionaries[locale][text] === undefined) gaps.push({ file, text });
+        }
       }
       assert.equal(fs.readFileSync(path.join(root, file), 'utf8'), output, `${file}: regeneration drift`);
       localizedPages++;

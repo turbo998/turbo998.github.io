@@ -80,12 +80,14 @@ function assertArenaFrames(file, html) {
 }
 const cycle377Paths = ['benchmark-cards.html', 'benchmark-cards.en.html', 'demo.html', 'selector.html'].map(name => `workshops/azure-agent-infra/${name}`);
 const cycle377Commit = '8c84971c7e952a5fb6f254ee8fcfef5678d9941d';
+const commerceCommit = '5808400f164a8d8d5736ccd0204221f34e6d0bf4';
+const securityCommit = '2c6b9d6c709d60ea790f44bcde3db3b56c386708';
 const concurrentCommit = '3bdac3d4db9a0cec264ee42b59bbef8a7f87364b';
 const concurrentPaths = ['voice/deck.html','voice/benchmark-cards.html','workshops/agentic-commerce/live-demo.html','workshops/agentic-commerce/live-demo.en.html','workshops/agentic-commerce/benchmark-cards.html','workshops/agentic-commerce/benchmark-cards.en.html','workshops/ai-security/benchmark-cards.html','workshops/ai-security/benchmark-cards.en.html'];
 function restoreConcurrentSource(r, html) {
   let restored = strip(html);
   if (r.path === 'voice/deck.html') restored = restored.replace('<body class="kee-dedicated-deck-root"><div class="kee-dedicated-deck-stage">','<body>').replace('</div></body>','</body>');
-  if (/agentic-commerce\/live-demo(?:\.en)?\.html$/.test(r.path)) restored = restored.replaceAll(String.raw`null / \"\" / []`, 'null / "" / []').replaceAll(String.raw`null/\"\"/[]`, 'null/""/[]');
+  if (/agentic-commerce\/live-demo(?:\.en)?\.html$/.test(r.path)) restored = restored.replace(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi, (full, attrs, body) => `<script${attrs}>${body.replace(/<code>[^<+\r\n]*<\/code>/g, m => m.replace(/\\"/g, '"'))}</script>`);
   return restored;
 }
 const output = process.env.DEDICATED_ARTIFACTS || path.join(root, 'tests', 'dedicated-artifacts');
@@ -198,7 +200,7 @@ async function main() {
     const preservation = assertSourcePreservation(r.path, live, expected.html);
     // Verify the reversible pre-localization transform as well as the live-output protection above.
     if (r.sourceOverride) {
-      assert.equal(r.sourceOverride.commit, cycle377Paths.includes(r.path) ? cycle377Commit : r.path.startsWith('workshops/agentic-commerce/') ? '209aea9a1db92c816927df71a9242526b44925c1' : concurrentCommit, `Unpinned concurrent source: ${r.path}`);
+      assert.equal(r.sourceOverride.commit, cycle377Paths.includes(r.path) ? cycle377Commit : r.path.startsWith('workshops/agentic-commerce/') ? commerceCommit : r.path.startsWith('workshops/ai-security/') ? securityCommit : concurrentCommit, `Unpinned concurrent source: ${r.path}`);
       assert.equal(restoreConcurrentSource(r, expected.html), source, `New source not reversibly preserved before localization: ${r.path}`);
     } else if (perimeterBaseline) assert.equal(normalizeReleaseShell(expected.html.replace(perimeterCss, previousPerimeterCss)), normalizeReleaseShell(gitSource(r.path)), `Non-perimeter source bytes changed since ${perimeterBaseline}: ${r.path}`);
     const csp = html => html.match(/<meta\b[^>]*http-equiv=["']Content-Security-Policy["'][^>]*>/gi) || [];
@@ -297,15 +299,15 @@ async function main() {
         action = await page.evaluate(() => ({ scenario: 'Code-Interpreter sandbox simulation', active: document.querySelector('#tpl_ci').classList.contains('active'), text: document.body.innerText.slice(-3000) }));
         assert(action.active, 'Infra template interaction did not activate');
       } else if (name === 'selector') {
-        action = { scenario: 'Exercise all five SA selector controls', controls: [] };
-        for (const id of ['sel_audience', 'sel_control', 'sel_devteam', 'sel_profile', 'sel_aks_sku']) {
+        action = { scenario: 'Exercise all five SA runtime observability and orchestration selector controls', controls: [] };
+        for (const id of ['sel_obs_mode', 'sel_wf_mode', 'sel_cua_mode', 'sel_dep_mode', 'sel_swm_mode']) {
           const value = await page.$eval(`#${id}`, e => e.options[1].value);
           await page.select(`#${id}`, value);
-          const observed = await page.$eval(`#${id}`, e => ({ id: e.id, value: e.value, outputPresent: e.closest('section,div')?.innerText.length > 0 }));
+          const observed = await page.$eval(`#${id}`, e => ({ id: e.id, value: e.value, outputPresent: (e.closest('.card, section')?.innerText.length || 0) > 0 }));
           assert.equal(observed.value, value, id);
           action.controls.push(observed);
         }
-        assert((await page.$eval('#decisionOutput', e => e.textContent)).length > 0, 'SA decision output missing');
+        assert((await page.$eval('#obsOut', e => e.textContent)).length > 0, 'SA observability output missing');
       } else if (name.startsWith('commerce')) {
         await page.waitForSelector('#scenario-tabs button');
         const before = await page.$eval('.app-shell', e => e.textContent);

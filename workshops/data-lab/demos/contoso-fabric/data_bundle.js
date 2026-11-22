@@ -1,19 +1,19 @@
 window.__INITIAL_BUNDLE__ = {
   "meta": {
-    "tenantAdmin": "sa-demo@contoso-global.example",
-    "subscriptionId": "00000000-0000-4000-8000-000000000001",
-    "resourceGroup": "rg-tcl-channel-iq-demo",
+    "tenantAdmin": "admin@contoso-ce-demo.onmicrosoft.com",
+    "subscriptionId": "00000000-0000-0000-0000-000000000000",
+    "resourceGroup": "rg-contoso-fabric-demo",
     "location": "centralus",
-    "capacityName": "fc-tcl-channel-iq-demo",
+    "capacityName": "fccontosochanneliq01",
     "capacitySku": "F8",
-    "mainWorkspaceName": "TCL_Global_Channel_IQ",
-    "mainWorkspaceId": "00000000-0000-4000-8000-000000000002",
-    "mainWorkspaceUrl": "playbook.html#architecture",
-    "partnerWorkspaceName": "TCL_Partner_EDI_Portal_Zone",
-    "partnerWorkspaceId": "00000000-0000-4000-8000-000000000003",
-    "partnerWorkspaceUrl": "playbook.html#onelake-shortcuts",
-    "sqlEndpointHost": "demo-endpoint-01-sql-tcl-channel-iq-demo.datawarehouse.fabric.microsoft.com",
-    "kustoQueryUri": "https://kusto-tcl-channel-iq-demo.kusto.fabric.microsoft.com",
+    "mainWorkspaceName": "Contoso_Global_Channel_IQ",
+    "mainWorkspaceId": "a0163b22-e3ae-467a-b04c-0265e364658b",
+    "mainWorkspaceUrl": "https://app.fabric.microsoft.com/groups/a0163b22-e3ae-467a-b04c-0265e364658b?experience=fabric-developer",
+    "partnerWorkspaceName": "Contoso_Partner_EDI_Portal_Zone",
+    "partnerWorkspaceId": "33d8b998-2924-42ad-9651-4466aa8ce091",
+    "partnerWorkspaceUrl": "https://app.fabric.microsoft.com/groups/33d8b998-2924-42ad-9651-4466aa8ce091?experience=fabric-developer",
+    "sqlEndpointHost": "25ssqwjtfavereq6fxcezg3bae-ei5rnifo4n5enmcmajs6gzdfrm.datawarehouse.fabric.microsoft.com",
+    "kustoQueryUri": "https://trd-bszpdhgv44g8s3zutr.z5.kusto.fabric.microsoft.com",
     "anchorTimestamp": "2026-11-14T12:00:00",
     "totalRows": 15319,
     "tableRowCounts": {
@@ -33,9 +33,9 @@ window.__INITIAL_BUNDLE__ = {
       "PortAndLogisticsAlerts": 20
     },
     "shortcuts": [
-      "Tables/fact_channel_inventory_weekly -> OneLake(TCL_Partner_EDI_Portal_Zone/lh_partner_edi_portal)",
-      "Tables/fact_sell_out_transactions -> OneLake(TCL_Partner_EDI_Portal_Zone/lh_partner_edi_portal)",
-      "Files/shortcut_partner_edi_852_raw -> OneLake(TCL_Partner_EDI_Portal_Zone)"
+      "Tables/fact_channel_inventory_weekly -> OneLake(Contoso_Partner_EDI_Portal_Zone/lh_partner_edi_portal)",
+      "Tables/fact_sell_out_transactions -> OneLake(Contoso_Partner_EDI_Portal_Zone/lh_partner_edi_portal)",
+      "Files/shortcut_partner_edi_852_raw -> OneLake(Contoso_Partner_EDI_Portal_Zone)"
     ]
   },
   "kpis": {
@@ -60,12 +60,12 @@ window.__INITIAL_BUNDLE__ = {
       "sharePct": 27.2
     },
     {
-      "channel": "Amazon / Marketplace",
+      "channel": "Third-Party E-Commerce Marketplace",
       "gmvUSD": 17518112.97,
       "sharePct": 16.1
     },
     {
-      "channel": "TikTok / Social Commerce OMO",
+      "channel": "Short-Video & Social Commerce OMO",
       "gmvUSD": 9664513.2,
       "sharePct": 8.9
     }
@@ -160,12 +160,12 @@ window.__INITIAL_BUNDLE__ = {
       "status": "CRITICAL_STOCKOUT",
       "criticalSkus": [
         {
-          "productId": "TCL-85C855",
+          "productId": "CSO-85C855",
           "wos": 0.82,
           "onHand": 98
         },
         {
-          "productId": "TCL-75C855",
+          "productId": "CSO-75C855",
           "wos": 0.86,
           "onHand": 185
         }
@@ -174,7 +174,7 @@ window.__INITIAL_BUNDLE__ = {
     },
     {
       "distributorId": "DIST-EU-DE02",
-      "distributorName": "MediaMarktSaturn Omnichannel DE",
+      "distributorName": "RheinMarkt Omnichannel Retail DE",
       "region": "Europe",
       "country": "Germany",
       "city": "Ingolstadt",
@@ -194,7 +194,7 @@ window.__INITIAL_BUNDLE__ = {
       "status": "CRITICAL_STOCKOUT",
       "criticalSkus": [
         {
-          "productId": "TCL-75C855",
+          "productId": "CSO-75C855",
           "wos": 1.04,
           "onHand": 268
         }
@@ -246,7 +246,7 @@ window.__INITIAL_BUNDLE__ = {
       "status": "CRITICAL_STOCKOUT",
       "criticalSkus": [
         {
-          "productId": "TCL-75C855",
+          "productId": "CSO-75C855",
           "wos": 1.14,
           "onHand": 132
         }
@@ -278,7 +278,7 @@ window.__INITIAL_BUNDLE__ = {
     },
     {
       "distributorId": "DIST-EU-FR02",
-      "distributorName": "Boulanger & Fnac Omnichannel FR",
+      "distributorName": "Hexagone & Lumiere Omnichannel FR",
       "region": "Europe",
       "country": "France",
       "city": "Lille",
@@ -324,7 +324,7 @@ window.__INITIAL_BUNDLE__ = {
     },
     {
       "distributorId": "DIST-EU-IT01",
-      "distributorName": "Unieuro & Mediterraneo AV SpA",
+      "distributorName": "Mediterraneo Vision Retail SpA",
       "region": "Europe",
       "country": "Italy",
       "city": "Milan",
@@ -370,7 +370,7 @@ window.__INITIAL_BUNDLE__ = {
     },
     {
       "distributorId": "DIST-EU-SE01",
-      "distributorName": "NordicVision Elgiganten Partner AB",
+      "distributorName": "NordicVision Megastore AB",
       "region": "Europe",
       "country": "Sweden",
       "city": "Stockholm",
@@ -390,7 +390,7 @@ window.__INITIAL_BUNDLE__ = {
       "status": "CRITICAL_STOCKOUT",
       "criticalSkus": [
         {
-          "productId": "TCL-75C855",
+          "productId": "CSO-75C855",
           "wos": 1.48,
           "onHand": 45
         }
@@ -399,7 +399,7 @@ window.__INITIAL_BUNDLE__ = {
     },
     {
       "distributorId": "DIST-NA-US01",
-      "distributorName": "Best Buy Omnichannel North America",
+      "distributorName": "Northwind Tech Superstore NA",
       "region": "North America",
       "country": "United States",
       "city": "Minneapolis",
@@ -422,7 +422,7 @@ window.__INITIAL_BUNDLE__ = {
     },
     {
       "distributorId": "DIST-NA-US02",
-      "distributorName": "Walmart US Omnichannel Retail",
+      "distributorName": "Fabrikam Hypermarket US",
       "region": "North America",
       "country": "United States",
       "city": "Bentonville",
@@ -445,7 +445,7 @@ window.__INITIAL_BUNDLE__ = {
     },
     {
       "distributorId": "DIST-NA-US03",
-      "distributorName": "Amazon Direct Global Retail NA",
+      "distributorName": "Tailspin Direct E-Commerce NA",
       "region": "North America",
       "country": "United States",
       "city": "Seattle",
@@ -468,7 +468,7 @@ window.__INITIAL_BUNDLE__ = {
     },
     {
       "distributorId": "DIST-NA-US04",
-      "distributorName": "Costco Wholesale Club NA",
+      "distributorName": "Litware Wholesale Club NA",
       "region": "North America",
       "country": "United States",
       "city": "Issaquah",
@@ -534,7 +534,7 @@ window.__INITIAL_BUNDLE__ = {
       "status": "CRITICAL_STOCKOUT",
       "criticalSkus": [
         {
-          "productId": "TCL-SB-Q85H",
+          "productId": "CSO-SB-Q85H",
           "wos": 1.3,
           "onHand": 58
         }
@@ -566,7 +566,7 @@ window.__INITIAL_BUNDLE__ = {
     },
     {
       "distributorId": "DIST-NA-CA02",
-      "distributorName": "Visions & BestBuy Canada Partner",
+      "distributorName": "Northern Lights Retail Partner CA",
       "region": "North America",
       "country": "Canada",
       "city": "Vancouver",
@@ -589,7 +589,7 @@ window.__INITIAL_BUNDLE__ = {
     },
     {
       "distributorId": "DIST-LATAM-BR01",
-      "distributorName": "Casas Bahia & Magalu Omnichannel BR",
+      "distributorName": "VeraCruz Varejo Omnichannel BR",
       "region": "Latin America",
       "country": "Brazil",
       "city": "Sao Paulo",
@@ -633,13 +633,13 @@ window.__INITIAL_BUNDLE__ = {
       "criticalSkus": [],
       "agingSkus": [
         {
-          "productId": "TCL-65P745",
+          "productId": "CSO-65P745",
           "wos": 13.51,
           "onHand": 1310,
           "ppUSD": 46816.0
         },
         {
-          "productId": "TCL-55P745",
+          "productId": "CSO-55P745",
           "wos": 12.41,
           "onHand": 1390,
           "ppUSD": 37312.0
@@ -671,7 +671,7 @@ window.__INITIAL_BUNDLE__ = {
     },
     {
       "distributorId": "DIST-LATAM-MX01",
-      "distributorName": "Coppel & Liverpool Omnicanal MX",
+      "distributorName": "SolAzteca Departamental Omnicanal MX",
       "region": "Latin America",
       "country": "Mexico",
       "city": "Mexico City",
@@ -715,13 +715,13 @@ window.__INITIAL_BUNDLE__ = {
       "criticalSkus": [],
       "agingSkus": [
         {
-          "productId": "TCL-65P745",
+          "productId": "CSO-65P745",
           "wos": 14.19,
           "onHand": 1490,
           "ppUSD": 51374.4
         },
         {
-          "productId": "TCL-55P745",
+          "productId": "CSO-55P745",
           "wos": 12.36,
           "onHand": 1520,
           "ppUSD": 39468.0
@@ -730,7 +730,7 @@ window.__INITIAL_BUNDLE__ = {
     },
     {
       "distributorId": "DIST-LATAM-MX03",
-      "distributorName": "MercadoLibre Official Store LATAM",
+      "distributorName": "LatamMart Official Marketplace MX",
       "region": "Latin America",
       "country": "Mexico",
       "city": "Monterrey",
@@ -753,7 +753,7 @@ window.__INITIAL_BUNDLE__ = {
     },
     {
       "distributorId": "DIST-LATAM-CL01",
-      "distributorName": "Falabella & Ripley Andina Retail",
+      "distributorName": "Cordillera Retail Omnicanal CL",
       "region": "Latin America",
       "country": "Chile",
       "city": "Santiago",
@@ -776,7 +776,7 @@ window.__INITIAL_BUNDLE__ = {
     },
     {
       "distributorId": "DIST-APAC-TH01",
-      "distributorName": "PowerBuy & Siam Cooling Dist. TH",
+      "distributorName": "Siam Crown Electronics Retail TH",
       "region": "APAC",
       "country": "Thailand",
       "city": "Bangkok",
@@ -820,49 +820,49 @@ window.__INITIAL_BUNDLE__ = {
       "criticalSkus": [],
       "agingSkus": [
         {
-          "productId": "TCL-85X11H",
+          "productId": "CSO-85X11H",
           "wos": 13.63,
           "onHand": 368,
           "ppUSD": 55332.0
         },
         {
-          "productId": "TCL-75C755",
+          "productId": "CSO-75C755",
           "wos": 14.44,
           "onHand": 390,
           "ppUSD": 19722.4
         },
         {
-          "productId": "TCL-65C655",
+          "productId": "CSO-65C655",
           "wos": 13.59,
           "onHand": 557,
           "ppUSD": 16432.0
         },
         {
-          "productId": "TCL-65P755",
+          "productId": "CSO-65P755",
           "wos": 14.11,
           "onHand": 649,
           "ppUSD": 15305.2
         },
         {
-          "productId": "TCL-65P745",
+          "productId": "CSO-65P745",
           "wos": 13.89,
           "onHand": 736,
           "ppUSD": 32216.8
         },
         {
-          "productId": "TCL-AC-FIN2-12K",
+          "productId": "CSO-AC-FIN2-12K",
           "wos": 14.33,
           "onHand": 659,
           "ppUSD": 16473.6
         },
         {
-          "productId": "TCL-AC-FIN2-18K",
+          "productId": "CSO-AC-FIN2-18K",
           "wos": 14.41,
           "onHand": 461,
           "ppUSD": 15042.0
         },
         {
-          "productId": "TCL-WSH-P609FLW",
+          "productId": "CSO-WSH-P609FLW",
           "wos": 14.02,
           "onHand": 687,
           "ppUSD": 0.0
@@ -871,7 +871,7 @@ window.__INITIAL_BUNDLE__ = {
     },
     {
       "distributorId": "DIST-APAC-VN02",
-      "distributorName": "Dien May Xanh Omnichannel VN",
+      "distributorName": "Viet Horizon Electronics Retail VN",
       "region": "APAC",
       "country": "Vietnam",
       "city": "Hanoi",
@@ -894,7 +894,7 @@ window.__INITIAL_BUNDLE__ = {
     },
     {
       "distributorId": "DIST-APAC-ID01",
-      "distributorName": "Nusantara Elektronik & Shopee Mall ID",
+      "distributorName": "Nusantara Elektronik & Digital Mall ID",
       "region": "APAC",
       "country": "Indonesia",
       "city": "Jakarta",
@@ -917,7 +917,7 @@ window.__INITIAL_BUNDLE__ = {
     },
     {
       "distributorId": "DIST-APAC-PH01",
-      "distributorName": "Abenson & Luzon Appliance Corp PH",
+      "distributorName": "Luzon Metro Appliance Corp PH",
       "region": "APAC",
       "country": "Philippines",
       "city": "Manila",
@@ -940,7 +940,7 @@ window.__INITIAL_BUNDLE__ = {
     },
     {
       "distributorId": "DIST-APAC-AU01",
-      "distributorName": "JB Hi-Fi & Harvey Norman Partner AU",
+      "distributorName": "SouthernCross AV & Home Retail AU",
       "region": "APAC",
       "country": "Australia",
       "city": "Sydney",
@@ -963,7 +963,7 @@ window.__INITIAL_BUNDLE__ = {
     },
     {
       "distributorId": "DIST-MEA-AE01",
-      "distributorName": "Sharaf DG & Al-Futtaim Tech AE",
+      "distributorName": "Emirates Oasis Tech Retail AE",
       "region": "MEA",
       "country": "United Arab Emirates",
       "city": "Dubai",
@@ -1007,13 +1007,13 @@ window.__INITIAL_BUNDLE__ = {
       "criticalSkus": [],
       "agingSkus": [
         {
-          "productId": "TCL-65P745",
+          "productId": "CSO-65P745",
           "wos": 12.89,
           "onHand": 1160,
           "ppUSD": 38561.6
         },
         {
-          "productId": "TCL-55P745",
+          "productId": "CSO-55P745",
           "wos": 12.04,
           "onHand": 1180,
           "ppUSD": 31152.0
@@ -1022,7 +1022,7 @@ window.__INITIAL_BUNDLE__ = {
     },
     {
       "distributorId": "DIST-MEA-SA02",
-      "distributorName": "eXtra & Jarir Omnichannel KSA",
+      "distributorName": "Arabia Horizon Omnichannel KSA",
       "region": "MEA",
       "country": "Saudi Arabia",
       "city": "Jeddah",
@@ -1045,7 +1045,7 @@ window.__INITIAL_BUNDLE__ = {
     },
     {
       "distributorId": "DIST-MEA-EG01",
-      "distributorName": "NileTech Appliances & B.TECH EG",
+      "distributorName": "NileTech Appliances & Retail EG",
       "region": "MEA",
       "country": "Egypt",
       "city": "Cairo",
@@ -1068,7 +1068,7 @@ window.__INITIAL_BUNDLE__ = {
     },
     {
       "distributorId": "DIST-MEA-ZA01",
-      "distributorName": "Southern Africa Hirsch & Makro Dist.",
+      "distributorName": "Cape Meridian Appliance Dist. ZA",
       "region": "MEA",
       "country": "South Africa",
       "city": "Johannesburg",
@@ -1093,42 +1093,42 @@ window.__INITIAL_BUNDLE__ = {
   "criticalStockouts": [
     {
       "DistributorId": "DIST-EU-DE01",
-      "ProductId": "TCL-85C855",
+      "ProductId": "CSO-85C855",
       "OnHandUnits": 98,
       "WeeksOfSupply": 0.82,
       "WeeklySellOutUnits": 190
     },
     {
       "DistributorId": "DIST-EU-DE01",
-      "ProductId": "TCL-75C855",
+      "ProductId": "CSO-75C855",
       "OnHandUnits": 185,
       "WeeksOfSupply": 0.86,
       "WeeklySellOutUnits": 340
     },
     {
       "DistributorId": "DIST-EU-DE02",
-      "ProductId": "TCL-75C855",
+      "ProductId": "CSO-75C855",
       "OnHandUnits": 268,
       "WeeksOfSupply": 1.04,
       "WeeklySellOutUnits": 410
     },
     {
       "DistributorId": "DIST-EU-NL01",
-      "ProductId": "TCL-75C855",
+      "ProductId": "CSO-75C855",
       "OnHandUnits": 132,
       "WeeksOfSupply": 1.14,
       "WeeklySellOutUnits": 180
     },
     {
       "DistributorId": "DIST-EU-SE01",
-      "ProductId": "TCL-75C855",
+      "ProductId": "CSO-75C855",
       "OnHandUnits": 45,
       "WeeksOfSupply": 1.48,
       "WeeklySellOutUnits": 29
     },
     {
       "DistributorId": "DIST-NA-US06",
-      "ProductId": "TCL-SB-Q85H",
+      "ProductId": "CSO-SB-Q85H",
       "OnHandUnits": 58,
       "WeeksOfSupply": 1.3,
       "WeeklySellOutUnits": 44
@@ -1137,49 +1137,49 @@ window.__INITIAL_BUNDLE__ = {
   "agingHotspots": [
     {
       "DistributorId": "DIST-LATAM-BR02",
-      "ProductId": "TCL-65P745",
+      "ProductId": "CSO-65P745",
       "OnHandUnits": 1310,
       "WeeksOfSupply": 13.51,
       "PriceProtectionExposureUSD": 46816.0
     },
     {
       "DistributorId": "DIST-LATAM-BR02",
-      "ProductId": "TCL-55P745",
+      "ProductId": "CSO-55P745",
       "OnHandUnits": 1390,
       "WeeksOfSupply": 12.41,
       "PriceProtectionExposureUSD": 37312.0
     },
     {
       "DistributorId": "DIST-LATAM-MX02",
-      "ProductId": "TCL-65P745",
+      "ProductId": "CSO-65P745",
       "OnHandUnits": 1490,
       "WeeksOfSupply": 14.19,
       "PriceProtectionExposureUSD": 51374.4
     },
     {
       "DistributorId": "DIST-LATAM-MX02",
-      "ProductId": "TCL-55P745",
+      "ProductId": "CSO-55P745",
       "OnHandUnits": 1520,
       "WeeksOfSupply": 12.36,
       "PriceProtectionExposureUSD": 39468.0
     },
     {
       "DistributorId": "DIST-APAC-VN01",
-      "ProductId": "TCL-65P745",
+      "ProductId": "CSO-65P745",
       "OnHandUnits": 736,
       "WeeksOfSupply": 13.89,
       "PriceProtectionExposureUSD": 32216.8
     },
     {
       "DistributorId": "DIST-MEA-SA01",
-      "ProductId": "TCL-65P745",
+      "ProductId": "CSO-65P745",
       "OnHandUnits": 1160,
       "WeeksOfSupply": 12.89,
       "PriceProtectionExposureUSD": 38561.6
     },
     {
       "DistributorId": "DIST-MEA-SA01",
-      "ProductId": "TCL-55P745",
+      "ProductId": "CSO-55P745",
       "OnHandUnits": 1180,
       "WeeksOfSupply": 12.04,
       "PriceProtectionExposureUSD": 31152.0
@@ -1529,11 +1529,11 @@ window.__INITIAL_BUNDLE__ = {
     {
       "AlertTimestamp": "2026-11-13T23:00:00",
       "ShipmentId": "SHIP-EU-208",
-      "VesselCode": "MSC-AURORA-V42",
+      "VesselCode": "OCEAN-AURORA-V42",
       "OriginPort": "Yantian / Shenzhen",
       "DestinationPort": "Port of Rotterdam",
       "SubsidiaryId": "SUB-EU-DE",
-      "AffectedProductId": "TCL-75C855",
+      "AffectedProductId": "CSO-75C855",
       "AffectedUnits": "1260",
       "CargoValueUSD": "1625400.0",
       "DelayDays": "11",
@@ -1544,11 +1544,11 @@ window.__INITIAL_BUNDLE__ = {
     {
       "AlertTimestamp": "2026-11-14T07:00:00",
       "ShipmentId": "SHIP-EU-209",
-      "VesselCode": "MSC-AURORA-V42",
+      "VesselCode": "OCEAN-AURORA-V42",
       "OriginPort": "Yantian / Shenzhen",
       "DestinationPort": "Port of Rotterdam",
       "SubsidiaryId": "SUB-EU-DE",
-      "AffectedProductId": "TCL-85C855",
+      "AffectedProductId": "CSO-85C855",
       "AffectedUnits": "590",
       "CargoValueUSD": "1050200.0",
       "DelayDays": "11",
@@ -1559,11 +1559,11 @@ window.__INITIAL_BUNDLE__ = {
     {
       "AlertTimestamp": "2026-11-13T22:00:00",
       "ShipmentId": "SHIP-EU-214",
-      "VesselCode": "CHINA-EU-RAIL-W45",
+      "VesselCode": "EURASIA-RAIL-W45",
       "OriginPort": "Chengdu Rail Hub",
       "DestinationPort": "Wroclaw EuroHub",
       "SubsidiaryId": "SUB-EU-PL",
-      "AffectedProductId": "TCL-75C855",
+      "AffectedProductId": "CSO-75C855",
       "AffectedUnits": "680",
       "CargoValueUSD": "877200.0",
       "DelayDays": "0",
@@ -1574,11 +1574,11 @@ window.__INITIAL_BUNDLE__ = {
     {
       "AlertTimestamp": "2026-11-13T20:00:00",
       "ShipmentId": "SHIP-GLB-301",
-      "VesselCode": "EVER-APEX-A21",
+      "VesselCode": "BLUEWAVE-APEX-A21",
       "OriginPort": "Yantian / Shenzhen",
       "DestinationPort": "Port of Manzanillo",
       "SubsidiaryId": "SUB-LATAM-MX",
-      "AffectedProductId": "TCL-98QM851G",
+      "AffectedProductId": "CSO-98QM851G",
       "AffectedUnits": "609",
       "CargoValueUSD": "1760010.0",
       "DelayDays": "1",
@@ -1589,11 +1589,11 @@ window.__INITIAL_BUNDLE__ = {
     {
       "AlertTimestamp": "2026-11-14T09:00:00",
       "ShipmentId": "SHIP-GLB-302",
-      "VesselCode": "CMA-CGM-VOLTAIRE-E04",
+      "VesselCode": "ATLANTIC-VOLTAIRE-E04",
       "OriginPort": "Wroclaw EuroHub",
       "DestinationPort": "Laem Chabang Port",
       "SubsidiaryId": "SUB-APAC-TH",
-      "AffectedProductId": "TCL-REF-C521CD",
+      "AffectedProductId": "CSO-REF-C521CD",
       "AffectedUnits": "202",
       "CargoValueUSD": "139380.0",
       "DelayDays": "0",
@@ -1604,11 +1604,11 @@ window.__INITIAL_BUNDLE__ = {
     {
       "AlertTimestamp": "2026-11-13T18:00:00",
       "ShipmentId": "SHIP-GLB-303",
-      "VesselCode": "MAERSK-SENTOSA-W09",
+      "VesselCode": "NORDIC-SENTOSA-W09",
       "OriginPort": "Laem Chabang",
-      "DestinationPort": "Port of Gdansk / China-EU Rail",
+      "DestinationPort": "Port of Gdansk / Eurasian Rail",
       "SubsidiaryId": "SUB-EU-PL",
-      "AffectedProductId": "TCL-75C855",
+      "AffectedProductId": "CSO-75C855",
       "AffectedUnits": "531",
       "CargoValueUSD": "684990.0",
       "DelayDays": "0",
@@ -1619,11 +1619,11 @@ window.__INITIAL_BUNDLE__ = {
     {
       "AlertTimestamp": "2026-11-13T17:00:00",
       "ShipmentId": "SHIP-GLB-304",
-      "VesselCode": "MAERSK-SENTOSA-W09",
+      "VesselCode": "NORDIC-SENTOSA-W09",
       "OriginPort": "Yantian / Shenzhen",
       "DestinationPort": "Port of Rotterdam",
       "SubsidiaryId": "SUB-EU-DE",
-      "AffectedProductId": "TCL-55P755",
+      "AffectedProductId": "CSO-55P755",
       "AffectedUnits": "618",
       "CargoValueUSD": "188490.0",
       "DelayDays": "1",
@@ -1634,11 +1634,11 @@ window.__INITIAL_BUNDLE__ = {
     {
       "AlertTimestamp": "2026-11-13T21:00:00",
       "ShipmentId": "SHIP-GLB-305",
-      "VesselCode": "EVER-APEX-A21",
+      "VesselCode": "BLUEWAVE-APEX-A21",
       "OriginPort": "Laem Chabang",
       "DestinationPort": "Port of Le Havre",
       "SubsidiaryId": "SUB-EU-FR",
-      "AffectedProductId": "TCL-AC-BREEZE-12K",
+      "AffectedProductId": "CSO-AC-BREEZE-12K",
       "AffectedUnits": "715",
       "CargoValueUSD": "260975.0",
       "DelayDays": "0",
@@ -1649,8 +1649,8 @@ window.__INITIAL_BUNDLE__ = {
   ],
   "rebalancePairs": [
     {
-      "productId": "TCL-75C855",
-      "productName": "TCL 75\" C855 Premium QD-Mini LED 4K TV",
+      "productId": "CSO-75C855",
+      "productName": "Contoso 75\" C855 Premium QD-Mini LED 4K TV",
       "shortagePartnerId": "DIST-EU-DE01",
       "shortagePartnerName": "EuroTech Distribution GmbH",
       "shortageCountry": "Germany",
@@ -1666,8 +1666,8 @@ window.__INITIAL_BUNDLE__ = {
       "complianceSpec": "EU_CE_230V"
     },
     {
-      "productId": "TCL-75C855",
-      "productName": "TCL 75\" C855 Premium QD-Mini LED 4K TV",
+      "productId": "CSO-75C855",
+      "productName": "Contoso 75\" C855 Premium QD-Mini LED 4K TV",
       "shortagePartnerId": "DIST-EU-DE01",
       "shortagePartnerName": "EuroTech Distribution GmbH",
       "shortageCountry": "Germany",
@@ -1683,10 +1683,10 @@ window.__INITIAL_BUNDLE__ = {
       "complianceSpec": "EU_CE_230V"
     },
     {
-      "productId": "TCL-75C855",
-      "productName": "TCL 75\" C855 Premium QD-Mini LED 4K TV",
+      "productId": "CSO-75C855",
+      "productName": "Contoso 75\" C855 Premium QD-Mini LED 4K TV",
       "shortagePartnerId": "DIST-EU-DE02",
-      "shortagePartnerName": "MediaMarktSaturn Omnichannel DE",
+      "shortagePartnerName": "RheinMarkt Omnichannel Retail DE",
       "shortageCountry": "Germany",
       "shortageUnits": 268,
       "shortageWos": 1.04,
@@ -1700,10 +1700,10 @@ window.__INITIAL_BUNDLE__ = {
       "complianceSpec": "EU_CE_230V"
     },
     {
-      "productId": "TCL-75C855",
-      "productName": "TCL 75\" C855 Premium QD-Mini LED 4K TV",
+      "productId": "CSO-75C855",
+      "productName": "Contoso 75\" C855 Premium QD-Mini LED 4K TV",
       "shortagePartnerId": "DIST-EU-DE02",
-      "shortagePartnerName": "MediaMarktSaturn Omnichannel DE",
+      "shortagePartnerName": "RheinMarkt Omnichannel Retail DE",
       "shortageCountry": "Germany",
       "shortageUnits": 268,
       "shortageWos": 1.04,
@@ -1717,8 +1717,8 @@ window.__INITIAL_BUNDLE__ = {
       "complianceSpec": "EU_CE_230V"
     },
     {
-      "productId": "TCL-75C855",
-      "productName": "TCL 75\" C855 Premium QD-Mini LED 4K TV",
+      "productId": "CSO-75C855",
+      "productName": "Contoso 75\" C855 Premium QD-Mini LED 4K TV",
       "shortagePartnerId": "DIST-EU-NL01",
       "shortagePartnerName": "Benelux Vision Retail BV",
       "shortageCountry": "Netherlands",
@@ -1734,8 +1734,8 @@ window.__INITIAL_BUNDLE__ = {
       "complianceSpec": "EU_CE_230V"
     },
     {
-      "productId": "TCL-75C855",
-      "productName": "TCL 75\" C855 Premium QD-Mini LED 4K TV",
+      "productId": "CSO-75C855",
+      "productName": "Contoso 75\" C855 Premium QD-Mini LED 4K TV",
       "shortagePartnerId": "DIST-EU-NL01",
       "shortagePartnerName": "Benelux Vision Retail BV",
       "shortageCountry": "Netherlands",
@@ -1756,7 +1756,7 @@ window.__INITIAL_BUNDLE__ = {
       "ClaimId": "CLM-2026Q4-VN01",
       "ClaimDate": "2026-11-13T10:30:00",
       "DistributorId": "DIST-APAC-VN01",
-      "ProductId": "TCL-65C655",
+      "ProductId": "CSO-65C655",
       "PromotionId": "PROMO-APAC-1111",
       "ClaimType": "Quarterly Stretch Volume Rebate",
       "ClaimedAmountUSD": "162500.0",
@@ -1771,7 +1771,7 @@ window.__INITIAL_BUNDLE__ = {
       "ClaimId": "CLM-2026Q4-MX02",
       "ClaimDate": "2026-11-14T08:15:00",
       "DistributorId": "DIST-LATAM-MX02",
-      "ProductId": "TCL-65P745",
+      "ProductId": "CSO-65P745",
       "PromotionId": "PROMO-LATAM-P745CLR",
       "ClaimType": "Price Protection Liability Simulation",
       "ClaimedAmountUSD": "90842.4",
@@ -1786,7 +1786,7 @@ window.__INITIAL_BUNDLE__ = {
       "ClaimId": "CLM-2026Q4-BR02",
       "ClaimDate": "2026-11-14T08:20:00",
       "DistributorId": "DIST-LATAM-BR02",
-      "ProductId": "TCL-65P745",
+      "ProductId": "CSO-65P745",
       "PromotionId": "PROMO-LATAM-P745CLR",
       "ClaimType": "Price Protection Liability Simulation",
       "ClaimedAmountUSD": "84128.0",
@@ -1801,7 +1801,7 @@ window.__INITIAL_BUNDLE__ = {
       "ClaimId": "CLM-2026Q4-SA01",
       "ClaimDate": "2026-11-14T08:25:00",
       "DistributorId": "DIST-MEA-SA01",
-      "ProductId": "TCL-65P745",
+      "ProductId": "CSO-65P745",
       "PromotionId": "PROMO-MEA-WHITEFRI",
       "ClaimType": "Price Protection Liability Simulation",
       "ClaimedAmountUSD": "69713.6",
@@ -1816,7 +1816,7 @@ window.__INITIAL_BUNDLE__ = {
       "ClaimId": "CLM-2026Q4-110",
       "ClaimDate": "2026-11-08T12:00:00",
       "DistributorId": "DIST-EU-DE01",
-      "ProductId": "TCL-85C855",
+      "ProductId": "CSO-85C855",
       "PromotionId": "PROMO-EU-BF26",
       "ClaimType": "Quarterly Volume Rebate",
       "ClaimedAmountUSD": "61710.65",
@@ -1831,7 +1831,7 @@ window.__INITIAL_BUNDLE__ = {
       "ClaimId": "CLM-2026Q4-111",
       "ClaimDate": "2026-10-28T12:00:00",
       "DistributorId": "DIST-EU-DE02",
-      "ProductId": "TCL-85C855",
+      "ProductId": "CSO-85C855",
       "PromotionId": "PROMO-EU-BF26",
       "ClaimType": "OMO Co-Op Marketing MDF",
       "ClaimedAmountUSD": "109933.2",
@@ -1846,7 +1846,7 @@ window.__INITIAL_BUNDLE__ = {
       "ClaimId": "CLM-2026Q4-112",
       "ClaimDate": "2026-11-05T12:00:00",
       "DistributorId": "DIST-EU-DE03",
-      "ProductId": "TCL-85C855",
+      "ProductId": "CSO-85C855",
       "PromotionId": "PROMO-EU-BF26",
       "ClaimType": "Sell-Out Spiff",
       "ClaimedAmountUSD": "11037.35",
@@ -1861,7 +1861,7 @@ window.__INITIAL_BUNDLE__ = {
       "ClaimId": "CLM-2026Q4-113",
       "ClaimDate": "2026-11-12T12:00:00",
       "DistributorId": "DIST-EU-NL01",
-      "ProductId": "TCL-85C855",
+      "ProductId": "CSO-85C855",
       "PromotionId": "PROMO-EU-BF26",
       "ClaimType": "OMO Co-Op Marketing MDF",
       "ClaimedAmountUSD": "43785.27",
@@ -1876,7 +1876,7 @@ window.__INITIAL_BUNDLE__ = {
       "ClaimId": "CLM-2026Q4-114",
       "ClaimDate": "2026-11-03T12:00:00",
       "DistributorId": "DIST-EU-FR01",
-      "ProductId": "TCL-85C855",
+      "ProductId": "CSO-85C855",
       "PromotionId": "PROMO-EU-FRBF26",
       "ClaimType": "Quarterly Volume Rebate",
       "ClaimedAmountUSD": "55493.14",
@@ -1891,7 +1891,7 @@ window.__INITIAL_BUNDLE__ = {
       "ClaimId": "CLM-2026Q4-115",
       "ClaimDate": "2026-10-27T12:00:00",
       "DistributorId": "DIST-EU-FR02",
-      "ProductId": "TCL-85C855",
+      "ProductId": "CSO-85C855",
       "PromotionId": "PROMO-EU-FRBF26",
       "ClaimType": "OMO Co-Op Marketing MDF",
       "ClaimedAmountUSD": "93214.17",
@@ -1906,7 +1906,7 @@ window.__INITIAL_BUNDLE__ = {
       "ClaimId": "CLM-2026Q4-116",
       "ClaimDate": "2026-10-27T12:00:00",
       "DistributorId": "DIST-EU-ES01",
-      "ProductId": "TCL-85C855",
+      "ProductId": "CSO-85C855",
       "PromotionId": "PROMO-EU-FRBF26",
       "ClaimType": "OMO Co-Op Marketing MDF",
       "ClaimedAmountUSD": "39495.83",
@@ -1921,7 +1921,7 @@ window.__INITIAL_BUNDLE__ = {
       "ClaimId": "CLM-2026Q4-117",
       "ClaimDate": "2026-10-26T12:00:00",
       "DistributorId": "DIST-EU-IT01",
-      "ProductId": "TCL-85C855",
+      "ProductId": "CSO-85C855",
       "PromotionId": "PROMO-EU-FRBF26",
       "ClaimType": "OMO Co-Op Marketing MDF",
       "ClaimedAmountUSD": "55421.39",
@@ -1941,7 +1941,7 @@ window.__INITIAL_BUNDLE__ = {
       "SourceEntityName": "AlpenElectro France SAS (Lyon)",
       "TargetDistributorId": "DIST-EU-DE01",
       "TargetDistributorName": "EuroTech Distribution GmbH (Frankfurt)",
-      "ProductId": "TCL-75C855",
+      "ProductId": "CSO-75C855",
       "TransferUnits": "350",
       "TransportMode": "48h Cross-Border Express Road (Lyon -> Frankfurt, 560 km)",
       "TransferCostUSD": "11900.0",
@@ -1954,10 +1954,10 @@ window.__INITIAL_BUNDLE__ = {
       "TransferId": "XFER-IQ-9002",
       "CreatedAt": "2026-11-14T11:46:00",
       "SourceEntityId": "SUB-EU-PL",
-      "SourceEntityName": "TCL Wroclaw EuroHub & PolVision PL",
+      "SourceEntityName": "Contoso Wroclaw EuroHub & PolVision PL",
       "TargetDistributorId": "DIST-EU-DE02",
-      "TargetDistributorName": "MediaMarktSaturn Omnichannel DE (Ingolstadt)",
-      "ProductId": "TCL-75C855",
+      "TargetDistributorName": "RheinMarkt Omnichannel Retail DE (Ingolstadt)",
+      "ProductId": "CSO-75C855",
       "TransferUnits": "300",
       "TransportMode": "36h EuroHub Direct Truck (Wroclaw -> Ingolstadt, 510 km)",
       "TransferCostUSD": "9600.0",
@@ -1973,7 +1973,7 @@ window.__INITIAL_BUNDLE__ = {
       "SourceEntityName": "AlpenElectro France SAS (Lyon)",
       "TargetDistributorId": "DIST-EU-DE01",
       "TargetDistributorName": "EuroTech Distribution GmbH (Frankfurt)",
-      "ProductId": "TCL-85C855",
+      "ProductId": "CSO-85C855",
       "TransferUnits": "180",
       "TransportMode": "48h Cross-Border Express Road (Lyon -> Frankfurt, 560 km)",
       "TransferCostUSD": "7920.0",
@@ -1986,10 +1986,10 @@ window.__INITIAL_BUNDLE__ = {
       "TransferId": "XFER-HIST-8101",
       "CreatedAt": "2026-11-06T12:00:00",
       "SourceEntityId": "SUB-EU-PL",
-      "SourceEntityName": "TCL Operations Polska (Wroclaw Mfg & EuroHub)",
+      "SourceEntityName": "Contoso Operations Polska (Wroclaw Mfg & EuroHub)",
       "TargetDistributorId": "DIST-EU-PL01",
       "TargetDistributorName": "PolVision Dystrybucja Sp. z o.o.",
-      "ProductId": "TCL-85C855",
+      "ProductId": "CSO-85C855",
       "TransferUnits": "200",
       "TransportMode": "Regional Hub Replenishment Truck",
       "TransferCostUSD": "7162.93",
@@ -2002,10 +2002,10 @@ window.__INITIAL_BUNDLE__ = {
       "TransferId": "XFER-HIST-8102",
       "CreatedAt": "2026-11-11T12:00:00",
       "SourceEntityId": "SUB-EU-FR",
-      "SourceEntityName": "TCL Electronics France SAS",
+      "SourceEntityName": "Contoso Electronics France SAS",
       "TargetDistributorId": "DIST-EU-ES01",
       "TargetDistributorName": "Iberia SmartHome Distribucion SL",
-      "ProductId": "TCL-85C855",
+      "ProductId": "CSO-85C855",
       "TransferUnits": "150",
       "TransportMode": "Regional Hub Replenishment Truck",
       "TransferCostUSD": "5179.47",
@@ -2018,10 +2018,10 @@ window.__INITIAL_BUNDLE__ = {
       "TransferId": "XFER-HIST-8103",
       "CreatedAt": "2026-11-11T12:00:00",
       "SourceEntityId": "SUB-EU-DE",
-      "SourceEntityName": "TCL Germany & DACH GmbH",
+      "SourceEntityName": "Contoso Germany & DACH GmbH",
       "TargetDistributorId": "DIST-EU-DE02",
-      "TargetDistributorName": "MediaMarktSaturn Omnichannel DE",
-      "ProductId": "TCL-85C855",
+      "TargetDistributorName": "RheinMarkt Omnichannel Retail DE",
+      "ProductId": "CSO-85C855",
       "TransferUnits": "120",
       "TransportMode": "Regional Hub Replenishment Truck",
       "TransferCostUSD": "4309.58",
@@ -2034,10 +2034,10 @@ window.__INITIAL_BUNDLE__ = {
       "TransferId": "XFER-HIST-8104",
       "CreatedAt": "2026-10-26T12:00:00",
       "SourceEntityId": "SUB-EU-FR",
-      "SourceEntityName": "TCL Electronics France SAS",
+      "SourceEntityName": "Contoso Electronics France SAS",
       "TargetDistributorId": "DIST-EU-ES01",
       "TargetDistributorName": "Iberia SmartHome Distribucion SL",
-      "ProductId": "TCL-85C855",
+      "ProductId": "CSO-85C855",
       "TransferUnits": "200",
       "TransportMode": "Regional Hub Replenishment Truck",
       "TransferCostUSD": "7145.59",
@@ -2050,10 +2050,10 @@ window.__INITIAL_BUNDLE__ = {
       "TransferId": "XFER-HIST-8105",
       "CreatedAt": "2026-10-10T12:00:00",
       "SourceEntityId": "SUB-LATAM-MX",
-      "SourceEntityName": "TCL Electronics Mexico S.A. de C.V.",
+      "SourceEntityName": "Contoso Electronics Mexico S.A. de C.V.",
       "TargetDistributorId": "DIST-LATAM-MX02",
       "TargetDistributorName": "Andes Hogar Distribucion MX",
-      "ProductId": "TCL-75C755",
+      "ProductId": "CSO-75C755",
       "TransferUnits": "80",
       "TransportMode": "Regional Hub Replenishment Truck",
       "TransferCostUSD": "2574.0",
@@ -2066,10 +2066,10 @@ window.__INITIAL_BUNDLE__ = {
       "TransferId": "XFER-HIST-8106",
       "CreatedAt": "2026-10-18T12:00:00",
       "SourceEntityId": "SUB-LATAM-MX",
-      "SourceEntityName": "TCL Electronics Mexico S.A. de C.V.",
+      "SourceEntityName": "Contoso Electronics Mexico S.A. de C.V.",
       "TargetDistributorId": "DIST-LATAM-MX03",
-      "TargetDistributorName": "MercadoLibre Official Store LATAM",
-      "ProductId": "TCL-75C755",
+      "TargetDistributorName": "LatamMart Official Marketplace MX",
+      "ProductId": "CSO-75C755",
       "TransferUnits": "80",
       "TransportMode": "Regional Hub Replenishment Truck",
       "TransferCostUSD": "2553.27",
@@ -2082,10 +2082,10 @@ window.__INITIAL_BUNDLE__ = {
       "TransferId": "XFER-HIST-8107",
       "CreatedAt": "2026-11-06T12:00:00",
       "SourceEntityId": "SUB-EU-FR",
-      "SourceEntityName": "TCL Electronics France SAS",
+      "SourceEntityName": "Contoso Electronics France SAS",
       "TargetDistributorId": "DIST-EU-ES01",
       "TargetDistributorName": "Iberia SmartHome Distribucion SL",
-      "ProductId": "TCL-85C855",
+      "ProductId": "CSO-85C855",
       "TransferUnits": "60",
       "TransportMode": "Regional Hub Replenishment Truck",
       "TransferCostUSD": "2051.74",
@@ -2096,9 +2096,9 @@ window.__INITIAL_BUNDLE__ = {
     }
   ],
   "ontology": {
-    "ontologyName": "ont_tcl_global_channel_network",
-    "ontologyId": "00000000-0000-4000-8000-000000000004",
-    "graphModelId": "00000000-0000-4000-8000-000000000005",
+    "ontologyName": "ont_contoso_global_channel_network",
+    "ontologyId": "fd3edbdb-0d14-4bdd-a1c7-7a1992fc7dca",
+    "graphModelId": "37051d2c-e77f-42c5-baef-fa0b8ece527d",
     "tmdlPartsCount": 31,
     "entities": [
       {
@@ -2152,8 +2152,8 @@ window.__INITIAL_BUNDLE__ = {
         "sampleHighlight": "DIST-EU-DE01 (EuroTech DE) · 实时 DynamicWOS=0.86w · 授信 $8.5M · 60天价保上限"
       },
       {
-        "id": "TclProduct",
-        "label": "TclProduct",
+        "id": "SmartProduct",
+        "label": "SmartProduct",
         "cnLabel": "全球智屏/空冰洗/声霸 SKU",
         "backingTable": "dim_products",
         "sourceEngine": "OneLake Delta",
@@ -2172,7 +2172,7 @@ window.__INITIAL_BUNDLE__ = {
           "RegionalComplianceSpec"
         ],
         "timeSeriesProperties": [],
-        "sampleHighlight": "TCL-75C855 (2026 旗舰 QD-Mini LED, EU_CE_230V) vs TCL-65P745 (2025 老品价保敏感)"
+        "sampleHighlight": "CSO-75C855 (2026 旗舰 QD-Mini LED, EU_CE_230V) vs CSO-65P745 (2025 老品价保敏感)"
       },
       {
         "id": "ChannelInventorySnapshot",
@@ -2194,7 +2194,7 @@ window.__INITIAL_BUNDLE__ = {
           "StockHealthStatus"
         ],
         "timeSeriesProperties": [],
-        "sampleHighlight": "跨工作区零拷贝接入 TCL_Partner_EDI_Portal_Zone · 暴露 $766,697.60 价保风险敞口"
+        "sampleHighlight": "跨工作区零拷贝接入 Contoso_Partner_EDI_Portal_Zone · 暴露 $766,697.60 价保风险敞口"
       },
       {
         "id": "OmoPromotion",
@@ -2212,7 +2212,7 @@ window.__INITIAL_BUNDLE__ = {
           "PromotionName",
           "CampaignChannel",
           "DiscountPct",
-          "TclCoOpFundingPct",
+          "OemCoOpFundingPct",
           "ExpectedVelocityLift"
         ],
         "timeSeriesProperties": [],
@@ -2280,7 +2280,7 @@ window.__INITIAL_BUNDLE__ = {
           "DelayRootCause"
         ],
         "timeSeriesProperties": [],
-        "sampleHighlight": "MSC-AURORA-V42 鹿特丹港拥堵延误 11 天 · 影响 1,850 台 C855 补货 ($2.68M)"
+        "sampleHighlight": "OCEAN-AURORA-V42 鹿特丹港拥堵延误 11 天 · 影响 1,850 台 C855 补货 ($2.68M)"
       },
       {
         "id": "PartnerRebateClaim",
@@ -2342,7 +2342,7 @@ window.__INITIAL_BUNDLE__ = {
       },
       {
         "from": "ChannelInventorySnapshot",
-        "to": "TclProduct",
+        "to": "SmartProduct",
         "label": "Tracks SKU"
       },
       {
@@ -2357,7 +2357,7 @@ window.__INITIAL_BUNDLE__ = {
       },
       {
         "from": "SellInWholesaleOrder",
-        "to": "TclProduct",
+        "to": "SmartProduct",
         "label": "Wholesale SKU"
       },
       {
@@ -2367,7 +2367,7 @@ window.__INITIAL_BUNDLE__ = {
       },
       {
         "from": "SellOutRetailTransaction",
-        "to": "TclProduct",
+        "to": "SmartProduct",
         "label": "Retail SKU"
       },
       {
@@ -2382,7 +2382,7 @@ window.__INITIAL_BUNDLE__ = {
       },
       {
         "from": "OceanContainerShipment",
-        "to": "TclProduct",
+        "to": "SmartProduct",
         "label": "Cargo SKU"
       },
       {
@@ -2410,7 +2410,7 @@ window.__INITIAL_BUNDLE__ = {
       {
         "id": "rule_prior_gen_price_protection",
         "name": "Rule 2 · 老品降价价保敞口风控 (Price Protection Guardrail)",
-        "entity": "ChannelInventorySnapshot -> TclProduct",
+        "entity": "ChannelInventorySnapshot -> SmartProduct",
         "condition": "ModelGeneration == '2025_PriorGen' AND WeeksOfSupply > 10.0 AND PriceProtectionExposureUSD > 30,000",
         "severity": "HIGH",
         "hitCount": 7,
@@ -2431,120 +2431,120 @@ window.__INITIAL_BUNDLE__ = {
   },
   "fabricItems": [
     {
-      "name": "lh_tcl_global_channel",
+      "name": "lh_contoso_global_channel",
       "type": "Lakehouse",
       "layer": "OneLake",
-      "id": "00000000-0000-4000-8000-000000000006",
+      "id": "a5822a01-0d95-43aa-94c8-8fcb11b569dd",
       "desc": "主数据湖仓：9 张 ERP/物流/财务 Delta 表 + 3 个零拷贝跨区 Shortcut",
-      "url": "playbook.html#asset-inventory"
+      "url": "https://app.fabric.microsoft.com/groups/a0163b22-e3ae-467a-b04c-0265e364658b/lakehouses/a5822a01-0d95-43aa-94c8-8fcb11b569dd?experience=fabric-developer"
     },
     {
       "name": "lh_partner_edi_portal",
       "type": "Lakehouse (External Zone)",
       "layer": "OneLake Shortcut Source",
-      "id": "00000000-0000-4000-8000-000000000007",
+      "id": "3649cc5d-8bf0-48dc-afa8-affc8012ad97",
       "desc": "外部代理商隔离区：存放 EDI 852 周库存 (3,456 行) 与 OMO POS 流水 (6,624 行)",
-      "url": "playbook.html#asset-inventory"
+      "url": "https://app.fabric.microsoft.com/groups/33d8b998-2924-42ad-9651-4466aa8ce091/lakehouses/3649cc5d-8bf0-48dc-afa8-affc8012ad97?experience=fabric-developer"
     },
     {
-      "name": "eh_tcl_channel_pulse",
+      "name": "eh_contoso_channel_pulse",
       "type": "Eventhouse",
       "layer": "Real-Time Intelligence",
-      "id": "00000000-0000-4000-8000-000000000008",
+      "id": "e340aa1f-26e6-4096-bf08-5092b752867e",
       "desc": "实时流引擎底座：承载黑五 POS 脉冲、库存消耗遥测与港口拥堵流",
-      "url": "playbook.html#asset-inventory"
+      "url": "https://app.fabric.microsoft.com/groups/a0163b22-e3ae-467a-b04c-0265e364658b/eventhouses/e340aa1f-26e6-4096-bf08-5092b752867e?experience=fabric-developer"
     },
     {
-      "name": "kql_tcl_channel_pulse",
+      "name": "kql_contoso_channel_pulse",
       "type": "KQLDatabase",
       "layer": "Real-Time Intelligence",
-      "id": "00000000-0000-4000-8000-000000000009",
+      "id": "ee71675d-3f0d-4791-a0ad-0e2496326489",
       "desc": "实时 KQL 分析库：1,028 条实时流记录 + 2 个跨国调拨配对 KQL 函数",
-      "url": "playbook.html#asset-inventory"
+      "url": "https://app.fabric.microsoft.com/groups/a0163b22-e3ae-467a-b04c-0265e364658b/databases/ee71675d-3f0d-4791-a0ad-0e2496326489?experience=fabric-developer"
     },
     {
-      "name": "rtd_tcl_channel_command_center",
+      "name": "rtd_contoso_channel_command_center",
       "type": "KQLDashboard",
       "layer": "Real-Time Intelligence",
-      "id": "00000000-0000-4000-8000-000000000010",
+      "id": "0c529b1c-040c-4e7c-b841-ba7471a779f0",
       "desc": "5 视图实时渠道指挥大屏：断货排行、OMO 流速、港口预警、法德配对",
-      "url": "playbook.html#asset-inventory"
+      "url": "https://app.fabric.microsoft.com/groups/a0163b22-e3ae-467a-b04c-0265e364658b/kustodashboards/0c529b1c-040c-4e7c-b841-ba7471a779f0?experience=fabric-developer"
     },
     {
-      "name": "sm_tcl_global_channel_iq",
+      "name": "sm_contoso_global_channel_iq",
       "type": "SemanticModel (DirectLake)",
       "layer": "BI & Semantic",
-      "id": "00000000-0000-4000-8000-000000000011",
+      "id": "f6621a37-6288-4e96-9a9d-0b1475fc89c2",
       "desc": "DirectLake 零导入语义模型：11 表、15 关系、19 个核心渠道财务 DAX 指标",
-      "url": "playbook.html#asset-inventory"
+      "url": "https://app.fabric.microsoft.com/groups/a0163b22-e3ae-467a-b04c-0265e364658b/datasets/f6621a37-6288-4e96-9a9d-0b1475fc89c2/details?experience=fabric-developer"
     },
     {
-      "name": "ont_tcl_global_channel_network",
+      "name": "ont_contoso_global_channel_network",
       "type": "Ontology (Fabric IQ)",
       "layer": "Fabric IQ Ontology",
-      "id": "00000000-0000-4000-8000-000000000004",
+      "id": "fd3edbdb-0d14-4bdd-a1c7-7a1992fc7dca",
       "desc": "新版 TMDL 业务本体：10 实体、13 图谱关系、TimeSeries 时序绑定、3 条风控规则",
-      "url": "playbook.html#asset-inventory"
+      "url": "https://app.fabric.microsoft.com/groups/a0163b22-e3ae-467a-b04c-0265e364658b?experience=fabric-developer"
     },
     {
-      "name": "ont_tcl_global_channel_network_graph",
+      "name": "ont_contoso_global_channel_network_graph",
       "type": "GraphModel (Property Graph)",
       "layer": "Fabric IQ Ontology",
-      "id": "00000000-0000-4000-8000-000000000005",
+      "id": "37051d2c-e77f-42c5-baef-fa0b8ece527d",
       "desc": "由 Ontology 自动物化的原生图计算模型，支持多跳渠道归因遍历",
-      "url": "playbook.html#asset-inventory"
+      "url": "https://app.fabric.microsoft.com/groups/a0163b22-e3ae-467a-b04c-0265e364658b?experience=fabric-developer"
     },
     {
-      "name": "da_tcl_channel_copilot",
+      "name": "da_contoso_channel_copilot",
       "type": "DataAgent",
       "layer": "Fabric IQ Agent",
-      "id": "00000000-0000-4000-8000-000000000012",
+      "id": "d8a3e246-efda-49d6-aaed-4b03940b0db8",
       "desc": "跨 OneLake SQL + Eventhouse KQL 双源对话智能体（预置 Validated Few-Shots）",
-      "url": "playbook.html#asset-inventory"
+      "url": "https://app.fabric.microsoft.com/groups/a0163b22-e3ae-467a-b04c-0265e364658b?experience=fabric-developer"
     },
     {
-      "name": "ops_tcl_autonomous_channel_guard",
+      "name": "ops_contoso_autonomous_channel_guard",
       "type": "OperationsAgent (Ontology)",
       "layer": "Fabric IQ Agent",
-      "id": "00000000-0000-4000-8000-000000000013",
+      "id": "f7888405-3f38-405f-9097-f59a220604d3",
       "desc": "挂载 Ontology 知识源的自主运营智能体：巡检断货、价保敞口与压货返利",
-      "url": "playbook.html#asset-inventory"
+      "url": "https://app.fabric.microsoft.com/groups/a0163b22-e3ae-467a-b04c-0265e364658b?experience=fabric-developer"
     },
     {
-      "name": "ops_tcl_realtime_pos_pulse_guard",
+      "name": "ops_contoso_realtime_pos_pulse_guard",
       "type": "OperationsAgent (Eventhouse)",
       "layer": "Fabric IQ Agent",
-      "id": "00000000-0000-4000-8000-000000000014",
+      "id": "9a2f863f-f795-4482-b30e-e80d9293fd7a",
       "desc": "挂载 Eventhouse KQL 知识源的实时运营智能体：捕捉分钟级黑五暴涨与船期延误",
-      "url": "playbook.html#asset-inventory"
+      "url": "https://app.fabric.microsoft.com/groups/a0163b22-e3ae-467a-b04c-0265e364658b?experience=fabric-developer"
     },
     {
-      "name": "pl_tcl_rebalance_orchestrator",
+      "name": "pl_contoso_rebalance_orchestrator",
       "type": "DataPipeline",
       "layer": "Closed-Loop Action",
-      "id": "00000000-0000-4000-8000-000000000015",
+      "id": "09524a41-cfaa-4abc-97db-97fb105673b5",
       "desc": "闭环调拨编排管道：接收跨国调拨参数并驱动 PySpark 回写 OneLake",
-      "url": "playbook.html#asset-inventory"
+      "url": "https://app.fabric.microsoft.com/groups/a0163b22-e3ae-467a-b04c-0265e364658b/pipelines/09524a41-cfaa-4abc-97db-97fb105673b5?experience=fabric-developer"
     },
     {
-      "name": "nb_tcl_rebalance_execution",
+      "name": "nb_contoso_rebalance_execution",
       "type": "Notebook (PySpark)",
       "layer": "Closed-Loop Action",
-      "id": "00000000-0000-4000-8000-000000000016",
+      "id": "92111b12-2100-4c45-ad4e-92750e9e59cd",
       "desc": "调拨单落库脚本：生成 XFER-AUTO 调拨单实时追加至 fact_inter_warehouse_transfers",
-      "url": "playbook.html#asset-inventory"
+      "url": "https://app.fabric.microsoft.com/groups/a0163b22-e3ae-467a-b04c-0265e364658b/synapsenotebooks/92111b12-2100-4c45-ad4e-92750e9e59cd?experience=fabric-developer"
     }
   ],
   "liveFabric": {
-    "syncedAt": "2026-11-14 12:53:51 UTC",
+    "syncedAt": "2026-11-19 15:14:23 UTC",
     "connected": true,
     "mode": "LIVE_FABRIC_CLOUD",
     "engines": {
       "directLakeDax": {
         "status": "ONLINE",
-        "latencyMs": 4934.8,
-        "artifact": "sm_tcl_global_channel_iq",
-        "artifactId": "00000000-0000-4000-8000-000000000011",
+        "latencyMs": 21510.7,
+        "artifact": "sm_contoso_global_channel_iq",
+        "artifactId": "f6621a37-6288-4e96-9a9d-0b1475fc89c2",
         "liveRow": {
           "[NetSellInUSD]": 135334687.6700004,
           "[RetailSellOutGMV]": 108952369.66999947,
@@ -2557,13 +2557,13 @@ window.__INITIAL_BUNDLE__ = {
       },
       "eventhouseKql": {
         "status": "ONLINE",
-        "latencyMs": 3773.0,
-        "artifact": "kql_tcl_channel_pulse",
-        "artifactId": "00000000-0000-4000-8000-000000000009",
+        "latencyMs": 11494.0,
+        "artifact": "kql_contoso_channel_pulse",
+        "artifactId": "ee71675d-3f0d-4791-a0ad-0e2496326489",
         "matchedPairs": 6,
         "rows": [
           {
-            "ProductId": "TCL-75C855",
+            "ProductId": "CSO-75C855",
             "TargetPartner": "Benelux Vision Retail BV",
             "TargetCountry": "Netherlands",
             "TargetOnHand": 132,
@@ -2575,8 +2575,8 @@ window.__INITIAL_BUNDLE__ = {
             "RecommendedTransferUnits": 338
           },
           {
-            "ProductId": "TCL-75C855",
-            "TargetPartner": "MediaMarktSaturn Omnichannel DE",
+            "ProductId": "CSO-75C855",
+            "TargetPartner": "RheinMarkt Omnichannel Retail DE",
             "TargetCountry": "Germany",
             "TargetOnHand": 268,
             "TargetWOS": 1.04,
@@ -2587,7 +2587,7 @@ window.__INITIAL_BUNDLE__ = {
             "RecommendedTransferUnits": 338
           },
           {
-            "ProductId": "TCL-75C855",
+            "ProductId": "CSO-75C855",
             "TargetPartner": "EuroTech Distribution GmbH",
             "TargetCountry": "Germany",
             "TargetOnHand": 185,
@@ -2599,7 +2599,7 @@ window.__INITIAL_BUNDLE__ = {
             "RecommendedTransferUnits": 338
           },
           {
-            "ProductId": "TCL-75C855",
+            "ProductId": "CSO-75C855",
             "TargetPartner": "Benelux Vision Retail BV",
             "TargetCountry": "Netherlands",
             "TargetOnHand": 132,
@@ -2611,8 +2611,8 @@ window.__INITIAL_BUNDLE__ = {
             "RecommendedTransferUnits": 244
           },
           {
-            "ProductId": "TCL-75C855",
-            "TargetPartner": "MediaMarktSaturn Omnichannel DE",
+            "ProductId": "CSO-75C855",
+            "TargetPartner": "RheinMarkt Omnichannel Retail DE",
             "TargetCountry": "Germany",
             "TargetOnHand": 268,
             "TargetWOS": 1.04,
@@ -2623,7 +2623,7 @@ window.__INITIAL_BUNDLE__ = {
             "RecommendedTransferUnits": 244
           },
           {
-            "ProductId": "TCL-75C855",
+            "ProductId": "CSO-75C855",
             "TargetPartner": "EuroTech Distribution GmbH",
             "TargetCountry": "Germany",
             "TargetOnHand": 185,
@@ -2638,9 +2638,9 @@ window.__INITIAL_BUNDLE__ = {
       },
       "fabricControlPlane": {
         "status": "ONLINE",
-        "latencyMs": 4073.6,
-        "workspace": "TCL_Global_Channel_IQ",
-        "workspaceId": "00000000-0000-4000-8000-000000000002",
+        "latencyMs": 4341.5,
+        "workspace": "Contoso_Global_Channel_IQ",
+        "workspaceId": "a0163b22-e3ae-467a-b04c-0265e364658b",
         "liveItemCount": 16,
         "itemTypes": [
           "DataAgent",
@@ -2660,11 +2660,11 @@ window.__INITIAL_BUNDLE__ = {
     },
     "telemetryLog": [
       {
-        "timestamp": "20:53:56",
+        "timestamp": "23:14:44",
         "engine": "DirectLake DAX",
-        "endpoint": "https://api.powerbi.com/v1.0/myorg/groups/00000000-0000-4000-8000-000000000002/datasets/00000000-0000-4000-8000-000000000011/executeQueries",
+        "endpoint": "https://api.powerbi.com/v1.0/myorg/groups/a0163b22-e3ae-467a-b04c-0265e364658b/datasets/f6621a37-6288-4e96-9a9d-0b1475fc89c2/executeQueries",
         "query": "EVALUATE\nROW(\n    \"NetSellInUSD\", [Total Net Sell-In USD],\n    \"RetailSellOutGMV\", [Total Retail Sell-Out GMV USD],\n    \"LatestChannelStockUSD\", [Latest Channel Inventory USD],\n    \"AvgWOS\", [Avg Channel Weeks of Supply],\n    \"PriceProtExposureUSD\", [Price Protection Exposure USD],\n    \"CriticalStockouts\", [Critical Stockout Positions],\n    \"BlockedRebateUSD\", [Blocked Stuffing Rebate USD]\n)",
-        "latencyMs": 4934.8,
+        "latencyMs": 21510.7,
         "status": "HTTP 200 OK",
         "sampleResponse": {
           "[NetSellInUSD]": 135334687.6700004,
@@ -2677,15 +2677,15 @@ window.__INITIAL_BUNDLE__ = {
         }
       },
       {
-        "timestamp": "20:54:00",
+        "timestamp": "23:14:56",
         "engine": "Eventhouse KQL",
-        "endpoint": "https://kusto-tcl-channel-iq-demo.kusto.fabric.microsoft.com/v2/rest/query",
+        "endpoint": "https://trd-bszpdhgv44g8s3zutr.z5.kusto.fabric.microsoft.com/v2/rest/query",
         "query": "fn_CrossBorderRebalanceCandidates()",
-        "latencyMs": 3773.0,
+        "latencyMs": 11494.0,
         "status": "HTTP 200 OK",
         "sampleResponse": [
           {
-            "ProductId": "TCL-75C855",
+            "ProductId": "CSO-75C855",
             "TargetPartner": "Benelux Vision Retail BV",
             "TargetCountry": "Netherlands",
             "TargetOnHand": 132,
@@ -2697,8 +2697,8 @@ window.__INITIAL_BUNDLE__ = {
             "RecommendedTransferUnits": 338
           },
           {
-            "ProductId": "TCL-75C855",
-            "TargetPartner": "MediaMarktSaturn Omnichannel DE",
+            "ProductId": "CSO-75C855",
+            "TargetPartner": "RheinMarkt Omnichannel Retail DE",
             "TargetCountry": "Germany",
             "TargetOnHand": 268,
             "TargetWOS": 1.04,
@@ -2711,15 +2711,15 @@ window.__INITIAL_BUNDLE__ = {
         ]
       },
       {
-        "timestamp": "20:54:04",
+        "timestamp": "23:15:00",
         "engine": "Fabric REST Control Plane",
-        "endpoint": "https://api.fabric.microsoft.com/v1/workspaces/00000000-0000-4000-8000-000000000002/items",
+        "endpoint": "https://api.fabric.microsoft.com/v1/workspaces/a0163b22-e3ae-467a-b04c-0265e364658b/items",
         "query": "GET /v1/workspaces/{workspaceId}/items",
-        "latencyMs": 4073.6,
+        "latencyMs": 4341.5,
         "status": "HTTP 200",
         "sampleResponse": {
           "liveItemCount": 16,
-          "ontologyId": "00000000-0000-4000-8000-000000000004"
+          "ontologyId": "fd3edbdb-0d14-4bdd-a1c7-7a1992fc7dca"
         }
       }
     ]

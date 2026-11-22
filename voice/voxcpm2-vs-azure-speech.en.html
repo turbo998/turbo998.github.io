@@ -1,0 +1,1362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="alternate" hreflang="en" href="voxcpm2-vs-azure-speech.en.html" />
+<link rel="alternate" hreflang="zh-CN" href="voxcpm2-vs-azure-speech.html" />
+<title>VoxCPM2 vs. Azure Speech: Acoustic Architecture &amp; TTS Benchmark — Qi Chen</title>
+<meta name="description" content="Solution Architect deep dive comparing OpenBMB VoxCPM2 (2B) and Microsoft Azure AI Speech: FSQ(512, s=9) source audit, 11-WAV 48 kHz Welch FFT forensics, interactive TCO break-even calculator, and hybrid enterprise routing." />
+<style>
+  :root {
+    --bg: #07101d;
+    --surface: #0d1b2e;
+    --surface-2: #11233b;
+    --border: rgba(148, 163, 184, 0.22);
+    --text: #f1f5f9;
+    --muted: #94a3b8;
+    --accent: #38bdf8;
+    --accent-2: #34d399;
+    --warn: #fbbf24;
+    --danger: #f87171;
+    --code-bg: #050b14;
+  }
+  html[data-theme="light"] {
+    --bg: #f4f7fb;
+    --surface: #ffffff;
+    --surface-2: #eef3f9;
+    --border: rgba(15, 23, 42, 0.14);
+    --text: #0f172a;
+    --muted: #475569;
+    --accent: #0284c7;
+    --accent-2: #059669;
+    --warn: #b45309;
+    --danger: #dc2626;
+    --code-bg: #0f172a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  .sa-shell {
+    width: 100%;
+    max-width: min(1720px, 94vw);
+    margin: 0 auto;
+    padding: clamp(20px, 2.4vw, 38px) 0 80px;
+  }
+  .hero-panel {
+    background: linear-gradient(155deg, var(--surface) 0%, var(--surface-2) 100%);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: clamp(22px, 2.6vw, 38px);
+    margin-bottom: 26px;
+  }
+  .eyebrow-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+  .eyebrow-tag {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: rgba(56, 189, 248, 0.12);
+    border: 1px solid rgba(56, 189, 248, 0.32);
+    padding: 4px 12px;
+    border-radius: 999px;
+  }
+  .hero-links { display: flex; flex-wrap: wrap; gap: 8px; }
+  .btn-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    border: 1px solid var(--border);
+    color: var(--text);
+    background: var(--surface);
+  }
+  .btn-link.primary {
+    background: rgba(56, 189, 248, 0.16);
+    border-color: rgba(56, 189, 248, 0.48);
+    color: var(--accent);
+  }
+  .btn-link:hover { border-color: var(--accent); }
+  .hero-title {
+    font-size: clamp(24px, 2.5vw, 38px);
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    margin-bottom: 12px;
+  }
+  .hero-lead {
+    font-size: clamp(14.5px, 1.15vw, 17px);
+    color: var(--muted);
+    max-width: 1280px;
+    margin-bottom: 22px;
+  }
+  .kpi-strip {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 12px;
+  }
+  .kpi-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 16px;
+  }
+  .kpi-val {
+    font-size: clamp(18px, 1.5vw, 24px);
+    font-weight: 800;
+    color: var(--accent);
+    line-height: 1.2;
+    margin-bottom: 4px;
+  }
+  .kpi-val.green { color: var(--accent-2); }
+  .kpi-val.amber { color: var(--warn); }
+  .kpi-lbl { font-size: 12px; color: var(--muted); line-height: 1.4; }
+  .section-block {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: clamp(20px, 2.3vw, 34px);
+    margin-bottom: 26px;
+  }
+  .section-eyebrow {
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+  .section-title {
+    font-size: clamp(19px, 1.6vw, 25px);
+    font-weight: 800;
+    margin-bottom: 8px;
+  }
+  .section-desc {
+    font-size: 14px;
+    color: var(--muted);
+    margin-bottom: 18px;
+    max-width: 1240px;
+  }
+  figure.bespoke-sa-architecture {
+    margin: 0;
+    width: 100%;
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    background: #07111f;
+  }
+  figure.bespoke-sa-architecture figcaption {
+    padding: 11px 16px;
+    font-size: 12.5px;
+    color: #94a3b8;
+    background: #091526;
+    border-top: 1px solid rgba(148, 163, 184, 0.18);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 8px;
+  }
+  figure.bespoke-sa-architecture figcaption a { color: #7dd3fc; text-decoration: none; font-weight: 600; }
+  .dual-workbench {
+    display: grid;
+    grid-template-columns: 1.08fr 0.92fr;
+    gap: 20px;
+    align-items: start;
+  }
+  .sub-panel {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px;
+  }
+  .preset-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0; }
+  .preset-btn {
+    background: var(--surface);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 6px 11px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .preset-btn.active, .preset-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(56, 189, 248, 0.12);
+  }
+  .slider-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+  .slider-vol { font-size: 20px; font-weight: 800; color: var(--accent); font-variant-numeric: tabular-nums; }
+  input[type="range"] { width: 100%; accent-color: #38bdf8; margin: 8px 0 16px; cursor: pointer; }
+  .tco-bars { display: flex; flex-direction: column; gap: 12px; }
+  .tco-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 11px 14px;
+  }
+  .tco-item-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    margin-bottom: 6px;
+  }
+  .tco-track { height: 10px; background: rgba(148, 163, 184, 0.18); border-radius: 999px; overflow: hidden; }
+  .tco-fill { height: 100%; border-radius: 999px; transition: width 0.2s ease; }
+  .verdict-callout {
+    margin-top: 14px;
+    padding: 13px 16px;
+    border-radius: 10px;
+    border-left: 4px solid var(--accent-2);
+    background: rgba(16, 185, 129, 0.1);
+    font-size: 13.5px;
+  }
+  .table-wrap { width: 100%; overflow-x: auto; overflow-y: hidden; border-radius: 12px; border: 1px solid var(--border); }
+  table.sa-table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 760px; }
+  table.sa-table th {
+    background: var(--surface-2);
+    color: var(--muted);
+    font-size: 11.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding: 11px 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  table.sa-table td {
+    padding: 11px 12px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  table.sa-table td.num, table.sa-table th.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  table.sa-table tr.row-highlight { background: rgba(56, 189, 248, 0.07); }
+  .cell-sub { font-size: 11.5px; color: var(--muted); margin-top: 2px; }
+  .status-badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+  .badge-pass { background: rgba(16, 185, 129, 0.16); color: #34d399; border: 1px solid rgba(52, 211, 153, 0.35); }
+  .badge-nuanced { background: rgba(245, 158, 11, 0.16); color: #fbbf24; border: 1px solid rgba(251, 191, 36, 0.35); }
+  .badge-fail { background: rgba(239, 68, 68, 0.16); color: #f87171; border: 1px solid rgba(248, 113, 113, 0.35); }
+  html[data-theme="light"] .badge-pass { color: #047857; }
+  html[data-theme="light"] .badge-nuanced { color: #b45309; }
+  html[data-theme="light"] .badge-fail { color: #b91c1c; }
+  .psd-canvas-wrap {
+    background: #07111f;
+    border: 1px solid rgba(148, 163, 184, 0.25);
+    border-radius: 12px;
+    padding: 14px;
+    margin-top: 10px;
+  }
+  .governance-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+  }
+  .gov-card {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px;
+  }
+  .gov-card h3 { font-size: 15.5px; font-weight: 800; margin-bottom: 8px; color: var(--text); }
+  .gov-card p, .gov-card li { font-size: 13.5px; color: var(--muted); line-height: 1.55; }
+  .gov-card ul { padding-left: 18px; display: flex; flex-direction: column; gap: 7px; }
+  code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 0.92em;
+    background: rgba(56, 189, 248, 0.1);
+    padding: 1px 5px;
+    border-radius: 4px;
+  }
+  @media (max-width: 1280px) {
+    .kpi-strip { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .dual-workbench { grid-template-columns: 1fr; }
+    .governance-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 720px) {
+    .sa-shell { max-width: 94vw; }
+    .kpi-strip, .governance-grid { grid-template-columns: 1fr; }
+  }
+</style>
+<script src="../assets/editorial/search-index.js" defer></script><script src="../assets/editorial/search.js" defer></script><style id="site-remediation-style">/* Embedded by integrate-dedicated.cjs so sealed report CSP remains unchanged. */
+.kee-dedicated-nav {
+  all: initial; box-sizing: border-box; position: relative; display: flex;
+  flex-wrap: wrap; align-items: center; gap: 6px 14px; width: 100%;
+  padding: 12px 18px; margin: 0 0 16px; border: 1px solid #314361;
+  background: #101A30; color: #EEF3FF; font: 13px/1.5 system-ui, sans-serif;
+  text-align: left; isolation: isolate; color-scheme: dark;
+}
+.kee-dedicated-nav a {
+  all: revert; box-sizing: border-box; display: inline-block; padding: 4px 0;
+  color: #9AABFF; background: transparent; font: inherit; text-decoration: underline;
+  text-underline-offset: 3px; border: 0; border-radius: 0; box-shadow: none;
+}
+.kee-dedicated-nav a:focus-visible { outline: 3px solid #56DDCD; outline-offset: 3px; }
+.kee-dedicated-nav .kee-dedicated-identity { font-weight: 700; color: #EEF3FF; }
+.kee-dedicated-nav .kee-dedicated-language {
+  all: revert; display: block; flex-basis: 100%; color: #ADBBD1; font: 12px/1.5 system-ui, sans-serif;
+}
+.kee-dedicated-native-link { display: block; padding: 22px; color: #1858a8; background: #f8fafc; font: 15px/1.6 system-ui, sans-serif; }
+.kee-dedicated-native-link a { color: #1858a8; text-decoration: underline; }
+@media print { .kee-dedicated-nav { display: none; } }
+
+/* Professional primary navigation: long section names reflow, never scroll inside the header. */
+[data-professional-header]{box-sizing:border-box;display:grid!important;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:18px!important;width:100%;max-width:none;height:auto!important;min-height:0!important;padding:18px 24px!important;margin:0 0 16px;position:relative;overflow:visible!important;background:#101A30;color:#EEF3FF;border:1px solid #314361;font:13px/1.5 system-ui,sans-serif;isolation:isolate;color-scheme:dark}
+[data-professional-header] *{box-sizing:border-box;min-width:0;max-height:none}
+[data-professional-header] a{font:inherit;text-decoration:none;color:#9AABFF;overflow-wrap:anywhere;white-space:normal}
+[data-professional-header] .professional-identity{font-weight:750;color:#EEF3FF;white-space:nowrap;font-size:14px;margin:0}
+[data-professional-header] .professional-primary{display:grid;grid-template-columns:1.45fr repeat(5,minmax(0,1fr));gap:6px;align-items:stretch;min-width:0}
+@media(max-width:960px) and (min-width:601px){[data-professional-header] .professional-primary{gap:5px}[data-professional-header] .professional-primary a{padding:8px 6px;font-size:11.5px}}
+[data-professional-header] .professional-primary a{display:flex;align-items:center;justify-content:center;padding:10px 9px;border:1px solid #314361;border-radius:12px;background:#172440;text-align:center;line-height:1.4;min-height:44px}
+[data-professional-header] .professional-primary a[aria-current=page]{background:#23375a;border-color:#56DDCD;color:#56DDCD}
+[data-professional-header] .professional-controls{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:4px;font-size:12px;margin:0;position:static}
+[data-professional-header] .professional-controls>a{display:flex;align-items:center;justify-content:center;padding:8px;min-height:40px;min-width:32px;border-radius:10px}
+[data-professional-header] .professional-context{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px 18px;padding-top:12px;border-top:1px solid #314361;font-size:12px;color:#ADBBD1;min-width:0;line-height:1.6}
+[data-professional-header] .professional-context>*{min-width:0;overflow-wrap:anywhere}
+[data-professional-header] .professional-context .kee-dedicated-language{flex-basis:100%;color:#ADBBD1}
+[data-professional-header] a:focus-visible{outline:3px solid #56DDCD;outline-offset:3px}
+[data-professional-header] a:hover{text-decoration:underline}
+[data-professional-header][data-perimeter-theme=light],:root[data-theme=light] .reading-header[data-professional-header]{background:#fff;color:#172440;border-color:#d4deee;color-scheme:light}
+[data-professional-header][data-perimeter-theme=light] a,:root[data-theme=light] .reading-header[data-professional-header] a{color:#3752a0}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a,:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a{background:#edf2ff;border-color:#d4deee}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a[aria-current],:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a[aria-current]{background:#dff6f0;color:#127b72;border-color:#127b72}
+@media(max-width:1150px){[data-professional-header]{grid-template-columns:minmax(0,1fr) auto;gap:12px!important}[data-professional-header] .professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header] .professional-controls{grid-column:2;grid-row:1}}
+@media(max-width:600px){[data-professional-header]{padding:14px 16px!important;gap:12px!important}[data-professional-header] .professional-primary{grid-template-columns:repeat(2,minmax(0,1fr))}[data-professional-header] .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:13px}[data-professional-header] .professional-controls{gap:0}[data-professional-header] .professional-controls>a{padding:6px;min-width:28px}}
+@media print{[data-professional-header]{display:none!important}}
+
+html{scroll-padding-top:164px}@media(max-width:600px){html{scroll-padding-top:260px}}.reading-header,.kee-dedicated-nav,[data-professional-header]{position:sticky;top:0;z-index:1000;-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
+
+:root{--search-bg:#101a30;--search-soft:#172440;--search-ink:#eef3ff;--search-muted:#adbbd1;--search-line:#293956;--search-accent:#9aabff;--header-offset:144px}
+:root[data-reading-shell][data-theme=light],[data-perimeter-theme=light]{--search-bg:#fff;--search-soft:#e8eefb;--search-ink:#17233e;--search-muted:#4c5e7c;--search-line:#d5ddec;--search-accent:#354ec8}
+html{scroll-padding-top:var(--header-offset,108px)!important}
+.site-search,.site-search *{box-sizing:border-box!important;font-family:"Segoe UI",sans-serif;letter-spacing:normal;text-transform:none}
+.site-search{position:relative;display:flex;align-items:center;gap:5px;min-width:0;width:230px;max-width:100%;margin:0!important;padding:0!important;line-height:1.4;border:1px solid var(--search-line);border-radius:9px;background:var(--search-soft);color:var(--search-ink);isolation:isolate}
+.site-search input[type=search]{display:block;flex:1;min-width:0;width:100%;height:42px;margin:0;padding:9px 8px!important;font-size:12px!important;line-height:1.5;border:0!important;border-radius:9px;background:transparent!important;color:var(--search-ink)!important;box-shadow:none!important;appearance:none}
+.site-search input::placeholder{color:var(--search-muted);opacity:1}.site-search input:focus-visible{outline:2px solid var(--search-accent);outline-offset:2px}
+.site-search kbd{font:11px Consolas,monospace;color:var(--search-muted);padding:1px 5px;border:1px solid var(--search-line);border-radius:4px}
+.site-search button[type=submit]{flex:none;width:38px;min-width:38px;height:42px;min-height:42px;padding:0;margin:0;border:0;border-radius:8px;background:transparent;color:var(--search-accent);font-size:24px;cursor:pointer;box-shadow:none}
+.search-label,.search-status{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.site-search .search-results{position:absolute;top:calc(100% + 10px);right:0;z-index:1100;width:min(480px,calc(100vw - 32px));max-height:min(560px,65vh);overflow-y:auto;border:1px solid var(--search-line);border-radius:12px;background:var(--search-bg);color:var(--search-ink);padding:10px;box-shadow:0 12px 32px #0005;text-align:left}
+.site-search .search-results[hidden]{display:none!important}.search-results .search-group{margin:8px 6px 4px;font:11px/1.5 Consolas,monospace;color:var(--search-muted)}
+.site-search .search-results a{display:block!important;padding:10px!important;margin:3px 0!important;border:1px solid transparent!important;border-radius:7px;background:transparent;color:var(--search-ink)!important;font-size:13px!important;text-decoration:none!important;white-space:normal;overflow-wrap:anywhere;text-align:left!important;line-height:1.5!important}
+.site-search .search-results a[aria-selected=true],.site-search .search-results a:hover{border-color:var(--search-accent)!important;background:var(--search-soft)}
+.search-results a small{display:block;font-size:10px;color:var(--search-muted);margin-top:4px}.search-results p{margin:10px;font-size:13px;color:var(--search-muted)}
+.search-archive-summary{padding:20px;border:1px solid var(--search-line);border-radius:10px;background:var(--search-bg);color:var(--search-ink);margin:24px 0}.search-archive-summary h2{font-size:24px;margin:0 0 12px}.search-archive-summary li{margin:12px 0}.search-archive-summary a{color:var(--search-accent)}
+[data-professional-header]{position:sticky!important;top:0!important;z-index:1000!important;background:var(--search-bg)!important;--header-glass:rgba(16,26,48,.9);grid-template-columns:auto minmax(0,1fr) 230px auto!important}
+[data-professional-header][data-perimeter-theme=light],:root[data-reading-shell][data-theme=light] [data-professional-header]{--header-glass:rgba(255,255,255,.94)}
+[data-professional-header] .professional-mobile{display:none}.professional-mobile summary{min-width:38px;min-height:42px;display:grid;place-items:center;cursor:pointer;list-style:none}.professional-mobile summary::-webkit-details-marker{display:none}
+[data-professional-header] .professional-context{display:none}
+.professional-context-bar{padding:12px 24px;border-bottom:1px solid var(--search-line);background:var(--search-bg);color:var(--search-muted);font:12px/1.6 "Segoe UI",sans-serif;display:flex;flex-wrap:wrap;gap:8px 18px;overflow-wrap:anywhere}.professional-context-bar a{color:var(--search-accent)}
+@supports((backdrop-filter:blur(16px)) or (-webkit-backdrop-filter:blur(16px))){.site-header,[data-professional-header]{background:var(--header-glass)!important;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}}
+@media(max-width:1250px) and (min-width:701px){.header-inner{grid-template-columns:minmax(0,1fr) 230px auto!important;padding:12px 0;gap:12px!important}.desktop-nav{grid-row:2;grid-column:1/-1}.header-inner>.site-search{grid-column:2;grid-row:1}.header-inner>.controls{grid-column:3;grid-row:1}[data-professional-header]{grid-template-columns:minmax(0,1fr) 230px auto!important;gap:12px!important}[data-professional-header]>.professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header]>.site-search{grid-column:2;grid-row:1}[data-professional-header]>.professional-controls{grid-column:3;grid-row:1}:root{--header-offset:184px}}
+@media(max-width:700px){.header-inner{grid-template-columns:minmax(0,1fr) auto!important;padding:10px 0;gap:8px!important}.header-inner>.site-search{grid-row:2;grid-column:1/-1;width:100%}.header-inner>.controls{grid-column:2;grid-row:1}.site-search .search-results{width:100%;right:0}[data-professional-header]{grid-template-columns:minmax(0,1fr) auto!important;padding:10px 16px!important;gap:8px!important}[data-professional-header]>.professional-primary{display:none!important}[data-professional-header]>.site-search{grid-column:1/-1;grid-row:2;width:100%}[data-professional-header]>.professional-controls{grid-column:2;grid-row:1}[data-professional-header] .professional-mobile{display:block}[data-professional-header] .professional-mobile[open]>.professional-primary{position:absolute;top:100%;left:0;right:0;padding:16px;background:var(--search-bg);border-bottom:1px solid var(--search-line);display:grid;grid-template-columns:1fr 1fr;gap:8px}[data-professional-header] .professional-mobile .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:12px!important}:root{--header-offset:136px}}
+@media(prefers-reduced-transparency:reduce){.site-header,[data-professional-header]{background:var(--search-bg)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}}
+@media print{.site-search,.professional-context-bar{display:none!important}}
+
+@media(min-width:1251px){.header-inner{display:grid!important;grid-template-columns:auto minmax(0,1fr) 230px auto!important;gap:18px!important}.header-inner .desktop-nav{min-width:0}}
+
+html:has(.kee-dedicated-app-root){height:auto!important;overflow-x:hidden!important;overflow-y:auto!important}
+body:has([data-professional-header]){height:auto!important;overflow-x:clip!important;overflow-y:visible!important;padding-top:0!important}
+.demo-language-navigation{display:none!important}
+.stage-column,.telemetry-panel,.scene-pill,#timeline-slider{min-width:0}
+@media(max-width:1180px){.workspace,.template-tabs{grid-template-columns:minmax(0,1fr)!important}}
+
+.in-arena-frame .professional-context-bar,.in-arena-frame [data-knowledge-atlas]{display:none!important}
+.knowledge-graph-wide{display:block}.knowledge-graph-compact{display:none}@media(max-width:600px){.knowledge-graph-wide{display:none}.knowledge-graph-compact{display:block}}
+</style></head>
+<body><nav class="kee-dedicated-nav" data-professional-header><a class="professional-identity reading-brand kee-dedicated-identity identity" href="../index.html">Qi Chen · @turbo998</a><div class="professional-primary" role="navigation" aria-label="Primary sections"><a href="../studio/index.html" data-section="hub" data-nav-en-href="../studio/index.html" data-nav-zh-href="../studio/zh-index.html" data-nav-en-label="Frontier Transformation Engineering Hub" data-nav-zh-label="Frontier Transformation Engineering Hub" aria-current="page">Frontier Transformation Engineering Hub</a><a href="../diamond.html" data-section="diamond" data-nav-en-href="../diamond.html" data-nav-zh-href="../zh-diamond.html" data-nav-en-label="Diamond Live Demos" data-nav-zh-label="Diamond 实战演示">Diamond Live Demos</a><a href="../benchmarks.html" data-section="benchmarks" data-nav-en-href="../benchmarks.html" data-nav-zh-href="../zh-benchmarks.html" data-nav-en-label="Benchmark &amp; Eval Foundry" data-nav-zh-label="基准评测中心">Benchmark &amp; Eval Foundry</a><a href="../github-radar.html" data-section="radar" data-nav-en-href="../github-radar.html" data-nav-zh-href="../zh-github-radar.html" data-nav-en-label="GitHub AI Signal Radar" data-nav-zh-label="GitHub AI 信号雷达">GitHub AI Signal Radar</a><a href="../openrouter.html" data-section="routing" data-nav-en-href="../openrouter.html" data-nav-zh-href="../zh-openrouter.html" data-nav-en-label="Model Routing &amp; Telemetry" data-nav-zh-label="OpenRouter 模型遥测">Model Routing &amp; Telemetry</a><a href="../about.html" data-section="profile" data-nav-en-href="../about.html" data-nav-zh-href="../zh-about.html" data-nav-en-label="Frontier Transformation Engineer" data-nav-zh-label="Frontier Transformation Engineer">Frontier Transformation Engineer</a></div><form class="site-search" role="search" action="../studio/archive.html" method="get" data-search-root="../index.html" data-search-language="en"><label class="search-label" for="site-search-input">Search architecture, benchmarks, demos...</label><input id="site-search-input" name="q" type="search" placeholder="Search architecture, benchmarks, demos..." autocomplete="off" spellcheck="false" aria-keyshortcuts="/ Control+k Meta+k"><kbd aria-hidden="true">/</kbd><button type="submit" aria-label="Search all content">⌕</button><div class="search-results" id="site-search-results" hidden></div><span class="search-status" role="status" aria-live="polite"></span></form><div class="reading-controls professional-controls" aria-label="Site language and appearance"><a href="voxcpm2-vs-azure-speech.en.html" hreflang="en" lang="en" aria-current="page">EN</a><a href="voxcpm2-vs-azure-speech.html" data-reading-language hreflang="zh-CN" lang="zh-CN">中文</a><details class="professional-mobile"><summary aria-label="Open navigation">☰</summary><div class="professional-primary" role="navigation" aria-label="Mobile navigation"><a href="../studio/index.html" data-section="hub" data-nav-en-href="../studio/index.html" data-nav-zh-href="../studio/zh-index.html" data-nav-en-label="Frontier Transformation Engineering Hub" data-nav-zh-label="Frontier Transformation Engineering Hub" aria-current="page">Frontier Transformation Engineering Hub</a><a href="../diamond.html" data-section="diamond" data-nav-en-href="../diamond.html" data-nav-zh-href="../zh-diamond.html" data-nav-en-label="Diamond Live Demos" data-nav-zh-label="Diamond 实战演示">Diamond Live Demos</a><a href="../benchmarks.html" data-section="benchmarks" data-nav-en-href="../benchmarks.html" data-nav-zh-href="../zh-benchmarks.html" data-nav-en-label="Benchmark &amp; Eval Foundry" data-nav-zh-label="基准评测中心">Benchmark &amp; Eval Foundry</a><a href="../github-radar.html" data-section="radar" data-nav-en-href="../github-radar.html" data-nav-zh-href="../zh-github-radar.html" data-nav-en-label="GitHub AI Signal Radar" data-nav-zh-label="GitHub AI 信号雷达">GitHub AI Signal Radar</a><a href="../openrouter.html" data-section="routing" data-nav-en-href="../openrouter.html" data-nav-zh-href="../zh-openrouter.html" data-nav-en-label="Model Routing &amp; Telemetry" data-nav-zh-label="OpenRouter 模型遥测">Model Routing &amp; Telemetry</a><a href="../about.html" data-section="profile" data-nav-en-href="../about.html" data-nav-zh-href="../zh-about.html" data-nav-en-label="Frontier Transformation Engineer" data-nav-zh-label="Frontier Transformation Engineer">Frontier Transformation Engineer</a></div></details><a data-reading-theme="light" href="voxcpm2-vs-azure-speech.en.html?theme=light" aria-label="Light theme">☀</a><a data-reading-theme="dark" href="voxcpm2-vs-azure-speech.en.html?theme=dark" aria-label="Dark theme">◐</a></div><div class="professional-context" aria-label="Back to context"><a href="../studio/index.html">← Engineering Hub</a> · <a href="../studio/voice.html">Parent topic</a></div></nav><div class="professional-context-bar"><a href="../studio/index.html">← Engineering Hub</a> · <a class="reading-context" href="../studio/voice.html">Parent topic</a></div>
+  <main class="sa-shell">
+    <!-- HERO -->
+    <header class="hero-panel">
+      <div class="eyebrow-row">
+        <span class="eyebrow-tag">VOICE &amp; SPEECH ARCHITECTURE · CODE AUDIT &amp; DSP BENCHMARK</span>
+        <div class="hero-links">
+          <a class="btn-link primary" href="voxcpm2-benchmark-cards.en.html">Open 7-Card 4:5 Benchmark Deck →</a>
+          <a class="btn-link" href="assets/voxcpm2-vs-azure-speech-architecture.svg">Architecture Vector SVG</a>
+          <a class="btn-link" href="data/voxcpm2-acoustic-benchmark-results.json">Sealed 11-WAV FFT JSON</a>
+          <a class="btn-link" href="https://github.com/turbo998/voice-agent-lab/blob/main/docs/voxcpm2-vs-azure-speech-tts-benchmark-selection-faq.en.md" target="_blank" rel="noopener noreferrer">Full SA Selection FAQ (GitHub)</a>
+          <a class="btn-link" href="https://github.com/turbo998/voice-agent-lab/tree/main/experiments/voxcpm2-acoustic-benchmark" target="_blank" rel="noopener noreferrer">Reproducibility Suite</a>
+        </div>
+      </div>
+      <h1 class="hero-title">VoxCPM2 vs. Azure Speech: Acoustic Architecture &amp; TTS Benchmark</h1>
+      <p class="hero-lead">For enterprise voice platforms and multimodal speech pipelines: line-by-line code audit of Tsinghua OpenBMB VoxCPM2 (2B, arXiv:2606.06928, Apache-2.0) and 1024-pt Hann Welch FFT forensics across 11 official 48 kHz WAVs, benchmarked against Microsoft Azure AI Speech (DragonHDOmni / Standard Neural / Personal Voice) across SSML/Viseme determinism, streaming TTFA, and monthly TCO crossover.</p>
+      <div class="kpi-strip">
+        <div class="kpi-box">
+          <div class="kpi-val">85.4% SIM</div>
+          <div class="kpi-lbl">#1 zero-shot SIM in 22/24 MLS languages (vs 61.3% ElevenLabs)</div>
+        </div>
+        <div class="kpi-box">
+          <div class="kpi-val green">48 kHz · 17.7k</div>
+          <div class="kpi-lbl">Measured -52 dB super-res bandwidth (+44.4 dB @ 16-24 kHz vs v1.5)</div>
+        </div>
+        <div class="kpi-box">
+          <div class="kpi-val">0.97% / 1.84%</div>
+          <div class="kpi-lbl">Seed-TTS clean ZH CER / EN WER (8.13% on test-Hard subset)</div>
+        </div>
+        <div class="kpi-box">
+          <div class="kpi-val green">50.88 dB SDR</div>
+          <div class="kpi-lbl">Whisper SDR via FSQ(512, s=9) + continuous residual (+34.8 dB vs discrete)</div>
+        </div>
+        <div class="kpi-box">
+          <div class="kpi-val amber">RTF 0.13</div>
+          <div class="kpi-lbl">4090 + vLLM-Omni ~135ms TTFA (~230ms H100 batch; 160ms patch floor)</div>
+        </div>
+        <div class="kpi-box">
+          <div class="kpi-val">25M–50M / mo</div>
+          <div class="kpi-lbl">Self-hosted GPU break-even vs cloud PAYG (60%-85% unit savings)</div>
+        </div>
+      </div>
+    </header>
+
+    <!-- BESPOKE SA ARCHITECTURE DIAGRAM -->
+    <section class="section-block" id="architecture">
+      <div class="section-eyebrow">01 · DUAL-TRACK SYSTEM ARCHITECTURE</div>
+      <h2 class="section-title">Dual-Track Enterprise Speech Architecture: VoxCPM2 Diffusion-AR vs. Azure AI Speech SLA Plane</h2>
+      <p class="section-desc">Path A serves expressive voice cloning, dialect transfer, and private-weight GPU workloads; Path B enforces deterministic SSML pronunciation, synchronous 0.1 ms avatar visemes, mandatory audio watermarking, and 99.9% SLA failover.</p>
+      <figure class="bespoke-sa-architecture knowledge-atlas">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 830" width="1440" height="830" role="img" aria-labelledby="enguide-arch-title enguide-arch-desc" style="width:100%;height:auto;display:block;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif">
+  <title id="enguide-arch-title">VoxCPM2 Hierarchical Diffusion-AR vs. Azure AI Speech Deterministic Routing Architecture</title>
+  <desc id="enguide-arch-desc">Grounded in voxcpm2.py / audiovae_v2.py code audit, 11-WAV 1024-pt Welch FFT forensics, and enterprise SLA governance boundaries</desc>
+  <defs>
+    <linearGradient id="enguide-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#07111f"/>
+      <stop offset="100%" stop-color="#0d1b2e"/>
+    </linearGradient>
+    <linearGradient id="enguide-accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="50%" stop-color="#60a5fa"/>
+      <stop offset="100%" stop-color="#34d399"/>
+    </linearGradient>
+    <marker id="enguide-arrow-cyan" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 9 5 L 0 9 z" fill="#38bdf8"/>
+    </marker>
+    <marker id="enguide-arrow-green" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 9 5 L 0 9 z" fill="#34d399"/>
+    </marker>
+    <marker id="enguide-arrow-amber" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 9 5 L 0 9 z" fill="#f59e0b"/>
+    </marker>
+  </defs>
+
+  <rect width="1440" height="830" rx="18" fill="url(#enguide-bg)" stroke="#243b5a" stroke-width="1.5"/>
+  <rect x="0" y="0" width="1440" height="5" rx="2.5" fill="url(#enguide-accent)"/>
+
+  <!-- Header -->
+  <rect x="28" y="20" width="640" height="24" rx="12" fill="#102540" stroke="#2c5282"/>
+  <text x="42" y="36" fill="#7dd3fc" font-size="11" font-weight="700" letter-spacing="0.5">DUAL-TRACK ENTERPRISE SPEECH ARCHITECTURE · VOXCPM2 (2B) + MICROSOFT AZURE AI SPEECH</text>
+  <text x="28" y="68" fill="#f8fafc" font-size="20" font-weight="800">VoxCPM2 Hierarchical Diffusion-AR vs. Azure AI Speech Deterministic Routing Architecture</text>
+  <text x="28" y="90" fill="#94a3b8" font-size="12.5">Grounded in voxcpm2.py / audiovae_v2.py code audit, 11-WAV 1024-pt Welch FFT forensics, and enterprise SLA governance boundaries</text>
+
+  <!-- Official Vendor Badge Strip -->
+  <rect x="1038" y="20" width="374" height="58" rx="10" fill="#0c1d33" stroke="#2b4c73"/>
+  <g transform="translate(1052, 31) scale(1.5556)" aria-label="Official Microsoft Azure AI Speech Icon">
+    <defs>
+      <linearGradient id="enguidehdr1-az-speech" x1="5.681" y1="-0.862" x2="5.681" y2="15.008" gradientUnits="userSpaceOnUse">
+        <stop offset="0" stop-color="#5ea0ef"/>
+        <stop offset="1" stop-color="#0078d4"/>
+      </linearGradient>
+    </defs>
+    <path d="M7.3,7.019H17.341A.659.659,0,0,1,18,7.677v7.981a.66.66,0,0,1-.659.658h-4.11a.109.109,0,0,0-.067.023l-2.108,1.615a.219.219,0,0,1-.353-.174V16.426a.11.11,0,0,0-.109-.11H7.3a.659.659,0,0,1-.658-.658V7.677A.66.66,0,0,1,7.3,7.019Z" fill="#50e6ff"/>
+    <path d="M11.361.659v7.98A.659.659,0,0,1,10.7,9.3h-3.3a.11.11,0,0,0-.109.11v1.355a.22.22,0,0,1-.353.174L4.836,9.32A.109.109,0,0,0,4.769,9.3H.659A.66.66,0,0,1,0,8.639V.659A.659.659,0,0,1,.659,0H10.7A.66.66,0,0,1,11.361.659Z" fill="url(#enguidehdr1-az-speech)"/>
+    <path d="M8.1,4.26a3.48,3.48,0,0,1-.07.7,3.688,3.688,0,0,1-.2.667,3.249,3.249,0,0,1-.329.615,4.03,4.03,0,0,1-.336.426.156.156,0,0,1-.226,0l-.031-.03a.159.159,0,0,1,0-.22,3.261,3.261,0,0,0,.3-.378,3.164,3.164,0,0,0,.477-1.153,3.242,3.242,0,0,0,0-1.262,3.13,3.13,0,0,0-.181-.6,3.311,3.311,0,0,0-.3-.553,3.107,3.107,0,0,0-.3-.38.16.16,0,0,1,0-.22l.032-.031a.156.156,0,0,1,.225,0,3.555,3.555,0,0,1,.336.428,3.453,3.453,0,0,1,.326.615,3.76,3.76,0,0,1,.2.667A3.3,3.3,0,0,1,8.1,4.26ZM6.924,3.3a2.516,2.516,0,0,0-.431-.693.155.155,0,0,0-.226,0l-.031.031a.154.154,0,0,0-.01.211,2.142,2.142,0,0,1,0,2.825.155.155,0,0,0,.01.212l.031.031a.155.155,0,0,0,.226,0,2.546,2.546,0,0,0,.431-.693,2.51,2.51,0,0,0,0-1.916Zm-1.238.3a1.134,1.134,0,0,1,.143.248,1.088,1.088,0,0,1,0,.824,1.011,1.011,0,0,1-.142.245.156.156,0,0,0,.014.205l.03.03a.159.159,0,0,0,.235-.012,1.421,1.421,0,0,0,.2-.334,1.444,1.444,0,0,0,.106-.547,1.486,1.486,0,0,0-.109-.547,1.359,1.359,0,0,0-.193-.332.158.158,0,0,0-.236-.013L5.7,3.4A.153.153,0,0,0,5.686,3.6Zm-2-.413H3.314A.314.314,0,0,0,3,3.5V5.018a.315.315,0,0,0,.314.314h.374a.314.314,0,0,1,.222.092l.937.935a.161.161,0,0,0,.111.046h0a.187.187,0,0,0,.187-.187V2.3a.189.189,0,0,0-.189-.189h0a.162.162,0,0,0-.112.046L3.91,3.1A.315.315,0,0,1,3.688,3.188Z" fill="#fff"/>
+    <path d="M15.211,10.932a.831.831,0,1,1-.83.83A.83.83,0,0,1,15.211,10.932Zm-3.48.837a.831.831,0,1,0,.831-.83A.831.831,0,0,0,11.731,11.769Zm-2.649,0a.831.831,0,1,0,.831-.83A.831.831,0,0,0,9.082,11.769Z" fill="#fff"/>
+  </g>
+  <g transform="translate(1088, 32) scale(1.4444)" aria-label="Official Microsoft Azure Icon">
+    <defs>
+      <linearGradient id="enguidehdr2-azA" x1="5.754" y1=".567" x2=".417" y2="16.333" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#114a8b"/><stop offset="1" stop-color="#0669bc"/>
+      </linearGradient>
+      <linearGradient id="enguidehdr2-azC" x1="9.138" y1=".566" x2="14.996" y2="16.174" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#3ccbf4"/><stop offset="1" stop-color="#2892df"/>
+      </linearGradient>
+    </defs>
+    <path d="M5.014.557A.82.82 0 0 1 5.789 0h5.14L5.594 15.807a.82.82 0 0 1-.775.557h-4a.82.82 0 0 1-.775-1.08z" fill="url(#enguidehdr2-azA)"/>
+    <path d="M13.231 10.636h-8.1c-.34 0-.505.417-.256.649l5.205 4.858a.82.82 0 0 0 .558.22h4.587z" fill="#0078d4"/>
+    <path d="M12.344.557A.82.82 0 0 0 11.569 0H5.841a.82.82 0 0 1 .775.557l4.97 14.727a.82.82 0 0 1-.775 1.08h5.727a.82.82 0 0 0 .775-1.08z" fill="url(#enguidehdr2-azC)"/>
+  </g>
+  <text x="1124" y="43" fill="#e2e8f0" font-size="11.5" font-weight="700">Azure AI Speech + OpenBMB VoxCPM2</text>
+  <text x="1124" y="61" fill="#94a3b8" font-size="10.5">arXiv:2606.06928 · Apache-2.0 · 48 kHz DSP Verified</text>
+
+  <!-- Left Ingress & Policy Router -->
+  <rect x="28" y="112" width="256" height="534" rx="14" fill="#0d2038" stroke="#315785" stroke-width="1.4"/>
+  <rect x="28" y="112" width="256" height="5" rx="2.5" fill="#38bdf8"/>
+  <g transform="translate(44, 130) scale(1.4444)" aria-label="Official Azure AI Gateway Icon">
+    <defs>
+      <linearGradient id="enguidegw-gw1" x1="0" y1="0" x2="18" y2="18" gradientUnits="userSpaceOnUse">
+        <stop offset="0" stop-color="#3bd5ff"/><stop offset=".5" stop-color="#0fafff"/><stop offset="1" stop-color="#9c6cfe"/>
+      </linearGradient>
+    </defs>
+    <path d="M11.02,1.15c-.55-.5-1.26-.78-2.02-.78-.81,0-1.56.31-2.13.88L1.26,6.87c-.57.57-.88,1.32-.88,2.13s.31,1.56.88,2.13l3.97,3.97c.83.83,2.12.94,3.07.33l-5.55-5.55c-.33-.33-.33-.87,0-1.2l6.01-6.0c.59-.59,1.35-.9,2.12-.93Z" fill="url(#enguidegw-gw1)"/>
+    <path d="M16.74,6.87l-3.97-3.97c-.83-.83-2.12-.94-3.07-.33l5.55,5.55c.33.33.33.87,0,1.2l-6.01,5.99c-.59.59-1.34.89-2.11.93.55.5,1.27.78,2.02.78.8,0,1.56-.31,2.13-.88l5.62-5.62c.57-.57.88-1.32.88-2.13s-.31-1.56-.88-2.13Z" fill="#0078d4"/>
+    <circle cx="9" cy="9" r="2.59" fill="#38bdf8"/>
+  </g>
+  <text x="78" y="141" fill="#38bdf8" font-size="10.5" font-weight="700">INGRESS &amp; POLICY ROUTER</text>
+  <text x="78" y="158" fill="#f8fafc" font-size="14" font-weight="800">Enterprise Speech Policy Router</text>
+  <line x1="44" y1="172" x2="268" y2="172" stroke="#1e3a5f"/>
+
+  <rect x="42" y="186" width="228" height="92" rx="9" fill="#09172a" stroke="#234066"/>
+  <text x="52" y="206" fill="#7dd3fc" font-size="11" font-weight="700">POLICY &amp; WORKLOAD CLASSIFIER</text>
+  <text x="52" y="226" fill="#cbd5e1" font-size="11">1. Workload Gate: Regulated IVR / 0.1ms Viseme vs Cloning</text>
+  <text x="52" y="246" fill="#cbd5e1" font-size="11">2. Front-End Text Normalization (TN) for currency &amp; IDs</text>
+  <text x="52" y="266" fill="#94a3b8" font-size="10.5">SSML / Viseme / PII / Locale Check</text>
+
+  <rect x="42" y="292" width="228" height="102" rx="9" fill="#09172a" stroke="#234066"/>
+  <text x="52" y="312" fill="#34d399" font-size="11" font-weight="700">CONSENT &amp; STREAMING SENTINEL</text>
+  <text x="52" y="332" fill="#cbd5e1" font-size="11">3. Dynamic Voice Consent + Streaming patch_ratio Sentinel</text>
+  <text x="52" y="352" fill="#94a3b8" font-size="10.5">Monitors patch_to_char_ratio &amp; ZCR</text>
+  <text x="52" y="372" fill="#94a3b8" font-size="10.5">Blocks unauthorized 3s voice spoofing</text>
+
+  <rect x="42" y="408" width="228" height="104" rx="9" fill="#09172a" stroke="#234066"/>
+  <text x="52" y="428" fill="#fbbf24" font-size="11" font-weight="700">FINOPS &amp; TCO TRAFFIC SPLIT</text>
+  <text x="52" y="448" fill="#cbd5e1" font-size="11">4. FinOps Split: &lt;25M chars/mo Cloud · &gt;=25M GPU Offload</text>
+  <text x="52" y="468" fill="#94a3b8" font-size="10.5">PAYG burst -&gt; Azure Speech Cloud</text>
+  <text x="52" y="488" fill="#94a3b8" font-size="10.5">High-vol cloning -&gt; vLLM-Omni GPU</text>
+
+  <rect x="42" y="526" width="228" height="102" rx="9" fill="#10243e" stroke="#2d5480"/>
+  <text x="52" y="546" fill="#e2e8f0" font-size="11" font-weight="700">ROUTING OUTPUT PORTS</text>
+  <text x="52" y="568" fill="#38bdf8" font-size="11" font-weight="600">-&gt; Path A: Creative / Cloning / SEA</text>
+  <text x="52" y="590" fill="#34d399" font-size="11" font-weight="600">-&gt; Path B: Regulated IVR / Viseme</text>
+  <text x="52" y="612" fill="#fbbf24" font-size="10.5">-&gt; Circuit-Breaker Failover A =&gt; B</text>
+
+  <!-- Router Connectors to Path A & Path B -->
+  <path d="M 284 250 L 314 250" fill="none" stroke="#38bdf8" stroke-width="2.4" marker-end="url(#enguide-arrow-cyan)"/>
+  <path d="M 284 510 L 314 510" fill="none" stroke="#34d399" stroke-width="2.4" marker-end="url(#enguide-arrow-green)"/>
+
+  <!-- PATH A CONTAINER -->
+  <rect x="318" y="112" width="1094" height="258" rx="14" fill="#0b1c31" stroke="#2c5282" stroke-width="1.4"/>
+  <rect x="318" y="112" width="1094" height="4" rx="2" fill="#38bdf8"/>
+  <g transform="translate(334, 125) scale(1.2222)" aria-label="Official GPU Compute Cluster Icon">
+    <rect x="0.5" y="1.0" width="10.2" height="6.8" rx="0.8" fill="#005ba1"/>
+    <rect x="3.8" y="4.2" width="10.2" height="6.8" rx="0.8" fill="#0078d4"/>
+    <rect x="7.0" y="7.5" width="10.2" height="6.8" rx="0.8" fill="#38bdf8"/>
+    <polygon points="12.1,9.0 14.3,10.2 12.1,11.4 9.9,10.2" fill="#e0f2fe"/>
+    <rect x="9.5" y="15.3" width="5.2" height="1.4" rx="0.5" fill="#94a3b8"/>
+  </g>
+  <text x="364" y="136" fill="#38bdf8" font-size="10.5" font-weight="700">PATH A · OPEN-WEIGHT CREATIVE / GPU SELF-HOSTED (APACHE-2.0 · vLLM-OMNI)</text>
+  <text x="364" y="154" fill="#f8fafc" font-size="14" font-weight="800">OpenBMB VoxCPM2 (2B) — 4-Stage Hierarchical Continuous-Latent Diffusion-AR Pipeline</text>
+
+  <!-- 5 Stage Boxes in Path A -->
+  <!-- A1 -->
+  <rect x="332" y="168" width="198" height="146" rx="10" fill="#0f2540" stroke="#335c8d"/>
+  <text x="344" y="187" fill="#7dd3fc" font-size="10" font-weight="700">A1 · ASYMMETRIC INGRESS</text>
+  <text x="344" y="205" fill="#f8fafc" font-size="12.5" font-weight="700">16 kHz Ref Audio + Text Prompt</text>
+  <line x1="344" y1="214" x2="518" y2="214" stroke="#23436b"/>
+  <text x="344" y="232" fill="#cbd5e1" font-size="10.3">Downsamples reference audio to 16 kHz (8 kHz Nyquist)</text>
+  <text x="344" y="252" fill="#cbd5e1" font-size="10.3">[103, ref_feats, 104] slot isolates timbre from prosody</text>
+  <text x="344" y="272" fill="#94a3b8" font-size="10.2">Supports zero-ref Voice Design &amp; 9 Chinese dialect shifts</text>
+  <text x="344" y="298" fill="#38bdf8" font-size="10" font-weight="600">30 Langs · 9 ZH Dialects</text>
+
+  <path d="M 530 241 L 546 241" fill="none" stroke="#38bdf8" stroke-width="2" marker-end="url(#enguide-arrow-cyan)"/>
+
+  <!-- A2 -->
+  <rect x="548" y="168" width="202" height="146" rx="10" fill="#0f2540" stroke="#335c8d"/>
+  <text x="560" y="187" fill="#7dd3fc" font-size="10" font-weight="700">A2 · ENCODER &amp; PATCHIFY</text>
+  <text x="560" y="205" fill="#f8fafc" font-size="12.5" font-weight="700">AudioVAE V2 Enc + Patchify (P=4)</text>
+  <line x1="560" y1="214" x2="738" y2="214" stroke="#23436b"/>
+  <text x="560" y="232" fill="#cbd5e1" font-size="10.3">Causal conv stride hop=640 -&gt; 25 Hz latents (dim=64)</text>
+  <text x="560" y="252" fill="#cbd5e1" font-size="10.3">Patchify (P=4 frames) -&gt; 6.25 Hz step (160 ms / patch)</text>
+  <text x="560" y="272" fill="#94a3b8" font-size="10.2">4-layer LocEnc aggregates local consonant/breath cues</text>
+  <text x="560" y="298" fill="#38bdf8" font-size="10" font-weight="600">Exact N x 0.160s Output Grid</text>
+
+  <path d="M 750 241 L 766 241" fill="none" stroke="#38bdf8" stroke-width="2" marker-end="url(#enguide-arrow-cyan)"/>
+
+  <!-- A3 -->
+  <rect x="768" y="168" width="206" height="146" rx="10" fill="#132946" stroke="#f59e0b" stroke-width="1.3"/>
+  <text x="780" y="187" fill="#fbbf24" font-size="10" font-weight="700">A3 · SEMANTIC AR + FSQ ANCHOR</text>
+  <text x="780" y="205" fill="#f8fafc" font-size="12.5" font-weight="700">28L TSLM + Internal FSQ(512, s=9)</text>
+  <line x1="780" y1="214" x2="962" y2="214" stroke="#3b4d6b"/>
+  <text x="780" y="232" fill="#cbd5e1" font-size="10.3">MiniCPM-4 28L backbone plans global prosodic skeleton</text>
+  <text x="780" y="252" fill="#fde68a" font-size="10.3">voxcpm2.py:258 round(tanh(x)*9)/9 prevents AR drift</text>
+  <text x="780" y="272" fill="#fca5a5" font-size="10.2">Caveat: streaming=True disables retry_badcase guard</text>
+  <text x="780" y="298" fill="#fbbf24" font-size="10" font-weight="600">Semi-Discrete Bottleneck</text>
+
+  <path d="M 974 241 L 990 241" fill="none" stroke="#38bdf8" stroke-width="2" marker-end="url(#enguide-arrow-cyan)"/>
+
+  <!-- A4 -->
+  <rect x="992" y="168" width="198" height="146" rx="10" fill="#0f2540" stroke="#335c8d"/>
+  <text x="1004" y="187" fill="#34d399" font-size="10" font-weight="700">A4 · RESIDUAL LM + FLOW</text>
+  <text x="1004" y="205" fill="#f8fafc" font-size="12.5" font-weight="700">8L RALM + LocDiT (10-Step Flow)</text>
+  <line x1="1004" y1="214" x2="1178" y2="214" stroke="#23436b"/>
+  <text x="1004" y="232" fill="#cbd5e1" font-size="10.3">8L RALM fuses FSQ skeleton + unquantized latent history</text>
+  <text x="1004" y="252" fill="#cbd5e1" font-size="10.3">LocDiT 10-step Conditional Flow Matching (CFG=2.0)</text>
+  <text x="1004" y="272" fill="#a7f3d0" font-size="10.2">Restores 50.88 dB Whisper SDR (+34.8 dB vs coarse discrete)</text>
+  <text x="1004" y="298" fill="#34d399" font-size="10" font-weight="600">Continuous Diffusion Head</text>
+
+  <path d="M 1190 241 L 1206 241" fill="none" stroke="#38bdf8" stroke-width="2" marker-end="url(#enguide-arrow-cyan)"/>
+
+  <!-- A5 -->
+  <rect x="1208" y="168" width="190" height="146" rx="10" fill="#0f2540" stroke="#38bdf8" stroke-width="1.3"/>
+  <text x="1220" y="187" fill="#38bdf8" font-size="10" font-weight="700">A5 · 3X SUPER-RES &amp; WATERMARK</text>
+  <text x="1220" y="205" fill="#f8fafc" font-size="12.5" font-weight="700">Streaming VAE Decoder -&gt; 48 kHz</text>
+  <line x1="1220" y1="214" x2="1386" y2="214" stroke="#23436b"/>
+  <text x="1220" y="232" fill="#cbd5e1" font-size="10.3">Causal conv ring buffer hop=1920 (3x upsample -&gt; 48 kHz)</text>
+  <text x="1220" y="252" fill="#7dd3fc" font-size="10.3">Measured 17.7 kHz BW (+44.4 dB @ 16-24 kHz vs v1.5)</text>
+  <text x="1220" y="272" fill="#cbd5e1" font-size="10.2">Post-hook AudioSeal invisible watermark + C2PA manifest</text>
+  <text x="1220" y="298" fill="#38bdf8" font-size="10" font-weight="600">48 kHz Studio PCM Stream</text>
+
+  <!-- Unquantized Residual Bypass Arc (A2 -> A4) -->
+  <path d="M 650 314 L 650 348 L 1090 348 L 1090 316" fill="none" stroke="#34d399" stroke-width="1.8" stroke-dasharray="5,3" marker-end="url(#enguide-arrow-green)"/>
+  <rect x="676" y="334" width="388" height="22" rx="6" fill="#082226" stroke="#10b981"/>
+  <text x="870" y="349" text-anchor="middle" fill="#6ee7b7" font-size="10.2" font-weight="600">Unquantized Continuous Residual Highway (LocEnc -&gt; RALM: preserves inhalations, whispers &amp; sobbing micro-dynamics)</text>
+
+  <!-- Circuit-Breaker Fallback Arrow from Path A (A3) to Path B (B2) -->
+  <path d="M 871 370 L 871 398" fill="none" stroke="#f59e0b" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#enguide-arrow-amber)"/>
+  <rect x="440" y="376" width="860" height="20" rx="6" fill="#231a0b" stroke="#b45309"/>
+  <text x="870" y="390" text-anchor="middle" fill="#fcd34d" font-size="10.2" font-weight="600">Automatic Streaming Circuit-Breaker Fallback (patch_text_ratio anomaly or hard lexicon -&gt; instant reroute to Azure Speech)</text>
+
+  <!-- PATH B CONTAINER -->
+  <rect x="318" y="402" width="1094" height="244" rx="14" fill="#0b1f33" stroke="#1d6fa5" stroke-width="1.4"/>
+  <rect x="318" y="402" width="1094" height="4" rx="2" fill="#34d399"/>
+  <g transform="translate(334, 415) scale(1.3333)" aria-label="Official Microsoft Azure AI Speech Icon">
+    <defs>
+      <linearGradient id="enguidesp-az-speech" x1="5.681" y1="-0.862" x2="5.681" y2="15.008" gradientUnits="userSpaceOnUse">
+        <stop offset="0" stop-color="#5ea0ef"/>
+        <stop offset="1" stop-color="#0078d4"/>
+      </linearGradient>
+    </defs>
+    <path d="M7.3,7.019H17.341A.659.659,0,0,1,18,7.677v7.981a.66.66,0,0,1-.659.658h-4.11a.109.109,0,0,0-.067.023l-2.108,1.615a.219.219,0,0,1-.353-.174V16.426a.11.11,0,0,0-.109-.11H7.3a.659.659,0,0,1-.658-.658V7.677A.66.66,0,0,1,7.3,7.019Z" fill="#50e6ff"/>
+    <path d="M11.361.659v7.98A.659.659,0,0,1,10.7,9.3h-3.3a.11.11,0,0,0-.109.11v1.355a.22.22,0,0,1-.353.174L4.836,9.32A.109.109,0,0,0,4.769,9.3H.659A.66.66,0,0,1,0,8.639V.659A.659.659,0,0,1,.659,0H10.7A.66.66,0,0,1,11.361.659Z" fill="url(#enguidesp-az-speech)"/>
+    <path d="M8.1,4.26a3.48,3.48,0,0,1-.07.7,3.688,3.688,0,0,1-.2.667,3.249,3.249,0,0,1-.329.615,4.03,4.03,0,0,1-.336.426.156.156,0,0,1-.226,0l-.031-.03a.159.159,0,0,1,0-.22,3.261,3.261,0,0,0,.3-.378,3.164,3.164,0,0,0,.477-1.153,3.242,3.242,0,0,0,0-1.262,3.13,3.13,0,0,0-.181-.6,3.311,3.311,0,0,0-.3-.553,3.107,3.107,0,0,0-.3-.38.16.16,0,0,1,0-.22l.032-.031a.156.156,0,0,1,.225,0,3.555,3.555,0,0,1,.336.428,3.453,3.453,0,0,1,.326.615,3.76,3.76,0,0,1,.2.667A3.3,3.3,0,0,1,8.1,4.26ZM6.924,3.3a2.516,2.516,0,0,0-.431-.693.155.155,0,0,0-.226,0l-.031.031a.154.154,0,0,0-.01.211,2.142,2.142,0,0,1,0,2.825.155.155,0,0,0,.01.212l.031.031a.155.155,0,0,0,.226,0,2.546,2.546,0,0,0,.431-.693,2.51,2.51,0,0,0,0-1.916Zm-1.238.3a1.134,1.134,0,0,1,.143.248,1.088,1.088,0,0,1,0,.824,1.011,1.011,0,0,1-.142.245.156.156,0,0,0,.014.205l.03.03a.159.159,0,0,0,.235-.012,1.421,1.421,0,0,0,.2-.334,1.444,1.444,0,0,0,.106-.547,1.486,1.486,0,0,0-.109-.547,1.359,1.359,0,0,0-.193-.332.158.158,0,0,0-.236-.013L5.7,3.4A.153.153,0,0,0,5.686,3.6Zm-2-.413H3.314A.314.314,0,0,0,3,3.5V5.018a.315.315,0,0,0,.314.314h.374a.314.314,0,0,1,.222.092l.937.935a.161.161,0,0,0,.111.046h0a.187.187,0,0,0,.187-.187V2.3a.189.189,0,0,0-.189-.189h0a.162.162,0,0,0-.112.046L3.91,3.1A.315.315,0,0,1,3.688,3.188Z" fill="#fff"/>
+    <path d="M15.211,10.932a.831.831,0,1,1-.83.83A.83.83,0,0,1,15.211,10.932Zm-3.48.837a.831.831,0,1,0,.831-.83A.831.831,0,0,0,11.731,11.769Zm-2.649,0a.831.831,0,1,0,.831-.83A.831.831,0,0,0,9.082,11.769Z" fill="#fff"/>
+  </g>
+  <text x="366" y="426" fill="#34d399" font-size="10.5" font-weight="700">PATH B · ENTERPRISE REGULATED / DETERMINISTIC CLOUD SLA (AZURE AI SPEECH)</text>
+  <text x="366" y="444" fill="#f8fafc" font-size="14" font-weight="800">Microsoft Azure AI Speech — Deterministic SSML, 0.1ms Viseme Sync &amp; Watermarked SLA Plane</text>
+
+  <!-- 4 Stage Boxes in Path B -->
+  <!-- B1 -->
+  <rect x="332" y="460" width="248" height="166" rx="10" fill="#0f2540" stroke="#2b5b84"/>
+  <text x="346" y="480" fill="#34d399" font-size="10" font-weight="700">B1 · DETERMINISTIC SSML</text>
+  <text x="346" y="499" fill="#f8fafc" font-size="13" font-weight="700">SSML Phoneme &amp; Pause Lock</text>
+  <line x1="346" y1="510" x2="566" y2="510" stroke="#23436b"/>
+  <text x="346" y="530" fill="#cbd5e1" font-size="10.5">&lt;phoneme&gt; enforces zero-error heteronym &amp; brand pronunciation</text>
+  <text x="346" y="552" fill="#cbd5e1" font-size="10.5">&lt;say-as&gt; currency/account formatting + ms &lt;break&gt; locks</text>
+  <text x="346" y="574" fill="#94a3b8" font-size="10.3">Hot-updatable custom Lexicon XML without retraining</text>
+  <text x="346" y="606" fill="#34d399" font-size="10.2" font-weight="600">W3C SSML 1.1 + mstts Schema</text>
+
+  <path d="M 580 543 L 600 543" fill="none" stroke="#34d399" stroke-width="2" marker-end="url(#enguide-arrow-green)"/>
+
+  <!-- B2 -->
+  <rect x="602" y="460" width="262" height="166" rx="10" fill="#102a49" stroke="#38bdf8" stroke-width="1.3"/>
+  <g transform="translate(616, 470) scale(1.2222)" aria-label="Official Microsoft Azure AI Speech Icon">
+    <defs>
+      <linearGradient id="enguideb2sp-az-speech" x1="5.681" y1="-0.862" x2="5.681" y2="15.008" gradientUnits="userSpaceOnUse">
+        <stop offset="0" stop-color="#5ea0ef"/>
+        <stop offset="1" stop-color="#0078d4"/>
+      </linearGradient>
+    </defs>
+    <path d="M7.3,7.019H17.341A.659.659,0,0,1,18,7.677v7.981a.66.66,0,0,1-.659.658h-4.11a.109.109,0,0,0-.067.023l-2.108,1.615a.219.219,0,0,1-.353-.174V16.426a.11.11,0,0,0-.109-.11H7.3a.659.659,0,0,1-.658-.658V7.677A.66.66,0,0,1,7.3,7.019Z" fill="#50e6ff"/>
+    <path d="M11.361.659v7.98A.659.659,0,0,1,10.7,9.3h-3.3a.11.11,0,0,0-.109.11v1.355a.22.22,0,0,1-.353.174L4.836,9.32A.109.109,0,0,0,4.769,9.3H.659A.66.66,0,0,1,0,8.639V.659A.659.659,0,0,1,.659,0H10.7A.66.66,0,0,1,11.361.659Z" fill="url(#enguideb2sp-az-speech)"/>
+    <path d="M8.1,4.26a3.48,3.48,0,0,1-.07.7,3.688,3.688,0,0,1-.2.667,3.249,3.249,0,0,1-.329.615,4.03,4.03,0,0,1-.336.426.156.156,0,0,1-.226,0l-.031-.03a.159.159,0,0,1,0-.22,3.261,3.261,0,0,0,.3-.378,3.164,3.164,0,0,0,.477-1.153,3.242,3.242,0,0,0,0-1.262,3.13,3.13,0,0,0-.181-.6,3.311,3.311,0,0,0-.3-.553,3.107,3.107,0,0,0-.3-.38.16.16,0,0,1,0-.22l.032-.031a.156.156,0,0,1,.225,0,3.555,3.555,0,0,1,.336.428,3.453,3.453,0,0,1,.326.615,3.76,3.76,0,0,1,.2.667A3.3,3.3,0,0,1,8.1,4.26ZM6.924,3.3a2.516,2.516,0,0,0-.431-.693.155.155,0,0,0-.226,0l-.031.031a.154.154,0,0,0-.01.211,2.142,2.142,0,0,1,0,2.825.155.155,0,0,0,.01.212l.031.031a.155.155,0,0,0,.226,0,2.546,2.546,0,0,0,.431-.693,2.51,2.51,0,0,0,0-1.916Zm-1.238.3a1.134,1.134,0,0,1,.143.248,1.088,1.088,0,0,1,0,.824,1.011,1.011,0,0,1-.142.245.156.156,0,0,0,.014.205l.03.03a.159.159,0,0,0,.235-.012,1.421,1.421,0,0,0,.2-.334,1.444,1.444,0,0,0,.106-.547,1.486,1.486,0,0,0-.109-.547,1.359,1.359,0,0,0-.193-.332.158.158,0,0,0-.236-.013L5.7,3.4A.153.153,0,0,0,5.686,3.6Zm-2-.413H3.314A.314.314,0,0,0,3,3.5V5.018a.315.315,0,0,0,.314.314h.374a.314.314,0,0,1,.222.092l.937.935a.161.161,0,0,0,.111.046h0a.187.187,0,0,0,.187-.187V2.3a.189.189,0,0,0-.189-.189h0a.162.162,0,0,0-.112.046L3.91,3.1A.315.315,0,0,1,3.688,3.188Z" fill="#fff"/>
+    <path d="M15.211,10.932a.831.831,0,1,1-.83.83A.83.83,0,0,1,15.211,10.932Zm-3.48.837a.831.831,0,1,0,.831-.83A.831.831,0,0,0,11.731,11.769Zm-2.649,0a.831.831,0,1,0,.831-.83A.831.831,0,0,0,9.082,11.769Z" fill="#fff"/>
+  </g>
+  <text x="644" y="480" fill="#7dd3fc" font-size="10" font-weight="700">B2 · MANAGED / CONTAINER ENGINE</text>
+  <text x="644" y="499" fill="#f8fafc" font-size="13" font-weight="700">Azure AI Speech (DragonHDOmni)</text>
+  <line x1="616" y1="510" x2="850" y2="510" stroke="#23436b"/>
+  <text x="616" y="530" fill="#cbd5e1" font-size="10.5">Native 48 kHz context-aware HD · 700+ voices / 140+ locales</text>
+  <text x="616" y="552" fill="#cbd5e1" font-size="10.5">Gated Personal Voice with live speaker consent verification</text>
+  <text x="616" y="574" fill="#94a3b8" font-size="10.3">Multi-region cloud + disconnected on-prem Docker containers</text>
+  <text x="616" y="606" fill="#7dd3fc" font-size="10.2" font-weight="600">TTFA ~180ms (Neural) · &lt;300ms (HD)</text>
+
+  <path d="M 864 543 L 884 543" fill="none" stroke="#34d399" stroke-width="2" marker-end="url(#enguide-arrow-green)"/>
+
+  <!-- B3 -->
+  <rect x="886" y="460" width="250" height="166" rx="10" fill="#0f2540" stroke="#2b5b84"/>
+  <text x="900" y="480" fill="#34d399" font-size="10" font-weight="700">B3 · MULTIMODAL AVATAR SYNC</text>
+  <text x="900" y="499" fill="#f8fafc" font-size="13" font-weight="700">0.1 ms Viseme &amp; Frame Alignment</text>
+  <line x1="900" y1="510" x2="1122" y2="510" stroke="#23436b"/>
+  <text x="900" y="530" fill="#cbd5e1" font-size="10.5">Synchronous 0.1 ms Viseme ID &amp; 55-blendshape event stream</text>
+  <text x="900" y="552" fill="#cbd5e1" font-size="10.5">Exact WordBoundary offsets for 3D avatar lip-sync lock</text>
+  <text x="900" y="574" fill="#94a3b8" font-size="10.3">Eliminates VoxCPM2 N x 160 ms patch duration quantization</text>
+  <text x="900" y="606" fill="#34d399" font-size="10.2" font-weight="600">WebRTC / WebSocket Avatar Sync</text>
+
+  <path d="M 1136 543 L 1156 543" fill="none" stroke="#34d399" stroke-width="2" marker-end="url(#enguide-arrow-green)"/>
+
+  <!-- B4 -->
+  <rect x="1158" y="460" width="240" height="166" rx="10" fill="#0f2540" stroke="#34d399" stroke-width="1.3"/>
+  <g transform="translate(1172, 470) scale(1.2222)" aria-label="Official Azure Guardrails Icon">
+    <path d="m13.864,8.047c0,3.822-4.627,6.907-5.632,7.544-.12.066-.265.066-.386,0-1.073-.687-5.716-3.772-5.716-7.544V3.386c0-.197.155-.36.352-.369,3.604-.101,2.783-1.676,5.482-1.676s1.861,1.576,5.465,1.676c.197.009.352.171.352.369l.084,4.66Z" fill="#0078d4"/>
+    <rect x="4.1" y="5.0" width="7.6" height="0.9" rx="0.2" fill="#fff" opacity=".8"/>
+    <rect x="4.1" y="7.2" width="6.8" height="0.9" rx="0.2" fill="#fff" opacity=".65"/>
+    <rect x="4.1" y="9.4" width="4.8" height="0.9" rx="0.2" fill="#fff" opacity=".5"/>
+    <circle cx="12.6" cy="13.2" r="3.3" fill="#34d399"/>
+    <path d="M11.1,13.2 l1.0,1.0 l2.1,-2.2" fill="none" stroke="#06281e" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <text x="1200" y="480" fill="#34d399" font-size="10" font-weight="700">B4 · GOVERNANCE &amp; 99.9% SLA</text>
+  <text x="1200" y="499" fill="#f8fafc" font-size="13" font-weight="700">Mandatory Watermark &amp; 99.9% SLA</text>
+  <line x1="1172" y1="510" x2="1384" y2="510" stroke="#23436b"/>
+  <text x="1172" y="530" fill="#cbd5e1" font-size="10.5">Built-in tamper-resistant audio watermark on custom voices</text>
+  <text x="1172" y="552" fill="#cbd5e1" font-size="10.5">Zero customer audio retention + Entra RBAC &amp; Purview audit</text>
+  <text x="1172" y="574" fill="#94a3b8" font-size="10.3">99.9% uptime SLA + instant failover target for Path A</text>
+  <text x="1172" y="606" fill="#34d399" font-size="10.2" font-weight="600">$15/1M Neural · $30/1M HD PAYG</text>
+
+  <!-- Bottom 3 Quantitative Architectural Takeaways -->
+  <g transform="translate(28, 664)">
+    <rect width="450" height="142" rx="12" fill="#0d1e34" stroke="#2c5282"/>
+    <rect width="450" height="4" rx="2" fill="#38bdf8"/>
+    <text x="18" y="26" fill="#38bdf8" font-size="10.5" font-weight="700">TAKEAWAY 01 · ZERO-SHOT CLONING &amp; WER</text>
+    <text x="18" y="50" fill="#f8fafc" font-size="13.5" font-weight="800">Seed-TTS 0.97% ZH CER / 1.84% EN WER · #1 SIM in 22/24 MLS Langs</text>
+    <foreignObject x="18" y="60" width="414" height="74">
+      <div xmlns="http://www.w3.org/1999/xhtml" style="color:#94a3b8;font-size:11.5px;line-height:1.45;">85.4% EN speaker SIM (vs 61.3% ElevenLabs); trails discrete codecs on Seed-TTS test-Hard (8.13% CER) &amp; zero-shot Arabic/Hindi</div>
+    </foreignObject>
+  </g>
+
+  <g transform="translate(495, 664)">
+    <rect width="450" height="142" rx="12" fill="#0d1e34" stroke="#2c5282"/>
+    <rect width="450" height="4" rx="2" fill="#a78bfa"/>
+    <text x="18" y="26" fill="#c4b5fd" font-size="10.5" font-weight="700">TAKEAWAY 02 · 48 KHZ BW &amp; QUANTIZATION FLOOR</text>
+    <text x="18" y="50" fill="#f8fafc" font-size="13.5" font-weight="800">48 kHz Native (17.7 kHz BW) · 50.88 dB Whisper SDR via FSQ+Residual</text>
+    <foreignObject x="18" y="60" width="414" height="74">
+      <div xmlns="http://www.w3.org/1999/xhtml" style="color:#94a3b8;font-size:11.5px;line-height:1.45;">+44.4 dB energy in 16-24 kHz over VoxCPM1.5; discrete-only bottlenecks lose 5.9-7.1 dB more on breaths (&gt;14.6 dB INT8 floor gap)</div>
+    </foreignObject>
+  </g>
+
+  <g transform="translate(962, 664)">
+    <rect width="450" height="142" rx="12" fill="#0d1e34" stroke="#2c5282"/>
+    <rect width="450" height="4" rx="2" fill="#34d399"/>
+    <text x="18" y="26" fill="#34d399" font-size="10.5" font-weight="700">TAKEAWAY 03 · LATENCY FLOOR &amp; TCO BREAK-EVEN</text>
+    <text x="18" y="50" fill="#f8fafc" font-size="13.5" font-weight="800">vLLM-Omni RTF 0.13 (~135ms 4090 / ~230ms H100 Batch) · 25M Crossover</text>
+    <foreignObject x="18" y="60" width="414" height="74">
+      <div xmlns="http://www.w3.org/1999/xhtml" style="color:#94a3b8;font-size:11.5px;line-height:1.45;">&lt;15M chars/mo favors Azure PAYG; &gt;25M-50M self-hosted GPU cuts TCO 60%-85% ($12.8k/mo Azure HD vs ~$3.2k/mo GPU @ 850M chars/mo)</div>
+    </foreignObject>
+  </g>
+</svg>
+        <figcaption>
+          <span>Grounded in OpenBMB/VoxCPM (voxcpm2.py, audiovae_v2.py) &amp; official Microsoft Azure AI Speech service primitives</span>
+          <a href="assets/voxcpm2-vs-azure-speech-architecture.svg">Open standalone vector SVG (1440x830) →</a>
+        </figcaption>
+      </figure>
+    </section>
+
+    <!-- INTERACTIVE TCO WORKBENCH + PSD EXPLORER -->
+    <section class="section-block" id="tco-and-spectrum">
+      <div class="section-eyebrow">02 · INTERACTIVE FINOPS &amp; ACOUSTIC WORKBENCH</div>
+      <h2 class="section-title">Interactive Monthly Character TCO Calculator &amp; 11-WAV Welch PSD Explorer</h2>
+      <p class="section-desc">Adjust monthly character volume (1M to 1,000M chars/month) to compare Azure Standard Neural, Azure DragonHDOmni (including committed enterprise tiers), ElevenLabs, and self-hosted VoxCPM2 on vLLM-Omni; inspect real 24-band Welch PSD curves from our 11-WAV DSP audit on the right.</p>
+
+      <div class="dual-workbench">
+        <!-- TCO Calculator -->
+        <div class="sub-panel">
+          <div class="slider-header">
+            <strong>Monthly Synthesis Volume (1M – 1,000M chars/mo)</strong>
+            <span class="slider-vol" id="tco-vol-label">50M</span>
+          </div>
+          <div class="preset-row" role="group" aria-label="Workload presets">
+            <button type="button" class="preset-btn" data-vol="5">5M · Internal MVP</button>
+            <button type="button" class="preset-btn" data-vol="15">15M · Regulated IVR</button>
+            <button type="button" class="preset-btn active" data-vol="50">50M · Podcast / Media</button>
+            <button type="button" class="preset-btn" data-vol="200">200M · Game NPCs</button>
+            <button type="button" class="preset-btn" data-vol="850">850M · Global Media Scale</button>
+          </div>
+          <input type="range" id="tco-slider" min="1" max="1000" value="50" aria-label="Monthly million characters" />
+          <div class="tco-bars" id="tco-bars"></div>
+          <div class="verdict-callout" id="tco-verdict"></div>
+        </div>
+
+        <!-- Interactive 11-WAV PSD Curve Explorer -->
+        <div class="sub-panel">
+          <div class="slider-header">
+            <strong>Measured 1024-pt Hann Welch PSD Explorer (200 Hz – 24 kHz)</strong>
+            <span style="font-size:12px;color:var(--muted);" id="psd-meta-badge">48,000 Hz · BW 17,672 Hz</span>
+          </div>
+          <div class="preset-row" id="psd-sample-buttons" role="group" aria-label="Select measured WAV sample">
+            <button type="button" class="preset-btn active" data-wav="style_result1_1.wav">Whisper Clone (48k)</button>
+            <button type="button" class="preset-btn" data-wav="style_result1_2.wav">Sichuan Clone (48k)</button>
+            <button type="button" class="preset-btn" data-wav="vd_emotion_grief.wav">Grief Design (48k)</button>
+            <button type="button" class="preset-btn" data-wav="vd_acoustic_asmr.wav">ASMR Design (48k)</button>
+            <button type="button" class="preset-btn" data-wav="zh_cn.wav">Mandarin (48k)</button>
+            <button type="button" class="preset-btn" data-wav="dongbei.wav">Dongbei (48k)</button>
+            <button type="button" class="preset-btn" data-wav="minnan.wav">Minnan (48k)</button>
+          </div>
+          <div class="psd-canvas-wrap">
+            <svg id="psd-svg" viewBox="0 0 640 270" width="640" height="270" style="width:100%;height:auto;display:block;" role="img" aria-label="Measured Welch PSD spectrum comparison"></svg>
+          </div>
+          <p style="font-size:12px;color:var(--muted);margin-top:10px;">Cyan solid: selected VoxCPM2 48 kHz WAV · Amber dashed: style_prompt1.wav reference input (24 kHz SR, 12 kHz Nyquist cutoff) · Slate dotted: legacy VoxCPM1.5 (-92.08 dB @ 16-24 kHz).</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CLAIMS AUDIT MATRIX -->
+    <section class="section-block" id="code-audit">
+      <div class="section-eyebrow">03 · SOURCE-CODE &amp; COMMUNITY CLAIMS VERIFICATION</div>
+      <h2 class="section-title">Community Technical Claims vs. Source-Code &amp; Signal Evidence</h2>
+      <p class="section-desc">Auditing widely circulated community claims line-by-line against src/voxcpm/model/voxcpm2.py, audiovae_v2.py, and controlled benchmarks.</p>
+      <div class="table-wrap">
+        <table class="sa-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Community Technical Claim</th>
+              <th>Audit Verdict</th>
+              <th>Source-Code &amp; Empirical DSP Evidence</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>01</td>
+              <td><strong>"Completely tokenizer-free; pure continuous diffusion-AR"</strong></td>
+              <td><span class="status-badge badge-nuanced">Nuanced (Hybrid FSQ)</span></td>
+              <td>Removes external pre-trained RVQ/HuBERT codecs, but <code>src/voxcpm/model/voxcpm2.py:258,345</code> enforces an internal differentiable Finite Scalar Quantization bottleneck (<code>round(tanh(x)*9)/9, dim=512</code>) inside TSLM while bypassing unquantized latents to <code>RALM + LocDiT</code>.</td>
+            </tr>
+            <tr>
+              <td>02</td>
+              <td><strong>"2B params, >2M hours audio, native 48 kHz studio output"</strong></td>
+              <td><span class="status-badge badge-pass">Verified (3x Super-Res)</span></td>
+              <td>Built on a 28L <code>MiniCPM-4</code> backbone (~2B total). Downsamples reference input to <code>16 kHz</code> (hop=640) and upsamples 3x (<code>hop=1920</code>) to <code>48 kHz</code>; Welch FFT confirms real <code>16-24 kHz</code> studio harmonics (<code>+44.4 dB</code> over VoxCPM1.5).</td>
+            </tr>
+            <tr>
+              <td>03</td>
+              <td><strong>"Seamless switching across 30 languages &amp; 9 Chinese dialects"</strong></td>
+              <td><span class="status-badge badge-nuanced">Uneven Across Scripts</span></td>
+              <td>Strong in Mandarin (<code>0.97%</code>), English (<code>1.84%</code>), 9 Chinese dialects, and SEA scripts (Burmese <code>1.42%</code>, Khmer <code>2.05%</code>), but elevated zero-shot error rates in MLS Arabic (<code>13.05%</code>), Hindi (<code>19.70%</code>), Czech (<code>24.13%</code>), and Cantonese (<code>38.58%</code>).</td>
+            </tr>
+            <tr>
+              <td>04</td>
+              <td><strong>"RTF 0.13 on RTX 4090 with near-zero streaming latency"</strong></td>
+              <td><span class="status-badge badge-nuanced">Engine &amp; Patch Bounded</span></td>
+              <td>Standard PyTorch on RTX 4090 runs at <code>RTF ~0.30</code> (~8 GB VRAM); <code>RTF 0.13</code> requires <code>vLLM-Omni</code> or <code>Nano-vLLM</code>. The <code>160 ms</code> patch step bounds single-stream TTFA to <code>~110-150 ms</code> (<code>~230 ms</code> batched H100), trailing Cartesia (<code>40-90 ms</code>), and <code>voxcpm2.py:667</code> disables <code>retry_badcase</code> when streaming.</td>
+            </tr>
+            <tr>
+              <td>05</td>
+              <td><strong>"Zero-reference Voice Design + style-controllable cloning"</strong></td>
+              <td><span class="status-badge badge-pass">Verified Mechanism</span></td>
+              <td>Dedicated <code>[103, ref_feats, 104]</code> prefix slot isolates speaker timbre from reference prosody, posting <code>84.2 APS / 83.2 DSD / 71.4 RP</code> on <code>InstructTTSEval-EN</code>; stochastic variance requires 1-3 candidate draws for strict creative QA.</td>
+            </tr>
+            <tr>
+              <td>06</td>
+              <td><strong>"Commercial cloud TTS replacement boundary: can it replace Azure Speech?"</strong></td>
+              <td><span class="status-badge badge-fail">Complementary, Not Replacement</span></td>
+              <td>Clean Apache-2.0 licensing (42,802 GitHub stars) transforms self-hosted media economics, yet zero <code>SSML</code>, zero <code>0.1 ms Viseme</code> lip-sync, <code>N x 160 ms</code> duration quantization, and zero built-in consent watermarks keep Azure AI Speech mandatory for regulated workloads.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 11-WAV EMPIRICAL FFT MATRIX & QUANTIZATION ABLATION -->
+    <section class="section-block" id="fft-matrix">
+      <div class="section-eyebrow">04 · 11-WAV WELCH FFT FORENSICS &amp; QUANTIZATION ABLATION</div>
+      <h2 class="section-title">11-WAV Spectral Bandwidth Matrix &amp; FSQ Residual Quantization Ablation</h2>
+      <p class="section-desc">Inspect the Duration column: every single 48 kHz VoxCPM2 sample lands on an exact integer multiple of 0.160s (7,680 samples @ 48 kHz = 6.25 Hz patch step), physically confirming why sub-frame video dubbing requires Azure SSML or token-locked IndexTTS-2.</p>
+      <div class="table-wrap" style="margin-bottom:20px;">
+        <table class="sa-table">
+          <thead>
+            <tr>
+              <th>Sample File (OpenBMB)</th>
+              <th class="num">Sample Rate</th>
+              <th class="num">Duration (160ms Grid)</th>
+              <th class="num">0–4 kHz Core</th>
+              <th class="num">8–12 kHz Crisp</th>
+              <th class="num">16–24 kHz Studio Air</th>
+              <th class="num">-52 dB Effective BW</th>
+              <th class="num">Breath Frames</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+        <td><code>style_prompt1.wav</code><div class="cell-sub">Input Reference Prompt (Raw)</div></td>
+        <td class="num">24,000 Hz</td>
+        <td class="num"><strong>6.538s</strong><div class="cell-sub">Non-patch baseline</div></td>
+        <td class="num">-5.78 dB</td>
+        <td class="num">-26.31 dB</td>
+        <td class="num"><strong>None (Nyquist cutoff)</strong></td>
+        <td class="num"><strong>11,625 Hz</strong></td>
+        <td class="num">23.9%</td>
+      </tr>
+<tr class="row-highlight">
+        <td><code>style_result1_1.wav</code><div class="cell-sub">Controllable Clone: Whisper</div></td>
+        <td class="num">48,000 Hz</td>
+        <td class="num"><strong>2.880s</strong><div class="cell-sub">18 × 0.16s</div></td>
+        <td class="num">-4.32 dB</td>
+        <td class="num">-26.67 dB</td>
+        <td class="num"><strong>-47.64 dB</strong></td>
+        <td class="num"><strong>17,672 Hz</strong></td>
+        <td class="num">20.8%</td>
+      </tr>
+<tr>
+        <td><code>style_result1_2.wav</code><div class="cell-sub">Controllable Clone: Sichuanese</div></td>
+        <td class="num">48,000 Hz</td>
+        <td class="num"><strong>4.320s</strong><div class="cell-sub">27 × 0.16s</div></td>
+        <td class="num">-4.70 dB</td>
+        <td class="num">-30.67 dB</td>
+        <td class="num"><strong>-48.96 dB</strong></td>
+        <td class="num"><strong>17,391 Hz</strong></td>
+        <td class="num">11.6%</td>
+      </tr>
+<tr class="row-highlight">
+        <td><code>vd_emotion_grief.wav</code><div class="cell-sub">Voice Design: Grief / Sobbing</div></td>
+        <td class="num">48,000 Hz</td>
+        <td class="num"><strong>7.360s</strong><div class="cell-sub">46 × 0.16s</div></td>
+        <td class="num">-3.99 dB</td>
+        <td class="num">-23.89 dB</td>
+        <td class="num"><strong>-51.93 dB</strong></td>
+        <td class="num"><strong>17,578 Hz</strong></td>
+        <td class="num">11.7%</td>
+      </tr>
+<tr>
+        <td><code>vd_acoustic_asmr.wav</code><div class="cell-sub">Voice Design: Close-Mic ASMR</div></td>
+        <td class="num">48,000 Hz</td>
+        <td class="num"><strong>12.640s</strong><div class="cell-sub">79 × 0.16s</div></td>
+        <td class="num">-3.70 dB</td>
+        <td class="num">-20.59 dB</td>
+        <td class="num"><strong>-57.01 dB</strong></td>
+        <td class="num"><strong>14,859 Hz</strong></td>
+        <td class="num">7.8%</td>
+      </tr>
+<tr>
+        <td><code>zh_cn.wav</code><div class="cell-sub">Multilingual: Standard Mandarin</div></td>
+        <td class="num">48,000 Hz</td>
+        <td class="num"><strong>12.000s</strong><div class="cell-sub">75 × 0.16s</div></td>
+        <td class="num">-4.42 dB</td>
+        <td class="num">-31.12 dB</td>
+        <td class="num"><strong>-59.43 dB</strong></td>
+        <td class="num"><strong>14,250 Hz</strong></td>
+        <td class="num">9.7%</td>
+      </tr>
+<tr>
+        <td><code>minnan.wav</code><div class="cell-sub">Dialect Synthesis: Minnan / Hokkien</div></td>
+        <td class="num">48,000 Hz</td>
+        <td class="num"><strong>25.600s</strong><div class="cell-sub">160 × 0.16s</div></td>
+        <td class="num">-12.83 dB</td>
+        <td class="num">-36.29 dB</td>
+        <td class="num"><strong>-66.39 dB</strong></td>
+        <td class="num"><strong>16,172 Hz</strong></td>
+        <td class="num">9.5%</td>
+      </tr>
+<tr>
+        <td><code>yue.wav</code><div class="cell-sub">Dialect Synthesis: Cantonese</div></td>
+        <td class="num">48,000 Hz</td>
+        <td class="num"><strong>20.640s</strong><div class="cell-sub">129 × 0.16s</div></td>
+        <td class="num">-27.24 dB</td>
+        <td class="num">-49.38 dB</td>
+        <td class="num"><strong>-83.01 dB</strong></td>
+        <td class="num"><strong>16,078 Hz</strong></td>
+        <td class="num">6.9%</td>
+      </tr>
+<tr>
+        <td><code>dongbei.wav</code><div class="cell-sub">Dialect Synthesis: Northeastern</div></td>
+        <td class="num">48,000 Hz</td>
+        <td class="num"><strong>9.120s</strong><div class="cell-sub">57 × 0.16s</div></td>
+        <td class="num">-16.81 dB</td>
+        <td class="num">-40.37 dB</td>
+        <td class="num"><strong>-70.80 dB</strong></td>
+        <td class="num"><strong>15,000 Hz</strong></td>
+        <td class="num">18.4%</td>
+      </tr>
+<tr>
+        <td><code>ref_speaker.wav</code><div class="cell-sub">Continuation Speaker Ref (16 kHz)</div></td>
+        <td class="num">48,000 Hz</td>
+        <td class="num"><strong>12.800s</strong><div class="cell-sub">80 × 0.16s</div></td>
+        <td class="num">-9.89 dB</td>
+        <td class="num">-36.58 dB</td>
+        <td class="num"><strong>-60.61 dB</strong></td>
+        <td class="num"><strong>17,250 Hz</strong></td>
+        <td class="num">9.1%</td>
+      </tr>
+<tr>
+        <td><code>voxcpm_example.wav</code><div class="cell-sub">Legacy Baseline: VoxCPM1.5 (44.1 kHz)</div></td>
+        <td class="num">44,100 Hz</td>
+        <td class="num"><strong>8.158s</strong><div class="cell-sub">Non-patch baseline</div></td>
+        <td class="num">-6.32 dB</td>
+        <td class="num">-21.82 dB</td>
+        <td class="num"><strong>-92.08 dB</strong></td>
+        <td class="num"><strong>10,034 Hz</strong></td>
+        <td class="num">18.4%</td>
+      </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="table-wrap">
+        <table class="sa-table">
+          <thead>
+            <tr>
+              <th>Ablation Sample (20 ms Frame ZCR Split)</th>
+              <th class="num">Voiced SDR (Discrete-Only)</th>
+              <th class="num">Breath/Whisper SDR (Discrete-Only)</th>
+              <th class="num">Breath Degradation Gap</th>
+              <th class="num">Voiced SDR (FSQ + Continuous)</th>
+              <th class="num">Breath/Whisper SDR (FSQ + Continuous)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="row-highlight">
+              <td><code>style_result1_1.wav</code> (Controllable Whisper Clone)</td>
+              <td class="num">23.25 dB</td>
+              <td class="num">16.12 dB</td>
+              <td class="num">-7.13 dB</td>
+              <td class="num"><strong>57.97 dB</strong></td>
+              <td class="num"><strong>50.88 dB (+34.76 dB)</strong></td>
+            </tr>
+            <tr>
+              <td><code>dongbei.wav</code> (Northeastern Dialect)</td>
+              <td class="num">11.10 dB</td>
+              <td class="num">5.20 dB</td>
+              <td class="num">-5.90 dB</td>
+              <td class="num"><strong>45.83 dB</strong></td>
+              <td class="num"><strong>39.95 dB (+34.75 dB)</strong></td>
+            </tr>
+            <tr>
+              <td><code>vd_acoustic_asmr.wav</code> (Close-Mic ASMR Voice Design)</td>
+              <td class="num">21.77 dB</td>
+              <td class="num">21.05 dB</td>
+              <td class="num">-0.72 dB</td>
+              <td class="num"><strong>56.51 dB</strong></td>
+              <td class="num"><strong>55.74 dB (+34.69 dB)</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 2026 HEAD-TO-HEAD MODEL SELECTION MATRIX -->
+    <section class="section-block" id="competitor-matrix">
+      <div class="section-eyebrow">05 · 2026 ENTERPRISE &amp; OPEN-WEIGHT TTS MATRIX</div>
+      <h2 class="section-title">Head-to-Head Model Selection Matrix: VoxCPM2 vs. Azure Speech &amp; Industry Peers</h2>
+      <div class="table-wrap">
+        <table class="sa-table">
+          <thead>
+            <tr>
+              <th>Model / Platform</th>
+              <th>License &amp; Deployment</th>
+              <th>Architecture &amp; Max SR</th>
+              <th>Cloning &amp; Multilingual</th>
+              <th>Seed-TTS (EN / ZH / Hard)</th>
+              <th>Streaming TTFA</th>
+              <th>Enterprise Controls</th>
+              <th class="num">Unit Cost (/1M Chars)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="row-highlight">
+              <td><strong>OpenBMB VoxCPM2 (2B)</strong></td>
+              <td>Apache-2.0 (Self-Hosted GPU)</td>
+              <td>6.25Hz FSQ-AR + 10-step LocDiT · <strong>48 kHz</strong></td>
+              <td><strong>#1 SIM in 22/24 langs</strong> (85.4% EN) · 30 langs + 9 dialects</td>
+              <td>1.84% / 0.97% / 8.13%</td>
+              <td>~135 ms (vLLM 4090)<br/>~230 ms (H100 batch)</td>
+              <td>No SSML / No Viseme / 160ms grid</td>
+              <td class="num"><strong>~$4–$8</strong> (GPU)</td>
+            </tr>
+            <tr class="row-highlight">
+              <td><strong>Microsoft Azure AI Speech</strong><div class="cell-sub">DragonHDOmni / Standard / CNV</div></td>
+              <td>Managed Cloud + Disconnected Containers</td>
+              <td>Context-Aware HD Neural · <strong>48 kHz</strong></td>
+              <td>700+ voices · 140+ locales · Gated Personal Voice</td>
+              <td>Lexicon-enforced deterministic</td>
+              <td>~180 ms (Standard)<br/>&lt;300 ms (DragonHDOmni)</td>
+              <td><strong>Full SSML + 0.1ms Visemes + Watermark + 99.9% SLA</strong></td>
+              <td class="num">$15–$16 (Neural)<br/>$24–$30 (HD)</td>
+            </tr>
+            <tr>
+              <td><strong>ElevenLabs</strong><div class="cell-sub">Eleven v4 / Flash v2.5</div></td>
+              <td>Commercial SaaS API</td>
+              <td>Expressive Generative Audio · 48 kHz</td>
+              <td>TTS Arena #1 (1336–1340 Elo) · 90+ langs</td>
+              <td>MLS EN 2.34% / ZH 16.03%</td>
+              <td><strong>~75 ms (Flash)</strong><br/>~100 ms (v4)</td>
+              <td>Phoneme dict + word timestamps</td>
+              <td class="num">$50–$165</td>
+            </tr>
+            <tr>
+              <td><strong>Cartesia Sonic 3.6</strong></td>
+              <td>Commercial SaaS API</td>
+              <td>State-Space Model (SSM) · 44.1 kHz</td>
+              <td>1294 Elo · 3s instant voice cloning</td>
+              <td>Low conversational WER</td>
+              <td><strong>40–90 ms (Fastest)</strong></td>
+              <td>Speed/emotion + word timestamps</td>
+              <td class="num">$38–$50</td>
+            </tr>
+            <tr>
+              <td><strong>OpenAI gpt-4o-mini-tts</strong></td>
+              <td>Commercial SaaS API</td>
+              <td>Native Multimodal Audio · 24 kHz</td>
+              <td>Natural prompt steering · No open cloning</td>
+              <td>Conversational EN focus</td>
+              <td>200–350 ms</td>
+              <td>Prompt-steered only (no SSML)</td>
+              <td class="num">~$15</td>
+            </tr>
+            <tr>
+              <td><strong>MiniMax Speech 2.8 HD</strong></td>
+              <td>Commercial SaaS API</td>
+              <td>AR + Flow Matching · 32/48 kHz</td>
+              <td>Strong ZH (0.83%), AR (1.67%), VI (0.88%)</td>
+              <td>1.65% / 0.83% / —</td>
+              <td>350–450 ms</td>
+              <td>Pause markers + voice mixing</td>
+              <td class="num">$60–$100</td>
+            </tr>
+            <tr>
+              <td><strong>Qwen3-TTS-1.7B / CosyVoice 3</strong></td>
+              <td>Apache-2.0 (Self-Hosted / Cloud)</td>
+              <td>12Hz Discrete Codec LM + DiT · 24 kHz</td>
+              <td>InstructTTSEval-ZH 85.2 APS / 65.1 RP</td>
+              <td>1.23% / 1.12% / <strong>5.83%</strong></td>
+              <td>~150 ms</td>
+              <td>Inline paralinguistic tags</td>
+              <td class="num">~$4–$6 (GPU)</td>
+            </tr>
+            <tr>
+              <td><strong>Fish Audio S2 (4B)</strong></td>
+              <td>Research License / Commercial API</td>
+              <td>Dual-AR · 44.1 kHz</td>
+              <td>Top ZH/EN WER; fails MY/LO/KM (75%–87%)</td>
+              <td><strong>0.99% / 0.54%</strong> / 5.99%</td>
+              <td>240–380 ms</td>
+              <td>Inline emotion tags (restricted self-host)</td>
+              <td class="num">$15 API</td>
+            </tr>
+            <tr>
+              <td><strong>Bilibili IndexTTS-2 (1.5B)</strong></td>
+              <td>Open Weights (Custom Commercial Terms)</td>
+              <td>Timbre-Emotion Disentangled AR · 44.1 kHz</td>
+              <td>Purpose-built for anime &amp; video dubbing</td>
+              <td>2.23% / 1.03% / 7.12%</td>
+              <td>~300 ms</td>
+              <td><strong>Exact token/ms duration lock</strong></td>
+              <td class="num">Self-hosted</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ENTERPRISE HYBRID ROUTING PLAYBOOK & ANTI-SPOOFING GOVERNANCE -->
+    <section class="section-block" id="governance">
+      <div class="section-eyebrow">06 · HYBRID ROUTING PLAYBOOK &amp; ANTI-DEEPFAKE GOVERNANCE</div>
+      <h2 class="section-title">Enterprise Hybrid Speech Routing Playbook &amp; Anti-Spoofing Controls</h2>
+      <div class="governance-grid">
+        <div class="gov-card">
+          <h3>1. Workload Routing Criteria</h3>
+          <ul>
+            <li>Route banking IVR, healthcare advisories, and strict heteronym/currency readouts 100% to Microsoft Azure AI Speech with SSML.</li>
+            <li>Route real-time 3D avatar lip-sync workloads to Azure Speech synchronous 0.1 ms Viseme &amp; blendshape streams.</li>
+            <li>Route high-volume audiobooks, podcasts, expressive NPCs, and SEA localization (>25M chars/mo) to self-hosted VoxCPM2 on vLLM-Omni.</li>
+          </ul>
+        </div>
+        <div class="gov-card">
+          <h3>2. Streaming Sentinel &amp; Front-End TN</h3>
+          <ul>
+            <li>Place a deterministic Text Normalizer (WeTextProcessing / NeMo TN) ahead of VoxCPM2 to expand numbers, dates, and currency symbols.</li>
+            <li>Compensate for voxcpm2.py:667 disabling retry_badcase in streaming mode by enforcing a real-time patch_to_char_ratio circuit breaker with instant failover to Azure Speech.</li>
+            <li>Wrap offline Voice Design and dense scripts in an automated ASR verification gate (re-roll up to 2 seeds if CER > 2%).</li>
+          </ul>
+        </div>
+        <div class="gov-card">
+          <h3>3. Anti-Spoofing &amp; Provenance Mandate</h3>
+          <ul>
+            <li>Deprecate voice-only biometric authentication across wire approvals and IT resets; enforce FIDO2/Passkey or out-of-band cryptographic signing.</li>
+            <li>Inject mandatory AudioSeal frame-level invisible watermarks + C2PA provenance manifests on every self-hosted VoxCPM2 output stream.</li>
+            <li>Require dynamic live consent-phrase verification before enrolling any reference voice, and deploy WavLM + AASIST3 deepfake detectors on SIP ingress.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+  (function () {
+    var IS_ZH = false;
+    var SAMPLES = {"style_prompt1.wav":{"role":"Input Reference Prompt (Raw)","sr":24000,"dur":6.538,"bw":11625,"air":null,"breath":23.9,"freqs":[200,246.3,303.3,373.4,459.9,566.3,697.3,858.7,1057.4,1302,1603.3,1974.3,2431.2,2993.8,3686.5,4539.6,5590.1,6883.6,8476.5,10437.9,12853.3,15827.5,19490,24000],"db":[3.33,5.29,3,3.32,0.86,-7.21,-6.45,-3.29,-7.64,-9.79,-8.04,-22.45,-12.39,-20.63,-20.84,-19.03,-25.73,-22.04,-24.44,-27.21,null,null,null,null]},"style_result1_1.wav":{"role":"Controllable Clone: Whisper","sr":48000,"dur":2.88,"bw":17672,"air":-47.64,"breath":20.8,"freqs":[200,246.3,303.3,373.4,459.9,566.3,697.3,858.7,1057.4,1302,1603.3,1974.3,2431.2,2993.8,3686.5,4539.6,5590.1,6883.6,8476.5,10437.9,12853.3,15827.5,19490,24000],"db":[3.76,5.65,6.39,3.73,-13,-13.87,-6.95,-9.05,-0.27,-8.26,-8.11,-13.54,-6.18,-11.69,-21.51,-13.89,-17.49,-20.48,-26.26,-27.1,-32.21,-44.26,-51.03,-76.32]},"style_result1_2.wav":{"role":"Controllable Clone: Sichuanese","sr":48000,"dur":4.32,"bw":17391,"air":-48.96,"breath":11.6,"freqs":[200,246.3,303.3,373.4,459.9,566.3,697.3,858.7,1057.4,1302,1603.3,1974.3,2431.2,2993.8,3686.5,4539.6,5590.1,6883.6,8476.5,10437.9,12853.3,15827.5,19490,24000],"db":[1.21,4.61,6.52,5.11,-2.84,-5.18,0.55,-6.92,-5.03,-9.16,-6.75,-17.86,-16.43,-29.62,-27.31,-18.54,-22.86,-22.09,-31.52,-30.55,-36.73,-44.45,-53.42,-84.07]},"vd_emotion_grief.wav":{"role":"Voice Design: Grief / Sobbing","sr":48000,"dur":7.36,"bw":17578,"air":-51.93,"breath":11.7,"freqs":[200,246.3,303.3,373.4,459.9,566.3,697.3,858.7,1057.4,1302,1603.3,1974.3,2431.2,2993.8,3686.5,4539.6,5590.1,6883.6,8476.5,10437.9,12853.3,15827.5,19490,24000],"db":[-10.28,-1.49,3.34,5.7,1.08,-1.62,3.72,-0.61,-1.11,-9.3,-10.35,-9.98,-17.12,-21.27,-13.05,-19.68,-17.17,-20.93,-22.47,-29.2,-32.28,-44.5,-56.11,-67.64]},"vd_acoustic_asmr.wav":{"role":"Voice Design: Close-Mic ASMR","sr":48000,"dur":12.64,"bw":14859,"air":-57.01,"breath":7.8,"freqs":[200,246.3,303.3,373.4,459.9,566.3,697.3,858.7,1057.4,1302,1603.3,1974.3,2431.2,2993.8,3686.5,4539.6,5590.1,6883.6,8476.5,10437.9,12853.3,15827.5,19490,24000],"db":[10.49,8.83,0.15,-10.51,-13.11,-11.57,-10.67,-15.84,-13.41,-18.66,-16.84,-15.2,-19.42,-21.47,-24.55,-27.14,-25.87,-26.34,-20.28,-27.54,-33.09,-47.76,-63.38,-80.55]},"zh_cn.wav":{"role":"Multilingual: Standard Mandarin","sr":48000,"dur":12,"bw":14250,"air":-59.43,"breath":9.7,"freqs":[200,246.3,303.3,373.4,459.9,566.3,697.3,858.7,1057.4,1302,1603.3,1974.3,2431.2,2993.8,3686.5,4539.6,5590.1,6883.6,8476.5,10437.9,12853.3,15827.5,19490,24000],"db":[5.53,4,2.98,2.71,0.32,0.76,-0.44,-6.36,-9.31,-9.68,-12.47,-16.69,-14.32,-23.5,-27.53,-25.29,-23.25,-37.43,-29.11,-34.99,-44.72,-51.65,-62.13,-88.75]},"minnan.wav":{"role":"Dialect Synthesis: Minnan / Hokkien","sr":48000,"dur":25.6,"bw":16172,"air":-66.39,"breath":9.5,"freqs":[200,246.3,303.3,373.4,459.9,566.3,697.3,858.7,1057.4,1302,1603.3,1974.3,2431.2,2993.8,3686.5,4539.6,5590.1,6883.6,8476.5,10437.9,12853.3,15827.5,19490,24000],"db":[-8.6,-7.05,-6.48,-7.52,-6.31,-9.46,-6.47,-8.55,-9.86,-16.29,-17.85,-23.53,-22.91,-22.7,-17.38,-24.23,-23.92,-36.03,-34.7,-36.92,-44.72,-60.58,-76.61,-91.68]},"yue.wav":{"role":"Dialect Synthesis: Cantonese","sr":48000,"dur":20.64,"bw":16078,"air":-83.01,"breath":6.9,"freqs":[200,246.3,303.3,373.4,459.9,566.3,697.3,858.7,1057.4,1302,1603.3,1974.3,2431.2,2993.8,3686.5,4539.6,5590.1,6883.6,8476.5,10437.9,12853.3,15827.5,19490,24000],"db":[-25.65,-24.49,-24.91,-26.33,-19.6,-18.49,-21.3,-20.58,-27.44,-25.81,-38.08,-35.72,-38.2,-46.67,-43.49,-55.55,-53.02,-57.89,-47.36,-57.46,-62.34,-75.87,-88.09,-96.02]},"dongbei.wav":{"role":"Dialect Synthesis: Northeastern","sr":48000,"dur":9.12,"bw":15000,"air":-70.8,"breath":18.4,"freqs":[200,246.3,303.3,373.4,459.9,566.3,697.3,858.7,1057.4,1302,1603.3,1974.3,2431.2,2993.8,3686.5,4539.6,5590.1,6883.6,8476.5,10437.9,12853.3,15827.5,19490,24000],"db":[-7.92,-7.87,-9.5,-6.3,-7.07,-15.7,-14.08,-17.76,-26.47,-24.97,-26.15,-27.4,-27.28,-39.33,-26.48,-38.26,-28.56,-31.38,-42.76,-44.29,-55.24,-62.03,-76.29,-93.89]},"ref_speaker.wav":{"role":"Continuation Speaker Ref (16 kHz)","sr":48000,"dur":12.8,"bw":17250,"air":-60.61,"breath":9.1,"freqs":[200,246.3,303.3,373.4,459.9,566.3,697.3,858.7,1057.4,1302,1603.3,1974.3,2431.2,2993.8,3686.5,4539.6,5590.1,6883.6,8476.5,10437.9,12853.3,15827.5,19490,24000],"db":[-22.93,-15.61,-11.89,-10.34,-11.71,-13.48,-7.54,-3.84,-3.45,-6.54,-8.31,-10.23,-18.04,-19.61,-22.88,-30.68,-27.62,-26.24,-34.93,-37.86,-41.54,-52.27,-66.86,-94.45]},"voxcpm_example.wav":{"role":"Legacy Baseline: VoxCPM1.5 (44.1 kHz)","sr":44100,"dur":8.158,"bw":10034,"air":-92.08,"breath":18.4,"freqs":[200,246.3,303.3,373.4,459.9,566.3,697.3,858.7,1057.4,1302,1603.3,1974.3,2431.2,2993.8,3686.5,4539.6,5590.1,6883.6,8476.5,10437.9,12853.3,15827.5,19490,24000],"db":[-0.14,-1.94,-2.88,-5.57,-7.9,-9.68,-12.8,-16.56,-14.07,-16.33,-20.41,-18.99,-17.88,-20.57,-20.88,-20.81,-15.04,-16.67,-18.03,-62.67,-82.7,-90.54,-92.16,null]}};
+    var slider = document.getElementById('tco-slider');
+    var volLabel = document.getElementById('tco-vol-label');
+    var barsEl = document.getElementById('tco-bars');
+    var verdictEl = document.getElementById('tco-verdict');
+
+    function fmtUsd(n) {
+      return '$' + Math.round(n).toLocaleString('en-US');
+    }
+
+    function renderTco(volM) {
+      var hours = Math.round(volM * 55);
+      volLabel.textContent = volM.toLocaleString('en-US') + 'M chars/mo (~' + hours.toLocaleString('en-US') + ' hrs audio)';
+
+      // Azure Standard Neural ($15/1M PAYG, 0.5M free; committed tier ~$11.5/1M above 500M)
+      var azStdUnit = volM >= 500 ? 11.5 : (volM >= 100 ? 13.0 : 15.0);
+      var azStd = Math.max(0, volM - 0.5) * azStdUnit;
+
+      // Azure DragonHDOmni ($30/1M PAYG; committed tier scales to ~$15.06/1M @ 850M -> ~$12,800/mo)
+      var azHdUnit = volM >= 500 ? 15.06 : (volM >= 100 ? 22.0 : 30.0);
+      var azHd = volM * azHdUnit;
+
+      // ElevenLabs Enterprise Scale (~$65/1M blended; $50/1M high-commit Flash/Scale)
+      var elUnit = volM >= 500 ? 50.0 : 68.0;
+      var eleven = volM * elUnit;
+
+      // Self-hosted VoxCPM2 on vLLM-Omni:
+      // 1x L40S/4090 node (~$450/mo infra + ops) handles ~180M chars/mo at 35% avg utilization;
+      // Above 360M chars/mo, HA multi-GPU L40S/H100 pool (~$3,200/mo @ 850M chars/mo including HA & AudioSeal gateway)
+      var gpuNodes = Math.max(1, Math.ceil(volM / 180));
+      var voxSelf = gpuNodes === 1 ? (380 + volM * 1.4) : (gpuNodes * 520 + volM * 0.72);
+
+      var maxCost = Math.max(azStd, azHd, eleven, voxSelf, 1);
+      var rows = [
+        {
+          name: 'Self-Hosted VoxCPM2 (vLLM-Omni · ' + gpuNodes + ' GPU node' + (gpuNodes > 1 ? 's' : '') + ')',
+          cost: voxSelf,
+          unit: (voxSelf / volM).toFixed(2),
+          color: '#38bdf8'
+        },
+        {
+          name: 'Azure AI Speech Standard Neural',
+          cost: azStd,
+          unit: (azStd / volM).toFixed(2),
+          color: '#34d399'
+        },
+        {
+          name: 'Azure AI Speech DragonHDOmni / CNV',
+          cost: azHd,
+          unit: (azHd / volM).toFixed(2),
+          color: '#818cf8'
+        },
+        {
+          name: 'ElevenLabs Commercial Scale',
+          cost: eleven,
+          unit: (eleven / volM).toFixed(2),
+          color: '#f59e0b'
+        }
+      ];
+
+      barsEl.innerHTML = rows.map(function (r) {
+        var pct = Math.max(2, Math.min(100, (r.cost / maxCost) * 100)).toFixed(1);
+        return '<div class="tco-item">' +
+          '<div class="tco-item-top"><span><strong>' + r.name + '</strong></span>' +
+          '<span><strong>' + fmtUsd(r.cost) + '/mo</strong> <span style="color:var(--muted);font-size:11.5px;">($' + r.unit + '/1M)</span></span></div>' +
+          '<div class="tco-track"><div class="tco-fill" style="width:' + pct + '%;background:' + r.color + ';"></div></div>' +
+          '</div>';
+      }).join('');
+
+      var saveVsHd = Math.round((1 - voxSelf / azHd) * 100);
+      if (volM < 18) {
+        verdictEl.innerHTML = '<strong>SA Routing Verdict (Cloud PAYG Sweet Spot):</strong> Below ~18M–25M chars/mo, idle GPU amortization makes self-hosting more expensive than <strong>Microsoft Azure AI Speech PAYG</strong>, which includes native SSML, visemes, and 99.9% SLA.';
+      } else {
+        verdictEl.innerHTML = '<strong>SA Routing Verdict (Hybrid Dual-Track Scale):</strong> At ' + volM.toLocaleString('en-US') + 'M chars/mo, offloading creative cloning &amp; localization to <strong>VoxCPM2 on vLLM-Omni (' + fmtUsd(voxSelf) + '/mo)</strong> saves <strong>' + saveVsHd + '%</strong> vs. Azure DragonHDOmni (' + fmtUsd(azHd) + '/mo), while keeping deterministic SSML &amp; 0.1 ms viseme traffic on Azure Speech.';
+      }
+    }
+
+    slider.addEventListener('input', function () {
+      var v = parseInt(slider.value, 10) || 50;
+      document.querySelectorAll('.preset-btn[data-vol]').forEach(function (b) {
+        b.classList.toggle('active', parseInt(b.getAttribute('data-vol'), 10) === v);
+      });
+      renderTco(v);
+    });
+
+    document.querySelectorAll('.preset-btn[data-vol]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var v = parseInt(btn.getAttribute('data-vol'), 10);
+        slider.value = String(v);
+        document.querySelectorAll('.preset-btn[data-vol]').forEach(function (b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        renderTco(v);
+      });
+    });
+
+    // PSD SVG Renderer
+    var psdSvg = document.getElementById('psd-svg');
+    var psdMeta = document.getElementById('psd-meta-badge');
+    var refPrompt = SAMPLES['style_prompt1.wav'];
+    var refV15 = SAMPLES['voxcpm_example.wav'];
+
+    function xCoord(idx) {
+      return 52 + (idx / 23) * 564;
+    }
+    function yCoord(db) {
+      var clamped = Math.max(-100, Math.min(10, db));
+      return 24 + ((10 - clamped) / 110) * 204;
+    }
+    function buildPolyline(arr) {
+      var pts = [];
+      for (var i = 0; i < arr.length; i++) {
+        if (arr[i] !== null && arr[i] !== undefined) {
+          pts.push(xCoord(i).toFixed(1) + ',' + yCoord(arr[i]).toFixed(1));
+        }
+      }
+      return pts.join(' ');
+    }
+
+    function renderPsd(wavKey) {
+      var cur = SAMPLES[wavKey] || SAMPLES['style_result1_1.wav'];
+      psdMeta.textContent = cur.sr.toLocaleString('en-US') + ' Hz · BW ' + cur.bw.toLocaleString('en-US') + ' Hz · ' + cur.dur.toFixed(2) + 's';
+
+      var grid = '';
+      [-90, -60, -30, 0].forEach(function (db) {
+        var y = yCoord(db).toFixed(1);
+        grid += '<line x1="52" y1="' + y + '" x2="616" y2="' + y + '" stroke="#1e293b" stroke-width="1"/>';
+        grid += '<text x="44" y="' + (parseFloat(y) + 4).toFixed(1) + '" text-anchor="end" fill="#64748b" font-size="10">' + db + ' dB</text>';
+      });
+
+      var freqTicks = [
+        [0, '200Hz'],
+        [7, '1kHz'],
+        [14, '4.5kHz'],
+        [19, '12kHz'],
+        [23, '24kHz']
+      ];
+      freqTicks.forEach(function ( pair ) {
+        var x = xCoord(pair[0]).toFixed(1);
+        grid += '<line x1="' + x + '" y1="24" x2="' + x + '" y2="228" stroke="#17253b" stroke-width="1"/>';
+        grid += '<text x="' + x + '" y="246" text-anchor="middle" fill="#94a3b8" font-size="10">' + pair[1] + '</text>';
+      });
+
+      var nyq12x = xCoord(19.3).toFixed(1);
+      var cutoff = '<line x1="' + nyq12x + '" y1="24" x2="' + nyq12x + '" y2="228" stroke="#f59e0b" stroke-dasharray="4,3" stroke-width="1.2"/>' +
+        '<text x="' + (parseFloat(nyq12x) - 6).toFixed(1) + '" y="36" text-anchor="end" fill="#fbbf24" font-size="9.5">12 kHz Ref Nyquist</text>';
+
+      psdSvg.innerHTML =
+        '<rect width="640" height="270" fill="#07111f"/>' +
+        grid +
+        cutoff +
+        '<polyline fill="none" stroke="#64748b" stroke-width="1.8" stroke-dasharray="3,3" points="' + buildPolyline(refV15.db) + '"/>' +
+        '<polyline fill="none" stroke="#f59e0b" stroke-width="2" stroke-dasharray="6,4" points="' + buildPolyline(refPrompt.db) + '"/>' +
+        '<polyline fill="none" stroke="#38bdf8" stroke-width="2.8" points="' + buildPolyline(cur.db) + '"/>' +
+        '<text x="54" y="264" fill="#cbd5e1" font-size="10.5">' + wavKey + ' (' + cur.role + ') · 16-24 kHz: ' + (cur.air !== null ? cur.air + ' dB' : 'N/A') + '</text>';
+    }
+
+    document.querySelectorAll('#psd-sample-buttons .preset-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        document.querySelectorAll('#psd-sample-buttons .preset-btn').forEach(function (b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        renderPsd(btn.getAttribute('data-wav'));
+      });
+    });
+
+    renderTco(50);
+    renderPsd('style_result1_1.wav');
+  })();
+  </script>
+</body>
+</html>

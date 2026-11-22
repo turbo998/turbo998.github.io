@@ -11,9 +11,14 @@ const readingSimulatorScroll = {
   'workshops/faf-vs-agent-forge/demo-agent-forge-pelican.html': [{selector:'#doc-box',reason:'Preserved simulator document/code artifact inspector; reading manifest dedicated-design exception.'}],
   'workshops/faf-vs-agent-forge/demo-faf-pelican.html': [{selector:'#doc-box',reason:'Preserved simulator document/code artifact inspector; reading manifest dedicated-design exception.'}],
   'workshops/faf-vs-agent-forge/demo-hve-pelican.html': [{selector:'#artifactContent',reason:'Preserved generated implementation-notes inspector; reading manifest dedicated-design exception.'}],
-  'workshops/data-lab/demos/tcl-fabric/index.html': [{selector:'#telemetryDrawer',reason:'Interactive live telemetry & KQL trace drawer.'},{selector:'.code-block',reason:'Bounded SQL/KQL/JSON protocol payload inspector.'}],
+  'workshops/data-lab/demos/contoso-fabric/index.html': [{selector:'#telemetryDrawer',reason:'Interactive live telemetry & KQL trace drawer.'},{selector:'.code-block',reason:'Bounded SQL/KQL/JSON protocol payload inspector.'}],
+  'workshops/data-lab/demos/contoso-fabric/index.en.html': [{selector:'#telemetryDrawer',reason:'Interactive live telemetry & KQL trace drawer.'},{selector:'.code-block',reason:'Bounded SQL/KQL/JSON protocol payload inspector.'}],
+  'workshops/data-lab/demos/contoso-fabric/fabric-studio.html': [{selector:'#wsItemsTableCard',reason:'Workspace items explorer pane inside simulated Fabric Studio console.'}],
+  'workshops/data-lab/demos/contoso-fabric/fabric-studio.en.html': [{selector:'#wsItemsTableCard',reason:'Workspace items explorer pane inside simulated Fabric Studio console.'}],
   'workshops/diamond-demos/contoso-fabric/index.html': [{selector:'#telemetryDrawer',reason:'Interactive live telemetry & KQL trace drawer.'},{selector:'.code-block',reason:'Bounded SQL/KQL/JSON protocol payload inspector.'}],
-  'workshops/diamond-demos/contoso-fabric/fabric-studio.html': [{selector:'#wsItemsTableCard',reason:'Workspace items explorer pane inside simulated Fabric Studio console.'}]
+  'workshops/diamond-demos/contoso-fabric/index.en.html': [{selector:'#telemetryDrawer',reason:'Interactive live telemetry & KQL trace drawer.'},{selector:'.code-block',reason:'Bounded SQL/KQL/JSON protocol payload inspector.'}],
+  'workshops/diamond-demos/contoso-fabric/fabric-studio.html': [{selector:'#wsItemsTableCard',reason:'Workspace items explorer pane inside simulated Fabric Studio console.'}],
+  'workshops/diamond-demos/contoso-fabric/fabric-studio.en.html': [{selector:'#wsItemsTableCard',reason:'Workspace items explorer pane inside simulated Fabric Studio console.'}]
 };
 const runtimeFragments = Object.fromEntries(['animation', 'generative-visual-lab'].flatMap(directory => ['index.html', 'index.en.html'].map(name => [`${directory}/demos/knowledge-explainer-studio/${name}`, {'tpl-mcp':'xiaozhe-mcp-node-graph','tpl-rag':'xiaozhe-rag-pipeline-flow','tpl-finops':'chimp-deepseek-unit-economics'}])));
 const root = path.join(__dirname, '..');
