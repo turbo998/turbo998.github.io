@@ -8908,6 +8908,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r744File),'utf8');
       assert.ok(txt.includes('4,100.00')&&txt.includes('4,400.00')&&txt.includes('8,500.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,190.00')&&txt.includes('96.35%')&&txt.includes('not_measured'),r744File+': contains exact 11-22 R8 R744 direx+deepaa+synapass+deepresearch closed-form parameters');
     }
+    // 2026-11-22 Night Round 9 (R745 Milestone: Riley-Coyote/mnemos-mcp + Elio896/dsh-familiar-memory + YudiG12/second-brain-mcp + ai-gateways/awesome-ai-gateways) verification
+    const r745PathA=4050.00+44.0*100.00;
+    assert.equal(r745PathA.toFixed(2),'8450.00','11-22 R9 R745 Path A total');
+    const r745PathC=65.00+2.4*100.00;
+    assert.equal(r745PathC.toFixed(2),'305.00','11-22 R9 R745 Path C total');
+    assert.equal((r745PathA-r745PathC).toFixed(2),'8145.00','11-22 R9 R745 savings vs Path A');
+    assert.equal(((r745PathA-r745PathC)/r745PathA*100).toFixed(2),'96.39','11-22 R9 R745 pct savings vs Path A');
+    for(const r745File of ['workshops/github-trending-radar/docs/mnemos-mcp-familiar-memory-second-brain-ai-gateways-selection-faq.md','workshops/github-trending-radar/docs/mnemos-mcp-familiar-memory-second-brain-ai-gateways-selection-faq.en.md','assets/github-ai-radar-2026-11-22-r9-r745-mnemos-familiarmemory-secondbrain-aigateways.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-22-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r745File),'utf8');
+      assert.ok(txt.includes('4,050.00')&&txt.includes('4,400.00')&&txt.includes('8,450.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('8,145.00')&&txt.includes('96.39%')&&txt.includes('not_measured'),r745File+': contains exact 11-22 R9 R745 mnemos+familiarmemory+secondbrain+aigateways closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
