@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; media-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src 'self' https://login.microsoftonline.com https://*.azuredatabricks.net; frame-src 'self' https://*.azuredatabricks.net https://login.microsoftonline.com; object-src 'none'; base-uri 'self';" />
+  <title>Viking Cruises Phase-2 AI Revenue &amp; Service Closed-Loop Cockpit — Azure Databricks Showcase</title>
+  <meta name="description" content="Diamond Enterprise Live Demo 03: Building on Viking Cruises Phase-1 NCR and Customer Service Lakehouse with China 21V HMAC-SHA256 zero-PII tokenization and Azure Global HK Databricks (Unity Catalog + AI/BI Dashboards + Genie + Agent Bricks), featuring normal-browser B2B launch and in-page embedding." />
+  <link rel="stylesheet" href="styles.css" />
+<style id="site-remediation-style">/* Embedded by integrate-dedicated.cjs so sealed report CSP remains unchanged. */
+.kee-dedicated-nav {
+  all: initial; box-sizing: border-box; position: relative; display: flex;
+  flex-wrap: wrap; align-items: center; gap: 6px 14px; width: 100%;
+  padding: 12px 18px; margin: 0 0 16px; border: 1px solid #314361;
+  background: #101A30; color: #EEF3FF; font: 13px/1.5 system-ui, sans-serif;
+  text-align: left; isolation: isolate; color-scheme: dark;
+}
+.kee-dedicated-nav a {
+  all: revert; box-sizing: border-box; display: inline-block; padding: 4px 0;
+  color: #9AABFF; background: transparent; font: inherit; text-decoration: underline;
+  text-underline-offset: 3px; border: 0; border-radius: 0; box-shadow: none;
+}
+.kee-dedicated-nav a:focus-visible { outline: 3px solid #56DDCD; outline-offset: 3px; }
+.kee-dedicated-nav .kee-dedicated-identity { font-weight: 700; color: #EEF3FF; }
+.kee-dedicated-nav .kee-dedicated-language {
+  all: revert; display: block; flex-basis: 100%; color: #ADBBD1; font: 12px/1.5 system-ui, sans-serif;
+}
+.kee-dedicated-native-link { display: block; padding: 22px; color: #1858a8; background: #f8fafc; font: 15px/1.6 system-ui, sans-serif; }
+.kee-dedicated-native-link a { color: #1858a8; text-decoration: underline; }
+@media print { .kee-dedicated-nav { display: none; } }
+
+/* Professional primary navigation: long section names reflow, never scroll inside the header. */
+[data-professional-header]{box-sizing:border-box;display:grid!important;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:18px!important;width:100%;max-width:none;height:auto!important;min-height:0!important;padding:18px 24px!important;margin:0 0 16px;position:relative;overflow:visible!important;background:#101A30;color:#EEF3FF;border:1px solid #314361;font:13px/1.5 system-ui,sans-serif;isolation:isolate;color-scheme:dark}
+[data-professional-header] *{box-sizing:border-box;min-width:0;max-height:none}
+[data-professional-header] a{font:inherit;text-decoration:none;color:#9AABFF;overflow-wrap:anywhere;white-space:normal}
+[data-professional-header] .professional-identity{font-weight:750;color:#EEF3FF;white-space:nowrap;font-size:14px;margin:0}
+[data-professional-header] .professional-primary{display:grid;grid-template-columns:1.45fr repeat(5,minmax(0,1fr));gap:6px;align-items:stretch;min-width:0}
+@media(max-width:960px) and (min-width:601px){[data-professional-header] .professional-primary{gap:5px}[data-professional-header] .professional-primary a{padding:8px 6px;font-size:11.5px}}
+[data-professional-header] .professional-primary a{display:flex;align-items:center;justify-content:center;padding:10px 9px;border:1px solid #314361;border-radius:12px;background:#172440;text-align:center;line-height:1.4;min-height:44px}
+[data-professional-header] .professional-primary a[aria-current=page]{background:#23375a;border-color:#56DDCD;color:#56DDCD}
+[data-professional-header] .professional-controls{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:4px;font-size:12px;margin:0;position:static}
+[data-professional-header] .professional-controls>a{display:flex;align-items:center;justify-content:center;padding:8px;min-height:40px;min-width:32px;border-radius:10px}
+[data-professional-header] .professional-context{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px 18px;padding-top:12px;border-top:1px solid #314361;font-size:12px;color:#ADBBD1;min-width:0;line-height:1.6}
+[data-professional-header] .professional-context>*{min-width:0;overflow-wrap:anywhere}
+[data-professional-header] .professional-context .kee-dedicated-language{flex-basis:100%;color:#ADBBD1}
+[data-professional-header] a:focus-visible{outline:3px solid #56DDCD;outline-offset:3px}
+[data-professional-header] a:hover{text-decoration:underline}
+[data-professional-header][data-perimeter-theme=light],:root[data-theme=light] .reading-header[data-professional-header]{background:#fff;color:#172440;border-color:#d4deee;color-scheme:light}
+[data-professional-header][data-perimeter-theme=light] a,:root[data-theme=light] .reading-header[data-professional-header] a{color:#3752a0}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a,:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a{background:#edf2ff;border-color:#d4deee}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a[aria-current],:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a[aria-current]{background:#dff6f0;color:#127b72;border-color:#127b72}
+@media(max-width:1150px){[data-professional-header]{grid-template-columns:minmax(0,1fr) auto;gap:12px!important}[data-professional-header] .professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header] .professional-controls{grid-column:2;grid-row:1}}
+@media(max-width:600px){[data-professional-header]{padding:14px 16px!important;gap:12px!important}[data-professional-header] .professional-primary{grid-template-columns:repeat(2,minmax(0,1fr))}[data-professional-header] .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:13px}[data-professional-header] .professional-controls{gap:0}[data-professional-header] .professional-controls>a{padding:6px;min-width:28px}}
+@media print{[data-professional-header]{display:none!important}}
+
+html{scroll-padding-top:164px}@media(max-width:600px){html{scroll-padding-top:260px}}.reading-header,.kee-dedicated-nav,[data-professional-header]{position:sticky;top:0;z-index:1000;-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
+
+:root{--search-bg:#101a30;--search-soft:#172440;--search-ink:#eef3ff;--search-muted:#adbbd1;--search-line:#293956;--search-accent:#9aabff;--header-offset:144px}
+:root[data-reading-shell][data-theme=light],[data-perimeter-theme=light]{--search-bg:#fff;--search-soft:#e8eefb;--search-ink:#17233e;--search-muted:#4c5e7c;--search-line:#d5ddec;--search-accent:#354ec8}
+html{scroll-padding-top:var(--header-offset,108px)!important}
+.site-search,.site-search *{box-sizing:border-box!important;font-family:"Segoe UI",sans-serif;letter-spacing:normal;text-transform:none}
+.site-search{position:relative;display:flex;align-items:center;gap:5px;min-width:0;width:230px;max-width:100%;margin:0!important;padding:0!important;line-height:1.4;border:1px solid var(--search-line);border-radius:9px;background:var(--search-soft);color:var(--search-ink);isolation:isolate}
+.site-search input[type=search]{display:block;flex:1;min-width:0;width:100%;height:42px;margin:0;padding:9px 8px!important;font-size:12px!important;line-height:1.5;border:0!important;border-radius:9px;background:transparent!important;color:var(--search-ink)!important;box-shadow:none!important;appearance:none}
+.site-search input::placeholder{color:var(--search-muted);opacity:1}.site-search input:focus-visible{outline:2px solid var(--search-accent);outline-offset:2px}
+.site-search kbd{font:11px Consolas,monospace;color:var(--search-muted);padding:1px 5px;border:1px solid var(--search-line);border-radius:4px}
+.site-search button[type=submit]{flex:none;width:38px;min-width:38px;height:42px;min-height:42px;padding:0;margin:0;border:0;border-radius:8px;background:transparent;color:var(--search-accent);font-size:24px;cursor:pointer;box-shadow:none}
+.search-label,.search-status{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.site-search .search-results{position:absolute;top:calc(100% + 10px);right:0;z-index:1100;width:min(480px,calc(100vw - 32px));max-height:min(560px,65vh);overflow-y:auto;border:1px solid var(--search-line);border-radius:12px;background:var(--search-bg);color:var(--search-ink);padding:10px;box-shadow:0 12px 32px #0005;text-align:left}
+.site-search .search-results[hidden]{display:none!important}.search-results .search-group{margin:8px 6px 4px;font:11px/1.5 Consolas,monospace;color:var(--search-muted)}
+.site-search .search-results a{display:block!important;padding:10px!important;margin:3px 0!important;border:1px solid transparent!important;border-radius:7px;background:transparent;color:var(--search-ink)!important;font-size:13px!important;text-decoration:none!important;white-space:normal;overflow-wrap:anywhere;text-align:left!important;line-height:1.5!important}
+.site-search .search-results a[aria-selected=true],.site-search .search-results a:hover{border-color:var(--search-accent)!important;background:var(--search-soft)}
+.search-results a small{display:block;font-size:10px;color:var(--search-muted);margin-top:4px}.search-results p{margin:10px;font-size:13px;color:var(--search-muted)}
+.search-archive-summary{padding:20px;border:1px solid var(--search-line);border-radius:10px;background:var(--search-bg);color:var(--search-ink);margin:24px 0}.search-archive-summary h2{font-size:24px;margin:0 0 12px}.search-archive-summary li{margin:12px 0}.search-archive-summary a{color:var(--search-accent)}
+[data-professional-header]{position:sticky!important;top:0!important;z-index:1000!important;background:var(--search-bg)!important;--header-glass:rgba(16,26,48,.9);grid-template-columns:auto minmax(0,1fr) 230px auto!important}
+[data-professional-header][data-perimeter-theme=light],:root[data-reading-shell][data-theme=light] [data-professional-header]{--header-glass:rgba(255,255,255,.94)}
+[data-professional-header] .professional-mobile{display:none}.professional-mobile summary{min-width:38px;min-height:42px;display:grid;place-items:center;cursor:pointer;list-style:none}.professional-mobile summary::-webkit-details-marker{display:none}
+[data-professional-header] .professional-context{display:none}
+.professional-context-bar{padding:12px 24px;border-bottom:1px solid var(--search-line);background:var(--search-bg);color:var(--search-muted);font:12px/1.6 "Segoe UI",sans-serif;display:flex;flex-wrap:wrap;gap:8px 18px;overflow-wrap:anywhere}.professional-context-bar a{color:var(--search-accent)}
+@supports((backdrop-filter:blur(16px)) or (-webkit-backdrop-filter:blur(16px))){.site-header,[data-professional-header]{background:var(--header-glass)!important;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}}
+@media(max-width:1250px) and (min-width:701px){.header-inner{grid-template-columns:minmax(0,1fr) 230px auto!important;padding:12px 0;gap:12px!important}.desktop-nav{grid-row:2;grid-column:1/-1}.header-inner>.site-search{grid-column:2;grid-row:1}.header-inner>.controls{grid-column:3;grid-row:1}[data-professional-header]{grid-template-columns:minmax(0,1fr) 230px auto!important;gap:12px!important}[data-professional-header]>.professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header]>.site-search{grid-column:2;grid-row:1}[data-professional-header]>.professional-controls{grid-column:3;grid-row:1}:root{--header-offset:184px}}
+@media(max-width:700px){.header-inner{grid-template-columns:minmax(0,1fr) auto!important;padding:10px 0;gap:8px!important}.header-inner>.site-search{grid-row:2;grid-column:1/-1;width:100%}.header-inner>.controls{grid-column:2;grid-row:1}.site-search .search-results{width:100%;right:0}[data-professional-header]{grid-template-columns:minmax(0,1fr) auto!important;padding:10px 16px!important;gap:8px!important}[data-professional-header]>.professional-primary{display:none!important}[data-professional-header]>.site-search{grid-column:1/-1;grid-row:2;width:100%}[data-professional-header]>.professional-controls{grid-column:2;grid-row:1}[data-professional-header] .professional-mobile{display:block}[data-professional-header] .professional-mobile[open]>.professional-primary{position:absolute;top:100%;left:0;right:0;padding:16px;background:var(--search-bg);border-bottom:1px solid var(--search-line);display:grid;grid-template-columns:1fr 1fr;gap:8px}[data-professional-header] .professional-mobile .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:12px!important}:root{--header-offset:136px}}
+@media(prefers-reduced-transparency:reduce){.site-header,[data-professional-header]{background:var(--search-bg)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}}
+@media print{.site-search,.professional-context-bar{display:none!important}}
+
+@media(min-width:1251px){.header-inner{display:grid!important;grid-template-columns:auto minmax(0,1fr) 230px auto!important;gap:18px!important}.header-inner .desktop-nav{min-width:0}}
+
+html:has(.kee-dedicated-app-root){height:auto!important;overflow-x:hidden!important;overflow-y:auto!important}
+body:has([data-professional-header]){height:auto!important;overflow-x:clip!important;overflow-y:visible!important;padding-top:0!important}
+.demo-language-navigation{display:none!important}
+.stage-column,.telemetry-panel,.scene-pill,#timeline-slider{min-width:0}
+@media(max-width:1180px){.workspace,.template-tabs{grid-template-columns:minmax(0,1fr)!important}}
+
+.in-arena-frame .professional-context-bar,.in-arena-frame [data-knowledge-atlas]{display:none!important}
+.knowledge-graph-wide{display:block}.knowledge-graph-compact{display:none}@media(max-width:600px){.knowledge-graph-wide{display:none}.knowledge-graph-compact{display:block}}
+</style><script src="../../../assets/editorial/search-index.js" defer></script><script src="../../../assets/editorial/search.js" defer></script></head>
+<body><nav class="kee-dedicated-nav" data-professional-header><a class="professional-identity reading-brand kee-dedicated-identity identity" href="../../../index.html">Qi Chen · @turbo998</a><div class="professional-primary" role="navigation" aria-label="Primary sections"><a href="../../../studio/index.html" data-section="hub" data-nav-en-href="../../../studio/index.html" data-nav-zh-href="../../../studio/zh-index.html" data-nav-en-label="Frontier Transformation Engineering Hub" data-nav-zh-label="Frontier Transformation Engineering Hub">Frontier Transformation Engineering Hub</a><a href="../../../diamond.html" data-section="diamond" data-nav-en-href="../../../diamond.html" data-nav-zh-href="../../../zh-diamond.html" data-nav-en-label="Diamond Live Demos" data-nav-zh-label="Diamond 实战演示" aria-current="page">Diamond Live Demos</a><a href="../../../benchmarks.html" data-section="benchmarks" data-nav-en-href="../../../benchmarks.html" data-nav-zh-href="../../../zh-benchmarks.html" data-nav-en-label="Benchmark &amp; Eval Foundry" data-nav-zh-label="基准评测中心">Benchmark &amp; Eval Foundry</a><a href="../../../github-radar.html" data-section="radar" data-nav-en-href="../../../github-radar.html" data-nav-zh-href="../../../zh-github-radar.html" data-nav-en-label="GitHub AI Signal Radar" data-nav-zh-label="GitHub AI 信号雷达">GitHub AI Signal Radar</a><a href="../../../openrouter.html" data-section="routing" data-nav-en-href="../../../openrouter.html" data-nav-zh-href="../../../zh-openrouter.html" data-nav-en-label="Model Routing &amp; Telemetry" data-nav-zh-label="OpenRouter 模型遥测">Model Routing &amp; Telemetry</a><a href="../../../about.html" data-section="profile" data-nav-en-href="../../../about.html" data-nav-zh-href="../../../zh-about.html" data-nav-en-label="Frontier Transformation Engineer" data-nav-zh-label="Frontier Transformation Engineer">Frontier Transformation Engineer</a></div><form class="site-search" role="search" action="../../../studio/archive.html" method="get" data-search-root="../../../index.html" data-search-language="en"><label class="search-label" for="site-search-input">Search architecture, benchmarks, demos...</label><input id="site-search-input" name="q" type="search" placeholder="Search architecture, benchmarks, demos..." autocomplete="off" spellcheck="false" aria-keyshortcuts="/ Control+k Meta+k"><kbd aria-hidden="true">/</kbd><button type="submit" aria-label="Search all content">⌕</button><div class="search-results" id="site-search-results" hidden></div><span class="search-status" role="status" aria-live="polite"></span></form><div class="reading-controls professional-controls" aria-label="Site language and appearance"><a href="index.en.html" hreflang="en" lang="en" aria-current="page">EN</a><a href="index.html" data-reading-language hreflang="zh-CN" lang="zh-CN">中文</a><details class="professional-mobile"><summary aria-label="Open navigation">☰</summary><div class="professional-primary" role="navigation" aria-label="Mobile navigation"><a href="../../../studio/index.html" data-section="hub" data-nav-en-href="../../../studio/index.html" data-nav-zh-href="../../../studio/zh-index.html" data-nav-en-label="Frontier Transformation Engineering Hub" data-nav-zh-label="Frontier Transformation Engineering Hub">Frontier Transformation Engineering Hub</a><a href="../../../diamond.html" data-section="diamond" data-nav-en-href="../../../diamond.html" data-nav-zh-href="../../../zh-diamond.html" data-nav-en-label="Diamond Live Demos" data-nav-zh-label="Diamond 实战演示" aria-current="page">Diamond Live Demos</a><a href="../../../benchmarks.html" data-section="benchmarks" data-nav-en-href="../../../benchmarks.html" data-nav-zh-href="../../../zh-benchmarks.html" data-nav-en-label="Benchmark &amp; Eval Foundry" data-nav-zh-label="基准评测中心">Benchmark &amp; Eval Foundry</a><a href="../../../github-radar.html" data-section="radar" data-nav-en-href="../../../github-radar.html" data-nav-zh-href="../../../zh-github-radar.html" data-nav-en-label="GitHub AI Signal Radar" data-nav-zh-label="GitHub AI 信号雷达">GitHub AI Signal Radar</a><a href="../../../openrouter.html" data-section="routing" data-nav-en-href="../../../openrouter.html" data-nav-zh-href="../../../zh-openrouter.html" data-nav-en-label="Model Routing &amp; Telemetry" data-nav-zh-label="OpenRouter 模型遥测">Model Routing &amp; Telemetry</a><a href="../../../about.html" data-section="profile" data-nav-en-href="../../../about.html" data-nav-zh-href="../../../zh-about.html" data-nav-en-label="Frontier Transformation Engineer" data-nav-zh-label="Frontier Transformation Engineer">Frontier Transformation Engineer</a></div></details><a data-reading-theme="light" href="index.en.html?theme=light" aria-label="Light theme">☀</a><a data-reading-theme="dark" href="index.en.html?theme=dark" aria-label="Dark theme">◐</a></div><div class="professional-context" aria-label="Back to context"><a href="../../../studio/index.html">← Engineering Hub</a> · <a href="../../../studio/data-infra.html">Parent topic</a></div></nav><div class="professional-context-bar"><a href="../../../studio/index.html">← Engineering Hub</a> · <a class="reading-context" href="../../../studio/data-infra.html">Parent topic</a></div><!-- site-remediation-knowledge:start --><figure class="knowledge-figure" data-knowledge-atlas="data-infra" style="margin:20px auto;max-width:1120px;padding:0 20px;box-sizing:border-box"><style>.knowledge-graph-wide{display:block}.knowledge-graph-compact{display:none}@media(max-width:600px){.knowledge-graph-wide{display:none}.knowledge-graph-compact{display:block}}</style><svg xmlns="http://www.w3.org/2000/svg" lang="en" class="knowledge-graph-compact" role="img" aria-labelledby="knowledge-b7d35c7ab740-compact-title knowledge-b7d35c7ab740-compact-desc" viewBox="0 0 360 1016" width="360" style="width:100%;height:auto;max-width:560px;margin:0 auto;font-family:system-ui,sans-serif"><title id="knowledge-b7d35c7ab740-compact-title">Viking Cruises Phase-2 AI Revenue &amp; Service Closed-Loop Cockpit — Azure Databricks Showcase</title><desc id="knowledge-b7d35c7ab740-compact-desc">Enterprise sources &amp; ingestion: ERP / POS / IoT · Eventhouse KQL · Change feeds → grounds open lakehouse → OneLake &amp; Databricks Mirroring: Shared Delta Parquet · Unity Catalog · 0-DBU Direct Lake → binds business ontology → Fabric IQ &amp; Cross-Cloud Choice: TCL &amp; Zava PoCs · vs Snowflake / BigQuery / Redshift → isolates agent execution → Isolated agent sandboxes: ACA Dynamic Sessions · AKS MicroVM · E2B VMSS → governs unit economics → Cloud &amp; Session FinOps: Capacity pooling · VM modernization · TCO verification</desc><rect width="360" height="1016" rx="16" fill="#081525" stroke="#284566"/><rect x="16" y="14" width="224" height="22" rx="11" fill="#112844" stroke="#2d5a88"/><text x="28" y="29" fill="#56ddcd" font-size="11.5" font-weight="700"><tspan x="28" dy="0">DATA FLOW &amp; ARCHITECTURE</tspan></text><text x="20" y="58" fill="#eef5ff" font-size="18" font-weight="700"><tspan x="20" dy="0">Viking Cruises Phase-2 AI</tspan><tspan x="20" dy="25.2">Revenue &amp; Service Closed-Loop</tspan><tspan x="20" dy="25.2">Cockpit — Azure Databricks</tspan><tspan x="20" dy="25.2">Showcase</tspan></text><text x="20" y="158" fill="#a9b8ce" font-size="12.5" font-weight="400"><tspan x="20" dy="0">Conceptual data flow · arrows show stage handoffs</tspan></text><g data-concept="1"><rect x="16" y="180" width="328" height="136" rx="12" fill="#0e2036" stroke="#38597d"/><rect x="16" y="180" width="328" height="4" rx="2" fill="#38bdf8"/><text x="30" y="203" fill="#38bdf8" font-size="11.5" font-weight="700"><tspan x="30" dy="0">01 · INGRESS</tspan></text><text x="30" y="226" fill="#f0f6ff" font-size="16.5" font-weight="700"><tspan x="30" dy="0">Enterprise sources &amp;</tspan><tspan x="30" dy="23.099999999999998">ingestion</tspan></text><text x="30" y="276" fill="#c4d5e8" font-size="13" font-weight="400"><tspan x="30" dy="0">ERP / POS / IoT · Eventhouse KQL ·</tspan><tspan x="30" dy="18.2">Change feeds</tspan></text></g><g data-relationship="grounds open lakehouse"><path d="M34 318 V356" fill="none" stroke="#56ddcd" stroke-width="2.2"/><path d="M29 350 L34 357 L39 350" fill="none" stroke="#56ddcd" stroke-width="2.2"/><text x="50" y="340" fill="#8eeadf" font-size="12.5" font-weight="600"><tspan x="50" dy="0">01→02 grounds open lakehouse</tspan></text></g><g data-concept="2"><rect x="16" y="362" width="328" height="136" rx="12" fill="#122842" stroke="#38597d"/><rect x="16" y="362" width="328" height="4" rx="2" fill="#34d399"/><text x="30" y="385" fill="#34d399" font-size="11.5" font-weight="700"><tspan x="30" dy="0">02 · GROUNDING</tspan></text><text x="30" y="408" fill="#f0f6ff" font-size="16.5" font-weight="700"><tspan x="30" dy="0">OneLake &amp; Databricks</tspan><tspan x="30" dy="23.099999999999998">Mirroring</tspan></text><text x="30" y="458" fill="#c4d5e8" font-size="13" font-weight="400"><tspan x="30" dy="0">Shared Delta Parquet · Unity Catalog</tspan><tspan x="30" dy="18.2">· 0-DBU Direct Lake</tspan></text></g><g data-relationship="binds business ontology"><path d="M34 500 V538" fill="none" stroke="#56ddcd" stroke-width="2.2"/><path d="M29 532 L34 539 L39 532" fill="none" stroke="#56ddcd" stroke-width="2.2"/><text x="50" y="522" fill="#8eeadf" font-size="12.5" font-weight="600"><tspan x="50" dy="0">02→03 binds business ontology</tspan></text></g><g data-concept="3"><rect x="16" y="544" width="328" height="136" rx="12" fill="#0e2036" stroke="#38597d"/><rect x="16" y="544" width="328" height="4" rx="2" fill="#a78bfa"/><text x="30" y="567" fill="#a78bfa" font-size="11.5" font-weight="700"><tspan x="30" dy="0">03 · POLICY GATE</tspan></text><text x="30" y="590" fill="#f0f6ff" font-size="16.5" font-weight="700"><tspan x="30" dy="0">Fabric IQ &amp; Cross-Cloud</tspan><tspan x="30" dy="23.099999999999998">Choice</tspan></text><text x="30" y="640" fill="#c4d5e8" font-size="13" font-weight="400"><tspan x="30" dy="0">TCL &amp; Zava PoCs · vs Snowflake /</tspan><tspan x="30" dy="18.2">BigQuery / Redshift</tspan></text></g><g data-relationship="isolates agent execution"><path d="M34 682 V720" fill="none" stroke="#56ddcd" stroke-width="2.2"/><path d="M29 714 L34 721 L39 714" fill="none" stroke="#56ddcd" stroke-width="2.2"/><text x="50" y="704" fill="#8eeadf" font-size="12.5" font-weight="600"><tspan x="50" dy="0">03→04 isolates agent execution</tspan></text></g><g data-concept="4"><rect x="16" y="726" width="328" height="113" rx="12" fill="#122842" stroke="#38597d"/><rect x="16" y="726" width="328" height="4" rx="2" fill="#f59e0b"/><text x="30" y="749" fill="#f59e0b" font-size="11.5" font-weight="700"><tspan x="30" dy="0">04 · EXECUTION</tspan></text><text x="30" y="772" fill="#f0f6ff" font-size="16.5" font-weight="700"><tspan x="30" dy="0">Isolated agent sandboxes</tspan></text><text x="30" y="799" fill="#c4d5e8" font-size="13" font-weight="400"><tspan x="30" dy="0">ACA Dynamic Sessions · AKS MicroVM ·</tspan><tspan x="30" dy="18.2">E2B VMSS</tspan></text></g><g data-relationship="governs unit economics"><path d="M34 841 V879" fill="none" stroke="#56ddcd" stroke-width="2.2"/><path d="M29 873 L34 880 L39 873" fill="none" stroke="#56ddcd" stroke-width="2.2"/><text x="50" y="863" fill="#8eeadf" font-size="12.5" font-weight="600"><tspan x="50" dy="0">04→05 governs unit economics</tspan></text></g><g data-concept="5"><rect x="16" y="885" width="328" height="113" rx="12" fill="#0e2036" stroke="#38597d"/><rect x="16" y="885" width="328" height="4" rx="2" fill="#56ddcd"/><text x="30" y="908" fill="#56ddcd" font-size="11.5" font-weight="700"><tspan x="30" dy="0">05 · AUDIT &amp; EVAL</tspan></text><text x="30" y="931" fill="#f0f6ff" font-size="16.5" font-weight="700"><tspan x="30" dy="0">Cloud &amp; Session FinOps</tspan></text><text x="30" y="958" fill="#c4d5e8" font-size="13" font-weight="400"><tspan x="30" dy="0">Capacity pooling · VM modernization</tspan><tspan x="30" dy="18.2">· TCO verification</tspan></text></g></svg><svg xmlns="http://www.w3.org/2000/svg" lang="en" class="knowledge-graph-wide" role="img" aria-labelledby="knowledge-b7d35c7ab740-title knowledge-b7d35c7ab740-desc" viewBox="0 0 1080 462" width="1080" style="width:100%;height:auto;max-width:1080px;margin:0 auto;font-family:system-ui,sans-serif"><title id="knowledge-b7d35c7ab740-title">Viking Cruises Phase-2 AI Revenue &amp; Service Closed-Loop Cockpit — Azure Databricks Showcase</title><desc id="knowledge-b7d35c7ab740-desc">Enterprise sources &amp; ingestion: ERP / POS / IoT · Eventhouse KQL · Change feeds → grounds open lakehouse → OneLake &amp; Databricks Mirroring: Shared Delta Parquet · Unity Catalog · 0-DBU Direct Lake → binds business ontology → Fabric IQ &amp; Cross-Cloud Choice: TCL &amp; Zava PoCs · vs Snowflake / BigQuery / Redshift → isolates agent execution → Isolated agent sandboxes: ACA Dynamic Sessions · AKS MicroVM · E2B VMSS → governs unit economics → Cloud &amp; Session FinOps: Capacity pooling · VM modernization · TCO verification</desc><rect width="1080" height="462" rx="16" fill="#081525" stroke="#284566"/><rect x="24" y="16" width="292" height="24" rx="12" fill="#102742" stroke="#2d5a88"/><text x="38" y="32" fill="#56ddcd" font-size="11.5" font-weight="700"><tspan x="38" dy="0">DATA FLOW &amp; KEY TAKEAWAYS ARCHITECTURE</tspan></text><rect x="646" y="16" width="196" height="24" rx="12" fill="#0d2238" stroke="#254b6e"/><text x="660" y="32" fill="#7ce8d8" font-size="11.5" font-weight="600"><tspan x="660" dy="0">──▶ Stage Data &amp; Context Flow</tspan></text><rect x="852" y="16" width="204" height="24" rx="12" fill="#15203c" stroke="#3b4278"/><text x="866" y="32" fill="#c4b5fd" font-size="11.5" font-weight="600"><tspan x="866" dy="0">◆ Policy Gate &amp; Key Notes</tspan></text><text x="24" y="62" fill="#f2f7ff" font-size="18" font-weight="700"><tspan x="24" dy="0">Viking Cruises Phase-2 AI Revenue &amp; Service Closed-Loop Cockpit —</tspan><tspan x="24" dy="25.2">Azure Databricks Showcase</tspan></text><g data-concept="1"><rect x="24" y="106" width="187" height="186" rx="12" fill="#0d1e34" stroke="#335277" stroke-width="1.2"/><rect x="24" y="106" width="187" height="5" rx="2.5" fill="#38bdf8"/><rect x="34" y="119" width="167" height="22" rx="6" fill="#081424" stroke="#223b59"/><text x="40" y="134" fill="#38bdf8" font-size="11.5" font-weight="700"><tspan x="40" dy="0">01 · INGRESS</tspan></text><text x="36" y="160" fill="#f4f8ff" font-size="13.5" font-weight="700"><tspan x="36" dy="0">Enterprise sources &amp;</tspan><tspan x="36" dy="18.9">ingestion</tspan></text><path d="M36 194 H199" stroke="#233b57" stroke-width="1"/><text x="36" y="212" fill="#c5d6e8" font-size="12" font-weight="400"><tspan x="36" dy="0">ERP / POS / IoT ·</tspan><tspan x="36" dy="16.799999999999997">Eventhouse KQL · Change</tspan><tspan x="36" dy="16.799999999999997">feeds</tspan></text></g><g data-relationship="grounds open lakehouse"><path d="M213 199 H231" fill="none" stroke="#56ddcd" stroke-width="2.4"/><path d="M225 194 L232 199 L225 204" fill="none" stroke="#56ddcd" stroke-width="2.4"/><rect x="24" y="300" width="187" height="44" rx="8" fill="#0b2239" stroke="#2b5b6c"/><text x="34" y="319" fill="#7ce8d8" font-size="11.5" font-weight="600"><tspan x="34" dy="0">01→02 grounds open</tspan><tspan x="34" dy="16.099999999999998">lakehouse</tspan></text></g><g data-concept="2"><rect x="235" y="106" width="187" height="186" rx="12" fill="#112640" stroke="#335277" stroke-width="1.2"/><rect x="235" y="106" width="187" height="5" rx="2.5" fill="#34d399"/><rect x="245" y="119" width="167" height="22" rx="6" fill="#081424" stroke="#223b59"/><text x="251" y="134" fill="#34d399" font-size="11.5" font-weight="700"><tspan x="251" dy="0">02 · GROUNDING</tspan></text><text x="247" y="160" fill="#f4f8ff" font-size="13.5" font-weight="700"><tspan x="247" dy="0">OneLake &amp; Databricks</tspan><tspan x="247" dy="18.9">Mirroring</tspan></text><path d="M247 194 H410" stroke="#233b57" stroke-width="1"/><text x="247" y="212" fill="#c5d6e8" font-size="12" font-weight="400"><tspan x="247" dy="0">Shared Delta Parquet ·</tspan><tspan x="247" dy="16.799999999999997">Unity Catalog · 0-DBU</tspan><tspan x="247" dy="16.799999999999997">Direct Lake</tspan></text></g><g data-relationship="binds business ontology"><path d="M424 199 H442" fill="none" stroke="#56ddcd" stroke-width="2.4"/><path d="M436 194 L443 199 L436 204" fill="none" stroke="#56ddcd" stroke-width="2.4"/><rect x="235" y="300" width="187" height="44" rx="8" fill="#0b2239" stroke="#2b5b6c"/><text x="245" y="319" fill="#7ce8d8" font-size="11.5" font-weight="600"><tspan x="245" dy="0">02→03 binds business</tspan><tspan x="245" dy="16.099999999999998">ontology</tspan></text></g><g data-concept="3"><rect x="446" y="106" width="187" height="186" rx="12" fill="#0d1e34" stroke="#335277" stroke-width="1.2"/><rect x="446" y="106" width="187" height="5" rx="2.5" fill="#a78bfa"/><rect x="456" y="119" width="167" height="22" rx="6" fill="#081424" stroke="#223b59"/><text x="462" y="134" fill="#a78bfa" font-size="11.5" font-weight="700"><tspan x="462" dy="0">03 · POLICY GATE</tspan></text><text x="458" y="160" fill="#f4f8ff" font-size="13.5" font-weight="700"><tspan x="458" dy="0">Fabric IQ &amp;</tspan><tspan x="458" dy="18.9">Cross-Cloud Choice</tspan></text><path d="M458 194 H621" stroke="#233b57" stroke-width="1"/><text x="458" y="212" fill="#c5d6e8" font-size="12" font-weight="400"><tspan x="458" dy="0">TCL &amp; Zava PoCs · vs</tspan><tspan x="458" dy="16.799999999999997">Snowflake / BigQuery /</tspan><tspan x="458" dy="16.799999999999997">Redshift</tspan></text></g><g data-relationship="isolates agent execution"><path d="M635 199 H653" fill="none" stroke="#56ddcd" stroke-width="2.4"/><path d="M647 194 L654 199 L647 204" fill="none" stroke="#56ddcd" stroke-width="2.4"/><rect x="446" y="300" width="187" height="44" rx="8" fill="#0b2239" stroke="#2b5b6c"/><text x="456" y="319" fill="#7ce8d8" font-size="11.5" font-weight="600"><tspan x="456" dy="0">03→04 isolates agent</tspan><tspan x="456" dy="16.099999999999998">execution</tspan></text></g><g data-concept="4"><rect x="657" y="106" width="187" height="186" rx="12" fill="#112640" stroke="#335277" stroke-width="1.2"/><rect x="657" y="106" width="187" height="5" rx="2.5" fill="#f59e0b"/><rect x="667" y="119" width="167" height="22" rx="6" fill="#081424" stroke="#223b59"/><text x="673" y="134" fill="#f59e0b" font-size="11.5" font-weight="700"><tspan x="673" dy="0">04 · EXECUTION</tspan></text><text x="669" y="160" fill="#f4f8ff" font-size="13.5" font-weight="700"><tspan x="669" dy="0">Isolated agent</tspan><tspan x="669" dy="18.9">sandboxes</tspan></text><path d="M669 194 H832" stroke="#233b57" stroke-width="1"/><text x="669" y="212" fill="#c5d6e8" font-size="12" font-weight="400"><tspan x="669" dy="0">ACA Dynamic Sessions ·</tspan><tspan x="669" dy="16.799999999999997">AKS MicroVM · E2B VMSS</tspan></text></g><g data-relationship="governs unit economics"><path d="M846 199 H864" fill="none" stroke="#56ddcd" stroke-width="2.4"/><path d="M858 194 L865 199 L858 204" fill="none" stroke="#56ddcd" stroke-width="2.4"/><rect x="657" y="300" width="187" height="44" rx="8" fill="#0b2239" stroke="#2b5b6c"/><text x="667" y="319" fill="#7ce8d8" font-size="11.5" font-weight="600"><tspan x="667" dy="0">04→05 governs unit</tspan><tspan x="667" dy="16.099999999999998">economics</tspan></text></g><g data-concept="5"><rect x="868" y="106" width="187" height="186" rx="12" fill="#0d1e34" stroke="#335277" stroke-width="1.2"/><rect x="868" y="106" width="187" height="5" rx="2.5" fill="#56ddcd"/><rect x="878" y="119" width="167" height="22" rx="6" fill="#081424" stroke="#223b59"/><text x="884" y="134" fill="#56ddcd" font-size="11.5" font-weight="700"><tspan x="884" dy="0">05 · AUDIT &amp; EVAL</tspan></text><text x="880" y="160" fill="#f4f8ff" font-size="13.5" font-weight="700"><tspan x="880" dy="0">Cloud &amp; Session</tspan><tspan x="880" dy="18.9">FinOps</tspan></text><path d="M880 194 H1043" stroke="#233b57" stroke-width="1"/><text x="880" y="212" fill="#c5d6e8" font-size="12" font-weight="400"><tspan x="880" dy="0">Capacity pooling · VM</tspan><tspan x="880" dy="16.799999999999997">modernization · TCO</tspan><tspan x="880" dy="16.799999999999997">verification</tspan></text></g><rect x="868" y="300" width="187" height="44" rx="8" fill="#0e2538" stroke="#2e5470"/><text x="878" y="319" fill="#93c5fd" font-size="11.5" font-weight="600"><tspan x="878" dy="0">05 Sink · Verified</tspan><tspan x="878" dy="16.099999999999998">Evidence</tspan></text><g data-takeaway="1"><rect x="24" y="358" width="334" height="88" rx="10" fill="#0b1a2e" stroke="#284466"/><rect x="24" y="370" width="4" height="64" rx="2" fill="#38bdf8"/><text x="38" y="383" fill="#38bdf8" font-size="11.5" font-weight="700"><tspan x="38" dy="0">TAKEAWAY 01 · END-TO-END DATA FLOW</tspan></text><text x="38" y="404" fill="#d5e4f5" font-size="12" font-weight="400"><tspan x="38" dy="0">Left-to-right pipeline from Enterprise</tspan><tspan x="38" dy="16.799999999999997">sources &amp; ingestion to Cloud &amp; Session</tspan><tspan x="38" dy="16.799999999999997">FinOps with explicit handoffs.</tspan></text></g><g data-takeaway="2"><rect x="373" y="358" width="334" height="88" rx="10" fill="#0b1a2e" stroke="#284466"/><rect x="373" y="370" width="4" height="64" rx="2" fill="#a78bfa"/><text x="387" y="383" fill="#a78bfa" font-size="11.5" font-weight="700"><tspan x="387" dy="0">TAKEAWAY 02 · CONTROL &amp; POLICY GATE</tspan></text><text x="387" y="404" fill="#d5e4f5" font-size="12" font-weight="400"><tspan x="387" dy="0">Core boundary at Fabric IQ &amp; Cross-Cloud</tspan><tspan x="387" dy="16.799999999999997">Choice: TCL &amp; Zava PoCs · vs Snowflake /</tspan><tspan x="387" dy="16.799999999999997">BigQuery / Redshift</tspan></text></g><g data-takeaway="3"><rect x="722" y="358" width="334" height="88" rx="10" fill="#0b1a2e" stroke="#284466"/><rect x="722" y="370" width="4" height="64" rx="2" fill="#34d399"/><text x="736" y="383" fill="#34d399" font-size="11.5" font-weight="700"><tspan x="736" dy="0">TAKEAWAY 03 · EVIDENCE &amp; BOUNDARY</tspan></text><text x="736" y="404" fill="#d5e4f5" font-size="12" font-weight="400"><tspan x="736" dy="0">Capacity pooling · VM modernization · TCO</tspan><tspan x="736" dy="16.799999999999997">verification · Conceptual flow, not measured</tspan><tspan x="736" dy="16.799999999999997">latency.</tspan></text></g></svg><figcaption style="font:13px/1.6 system-ui,sans-serif;margin:10px auto 0;max-width:1080px;color:#9fb2ca;overflow-wrap:anywhere">Architecture & data-flow blueprint: follow the left-to-right stage handoffs, policy gates, and three key takeaway callouts below (conceptual topology, not measured latency or rankings).</figcaption></figure><!-- site-remediation-knowledge:end -->
+  <header class="top-header">
+    <div class="brand-group">
+      <div class="vkg-badge">DIAMOND 03<br />VIKING × DBX</div>
+      <div class="brand-titles">
+        <h1>
+          Viking Cruises Phase-2 AI Closed-Loop Cockpit
+          <span class="coexist-pill">21V Zero-PII · AI/BI · Genie · Agent Bricks</span>
+        </h1>
+        <p class="brand-sub">
+          Extending SWO Phase-1 NCR &amp; CS Lakehouse · Shanghai 21V HMAC-SHA256 Tokenization → Azure Global HK Databricks (<span class="mono">viking_cruise</span>) → WeCom Write-Back
+        </p>
+      </div>
+    </div>
+    <div class="header-controls">
+      <span class="live-indicator" id="headerLiveBadge"><span class="pulse-dot"></span>● Instant Sandbox Ready · Live Unlock Available</span>
+      <a class="btn btn-vkg btn-sm" href="#act-live">🔓 Normal-Browser Live &amp; Embed</a>
+      <a class="btn btn-sm" href="../../../diamond.html">← Back to Diamond Showcase</a>
+      <a class="btn btn-sm" href="index.html" hreflang="zh-CN" lang="zh-CN">ZH Edition</a>
+      <button type="button" class="btn btn-sm" id="btnThemeToggle" aria-label="Toggle color theme">◐ Theme</button>
+    </div>
+  </header>
+
+  <nav class="act-nav-strip" aria-label="Showcase act navigation">
+    <a class="act-jump active" href="#act-overview"><span class="act-num">ARCH</span>Phase-2 Architecture &amp; 21V Topology</a>
+    <a class="act-jump" href="#act-1"><span class="act-num">ACT 1</span>Native AI/BI Dashboards (S1–S2)</a>
+    <a class="act-jump" href="#act-2"><span class="act-num">ACT 2</span>AI/BI Genie Root-Cause Lab (S3–S4)</a>
+    <a class="act-jump" href="#act-3"><span class="act-num">ACT 3</span>Agent Bricks Workbench (S5–S6)</a>
+    <a class="act-jump" href="#act-live"><span class="act-num">ACT 4</span>Normal-Browser Cloud Gate · Embed · 1080p Video</a>
+  </nav>
+
+  <main class="main-container" id="app-main">
+    <!-- HERO CALLOUT & ARCHITECTURE OVERVIEW -->
+    <section class="act-section" id="act-overview">
+      <div class="hero-callout">
+        <div class="hero-callout-body">
+          <h2 class="hero-callout-title">✅ Resolved: Direct Normal-Browser Corporate Access to Databricks + Native &amp; Embedded Personal Site Showcase</h2>
+          <p class="hero-callout-text">
+            Four cloud layers are live: (1) Primary Microsoft corporate account invited as Entra B2B Guest with Cross-Tenant Partner Inbound Trust enabled; (2) All 6 guest-blocking Conditional Access policies updated with guest exclusions; (3) Unity Catalog (<span class="mono">viking_cruise</span>), dual AI/BI Dashboards (<span class="mono">embed_credentials: true</span>), and Genie ACLs granted; (4) Workspace embedding policy set to <span class="mono">ALLOW_ALL_DOMAINS</span>. Explore the full sanitized dataset instantly below or unlock live normal-browser SSO &amp; in-page <span class="mono">&lt;iframe&gt;</span> views in Act 4.
+          </p>
+        </div>
+        <div class="hero-callout-actions">
+          <a class="btn btn-vkg" href="#act-live">🚀 Jump to Normal-Browser Live &amp; Embed (#act-live)</a>
+          <a class="btn btn-ocean" id="btnDrawio1" href="https://app.diagrams.net/" target="_blank" rel="noopener noreferrer">📐 Open Scenario Architecture (Draw.io #1) ↗</a>
+          <a class="btn" id="btnDrawio2" href="https://app.diagrams.net/" target="_blank" rel="noopener noreferrer">🛡️ Open 21V-to-HK Zero-PII Topology (Draw.io #2) ↗</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <p class="section-eyebrow">PHASE-2 ARCHITECTURE · 21V SHANGHAI TO AZURE GLOBAL HK</p>
+            <h2 class="card-title">End-to-End Cross-Border Topology: Mainland Zero-PII Desensitization &amp; HK Databricks AI Loop</h2>
+            <p class="card-subtitle">Preserves SWO Phase-1 core data warehouse investments while linking Net Cruise Revenue guardrails to frontline WeCom execution via irreversible <span class="mono">VKG_OID_*</span> tokens</p>
+          </div>
+          <span class="pill-tag tag-purple">PIPL Zero-Plaintext · 6 Scenarios</span>
+        </div>
+
+        <div class="svg-stage">
+          <svg viewBox="0 0 1120 310" role="img" aria-label="Viking Cruises 21V Shanghai to Azure Global HK Databricks Zero-PII AI Architecture">
+            <defs>
+              <linearGradient id="g-sh" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#1e293b" />
+                <stop offset="100%" stop-color="#0f172a" />
+              </linearGradient>
+              <linearGradient id="g-dbx" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#3b0a1e" />
+                <stop offset="100%" stop-color="#172554" />
+              </linearGradient>
+              <linearGradient id="g-act" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#064e3b" />
+                <stop offset="100%" stop-color="#0f172a" />
+              </linearGradient>
+              <marker id="arr-cyan" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 1 L 10 5 L 0 9 z" fill="#38bdf8" />
+              </marker>
+              <marker id="arr-green" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 1 L 10 5 L 0 9 z" fill="#34d399" />
+              </marker>
+            </defs>
+
+            <!-- Zone 1: China 21V Shanghai -->
+            <rect x="16" y="18" width="265" height="274" rx="14" fill="url(#g-sh)" stroke="#38bdf8" stroke-width="1.5" />
+            <text x="32" y="46" fill="#7dd3fc" font-size="11" font-weight="800">ZONE 1 · MAINLAND CHINA (21V SHANGHAI)</text>
+            <text x="32" y="68" fill="#f8fafc" font-size="14" font-weight="800">Phase-1 Sources &amp; PII Tokenizer</text>
+            <rect x="32" y="84" width="233" height="52" rx="8" fill="#0f172a" stroke="#334155" />
+            <text x="44" y="105" fill="#e2e8f0" font-size="12" font-weight="700">Booking / NCR Finance / 400 / WeCom</text>
+            <text x="44" y="124" fill="#94a3b8" font-size="11">SWO Phase-1 Orders &amp; Call Transcripts</text>
+
+            <rect x="32" y="150" width="233" height="62" rx="8" fill="#1e1b4b" stroke="#818cf8" />
+            <text x="44" y="172" fill="#c7d2fe" font-size="12" font-weight="800">HMAC-SHA256 Desensitizer</text>
+            <text x="44" y="191" fill="#a5b4fc" font-size="11">Name / Phone / ID ➔ VKG_OID_9A41C3</text>
+            <text x="44" y="205" fill="#34d399" font-size="10.5" font-weight="700">✓ Raw PII stays 100% inside Shanghai 21V</text>
+
+            <rect x="32" y="226" width="233" height="52" rx="8" fill="url(#g-act)" stroke="#34d399" />
+            <text x="44" y="247" fill="#6ee7b7" font-size="12" font-weight="800">Shanghai WeCom Sales Workbench</text>
+            <text x="44" y="265" fill="#cbd5e1" font-size="11">Resolves VKG_OID locally for VIP outreach</text>
+
+            <!-- Zone 2: Azure Global HK Databricks UC -->
+            <rect x="326" y="18" width="448" height="274" rx="14" fill="url(#g-dbx)" stroke="#fb7185" stroke-width="1.6" />
+            <text x="344" y="46" fill="#fda4af" font-size="11" font-weight="800">ZONE 2 · AZURE GLOBAL (HONG KONG · AZURE DATABRICKS)</text>
+            <text x="344" y="68" fill="#ffffff" font-size="14" font-weight="800">Unity Catalog (viking_cruise) + Phase-2 AI Suite</text>
+
+            <rect x="344" y="84" width="412" height="54" rx="8" fill="#0f172a" stroke="#475569" />
+            <text x="358" y="105" fill="#f8fafc" font-size="12" font-weight="700">viking_cruise.dws.* Curated Gold Tables</text>
+            <text x="358" y="124" fill="#94a3b8" font-size="11">sailing_ncr · channel_roi · cs_funnel · qa_inspection · promo_workorders</text>
+
+            <rect x="344" y="152" width="130" height="124" rx="9" fill="#0f172a" stroke="#fb7185" />
+            <text x="355" y="174" fill="#fda4af" font-size="11.5" font-weight="800">AI/BI Dashboards</text>
+            <text x="355" y="194" fill="#e2e8f0" font-size="11">S1: Sailing NCR</text>
+            <text x="355" y="210" fill="#e2e8f0" font-size="11">4-Part Waterfall</text>
+            <text x="355" y="230" fill="#e2e8f0" font-size="11">S2: 6-Channel</text>
+            <text x="355" y="246" fill="#e2e8f0" font-size="11">True Net NCR ROI</text>
+            <text x="355" y="265" fill="#34d399" font-size="10" font-weight="700">ALLOW_ALL_DOMAINS</text>
+
+            <rect x="485" y="152" width="130" height="124" rx="9" fill="#0f172a" stroke="#38bdf8" />
+            <text x="496" y="174" fill="#7dd3fc" font-size="11.5" font-weight="800">AI/BI Genie Room</text>
+            <text x="496" y="194" fill="#e2e8f0" font-size="11">S3: 96.7% Occ /</text>
+            <text x="496" y="210" fill="#e2e8f0" font-size="11">66.53% Margin Ask</text>
+            <text x="496" y="230" fill="#e2e8f0" font-size="11">S4: Team 2 27.89%</text>
+            <text x="496" y="246" fill="#e2e8f0" font-size="11">Deposit Dropoff</text>
+            <text x="496" y="265" fill="#38bdf8" font-size="10" font-weight="700">Verified UC NL2SQL</text>
+
+            <rect x="626" y="152" width="130" height="124" rx="9" fill="#0f172a" stroke="#a78bfa" />
+            <text x="637" y="174" fill="#c4b5fd" font-size="11.5" font-weight="800">Agent Bricks Loop</text>
+            <text x="637" y="194" fill="#e2e8f0" font-size="11">S5: Full-Volume</text>
+            <text x="637" y="210" fill="#e2e8f0" font-size="11">P0 QA Intercept</text>
+            <text x="637" y="230" fill="#e2e8f0" font-size="11">S6: T-28 Cabin</text>
+            <text x="637" y="246" fill="#e2e8f0" font-size="11">¥1.38M Promo Agent</text>
+            <text x="637" y="265" fill="#fbbf24" font-size="10" font-weight="700">PASS_GUARDRAIL</text>
+
+            <!-- Zone 3: Normal Browser & Personal Website -->
+            <rect x="818" y="18" width="286" height="274" rx="14" fill="url(#g-sh)" stroke="#34d399" stroke-width="1.5" />
+            <text x="836" y="46" fill="#6ee7b7" font-size="11" font-weight="800">ZONE 3 · NORMAL BROWSER &amp; PERSONAL SITE</text>
+            <text x="836" y="68" fill="#f8fafc" font-size="14" font-weight="800">Zero-InPrivate SSO + Dual Showcase</text>
+
+            <rect x="836" y="84" width="250" height="84" rx="8" fill="#0f172a" stroke="#34d399" />
+            <text x="848" y="106" fill="#6ee7b7" font-size="12" font-weight="800">Normal Edge / Chrome Direct</text>
+            <text x="848" y="125" fill="#cbd5e1" font-size="11">Entra B2B Guest + 6 CA Exclusions</text>
+            <text x="848" y="143" fill="#cbd5e1" font-size="11">/aad/auth Corp SSO without InPrivate</text>
+            <text x="848" y="159" fill="#fbbf24" font-size="10.5" font-weight="700">Includes 1-Click B2B Activation</text>
+
+            <rect x="836" y="182" width="250" height="94" rx="8" fill="#0f172a" stroke="#38bdf8" />
+            <text x="848" y="204" fill="#7dd3fc" font-size="12" font-weight="800">turbo998.github.io Showcase</text>
+            <text x="848" y="223" fill="#cbd5e1" font-size="11">1. Instant Zero-Auth Interactive Data</text>
+            <text x="848" y="241" fill="#cbd5e1" font-size="11">2. WebCrypto On-Demand &lt;iframe&gt; View</text>
+            <text x="848" y="259" fill="#cbd5e1" font-size="11">3. 5-Chapter 1080p Subtitled Theater</text>
+
+            <!-- Arrows -->
+            <path d="M 281 180 L 324 114" fill="none" stroke="#38bdf8" stroke-width="2" marker-end="url(#arr-cyan)" />
+            <path d="M 626 254 L 268 254" fill="none" stroke="#34d399" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#arr-green)" />
+            <path d="M 774 140 L 816 140" fill="none" stroke="#38bdf8" stroke-width="2" marker-end="url(#arr-cyan)" />
+            <path d="M 774 224 L 816 224" fill="none" stroke="#34d399" stroke-width="2" marker-end="url(#arr-green)" />
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- ACT 1: NATIVE INTERACTIVE AI/BI DASHBOARDS (SCENARIOS 1 & 2) -->
+    <section class="act-section" id="act-1">
+      <div class="section-banner">
+        <div>
+          <p class="section-eyebrow">ACT 1 · AZURE DATABRICKS AI/BI DASHBOARDS (SCENARIOS 1 &amp; 2)</p>
+          <h2 class="section-heading">Act 1: Native Interactive Executive Dashboards — Sailing NCR Cockpit &amp; Omnichannel Net ROI</h2>
+          <p class="section-desc">Rendered instantaneously in-browser from sanitized Unity Catalog <span class="mono">viking_cruise.dws</span> tables; click any voyage row to inspect its 4-deduction Gross-to-NCR waterfall</p>
+        </div>
+        <span class="pill-tag tag-green">Zero-Auth Instant Render · 8 Sailings × 6 Channels</span>
+      </div>
+
+      <div class="subtab-bar" role="tablist">
+        <button type="button" class="subtab-btn active" data-act1-subtab="s1">📊 Tab 1A · Scenario 1: Sailing Net Cruise Revenue (NCR) Cockpit</button>
+        <button type="button" class="subtab-btn" data-act1-subtab="s2">📈 Tab 1B · Scenario 2: Omnichannel True Net NCR ROI Attribution</button>
+      </div>
+
+      <!-- TAB 1A: SCENARIO 1 -->
+      <div class="subtab-panel active" data-subtab-panel="s1">
+        <div class="kpi-grid" id="s1KpiGrid"></div>
+
+        <div class="filter-bar">
+          <strong style="font-size:12.5px;">Health Filter:</strong>
+          <button type="button" class="filter-chip active" data-s1-health="ALL">All Sailings (8)</button>
+          <button type="button" class="filter-chip" data-s1-health="HIGH_OCC_ALERT">🔴 Full-Ship Low-NCR Alert (1)</button>
+          <button type="button" class="filter-chip" data-s1-health="CABIN_GAP_ALERT">🟠 Last-Minute Cabin Gap Alert (2)</button>
+          <button type="button" class="filter-chip" data-s1-health="HEALTHY">🟢 Healthy On-Target (5)</button>
+
+          <select id="s1RegionSelect" aria-label="Filter by sailing region">
+            <option value="ALL">All Regions (Rhine / Danube / Med / Seine)</option>
+            <option value="RHI">Rhine River</option>
+            <option value="DAN">Danube River</option>
+            <option value="MED">Mediterranean Ocean</option>
+            <option value="SEI">Seine River</option>
+          </select>
+
+          <select id="s1SortSelect" aria-label="Sort sailings">
+            <option value="default">Alert-First Default Order</option>
+            <option value="margin_asc">Sort by NCR Margin % (Low → High)</option>
+            <option value="occ_desc">Sort by Occupancy % (High → Low)</option>
+            <option value="ncr_desc">Sort by Total Net NCR (High → Low)</option>
+            <option value="days_asc">Sort by Days to Departure</option>
+          </select>
+        </div>
+
+        <div class="grid-2">
+          <div class="card" id="s1WaterfallCard"></div>
+
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title">8-Sailing Fleet NCR Scorecard (<span class="mono">dws_sailing_ncr_summary</span>)</h3>
+                <p class="card-subtitle">Click any voyage row to inspect its 4-part Gross-to-NCR waterfall breakdown and AI diagnosis on the left</p>
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Sailing ID / Date</th>
+                    <th>Itinerary &amp; Ship</th>
+                    <th class="num">Occupancy</th>
+                    <th class="num">Gross Rev</th>
+                    <th class="num">4 Deductions</th>
+                    <th class="num">True Net NCR</th>
+                    <th class="num">NCR Margin</th>
+                    <th>Health Flag</th>
+                  </tr>
+                </thead>
+                <tbody id="s1TableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 1B: SCENARIO 2 -->
+      <div class="subtab-panel" data-subtab-panel="s2">
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title">Gross ROI vs True Net NCR ROI Comparison (<span class="mono">dws_channel_roi_summary</span>)</h3>
+                <p class="card-subtitle">Exposing surface GMV illusions: after tiered OTA rebates, 18.6% refunds, and NC claims, WeCom VIP repeat delivers 7.97x True Net NCR ROI vs Head OTA's 3.23x</p>
+              </div>
+              <span class="pill-tag tag-blue">6 Channels Compared</span>
+            </div>
+            <div class="roi-compare-list" id="s2RoiBars"></div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title">6-Channel Net NCR Contribution &amp; Budget Allocation Matrix</h3>
+                <p class="card-subtitle">Reallocating marketing spend by Net NCR per passenger (<span class="mono">ncr_per_pax_cny</span>) and refund resilience</p>
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Channel</th>
+                    <th class="num">Ad Spend</th>
+                    <th class="num">Paid Pax</th>
+                    <th class="num">Gross GMV</th>
+                    <th class="num">Rebate &amp; NC</th>
+                    <th class="num">True Net NCR</th>
+                    <th class="num">Gross → Net ROI</th>
+                    <th>Budget Recommendation</th>
+                  </tr>
+                </thead>
+                <tbody id="s2TableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ACT 2: AI/BI GENIE CONVERSATIONAL ROOT-CAUSE LAB (SCENARIOS 3 & 4) -->
+    <section class="act-section" id="act-2">
+      <div class="section-banner">
+        <div>
+          <p class="section-eyebrow">ACT 2 · AI/BI GENIE CONVERSATIONAL NL2SQL LAB (SCENARIOS 3 &amp; 4)</p>
+          <h2 class="section-heading">Act 2: AI/BI Genie Conversational Root-Cause Lab — Finance Margin &amp; CS Funnel Drill-Down</h2>
+          <p class="section-desc">Switch between verified natural-language prompts executed against Databricks Genie to inspect generated Unity Catalog SQL, live result rows, and executive synthesis</p>
+        </div>
+        <span class="pill-tag tag-purple">Verified Genie API Output</span>
+      </div>
+
+      <div class="genie-prompt-grid">
+        <button type="button" class="genie-q-btn active" data-genie-key="s3">
+          <div style="display:flex;justify-content:space-between;gap:8px;margin-bottom:4px;">
+            <span class="pill-tag tag-red">Scenario 3 · Finance NCR Margin Erosion Ask</span>
+            <span class="mono" style="font-size:11px;color:var(--text-muted);">dws_sailing_ncr_summary</span>
+          </div>
+          <strong>"Which sailings triggered the Full-Ship Low-NCR Margin Alert? List sailing ID, occupancy rate, Net NCR margin %, and all 4 deduction components."</strong>
+        </button>
+
+        <button type="button" class="genie-q-btn" data-genie-key="s4">
+          <div style="display:flex;justify-content:space-between;gap:8px;margin-bottom:4px;">
+            <span class="pill-tag tag-blue">Scenario 4 · CS Deposit-to-Final Dropoff Funnel</span>
+            <span class="mono" style="font-size:11px;color:var(--text-muted);">dws_cs_funnel_agent_daily</span>
+          </div>
+          <strong>"Rank all 5 telesales teams by post-deposit dropoff rate descending, showing average first follow-up latency and top dropoff root cause."</strong>
+        </button>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h3 class="card-title">Genie Auto-Generated Unity Catalog SQL</h3>
+              <p class="card-subtitle mono" id="genieConvMeta"></p>
+            </div>
+            <span class="pill-tag tag-green">SQL Warehouse Verified</span>
+          </div>
+          <pre class="code-block" id="genieSqlBlock"></pre>
+          <div class="sim-panel" style="margin-top:12px;">
+            <div style="font-size:12px;font-weight:800;color:var(--vkg-crimson);margin-bottom:4px;">💡 Genie Executive Root-Cause Synthesis</div>
+            <div id="genieSynthesisText" style="font-size:12.6px;color:var(--text-primary);"></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h3 class="card-title">Live Genie Query Result Table</h3>
+              <p class="card-subtitle">Zero BI backlog: Finance and Customer Service leaders align on margin leakage and funnel bottlenecks in seconds</p>
+            </div>
+          </div>
+          <div id="genieResultMount"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ACT 3: AGENT BRICKS CLOSED-LOOP WORKBENCH (SCENARIOS 5 & 6) -->
+    <section class="act-section" id="act-3">
+      <div class="section-banner">
+        <div>
+          <p class="section-eyebrow">ACT 3 · AGENT BRICKS CLOSED-LOOP WORKBENCH (SCENARIOS 5 &amp; 6)</p>
+          <h2 class="section-heading">Act 3: Agent Bricks Operational Closed Loop — Smart CS QA &amp; Cabin Promo Supervisor</h2>
+          <p class="section-desc">Moving from passive analytics to governed action: intercepting unauthorized P0 sales promises pre-boarding while unlocking CNY 1.38M incremental Net NCR above the CNY 29,500 breakeven floor</p>
+        </div>
+        <span class="pill-tag tag-amber">UC Tools + Supervisor Guardrail</span>
+      </div>
+
+      <div class="grid-equal">
+        <!-- SCENARIO 5 -->
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <span class="pill-tag tag-red" style="margin-bottom:5px;">SCENARIO 5 · FULL-VOLUME SMART CS QA</span>
+              <h3 class="card-title">Full-Volume Smart CS QA Agent (<span class="mono">inspect_service_conversation</span>)</h3>
+              <p class="card-subtitle">100% automated audit across WeCom &amp; 400 transcripts, catching unauthorized Schengen visa guarantees and low-water refund promises before embarkation</p>
+            </div>
+          </div>
+
+          <div class="filter-bar">
+            <button type="button" class="filter-chip active" data-qa-risk="ALL">All Audits (6)</button>
+            <button type="button" class="filter-chip" data-qa-risk="P0">🔴 P0 Unauthorized Promise (3)</button>
+            <button type="button" class="filter-chip" data-qa-risk="P1">🟠 P1 Deal-Loss Alert (1)</button>
+            <button type="button" class="filter-chip" data-qa-risk="COMPLIANT">🟢 Gold Benchmark (2)</button>
+          </div>
+
+          <div class="table-wrap" style="margin-bottom:12px;">
+            <table>
+              <thead>
+                <tr>
+                  <th>Conv ID / Token</th>
+                  <th>Sailing / Team</th>
+                  <th>Risk Tier</th>
+                  <th>Detected Issue</th>
+                  <th class="num">Exposure Risk</th>
+                </tr>
+              </thead>
+              <tbody id="s5QaTableBody"></tbody>
+            </table>
+          </div>
+
+          <div class="sim-panel" id="s5QaDetailPanel"></div>
+        </div>
+
+        <!-- SCENARIO 6 -->
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <span class="pill-tag tag-green" style="margin-bottom:5px;">SCENARIO 6 · CABIN PROMO SUPERVISOR</span>
+              <h3 class="card-title">Last-Minute Unsold Cabin Promo Supervisor (<span class="mono">run_cabin_promo_supervisor</span>)</h3>
+              <p class="card-subtitle">Automated margin-floor verification &amp; WeCom workorder dispatch for <span class="mono">VKG-DAN-202612</span> (T-28 days · 65 unsold cabins)</p>
+            </div>
+            <span class="pill-tag tag-green">PASS_GUARDRAIL ✓</span>
+          </div>
+
+          <div class="guardrail-meter">
+            <div class="guardrail-stat">
+              <div class="g-lbl">Rack Fare Held</div>
+              <div class="g-val">¥38,800<span style="font-size:11px;font-weight:600;">/pax</span></div>
+            </div>
+            <div class="guardrail-stat">
+              <div class="g-lbl">Projected Net NCR</div>
+              <div class="g-val" style="color:var(--status-green);">¥34,517.32</div>
+            </div>
+            <div class="guardrail-stat">
+              <div class="g-lbl">Buffer vs ¥29.5K Floor</div>
+              <div class="g-val" style="color:var(--ocean-blue);">+¥5,017.32</div>
+            </div>
+            <div class="guardrail-stat">
+              <div class="g-lbl">Incremental Net NCR</div>
+              <div class="g-val" style="color:var(--vkg-crimson);">¥1,380,693</div>
+            </div>
+          </div>
+
+          <div class="filter-bar">
+            <button type="button" class="filter-chip active" data-s6-tab="guardrail">1. Guardrail &amp; Bundle</button>
+            <button type="button" class="filter-chip" data-s6-tab="script">2. 21V Tiered Callback</button>
+            <button type="button" class="filter-chip" data-s6-tab="redlines">3. 6 Compliance Red Lines</button>
+            <button type="button" class="filter-chip" data-s6-tab="json">4. Structured JSON</button>
+          </div>
+
+          <div class="sim-panel" id="s6TabContent"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ACT 4 (#act-live): NORMAL-BROWSER LIVE GATEWAY, EMBEDDED IFRAME & 5-CHAPTER 1080P VIDEO THEATER -->
+    <section class="act-section" id="act-live">
+      <div class="section-banner">
+        <div>
+          <p class="section-eyebrow">ACT 4 · ZERO-INPRIVATE NORMAL-BROWSER LIVE DATABRICKS &amp; 1080P THEATER</p>
+          <h2 class="section-heading">Act 4: Normal-Browser Live Databricks Gateway, On-Demand Iframe Embed &amp; 1080p Video Theater</h2>
+          <p class="section-desc">Enter the shared Diamond presenter passcode to launch Databricks directly in normal Edge via corporate Entra B2B SSO or mount live embedded AI/BI views in-page; all 5 subtitled 1080p recordings below play with zero auth</p>
+        </div>
+        <span class="pill-tag tag-green">WebCrypto AES-256-GCM · 5× 1080p MP4</span>
+      </div>
+
+      <div id="liveGatewayMount" style="margin-bottom:18px;"></div>
+
+      <div class="card" id="liveVideoTheaterCard">
+        <div class="card-header">
+          <div>
+            <h3 class="card-title">🎬 5-Chapter 1080p Subtitled Live Environment Video Theater (Open to All Visitors · Offline Ready)</h3>
+            <p class="card-subtitle">Captured directly from the live Azure Databricks (<span class="mono">viking_cruise</span>) workspace across AI/BI Dashboards, Genie NL2SQL, and Agent Bricks</p>
+          </div>
+          <span class="pill-tag tag-green">1920×1080 MP4 · 5 Chapters · Zero Auth Required</span>
+        </div>
+
+        <div class="video-theater-layout">
+          <div class="video-player-frame">
+            <video id="vikingWalkthroughVideo" class="live-video-player" controls preload="metadata" playsinline src="videos/ch0-full-walkthrough.mp4"></video>
+            <div class="video-player-meta">
+              <div style="min-width:0;flex:1;">
+                <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+                  <span class="pill-tag tag-red" id="videoActiveBadge">CHAPTER 0 / FULL</span>
+                  <strong id="videoActiveTitle" style="font-size:13.5px;">Full Walkthrough · End-to-End 6-Scenario Live Databricks Recording</strong>
+                </div>
+                <div id="videoActiveDesc" style="font-size:12px;color:var(--text-muted);margin-top:3px;">Complete tour across Unity Catalog (viking_cruise), dual AI/BI Dashboards, Genie NL2SQL, and Agent Bricks closed loop</div>
+              </div>
+              <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                <button type="button" class="btn btn-sm" id="btnVideoPrev">◀ Prev</button>
+                <button type="button" class="btn btn-sm btn-vkg" id="btnVideoNext">Next ▶</button>
+                <a class="btn btn-sm" id="videoDirectLink" href="videos/ch0-full-walkthrough.mp4" target="_blank" rel="noopener noreferrer">↗ Open Raw MP4</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="video-chapter-list" id="videoChapterList"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="showcase-footer">
+    <span>Diamond Enterprise Live Demo 03 · Viking Cruises Phase-2 AI Closed Loop · Unity Catalog + AI/BI + Genie + Agent Bricks</span>
+    <span>Strict Zero-Plaintext Security: Only irreversible <span class="mono">VKG_OID_*</span> tokens &amp; PBKDF2-SHA256 + AES-256-GCM encrypted gateway payloads</span>
+  </footer>
+
+  <script src="app.js" defer></script>
+</body>
+</html>
