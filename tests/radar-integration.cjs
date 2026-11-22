@@ -9238,6 +9238,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r774File),'utf8');
       assert.ok(txt.includes('4,420.00')&&txt.includes('4,500.00')&&txt.includes('8,920.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('8,615.00')&&txt.includes('96.58%')&&txt.includes('not_measured'),r774File+': contains exact 11-22 R38 R774 hatoba+codextrajectory+channelterm+peerbridge closed-form parameters');
     }
+    // 2026-11-22 Night Round 39 (R775 Milestone: yile2020/fastapi-react-admin + skyelan1999/aide + Heyosseus/sloppy + bestagentkits/design-studio-ai) verification
+    const r775PathA=4610.00+46.0*100.00;
+    assert.equal(r775PathA.toFixed(2),'9210.00','11-22 R39 R775 Path A total');
+    const r775PathC=75.00+2.5*100.00;
+    assert.equal(r775PathC.toFixed(2),'325.00','11-22 R39 R775 Path C total');
+    assert.equal((r775PathA-r775PathC).toFixed(2),'8885.00','11-22 R39 R775 savings vs Path A');
+    assert.equal(((r775PathA-r775PathC)/r775PathA*100).toFixed(2),'96.47','11-22 R39 R775 pct savings vs Path A');
+    for(const r775File of ['workshops/github-trending-radar/docs/fastapi-react-admin-aide-sloppy-design-studio-ai-selection-faq.md','workshops/github-trending-radar/docs/fastapi-react-admin-aide-sloppy-design-studio-ai-selection-faq.en.md','assets/github-ai-radar-2026-11-22-r39-r775-fastapiadmin-aide-sloppy-designstudio.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-22-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r775File),'utf8');
+      assert.ok(txt.includes('4,610.00')&&txt.includes('4,600.00')&&txt.includes('9,210.00')&&txt.includes('75.00')&&txt.includes('250.00')&&txt.includes('325.00')&&txt.includes('8,885.00')&&txt.includes('96.47%')&&txt.includes('not_measured'),r775File+': contains exact 11-22 R39 R775 fastapiadmin+aide+sloppy+designstudio closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
