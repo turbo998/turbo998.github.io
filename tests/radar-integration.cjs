@@ -9260,6 +9260,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r776File),'utf8');
       assert.ok(txt.includes('4,530.00')&&txt.includes('4,500.00')&&txt.includes('9,030.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('8,725.00')&&txt.includes('96.62%')&&txt.includes('not_measured'),r776File+': contains exact 11-22 R40 R776 kite+backlot+guardana+antiburn closed-form parameters');
     }
+    // 2026-11-22 Night Round 41 (R777: glincker/levelrail + dk23lhl/termius-mcp + bicho-fyi/bicho + srelens/srelens) verification
+    const r777PathA=4590.00+46.0*100.00;
+    assert.equal(r777PathA.toFixed(2),'9190.00','11-22 R41 R777 Path A total');
+    const r777PathC=70.00+2.4*100.00;
+    assert.equal(r777PathC.toFixed(2),'310.00','11-22 R41 R777 Path C total');
+    assert.equal((r777PathA-r777PathC).toFixed(2),'8880.00','11-22 R41 R777 savings vs Path A');
+    assert.equal(((r777PathA-r777PathC)/r777PathA*100).toFixed(2),'96.63','11-22 R41 R777 pct savings vs Path A');
+    for(const r777File of ['workshops/github-trending-radar/docs/levelrail-termius-mcp-bicho-srelens-selection-faq.md','workshops/github-trending-radar/docs/levelrail-termius-mcp-bicho-srelens-selection-faq.en.md','assets/github-ai-radar-2026-11-22-r41-r777-levelrail-termiusmcp-bicho-srelens.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-22-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r777File),'utf8');
+      assert.ok(txt.includes('4,590.00')&&txt.includes('4,600.00')&&txt.includes('9,190.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,880.00')&&txt.includes('96.63%')&&txt.includes('not_measured'),r777File+': contains exact 11-22 R41 R777 levelrail+termiusmcp+bicho+srelens closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
