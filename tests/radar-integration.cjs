@@ -8996,6 +8996,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r752File),'utf8');
       assert.ok(txt.includes('4,140.00')&&txt.includes('4,400.00')&&txt.includes('8,540.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('8,235.00')&&txt.includes('96.43%')&&txt.includes('not_measured'),r752File+': contains exact 11-22 R16 R752 vaultite+triviumdb+llmwiki+greatdocs closed-form parameters');
     }
+    // 2026-11-22 Night Round 17 (R753: SynaLinks/synalinks + JiangNanGenius/floe-agent + bitrouter/bitrouter + narumiruna/yfinance-mcp) verification
+    const r753PathA=4280.00+45.0*100.00;
+    assert.equal(r753PathA.toFixed(2),'8780.00','11-22 R17 R753 Path A total');
+    const r753PathC=70.00+2.4*100.00;
+    assert.equal(r753PathC.toFixed(2),'310.00','11-22 R17 R753 Path C total');
+    assert.equal((r753PathA-r753PathC).toFixed(2),'8470.00','11-22 R17 R753 savings vs Path A');
+    assert.equal(((r753PathA-r753PathC)/r753PathA*100).toFixed(2),'96.47','11-22 R17 R753 pct savings vs Path A');
+    for(const r753File of ['workshops/github-trending-radar/docs/synalinks-floe-agent-bitrouter-yfinance-mcp-selection-faq.md','workshops/github-trending-radar/docs/synalinks-floe-agent-bitrouter-yfinance-mcp-selection-faq.en.md','assets/github-ai-radar-2026-11-22-r17-r753-synalinks-floe-bitrouter-yfinancemcp.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-22-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r753File),'utf8');
+      assert.ok(txt.includes('4,280.00')&&txt.includes('4,500.00')&&txt.includes('8,780.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,470.00')&&txt.includes('96.47%')&&txt.includes('not_measured'),r753File+': contains exact 11-22 R17 R753 synalinks+floe+bitrouter+yfinancemcp closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
