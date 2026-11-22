@@ -842,12 +842,22 @@ VALUES
     return parsed;
   }
 
+  function encodeAadNextUrl(routePath) {
+    const raw = String(routePath || "/");
+    const normalized = raw.charAt(0) === "/" ? raw : "/" + raw;
+    const bytes = new TextEncoder().encode(normalized);
+    let bin = "";
+    for (let i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
+    return window.btoa(bin);
+  }
+
   function buildSsoBootstrapUrl(manifest, nextPath) {
     const u = new URL("/aad/auth", manifest.workspaceOrigin);
+    u.searchParams.set("hash", "");
+    u.searchParams.set("next_url", encodeAadNextUrl(nextPath || "/"));
     if (manifest.orgId) u.searchParams.set("o", manifest.orgId);
     if (manifest.loginHint) u.searchParams.set("login_hint", manifest.loginHint);
     if (manifest.tenantDomain) u.searchParams.set("domain_hint", manifest.tenantDomain);
-    u.searchParams.set("next_url", nextPath || "/");
     return u.toString();
   }
 
@@ -870,12 +880,20 @@ VALUES
   // Deterministic offline verification hook for automated Chromium tests (never mutates live state)
   window.__zavaVerifyFixture = async function (passcode, customBundle) {
     const bundle = customBundle || SYNTHETIC_TEST_BUNDLE;
-    const manifest = await decryptManifestBundle(passcode, bundle);
+    const manifest = await decryptManifestBundle(passcode || "unit-test-fixture-only", bundle);
     const firstRoute = manifest.routes[0] || { id: "catalog", nextPath: "/" };
+    const sampleSsoUrl = buildSsoBootstrapUrl(manifest, firstRoute.nextPath);
+    const nextUrlParam = new URL(sampleSsoUrl).searchParams.get("next_url") || "";
     return {
       ok: true,
       manifest,
-      sampleSsoUrl: buildSsoBootstrapUrl(manifest, firstRoute.nextPath),
+      sampleSsoUrl,
+      expectedRoutePath: firstRoute.nextPath,
+      encodedNextUrl: encodeAadNextUrl(firstRoute.nextPath),
+      decodedNextUrl: nextUrlParam ? window.atob(nextUrlParam) : "",
+      nextUrlBase64Valid:
+        sampleSsoUrl.includes("/aad/auth?hash=&next_url=") &&
+        (nextUrlParam ? window.atob(nextUrlParam) === firstRoute.nextPath : false),
       sampleDirectUrl: buildDirectWorkspaceUrl(manifest, firstRoute.nextPath),
       sampleProtocolUrl: buildLocalProtocolUrl(manifest, firstRoute.id)
     };
@@ -1112,8 +1130,8 @@ VALUES
             "2️⃣ Tenant-Pinned + login_hint /aad/auth SSO (No InPrivate Needed)"
           )}</h3>
           <p>${T(
-            "普通浏览器直访 /login.html 常被 Windows WAM 默认企业账号劫持或误跳个人账号。本网关动态拼装 /aad/auth?o=<orgId>&login_hint=...&domain_hint=...&next_url=...，精准锁定 Diamond 租户与管理员账号，首次勾选「保持登录状态」后即可与公司 M365 账号同浏览器长期共存！",
-            "Visiting /login.html directly often triggers corporate Windows WAM account hijacks or consumer MSA redirects. Every button here builds /aad/auth?o=<orgId>&login_hint=...&domain_hint=...&next_url=..., pinning the exact Entra tenant & account so normal browsers coexist peacefully with corporate M365 once 'Stay signed in' is accepted."
+            "普通浏览器直访 /login.html 常被 Windows WAM 默认企业账号劫持或误跳个人账号。本网关动态拼装 /aad/auth?hash=&amp;next_url=&lt;Base64&gt;&amp;o=&lt;orgId&gt;&amp;login_hint=...&amp;domain_hint=...，精准锁定 Diamond 租户与管理员账号，首次勾选「保持登录状态」后即可与公司 M365 账号同浏览器长期共存！",
+            "Visiting /login.html directly often triggers corporate Windows WAM account hijacks or consumer MSA redirects. Every button here builds /aad/auth?hash=&amp;next_url=&lt;Base64&gt;&amp;o=&lt;orgId&gt;&amp;login_hint=...&amp;domain_hint=..., pinning the exact Entra tenant &amp; account so normal browsers coexist peacefully with corporate M365 once 'Stay signed in' is accepted."
           )}</p>
         </div>
         <div class="live-arch-card">
@@ -1312,8 +1330,8 @@ VALUES
             )}</strong>
             <span style="font-size:12px;color:var(--text-secondary);">
               ${T(
-                "通过 /aad/auth?o=...&login_hint=...&domain_hint=...&next_url=... 精确路由，防止默认企业账号串号",
-                "Routes via /aad/auth?o=...&login_hint=...&domain_hint=...&next_url=... to prevent corporate WAM account collision"
+                "通过 /aad/auth?hash=&amp;next_url=&lt;Base64&gt;&amp;o=...&amp;login_hint=...&amp;domain_hint=... 精确路由，防止默认企业账号串号",
+                "Routes via /aad/auth?hash=&amp;next_url=&lt;Base64&gt;&amp;o=...&amp;login_hint=...&amp;domain_hint=... to prevent corporate WAM account collision"
               )}
             </span>
           </button>

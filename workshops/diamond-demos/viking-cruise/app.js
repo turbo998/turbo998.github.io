@@ -1344,28 +1344,38 @@
     return { manifest: manifest, isFixture: false };
   }
 
+  function encodeAadNextUrl(routePath) {
+    const raw = String(routePath || "/");
+    const normalized = raw.charAt(0) === "/" ? raw : "/" + raw;
+    const bytes = new TextEncoder().encode(normalized);
+    let bin = "";
+    for (let i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
+    return btoa(bin);
+  }
+
   function buildLaunchUrl(manifest, routePath, mode) {
     if (!manifest || !routePath) return "#";
     const m = mode || liveState.routingMode || "corp_b2b";
     if (m === "direct") {
       return manifest.workspaceHost + routePath;
     }
+    const encodedNextUrl = encodeURIComponent(encodeAadNextUrl(routePath));
     if (m === "tenant_admin") {
       return (
         manifest.workspaceHost +
-        "/aad/auth?o=" + encodeURIComponent(manifest.orgId) +
+        "/aad/auth?hash=&next_url=" + encodedNextUrl +
+        "&o=" + encodeURIComponent(manifest.orgId) +
         "&login_hint=" + encodeURIComponent(manifest.adminLoginHint || "") +
-        "&domain_hint=" + encodeURIComponent(manifest.adminDomainHint || manifest.tenantDomain || "") +
-        "&next_url=" + encodeURIComponent(routePath)
+        "&domain_hint=" + encodeURIComponent(manifest.adminDomainHint || manifest.tenantDomain || "")
       );
     }
     // Default Mode 1: corp_b2b — Microsoft Corporate Account B2B Direct in Normal Browser!
     return (
       manifest.workspaceHost +
-      "/aad/auth?o=" + encodeURIComponent(manifest.orgId) +
+      "/aad/auth?hash=&next_url=" + encodedNextUrl +
+      "&o=" + encodeURIComponent(manifest.orgId) +
       "&login_hint=" + encodeURIComponent(manifest.corpLoginHint || "") +
-      "&domain_hint=" + encodeURIComponent(manifest.corpDomainHint || "microsoft.com") +
-      "&next_url=" + encodeURIComponent(routePath)
+      "&domain_hint=" + encodeURIComponent(manifest.corpDomainHint || "microsoft.com")
     );
   }
 
@@ -1582,7 +1592,7 @@
           fourFixesHtml +
           '<form id="vikingGateForm" class="live-gate-form" autocomplete="off">' +
             '<label for="vikingPassInput" style="font-size:13px;font-weight:700;">' +
-              tr("输入 Diamond 共享演示口令（解锁正常浏览器企业主账号 B2B 直连、首次一键激活与页内嵌入 AI/BI 看板）：", "Enter Shared Diamond Presenter Passcode (Unlocks Normal-Browser Corporate B2B Launch, 1-Click Redemption & Live Iframe Viewer):") +
+              tr("输入 Diamond 共享演示口令（解锁正常浏览器企业主账号 B2B 免隐身 SSO 直连与页内嵌入 AI/BI 看板）：", "Enter Shared Diamond Presenter Passcode (Unlocks Normal-Browser Corporate B2B SSO Launch & Live Iframe Viewer):") +
             '</label>' +
             '<div class="live-input-row">' +
               '<div class="live-pass-wrap">' +
@@ -1610,6 +1620,7 @@
       ? m.routes.roiDashboard
       : (liveState.activeEmbedKey === "genie" ? m.routes.genie : m.routes.ncrDashboard);
     const activeNormalTabUrl = buildLaunchUrl(m, activeDirectRoute, liveState.routingMode);
+    const corpSsoBootstrapUrl = buildLaunchUrl(m, m.routes.ncrDashboard, "corp_b2b");
 
     mount.innerHTML =
       '<div class="card">' +
@@ -1636,14 +1647,14 @@
         '<div class="b2b-redeem-box">' +
           '<div style="flex:1 1 420px;min-width:0;">' +
             '<div style="font-size:13.5px;font-weight:800;color:var(--text-primary);">' +
-              tr("🔑 首次在正常 Edge / Chrome 访问？请先点此完成一次性 B2B 邀请激活（仅需点一次！）", "🔑 First Time in Normal Edge / Chrome? Click Once for 1-Click B2B Guest Redemption") +
+              tr("✅ 企业主账号 Entra B2B 身份已永久就绪 — 正常 Edge / Chrome 一键 SSO 建立会话", "✅ Corporate Entra B2B Identity Active — 1-Click Normal-Browser SSO Session Bootstrap") +
             '</div>' +
             '<div style="font-size:12px;color:var(--text-secondary);margin-top:3px;">' +
-              tr("在已登录企业主账号的正常浏览器中点击右侧按钮，自动确认 Entra B2B 来宾握手并直接跳入「航次 NCR 经营驾驶舱」；此后日常访问直接走下方模式 1 秒开！", "Click once in your normal corporate Edge/Chrome session to accept the Entra B2B handshake and land straight inside NCR Dashboard 1. All subsequent visits open directly via Mode 1 below!") +
+              tr("企业主账号已完成跨租户 B2B 兑换与 Databricks 全栈授权。在正常浏览器中点击右侧按钮即可通过 Base64 路由编码的 /aad/auth 免隐身直达「航次 NCR 经营驾驶舱」并建立会话（同步赋能下方页内嵌入视图）！", "Corporate B2B guest identity and Databricks ACLs are active. Click once in your normal Edge/Chrome session to sign in directly via Base64-encoded /aad/auth and land inside Sailing NCR Cockpit (also authenticating the in-page embedded viewer below)!") +
             '</div>' +
           '</div>' +
-          '<a class="btn btn-emerald" id="btnB2bRedeemOnce" href="' + escapeHtml(m.b2bRedeemUrl) + '" target="_blank" rel="noopener noreferrer">' +
-            tr("🔑 首次一键激活 B2B 并进入看板 ↗", "🔑 First-Time 1-Click B2B Activation ↗") +
+          '<a class="btn btn-emerald" id="btnB2bRedeemOnce" href="' + escapeHtml(corpSsoBootstrapUrl) + '" target="_blank" rel="noopener noreferrer">' +
+            tr("🚀 正常浏览器一键 SSO 直达看板 ↗", "🚀 1-Click Normal-Browser SSO Launch ↗") +
           '</a>' +
         '</div>' +
 
@@ -1654,7 +1665,7 @@
               '<span class="pill-tag tag-green">' + tr("默认推荐", "DEFAULT") + '</span>' +
             '</div>' +
             '<span style="font-size:12px;color:var(--text-secondary);">' +
-              tr("自动注入 /aad/auth?login_hint=企业账号&domain_hint=microsoft.com，正常浏览器免隐身直达。", "Routes via /aad/auth with corp login_hint & domain_hint so normal Edge opens Databricks directly without InPrivate.") +
+              tr("自动拼装 /aad/auth?hash=&amp;next_url=&lt;Base64&gt;&amp;o=...&amp;login_hint=...，正常浏览器免隐身零报错直达。", "Routes via /aad/auth?hash=&amp;next_url=&lt;Base64&gt; with corp login_hint &amp; domain_hint so normal Edge opens Databricks directly without InPrivate.") +
             '</span>' +
           '</button>' +
           '<button type="button" class="live-mode-option ' + (liveState.routingMode === "direct" ? "active" : "") + '" data-route-mode="direct">' +
@@ -2004,6 +2015,10 @@
   /* ================= AUTOMATED HEADLESS FIXTURE VERIFIER ================= */
   window.__vikingVerifyFixture = async function (passcode, customBundle) {
     const m = await decryptManifestBundle(passcode || "unit-test-fixture-only", customBundle || FIXTURE_BUNDLE);
+    const corpB2bUrl = buildLaunchUrl(m, m.routes.ncrDashboard, "corp_b2b");
+    const tenantAdminUrl = buildLaunchUrl(m, m.routes.ncrDashboard, "tenant_admin");
+    const corpNextParam = new URL(corpB2bUrl).searchParams.get("next_url") || "";
+    const adminNextParam = new URL(tenantAdminUrl).searchParams.get("next_url") || "";
     return {
       ok: true,
       sailings: SAILINGS.length,
@@ -2012,10 +2027,20 @@
       qaRows: QA_AUDITS.length,
       videos: VIDEO_CHAPTERS.length,
       manifest: m,
-      sampleCorpB2bUrl: buildLaunchUrl(m, m.routes.ncrDashboard, "corp_b2b"),
+      sampleCorpB2bUrl: corpB2bUrl,
+      sampleBootstrapUrl: corpB2bUrl,
+      sampleRedeemUrl: corpB2bUrl,
       sampleDirectUrl: buildLaunchUrl(m, m.routes.ncrDashboard, "direct"),
-      sampleTenantAdminUrl: buildLaunchUrl(m, m.routes.ncrDashboard, "tenant_admin"),
-      sampleRedeemUrl: m.b2bRedeemUrl,
+      sampleTenantAdminUrl: tenantAdminUrl,
+      expectedRoutePath: m.routes.ncrDashboard,
+      encodedNextUrl: encodeAadNextUrl(m.routes.ncrDashboard),
+      decodedCorpNextUrl: corpNextParam ? atob(corpNextParam) : "",
+      decodedAdminNextUrl: adminNextParam ? atob(adminNextParam) : "",
+      nextUrlBase64Valid:
+        corpB2bUrl.indexOf("/aad/auth?hash=&next_url=") !== -1 &&
+        tenantAdminUrl.indexOf("/aad/auth?hash=&next_url=") !== -1 &&
+        (corpNextParam ? atob(corpNextParam) === m.routes.ncrDashboard : false) &&
+        (adminNextParam ? atob(adminNextParam) === m.routes.ncrDashboard : false),
       sampleEmbedNcrUrl: buildEmbedUrl(m, "ncrEmbed"),
       sampleEmbedRoiUrl: buildEmbedUrl(m, "roiEmbed"),
       sampleEmbedGenieUrl: buildEmbedUrl(m, "genie"),
