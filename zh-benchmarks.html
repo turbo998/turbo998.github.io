@@ -147,7 +147,7 @@ body:has([data-professional-header]){height:auto!important;overflow-x:clip!impor
           <div class="bm-kpi-sub">商业性价比达 Sunburst ($0.061) 的 3.83×、FLUX.2-pro ($0.047) 的 4.65×；Terminal-Bench 4.1 亦揭示仅 7/52 (13.5%) 帕累托有效</div>
         </div>
         <div class="bm-kpi">
-          <div class="bm-kpi-val">38 套密封卡片</div>
+          <div class="bm-kpi-val">39 套密封卡片</div>
           <div class="bm-kpi-label">7-Card 4:5 视觉报告标准</div>
           <div class="bm-kpi-sub">零外链自包含 HTML 报告集，配套 SHA-256 锁定确定性 Python 离线验证器（58863f19...d5d8）与 JSON/WebP 密封证据包</div>
         </div>
@@ -157,19 +157,44 @@ body:has([data-professional-header]){height:auto!important;overflow-x:clip!impor
     <!-- FILTER BAR FOR BENCHMARK EVOLUTION MATRIX -->
     <div class="filter-bar">
       <div class="filter-tabs" role="tablist" aria-label="按评测赛道筛选报告">
-        <button type="button" class="filter-btn active" data-filter="all">全部报告 (38)</button>
+        <button type="button" class="filter-btn active" data-filter="all">全部报告 (39)</button>
         <button type="button" class="filter-btn" data-filter="commercial-image">商业图像编辑基准 (1)</button>
         <button type="button" class="filter-btn" data-filter="coding-supplements">编码智能体与 Terminal-Bench (5)</button>
         <button type="button" class="filter-btn" data-filter="cyber-safety">网络安全与长程代理 (3)</button>
-        <button type="button" class="filter-btn" data-filter="routing-decision">路由与决策模型 (8)</button>
-        <button type="button" class="filter-btn" data-filter="harness-infra">Agent Harness 与沙箱底座 (29)</button>
+        <button type="button" class="filter-btn" data-filter="routing-decision">路由与决策模型 (9)</button>
+        <button type="button" class="filter-btn" data-filter="harness-infra">Agent Harness 与沙箱底座 (30)</button>
       </div>
       <div class="filter-meta">
-        <span class="filter-count" id="pub-count">当前显示全部 38 份 Benchmark 测试报告</span>
+        <span class="filter-count" id="pub-count">当前显示全部 39 份 Benchmark 测试报告</span>
       </div>
     </div>
 
     <div class="pub-list" id="pub-list">
+
+      <!-- VOXCPM2 VS. MICROSOFT AZURE AI SPEECH ACOUSTIC ARCHITECTURE & TTS BENCHMARK -->
+      <article class="pub" data-category="routing-decision harness-infra" id="voxcpm2-vs-azure-speech">
+        <div>
+          <span class="pub-tag report">语音声学架构 · 11 组波形 Welch FFT</span>
+          <div class="pub-date">2026-11-22 · OpenBMB VoxCPM2 (2B) 对比 Azure AI Speech</div>
+          <a href="voice/voxcpm2-vs-azure-speech.html" style="display:block;margin-top:10px;border-radius:8px;overflow:hidden;border:1px solid rgba(148,163,184,.25)">
+            <img src="voice/assets/voxcpm2-vs-azure-speech-architecture.svg" alt="VoxCPM2 与 Microsoft Azure AI Speech 企业双轨参考架构图" loading="lazy" style="display:block;width:100%;height:auto">
+          </a>
+        </div>
+        <div class="pub-main">
+          <h3><a href="voice/voxcpm2-vs-azure-speech.html">VoxCPM2 与企业语音模型对比：FSQ 声学架构与选型基准</a></h3>
+          <p>面向企业多语种表现力配音与金融确定性交互场景的声学架构审计与选型基准，对比 <strong>清华 OpenBMB VoxCPM2（2B，Apache-2.0，<code>arXiv:2606.06928</code>）</strong>与 <strong>Microsoft Azure AI Speech（DragonHDOmni / Personal Voice）</strong>：(1) <strong>内置半离散瓶颈源码核验</strong>——审计 <code>src/voxcpm/model/voxcpm2.py</code>（第 79–106 与 284–318 行）证实 VoxCPM2 移除了外部离散语义码本，但在模型内部保留 <code>ScalarQuantizationLayer(hidden_dim=2048, latent_dim=512, scale=9)</code> 并叠加未量化声学残差送入 10 步 <code>LocDiT</code> 流匹配解码器，耳语样本 SDR 保持 <strong><code>50.88 dB</code></strong>（粗粒度离散量化跌至 <strong><code>16.12 dB</code></strong>，领先 <code>+34.76 dB</code>），而盲目 INT8 权重量化会导致 16–24 kHz 空气频段底噪抬升 <strong><code>+14.6 dB</code></strong>；(2) <strong>11 组 48 kHz 官方波形 Welch FFT 频谱取证</strong>——1024 点 Hann 窗 Welch PSD 实测证实即使输入 24 kHz 参考音频（<code>11,953 Hz</code> 奈奎斯特上限），AudioVAE V2 仍稳定重建 <strong><code>16,781–17,656 Hz</code>（-60 dB）真实超宽带频谱</strong>，结合论文 <code>Seed-TTS</code> <strong><code>1.84%</code> EN WER / <code>0.97%</code> ZH CER</strong> 与 <code>Minimax-MLS</code> <strong><code>85.4%</code> EN 说话人相似度</strong>；(3) <strong>企业双轨路由与月度 TCO 边界</strong>——月产超 <strong><code>1,800 万–2,500 万字符</code></strong>时，自建 <code>vLLM-Omni</code>（<code>RTF 0.13</code>，首包 <code>~135 ms</code>）在 8.5 亿字符/月规模可将成本由 <strong><code>$12.8k/月</code> 降至约 <code>$3.2k/月</code></strong>；金融确定性 SSML、<code>0.1 ms</code> 口型帧同步、强制防伪水印与 <code>99.9%</code> SLA 场景继续采用 Azure AI Speech。</p>
+          <div class="pub-meta">
+            <span><a href="voice/voxcpm2-vs-azure-speech.html"><b>架构指南与交互式 TCO / PSD 工作台</b></a></span>
+            <span><a href="workshops/benchmarks/voxcpm2-vs-azure-speech-cards.zh-CN.html"><b>7-Card 4:5 密封视觉报告</b></a></span>
+            <span><a href="voice/assets/voxcpm2-vs-azure-speech-architecture.svg" target="_blank" rel="noopener"><b>双轨参考架构矢量图 (SVG)</b></a></span>
+            <span><a href="voice/data/voxcpm2-acoustic-benchmark-results.json" target="_blank" rel="noopener"><b>11 组波形 Welch FFT 密封数据集 (JSON)</b></a></span>
+            <span><a href="https://github.com/turbo998/voice-agent-lab/blob/main/docs/voxcpm2-vs-azure-speech-tts-benchmark-selection-faq.md" target="_blank" rel="noopener"><b>双语架构选型指南 (MD)</b></a></span>
+            <span><a href="https://github.com/turbo998/voice-agent-lab/tree/main/experiments/voxcpm2-acoustic-benchmark" target="_blank" rel="noopener"><b>复现脚本与 11-WAV 实验套件</b></a></span>
+            <span>11 组官方波形实测 · FSQ(512, s=9) 源码核验 · Apache-2.0 · 零外部运行时依赖</span>
+          </div>
+        </div>
+        <a class="pub-arrow" href="voice/voxcpm2-vs-azure-speech.html" aria-label="打开 VoxCPM2 与企业语音模型对比工作台">→</a>
+      </article>
 
       <!-- MAI-IMAGE-2.7 & MAI-IMAGE-2.7-FLASH COMMERCIAL IMAGE EDITING BENCHMARK (EDITABLE / SERVIMAGE ARXIV:2604.24023V2) -->
       <article class="pub" data-category="commercial-image routing-decision" id="mai-image-2-7-commercial-edit-bench">

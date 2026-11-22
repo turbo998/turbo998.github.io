@@ -147,6 +147,14 @@ const gpt62SolPages = [
   {path:'workshops/benchmarks/gpt-6-2-sol-cards.zh-CN.html',role:'report',title:'增补报告 9：GPT-6.2 Sol 全档推理强度实测、校准路由与二十一模型前沿基准报告 (中文)',tracks:['benchmarks'],language:{declared:'zh-CN'},supplemental:true}
 ];
 const recentSupplementPages = [
+  {path:'voice/voxcpm2-vs-azure-speech.html',role:'demo',title:'VoxCPM2 与企业语音模型对比：FSQ 声学架构与选型基准',tracks:['voice'],language:{declared:'zh-CN'},supplemental:true},
+  {path:'voice/voxcpm2-vs-azure-speech.en.html',role:'demo',title:'VoxCPM2 vs. Azure Speech: Acoustic Architecture & TTS Benchmark',tracks:['voice'],language:{declared:'en'},supplemental:true},
+  {path:'voice/voxcpm2-benchmark-cards.html',role:'report',title:'VoxCPM2 vs. Azure Speech: Acoustic Architecture & TTS Benchmark (7-Card Deck)',tracks:['voice','benchmarks'],language:{declared:'en'},supplemental:true},
+  {path:'voice/voxcpm2-benchmark-cards.en.html',role:'report',title:'VoxCPM2 vs. Azure Speech: Acoustic Architecture & TTS Benchmark (EN Deck)',tracks:['voice','benchmarks'],language:{declared:'en'},supplemental:true},
+  {path:'voice/voxcpm2-benchmark-cards.zh-CN.html',role:'report',title:'VoxCPM2 与企业语音模型对比：FSQ 声学架构与选型基准（7 卡报告）',tracks:['voice','benchmarks'],language:{declared:'zh-CN'},supplemental:true},
+  {path:'workshops/benchmarks/voxcpm2-vs-azure-speech-cards.html',role:'report',title:'VoxCPM2 vs. Azure Speech: Acoustic Architecture & TTS Benchmark (7-Card Deck)',tracks:['benchmarks','voice'],language:{declared:'en'},supplemental:true},
+  {path:'workshops/benchmarks/voxcpm2-vs-azure-speech-cards.en.html',role:'report',title:'VoxCPM2 vs. Azure Speech: Acoustic Architecture & TTS Benchmark (EN Deck)',tracks:['benchmarks','voice'],language:{declared:'en'},supplemental:true},
+  {path:'workshops/benchmarks/voxcpm2-vs-azure-speech-cards.zh-CN.html',role:'report',title:'VoxCPM2 与企业语音模型对比：FSQ 声学架构与选型基准（7 卡报告）',tracks:['benchmarks','voice'],language:{declared:'zh-CN'},supplemental:true},
   {path:'workshops/benchmarks/mai-image-2-7-cards.html',role:'report',title:'MAI-Image-2.7 Live Multimodal Generation & Commercial Image Editing Benchmark (7-Card Deck)',tracks:['benchmarks'],language:{declared:'en'},supplemental:true},
   {path:'workshops/benchmarks/mai-image-2-7-cards.en.html',role:'report',title:'MAI-Image-2.7 Live Multimodal Generation & Commercial Image Editing Benchmark (EN)',tracks:['benchmarks'],language:{declared:'en'},supplemental:true},
   {path:'workshops/benchmarks/mai-image-2-7-cards.zh-CN.html',role:'report',title:'MAI-Image-2.7 实时多模态文生图与商业图像编辑基准评测报告 (中文)',tracks:['benchmarks'],language:{declared:'zh-CN'},supplemental:true},

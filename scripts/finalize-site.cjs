@@ -49,6 +49,7 @@ function localeRegistry() {
     pairs.set(record.source,{en:record.en,zh:record.zh});
   }
   add('workshops/data-lab/index.en.html','workshops/data-lab/index.html');
+  add('voice/voxcpm2-vs-azure-speech.en.html','voice/voxcpm2-vs-azure-speech.html');
   pairs.set('workshops/data-lab/live-demo.en.html',{en:'workshops/data-lab/index.en.html',zh:'workshops/data-lab/index.html'});
   pairs.set('workshops/data-lab/live-demo.html',{en:'workshops/data-lab/index.en.html',zh:'workshops/data-lab/index.html'});
   for (const base of [
@@ -58,6 +59,8 @@ function localeRegistry() {
     'workshops/benchmarks/mai-image-2-7-cards',
     'workshops/benchmarks/terminal-bench-4-1-cards',
     'workshops/benchmarks/mi300x-large-moe-bf16-mxfp4-cards',
+    'workshops/benchmarks/voxcpm2-vs-azure-speech-cards',
+    'voice/voxcpm2-benchmark-cards',
     'workshops/scientific-and-industry-harness-engineering/cards',
     'workshops/scientific-and-industry-harness-engineering/test-report-cards'
   ]) {
@@ -156,7 +159,7 @@ function finalizeSite() {
         return `href="${professional.relative(file,en?linked.en:linked.zh)}${url.search}${url.hash}"`;
       });
     })).join('');
-    if(header&&!isReportOrPhase179&&!/class="(?:[^"]*\s)?(?:knowledge-atlas|phase179-knowledge)\b|data-knowledge-atlas=/.test(html)) {
+    if(header&&!isReportOrPhase179&&!/^(?:workshops\/benchmarks\/voxcpm2-vs-azure-speech-cards|voice\/voxcpm2-benchmark-cards|voice\/voxcpm2-vs-azure-speech)\b/.test(file)&&!/class="(?:[^"]*\s)?(?:knowledge-atlas|phase179-knowledge|bespoke-sa-architecture)\b|data-knowledge-atlas=/.test(html)) {
       const title=plain(/<title[^>]*>([\s\S]*?)<\/title>/i.exec(html)?.[1]||file);
       const figure=knowledgeFigure(file,!en,{topic:classifyPath(file)||'infra',title});
       const marker=`<!-- site-remediation-knowledge:start -->${figure}<!-- site-remediation-knowledge:end -->`;
