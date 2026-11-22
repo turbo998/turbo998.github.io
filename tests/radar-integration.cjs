@@ -9062,6 +9062,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r758File),'utf8');
       assert.ok(txt.includes('4,380.00')&&txt.includes('4,500.00')&&txt.includes('8,880.00')&&txt.includes('75.00')&&txt.includes('250.00')&&txt.includes('325.00')&&txt.includes('8,555.00')&&txt.includes('96.34%')&&txt.includes('not_measured'),r758File+': contains exact 11-22 R22 R758 scrumboy+pojun+wrongstack+dochelper closed-form parameters');
     }
+    // 2026-11-22 Night Round 23 (R759: mattabate/life-distributable + sonichi/sutando + goruck/home-generative-agent + guaardvark/guaardvark) verification
+    const r759PathA=4340.00+45.0*100.00;
+    assert.equal(r759PathA.toFixed(2),'8840.00','11-22 R23 R759 Path A total');
+    const r759PathC=70.00+2.4*100.00;
+    assert.equal(r759PathC.toFixed(2),'310.00','11-22 R23 R759 Path C total');
+    assert.equal((r759PathA-r759PathC).toFixed(2),'8530.00','11-22 R23 R759 savings vs Path A');
+    assert.equal(((r759PathA-r759PathC)/r759PathA*100).toFixed(2),'96.49','11-22 R23 R759 pct savings vs Path A');
+    for(const r759File of ['workshops/github-trending-radar/docs/life-distributable-sutando-home-generative-agent-guaardvark-selection-faq.md','workshops/github-trending-radar/docs/life-distributable-sutando-home-generative-agent-guaardvark-selection-faq.en.md','assets/github-ai-radar-2026-11-22-r23-r759-life-sutando-hga-guaardvark.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-22-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r759File),'utf8');
+      assert.ok(txt.includes('4,340.00')&&txt.includes('4,500.00')&&txt.includes('8,840.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,530.00')&&txt.includes('96.49%')&&txt.includes('not_measured'),r759File+': contains exact 11-22 R23 R759 life+sutando+hga+guaardvark closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
