@@ -9216,6 +9216,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r772File),'utf8');
       assert.ok(txt.includes('4,550.00')&&txt.includes('4,600.00')&&txt.includes('9,150.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,840.00')&&txt.includes('96.61%')&&txt.includes('not_measured'),r772File+': contains exact 11-22 R36 R772 mixdog+veil+stroq+doberman closed-form parameters');
     }
+    // 2026-11-22 Night Round 37 (R773: Windsander/Mebular + win4r/codebase-memory-mcp-pro + NiazMorshed2007/jev-review + HduSy/tokenscope) verification
+    const r773PathA=4480.00+45.0*100.00;
+    assert.equal(r773PathA.toFixed(2),'8980.00','11-22 R37 R773 Path A total');
+    const r773PathC=65.00+2.4*100.00;
+    assert.equal(r773PathC.toFixed(2),'305.00','11-22 R37 R773 Path C total');
+    assert.equal((r773PathA-r773PathC).toFixed(2),'8675.00','11-22 R37 R773 savings vs Path A');
+    assert.equal(((r773PathA-r773PathC)/r773PathA*100).toFixed(2),'96.60','11-22 R37 R773 pct savings vs Path A');
+    for(const r773File of ['workshops/github-trending-radar/docs/mebular-codebase-memory-pro-jev-review-tokenscope-selection-faq.md','workshops/github-trending-radar/docs/mebular-codebase-memory-pro-jev-review-tokenscope-selection-faq.en.md','assets/github-ai-radar-2026-11-22-r37-r773-mebular-codebasememory-jevreview-tokenscope.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-22-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r773File),'utf8');
+      assert.ok(txt.includes('4,480.00')&&txt.includes('4,500.00')&&txt.includes('8,980.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('8,675.00')&&txt.includes('96.60%')&&txt.includes('not_measured'),r773File+': contains exact 11-22 R37 R773 mebular+codebasememory+jevreview+tokenscope closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
