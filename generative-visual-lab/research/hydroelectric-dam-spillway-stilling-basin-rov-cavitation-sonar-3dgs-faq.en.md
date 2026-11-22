@@ -40,10 +40,10 @@ In **mega-hydroelectric dams (Three Gorges, Baihetan, Xiluodu, Itaipu, Grand Cou
 ```mermaid
 flowchart TD
     A[Hydroelectric Dam Underwater Inspection Scenario] --> B{Target Defect Scale & Water Turbidity?}
-    B -->|Macro Reservoir Siltation Bathymetry >0.5m| C[Surface Vessel Multibeam Echo Sounder MBES]
-    B -->|Millimeter Spillway Cavitation Pits & 80m Trash-Racks<br/>15–30 NTU Turbid Water with Zero Dewatering| D{Underwater 3D Reconstruction Stack?}
-    D -->|Flat-Port RGB SfM or Cofferdam Basin Dewatering| E[❌ Baseline: ±185mm Refractive/Backscatter Drift<br/>or $4.5M / 28-Day Cofferdam Dewatering]
-    D -->|1.2MHz MBES + 532nm Green Laser + Snell Sea-Thru 3DGS| F[✅ Recommended: ±1.4mm Pit Bathymetry +<br/>0 Dewatering Days via Suction-Cup Grouting ROV]
+    B -->|"Macro Reservoir Siltation Bathymetry >0.5m"| C[Surface Vessel Multibeam Echo Sounder MBES]
+    B -->|"Millimeter Spillway Cavitation Pits & 80m Trash-Racks<br/>15–30 NTU Turbid Water with Zero Dewatering"| D{Underwater 3D Reconstruction Stack?}
+    D -->|"Flat-Port RGB SfM or Cofferdam Basin Dewatering"| E[❌ Baseline: ±185mm Refractive/Backscatter Drift<br/>or $4.5M / 28-Day Cofferdam Dewatering]
+    D -->|"1.2MHz MBES + 532nm Green Laser + Snell Sea-Thru 3DGS"| F[✅ Recommended: ±1.4mm Pit Bathymetry +<br/>0 Dewatering Days via Suction-Cup Grouting ROV]
 ```
 
 ### 3.2 ROV Sonar + 532nm Laser + Snell-Refraction 3DGS Pipeline

@@ -51,7 +51,7 @@ flowchart TD
     B --> C{"Warm Worker Available in<br/>Target Base-Model Pool?"}
     C -->|"Yes (24GB Base Already Pinned in HBM)"| D{"Requires Tenant LoRA<br/>or ControlNet?"}
     D -->|"Yes (150MB Adapter)"| E["✅ Async CUDA Stream DMA Prefetch<br/><180ms Pointer Hot-Swap (0 Base Reload)"]
-    D -->|No| F["✅ 0ms Load! Execute Immediately<br/>with DAG Prefix Cache"]
+    D -->|"No"| F["✅ 0ms Load! Execute Immediately<br/>with DAG Prefix Cache"]
     C -->|"No (Burst Traffic Scale-Up)"| G["✅ Restore CRIU/CUDA Pod Snapshot +<br/>Zero-Copy Host NVMe/shm mmap (<1.8s)"]
     E --> H["Shared T5 Encoder -> Pinned DiT -> Tiled VAE"]
     F --> H

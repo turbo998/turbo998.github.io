@@ -42,10 +42,10 @@
 ```mermaid
 flowchart TD
     A["Enterprise 3D Product Configurator"] --> B{"Audience Surface & Peak Concurrency?"}
-    B -->|Public Consumer Website / Mobile App<br/>Automotive Launch / Apparel / Furniture 1k - 100k+ Users| C["Client-Side Three.js / WebGPU + Cycles Baked AO Lightmaps<br/>+ KHR_materials_clearcoat Zero Server GPU Cost $0.0004"]
+    B -->|"Public Consumer Website / Mobile App<br/>Automotive Launch / Apparel / Furniture 1k - 100k+ Users"| C["Client-Side Three.js / WebGPU + Cycles Baked AO Lightmaps<br/>+ KHR_materials_clearcoat Zero Server GPU Cost $0.0004"]
     C --> D["On Final 'Download / Share My 4K Build' Click Only:<br/>Trigger 1.5s Serverless Cloud Path-Tracer or Flux.1+IC-Light Snapshot"]
-    B -->|Luxury Watch / Diamond Jewelry Macro Customizer<br/>Requires Razor-Sharp Micro-Dials & Gem Dispersion| E["Client-Side Three.js at Native 3x Retina DPR<br/>+ RGB 3-Wavelength IOR Dispersion + Anisotropic Gold"]
-    B -->|Dealership 8K VIP Lounge / Unbaked 50M-Poly Architecture<br/>Authenticated < 200 Concurrent Kiosks| F["Edge Unreal Engine Pixel Streaming WebRTC<br/>+ Mandatory 60s Idle Frame-Freeze GPU Hibernation Gate"]
+    B -->|"Luxury Watch / Diamond Jewelry Macro Customizer<br/>Requires Razor-Sharp Micro-Dials & Gem Dispersion"| E["Client-Side Three.js at Native 3x Retina DPR<br/>+ RGB 3-Wavelength IOR Dispersion + Anisotropic Gold"]
+    B -->|"Dealership 8K VIP Lounge / Unbaked 50M-Poly Architecture<br/>Authenticated < 200 Concurrent Kiosks"| F["Edge Unreal Engine Pixel Streaming WebRTC<br/>+ Mandatory 60s Idle Frame-Freeze GPU Hibernation Gate"]
 ```
 
 ### 3.2 4-Stage "Offline Cycles Bake + Client WebGPU + On-Demand 4K Snapshot" Pipeline
@@ -60,7 +60,7 @@ flowchart LR
         CDN --> THREE[Client Phone/PC Three.js / WebGPU:<br/>Clearcoat Flake Paint + 8.2ms Orbit]
     end
     subgraph Snapshot[3. On-Demand 4K Social Share Render]
-        THREE -->|10% Users Clicking Share| SNAP[Send Camera Pose + Config JSON<br/>1.5s Cloud Path-Trace / Flux.1+IC-Light 4K]
+        THREE -->|"10% Users Clicking Share"| SNAP[Send Camera Pose + Config JSON<br/>1.5s Cloud Path-Trace / Flux.1+IC-Light 4K]
     end
 ```
 

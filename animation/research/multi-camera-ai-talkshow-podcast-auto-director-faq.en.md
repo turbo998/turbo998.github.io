@@ -49,8 +49,8 @@ flowchart TD
     C -->|"Exactly 1 New Guest k"| F{"Lookahead Utterance Duration<br/>Duration(k) >= 1.2s?"}
     F -->|"No (<1.2s Backchannel 'Uh-huh')"| D
     F -->|"Yes (>=1.2s Full Turn)"| G{"Elapsed Time Since Last Cut<br/>τ_elapsed >= 1.8s?"}
-    G -->|Yes| H["✅ Pre-Roll Cut 400ms Before First Syllable to Cam_k<br/>(+ Insert 2.5s Listener Nodding Cutaway Every 24s)"]
-    G -->|No| D
+    G -->|"Yes"| H["✅ Pre-Roll Cut 400ms Before First Syllable to Cam_k<br/>(+ Insert 2.5s Listener Nodding Cutaway Every 24s)"]
+    G -->|"No"| D
 ```
 
 ### 3.2 Enterprise Multi-Camera Auto-Director & FCPXML Pipeline Architecture

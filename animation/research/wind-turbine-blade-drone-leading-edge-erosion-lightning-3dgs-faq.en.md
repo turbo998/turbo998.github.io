@@ -30,9 +30,9 @@
 ```mermaid
 flowchart TD
     A[100-Turbine 15MW Wind Farm 107m Blade Inspection] --> B{Inspection & Localization Architecture?}
-    B -->|Manual Rope-Access Technician Rappelling| C[360 Minutes Downtime per Turbine<br/>Misses 2 Cat-4 Cracks in Blind Zones]
-    B -->|GPS-Only 2D Drone Photo Stitching| D[2.6m Blade Bending + Featureless White Gelcoat<br/>±4.2m Spanwise Drift Strands Repair Crews]
-    B -->|LiDAR Arc-Length Spine + Polarized 3DGS + DNV Solver| E[Integrate True Curved Arc-Length s∈0..107m to ±2.4cm<br/>Cross-Polarized Optics Strip White Gelcoat Glare]
+    B -->|"Manual Rope-Access Technician Rappelling"| C[360 Minutes Downtime per Turbine<br/>Misses 2 Cat-4 Cracks in Blind Zones]
+    B -->|"GPS-Only 2D Drone Photo Stitching"| D[2.6m Blade Bending + Featureless White Gelcoat<br/>±4.2m Spanwise Drift Strands Repair Crews]
+    B -->|"LiDAR Arc-Length Spine + Polarized 3DGS + DNV Solver"| E[Integrate True Curved Arc-Length s∈0..107m to ±2.4cm<br/>Cross-Polarized Optics Strip White Gelcoat Glare]
     E --> F[Quantify Cat-3 Rain Erosion & Lightning Crater Volume<br/>28-Min Sortie · +2.35% AEP Recovered · +$1.86M/Yr Saved]
 ```
 

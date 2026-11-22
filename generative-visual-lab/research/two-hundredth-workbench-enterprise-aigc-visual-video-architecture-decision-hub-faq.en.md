@@ -44,17 +44,17 @@ Designed as the master reference playbook for **Cloud & AI Solution Architects**
 ```mermaid
 flowchart TD
     A[Enterprise AIGC Visual or Video Requirement] --> B{Target Media Modality?}
-    B -->|Static Commercial Image / SKU Photo / Ad Banner| C{Requires Exact SKU Geometry or Multilingual Copy?}
-    C -->|Exact Product / Garment Lock| C1[✅ Headless ComfyUI DAG: BiRefNet + CatVTON + Flux ControlNet + IC-Light]
-    C -->|16-Locale Promotional Typography| C2[✅ 1× Clean-Plate AI Scene + Satori/HarfBuzz Vector SVG Layer]
-    C -->|Complex Multi-Subject or Fast Draft| C3[✅ 4-Model Router: GPT-Image-1 / Imagen 4 / Flux-schnell 0.35s]
-    B -->|Marketing Video / Product Demo / Animatic Previs| D{Includes SaaS UI, Data Charts, or Exact Pricing?}
-    D -->|Yes: UI / Charts / Dynamic Pricing| D1[✅ Hybrid Pipeline: Cached AI B-Roll + Remotion / Motion Canvas Overlay]
-    D -->|No: Pure Cinematic / SKU Video Batch| D2{Monthly Volume ≥ 4,200 Clips?}
-    D2 -->|≥ 4,200 Clips/Mo| D3[✅ 85% AKS Self-Hosted Wan 2.1 $0.24 + 15% Sora 2 / Veo 3 API]
-    D2 -->|< 4,200 Clips/Mo| D4[✅ 100% Commercial APIs: Sora 2 / Veo 3 / Kling 2.1]
-    B -->|Digital Avatar / Live Support / Video Dubbing| E[✅ Azure AI Speech Avatar VNet + Self-Hosted MuseTalk 256px ROI<br/>+ UVR5 Stem Split + Isochronous LLM ±2.4%]
-    B -->|Interactive Web 3D / Virtual Tour / Scrollytelling| F[✅ Part Swap: Three.js Draco/KTX2 · Real Tour: SOGS 3DGS<br/>Scrollytelling: WebP Canvas 2.4ms + GSAP SVG]
+    B -->|"Static Commercial Image / SKU Photo / Ad Banner"| C{Requires Exact SKU Geometry or Multilingual Copy?}
+    C -->|"Exact Product / Garment Lock"| C1[✅ Headless ComfyUI DAG: BiRefNet + CatVTON + Flux ControlNet + IC-Light]
+    C -->|"16-Locale Promotional Typography"| C2[✅ 1× Clean-Plate AI Scene + Satori/HarfBuzz Vector SVG Layer]
+    C -->|"Complex Multi-Subject or Fast Draft"| C3[✅ 4-Model Router: GPT-Image-1 / Imagen 4 / Flux-schnell 0.35s]
+    B -->|"Marketing Video / Product Demo / Animatic Previs"| D{Includes SaaS UI, Data Charts, or Exact Pricing?}
+    D -->|"Yes: UI / Charts / Dynamic Pricing"| D1[✅ Hybrid Pipeline: Cached AI B-Roll + Remotion / Motion Canvas Overlay]
+    D -->|"No: Pure Cinematic / SKU Video Batch"| D2{Monthly Volume ≥ 4,200 Clips?}
+    D2 -->|"≥ 4,200 Clips/Mo"| D3[✅ 85% AKS Self-Hosted Wan 2.1 $0.24 + 15% Sora 2 / Veo 3 API]
+    D2 -->|"< 4,200 Clips/Mo"| D4[✅ 100% Commercial APIs: Sora 2 / Veo 3 / Kling 2.1]
+    B -->|"Digital Avatar / Live Support / Video Dubbing"| E[✅ Azure AI Speech Avatar VNet + Self-Hosted MuseTalk 256px ROI<br/>+ UVR5 Stem Split + Isochronous LLM ±2.4%]
+    B -->|"Interactive Web 3D / Virtual Tour / Scrollytelling"| F[✅ Part Swap: Three.js Draco/KTX2 · Real Tour: SOGS 3DGS<br/>Scrollytelling: WebP Canvas 2.4ms + GSAP SVG]
 ```
 
 ### 3.2 The 200th-Milestone 4-Layer Enterprise Visual AI Platform Architecture

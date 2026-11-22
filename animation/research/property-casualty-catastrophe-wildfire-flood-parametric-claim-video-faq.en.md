@@ -30,9 +30,9 @@
 ```mermaid
 flowchart TD
     A[5M WUI Wildfire / Hurricane / Flood Homeowner Policies] --> B{Underwriting & Claims Visual Pipeline?}
-    B -->|40-Page Static PDF Notice + Manual Field Adjuster| C[11.2% Remediation Compliance = Mass Non-Renewals<br/>28-Day 672h Post-CAT Adjuster Backlog]
-    B -->|Generative AI Satellite Upscaling| D[Hallucinates Roof Shingles & Fence Materials<br/>Rejected by State DOI Regulators]
-    B -->|Parcel LiDAR+Oblique Zone-0 Lock + 93.5% Closed-GOP| E[Pinpoints 0–1.5m Shrubs, Mulch & Wood Fence Attachments<br/>$0.0034/Home Video Lifts Remediation to 61.8%]
+    B -->|"40-Page Static PDF Notice + Manual Field Adjuster"| C[11.2% Remediation Compliance = Mass Non-Renewals<br/>28-Day 672h Post-CAT Adjuster Backlog]
+    B -->|"Generative AI Satellite Upscaling"| D[Hallucinates Roof Shingles & Fence Materials<br/>Rejected by State DOI Regulators]
+    B -->|"Parcel LiDAR+Oblique Zone-0 Lock + 93.5% Closed-GOP"| E[Pinpoints 0–1.5m Shrubs, Mulch & Wood Fence Attachments<br/>$0.0034/Home Video Lifts Remediation to 61.8%]
     E --> F[Post-CAT Bi-Temporal 7cm Orthophoto & LiDAR FFE Lock<br/>18-Hour Parametric Payout Video · +$8.42M/Yr Saved]
 ```
 

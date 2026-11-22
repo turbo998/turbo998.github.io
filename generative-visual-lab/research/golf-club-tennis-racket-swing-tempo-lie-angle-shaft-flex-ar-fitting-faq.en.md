@@ -40,10 +40,10 @@ In **direct-to-consumer custom golf equipment (`$1,800–$3,800` full-bag sets f
 ```mermaid
 flowchart TD
     A[Golf Club / Tennis Racket E-Commerce Scenario] --> B{Equipment Tier & Performance Sensitivity?}
-    B -->|Entry-Level Junior / Recreational Starter Set| C[Standard Height-Based Sizing Chart]
-    B -->|$500–$3,800 Custom Driver, Forged Irons & Pro Rackets<br/>Slice Correction, Spin Optimization & Elbow Protection| D{Fitting Metrology Pipeline?}
-    D -->|Static Height Chart or Self-Reported Quiz| E[❌ Baseline: Misses Toe-Droop & Tempo Strain<br/>±2.8° Lie Error, ±22.4yd Slice & 26.8% Returns]
-    D -->|240fps Smartphone Kinematics + Shaft EI Solver| F[✅ Recommended: ±0.2° Impact Lie Lock + EI Profile<br/>±6.8yd Dispersion, +19.4yd Carry & 2.9% Returns]
+    B -->|"Entry-Level Junior / Recreational Starter Set"| C[Standard Height-Based Sizing Chart]
+    B -->|"$500–$3,800 Custom Driver, Forged Irons & Pro Rackets<br/>Slice Correction, Spin Optimization & Elbow Protection"| D{Fitting Metrology Pipeline?}
+    D -->|"Static Height Chart or Self-Reported Quiz"| E[❌ Baseline: Misses Toe-Droop & Tempo Strain<br/>±2.8° Lie Error, ±22.4yd Slice & 26.8% Returns]
+    D -->|"240fps Smartphone Kinematics + Shaft EI Solver"| F[✅ Recommended: ±0.2° Impact Lie Lock + EI Profile<br/>±6.8yd Dispersion, +19.4yd Carry & 2.9% Returns]
 ```
 
 ### 3.2 240fps Swing Kinematics & Shaft EI Custom Fitting Architecture

@@ -41,10 +41,10 @@ Legacy notification and video architectures fail in two ways:
 ```mermaid
 flowchart TD
     A[Global Maritime Disruption / Port Strike / Tariff Spike] --> B{Executive Alert Modality Across 45,000 Shippers?}
-    B -->|Static CSV / Email Container Table| C[❌ Baseline A: 6.4-Hour Manual ERP Spreadsheet Triage<br/>Misses Scarce Air/Rail Capacity · 14.6% Approval]
-    B -->|Personalized Executive Rerouting & BOM Run-Out Video| D{Video Synthesis & Data Grounding Stack?}
-    D -->|End-to-End Pixel Diffusion T2V| E[❌ Baseline B: $1.65/Clip $74.2k Burst Cost<br/>& 59.2% Hallucinated B/L Container & Tariff Numbers]
-    D -->|AIS × BOM Run-Out AST + 93.8% Closed-GOP Byte-Mux| F[✅ Recommended: Surgical Container Split + $0.0026/Clip<br/>45k Videos in 112s · 2.2m Triage & 68.4% 1-Tap Approval]
+    B -->|"Static CSV / Email Container Table"| C[❌ Baseline A: 6.4-Hour Manual ERP Spreadsheet Triage<br/>Misses Scarce Air/Rail Capacity · 14.6% Approval]
+    B -->|"Personalized Executive Rerouting & BOM Run-Out Video"| D{Video Synthesis & Data Grounding Stack?}
+    D -->|"End-to-End Pixel Diffusion T2V"| E[❌ Baseline B: $1.65/Clip $74.2k Burst Cost<br/>& 59.2% Hallucinated B/L Container & Tariff Numbers]
+    D -->|"AIS × BOM Run-Out AST + 93.8% Closed-GOP Byte-Mux"| F[✅ Recommended: Surgical Container Split + $0.0026/Clip<br/>45k Videos in 112s · 2.2m Triage & 68.4% 1-Tap Approval]
 ```
 
 ### 3.2 AIS × ERP BOM Run-Out Solver & 93.8% Closed-GOP Synthesis Pipeline

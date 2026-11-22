@@ -30,9 +30,9 @@
 ```mermaid
 flowchart TD
     A[25M Frequent-Flyer Year-in-Review Video Campaign] --> B{Synthesis Architecture?}
-    B -->|Per-User AI Video Diffusion<br/>Sora / Veo Full Render| C[$30.0M Compute Bill · Garbled IATA Codes<br/>Flat Mercator Lines · ±4,820 Mile Error]
-    B -->|Uncached Per-User Three.js 3D Globe| D[$1.70M GPU Bill · Redundant Earth Cloud Raymarching]
-    B -->|Top-800 Corridor Closed-GOP + PNR Vector Lock| E[Pre-Bake 800 Great-Circle Corridors + 5 Tier Badges<br/>94.2% Compute Reused via Zero-Transcode Stream Copy]
+    B -->|"Per-User AI Video Diffusion<br/>Sora / Veo Full Render"| C[$30.0M Compute Bill · Garbled IATA Codes<br/>Flat Mercator Lines · ±4,820 Mile Error]
+    B -->|"Uncached Per-User Three.js 3D Globe"| D[$1.70M GPU Bill · Redundant Earth Cloud Raymarching]
+    B -->|"Top-800 Corridor Closed-GOP + PNR Vector Lock"| E[Pre-Bake 800 Great-Circle Corridors + 5 Tier Badges<br/>94.2% Compute Reused via Zero-Transcode Stream Copy]
     E --> F[Render 5.8% Personal Geodesic Finale + Status Buy-Up CTA<br/>$0.0019/Member = $47.5k Total · +$14.8M Co-Brand Revenue]
 ```
 

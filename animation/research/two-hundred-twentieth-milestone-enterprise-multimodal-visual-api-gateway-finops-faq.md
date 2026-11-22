@@ -46,13 +46,13 @@
 ```mermaid
 flowchart TD
     A[业务应用发起图像/视频/3D生成请求] --> B[第1层: 幂等与环境校验<br/>计算 Idempotency-Key & 检查 Dev/Prod 环境标签]
-    B -->|命中进行中任务| C[直接返回既有 Job ID 与实时进度流 0 重复扣费]
-    B -->|Dev/QA 测试环境流量| D[强制路由至内部 4步 Flux.1-schnell $0.0008]
-    B -->|生产环境新请求| E{第2层: 部门当月 FinOps 预算水位?}
-    E -->|已消耗 >= 85% 触发软降级| F[自动路由至内部 AKS Flux.1 / Wan 2.1 开源温池<br/>保障月底零停服]
-    E -->|预算充足 < 85%| G{第3层: 主用云 API RPM 令牌桶水位 & 健康度?}
-    G -->|RPM 充足且 P95 延迟正常| H[调用主用云 API: Azure OpenAI / Vertex Veo 3]
-    G -->|RPM < 10% 或上游 429/503| I[50ms 毫秒级无感逃逸至备用云 Region 或 AKS 温池]
+    B -->|"命中进行中任务"| C[直接返回既有 Job ID 与实时进度流 0 重复扣费]
+    B -->|"Dev/QA 测试环境流量"| D[强制路由至内部 4步 Flux.1-schnell $0.0008]
+    B -->|"生产环境新请求"| E{第2层: 部门当月 FinOps 预算水位?}
+    E -->|"已消耗 >= 85% 触发软降级"| F[自动路由至内部 AKS Flux.1 / Wan 2.1 开源温池<br/>保障月底零停服]
+    E -->|"预算充足 < 85%"| G{第3层: 主用云 API RPM 令牌桶水位 & 健康度?}
+    G -->|"RPM 充足且 P95 延迟正常"| H[调用主用云 API: Azure OpenAI / Vertex Veo 3]
+    G -->|"RPM < 10% 或上游 429/503"| I[50ms 毫秒级无感逃逸至备用云 Region 或 AKS 温池]
     H & I & F & D --> J[第4层: 出口强制执行 Content Safety + C2PA v2.1 签名 + 计费落账]
 ```
 
@@ -68,9 +68,9 @@ flowchart LR
         FIN --> ROUTER[3. 多云健康度与 RPM 路由器:<br/>令牌桶预判 + 50ms 熔断逃逸]
     end
     subgraph Backends[多云与自建混合算力底座]
-        ROUTER -->|Tier 1 旗舰| C1[OpenAI GPT-Image-1 / Sora 2]
-        ROUTER -->|Tier 1 旗舰| C2[Google Vertex Imagen 4 / Veo 3]
-        ROUTER -->|Tier 2 主力/兜底| C3[自建 AKS Flux.1 / Wan 2.1 / ComfyUI 池]
+        ROUTER -->|"Tier 1 旗舰"| C1[OpenAI GPT-Image-1 / Sora 2]
+        ROUTER -->|"Tier 1 旗舰"| C2[Google Vertex Imagen 4 / Veo 3]
+        ROUTER -->|"Tier 2 主力/兜底"| C3[自建 AKS Flux.1 / Wan 2.1 / ComfyUI 池]
     end
 ```
 

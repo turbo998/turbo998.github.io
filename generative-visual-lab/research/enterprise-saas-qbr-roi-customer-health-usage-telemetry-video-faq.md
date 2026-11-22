@@ -45,10 +45,10 @@
 ```mermaid
 flowchart TD
     A[B2B SaaS 客户营销与客户成功视频场景] --> B{是否包含客户专属合同席位 / SLA / 账单 ROI 数字?}
-    B -->|否: 通用产品发布会品牌宣传片| C[纯 AI 视频生成大模型<br/>Sora / Veo / Runway 创意镜头]
-    B -->|是: 季度业务回顾 QBR / 续约价值审计 / 超额扩容提醒| D{目标触达客户规模?}
-    D -->|仅 Top 50 战略大客户定制汇报| E[CSM 架构师人工深度定制 + 现场路演]
-    D -->|1万–50万 SMB / Mid-Market / Enterprise 全量规模化触达| F[✅ 推荐架构: Snowflake/Gainsight 遥测直驱 Remotion 矢量图表<br/>+ 93.8% AI CSM 演播室 Closed-GOP 分片流式拼接]
+    B -->|"否: 通用产品发布会品牌宣传片"| C[纯 AI 视频生成大模型<br/>Sora / Veo / Runway 创意镜头]
+    B -->|"是: 季度业务回顾 QBR / 续约价值审计 / 超额扩容提醒"| D{目标触达客户规模?}
+    D -->|"仅 Top 50 战略大客户定制汇报"| E[CSM 架构师人工深度定制 + 现场路演]
+    D -->|"1万–50万 SMB / Mid-Market / Enterprise 全量规模化触达"| F[✅ 推荐架构: Snowflake/Gainsight 遥测直驱 Remotion 矢量图表<br/>+ 93.8% AI CSM 演播室 Closed-GOP 分片流式拼接]
 ```
 
 ### 3.2 Snowflake + Gainsight + Remotion 混合 QBR 视频生产管线架构图

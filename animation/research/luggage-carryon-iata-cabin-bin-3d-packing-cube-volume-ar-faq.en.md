@@ -32,11 +32,11 @@
 ```mermaid
 flowchart TD
     A[Launch Carry-On Luggage SKU & AI Campaign] --> B{Dimension & Capacity Pipeline?}
-    B -->|Unconstrained AI Render / Bare Shell BBox| C[Omits 48mm Spinner Wheels + Inflates 42L Claim<br/>Jams 550mm Gate Sizer Cage · 27.4% Return Rate]
-    B -->|3D CAD Wheel-Inclusive BVH + Interior Voxel Solver| D[Include 48mm Wheels + Handles + TSA Lock + Gusset]
+    B -->|"Unconstrained AI Render / Bare Shell BBox"| C[Omits 48mm Spinner Wheels + Inflates 42L Claim<br/>Jams 550mm Gate Sizer Cage · 27.4% Return Rate]
+    B -->|"3D CAD Wheel-Inclusive BVH + Interior Voxel Solver"| D[Include 48mm Wheels + Handles + TSA Lock + Gusset]
     D --> E{42-Airline Sizer Cage & Overhead Bin BVH Check}
-    E -->|Zipper Expanded +45mm Exceeds 230mm Depth| F[Show Real-Time Carrier Warning: Zip Gusset Closed for EU LCCs]
-    E -->|Total Height <= 546mm · Depth <= 226mm| G[Run 34.8L Interior Voxel 3D Packing-Cube Solver<br/>42/42 Airlines Passed · 3.1% Return Rate]
+    E -->|"Zipper Expanded +45mm Exceeds 230mm Depth"| F[Show Real-Time Carrier Warning: Zip Gusset Closed for EU LCCs]
+    E -->|"Total Height <= 546mm · Depth <= 226mm"| G[Run 34.8L Interior Voxel 3D Packing-Cube Solver<br/>42/42 Airlines Passed · 3.1% Return Rate]
 ```
 
 ### 3.2 Enterprise Luggage CAD Sizer BVH, Interior Voxel & AI Relighting Architecture

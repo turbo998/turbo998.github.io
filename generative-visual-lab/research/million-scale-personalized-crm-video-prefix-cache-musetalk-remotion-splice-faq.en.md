@@ -44,10 +44,10 @@
 ```mermaid
 flowchart TD
     A[Enterprise Personalized Video Campaign] --> B{Audience Size & Trigger Pattern?}
-    B -->|1-on-1 Account Executive Outreach<br/>< 1,000 Clips/Mo| C[Full Per-User Avatar API or MuseTalk<br/>Bespoke Script per Prospect]
-    B -->|B2B SaaS Real-Time Signup Welcome<br/>10k - 250k Leads/Mo| D[2.5s Name Cache + 8 Industry Pain-Point Branches<br/>+ Alpha Avatar PIP over Live Playwright Website Capture 1.45s]
-    B -->|Wealth Wrap / Loyalty Recap<br/>500k - 2M Users/Campaign| E[Top-5,000 Name 2.5s Cache + Shared Base GOP<br/>+ Remotion Chart Cutaway + FFmpeg -c:v copy 0.38s]
-    B -->|Gaming Season Recap / Consumer App Wrap<br/>5M+ Simultaneous Launch Spike| F[Edge CDN Archetype Clips<br/>+ Client-Side Browser Canvas & WebCodecs Synthesis 80% Offload]
+    B -->|"1-on-1 Account Executive Outreach<br/>< 1,000 Clips/Mo"| C[Full Per-User Avatar API or MuseTalk<br/>Bespoke Script per Prospect]
+    B -->|"B2B SaaS Real-Time Signup Welcome<br/>10k - 250k Leads/Mo"| D[2.5s Name Cache + 8 Industry Pain-Point Branches<br/>+ Alpha Avatar PIP over Live Playwright Website Capture 1.45s]
+    B -->|"Wealth Wrap / Loyalty Recap<br/>500k - 2M Users/Campaign"| E[Top-5,000 Name 2.5s Cache + Shared Base GOP<br/>+ Remotion Chart Cutaway + FFmpeg -c:v copy 0.38s]
+    B -->|"Gaming Season Recap / Consumer App Wrap<br/>5M+ Simultaneous Launch Spike"| F[Edge CDN Archetype Clips<br/>+ Client-Side Browser Canvas & WebCodecs Synthesis 80% Offload]
 ```
 
 ### 3.2 4-Chunk "Prefix Cache + Rest-Pose Anchor + Remotion Cutaway + GOP Stream Copy" Pipeline

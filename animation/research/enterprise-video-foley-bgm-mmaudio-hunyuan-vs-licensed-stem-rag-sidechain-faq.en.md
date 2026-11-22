@@ -42,8 +42,8 @@
 ```mermaid
 flowchart TD
     A[Enterprise Video Requires Voiceover, Foley & BGM] --> B{What Drives the Visual Action?}
-    B -->|Programmatic UI / E-Learning<br/>DOM / Remotion Driven| C[Extract Exact DOM Click/Transition Frame Timestamps<br/>Trigger Lossless UI SFX Library 12.0ms Sync]
-    B -->|AI Video or Live Footage<br/>Physical Collisions / Footsteps| D[Optical-Flow Peak Extractor + MMAudio / HunyuanVideo-Foley<br/>Synthesize 48kHz Foley Stem 18.5ms Sync]
+    B -->|"Programmatic UI / E-Learning<br/>DOM / Remotion Driven"| C[Extract Exact DOM Click/Transition Frame Timestamps<br/>Trigger Lossless UI SFX Library 12.0ms Sync]
+    B -->|"AI Video or Live Footage<br/>Physical Collisions / Footsteps"| D[Optical-Flow Peak Extractor + MMAudio / HunyuanVideo-Foley<br/>Synthesize 48kHz Foley Stem 18.5ms Sync]
     C --> E[BGM Selection: Block Un-Cleared Music Gen!<br/>CLAP Embedding RAG over Indemnified Stem Library]
     D --> E
     E --> F[FFmpeg Master Bus: Azure Speech Stem Triggers -12dB Sidechain<br/>+ 300Hz-3.4kHz Spectral Notch + EBU R128 -14 LUFS]

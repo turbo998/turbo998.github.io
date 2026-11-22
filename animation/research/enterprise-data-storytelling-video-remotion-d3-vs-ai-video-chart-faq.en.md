@@ -47,8 +47,8 @@
 ```mermaid
 flowchart TD
     A[Enterprise Needs Earnings / BI Digest / ESG Data Video] --> B{Visual Element Category?}
-    B -->|Bar/Line Charts / Sankey Flows / Financial Digits / Maps| C[Block Pixel Video Diffusion!<br/>100% Audited SQL JSON -> D3.js Scales & GeoJSON -> Remotion Vector HUD]
-    B -->|Documentary Scene Transitions<br/>Wind Farms / Ports / Retail Stores| D[Generate 3s Text-Free Cinematic B-Roll via Wan 2.1 / Veo 3]
+    B -->|"Bar/Line Charts / Sankey Flows / Financial Digits / Maps"| C[Block Pixel Video Diffusion!<br/>100% Audited SQL JSON -> D3.js Scales & GeoJSON -> Remotion Vector HUD]
+    B -->|"Documentary Scene Transitions<br/>Wind Farms / Ports / Retail Stores"| D[Generate 3s Text-Free Cinematic B-Roll via Wan 2.1 / Veo 3]
     C & D --> E[Compositor: Dim & Blur B-Roll Backdrop 16px<br/>+ Azure Speech WordBoundary Millisecond-Synced D3 Spring Animations]
 ```
 

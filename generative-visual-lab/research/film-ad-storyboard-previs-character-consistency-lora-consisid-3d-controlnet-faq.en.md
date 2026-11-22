@@ -45,10 +45,10 @@ Relying on text prompts or a single front-facing reference image (`Prompt-Only /
 ```mermaid
 flowchart TD
     A[Film / Ad / Game Storyboard & Previs Workload] --> B{Shot Count, Camera Angles & Character Count?}
-    B -->|≤ 5 Shots · Single Front-Facing Character<br/>Quick Concept Pitch| C[Use Zero-Shot StoryDiffusion / IP-Adapter / PulID<br/>Single Reference Image]
-    B -->|24–60 Shots · Full Commercial TVC or Cutscene<br/>Includes Side Profiles, OTS Two-Shots & Specific Lenses| D{Camera & Multi-Character Conditioning Stack?}
-    D -->|Text Prompts & Unmasked Global Reference| E[❌ Anti-Pattern: 51.4% Profile Identity Drift<br/>Dual-Character Face Bleeding & Broken 180° Axis]
-    D -->|3D Blockout + Turnaround LoRA + Regional Mask + ConsisID| F[✅ Recommended: Three.js/Blender Depth+Pose+ID Mask<br/>+ Regional LoRA Attention + ConsisID Video · 98.4% Lock]
+    B -->|"≤ 5 Shots · Single Front-Facing Character<br/>Quick Concept Pitch"| C[Use Zero-Shot StoryDiffusion / IP-Adapter / PulID<br/>Single Reference Image]
+    B -->|"24–60 Shots · Full Commercial TVC or Cutscene<br/>Includes Side Profiles, OTS Two-Shots & Specific Lenses"| D{Camera & Multi-Character Conditioning Stack?}
+    D -->|"Text Prompts & Unmasked Global Reference"| E[❌ Anti-Pattern: 51.4% Profile Identity Drift<br/>Dual-Character Face Bleeding & Broken 180° Axis]
+    D -->|"3D Blockout + Turnaround LoRA + Regional Mask + ConsisID"| F[✅ Recommended: Three.js/Blender Depth+Pose+ID Mask<br/>+ Regional LoRA Attention + ConsisID Video · 98.4% Lock]
 ```
 
 ### 3.2 4-Stage Controlled Storyboard & Animatic Previs Production Pipeline

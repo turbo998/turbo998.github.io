@@ -47,8 +47,8 @@
 flowchart TD
     A["Enterprise Studio Shoot Requirement"] --> B{"Shooting on an LED Volume (ICVFX)<br/>or Traditional Green Screen?"}
     B -->|"Green Screen"| C{"Includes reflective car paint,<br/>glass, or fine hair?"}
-    C -->|Yes| D["⚠️ High Green-Spill Roto Cost!<br/>Migrate to LED Volume ICVFX"]
-    C -->|No| E["Standard Chroma Key + Post Matchmove"]
+    C -->|"Yes"| D["⚠️ High Green-Spill Roto Cost!<br/>Migrate to LED Volume ICVFX"]
+    C -->|"No"| E["Standard Chroma Key + Post Matchmove"]
     B -->|"Curved LED Volume"| F{"Does the physical camera translate<br/>(Dolly / Steadicam / Crane)?"}
     F -->|"Yes (Moving Camera Commercial / xR Keynote)"| G["✅ Full ICVFX Dual-Frustum + Genlock Pipeline:<br/>1. Inner Frustum: 6DoF Tracked 3DGS / UE5 Off-Axis Render<br/>2. Outer Dome: 360° 16-Bit AIGC HDRI Reflection<br/>3. PTPv2 + Tri-Level Genlock Shutter Sync"]
     F -->|"No (Locked Static Tripod)"| H["✅ Static 10-Bit 4K AIGC Plate + Genlock Sync"]

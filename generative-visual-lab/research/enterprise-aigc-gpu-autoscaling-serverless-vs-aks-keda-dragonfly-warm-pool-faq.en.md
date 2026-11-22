@@ -46,8 +46,8 @@
 ```mermaid
 flowchart TD
     A[Enterprise AIGC Image/Video Inference Cluster Selection] --> B{Monthly Compute Volume?}
-    B -->|< 250 GPU-Hours/Mo<br/>or Early PoC / 15x Spiky Campaigns| C[100% Serverless GPU:<br/>Modal / Fal CUDA Memory Snapshot<br/>3.4s Cold Start + True Scale-to-Zero]
-    B -->|>= 250 GPU-Hours/Mo<br/>Steady Enterprise Visual Platform| D[AKS / EKS 3-Tier Hybrid Pool:<br/>30% Reserved Base + 60% KEDA Spot + 10% Serverless Overflow]
+    B -->|"< 250 GPU-Hours/Mo<br/>or Early PoC / 15x Spiky Campaigns"| C[100% Serverless GPU:<br/>Modal / Fal CUDA Memory Snapshot<br/>3.4s Cold Start + True Scale-to-Zero]
+    B -->|">= 250 GPU-Hours/Mo<br/>Steady Enterprise Visual Platform"| D[AKS / EKS 3-Tier Hybrid Pool:<br/>30% Reserved Base + 60% KEDA Spot + 10% Serverless Overflow]
     D --> E[Fast-Boot Layer:<br/>Weight-Decoupled Image + Dragonfly P2P + Local NVMe safetensors mmap 6.8s]
     D --> F[Spot Fault-Tolerance Layer:<br/>30s IMDS Eviction Hook + 10-Step 18MB Latent Checkpoint to Redis]
 ```
@@ -65,7 +65,7 @@ flowchart LR
     end
     subgraph SpotPool[3. Spot Step-Checkpointing Pool]
         NVME --> WORK[Wan 2.1 / Flux.1 Worker:<br/>Save 18MB Latent Every 10 Steps -> Redis]
-        WORK -->|30s Spot Eviction Webhook| RESUME[Standby Spot Pod Pulls Step-40 Latent<br/>Resumes Steps 41-50 in 4.2s]
+        WORK -->|"30s Spot Eviction Webhook"| RESUME[Standby Spot Pod Pulls Step-40 Latent<br/>Resumes Steps 41-50 in 4.2s]
     end
 ```
 

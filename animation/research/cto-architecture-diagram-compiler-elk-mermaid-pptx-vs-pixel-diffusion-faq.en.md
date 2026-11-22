@@ -44,9 +44,9 @@
 ```mermaid
 flowchart TD
     A[Architect Needs Cloud Diagram or CTO Board Deck] --> B{Primary Deliverable Surface?}
-    B -->|RFP & Architecture Review Doc<br/>Requires Editable Draw.io / Vector SVG| C[IaC or Prompt -> LLM Topology JSON AST<br/>+ ELK.js Orthogonal Router + Official Azure/AWS SVG Icons]
-    B -->|Executive Board .pptx Deck<br/>Requires Native Editable Shapes & Text| D[JSON Slide Spec + ELK Grid Coordinates<br/>+ PptxGenJS Native Shapes/Tables + Scoped Clean-Plate AI Slot]
-    B -->|Live Customer Technical Demo<br/>Requires Interactive Failover & QPS Flow| E[Same JSON AST -> React Flow / SVG Interactive Canvas<br/>+ 60fps stroke-dashoffset Token Stream + Chaos Toggle]
+    B -->|"RFP & Architecture Review Doc<br/>Requires Editable Draw.io / Vector SVG"| C[IaC or Prompt -> LLM Topology JSON AST<br/>+ ELK.js Orthogonal Router + Official Azure/AWS SVG Icons]
+    B -->|"Executive Board .pptx Deck<br/>Requires Native Editable Shapes & Text"| D[JSON Slide Spec + ELK Grid Coordinates<br/>+ PptxGenJS Native Shapes/Tables + Scoped Clean-Plate AI Slot]
+    B -->|"Live Customer Technical Demo<br/>Requires Interactive Failover & QPS Flow"| E[Same JSON AST -> React Flow / SVG Interactive Canvas<br/>+ 60fps stroke-dashoffset Token Stream + Chaos Toggle]
 ```
 
 ### 3.2 4-Stage "AST -> ELK.js -> Official Icons -> Multi-Format Editable Compiler" Pipeline
