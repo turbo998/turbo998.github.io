@@ -8974,6 +8974,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r750File),'utf8');
       assert.ok(txt.includes('4,300.00')&&txt.includes('4,600.00')&&txt.includes('8,900.00')&&txt.includes('75.00')&&txt.includes('250.00')&&txt.includes('325.00')&&txt.includes('8,575.00')&&txt.includes('96.35%')&&txt.includes('not_measured'),r750File+': contains exact 11-22 R14 R750 frappe+yuquemcp+victoriametrics+geomcp closed-form parameters');
     }
+    // 2026-11-22 Night Round 15 (R751: shibing624/agentica + xuiltul/animaworks + phil65/agentpool + GroundedCoreAI/nexusdesk) verification
+    const r751PathA=4240.00+45.0*100.00;
+    assert.equal(r751PathA.toFixed(2),'8740.00','11-22 R15 R751 Path A total');
+    const r751PathC=70.00+2.4*100.00;
+    assert.equal(r751PathC.toFixed(2),'310.00','11-22 R15 R751 Path C total');
+    assert.equal((r751PathA-r751PathC).toFixed(2),'8430.00','11-22 R15 R751 savings vs Path A');
+    assert.equal(((r751PathA-r751PathC)/r751PathA*100).toFixed(2),'96.45','11-22 R15 R751 pct savings vs Path A');
+    for(const r751File of ['workshops/github-trending-radar/docs/agentica-animaworks-agentpool-nexusdesk-selection-faq.md','workshops/github-trending-radar/docs/agentica-animaworks-agentpool-nexusdesk-selection-faq.en.md','assets/github-ai-radar-2026-11-22-r15-r751-agentica-animaworks-agentpool-nexusdesk.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-22-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r751File),'utf8');
+      assert.ok(txt.includes('4,240.00')&&txt.includes('4,500.00')&&txt.includes('8,740.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,430.00')&&txt.includes('96.45%')&&txt.includes('not_measured'),r751File+': contains exact 11-22 R15 R751 agentica+animaworks+agentpool+nexusdesk closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
