@@ -8897,6 +8897,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r743File),'utf8');
       assert.ok(txt.includes('4,020.00')&&txt.includes('4,350.00')&&txt.includes('8,370.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('8,065.00')&&txt.includes('96.36%')&&txt.includes('not_measured'),r743File+': contains exact 11-22 R7 R743 reliabilityskills+dashboard+launchguard+cifailure closed-form parameters');
     }
+    // 2026-11-22 Night Round 8 (R744: trydirex/direx + AIAgentAndy/DeepAA + ShadowSafin/Synapass + weir36/deep-research-langgraph) verification
+    const r744PathA=4100.00+44.0*100.00;
+    assert.equal(r744PathA.toFixed(2),'8500.00','11-22 R8 R744 Path A total');
+    const r744PathC=70.00+2.4*100.00;
+    assert.equal(r744PathC.toFixed(2),'310.00','11-22 R8 R744 Path C total');
+    assert.equal((r744PathA-r744PathC).toFixed(2),'8190.00','11-22 R8 R744 savings vs Path A');
+    assert.equal(((r744PathA-r744PathC)/r744PathA*100).toFixed(2),'96.35','11-22 R8 R744 pct savings vs Path A');
+    for(const r744File of ['workshops/github-trending-radar/docs/direx-deepaa-synapass-deep-research-langgraph-selection-faq.md','workshops/github-trending-radar/docs/direx-deepaa-synapass-deep-research-langgraph-selection-faq.en.md','assets/github-ai-radar-2026-11-22-r8-r744-direx-deepaa-synapass-deepresearch.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-22-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r744File),'utf8');
+      assert.ok(txt.includes('4,100.00')&&txt.includes('4,400.00')&&txt.includes('8,500.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,190.00')&&txt.includes('96.35%')&&txt.includes('not_measured'),r744File+': contains exact 11-22 R8 R744 direx+deepaa+synapass+deepresearch closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
