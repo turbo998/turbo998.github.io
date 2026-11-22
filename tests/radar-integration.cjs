@@ -9315,6 +9315,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r781File),'utf8');
       assert.ok(txt.includes('4,440.00')&&txt.includes('4,500.00')&&txt.includes('8,940.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('8,635.00')&&txt.includes('96.59%')&&txt.includes('not_measured'),r781File+': contains exact 11-22 R45 R781 paperpreflight+paperdelta+anomalous+bluewhale closed-form parameters');
     }
+    // 2026-11-22 Night Round 46 (R782: sayaka-aiart/StandRig + taisly/agent + greenpolo/cc-multi-cli-plugin + this-rs/project-orchestrator) verification
+    const r782PathA=4470.00+45.0*100.00;
+    assert.equal(r782PathA.toFixed(2),'8970.00','11-22 R46 R782 Path A total');
+    const r782PathC=65.00+2.4*100.00;
+    assert.equal(r782PathC.toFixed(2),'305.00','11-22 R46 R782 Path C total');
+    assert.equal((r782PathA-r782PathC).toFixed(2),'8665.00','11-22 R46 R782 savings vs Path A');
+    assert.equal(((r782PathA-r782PathC)/r782PathA*100).toFixed(2),'96.60','11-22 R46 R782 pct savings vs Path A');
+    for(const r782File of ['workshops/github-trending-radar/docs/standrig-taisly-agent-cc-multi-cli-project-orchestrator-selection-faq.md','workshops/github-trending-radar/docs/standrig-taisly-agent-cc-multi-cli-project-orchestrator-selection-faq.en.md','assets/github-ai-radar-2026-11-22-r46-r782-standrig-taisly-ccmulticli-orchestrator.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-22-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r782File),'utf8');
+      assert.ok(txt.includes('4,470.00')&&txt.includes('4,500.00')&&txt.includes('8,970.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('8,665.00')&&txt.includes('96.60%')&&txt.includes('not_measured'),r782File+': contains exact 11-22 R46 R782 standrig+taisly+ccmulticli+orchestrator closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
