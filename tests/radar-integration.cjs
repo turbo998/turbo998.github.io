@@ -9326,6 +9326,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r782File),'utf8');
       assert.ok(txt.includes('4,470.00')&&txt.includes('4,500.00')&&txt.includes('8,970.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('8,665.00')&&txt.includes('96.60%')&&txt.includes('not_measured'),r782File+': contains exact 11-22 R46 R782 standrig+taisly+ccmulticli+orchestrator closed-form parameters');
     }
+    // 2026-11-22 Night Round 47 (R783: anomalyco/isocast + regrevia/Envoy + thebanri/limoni + Cai-aa/CAD-Agent-Hub) verification
+    const r783PathA=4560.00+46.0*100.00;
+    assert.equal(r783PathA.toFixed(2),'9160.00','11-22 R47 R783 Path A total');
+    const r783PathC=70.00+2.4*100.00;
+    assert.equal(r783PathC.toFixed(2),'310.00','11-22 R47 R783 Path C total');
+    assert.equal((r783PathA-r783PathC).toFixed(2),'8850.00','11-22 R47 R783 savings vs Path A');
+    assert.equal(((r783PathA-r783PathC)/r783PathA*100).toFixed(2),'96.62','11-22 R47 R783 pct savings vs Path A');
+    for(const r783File of ['workshops/github-trending-radar/docs/isocast-envoy-limoni-cad-agent-hub-selection-faq.md','workshops/github-trending-radar/docs/isocast-envoy-limoni-cad-agent-hub-selection-faq.en.md','assets/github-ai-radar-2026-11-22-r47-r783-isocast-envoy-limoni-cadagenthub.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-22-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r783File),'utf8');
+      assert.ok(txt.includes('4,560.00')&&txt.includes('4,600.00')&&txt.includes('9,160.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,850.00')&&txt.includes('96.62%')&&txt.includes('not_measured'),r783File+': contains exact 11-22 R47 R783 isocast+envoy+limoni+cadagenthub closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
