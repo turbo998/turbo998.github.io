@@ -9293,6 +9293,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r779File),'utf8');
       assert.ok(txt.includes('4,450.00')&&txt.includes('4,500.00')&&txt.includes('8,950.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('8,645.00')&&txt.includes('96.59%')&&txt.includes('not_measured'),r779File+': contains exact 11-22 R43 R779 dshcrew+cassette+growthengineer+antumi closed-form parameters');
     }
+    // 2026-11-22 Night Round 44 (R780 Milestone: sandbaseai/deepseek-harness-handbook + Remocn/remocn-studio + jdilla1277/agentcad + 3241288994/AImanager) verification
+    const r780PathA=4620.00+46.0*100.00;
+    assert.equal(r780PathA.toFixed(2),'9220.00','11-22 R44 R780 Path A total');
+    const r780PathC=70.00+2.4*100.00;
+    assert.equal(r780PathC.toFixed(2),'310.00','11-22 R44 R780 Path C total');
+    assert.equal((r780PathA-r780PathC).toFixed(2),'8910.00','11-22 R44 R780 savings vs Path A');
+    assert.equal(((r780PathA-r780PathC)/r780PathA*100).toFixed(2),'96.64','11-22 R44 R780 pct savings vs Path A');
+    for(const r780File of ['workshops/github-trending-radar/docs/deepseek-harness-handbook-remocn-studio-agentcad-aimanager-selection-faq.md','workshops/github-trending-radar/docs/deepseek-harness-handbook-remocn-studio-agentcad-aimanager-selection-faq.en.md','assets/github-ai-radar-2026-11-22-r44-r780-dshhandbook-remocn-agentcad-aimanager.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-22-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r780File),'utf8');
+      assert.ok(txt.includes('4,620.00')&&txt.includes('4,600.00')&&txt.includes('9,220.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,910.00')&&txt.includes('96.64%')&&txt.includes('not_measured'),r780File+': contains exact 11-22 R44 R780 dshhandbook+remocn+agentcad+aimanager closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
