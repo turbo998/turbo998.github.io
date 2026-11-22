@@ -9304,6 +9304,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r780File),'utf8');
       assert.ok(txt.includes('4,620.00')&&txt.includes('4,600.00')&&txt.includes('9,220.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,910.00')&&txt.includes('96.64%')&&txt.includes('not_measured'),r780File+': contains exact 11-22 R44 R780 dshhandbook+remocn+agentcad+aimanager closed-form parameters');
     }
+    // 2026-11-22 Night Round 45 (R781: amos689/paper-preflight + DemonGatanjieu/Anomalous_Model_Browser + amos689/paperdelta + leenkcool/Blue-Whale-Harness) verification
+    const r781PathA=4440.00+45.0*100.00;
+    assert.equal(r781PathA.toFixed(2),'8940.00','11-22 R45 R781 Path A total');
+    const r781PathC=65.00+2.4*100.00;
+    assert.equal(r781PathC.toFixed(2),'305.00','11-22 R45 R781 Path C total');
+    assert.equal((r781PathA-r781PathC).toFixed(2),'8635.00','11-22 R45 R781 savings vs Path A');
+    assert.equal(((r781PathA-r781PathC)/r781PathA*100).toFixed(2),'96.59','11-22 R45 R781 pct savings vs Path A');
+    for(const r781File of ['workshops/github-trending-radar/docs/paper-preflight-paperdelta-anomalous-model-browser-blue-whale-harness-selection-faq.md','workshops/github-trending-radar/docs/paper-preflight-paperdelta-anomalous-model-browser-blue-whale-harness-selection-faq.en.md','assets/github-ai-radar-2026-11-22-r45-r781-paperpreflight-paperdelta-anomalous-bluewhale.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-22-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r781File),'utf8');
+      assert.ok(txt.includes('4,440.00')&&txt.includes('4,500.00')&&txt.includes('8,940.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('8,635.00')&&txt.includes('96.59%')&&txt.includes('not_measured'),r781File+': contains exact 11-22 R45 R781 paperpreflight+paperdelta+anomalous+bluewhale closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
