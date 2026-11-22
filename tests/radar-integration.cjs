@@ -8985,6 +8985,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r751File),'utf8');
       assert.ok(txt.includes('4,240.00')&&txt.includes('4,500.00')&&txt.includes('8,740.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,430.00')&&txt.includes('96.45%')&&txt.includes('not_measured'),r751File+': contains exact 11-22 R15 R751 agentica+animaworks+agentpool+nexusdesk closed-form parameters');
     }
+    // 2026-11-22 Night Round 16 (R752: Vaultite/vaultite + Astrmira/TriviumDB + gavischneider/awesome-llm-wiki + posit-dev/great-docs) verification
+    const r752PathA=4140.00+44.0*100.00;
+    assert.equal(r752PathA.toFixed(2),'8540.00','11-22 R16 R752 Path A total');
+    const r752PathC=65.00+2.4*100.00;
+    assert.equal(r752PathC.toFixed(2),'305.00','11-22 R16 R752 Path C total');
+    assert.equal((r752PathA-r752PathC).toFixed(2),'8235.00','11-22 R16 R752 savings vs Path A');
+    assert.equal(((r752PathA-r752PathC)/r752PathA*100).toFixed(2),'96.43','11-22 R16 R752 pct savings vs Path A');
+    for(const r752File of ['workshops/github-trending-radar/docs/vaultite-triviumdb-awesome-llm-wiki-great-docs-selection-faq.md','workshops/github-trending-radar/docs/vaultite-triviumdb-awesome-llm-wiki-great-docs-selection-faq.en.md','assets/github-ai-radar-2026-11-22-r16-r752-vaultite-triviumdb-llmwiki-greatdocs.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-22-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r752File),'utf8');
+      assert.ok(txt.includes('4,140.00')&&txt.includes('4,400.00')&&txt.includes('8,540.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('8,235.00')&&txt.includes('96.43%')&&txt.includes('not_measured'),r752File+': contains exact 11-22 R16 R752 vaultite+triviumdb+llmwiki+greatdocs closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
