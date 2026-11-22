@@ -9029,6 +9029,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r755File),'utf8');
       assert.ok(txt.includes('4,220.00')&&txt.includes('4,400.00')&&txt.includes('8,620.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('8,315.00')&&txt.includes('96.46%')&&txt.includes('not_measured'),r755File+': contains exact 11-22 R19 R755 gunshi+cship+monarch+phpmcp closed-form parameters');
     }
+    // 2026-11-22 Night Round 20 (R756: KenKaiii/gg-framework + jumpstarter-dev/jumpstarter + oaslananka/kicad-mcp-pro + damianvtran/local-operator) verification
+    const r756PathA=4420.00+46.0*100.00;
+    assert.equal(r756PathA.toFixed(2),'9020.00','11-22 R20 R756 Path A total');
+    const r756PathC=75.00+2.5*100.00;
+    assert.equal(r756PathC.toFixed(2),'325.00','11-22 R20 R756 Path C total');
+    assert.equal((r756PathA-r756PathC).toFixed(2),'8695.00','11-22 R20 R756 savings vs Path A');
+    assert.equal(((r756PathA-r756PathC)/r756PathA*100).toFixed(2),'96.40','11-22 R20 R756 pct savings vs Path A');
+    for(const r756File of ['workshops/github-trending-radar/docs/gg-framework-jumpstarter-kicad-mcp-local-operator-selection-faq.md','workshops/github-trending-radar/docs/gg-framework-jumpstarter-kicad-mcp-local-operator-selection-faq.en.md','assets/github-ai-radar-2026-11-22-r20-r756-ggframework-jumpstarter-kicad-localop.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-22-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r756File),'utf8');
+      assert.ok(txt.includes('4,420.00')&&txt.includes('4,600.00')&&txt.includes('9,020.00')&&txt.includes('75.00')&&txt.includes('250.00')&&txt.includes('325.00')&&txt.includes('8,695.00')&&txt.includes('96.40%')&&txt.includes('not_measured'),r756File+': contains exact 11-22 R20 R756 ggframework+jumpstarter+kicad+localop closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
