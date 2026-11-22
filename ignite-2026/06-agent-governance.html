@@ -1,0 +1,1354 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark" data-mode="read">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>06 全域智能体治理｜企业级 Agentic AI 生产落地之旅</title>
+  <link rel="stylesheet" href="assets/ignite-recap.css" />
+  <style>
+    /* Stage 06 Scoped Components (100% CSS-Variable Theme Aware) */
+    .guardrail-toggle-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 10px;
+      margin: 14px 0 16px;
+    }
+    .guard-chip {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 11px 13px;
+      border-radius: 11px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      cursor: pointer;
+      user-select: none;
+      transition: border-color 0.15s ease;
+    }
+    .guard-chip:hover {
+      border-color: var(--accent);
+    }
+    .guard-chip input[type="checkbox"] {
+      margin-top: 3px;
+      width: 16px;
+      height: 16px;
+      accent-color: var(--teal);
+      cursor: pointer;
+      flex: none;
+    }
+    .guard-chip strong {
+      display: block;
+      font-size: 13px;
+      color: var(--text);
+      line-height: 1.3;
+    }
+    .guard-chip small {
+      display: block;
+      font-size: 11.5px;
+      color: var(--text-soft);
+      margin-top: 2px;
+    }
+    .risk-compare-box {
+      margin-top: 16px;
+      padding: 16px 18px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+    }
+    .risk-row {
+      display: grid;
+      grid-template-columns: 185px minmax(0, 1fr) 92px;
+      align-items: center;
+      gap: 12px;
+      margin: 9px 0;
+      font-size: 13px;
+    }
+    .risk-track {
+      height: 16px;
+      border-radius: 999px;
+      background: var(--surface-strong);
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+    .risk-fill {
+      height: 100%;
+      border-radius: 999px;
+      transition: width 0.25s ease;
+    }
+    .exec-closing-banner {
+      margin-top: 16px;
+      padding: 16px 18px;
+      border-radius: 14px;
+      border: 1px solid var(--border-strong);
+      border-left: 4px solid var(--purple);
+      background: var(--surface-soft);
+      font-size: 13.5px;
+    }
+    .exec-closing-banner h4 {
+      margin: 0 0 8px;
+      font-size: 14.5px;
+      color: var(--purple);
+    }
+    .stage-pill-tag {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      background: var(--accent-soft);
+      color: var(--accent);
+      border: 1px solid rgba(56, 189, 248, 0.32);
+      white-space: nowrap;
+    }
+    @media (max-width: 720px) {
+      .risk-row {
+        grid-template-columns: 1fr;
+        gap: 4px;
+      }
+    }
+  </style>
+</head>
+<body data-title-zh="06 全域智能体治理｜企业级 Agentic AI 生产落地之旅" data-title-en="06 Enterprise Agent Governance | The Enterprise Agentic AI Journey">
+  <a href="#main-content" class="skip-link">
+    <span data-lang="zh-CN">跳至正文内容</span>
+    <span data-lang="en">Skip to main content</span>
+  </a>
+
+  <!-- Shared Sticky Site Header + 7-Item Journey Bar -->
+  <header class="site-header">
+    <div class="header-top">
+      <div class="brand-group">
+        <a href="index.html" class="brand-mark" aria-label="Home">IG26</a>
+        <div>
+          <a href="index.html" class="brand-title">
+            <span data-lang="zh-CN">企业级 Agentic AI 生产落地之旅</span>
+            <span data-lang="en">The Enterprise Agentic AI Journey</span>
+          </a>
+          <span class="brand-sub">
+            <span data-lang="zh-CN">Microsoft Ignite 2026 解决方案架构师全景指南</span>
+            <span data-lang="en">Microsoft Ignite 2026 Solution Architect Blueprint</span>
+          </span>
+        </div>
+      </div>
+      <div class="header-controls">
+        <a class="ctrl-btn hub-return-link" href="../zh.html">← 个人主页</a>
+        <div class="header-search-wrap"><input type="search" class="header-search-input" placeholder="搜索章节 / 微软服务…" aria-label="搜索 Ignite 2026 章节与服务"><div class="header-search-results" hidden></div></div>
+        <button type="button" class="ctrl-btn" data-action="toggle-mode">📖 精读 / 🎤 投屏</button>
+        <button type="button" class="ctrl-btn" data-action="toggle-cues"><span data-lang="zh-CN">🎙️ 宣讲提示</span><span data-lang="en">🎙️ Speaker Cues</span></button>
+        <button type="button" class="ctrl-btn" data-action="toggle-theme">🌗 <span class="theme-label">浅色</span></button>
+        <a class="ctrl-btn language-link" href="06-agent-governance.en.html" hreflang="en" data-action="toggle-lang">EN / 中文</a>
+      </div>
+    </div>
+    <div class="journey-bar">
+      <nav class="journey-nav" aria-label="Journey Stages">
+        <a href="index.html" class="journey-link">
+          <span class="journey-step">00</span>
+          <span data-lang="zh-CN">全景架构蓝图</span>
+          <span data-lang="en">Architecture Blueprint</span>
+        </a>
+        <a href="01-copilot-entry.html" class="journey-link">
+          <span class="journey-step">01</span>
+          <span data-lang="zh-CN">统一智能体入口</span>
+          <span data-lang="en">Unified Agent Entry</span>
+        </a>
+        <a href="02-web-iq-context.html" class="journey-link">
+          <span class="journey-step">02</span>
+          <span data-lang="zh-CN">外部实时上下文</span>
+          <span data-lang="en">Live World Context</span>
+        </a>
+        <a href="03-fabric-ontology.html" class="journey-link">
+          <span class="journey-step">03</span>
+          <span data-lang="zh-CN">企业数据本体</span>
+          <span data-lang="en">Enterprise Data Ontology</span>
+        </a>
+        <a href="04-foundry-engineering.html" class="journey-link">
+          <span class="journey-step">04</span>
+          <span data-lang="zh-CN">智能体工程运行时</span>
+          <span data-lang="en">Agent Runtime Engineering</span>
+        </a>
+        <a href="05-ai-infra-optimization.html" class="journey-link">
+          <span class="journey-step">05</span>
+          <span data-lang="zh-CN">推理基础设施优化</span>
+          <span data-lang="en">Inference Infra Optimization</span>
+        </a>
+        <a href="06-agent-governance.html" class="journey-link" aria-current="page">
+          <span class="journey-step">06</span>
+          <span data-lang="zh-CN">全域智能体治理</span>
+          <span data-lang="en">Enterprise Agent Governance</span>
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main-content" class="page-main">
+    <!-- Hero Panel -->
+    <section class="hero-panel">
+      <div class="hero-grid">
+        <div>
+          <p class="eyebrow">STAGE 06 · ENTERPRISE AGENT GOVERNANCE</p>
+          <h1 class="hero-title">
+            <span data-lang="zh-CN">全域智能体治理</span>
+            <span data-lang="en">Enterprise Agent Governance</span>
+          </h1>
+          <p class="hero-lead">
+            <span data-lang="zh-CN">当组织内部同时运行数以千计的 Copilot、Foundry、第三方 SaaS 及研发笔记本上的本地 CLI 编程智能体，<strong>失控的影子智能体蔓延、MCP 工具数据外泄、未打标敏感文件上传与算不清业务产出的黑盒 Token 账单</strong>，成为 CISO 与 CFO 规模放行的头号阻碍。看 <strong><code>Microsoft Agent 365</code></strong>、<strong>零信任运行时护栏</strong>、<strong>成果导向 AI FinOps</strong> 与 <strong><code>Microsoft Perception</code></strong> 如何完成生产之旅收官闭环，并解锁高续费率的 <strong>合作伙伴托管 AI 服务（Partner MSP）</strong>。</span>
+            <span data-lang="en">As organizations deploy thousands of Copilot, Foundry, SaaS, and local CLI coding agents, <strong>ungoverned agent sprawl, MCP tool exfiltration, unlabeled sensitive data leaks, and opaque token bills</strong> become the CISO &amp; CFO's top blockers. See how <strong><code>Microsoft Agent 365</code></strong>, <strong>Zero-Trust Runtime Guardrails</strong>, <strong>Outcome-Based AI FinOps</strong>, and <strong><code>Microsoft Perception</code></strong> close the enterprise journey—and unlock recurring <strong>Partner Managed AI Services (MSP)</strong>.</span>
+          </p>
+          <div class="pill-row">
+            <span class="pill"><span class="badge badge-ga">GA</span> Microsoft Agent 365 + Entra Agent ID</span>
+            <span class="pill"><span class="badge badge-preview">Public Preview</span> Agent 365 CSP Multi-Tenant</span>
+            <span class="pill"><span class="badge badge-ga">GA</span> Purview Unlabeled DLP + MCP Firewall</span>
+            <span class="pill"><span class="badge badge-ga">GA</span> Microsoft Perception + MDASH (Preview)</span>
+          </div>
+        </div>
+
+        <aside class="hero-kpi-box" aria-label="Stage 06 Key Metrics">
+          <strong style="font-size:13.5px;color:var(--teal);text-transform:uppercase;letter-spacing:0.6px;">
+            <span data-lang="zh-CN">全域治理与安全闭环核心指标</span>
+            <span data-lang="en">Governance &amp; Cyber Defense Benchmarks</span>
+          </strong>
+          <div class="kpi-grid">
+            <div class="kpi-item">
+              <span class="kpi-val">
+                <span data-lang="zh-CN">5,000 万+</span>
+                <span data-lang="en">50M+</span>
+              </span>
+              <span class="kpi-lbl">
+                <span data-lang="zh-CN">Agent 365 统一纳管注册智能体规模</span>
+                <span data-lang="en">Agent 365 registered agents governed</span>
+              </span>
+            </div>
+            <div class="kpi-item">
+              <span class="kpi-val">
+                <span data-lang="zh-CN">35 类影子端侧发现</span>
+                <span data-lang="en">35 Shadow Classes</span>
+              </span>
+              <span class="kpi-lbl">
+                <span data-lang="zh-CN">自动发现员工电脑本地 CLI 与桌面智能体</span>
+                <span data-lang="en">Local CLI &amp; desktop shadow agents discovered</span>
+              </span>
+            </div>
+            <div class="kpi-item">
+              <span class="kpi-val">~80% 告警分诊</span>
+              <span class="kpi-lbl">
+                <span data-lang="zh-CN">Microsoft Perception 分诊典型告警队列</span>
+                <span data-lang="en">Microsoft Perception Triage Agent coverage</span>
+              </span>
+            </div>
+            <div class="kpi-item">
+              <span class="kpi-val">CSP 多租户预览</span>
+              <span class="kpi-lbl">
+                <span data-lang="zh-CN">赋能合作伙伴跨客户交付 AI 托管治理服务</span>
+                <span data-lang="en">Partner Managed Agent Governance (Preview)</span>
+              </span>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <div class="speaker-cue">
+        <div class="speaker-cue-title">
+          🎙️ <span data-lang="zh-CN">Partner SA 讲师收官话术（向 CISO / CFO 要签字权与年框预算）</span>
+          <span data-lang="en">Partner SA Speaker Cue (Winning CISO Sign-Off &amp; CFO Renewal)</span>
+        </div>
+        <p>
+          <span data-lang="zh-CN">“前五站解决了‘能不能造出又准又快的企业智能体’；第六站解决的是‘CISO 敢不敢让你上线、CFO 明年愿不愿意继续批预算、以及我们合作伙伴如何把一次性交付变成按月持续收费的 MSP 托管服务’。记住三个杀手锏：第一，Agent 365 连员工笔记本里私装的 35 类本地 CLI 影子智能体和 AWS/Salesforce 智能体都能一屏盘清，而且刚推出 CSP 多租户管理预览；第二，Purview 即使面对从未打过密级标签的源码和并购合同，也能实时拦截外泄；第三，把财务报表从‘烧了多少亿 Token’升级为‘交付了多少笔合规业务结果’！”</span>
+          <span data-lang="en">“Stages 01–05 answered whether we can engineer fast, grounded enterprise agents. Stage 06 answers whether the CISO lets them stay in production, whether the CFO funds next year's expansion, and how Partners convert one-off builds into recurring Managed AI Services. Anchor on three differentiators: Agent 365 discovers agents across clouds PLUS 35 local CLI shadow classes with new CSP Multi-Tenant management; Purview blocks sensitive leaks even on unlabeled files; and Cost Management + Business Analytics shifts ROI reporting from tokens burned to business outcomes delivered.”</span>
+        </p>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         SOLUTION ARCHITECTURE SPLIT-BOARD: STAGE 06 AGENT GOVERNANCE & CYBER
+         ====================================================================== -->
+    <section class="ms-arch-board" data-knowledge-atlas="ignite-2026" id="stage06-architecture" aria-labelledby="stage06-arch-heading">
+      <div class="ms-arch-topbar">
+        <div>
+          <span class="ms-arch-kicker">STAGE 06 SOLUTION ARCHITECTURE · AGENT 365, ZERO TRUST &amp; PERCEPTION</span>
+          <h2 class="ms-arch-heading" id="stage06-arch-heading">
+            <span data-lang="zh-CN">跨云智能体控制平面、协议级零信任策略与自动化安全响应架构</span>
+            <span data-lang="en">Multi-Cloud Agent Control Plane, Inline Zero-Trust Policy &amp; Automated SecOps Architecture</span>
+          </h2>
+        </div>
+        <div class="ms-arch-actions">
+          <a class="ms-arch-drawio-btn" href="drawio/06-agent-governance.drawio" download>
+            <span aria-hidden="true">📐</span>
+            <span data-lang="zh-CN">下载 Draw.io 架构源文件</span>
+            <span data-lang="en">Download .drawio Source</span>
+          </a>
+          <button type="button" class="ms-arch-zoom-btn" data-action="zoom-arch" aria-pressed="false">
+            <span aria-hidden="true">🔍</span>
+            <span data-lang="zh-CN">放大架构图 / 全宽视图</span>
+            <span data-lang="en">Zoom Diagram / Full Width</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="ms-arch-split">
+        <!-- Left: Microsoft Solution Architecture Blueprint Canvas -->
+        <div class="ms-arch-canvas" role="region" aria-label="Stage 06 Enterprise Agent Governance and Cyber Defense Architecture Diagram">
+          <div class="arch-main-stack">
+            <!-- Top Zone: Multi-Cloud & Unmanaged Endpoint Agents -->
+            <div class="arch-zone zone-slate">
+              <div class="arch-zone-head">
+                <span class="arch-zone-title">
+                  <span data-lang="zh-CN">Multi-Cloud &amp; Endpoint Agent Inventory · 跨云异构与终端未纳管智能体发现层</span>
+                  <span data-lang="en">Multi-Cloud &amp; Unmanaged Endpoint Agent Discovery</span>
+                </span>
+                <span class="arch-zone-caption">
+                  <span data-lang="zh-CN">第一方生产实例 · 跨云 SaaS 智能体 · 35 类终端本地进程</span>
+                  <span data-lang="en">1P Production Fleet · Multi-Cloud Agents · 35 Endpoint Process Classes</span>
+                </span>
+              </div>
+              <div class="arch-cards-3">
+                <div class="arch-svc svc-blue">
+                  <div class="arch-svc-head">
+                    <span class="ms-logo" data-ms-icon="copilot"></span>
+                    <span class="arch-svc-name">M365 · Foundry · Studio Agents</span>
+                    <span class="svc-tag ga">First-Party</span>
+                  </div>
+                  <p class="arch-svc-desc">
+                    <span data-lang="zh-CN">企业登记发布的 M365 Copilot、Copilot Studio、Foundry 生产智能体及持久化 Autopilot 实例。</span>
+                    <span data-lang="en">Registered enterprise M365 Copilot, Copilot Studio, Foundry production agents, and persistent Autopilot instances.</span>
+                  </p>
+                </div>
+
+                <div class="arch-svc">
+                  <div class="arch-svc-head">
+                    <span class="ms-logo" data-ms-icon="azure"></span>
+                    <span class="arch-svc-name">AWS · GCP · Salesforce · Databricks</span>
+                    <span class="svc-tag prev">Multi-Cloud</span>
+                  </div>
+                  <p class="arch-svc-desc">
+                    <span data-lang="zh-CN">跨云部署的第三方模型服务（OpenAI / Anthropic）及 AWS、GCP、Salesforce、Snowflake 业务智能体。</span>
+                    <span data-lang="en">Cross-cloud third-party model endpoints and SaaS agents running across AWS, GCP, Salesforce, Databricks, and Snowflake.</span>
+                  </p>
+                </div>
+
+                <div class="arch-svc svc-purple">
+                  <div class="arch-svc-head">
+                    <span class="ms-logo" data-ms-icon="github"></span>
+                    <span class="arch-svc-name">
+                      <span data-lang="zh-CN">35 类终端本地 CLI / 桌面未注册 Agent</span>
+                      <span data-lang="en">35 Unmanaged Endpoint CLI / Desktop Agents</span>
+                    </span>
+                    <span class="svc-tag warn">Discovery</span>
+                    <span class="step-dot" title="Step 1">1</span>
+                  </div>
+                  <p class="arch-svc-desc">
+                    <span data-lang="zh-CN">通过终端遥测自动识别办公设备上运行的 <strong>Copilot CLI · Claude Code · 本地 MCP 进程</strong>及未备案开源 Agent。</span>
+                    <span data-lang="en">Endpoint telemetry automatically identifies workstation-resident <strong>Copilot CLI, Claude Code, local MCP processes</strong>, and unregistered OSS agents.</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="arch-flow-connector" aria-hidden="true">
+              <span class="arch-flow-hop">
+                <span data-lang="zh-CN">↓ 统一资产注册纳管 · 非人身份与责任人绑定 · MCP 协议与内容级 DLP 内联策略执行</span>
+                <span data-lang="en">↓ Unified registry enrollment · Non-human identity sponsorship · Inline MCP &amp; Content DLP policy</span>
+              </span>
+            </div>
+
+            <!-- Middle Frame: Microsoft Agent 365 Unified Control Plane -->
+            <div class="arch-sub-frame">
+              <div class="arch-sub-bar">
+                <span class="arch-sub-title">
+                  <span class="ms-logo" data-ms-icon="agent365"></span>
+                  <span data-lang="zh-CN">Microsoft Agent 365 统一控制平面（已纳管 5,000 万+ 实例 · 支持 CSP 多租户委托治理）</span>
+                  <span data-lang="en">Microsoft Agent 365 Unified Control Plane (50M+ Enrolled Instances · CSP Multi-Tenant Delegation)</span>
+                </span>
+                <span class="arch-sub-pill">
+                  <span data-lang="zh-CN">Partner MSP 跨租户委托管理平面</span>
+                  <span data-lang="en">Partner MSP Delegated Multi-Tenant Administration</span>
+                </span>
+              </div>
+
+              <div class="arch-cards-2">
+                <!-- Left Sub-Zone: Identity & Runtime Zero-Trust Plane -->
+                <div class="arch-zone zone-purple">
+                  <div class="arch-zone-head">
+                    <span class="arch-zone-title">
+                      <span data-lang="zh-CN">Identity &amp; Protocol Policy Plane · 身份治理与协议运行时策略层</span>
+                      <span data-lang="en">Identity Governance &amp; Inline Protocol Policy Plane</span>
+                    </span>
+                  </div>
+                  <div class="arch-col-stack">
+                    <div class="arch-svc svc-purple">
+                      <div class="arch-svc-head">
+                        <span class="ms-logo" data-ms-icon="agent365"></span>
+                        <span class="arch-svc-name">Agent 365 Registry &amp; CSP Portal</span>
+                        <span class="svc-tag ga">GA · Prev</span>
+                        <span class="step-dot" title="Step 2">2</span>
+                      </div>
+                      <p class="arch-svc-desc">
+                        <span data-lang="zh-CN">跨域智能体目录清点、准入审批与生命周期审计，支持<strong>合作伙伴 CSP 跨客户租户策略下发</strong>。</span>
+                        <span data-lang="en">Cross-cloud agent catalog, lifecycle approvals, and <strong>Partner CSP delegated policy administration</strong> across customer tenants.</span>
+                      </p>
+                    </div>
+
+                    <div class="arch-svc svc-purple">
+                      <div class="arch-svc-head">
+                        <span class="ms-logo" data-ms-icon="entra"></span>
+                        <span class="arch-svc-name">Entra Agent ID &amp; Dynamic Risk</span>
+                        <span class="svc-tag ga">GA</span>
+                      </div>
+                      <p class="arch-svc-desc">
+                        <span data-lang="zh-CN">分配独立非人工作负载身份并强制关联<strong>人类责任主管（Sponsor）</strong>，基于实时风险评分执行条件访问降权与令牌吊销。</span>
+                        <span data-lang="en">Assigns dedicated non-human identities with mandatory <strong>human sponsor</strong> ownership, conditional access step-down, and token revocation.</span>
+                      </p>
+                    </div>
+
+                    <div class="arch-svc svc-purple">
+                      <div class="arch-svc-head">
+                        <span class="ms-logo" data-ms-icon="guardrails"></span>
+                        <span class="arch-svc-name">MCP Firewall &amp; Edge for Business</span>
+                        <span class="svc-tag prev">Preview</span>
+                        <span class="step-dot" title="Step 3">3</span>
+                      </div>
+                      <p class="arch-svc-desc">
+                        <span data-lang="zh-CN">在协议层拦截未注册 MCP Server、<strong>工具描述投毒（Tool Poisoning）</strong>与越权外发请求；在受控企业浏览器内隔离网页自动化会话。</span>
+                        <span data-lang="en">Enforces MCP server allowlists, blocks <strong>tool-schema poisoning</strong> and unauthorized egress, and isolates browser automation in Edge for Business.</span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Right Sub-Zone: Data Protection & Outcome FinOps Plane -->
+                <div class="arch-zone zone-blue">
+                  <div class="arch-zone-head">
+                    <span class="arch-zone-title">
+                      <span data-lang="zh-CN">Content DLP &amp; Outcome FinOps Plane · 内容防泄漏与业务效能度量层</span>
+                      <span data-lang="en">Content-Aware DLP &amp; Outcome FinOps Plane</span>
+                    </span>
+                  </div>
+                  <div class="arch-col-stack">
+                    <div class="arch-svc svc-blue">
+                      <div class="arch-svc-head">
+                        <span class="ms-logo" data-ms-icon="purview"></span>
+                        <span class="arch-svc-name">Microsoft Purview Unlabeled DLP</span>
+                        <span class="svc-tag ga">GA</span>
+                        <span class="step-dot" title="Step 4">4</span>
+                      </div>
+                      <p class="arch-svc-desc">
+                        <span data-lang="zh-CN">基于实时内容分类器检查提示词与工具载荷，<strong>对未打敏感度标签的存量文件</strong>同样可阻断源码、财务报表与合同外泄。</span>
+                        <span data-lang="en">Inline content classifiers inspect prompts and tool payloads in real time, blocking source code and financial leaks <strong>even on unlabeled files</strong>.</span>
+                      </p>
+                    </div>
+
+                    <div class="arch-svc svc-blue">
+                      <div class="arch-svc-head">
+                        <span class="ms-logo" data-ms-icon="powerbi"></span>
+                        <span class="arch-svc-name">Agent 365 Cost &amp; Business Analytics</span>
+                        <span class="svc-tag front">Prev · Front</span>
+                        <span class="step-dot" title="Step 5">5</span>
+                      </div>
+                      <p class="arch-svc-desc">
+                        <span data-lang="zh-CN">关联 Azure 成本遥测与业务任务完成指标，按部门与智能体核算<strong>单笔合规业务成果成本（Cost per Validated Outcome）</strong>。</span>
+                        <span data-lang="en">Correlates Azure consumption with task telemetry to calculate <strong>Cost per Validated Outcome</strong> and auditable FTE ROI per agent.</span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="arch-flow-connector" aria-hidden="true">
+              <span class="arch-flow-hop">
+                <span data-lang="zh-CN">↓ 安全遥测联动 SOC 告警自动分诊 · 隔离沙箱漏洞验证 · 自动补丁 PR 提交</span>
+                <span data-lang="en">↓ Security telemetry drives automated SOC triage · Sandbox exploit verification · Auto-PR remediation</span>
+              </span>
+            </div>
+
+            <!-- Bottom Zone: Autonomous Cyber Defense Loop -->
+            <div class="arch-zone zone-green">
+              <div class="arch-zone-head">
+                <div class="arch-zone-title">
+                  <span data-lang="zh-CN">Automated SecOps &amp; Vulnerability Remediation · 自动化安全运营与代码修复层</span>
+                  <span data-lang="en">Automated SecOps &amp; Vulnerability Remediation Loop</span>
+                </div>
+                <span class="arch-zone-caption">
+                  <span data-lang="zh-CN">~80% 告警自动分诊 → 沙箱复现取证 → 自动补丁 PR</span>
+                  <span data-lang="en">~80% Alert Triage → Sandbox Verification → Auto-PR Patch</span>
+                </span>
+              </div>
+              <div class="arch-cards-3">
+                <div class="arch-svc svc-green">
+                  <div class="arch-svc-head">
+                    <span class="ms-logo" data-ms-icon="defender"></span>
+                    <span class="arch-svc-name">Microsoft Perception</span>
+                    <span class="svc-tag ga">GA</span>
+                    <span class="step-dot" title="Step 6">6</span>
+                  </div>
+                  <p class="arch-svc-desc">
+                    <span data-lang="zh-CN"><strong>攻防验证与响应多智能体编排（Red/Blue/Green SecOps）</strong>结合标准 Playbooks，自动分诊 <strong>~80% Defender 告警队列</strong>并扩展至 AWS 与 Salesforce。</span>
+                    <span data-lang="en"><strong>Red/Blue/Green SecOps multi-agent workflows</strong> + Playbooks autonomously triage <strong>~80% of Defender alert queues</strong> across Azure, AWS &amp; Salesforce.</span>
+                  </p>
+                </div>
+
+                <div class="arch-svc svc-green">
+                  <div class="arch-svc-head">
+                    <span class="ms-logo" data-ms-icon="foundry"></span>
+                    <span class="arch-svc-name">Codename MDASH</span>
+                    <span class="svc-tag prev">Preview</span>
+                  </div>
+                  <p class="arch-svc-desc">
+                    <span data-lang="zh-CN">基于安全专用模型 <strong><code>MAI-Cyber-2-Flash</code></strong> 的多智能体审计管线，在隔离沙箱内对应用源码高危漏洞进行动态复现与可利用性验证。</span>
+                    <span data-lang="en">Multi-agent code audit pipeline powered by <strong><code>MAI-Cyber-2-Flash</code></strong> that dynamically reproduces and verifies high-severity exploits inside isolated sandboxes.</span>
+                  </p>
+                </div>
+
+                <div class="arch-svc svc-green">
+                  <div class="arch-svc-head">
+                    <span class="ms-logo" data-ms-icon="functions"></span>
+                    <span class="arch-svc-name">Azure Catalyst Auto-PR</span>
+                    <span class="svc-tag ga">GA</span>
+                  </div>
+                  <p class="arch-svc-desc">
+                    <span data-lang="zh-CN">基于 MDASH 已复现的漏洞调用链证据，自动生成修复代码与回归单元测试并向代码仓库提交待审 PR。</span>
+                    <span data-lang="en">Ingests verified MDASH exploit traces to generate targeted code patches, unit regression tests, and review-ready repository PRs.</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Structured Data Flow, Design Points & Why Microsoft -->
+        <aside class="ms-arch-aside" aria-label="Stage 06 Architecture Notes">
+          <div class="aside-block">
+            <h4 class="tone-purple">
+              <span data-lang="zh-CN">Data flow · 资产纳管、策略执行与安全响应流 (1–6)</span>
+              <span data-lang="en">Data flow · Inventory, Inline Policy &amp; SecOps Loop (1–6)</span>
+            </h4>
+            <ol class="aside-flow-list">
+              <li>
+                <span data-lang="zh-CN"><strong>跨域与终端资产发现：</strong>持续发现第一方智能体、AWS/GCP/Salesforce 跨云智能体及研发/办公终端上的 35 类本地 CLI 与桌面进程。</span>
+                <span data-lang="en"><strong>Cross-cloud &amp; endpoint discovery:</strong> Continuously inventories 1P agents, AWS/GCP/Salesforce agents, and 35 workstation-resident CLI/desktop process classes.</span>
+              </li>
+              <li>
+                <span data-lang="zh-CN"><strong>注册准入与身份责任人绑定：</strong>统一纳入 <code>Agent 365</code> 资产目录与 CSP 多租户管理面，通过 <code>Entra Agent ID</code> 分配独立凭据并强制绑定人类 Sponsor。</span>
+                <span data-lang="en"><strong>Registry enrollment &amp; sponsor binding:</strong> Enrolls instances into <code>Agent 365</code> + CSP portal and binds every <code>Entra Agent ID</code> credential to an accountable human sponsor.</span>
+              </li>
+              <li>
+                <span data-lang="zh-CN"><strong>MCP 协议与浏览器内联控制：</strong><code>MCP Firewall</code> 校验白名单并阻断未注册 MCP Server 与工具投毒载荷，<code>Edge for Business</code> 审计隔离网页操作。</span>
+                <span data-lang="en"><strong>Inline MCP &amp; browser policy enforcement:</strong> <code>MCP Firewall</code> enforces server allowlists and blocks tool poisoning while <code>Edge for Business</code> isolates web actions.</span>
+              </li>
+              <li>
+                <span data-lang="zh-CN"><strong>无标签内容级 DLP 检查：</strong><code>Purview Unlabeled DLP</code> 对上下文与工具参数执行实时内容分类，无需前置人工打标即可阻断敏感代码与财务数据外发。</span>
+                <span data-lang="en"><strong>Unlabeled content-aware DLP inspection:</strong> <code>Purview Unlabeled DLP</code> classifies prompts and tool arguments inline, preventing sensitive egress even on untagged files.</span>
+              </li>
+              <li>
+                <span data-lang="zh-CN"><strong>业务成果导向 FinOps 归因：</strong>将 Token 与算力开销关联至已验证完成的业务工单与节约工时，生成供财务与架构治理评审的单位成果成本报表。</span>
+                <span data-lang="en"><strong>Outcome-attributed FinOps reporting:</strong> Joins token/compute spend with validated task completions to report Cost per Validated Outcome for finance governance.</span>
+              </li>
+              <li>
+                <span data-lang="zh-CN"><strong>自动化告警分诊与漏洞补丁闭环：</strong><code>Perception</code> 自动分诊约 80% 常规安全告警，<code>MDASH</code> 沙箱验证真实可利用漏洞后交由 <code>Catalyst</code> 生成修复 PR。</span>
+                <span data-lang="en"><strong>Automated SOC triage &amp; patch generation:</strong> <code>Perception</code> triages ~80% of alert volume while <code>MDASH</code> + <code>Catalyst</code> validate exploits and submit patch PRs.</span>
+              </li>
+            </ol>
+          </div>
+
+          <div class="aside-block">
+            <h4 class="tone-green">
+              <span data-lang="zh-CN">Design points · 架构师关键设计决策</span>
+              <span data-lang="en">Design points / Solution Architect Decisions</span>
+            </h4>
+            <ul class="aside-bullets">
+              <li>
+                <span data-lang="zh-CN"><strong>将治理边界延伸至开发者与员工终端：</strong>仅监控云端 API 网关无法覆盖本地 CLI 工具链，须结合终端发现能力纳管 35 类本地 Agent 与未注册 MCP 进程。</span>
+                <span data-lang="en"><strong>Extend governance from cloud gateways to endpoints:</strong> Cloud-only API logs miss workstation tools; combine cloud inventory with endpoint discovery across 35 local CLI and MCP runner classes.</span>
+              </li>
+              <li>
+                <span data-lang="zh-CN"><strong>解耦 DLP 上线前置条件与历史文件打标工程：</strong>启用 <code>Purview Unlabeled DLP</code> 内容级分类与 <code>MCP Firewall</code> 协议拦截，避免因存量文档缺少密级标签而阻塞上线。</span>
+                <span data-lang="en"><strong>Decouple Day-1 DLP protection from historical labeling backlogs:</strong> Pair inline <code>Purview Unlabeled DLP</code> classifiers with <code>MCP Firewall</code> allowlists so unlabeled legacy files do not block production launch.</span>
+              </li>
+              <li>
+                <span data-lang="zh-CN"><strong>建立基于业务结果的 FinOps 治理指标：</strong>以“单笔有效业务成果成本（Cost per Validated Outcome）”替代单纯 Token 消耗监控，作为扩容配额或下线低效实例的量化依据。</span>
+                <span data-lang="en"><strong>Standardize FinOps on Cost per Validated Outcome:</strong> Evaluate agent fleet ROI by linking Azure infrastructure spend to completed business transactions rather than raw token volume alone.</span>
+              </li>
+              <li>
+                <span data-lang="zh-CN"><strong>依托 CSP 多租户架构构建可复用托管服务（MSP）：</strong>合作伙伴可通过标准化策略模板跨多个客户租户统一维护身份生命周期、MCP 白名单与月度合规审计。</span>
+                <span data-lang="en"><strong>Standardize Partner MSP operations via CSP Multi-Tenant:</strong> Manage cross-tenant identity lifecycles, MCP allowlists, and monthly compliance/FinOps reviews from a single delegated console.</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="why-ms-box">
+            <h4>
+              <span data-lang="zh-CN">Why Microsoft · 控制平面与内生安全优势</span>
+              <span data-lang="en">Why Microsoft · Control Plane &amp; Native Security Advantages</span>
+            </h4>
+            <ul>
+              <li>
+                <span data-lang="zh-CN"><strong>经 5,000 万+ 实例验证的跨云与终端统一目录：</strong>在同一控制面内纳管 M365、Foundry、AWS/GCP/Salesforce 及 35 类终端智能体资产。</span>
+                <span data-lang="en"><strong>Unified inventory proven at 50M+ scale across clouds &amp; endpoints:</strong> Single registry spanning M365, Foundry, AWS/GCP/Salesforce, and 35 workstation agent classes.</span>
+              </li>
+              <li>
+                <span data-lang="zh-CN"><strong>身份、数据安全、企业浏览器与威胁检测内生集成：</strong><code>Entra + Purview + Defender + Edge</code> 原生共享风险信号与策略上下文，减少多厂商安全组件集成盲区。</span>
+                <span data-lang="en"><strong>Native signal sharing across Identity, DLP, Browser &amp; XDR:</strong> <code>Entra + Purview + Defender + Edge</code> enforce inline zero trust without multi-vendor integration gaps.</span>
+              </li>
+              <li>
+                <span data-lang="zh-CN"><strong>从威胁检测、沙箱验证到代码修复的工程闭环：</strong><code>Perception (GA)</code> + <code>MDASH (MAI-Cyber-2-Flash)</code> + <code>Catalyst</code> 显著缩短告警响应与高危漏洞 MTTR。</span>
+                <span data-lang="en"><strong>End-to-end engineering loop from SOC alert to code PR:</strong> <code>Perception (GA)</code> + <code>MDASH</code> + <code>Catalyst</code> compress alert triage and vulnerability remediation MTTR.</span>
+              </li>
+              <li>
+                <span data-lang="zh-CN"><strong>原生支持合作伙伴 CSP 多租户托管商业模式：</strong>将安全合规基线与成果 FinOps 固化为可规模化复制的长期托管运营服务。</span>
+                <span data-lang="en"><strong>Purpose-built CSP delegation for Partner MSP scale:</strong> Operationalizes zero-trust baselines and Outcome FinOps as repeatable multi-tenant managed services.</span>
+              </li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         SECTION 1: 4-LAYER ENTERPRISE AGENT GOVERNANCE & SECURITY BLUEPRINT
+         ====================================================================== -->
+    <section class="stage-section">
+      <div class="section-header">
+        <div>
+          <p class="eyebrow">CONTROL PLANE ARCHITECTURE · FOUR DEFENSE PLANES</p>
+          <h2 class="section-title">
+            <span data-lang="zh-CN">四层全域治理防线</span>
+            <span data-lang="en">Four-Layer Governance Blueprint</span>
+          </h2>
+          <p class="section-sub">
+            <span data-lang="zh-CN">从跨云与端侧影子资产盘点、身份与 MCP 运行时零信任拦截、无标签数据防泄漏与成果 FinOps，直到自主攻防安全智能体军团，构建无死角治理控制平面。</span>
+            <span data-lang="en">A unified enterprise control plane spanning multi-cloud &amp; endpoint shadow discovery, zero-trust identity &amp; MCP runtime firewalling, content-aware DLP &amp; outcome FinOps, and autonomous cyber defense.</span>
+          </p>
+        </div>
+        <span class="badge badge-ga">Zero-Trust Control Plane</span>
+      </div>
+
+      <!-- Inline SVG: 4-Layer Control Plane Diagram -->
+      <div class="svg-frame" role="img" aria-label="4-Layer Enterprise Agent Governance Control Plane Blueprint">
+        <svg viewBox="0 0 1160 390" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="govArr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M 0 1 L 10 5 L 0 9 z" fill="#38bdf8" />
+            </marker>
+          </defs>
+
+          <!-- Top CSP Partner Multi-Tenant Bar -->
+          <rect x="20" y="14" width="1120" height="54" rx="12" fill="#142341" stroke="#a78bfa" stroke-width="1.5" />
+          <g data-lang="zh-CN">
+            <text x="40" y="37" fill="#c4b5fd" font-size="12.5" font-weight="800" font-family="Cascadia Code, Consolas, monospace">PARTNER MSP OVERLAY · Microsoft Agent 365 CSP Multi-Tenant Management (Public Preview)</text>
+            <text x="40" y="56" fill="#eef4ff" font-size="12">合作伙伴单一控制台跨数十家客户租户统一执行：影子智能体清查 · 基线策略下发 · MCP 白名单治理 · 月度 AI 成果 FinOps 运营报告</text>
+          </g>
+          <g data-lang="en">
+            <text x="40" y="37" fill="#c4b5fd" font-size="12.5" font-weight="800" font-family="Cascadia Code, Consolas, monospace">PARTNER MSP OVERLAY · Microsoft Agent 365 CSP Multi-Tenant Management (Public Preview)</text>
+            <text x="40" y="56" fill="#eef4ff" font-size="12">Single Partner console across customer tenants: shadow inventory · baseline policy rollout · MCP allowlisting · monthly Outcome FinOps reviews</text>
+          </g>
+
+          <!-- Plane 1: Discovery -->
+          <rect x="20" y="88" width="262" height="282" rx="14" fill="#0d1c34" stroke="#38bdf8" stroke-width="1.5" />
+          <text x="36" y="114" fill="#38bdf8" font-size="12" font-weight="800" font-family="Cascadia Code, Consolas, monospace">1. UNIFIED DISCOVERY</text>
+          <g data-lang="zh-CN">
+            <text x="36" y="138" fill="#eef4ff" font-size="13.5" font-weight="800">跨云与影子智能体发现</text>
+            <text x="36" y="162" fill="#b6c6e3" font-size="11.5">• Microsoft Agent 365 统一注册表</text>
+            <text x="36" y="183" fill="#b6c6e3" font-size="11.5">• 跨云纳管 AWS · GCP · OpenAI</text>
+            <text x="36" y="202" fill="#b6c6e3" font-size="11.5">  Anthropic · Salesforce · Databricks</text>
+            <text x="36" y="221" fill="#b6c6e3" font-size="11.5">  Snowflake 异构智能体资产</text>
+          </g>
+          <g data-lang="en">
+            <text x="36" y="138" fill="#eef4ff" font-size="13.5" font-weight="800">Multi-Cloud &amp; Shadow Inventory</text>
+            <text x="36" y="162" fill="#b6c6e3" font-size="11.5">• Microsoft Agent 365 Registry</text>
+            <text x="36" y="183" fill="#b6c6e3" font-size="11.5">• Governs AWS · GCP · OpenAI</text>
+            <text x="36" y="202" fill="#b6c6e3" font-size="11.5">  Anthropic · Salesforce · Databricks</text>
+            <text x="36" y="221" fill="#b6c6e3" font-size="11.5">  &amp; Snowflake external agents</text>
+          </g>
+          <rect x="36" y="244" width="230" height="108" rx="10" fill="#091426" stroke="#38bdf8" />
+          <text x="48" y="266" fill="#7dd3fc" font-size="11.5" font-weight="700" font-family="Cascadia Code, Consolas, monospace">35 Shadow Endpoint Classes</text>
+          <g data-lang="zh-CN">
+            <text x="48" y="287" fill="#cbd5e1" font-size="11">透视员工终端本地运行的：</text>
+            <text x="48" y="306" fill="#cbd5e1" font-size="11">Copilot CLI · Claude Code</text>
+            <text x="48" y="325" fill="#cbd5e1" font-size="11">本地开源 Agent 与未注册 MCP 进程</text>
+          </g>
+          <g data-lang="en">
+            <text x="48" y="287" fill="#cbd5e1" font-size="11">Discovers laptop-resident:</text>
+            <text x="48" y="306" fill="#cbd5e1" font-size="11">Copilot CLI · Claude Code</text>
+            <text x="48" y="325" fill="#cbd5e1" font-size="11">&amp; local unapproved MCP runners</text>
+          </g>
+
+          <line x1="282" y1="228" x2="306" y2="228" stroke="#38bdf8" stroke-width="2.2" marker-end="url(#govArr)" />
+
+          <!-- Plane 2: Identity & Runtime Firewall -->
+          <rect x="310" y="88" width="268" height="282" rx="14" fill="#0d1c34" stroke="#2dd4bf" stroke-width="1.5" />
+          <text x="326" y="114" fill="#2dd4bf" font-size="12" font-weight="800" font-family="Cascadia Code, Consolas, monospace">2. IDENTITY &amp; RUNTIME</text>
+          <g data-lang="zh-CN">
+            <text x="326" y="138" fill="#eef4ff" font-size="13.5" font-weight="800">身份问责与运行时防火墙</text>
+            <text x="326" y="162" fill="#b6c6e3" font-size="11.5">• Entra Agent ID 绑定人类责任人</text>
+            <text x="326" y="183" fill="#b6c6e3" font-size="11.5">• 生命周期自动过期回收孤儿身份</text>
+            <text x="326" y="204" fill="#b6c6e3" font-size="11.5">• Dynamic Agent Risk 实时风险评分</text>
+            <text x="326" y="225" fill="#b6c6e3" font-size="11.5">• Edge for Business 浏览器操作管控</text>
+          </g>
+          <g data-lang="en">
+            <text x="326" y="138" fill="#eef4ff" font-size="13.5" font-weight="800">Identity &amp; Runtime Firewall</text>
+            <text x="326" y="162" fill="#b6c6e3" font-size="11.5">• Entra Agent ID + human sponsor</text>
+            <text x="326" y="183" fill="#b6c6e3" font-size="11.5">• Automated orphan expiry lifecycle</text>
+            <text x="326" y="204" fill="#b6c6e3" font-size="11.5">• Real-time Dynamic Agent Risk</text>
+            <text x="326" y="225" fill="#b6c6e3" font-size="11.5">• Edge for Business browser guard</text>
+          </g>
+          <rect x="326" y="244" width="236" height="108" rx="10" fill="#091426" stroke="#2dd4bf" />
+          <text x="338" y="266" fill="#5eead4" font-size="11.5" font-weight="700" font-family="Cascadia Code, Consolas, monospace">MCP Firewall Inspection</text>
+          <g data-lang="zh-CN">
+            <text x="338" y="287" fill="#cbd5e1" font-size="11">实时阻断未授权外部 MCP Server、</text>
+            <text x="338" y="306" fill="#cbd5e1" font-size="11">工具描述投毒（Tool Poisoning）</text>
+            <text x="338" y="325" fill="#cbd5e1" font-size="11">与间接提示词注入静默外发数据</text>
+          </g>
+          <g data-lang="en">
+            <text x="338" y="287" fill="#cbd5e1" font-size="11">Blocks unapproved MCP servers,</text>
+            <text x="338" y="306" fill="#cbd5e1" font-size="11">poisoned tool descriptions &amp;</text>
+            <text x="338" y="325" fill="#cbd5e1" font-size="11">prompt-injected data exfiltration</text>
+          </g>
+
+          <line x1="578" y1="228" x2="602" y2="228" stroke="#38bdf8" stroke-width="2.2" marker-end="url(#govArr)" />
+
+          <!-- Plane 3: Data & Outcome FinOps -->
+          <rect x="606" y="88" width="262" height="282" rx="14" fill="#0d1c34" stroke="#fbbf24" stroke-width="1.5" />
+          <text x="622" y="114" fill="#fbbf24" font-size="12" font-weight="800" font-family="Cascadia Code, Consolas, monospace">3. DATA &amp; OUTCOME FINOPS</text>
+          <g data-lang="zh-CN">
+            <text x="622" y="138" fill="#eef4ff" font-size="13.5" font-weight="800">无标签防泄漏与成果核算</text>
+            <text x="622" y="162" fill="#b6c6e3" font-size="11.5">• Purview 内容感知 DLP 实时拦截</text>
+            <text x="622" y="183" fill="#b6c6e3" font-size="11.5">• 无需提前手工打敏感度标签！</text>
+            <text x="622" y="204" fill="#b6c6e3" font-size="11.5">• 保护核心源码、并购文档与客户 PII</text>
+          </g>
+          <g data-lang="en">
+            <text x="622" y="138" fill="#eef4ff" font-size="13.5" font-weight="800">Unlabeled DLP &amp; AI FinOps</text>
+            <text x="622" y="162" fill="#b6c6e3" font-size="11.5">• Purview Content-Aware DLP</text>
+            <text x="622" y="183" fill="#b6c6e3" font-size="11.5">• Protects even UNLABELED files!</text>
+            <text x="622" y="204" fill="#b6c6e3" font-size="11.5">• Blocks source code, M&amp;A &amp; PII leaks</text>
+          </g>
+          <rect x="622" y="244" width="230" height="108" rx="10" fill="#091426" stroke="#fbbf24" />
+          <text x="634" y="266" fill="#fde68a" font-size="11.5" font-weight="700" font-family="Cascadia Code, Consolas, monospace">Work Delivered vs Tokens</text>
+          <g data-lang="zh-CN">
+            <text x="634" y="287" fill="#cbd5e1" font-size="11">Cost Management (Preview) +</text>
+            <text x="634" y="306" fill="#cbd5e1" font-size="11">Business Analytics (Frontier)</text>
+            <text x="634" y="325" fill="#cbd5e1" font-size="11">直接核算每笔业务成果单价与工时</text>
+          </g>
+          <g data-lang="en">
+            <text x="634" y="287" fill="#cbd5e1" font-size="11">Cost Management (Preview) +</text>
+            <text x="634" y="306" fill="#cbd5e1" font-size="11">Business Analytics (Frontier)</text>
+            <text x="634" y="325" fill="#cbd5e1" font-size="11">Maps spend to verified tasks &amp; FTEs</text>
+          </g>
+
+          <line x1="868" y1="228" x2="892" y2="228" stroke="#38bdf8" stroke-width="2.2" marker-end="url(#govArr)" />
+
+          <!-- Plane 4: Autonomous Cyber Defense -->
+          <rect x="896" y="88" width="244" height="282" rx="14" fill="#0d1c34" stroke="#fb7185" stroke-width="1.5" />
+          <text x="912" y="114" fill="#fb7185" font-size="12" font-weight="800" font-family="Cascadia Code, Consolas, monospace">4. CYBER DEFENSE</text>
+          <g data-lang="zh-CN">
+            <text x="912" y="138" fill="#eef4ff" font-size="13.5" font-weight="800">自主安全攻防与修复</text>
+            <text x="912" y="162" fill="#b6c6e3" font-size="11.5">• Microsoft Perception (GA)</text>
+            <text x="912" y="183" fill="#b6c6e3" font-size="11.5">• 红 / 蓝 / 绿三队 Playbook 协同</text>
+            <text x="912" y="204" fill="#b6c6e3" font-size="11.5">• 自动分诊 ~80% 告警 (含 AWS/SF)</text>
+          </g>
+          <g data-lang="en">
+            <text x="912" y="138" fill="#eef4ff" font-size="13.5" font-weight="800">Autonomous Cyber Defense</text>
+            <text x="912" y="162" fill="#b6c6e3" font-size="11.5">• Microsoft Perception (GA)</text>
+            <text x="912" y="183" fill="#b6c6e3" font-size="11.5">• Red / Blue / Green Playbooks</text>
+            <text x="912" y="204" fill="#b6c6e3" font-size="11.5">• ~80% alert triage (+AWS/SFDC)</text>
+          </g>
+          <rect x="912" y="244" width="212" height="108" rx="10" fill="#091426" stroke="#fb7185" />
+          <text x="924" y="266" fill="#fda4af" font-size="11.5" font-weight="700" font-family="Cascadia Code, Consolas, monospace">Codename MDASH (Preview)</text>
+          <g data-lang="zh-CN">
+            <text x="924" y="287" fill="#cbd5e1" font-size="11">100+ 专精安全 Agent 协同</text>
+            <text x="924" y="306" fill="#cbd5e1" font-size="11">MAI-Cyber-2-Flash 复现验证漏洞</text>
+            <text x="924" y="325" fill="#cbd5e1" font-size="11">→ 联动 Azure Catalyst 自动提 PR</text>
+          </g>
+          <g data-lang="en">
+            <text x="924" y="287" fill="#cbd5e1" font-size="11">100+ agents + MAI-Cyber-2-Flash</text>
+            <text x="924" y="306" fill="#cbd5e1" font-size="11">reproduce real code exploits →</text>
+            <text x="924" y="325" fill="#cbd5e1" font-size="11">Azure Catalyst remediation PRs</text>
+          </g>
+        </svg>
+      </div>
+
+      <!-- Four 4-Dimension Partner SA Spotlight Cards -->
+      <div style="margin-top:22px;">
+        <!-- Spotlight 1: Agent 365 Unified Registry & CSP Multi-Tenant -->
+        <article class="spotlight-card">
+          <div class="spotlight-head">
+            <h3 class="spotlight-title">
+              <span data-lang="zh-CN">1. <code>Microsoft Agent 365</code> 统一注册中心与 CSP 多租户管理</span>
+              <span data-lang="en">1. <code>Microsoft Agent 365</code> Unified Registry &amp; CSP Multi-Tenant Management</span>
+            </h3>
+            <div>
+              <span class="badge badge-ga">Agent 365 GA</span>
+              <span class="badge badge-preview">CSP Multi-Tenant Public Preview</span>
+            </div>
+          </div>
+          <div class="dim-grid">
+            <div class="dim-box">
+              <div class="dim-label">⚙️ <span data-lang="zh-CN">架构机制</span><span data-lang="en">Architecture Mechanics</span></div>
+              <ul>
+                <li><span data-lang="zh-CN">单一控制平面自动发现、编目并持续监测横跨 <strong>Microsoft、AWS、GCP、OpenAI、Anthropic、Salesforce、Databricks、Snowflake</strong> 的云端与 SaaS 智能体（平台已治理超 5,000 万注册智能体）。</span><span data-lang="en">Single pane of glass discovering, cataloging, and governing agents across <strong>Microsoft, AWS, GCP, OpenAI, Anthropic, Salesforce, Databricks, and Snowflake</strong> (50M+ registered agents).</span></li>
+                <li><span data-lang="zh-CN">结合终端遥测透视员工笔记本上私自运行的 <strong>35 类本地客户端与 CLI 影子智能体</strong>（如 <code>Copilot CLI</code>、<code>Claude Code</code>、本地未备案 MCP Runner），并支持 <strong><code>CSP 多租户管理</code>（<code>Public Preview</code>）</strong>。</span><span data-lang="en">Surfaces <strong>35 categories of shadow local client &amp; CLI agents</strong> (e.g., <code>Copilot CLI</code>, <code>Claude Code</code>, local MCP runners) on laptops, plus <strong><code>CSP Multi-Tenant Management</code> (<code>Public Preview</code>)</strong>.</span></li>
+              </ul>
+            </div>
+            <div class="dim-box scenario">
+              <div class="dim-label">🏢 <span data-lang="zh-CN">业务场景</span><span data-lang="en">Business Scenarios</span></div>
+              <ul>
+                <li><span data-lang="zh-CN"><strong>全集团 AI 影子资产盘点（Shadow AI Assessment）</strong>：两周内梳理研发、法务、营销部门各自采购或终端安装的未备案智能体清单与外部 API 调用流向。</span><span data-lang="en"><strong>Enterprise Shadow AI Assessment</strong>: Inventory unmanaged SaaS bots and developer laptop CLI agents across engineering, legal, and marketing within days.</span></li>
+                <li><span data-lang="zh-CN"><strong>合作伙伴托管 AI 治理服务（Partner MSP）</strong>：通过 CSP 多租户视图同时代维数十家中大型客户租户的智能体合规基线。</span><span data-lang="en"><strong>Partner Managed AI Governance</strong>: Operate recurring cross-tenant policy enforcement and monthly compliance reporting for CSP customers.</span></li>
+              </ul>
+            </div>
+            <div class="dim-box compete">
+              <div class="dim-label">🏆 <span data-lang="zh-CN">竞争优势（对比孤立云日志与单点安全工具）</span><span data-lang="en">Competitive Advantage (vs Siloed Cloud Logs &amp; Point Tools)</span></div>
+              <ul>
+                <li><span data-lang="zh-CN">单一公有云日志仅能看到自家网关调用，传统 CASB 看不懂本地 CLI 进程与 MCP 协议；Agent 365 天然打通<strong>多云 API + 终端操作系统 + M365 身份图谱</strong>三位一体视野。</span><span data-lang="en">Siloed cloud logs miss other clouds, while legacy CASBs are blind to local CLI processes and MCP tool calls—Agent 365 unifies multi-cloud APIs, OS endpoints, and M365 identity graph.</span></li>
+              </ul>
+            </div>
+            <div class="dim-box guidance">
+              <div class="dim-label">🧭 <span data-lang="zh-CN">SA 落地要点</span><span data-lang="en">SA Implementation Guardrails</span></div>
+              <ul>
+                <li><span data-lang="zh-CN">用<strong>“7 天影子智能体免费体检报告”</strong>作为敲门砖切入 CISO 办公室，再顺势签约年度 CSP 多租户托管治理服务包。</span><span data-lang="en">Lead with a <strong>7-Day Shadow Agent Discovery Workshop</strong> for the CISO, then convert findings into an annual CSP Multi-Tenant Managed Governance contract.</span></li>
+              </ul>
+            </div>
+          </div>
+        </article>
+
+        <!-- Spotlight 2: Zero-Trust Agent Identity & Runtime Protection -->
+        <article class="spotlight-card">
+          <div class="spotlight-head">
+            <h3 class="spotlight-title">
+              <span data-lang="zh-CN">2. 零信任智能体身份与运行时防护（<code>Entra Agent ID</code> · <code>MCP Firewall</code> · <code>Edge</code>）</span>
+              <span data-lang="en">2. Zero-Trust Agent Identity &amp; Runtime Protection (<code>Entra Agent ID</code> · <code>MCP Firewall</code>)</span>
+            </h3>
+            <span class="badge badge-ga">Zero-Trust Runtime</span>
+          </div>
+          <div class="dim-grid">
+            <div class="dim-box">
+              <div class="dim-label">⚙️ <span data-lang="zh-CN">架构机制</span><span data-lang="en">Architecture Mechanics</span></div>
+              <ul>
+                <li><span data-lang="zh-CN">每个自主智能体分配一等公民 <strong><code>Entra Agent ID</code></strong>，强制绑定人类责任主管（Human Sponsor）、最小权限范围、凭证到期轮换与实时 <strong><code>Dynamic Agent Risk</code></strong> 行为风险分。</span><span data-lang="en">Every autonomous agent receives a first-class <strong><code>Entra Agent ID</code></strong> bound to an accountable human sponsor, lifecycle expiration, and real-time <strong><code>Dynamic Agent Risk</code></strong> scoring.</span></li>
+                <li><span data-lang="zh-CN"><strong><code>MCP Firewall</code></strong> 深度检测并阻断未审批外部 MCP Server、恶意篡改的工具描述（Tool Poisoning）与提示词注入诱导的数据外带；<strong><code>Edge for Business</code></strong> 管控浏览器端智能体点击与表单动作。</span><span data-lang="en"><strong><code>MCP Firewall</code></strong> inspects and blocks unauthorized external MCP servers, poisoned tool descriptions, and prompt-injected exfiltration; <strong><code>Edge for Business</code></strong> governs browser-using agents.</span></li>
+              </ul>
+            </div>
+            <div class="dim-box scenario">
+              <div class="dim-label">🏢 <span data-lang="zh-CN">业务场景</span><span data-lang="en">Business Scenarios</span></div>
+              <ul>
+                <li><span data-lang="zh-CN"><strong>防范“永久高危 API Key”与孤儿 Agent</strong>：员工离职或转岗时，其名下创建的自动化智能体自动触发责任人移交或冻结，杜绝无人看管的后台写库特权。</span><span data-lang="en"><strong>Eliminating Immortal API Keys &amp; Orphan Agents</strong>: Automatically transfer sponsorship or suspend autonomous agents when their human owner changes roles or departs.</span></li>
+                <li><span data-lang="zh-CN"><strong>安全开放研发与业务 MCP 生态</strong>：仅放行经企业签名认证的内部 MCP 注册表服务，拦截把客户通讯录发往公网 Webhook 的越权调用。</span><span data-lang="en"><strong>Safe Enterprise MCP Rollout</strong>: Allowlist verified internal MCP servers while blocking rogue tool calls attempting to POST CRM records to external webhooks.</span></li>
+              </ul>
+            </div>
+            <div class="dim-box compete">
+              <div class="dim-label">🏆 <span data-lang="zh-CN">竞争优势</span><span data-lang="en">Competitive Advantage</span></div>
+              <ul>
+                <li><span data-lang="zh-CN">业界首个将 <strong>IAM 身份治理 + MCP 协议级载荷防火墙 + 企业安全浏览器控制</strong> 原生联动的零信任控制链，异常风险评分升高时可秒级自动吊销会话令牌。</span><span data-lang="en">Uniquely couples identity lifecycle, protocol-aware MCP payload inspection, and enterprise browser enforcement with instant Conditional Access token revocation.</span></li>
+              </ul>
+            </div>
+            <div class="dim-box guidance">
+              <div class="dim-label">🧭 <span data-lang="zh-CN">SA 落地要点</span><span data-lang="en">SA Implementation Guardrails</span></div>
+              <ul>
+                <li><span data-lang="zh-CN">严禁多个智能体共享同一个静态 Service Principal 密钥；规定所有生产 Agent 必须具备独立 <code>Entra Agent ID</code>，并将外部 MCP 注册收口至统一网关白名单。</span><span data-lang="en">Ban shared static Service Principal secrets across agents; mandate per-agent <code>Entra Agent ID</code> with human sponsors and route all MCP traffic through allowlisted policies.</span></li>
+              </ul>
+            </div>
+          </div>
+        </article>
+
+        <!-- Spotlight 3: Purview Unlabeled DLP & Outcome-Based AI FinOps -->
+        <article class="spotlight-card">
+          <div class="spotlight-head">
+            <h3 class="spotlight-title">
+              <span data-lang="zh-CN">3. 无标签敏感数据保护（<code>Purview DLP</code>）与成果导向 AI FinOps</span>
+              <span data-lang="en">3. Unlabeled Data Protection (<code>Purview DLP</code>) &amp; Outcome-Based AI FinOps</span>
+            </h3>
+            <div>
+              <span class="badge badge-ga">Purview DLP GA</span>
+              <span class="badge badge-preview">Cost Mgmt Preview</span>
+              <span class="badge badge-frontier">Business Analytics Frontier</span>
+            </div>
+          </div>
+          <div class="dim-grid">
+            <div class="dim-box">
+              <div class="dim-label">⚙️ <span data-lang="zh-CN">架构机制</span><span data-lang="en">Architecture Mechanics</span></div>
+              <ul>
+                <li><span data-lang="zh-CN"><strong><code>Purview</code> 内容感知 DLP</strong>：即使企业历史文件<strong>从未手工标注敏感度标签（Unlabeled Files）</strong>，也能通过实时语义与分类器识别核心源代码、并购协议与客户 PII，实时阻断上传至 Web AI 或本地智能体！</span><span data-lang="en"><strong><code>Purview</code> Content-Aware DLP</strong>: Blocks sensitive source code, M&amp;A docs, or customer PII uploaded to web AI or local agents <strong>even when files have NOT been manually sensitivity-labeled</strong>!</span></li>
+                <li><span data-lang="zh-CN"><strong>从“消耗 Token”转向“交付业务成果”</strong>：将模型与基础设施账单（<code>Agent 365 Cost Management</code> <code>Preview</code>）与任务完结数、节省工时及流程采纳率（<code>Business Analytics</code> <code>Frontier</code>）直接关联合算。</span><span data-lang="en"><strong>From “Tokens Burned” to “Business Work Delivered”</strong>: Correlates model/infra spend (<code>Cost Management</code>) directly with task completion, hours saved, and adoption (<code>Business Analytics</code>).</span></li>
+              </ul>
+            </div>
+            <div class="dim-box scenario">
+              <div class="dim-label">🏢 <span data-lang="zh-CN">业务场景</span><span data-lang="en">Business Scenarios</span></div>
+              <ul>
+                <li><span data-lang="zh-CN"><strong>解除历史文档大规模人工分类标签的前置阻塞</strong>：让存量未打标文档库零改造即刻获得内容级 DLP 防泄漏保护。</span><span data-lang="en"><strong>Unblocking Stalled AI Rollouts</strong>: Eliminates the multi-quarter prerequisite of manually labeling millions of legacy files before enabling enterprise AI.</span></li>
+                <li><span data-lang="zh-CN"><strong>CFO 季度 AI 预算复盘</strong>：清晰呈现“智能体本月消耗 $28K 算力，自动闭环 18 万笔合规审核、释放 4.2 万人工工时”，赢得扩购预算。</span><span data-lang="en"><strong>CFO Quarterly Value Defense</strong>: Prove exact unit economics (<code>$/completed outcome</code>) so finance leaders confidently fund expansion.</span></li>
+              </ul>
+            </div>
+            <div class="dim-box compete">
+              <div class="dim-label">🏆 <span data-lang="zh-CN">竞争优势</span><span data-lang="en">Competitive Advantage</span></div>
+              <ul>
+                <li><span data-lang="zh-CN">传统云账单工具只看得到 GPU/API 消耗曲线，看不到业务动作闭环；Microsoft 打通了 Foundry / Azure 成本层与 M365 / Agent 365 业务遥测层。</span><span data-lang="en">Generic FinOps tools only see raw API spend—Agent 365 uniquely joins Azure/Foundry token costs with verified M365 and line-of-business workflow outcomes.</span></li>
+              </ul>
+            </div>
+            <div class="dim-box guidance">
+              <div class="dim-label">🧭 <span data-lang="zh-CN">SA 落地要点</span><span data-lang="en">SA Implementation Guardrails</span></div>
+              <ul>
+                <li><span data-lang="zh-CN">每个智能体立项第 1 天即定义可度量的 <strong>“有效业务成果事件（Validated Outcome Event）”</strong>（如工单解决、PR 合入、对账放行），接入 Business Analytics 仪表盘。</span><span data-lang="en">Define a concrete <strong>Validated Outcome Event</strong> (ticket resolved, PR merged, claim cleared) on Day 1 of every agent build so ROI is measured automatically.</span></li>
+              </ul>
+            </div>
+          </div>
+        </article>
+
+        <!-- Spotlight 4: Autonomous Cyber Defense (Perception + MDASH) -->
+        <article class="spotlight-card" style="margin-bottom:0;">
+          <div class="spotlight-head">
+            <h3 class="spotlight-title">
+              <span data-lang="zh-CN">4. 自主网络安全攻防闭环（<code>Microsoft Perception</code> <code>GA</code> + <code>Codename MDASH</code> <code>Preview</code>）</span>
+              <span data-lang="en">4. Autonomous Cyber Defense (<code>Microsoft Perception</code> <code>GA</code> + <code>Codename MDASH</code> <code>Preview</code>)</span>
+            </h3>
+            <div>
+              <span class="badge badge-ga">Perception GA</span>
+              <span class="badge badge-preview">Codename MDASH Preview</span>
+            </div>
+          </div>
+          <div class="dim-grid">
+            <div class="dim-box">
+              <div class="dim-label">⚙️ <span data-lang="zh-CN">架构机制</span><span data-lang="en">Architecture Mechanics</span></div>
+              <ul>
+                <li><span data-lang="zh-CN"><strong><code>Microsoft Perception</code>（<code>GA</code>）</strong>：通过可定制 <strong>Playbooks</strong> 编排 <strong>红队</strong>（持续攻击模拟）、<strong>蓝队</strong>（检测与响应）与 <strong>绿队</strong>（安全态势加固）智能体军团；其分诊智能体自动处理 <strong>约 80% 典型 Defender 告警队列</strong>，并延伸覆盖 <strong>AWS 与 Salesforce</strong> 告警遥测。</span><span data-lang="en"><strong><code>Microsoft Perception</code> (<code>GA</code>)</strong>: Coordinates <strong>Red</strong> (offensive simulation), <strong>Blue</strong> (detection &amp; response), and <strong>Green</strong> (posture hardening) agent teams via customizable Playbooks; its Triage Agent handles <strong>~80% of typical Defender alert queues</strong> and extends across <strong>AWS and Salesforce</strong> telemetry.</span></li>
+                <li><span data-lang="zh-CN"><strong><code>Codename MDASH</code>（<code>Preview</code>）</strong>：调度 <strong>100+ 专精安全智能体</strong> 并搭载 <strong><code>MAI-Cyber-2-Flash</code></strong> 模型，在应用源代码中自主挖掘、沙箱复现并验证真实可利用漏洞——再将零误报结果移交 <strong><code>Azure Catalyst</code></strong> 自动生成修复 PR！</span><span data-lang="en"><strong><code>Codename MDASH</code> (<code>Preview</code>)</strong>: Orchestrates <strong>100+ specialized security agents</strong> powered by <strong><code>MAI-Cyber-2-Flash</code></strong> to autonomously discover, reproduce, and verify exploitable source-code vulnerabilities—handing verified findings to <strong><code>Azure Catalyst</code></strong> for automated remediation PRs.</span></li>
+              </ul>
+            </div>
+            <div class="dim-box scenario">
+              <div class="dim-label">🏢 <span data-lang="zh-CN">业务场景</span><span data-lang="en">Business Scenarios</span></div>
+              <ul>
+                <li><span data-lang="zh-CN"><strong>7×24 多云 SOC 告警降噪提效</strong>：消除安全分析师面对每日上万条跨云（Azure + AWS + Salesforce）低信噪比告警的疲劳漏报。</span><span data-lang="en"><strong>24×7 Multi-Cloud SOC Alert Compression</strong>: Eliminates analyst fatigue across Defender, AWS, and Salesforce security queues.</span></li>
+                <li><span data-lang="zh-CN"><strong>AI 加速研发速度下的同步安全左移</strong>：当 Coding Agent 让代码提交量翻倍时，用 <code>MDASH + Catalyst</code> 实现“机器级速度挖洞验证 + 机器级速度提修复 PR”。</span><span data-lang="en"><strong>Securing AI-Accelerated Code Velocity</strong>: Matches machine-speed code generation with autonomous exploit verification and automated fix PRs.</span></li>
+              </ul>
+            </div>
+            <div class="dim-box compete">
+              <div class="dim-label">🏆 <span data-lang="zh-CN">竞争优势</span><span data-lang="en">Competitive Advantage</span></div>
+              <ul>
+                <li><span data-lang="zh-CN">传统静态扫描（SAST）产生海量误报淹没研发团队；<code>MDASH</code> 通过真实复现验证确保推送给研发的每一条高危漏洞均具备确凿 PoC，并由 <code>Azure Catalyst</code> 闭环代码修复。</span><span data-lang="en">Traditional SAST floods developers with false positives—<code>MDASH</code> proves real exploitability before handing off to <code>Azure Catalyst</code> for verified code remediation.</span></li>
+              </ul>
+            </div>
+            <div class="dim-box guidance">
+              <div class="dim-label">🧭 <span data-lang="zh-CN">SA 落地要点</span><span data-lang="en">SA Implementation Guardrails</span></div>
+              <ul>
+                <li><span data-lang="zh-CN">面向拥有 MSSP（托管安全服务）能力的合作伙伴，将 <code>Perception Playbooks</code> 定制与跨云连接器集成打包为高毛利的 AI-SOC 升级服务。</span><span data-lang="en">Package custom <code>Perception Playbooks</code> + AWS/Salesforce connector onboarding as a high-margin AI-SOC modernization offering for MSSP partners.</span></li>
+              </ul>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         SECTION 2: INTERACTIVE OUTCOME-BASED AI FINOPS & PARTNER MSP ROI CALCULATOR
+         ====================================================================== -->
+    <section class="stage-section">
+      <div class="section-header">
+        <div>
+          <p class="eyebrow">EXECUTIVE VALUE &amp; RISK WORKBENCH</p>
+          <h2 class="section-title">
+            <span data-lang="zh-CN">成果导向投资回报测算</span>
+            <span data-lang="en">Outcome-Based AI FinOps</span>
+          </h2>
+          <p class="section-sub">
+            <span data-lang="zh-CN">供 Partner SA 在向客户 CFO 与 CISO 汇报收官时现场演示：将月度 Token 与运行时投入转化为<strong>单笔业务成果成本（<code>$/task</code>）、等效释放工时、净业务 ROI 倍数与零信任风险压降评分</strong>。</span>
+            <span data-lang="en">An interactive CFO/CISO closing workbench translating monthly token &amp; runtime spend into <strong>Cost per Completed Outcome (<code>$/task</code>), FTE hours unlocked, Net Business ROI multiple, and Zero-Trust risk reduction</strong>.</span>
+          </p>
+        </div>
+        <span class="badge badge-frontier">CFO &amp; CISO Calculator</span>
+      </div>
+
+      <div class="workbench" id="finops-workbench">
+        <div class="control-row">
+          <div class="field-group">
+            <label for="gov-agents">
+              <span>
+                <span data-lang="zh-CN">企业活跃智能体总数</span>
+                <span data-lang="en">Active Enterprise Agents</span>
+              </span>
+              <strong class="mono" id="gov-agents-val">120</strong>
+            </label>
+            <input type="range" id="gov-agents" min="10" max="500" step="10" value="120" />
+          </div>
+
+          <div class="field-group">
+            <label for="gov-tasks">
+              <span>
+                <span data-lang="zh-CN">月度完成有效业务任务数</span>
+                <span data-lang="en">Monthly Tasks Completed</span>
+              </span>
+              <strong class="mono" id="gov-tasks-val">180K</strong>
+            </label>
+            <input type="range" id="gov-tasks" min="5000" max="1000000" step="5000" value="180000" />
+          </div>
+
+          <div class="field-group">
+            <label for="gov-mins">
+              <span>
+                <span data-lang="zh-CN">单笔验证任务节省时间</span>
+                <span data-lang="en">Minutes Saved per Task</span>
+              </span>
+              <strong class="mono" id="gov-mins-val">12 min</strong>
+            </label>
+            <input type="range" id="gov-mins" min="3" max="45" step="1" value="12" />
+          </div>
+
+          <div class="field-group">
+            <label for="gov-labor">
+              <span>
+                <span data-lang="zh-CN">综合人力完全成本 ($/hr)</span>
+                <span data-lang="en">Blended Labor Cost ($/hr)</span>
+              </span>
+              <strong class="mono" id="gov-labor-val">$65</strong>
+            </label>
+            <input type="range" id="gov-labor" min="25" max="180" step="5" value="65" />
+          </div>
+
+          <div class="field-group">
+            <label for="gov-spend">
+              <span>
+                <span data-lang="zh-CN">月度 Token + 运行时支出</span>
+                <span data-lang="en">Monthly Token + Runtime ($)</span>
+              </span>
+              <strong class="mono" id="gov-spend-val">$28,000</strong>
+            </label>
+            <input type="range" id="gov-spend" min="2000" max="250000" step="2000" value="28000" />
+          </div>
+        </div>
+
+        <div class="guardrail-toggle-row">
+          <label class="guard-chip">
+            <input type="checkbox" id="guard-a365" checked />
+            <span>
+              <strong><span data-lang="zh-CN">启用 Agent 365 跨云与 35 类影子发现</span><span data-lang="en">Agent 365 Multi-Cloud &amp; 35 Shadow Discovery</span></strong>
+              <small><span data-lang="zh-CN">消除未纳管本地 CLI 与跨云 Agent 可观测盲区</span><span data-lang="en">Eliminates unmanaged CLI &amp; multi-cloud blind spots</span></small>
+            </span>
+          </label>
+          <label class="guard-chip">
+            <input type="checkbox" id="guard-mcp" checked />
+            <span>
+              <strong><span data-lang="zh-CN">启用 Entra Agent ID + MCP Firewall</span><span data-lang="en">Entra Agent ID + MCP Runtime Firewall</span></strong>
+              <small><span data-lang="zh-CN">绑定人类责任人并阻断越权工具外发</span><span data-lang="en">Enforces human sponsors &amp; blocks rogue MCP calls</span></small>
+            </span>
+          </label>
+          <label class="guard-chip">
+            <input type="checkbox" id="guard-dlp" checked />
+            <span>
+              <strong><span data-lang="zh-CN">启用 Purview 无标签内容感知 DLP</span><span data-lang="en">Purview Unlabeled Content-Aware DLP</span></strong>
+              <small><span data-lang="zh-CN">实时拦截未打标源码、合同与 PII 上传</span><span data-lang="en">Blocks unlabeled source code, M&amp;A &amp; PII leaks</span></small>
+            </span>
+          </label>
+        </div>
+
+        <div class="metric-strip">
+          <div class="metric-card">
+            <span class="m-title"><span data-lang="zh-CN">单笔业务成果交付成本</span><span data-lang="en">Cost per Completed Outcome</span></span>
+            <span class="m-num" id="fin-cpo">--</span>
+            <span class="m-note" id="fin-cpo-note">--</span>
+          </div>
+          <div class="metric-card">
+            <span class="m-title"><span data-lang="zh-CN">月度释放等效专业工时</span><span data-lang="en">Equivalent FTE Hours Unlocked</span></span>
+            <span class="m-num" id="fin-hours">--</span>
+            <span class="m-note" id="fin-fte-note">--</span>
+          </div>
+          <div class="metric-card">
+            <span class="m-title"><span data-lang="zh-CN">净验证业务回报倍数</span><span data-lang="en">Net Verified Business ROI</span></span>
+            <span class="m-num" id="fin-roi">--</span>
+            <span class="m-note" id="fin-net-note">--</span>
+          </div>
+          <div class="metric-card">
+            <span class="m-title"><span data-lang="zh-CN">治理后残余风险暴露分</span><span data-lang="en">Governed Risk Exposure Score</span></span>
+            <span class="m-num" id="fin-risk">--</span>
+            <span class="m-note" id="fin-risk-note">--</span>
+          </div>
+        </div>
+
+        <div class="risk-compare-box">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:6px;">
+            <strong style="font-size:13px;">
+              <span data-lang="zh-CN">🛡️ 影子智能体与无标签数据外泄风险暴露指数（0 = 最低风险，100 = 未启用控制基线）</span>
+              <span data-lang="en">🛡️ Shadow Agent &amp; Unlabeled Data Leak Exposure Index (0 = Minimal Risk, 100 = Ungoverned Baseline)</span>
+            </strong>
+            <span class="mono" style="font-size:12px;color:var(--teal);" id="risk-delta-badge">--</span>
+          </div>
+
+          <div class="risk-row">
+            <span style="color:var(--text-muted);font-weight:600;">
+              <span data-lang="zh-CN">未受控基线（Ungoverned）</span>
+              <span data-lang="en">Before Governance</span>
+            </span>
+            <div class="risk-track"><div class="risk-fill" id="risk-bar-before" style="width:85%;background:var(--rose);"></div></div>
+            <strong class="mono" style="color:var(--rose);text-align:right;" id="risk-val-before">85 / 100</strong>
+          </div>
+
+          <div class="risk-row">
+            <span style="color:var(--text);font-weight:700;">
+              <span data-lang="zh-CN">启用当前零信任栈后</span>
+              <span data-lang="en">After Selected Guardrails</span>
+            </span>
+            <div class="risk-track"><div class="risk-fill" id="risk-bar-after" style="width:14%;background:var(--green);"></div></div>
+            <strong class="mono" style="color:var(--green);text-align:right;" id="risk-val-after">14 / 100</strong>
+          </div>
+        </div>
+
+        <div class="exec-closing-banner">
+          <h4 id="fin-exec-title">💼 CFO &amp; CISO Executive Summary + Partner MSP Opportunity</h4>
+          <p id="fin-exec-body" style="margin:0;color:var(--text);"></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         SECTION 3: SERIES CLOSING SYNTHESIS — 6-STAGE PARTNER SA CHECKLIST
+         ====================================================================== -->
+    <section class="stage-section">
+      <div class="section-header">
+        <div>
+          <p class="eyebrow">SERIES CLOSING SYNTHESIS · STAGES 01–06</p>
+          <h2 class="section-title">
+            <span data-lang="zh-CN">全栈落地行动总表</span>
+            <span data-lang="en">Partner SA Action Blueprint</span>
+          </h2>
+          <p class="section-sub">
+            <span data-lang="zh-CN">将《企业级 Agentic AI 生产落地之旅》全六站能力精准映射至客户五大核心决策人（CXO Persona），明确下周一即可启动的合作伙伴切入动作。</span>
+            <span data-lang="en">Mapping all 6 stages of <em>The Enterprise Agentic AI Journey</em> directly to customer CXO decision-makers and concrete Next-Monday Partner SA engagement plays.</span>
+          </p>
+        </div>
+        <span class="badge badge-ga">Full-Journey Playbook</span>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th><span data-lang="zh-CN">客户关键决策人 (CXO)</span><span data-lang="en">Customer CXO Persona</span></th>
+              <th><span data-lang="zh-CN">对应阶段</span><span data-lang="en">Journey Stage</span></th>
+              <th><span data-lang="zh-CN">Ignite 2026 核心锚点能力</span><span data-lang="en">Ignite 2026 Anchor Capabilities</span></th>
+              <th><span data-lang="zh-CN">下周一合作伙伴切入动作（Next-Monday Action）</span><span data-lang="en">Next-Monday Partner SA Action</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <strong>CEO / COO</strong><br/>
+                <span style="font-size:12px;color:var(--text-soft);">
+                  <span data-lang="zh-CN">业务增长与全员生产力</span>
+                  <span data-lang="en">Productivity &amp; Frontline Growth</span>
+                </span>
+              </td>
+              <td><a href="01-copilot-entry.html" class="stage-pill-tag">01 · Copilot Entry</a></td>
+              <td>
+                <span data-lang="zh-CN">Copilot 四大模式（<code>Chat / Cowork / Autopilot / Code</code>）+ <strong><code>Copilot Standalone</code></strong>（12 月 1 日解绑底座）+ <code>D365 / Salesforce</code> 插件</span>
+                <span data-lang="en">4 Copilot Modes (<code>Chat / Cowork / Autopilot / Code</code>) + <strong><code>Copilot Standalone</code></strong> (Dec 1 base-license decoupling) + CRM plugins</span>
+              </td>
+              <td>
+                <span data-lang="zh-CN">针对飞书/钉钉/WPS/Google 异构存量白地客户，无需首日替换办公底座，用 <code>Copilot Standalone + Azure APIM + OBO</code> 快速切入核心销售与运营流程 PoC。</span>
+                <span data-lang="en">Target whitespace accounts on non-M365 suites with zero Day-1 rip-and-replace via <code>Copilot Standalone + APIM + Entra OBO</code> workflow pilots.</span>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <strong>CDO / 首席数据官</strong><br/>
+                <span style="font-size:12px;color:var(--text-soft);">
+                  <span data-lang="zh-CN">内外上下文与零幻觉指标</span>
+                  <span data-lang="en">Trusted External &amp; Internal Context</span>
+                </span>
+              </td>
+              <td>
+                <a href="02-web-iq-context.html" class="stage-pill-tag">02 · Web IQ</a>
+                <a href="03-fabric-ontology.html" class="stage-pill-tag" style="margin-top:4px;">03 · Ontology</a>
+              </td>
+              <td>
+                <span data-lang="zh-CN"><strong><code>Web IQ</code></strong>（<code>Auto Advanced</code> + <code>Scopes</code> 1 万条黑白名单 + <code>Places/Weather/Commerce</code>）× <strong><code>Fabric OneLake</code> 零拷贝 + <code>Fabric IQ Ontology</code> + <code>HorizonDB</code></strong></span>
+                <span data-lang="en"><strong><code>Web IQ</code></strong> (<code>Auto Advanced</code> + free <code>Scopes</code> + vertical APIs) × <strong><code>Fabric OneLake</code> Zero-Copy + <code>Fabric IQ Ontology</code> + <code>HorizonDB</code></strong></span>
+              </td>
+              <td>
+                <span data-lang="zh-CN">开展“内外部联邦上下文架构工作坊”：左侧配置受控 <code>Web IQ Scopes</code> 接入实时外部情报，右侧基于 <code>OneLake Shortcuts + Ontology</code> 统一跨智能体业务语义与写回动作。</span>
+                <span data-lang="en">Run a Federated Context Architecture Workshop: pair domain-scoped <code>Web IQ Scopes</code> with a <code>OneLake + Fabric IQ Ontology</code> pilot over live ERP/CRM data.</span>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <strong>VP Engineering</strong><br/>
+                <span style="font-size:12px;color:var(--text-soft);">
+                  <span data-lang="zh-CN">智能体研发工程与沙箱选型</span>
+                  <span data-lang="en">Agent Engineering &amp; Runtimes</span>
+                </span>
+              </td>
+              <td><a href="04-foundry-engineering.html" class="stage-pill-tag">04 · Foundry Runtime</a></td>
+              <td>
+                <span data-lang="zh-CN">Foundry 持续优化闭环（<code>Agent Optimizer GA</code>）+ 四大托管运行时（<code>Agent Service / Foundry on AKS / ACA / AKS Agent Sandbox</code>）+ <strong><code>Microsoft-Decision-1.1</code>（<code>$0</code> 输出）</strong></span>
+                <span data-lang="en">Foundry Loop (<code>Agent Optimizer GA</code>) + 4 Hosting Runtimes (<code>Managed / AKS / ACA / AKS Agent Sandbox</code>) + <strong><code>Microsoft-Decision-1.1</code> (<code>$0</code> output)</strong></span>
+              </td>
+              <td>
+                <span data-lang="zh-CN">用 <code>Decision-1.1</code> 三段式置信度门控重构客户高成本路由与评测链路，并为代码/浏览器执行智能体落地 Kata 隔离的 <code>AKS Agent Sandbox</code>。</span>
+                <span data-lang="en">Refactor expensive LLM classification/routing onto 3-band <code>Decision-1.1</code> confidence gating, and isolate code/browser execution in <code>AKS Agent Sandbox</code>.</span>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <strong>Infra Lead / 基础架构负责人</strong><br/>
+                <span style="font-size:12px;color:var(--text-soft);">
+                  <span data-lang="zh-CN">推理延迟、GPU 显存与 RDMA 网络</span>
+                  <span data-lang="en">Latency, GPU Sizing &amp; RDMA Fabric</span>
+                </span>
+              </td>
+              <td><a href="05-ai-infra-optimization.html" class="stage-pill-tag">05 · AI Infra</a></td>
+              <td>
+                <span data-lang="zh-CN"><strong>PD 算存分离 + 前缀 KV 缓存</strong> + Foundry 开源与生视频模型（<code>Fireworks / Baseten / fal</code>）+ <strong><code>Maia 300</code> / <code>Cobalt 200 GA</code></strong> + <code>NVLink</code> &amp; <code>RoCEv2 / IB</code></span>
+                <span data-lang="en"><strong>PD Disaggregation + Prefix KV</strong> + Foundry open/video wave (<code>Fireworks / Baseten / fal</code>) + <strong><code>Maia 300</code> / <code>Cobalt 200 GA</code></strong> + <code>RoCEv2 / IB</code></span>
+              </td>
+              <td>
+                <span data-lang="zh-CN">第一天审计客户 Prompt 前缀顺序立降 70%+ <code>TTFT</code>；用本章显存计算器评估 <code>DeepSeek / Kimi / 生视频</code> 在托管接口与 <code>AKS GPU + RoCEv2</code> 自建间的盈亏拐点。</span>
+                <span data-lang="en">Audit prompt prefix ordering to cut <code>TTFT</code> by 70%+ immediately, and benchmark <code>Fireworks/Baseten/fal</code> vs dedicated <code>AKS GPU + RoCEv2</code> breakeven.</span>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <strong>CISO &amp; CFO</strong><br/>
+                <span style="font-size:12px;color:var(--text-soft);">
+                  <span data-lang="zh-CN">全域风控合规与财务投资回报</span>
+                  <span data-lang="en">Security Sign-Off &amp; Financial ROI</span>
+                </span>
+              </td>
+              <td><a href="06-agent-governance.html" class="stage-pill-tag">06 · Governance</a></td>
+              <td>
+                <span data-lang="zh-CN"><strong><code>Agent 365</code>（含 35 类端侧发现 + <code>CSP 多租户</code>）</strong>+ <code>Entra Agent ID</code> + <code>MCP Firewall</code> + <strong><code>Purview</code> 无标签 DLP</strong> + 成果 FinOps + <strong><code>Perception GA</code> / <code>MDASH</code></strong></span>
+                <span data-lang="en"><strong><code>Agent 365</code> (35 shadow classes + <code>CSP Multi-Tenant</code>)</strong> + <code>Entra Agent ID</code> + <code>MCP Firewall</code> + <strong>Unlabeled <code>Purview DLP</code></strong> + <strong><code>Perception GA</code> / <code>MDASH</code></strong></span>
+              </td>
+              <td>
+                <span data-lang="zh-CN">交付跨云与笔记本影子智能体清查 + 无标签 DLP 策略上线，以 <code>CSP 多租户预览</code> 签约按月持续运营的 Partner Managed AI Governance &amp; AI-SOC 托管服务。</span>
+                <span data-lang="en">Run a Shadow Agent + Unlabeled DLP assessment, establish outcome-based CFO dashboards, and sign a recurring CSP Multi-Tenant Managed AI Governance retainer.</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Chapter Pager -->
+    <nav class="chapter-pager" aria-label="Chapter Pagination">
+      <a href="05-ai-infra-optimization.html" class="pager-card prev">
+        <span class="pager-dir">← STAGE 05</span>
+        <span class="pager-name">
+          <span data-lang="zh-CN">推理基础设施优化</span>
+          <span data-lang="en">Inference Infra Optimization</span>
+        </span>
+      </a>
+      <a href="index.html" class="pager-card next">
+        <span class="pager-dir">↺ OVERVIEW HUB</span>
+        <span class="pager-name">
+          <span data-lang="zh-CN">返回 00 全景架构蓝图</span>
+          <span data-lang="en">Back to 00 Architecture Blueprint</span>
+        </span>
+      </a>
+    </nav>
+  </main>
+
+  <script src="assets/ignite-recap.js"></script>
+  <script>
+    (function () {
+      "use strict";
+
+      function getLang() {
+        return document.documentElement.lang === "en" ? "en" : "zh-CN";
+      }
+
+      function formatTasks(n) {
+        if (n >= 1000000) return (n / 1000000).toFixed(2) + "M";
+        return Math.round(n / 1000) + "K";
+      }
+
+      function updateFinOps() {
+        const lang = getLang();
+        const agents = Number(document.getElementById("gov-agents").value);
+        const tasks = Number(document.getElementById("gov-tasks").value);
+        const mins = Number(document.getElementById("gov-mins").value);
+        const labor = Number(document.getElementById("gov-labor").value);
+        const spend = Number(document.getElementById("gov-spend").value);
+
+        const hasA365 = document.getElementById("guard-a365").checked;
+        const hasMcp = document.getElementById("guard-mcp").checked;
+        const hasDlp = document.getElementById("guard-dlp").checked;
+
+        document.getElementById("gov-agents-val").textContent = String(agents);
+        document.getElementById("gov-tasks-val").textContent = formatTasks(tasks);
+        document.getElementById("gov-mins-val").textContent = mins + " min";
+        document.getElementById("gov-labor-val").textContent = "$" + labor;
+        document.getElementById("gov-spend-val").textContent = "$" + spend.toLocaleString();
+
+        // Unit Economics & ROI Math
+        const costPerOutcome = spend / tasks;
+        const manualCostPerTask = (mins / 60) * labor;
+        const hoursUnlocked = (tasks * mins) / 60;
+        const fteEquivalent = hoursUnlocked / 160;
+        const grossValue = hoursUnlocked * labor;
+        const netSavings = grossValue - spend;
+        const roiMultiple = grossValue / spend;
+
+        // Risk Exposure Score (0 - 100)
+        const scalePressure = Math.min(28, Math.round(Math.log10(tasks / 1000) * 8 + agents / 32));
+        const riskBefore = Math.min(98, 66 + scalePressure);
+        let mitigation = 0;
+        if (hasA365) mitigation += 26;
+        if (hasMcp) mitigation += 27;
+        if (hasDlp) mitigation += 29;
+        const riskAfter = Math.max(8, Math.round(riskBefore * (1 - mitigation / 100)));
+        const riskCutPct = Math.round(((riskBefore - riskAfter) / riskBefore) * 100);
+
+        // Populate Metrics
+        document.getElementById("fin-cpo").textContent = "$" + (costPerOutcome < 1 ? costPerOutcome.toFixed(3) : costPerOutcome.toFixed(2));
+        document.getElementById("fin-cpo-note").textContent = lang === "en"
+          ? `vs $${manualCostPerTask.toFixed(2)} manual labor/task`
+          : `人工基准 $${manualCostPerTask.toFixed(2)} / 笔`;
+
+        document.getElementById("fin-hours").textContent = Math.round(hoursUnlocked).toLocaleString() + " hrs";
+        document.getElementById("fin-fte-note").textContent = lang === "en"
+          ? `≈ ${fteEquivalent.toFixed(1)} FTE capacity unlocked/mo`
+          : `折合约 ${fteEquivalent.toFixed(1)} 名全职专家月度产能`;
+
+        document.getElementById("fin-roi").textContent = roiMultiple.toFixed(1) + "×";
+        const netFormatted = (netSavings >= 0 ? "+$" : "-$") + Math.abs(Math.round(netSavings)).toLocaleString();
+        document.getElementById("fin-net-note").textContent = lang === "en"
+          ? `Net monthly value: ${netFormatted}/mo`
+          : `月度净创造业务价值：${netFormatted}`;
+
+        document.getElementById("fin-risk").textContent = `${riskAfter} / 100`;
+        document.getElementById("fin-risk-note").textContent = lang === "en"
+          ? (riskCutPct > 0 ? `▼ ${riskCutPct}% vs ungoverned (${riskBefore}/100)` : "Ungoverned high exposure!")
+          : (riskCutPct > 0 ? `较未受控基线 (${riskBefore}/100) 压降 ${riskCutPct}%` : "警告：当前未启用治理控制项");
+
+        // Update Risk Bars
+        document.getElementById("risk-bar-before").style.width = riskBefore + "%";
+        document.getElementById("risk-val-before").textContent = `${riskBefore} / 100`;
+        document.getElementById("risk-bar-after").style.width = riskAfter + "%";
+        document.getElementById("risk-bar-after").style.background = riskAfter <= 25 ? "var(--green)" : (riskAfter <= 55 ? "var(--amber)" : "var(--rose)");
+        document.getElementById("risk-val-after").style.color = riskAfter <= 25 ? "var(--green)" : (riskAfter <= 55 ? "var(--amber)" : "var(--rose)");
+        document.getElementById("risk-val-after").textContent = `${riskAfter} / 100`;
+        document.getElementById("risk-delta-badge").textContent = lang === "en"
+          ? `Exposure Reduction: -${riskCutPct}%`
+          : `风险敞口压降幅度：-${riskCutPct}%`;
+
+        // Partner MSP Monthly Retainer Benchmark (~12%-18% of governed AI value/spend floor)
+        const estMspRetainer = Math.max(3500, Math.round((agents * 45 + spend * 0.12) / 100) * 100);
+        const execTitle = document.getElementById("fin-exec-title");
+        const execBody = document.getElementById("fin-exec-body");
+
+        if (lang === "en") {
+          execTitle.textContent = "💼 Executive CFO/CISO Takeaway & Partner CSP Managed Service Play";
+          execBody.innerHTML = `Across <strong>${agents} active agents</strong> completing <strong>${tasks.toLocaleString()} validated tasks/month</strong>, AI shifts from a <code>$${spend.toLocaleString()}</code> cost center into <strong><code>$${Math.round(grossValue).toLocaleString()}/mo</code> of verified business capacity (${roiMultiple.toFixed(1)}× ROI at $${costPerOutcome < 1 ? costPerOutcome.toFixed(3) : costPerOutcome.toFixed(2)}/outcome)</strong>, while compressing shadow CLI &amp; unlabeled data risk from <code>${riskBefore}</code> down to <code>${riskAfter}/100</code>. <strong>Partner MSP Opportunity:</strong> Bundle <code>Agent 365 CSP Multi-Tenant</code> governance, MCP Firewall policy ops, and <code>Perception</code> triage playbooks as a recurring <strong>~$${estMspRetainer.toLocaleString()}/mo Managed AI Governance retainer</strong>.`;
+        } else {
+          execTitle.textContent = "💼 CFO / CISO 汇报结论与合作伙伴 CSP 托管服务（MSP）商机测算";
+          execBody.innerHTML = `在纳管 <strong>${agents} 个活跃智能体</strong>、月均闭环 <strong>${tasks.toLocaleString()} 笔有效业务任务</strong>的规模下，企业用 <code>$${spend.toLocaleString()}</code> 的算力与运行时投入撬动了 <strong><code>$${Math.round(grossValue).toLocaleString()}/月</code> 的可验证产能释放（净投资回报 <code>${roiMultiple.toFixed(1)}×</code>，单笔成果成本仅 <code>$${costPerOutcome < 1 ? costPerOutcome.toFixed(3) : costPerOutcome.toFixed(2)}</code>）</strong>，同时将影子 CLI 与无标签敏感文件外泄风险从 <code>${riskBefore}</code> 压降至 <code>${riskAfter}/100</code>。<strong>合作伙伴持续营收切入点：</strong>依托 <code>Agent 365 CSP 多租户管理</code>、<code>MCP Firewall</code> 策略代维与 <code>Perception</code> 安全剧本运营，可转化为约 <strong>~$${estMspRetainer.toLocaleString()}/月 的高粘性 AI 托管治理年框服务</strong>。`;
+        }
+      }
+
+      ["gov-agents", "gov-tasks", "gov-mins", "gov-labor", "gov-spend", "guard-a365", "guard-mcp", "guard-dlp"].forEach((id) => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener("input", updateFinOps);
+        if (el) el.addEventListener("change", updateFinOps);
+      });
+
+      window.addEventListener("ignite:langchange", updateFinOps);
+      updateFinOps();
+    })();
+  </script>
+</body>
+</html>

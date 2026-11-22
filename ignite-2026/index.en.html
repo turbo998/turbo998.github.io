@@ -1,0 +1,3085 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" data-mode="read">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Microsoft Ignite 2026 Partner Solution Architect Executive Blueprint — The Enterprise Agentic AI Journey across Unified Agent Entry, Live World Context, Enterprise Data Ontology, Agent Runtime Engineering, Inference Infra Optimization, and Enterprise Agent Governance.">
+  <title>Architecture Blueprint | The Enterprise Agentic AI Journey · Ignite 2026</title>
+  <link rel="stylesheet" href="assets/ignite-recap.css">
+  <style>
+    /* Executive Hub Scoped Styles (100% Theme-Aware & Offline) */
+    .hero-accent {
+      background: linear-gradient(92deg, var(--accent), var(--teal), var(--purple));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .kpi-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      font-weight: 800;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      color: var(--teal);
+    }
+
+    /* Interactive SVG Blueprint Nodes */
+    .blueprint-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .stage-pill-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .stage-select-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 7px 13px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--bg-elevated);
+      color: var(--text-muted);
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.16s ease;
+    }
+
+    .stage-select-btn:hover {
+      border-color: var(--accent);
+      color: var(--text);
+    }
+
+    .stage-select-btn.active,
+    .stage-select-btn[aria-selected="true"] {
+      background: var(--accent-soft);
+      border-color: var(--accent);
+      color: var(--accent);
+      box-shadow: 0 0 0 1px var(--accent-soft);
+    }
+
+    .stage-select-btn .step-num {
+      display: inline-grid;
+      place-items: center;
+      width: 21px;
+      height: 21px;
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      background: var(--surface-strong);
+      color: var(--text);
+    }
+
+    .stage-select-btn.active .step-num {
+      background: var(--accent);
+      color: #ffffff;
+    }
+
+    .svg-stage-node {
+      cursor: pointer;
+      transition: opacity 0.18s ease, filter 0.18s ease;
+      outline: none;
+    }
+
+    .svg-stage-node .node-bg {
+      transition: stroke-width 0.18s ease, stroke 0.18s ease, fill 0.18s ease;
+    }
+
+    .svg-stage-node:hover .node-bg,
+    .svg-stage-node:focus-visible .node-bg {
+      stroke-width: 2.6;
+      filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.35));
+    }
+
+    .svg-stage-node.is-selected .node-bg {
+      stroke-width: 3;
+      fill: #132a4f;
+      filter: drop-shadow(0 0 14px rgba(56, 189, 248, 0.52));
+    }
+
+    /* Architect Stage Inspector Panel */
+    .inspector-panel {
+      margin-top: 18px;
+      border: 1.5px solid var(--border-strong);
+      border-radius: 18px;
+      background: linear-gradient(160deg, var(--bg-elevated), var(--surface-soft));
+      padding: 22px 24px;
+    }
+
+    .inspector-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 14px;
+      padding-bottom: 14px;
+      margin-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .inspector-title-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .inspector-stage-tag {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 5px 11px;
+      border-radius: 8px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 800;
+      background: var(--accent);
+      color: #ffffff;
+    }
+
+    .inspector-stage-name {
+      margin: 0;
+      font-size: 21px;
+      font-weight: 800;
+      line-height: 1.25;
+    }
+
+    .inspector-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .inspector-box {
+      padding: 16px;
+      border-radius: 13px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+    }
+
+    .inspector-box h4 {
+      margin: 0 0 8px;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .inspector-box.releases h4 {
+      color: var(--teal);
+    }
+
+    .inspector-box.motion h4 {
+      color: var(--amber);
+    }
+
+    .inspector-box p {
+      margin: 0;
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    .inspector-list {
+      margin: 0;
+      padding-left: 17px;
+      font-size: 13.5px;
+      color: var(--text-muted);
+    }
+
+    .inspector-list li {
+      margin-bottom: 6px;
+    }
+
+    .inspector-list li:last-child {
+      margin-bottom: 0;
+    }
+
+    .inspector-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 16px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+    }
+
+    /* Executive 6-Stage Cards */
+    .exec-stage-card {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 14px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .exec-card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+    }
+
+    .exec-step-chip {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 800;
+      padding: 3px 9px;
+      border-radius: 7px;
+      background: var(--surface-strong);
+      color: var(--accent);
+      border: 1px solid var(--border);
+    }
+
+    .badge-cluster {
+      display: inline-flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+
+    .stage-bullets {
+      margin: 10px 0 0;
+      padding-left: 18px;
+      color: var(--text-muted);
+      font-size: 13.8px;
+    }
+
+    .stage-bullets li {
+      margin-bottom: 7px;
+    }
+
+    .demo-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 10px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      background: var(--teal-soft);
+      color: var(--teal);
+      border: 1px solid rgba(45, 212, 191, 0.3);
+    }
+
+    .exec-card-foot {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+    }
+
+    .card-jump-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: space-between;
+      font-weight: 800;
+      font-size: 13.5px;
+      color: var(--accent);
+    }
+
+    /* Release Radar Workbench */
+    .radar-status-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .count-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 13px;
+      border-radius: 999px;
+      font-family: var(--font-mono);
+      font-size: 12.5px;
+      font-weight: 800;
+      background: var(--accent-soft);
+      border: 1px solid var(--accent);
+      color: var(--accent);
+    }
+
+    .motion-chip {
+      display: inline-block;
+      padding: 3px 9px;
+      border-radius: 999px;
+      font-size: 11.5px;
+      font-weight: 700;
+      background: var(--surface-soft);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+
+    .cap-name {
+      font-weight: 800;
+      color: var(--text);
+      display: block;
+      margin-bottom: 3px;
+    }
+
+    .cap-stage-link {
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .empty-radar {
+      padding: 28px;
+      text-align: center;
+      color: var(--text-soft);
+      font-size: 14.5px;
+    }
+
+    /* Briefing Agenda & Wedge Cards */
+    .time-pill {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 700;
+      background: var(--purple-soft);
+      color: var(--purple);
+      white-space: nowrap;
+    }
+
+    .wedge-card {
+      border-top: 3px solid var(--accent);
+    }
+
+    .wedge-card.wedge-2 {
+      border-top-color: var(--teal);
+    }
+
+    .wedge-card.wedge-3 {
+      border-top-color: var(--amber);
+    }
+
+    .wedge-step {
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      font-size: 13.2px;
+      color: var(--text-muted);
+    }
+
+    .wedge-step strong {
+      color: var(--text);
+      display: block;
+      margin-bottom: 3px;
+    }
+
+    /* One-Page Master Ecosystem Overview Board Refinements (Light Canvas Safe in Dark/Light Themes) */
+    #one-page-overview code {
+      background: #f1f5f9;
+      border-color: #cbd5e1;
+      color: #0f172a;
+      font-size: 0.88em;
+      padding: 1px 5px;
+      border-radius: 4px;
+    }
+
+    #one-page-overview .arch-zone-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.92);
+      border: 1px solid #cbd5e1;
+      color: #0067b8;
+      font-size: 10.5px;
+      font-weight: 800;
+      font-family: var(--font-mono);
+      white-space: nowrap;
+      text-decoration: none;
+      transition: all 0.15s ease;
+    }
+
+    #one-page-overview .arch-zone-link:hover {
+      border-color: #0067b8;
+      background: #eff6ff;
+      color: #005293;
+      text-decoration: none;
+    }
+
+    #one-page-overview .arch-flow-connector {
+      flex-wrap: wrap;
+      background: #f8fafc;
+      border: 1px dashed #cbd5e1;
+      border-radius: 8px;
+      padding: 4px 10px;
+    }
+
+    #one-page-overview .zone-rail {
+      background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+      justify-content: flex-start;
+      gap: 10px;
+    }
+
+    #one-page-overview .zone-rail .arch-zone-head {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 5px;
+      padding-bottom: 6px;
+      border-bottom: 1px dashed #cbd5e1;
+      margin-bottom: 2px;
+    }
+
+    #one-page-overview .rail-cross-pill {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 8px;
+      border-radius: 7px;
+      background: #eff6ff;
+      border: 1px dashed #60a5fa;
+      color: #1e3a8a;
+      font-size: 10.2px;
+      font-weight: 700;
+      line-height: 1.3;
+    }
+
+    #one-page-overview .zone-rail .arch-svc {
+      flex: 0 0 auto;
+    }
+
+    @media (max-width: 980px) {
+      .inspector-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+  <script src="assets/ignite-recap.js" defer></script>
+</head>
+<body data-title-zh="全景架构蓝图｜企业级 Agentic AI 生产落地之旅 · Ignite 2026" data-title-en="Architecture Blueprint | The Enterprise Agentic AI Journey · Ignite 2026">
+  <a href="#main-content" class="skip-link">
+    <span data-lang="zh-CN">跳转到正文内容</span>
+    <span data-lang="en">Skip to main content</span>
+  </a>
+
+  <!-- Shared Sticky Top Header & 7-Item Journey Bar -->
+  <header class="site-header">
+    <div class="header-top">
+      <div class="brand-group">
+        <div class="brand-mark" aria-hidden="true">AI</div>
+        <div>
+          <span class="brand-title">
+            <span data-lang="zh-CN">企业级 Agentic AI 生产落地之旅</span>
+            <span data-lang="en">The Enterprise Agentic AI Journey</span>
+          </span>
+          <span class="brand-sub">
+            <span data-lang="zh-CN">Microsoft Ignite 2026 · Partner Solution Architect 全景技术专栏（Qi Chen）</span>
+            <span data-lang="en">Microsoft Ignite 2026 · Partner Solution Architect Technical Column (Qi Chen)</span>
+          </span>
+        </div>
+      </div>
+
+      <div class="header-controls">
+        <a class="ctrl-btn hub-return-link" href="../index.html">← Main Site</a>
+        <div class="header-search-wrap"><input type="search" class="header-search-input" placeholder="Search stages / services…" aria-label="Search Ignite 2026 stages and services"><div class="header-search-results" hidden></div></div>
+        <button type="button" class="ctrl-btn" data-action="toggle-mode">📖 Reading / 🎤 Stage</button>
+        <button type="button" class="ctrl-btn" data-action="toggle-cues">
+          <span data-lang="zh-CN">🎙️ 宣讲提示</span>
+          <span data-lang="en">🎙️ Speaker Cues</span>
+        </button>
+        <button type="button" class="ctrl-btn" data-action="toggle-theme">🌗 <span class="theme-label">Light</span></button>
+        <a class="ctrl-btn language-link" href="index.html" hreflang="zh-CN" data-action="toggle-lang">中文 / EN</a>
+      </div>
+    </div>
+
+    <div class="journey-bar">
+      <nav class="journey-nav" aria-label="Enterprise Agentic AI 6-Stage Journey">
+        <a class="journey-link" href="index.en.html" aria-current="page">
+          <span class="journey-step">00</span>
+          <span data-lang="zh-CN">全景架构蓝图</span>
+          <span data-lang="en">Architecture Blueprint</span>
+        </a>
+        <a class="journey-link" href="01-copilot-entry.en.html">
+          <span class="journey-step">01</span>
+          <span data-lang="zh-CN">统一智能体入口</span>
+          <span data-lang="en">Unified Agent Entry</span>
+        </a>
+        <a class="journey-link" href="02-web-iq-context.en.html">
+          <span class="journey-step">02</span>
+          <span data-lang="zh-CN">外部实时上下文</span>
+          <span data-lang="en">Live World Context</span>
+        </a>
+        <a class="journey-link" href="03-fabric-ontology.en.html">
+          <span class="journey-step">03</span>
+          <span data-lang="zh-CN">企业数据本体</span>
+          <span data-lang="en">Enterprise Data Ontology</span>
+        </a>
+        <a class="journey-link" href="04-foundry-engineering.en.html">
+          <span class="journey-step">04</span>
+          <span data-lang="zh-CN">智能体工程运行时</span>
+          <span data-lang="en">Agent Runtime Engineering</span>
+        </a>
+        <a class="journey-link" href="05-ai-infra-optimization.en.html">
+          <span class="journey-step">05</span>
+          <span data-lang="zh-CN">推理基础设施优化</span>
+          <span data-lang="en">Inference Infra Optimization</span>
+        </a>
+        <a class="journey-link" href="06-agent-governance.en.html">
+          <span class="journey-step">06</span>
+          <span data-lang="zh-CN">全域智能体治理</span>
+          <span data-lang="en">Enterprise Agent Governance</span>
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main-content" class="page-main">
+    <!-- HERO PANEL + OPENING SPEAKER CUE -->
+    <section class="hero-panel" aria-labelledby="hero-heading">
+      <div class="hero-grid">
+        <div>
+          <p class="eyebrow">MICROSOFT IGNITE 2026 · PARTNER SOLUTION ARCHITECT SERIES</p>
+          <h1 id="hero-heading" class="hero-title">
+            <span data-lang="zh-CN"><span class="hero-accent">企业级 Agentic AI</span> 生产落地之旅</span>
+            <span data-lang="en">The <span class="hero-accent">Enterprise Agentic AI</span> Journey</span>
+          </h1>
+          <p class="hero-lead">
+            <span data-lang="zh-CN">
+              企业 AI 已正式跨越孤立的 Prompt 对话工具阶段，全面迈入规模化投产的 <strong>Agentic Systems（生产级智能体系统）</strong>。本专栏从合作伙伴解决方案架构师（Partner SA）视角出发，将 Microsoft Ignite 2026 核心技术发布收敛为一条严密的六阶工程链路：以统一工作界面收敛交互入口（<code>Copilot 四大模式 + Standalone</code>），以内外部联邦上下文消除检索幻觉（<code>Web IQ + Fabric Ontology</code>），以闭环评估与判别路由跨越生产落地鸿沟（<code>Foundry + Decision-1.1</code>），以全栈推理架构压降延迟与算力成本（<code>PD 分离 · GPU 显存与 RoCEv2/IB · Maia 300</code>），最终通过零信任控制平面实现规模化可观测运营（<code>Agent 365 + Perception</code>）。
+            </span>
+            <span data-lang="en">
+              Enterprise AI has decisively evolved from isolated prompt-based chatbots to <strong>production-grade Agentic Systems</strong>. Curated from a Partner Solution Architect perspective, this blueprint connects Microsoft Ignite 2026 into a six-stage reference architecture: unified work entry (<code>Copilot 4 Modes + Standalone</code>), federated external &amp; internal context (<code>Web IQ + Fabric Ontology</code>), self-optimizing runtime engineering (<code>Foundry + Decision-1.1</code>), full-stack inference systems (<code>PD Disaggregation, GPU VRAM &amp; RoCEv2/IB, Maia 300</code>), and zero-trust fleet governance (<code>Agent 365 + Perception</code>).
+            </span>
+          </p>
+
+          <div class="pill-row">
+            <span class="pill">
+              <span data-lang="zh-CN">👤 Qi Chen · Partner Solution Architect</span>
+              <span data-lang="en">👤 Qi Chen · Partner Solution Architect</span>
+            </span>
+            <span class="pill">
+              <span data-lang="zh-CN">💎 Diamond 企业级脱敏沙盘对标</span>
+              <span data-lang="en">💎 Sanitized Diamond Tenant Blueprint</span>
+            </span>
+            <span class="pill">
+              <span data-lang="zh-CN">⌨️ 快捷键：Alt+P 投屏 · Alt+L 中/英切换</span>
+              <span data-lang="en">⌨️ Shortcuts: Alt+P Stage · Alt+L Lang</span>
+            </span>
+          </div>
+
+          <div class="btn-row">
+            <a class="btn btn-primary" href="01-copilot-entry.en.html">
+              <span data-lang="zh-CN">开启第一阶 · 01 统一智能体入口 →</span>
+              <span data-lang="en">Start Stage 01 · Unified Agent Entry →</span>
+            </a>
+            <a class="btn btn-teal" href="#one-page-overview">
+              <span data-lang="zh-CN">一页纸全栈总览图 ↓</span>
+              <span data-lang="en">One-Page Overview ↓</span>
+            </a>
+            <a class="btn" href="#blueprint">
+              <span data-lang="zh-CN">交互式全景架构图 ↓</span>
+              <span data-lang="en">Interactive Blueprint ↓</span>
+            </a>
+            <a class="btn" href="#release-radar">
+              <span data-lang="zh-CN">检索 33 项核心发布雷达 ↓</span>
+              <span data-lang="en">Explore 33-Item Release Radar ↓</span>
+            </a>
+          </div>
+        </div>
+
+        <aside class="hero-kpi-box" aria-label="Ignite 2026 Key Architectural Metrics">
+          <div class="kpi-head">
+            <span data-lang="zh-CN">IGNITE 2026 生产落地核心量化路标</span>
+            <span data-lang="en">IGNITE 2026 ARCHITECTURAL NORTH STAR</span>
+          </div>
+          <div class="kpi-grid">
+            <div class="kpi-item">
+              <span class="kpi-val">
+                <span data-lang="zh-CN">6 大演进阶段</span>
+                <span data-lang="en">6 Architectural Stages</span>
+              </span>
+              <span class="kpi-lbl">
+                <span data-lang="zh-CN">入口 → 实时上下文 → 数据本体 → 运行时 → 推理底座 → 全域治理</span>
+                <span data-lang="en">Entry → Live Context → Data Ontology → Runtime → Infra → Governance</span>
+              </span>
+            </div>
+            <div class="kpi-item">
+              <span class="kpi-val">
+                <span data-lang="zh-CN">5,000 万+</span>
+                <span data-lang="en">50M+</span>
+              </span>
+              <span class="kpi-lbl">
+                <span data-lang="zh-CN"><code>Agent 365</code> 注册智能体规模（财富 500 强 <code>~80%</code> 采用 Cowork）</span>
+                <span data-lang="en">Registered Agents on <code>Agent 365</code> (<code>~80%</code> Fortune 500 on Cowork)</span>
+              </span>
+            </div>
+            <div class="kpi-item">
+              <span class="kpi-val">78.8% / $0 Out</span>
+              <span class="kpi-lbl">
+                <span data-lang="zh-CN"><code>Microsoft-Decision-1.1</code> 102 项基准准确率 &amp; 零输出 Token 费</span>
+                <span data-lang="en"><code>Microsoft-Decision-1.1</code> 102-benchmark accuracy &amp; zero output token fee</span>
+              </span>
+            </div>
+            <div class="kpi-item">
+              <span class="kpi-val">+40% Tok/W</span>
+              <span class="kpi-lbl">
+                <span data-lang="zh-CN"><code>Maia 300</code> 每瓦吞吐提升 + <code>Fireworks / Baseten / fal</code> 开放与视频生态</span>
+                <span data-lang="en"><code>Maia 300</code> tokens/watt + <code>Fireworks / Baseten / fal</code> open &amp; video ecosystem</span>
+              </span>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <!-- Opening 60-Second Partner SA Pitch -->
+      <div class="speaker-cue">
+        <div class="speaker-cue-title">
+          <span data-lang="zh-CN">🎙️ 周四 Partner SA 宣讲开场 60 秒黄金话术（Opening Pitch）</span>
+          <span data-lang="en">🎙️ Thursday Partner SA 60-Second Opening Pitch</span>
+        </div>
+        <p>
+          <span data-lang="zh-CN">
+            “各位架构师同事好！今天我们不按产品部门罗列上百条更新，而是回答客户 CIO 和业务负责人最核心的工程问题：<strong>如何让 Agent 从孤立对话 PoC，演进为安全合规、成本可测算、可闭环执行业务事务的生产系统？</strong> 整场分享按一条真实端到端请求链路展开——前端通过 <strong>Copilot 四大模式与 12 月 1 日解耦基础坐席的 Copilot Standalone</strong> 零迁移接入飞书/钉钉/Salesforce 异构环境；数据与上下文层通过 <strong>Web IQ 与 Fabric Ontology</strong> 构建公开域与企业内域联邦上下文；运行时层在 <strong>Foundry</strong> 利用 <strong>Decision-1.1 零输出计费门控</strong> 与 <strong>PD 分离 / GPU 显存 / RoCEv2 网络容量规划</strong> 优化推理单价，最后通过 <strong>Agent 365 CSP 多租户控制平面</strong> 沉淀伙伴托管安全与 FinOps 服务。”
+          </span>
+          <span data-lang="en">
+            “Welcome architects. Instead of reading a fragmented product catalog, today we answer the core engineering question every CIO and LOB leader is asking: <strong>How do we take AI from isolated chat PoCs to governed, cost-predictable production Agentic Systems?</strong> Follow one enterprise request across six architectural stages—unify the entry layer with <strong>Copilot's 4 modes and Dec 1 base-seat-decoupled Copilot Standalone</strong> over existing collaboration stacks, ground reasoning in federated external and internal context via <strong>Web IQ and Fabric Ontology</strong>, engineer deterministic runtimes with <strong>Foundry and zero-output-fee Decision-1.1</strong>, rightsize <strong>TTFT/TPOT, GPU VRAM, and RoCEv2/IB fabrics</strong>, and deliver recurring managed operations with <strong>Agent 365 CSP multi-tenant governance</strong>.”
+          </span>
+        </p>
+      </div>
+    </section>
+
+    <!-- FLAGSHIP ONE-PAGE MASTER ECOSYSTEM OVERVIEW DIAGRAM -->
+    <section class="ms-arch-board" data-knowledge-atlas="ignite-2026" id="one-page-overview" aria-labelledby="one-page-arch-heading">
+      <div class="ms-arch-topbar">
+        <div>
+          <span class="ms-arch-kicker">END-TO-END REFERENCE ARCHITECTURE · IGNITE 2026 ENTERPRISE STACK</span>
+          <h2 id="one-page-arch-heading" class="ms-arch-heading">
+            <span data-lang="zh-CN">企业级 Agentic AI 端到端分层参考架构（One-Page 全景总览）</span>
+            <span data-lang="en">Enterprise Agentic AI Layered Reference Architecture (One-Page Overview)</span>
+          </h2>
+        </div>
+        <div class="ms-arch-actions">
+          <a class="ms-arch-drawio-btn" href="drawio/00-ecosystem-overview.drawio" download="00-ecosystem-overview.drawio">
+            <span data-lang="zh-CN">📐 下载 .drawio 源文件</span>
+            <span data-lang="en">📐 Download .drawio</span>
+          </a>
+          <button type="button" class="ms-arch-zoom-btn" data-action="zoom-arch" aria-pressed="false">
+            <span data-lang="zh-CN">🔍 放大全宽视图</span>
+            <span data-lang="en">🔍 Expand Diagram</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="ms-arch-split">
+        <!-- LEFT COLUMN: Ecosystem Working Together Diagram -->
+        <div class="ms-arch-canvas">
+          <div class="arch-sub-frame">
+            <div class="arch-sub-bar">
+              <span class="arch-sub-title">
+                <span class="ms-logo" data-ms-icon="microsoft"></span>
+                <span data-lang="zh-CN">Microsoft Agentic AI 企业级集成架构边界（非侵入式接入存量系统）</span>
+                <span data-lang="en">Microsoft Agentic AI Enterprise Integration Boundary (Non-Invasive Federation)</span>
+              </span>
+              <span class="arch-sub-pill">
+                <span class="ms-logo" data-ms-icon="azure"></span>
+                <span data-lang="zh-CN">OIDC/SAML 身份联邦 · 零拷贝数据互通（飞书 / 钉钉 / Salesforce / Databricks）</span>
+                <span data-lang="en">OIDC/SAML Federation · Zero-Copy Interop (Feishu / DingTalk / Salesforce / Databricks)</span>
+              </span>
+            </div>
+
+            <div class="arch-ecosystem-layout">
+              <!-- Main 5-Row Vertical Stack (Zones 01–05 + Numbered Connectors) -->
+              <div class="arch-main-stack">
+                <!-- Row 1: Zone 01 · Client & Orchestration Layer · Copilot -->
+                <div class="arch-zone zone-purple">
+                  <div class="arch-zone-head">
+                    <span class="arch-zone-title">
+                      <span class="ms-logo" data-ms-icon="copilot"></span>
+                      <span data-lang="zh-CN">01 · 交互接入与任务编排层（Client &amp; Orchestration Layer）</span>
+                      <span data-lang="en">01 · Client &amp; Orchestration Layer · Copilot</span>
+                    </span>
+                    <a class="arch-zone-link" href="01-copilot-entry.en.html">
+                      <span data-lang="zh-CN">01 章节 →</span>
+                      <span data-lang="en">Stage 01 →</span>
+                    </a>
+                  </div>
+                  <div class="arch-cards-3">
+                    <div class="arch-svc svc-purple">
+                      <div class="arch-svc-head">
+                        <span class="ms-logo" data-ms-icon="copilot"></span>
+                        <span class="arch-svc-name">
+                          <span data-lang="zh-CN">M365 Copilot 四级执行模式</span>
+                          <span data-lang="en">M365 Copilot Execution Modes</span>
+                        </span>
+                        <span class="svc-tag front">GA · Frontier</span>
+                      </div>
+                      <p class="arch-svc-desc">
+                        <span data-lang="zh-CN">Chat 同步检索 · Cowork (<code>Office in Copilot</code> 原生文档生成) · Autopilot 后台执行 · Code 托管沙箱</span>
+                        <span data-lang="en">Chat sync Q&amp;A · Cowork (<code>Office in Copilot</code> native authoring) · Autopilot async · Code Managed Runtime</span>
+                      </p>
+                    </div>
+
+                    <div class="arch-svc">
+                      <div class="arch-svc-head">
+                        <span class="ms-logo" data-ms-icon="copilot-studio"></span>
+                        <span class="arch-svc-name">Copilot Standalone &amp; Studio</span>
+                        <span class="svc-tag ga">
+                          <span data-lang="zh-CN">12/01 解耦</span>
+                          <span data-lang="en">Dec 1 SKU</span>
+                        </span>
+                      </div>
+                      <p class="arch-svc-desc">
+                        <span data-lang="zh-CN">独立订阅解耦 M365 基础席位依赖，通过联邦 SSO 与连接器编排飞书/钉钉/Google 流程</span>
+                        <span data-lang="en">Decouples M365 base-license dependency; orchestrates Feishu/DingTalk/Google via federated SSO &amp; connectors</span>
+                      </p>
+                    </div>
+
+                    <div class="arch-svc">
+                      <div class="arch-svc-head">
+                        <span class="ms-logo" data-ms-icon="d365"></span>
+                        <span class="arch-svc-name">MCP Plugins &amp; SDK 2.0</span>
+                        <span class="svc-tag ga">GA</span>
+                      </div>
+                      <p class="arch-svc-desc">
+                        <span data-lang="zh-CN">D365 (100+ 工具) · Salesforce (38+ 工具) · Rust 原生多语言 <code>Copilot SDK 2.0</code></span>
+                        <span data-lang="en">D365 (100+ tools) · Salesforce (38+ tools) · Native Rust 6-language <code>Copilot SDK 2.0</code></span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Connector Row 1 (Steps 1 & 2) -->
+                <div class="arch-flow-connector" aria-hidden="true">
+                  <span class="arch-flow-hop">
+                    <span class="step-dot">1</span>
+                    <span data-lang="zh-CN">OAuth 2.0 OBO 委托令牌与 MCP 协议路由 ↕</span>
+                    <span data-lang="en">OAuth 2.0 OBO Delegation &amp; MCP Protocol Routing ↕</span>
+                  </span>
+                  <span class="arch-flow-hop">
+                    <span class="step-dot">2</span>
+                    <span data-lang="zh-CN">内外部上下文并行检索与结构化注入 ↕</span>
+                    <span data-lang="en">Parallel External &amp; Enterprise Context Grounding ↕</span>
+                  </span>
+                </div>
+
+                <!-- Row 2: Paired Context Sub-Zones (02 Web IQ + 03 Fabric) -->
+                <div class="arch-cards-2">
+                  <!-- Left Sub-Zone: 02 External Grounding · Web IQ -->
+                  <div class="arch-zone zone-blue">
+                    <div class="arch-zone-head">
+                      <span class="arch-zone-title">
+                        <span class="ms-logo" data-ms-icon="webiq"></span>
+                        <span data-lang="zh-CN">02 · 外部实时检索层（Web IQ）</span>
+                        <span data-lang="en">02 · External Grounding (Web IQ)</span>
+                      </span>
+                      <a class="arch-zone-link" href="02-web-iq-context.en.html">
+                        <span data-lang="zh-CN">02 →</span>
+                        <span data-lang="en">02 →</span>
+                      </a>
+                    </div>
+                    <div class="arch-col-stack">
+                      <div class="arch-svc svc-blue">
+                        <div class="arch-svc-head">
+                          <span class="ms-logo" data-ms-icon="webiq"></span>
+                          <span class="arch-svc-name">Web IQ Auto / Advanced</span>
+                          <span class="svc-tag ga">GA</span>
+                        </div>
+                        <p class="arch-svc-desc">
+                          <span data-lang="zh-CN">服务端多跳查询改写 · Places (2.075亿+ POI) · Weather · Commerce (400亿报价)</span>
+                          <span data-lang="en">Server-side multi-hop query rewrite · Places (207.5M+ POIs) · Weather · Commerce (40B+ offers)</span>
+                        </p>
+                      </div>
+
+                      <div class="arch-svc">
+                        <div class="arch-svc-head">
+                          <span class="ms-logo" data-ms-icon="guardrails"></span>
+                          <span class="arch-svc-name">Web IQ Scopes &amp; MCP</span>
+                          <span class="svc-tag ga">GA</span>
+                        </div>
+                        <p class="arch-svc-desc">
+                          <span data-lang="zh-CN">前置 20K URL 前缀准入过滤 · 可选零查询日志 · 标准远程 MCP 接口</span>
+                          <span data-lang="en">Pre-retrieval 20K URL-prefix filtering · Zero Query Logging · Remote MCP endpoint</span>
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Right Sub-Zone: 03 Enterprise Semantic Layer · Fabric -->
+                  <div class="arch-zone zone-green">
+                    <div class="arch-zone-head">
+                      <span class="arch-zone-title">
+                        <span class="ms-logo" data-ms-icon="fabric"></span>
+                        <span data-lang="zh-CN">03 · 统一湖仓与语义本体层（Fabric）</span>
+                        <span data-lang="en">03 · Lakehouse &amp; Ontology (Fabric)</span>
+                      </span>
+                      <a class="arch-zone-link" href="03-fabric-ontology.en.html">
+                        <span data-lang="zh-CN">03 →</span>
+                        <span data-lang="en">03 →</span>
+                      </a>
+                    </div>
+                    <div class="arch-col-stack">
+                      <div class="arch-svc svc-green">
+                        <div class="arch-svc-head">
+                          <span class="ms-logo" data-ms-icon="onelake"></span>
+                          <span class="arch-svc-name">
+                            <span data-lang="zh-CN">OneLake 多云零拷贝联邦</span>
+                            <span data-lang="en">OneLake Zero-Copy Federation</span>
+                          </span>
+                          <span class="svc-tag ga">GA</span>
+                        </div>
+                        <p class="arch-svc-desc">
+                          <span data-lang="zh-CN">Shortcuts 跨云挂载 · Salesforce Data 360 双向互通 · Mirrored Unity Catalog</span>
+                          <span data-lang="en">Cross-cloud Shortcuts · Bi-directional Salesforce Data 360 · Mirrored Unity Catalog</span>
+                        </p>
+                      </div>
+
+                      <div class="arch-svc">
+                        <div class="arch-svc-head">
+                          <span class="ms-logo" data-ms-icon="horizondb"></span>
+                          <span class="arch-svc-name">Fabric IQ Ontology &amp; HorizonDB</span>
+                          <span class="svc-tag prev">GA · Prev</span>
+                        </div>
+                        <p class="arch-svc-desc">
+                          <span data-lang="zh-CN">标准实体关系与 DAX 指标口径绑定 · Serverless PostgreSQL HTAP 分析卸载</span>
+                          <span data-lang="en">Canonical entity joins &amp; governed DAX metrics · Serverless PostgreSQL HTAP offload</span>
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Connector Row 2 (Steps 3 & 4) -->
+                <div class="arch-flow-connector" aria-hidden="true">
+                  <span class="arch-flow-hop">
+                    <span class="step-dot">3</span>
+                    <span data-lang="zh-CN">带引用证据片段与受控业务语义合并 ↕</span>
+                    <span data-lang="en">Cited Passages &amp; Governed Semantic Context Assembly ↕</span>
+                  </span>
+                  <span class="arch-flow-hop">
+                    <span class="step-dot">4</span>
+                    <span data-lang="zh-CN">置信度阈值路由、沙箱隔离执行与轨迹评测 ↕</span>
+                    <span data-lang="en">Confidence-Threshold Routing, Sandbox Execution &amp; Trace Evals ↕</span>
+                  </span>
+                </div>
+
+                <!-- Row 3: Zone 04 · Agent Runtime & Model Routing · Microsoft Foundry -->
+                <div class="arch-zone zone-blue">
+                  <div class="arch-zone-head">
+                    <span class="arch-zone-title">
+                      <span class="ms-logo" data-ms-icon="foundry"></span>
+                      <span data-lang="zh-CN">04 · 智能体运行时与模型路由层（Microsoft Foundry）</span>
+                      <span data-lang="en">04 · Agent Runtime &amp; Model Routing · Microsoft Foundry</span>
+                    </span>
+                    <a class="arch-zone-link" href="04-foundry-engineering.en.html">
+                      <span data-lang="zh-CN">04 章节 →</span>
+                      <span data-lang="en">Stage 04 →</span>
+                    </a>
+                  </div>
+                  <div class="arch-cards-2">
+                    <div class="arch-svc svc-blue">
+                      <div class="arch-svc-head">
+                        <span class="ms-logo" data-ms-icon="foundry-agent"></span>
+                        <span class="arch-svc-name">Foundry Agent Service &amp; Optimizer</span>
+                        <span class="svc-tag ga">GA</span>
+                      </div>
+                      <p class="arch-svc-desc">
+                        <span data-lang="zh-CN">有状态会话编排 + <code>Evaluate → Insights → Agent Optimizer</code> 自动调优与 RFT 蒸馏</span>
+                        <span data-lang="en">Stateful thread orchestration + <code>Evaluate → Insights → Optimizer</code> tuning &amp; RFT distillation</span>
+                      </p>
+                    </div>
+
+                    <div class="arch-svc svc-blue">
+                      <div class="arch-svc-head">
+                        <span class="ms-logo" data-ms-icon="foundry-models"></span>
+                        <span class="arch-svc-name">Decision-1.1 &amp; Frontier Models</span>
+                        <span class="svc-tag ga">GA</span>
+                      </div>
+                      <p class="arch-svc-desc">
+                        <span data-lang="zh-CN"><code>Decision-1.1</code> 校准概率路由 (78.8% 准确率 · <strong>$0 输出计费</strong>) · <code>MAI-Code-2</code> · <code>GPT-6.2 / Live-1</code></span>
+                        <span data-lang="en"><code>Decision-1.1</code> calibrated router (78.8% accuracy · <strong>$0 output fee</strong>) · <code>MAI-Code-2</code> · <code>GPT-6.2 / Live-1</code></span>
+                      </p>
+                    </div>
+
+                    <div class="arch-svc">
+                      <div class="arch-svc-head">
+                        <span class="ms-logo" data-ms-icon="aks"></span>
+                        <span class="arch-svc-name">Foundry on AKS &amp; Agent Sandbox</span>
+                        <span class="svc-tag prev">Preview</span>
+                      </div>
+                      <p class="arch-svc-desc">
+                        <span data-lang="zh-CN">客户私有 VNet/AKS 同构部署 · Kata microVM 内核级隔离 + <code>Pod Snapshot</code> 亚秒恢复</span>
+                        <span data-lang="en">Private VNet/AKS deployment · Kata microVM kernel isolation + sub-second <code>Pod Snapshot</code></span>
+                      </p>
+                    </div>
+
+                    <div class="arch-svc">
+                      <div class="arch-svc-head">
+                        <span class="ms-logo" data-ms-icon="foundry-iq"></span>
+                        <span class="arch-svc-name">Foundry IQ &amp; ACA Dynamic Sessions</span>
+                        <span class="svc-tag prev">GA · Prev</span>
+                      </div>
+                      <p class="arch-svc-desc">
+                        <span data-lang="zh-CN">ACL 裁剪图谱检索 (92% 召回) · <code>Retriever-1</code> (0.76s) · Hyper-V 代码解释会话</span>
+                        <span data-lang="en">ACL-trimmed graph retrieval (92% recall) · <code>Retriever-1</code> (0.76s) · Hyper-V code sessions</span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Connector Row 3 (Steps 5 & 6) -->
+                <div class="arch-flow-connector" aria-hidden="true">
+                  <span class="arch-flow-hop">
+                    <span class="step-dot">5</span>
+                    <span data-lang="zh-CN">Prefill/Decode 分离池调度与 GPUDirect RDMA 互联 ↕</span>
+                    <span data-lang="en">Prefill/Decode Pool Dispatch &amp; GPUDirect RDMA Interconnect ↕</span>
+                  </span>
+                  <span class="arch-flow-hop">
+                    <span class="step-dot">6</span>
+                    <span data-lang="zh-CN">非人身份授权、内联内容级 DLP 与成本遥测采集 ↔</span>
+                    <span data-lang="en">Non-Human Principal Auth, Inline Content DLP &amp; FinOps Telemetry ↔</span>
+                  </span>
+                </div>
+
+                <!-- Row 4: Zone 05 · Inference Compute & RDMA Network Layer · Azure AI Infra -->
+                <div class="arch-zone zone-amber">
+                  <div class="arch-zone-head">
+                    <span class="arch-zone-title">
+                      <span class="ms-logo" data-ms-icon="azure"></span>
+                      <span data-lang="zh-CN">05 · 推理算力与高速互联层（Inference Compute &amp; RDMA Network）</span>
+                      <span data-lang="en">05 · Inference Compute &amp; RDMA Network · Azure AI Infra</span>
+                    </span>
+                    <a class="arch-zone-link" href="05-ai-infra-optimization.en.html">
+                      <span data-lang="zh-CN">05 章节 →</span>
+                      <span data-lang="en">Stage 05 →</span>
+                    </a>
+                  </div>
+                  <div class="arch-cards-3">
+                    <div class="arch-svc svc-amber">
+                      <div class="arch-svc-head">
+                        <span class="ms-logo" data-ms-icon="silicon"></span>
+                        <span class="arch-svc-name">
+                          <span data-lang="zh-CN">PD 分离 · Maia 300 &amp; Cobalt 200</span>
+                          <span data-lang="en">PD Split · Maia 300 &amp; Cobalt 200</span>
+                        </span>
+                        <span class="svc-tag ga">GA</span>
+                      </div>
+                      <p class="arch-svc-desc">
+                        <span data-lang="zh-CN">分层 Prefix KV 缓存解耦 TTFT/TPOT 资源争用 · Maia 300 (+40% Tok/W) · Cobalt 200 (+50% CPU)</span>
+                        <span data-lang="en">Tiered Prefix KV decouples TTFT/TPOT contention · Maia 300 (+40% Tok/W) · Cobalt 200 (+50% CPU)</span>
+                      </p>
+                    </div>
+
+                    <div class="arch-svc">
+                      <div class="arch-svc-head">
+                        <span class="ms-logo" data-ms-icon="gpu"></span>
+                        <span class="arch-svc-name">Fireworks · Baseten · fal &amp; GPU</span>
+                        <span class="svc-tag prev">Preview</span>
+                      </div>
+                      <p class="arch-svc-desc">
+                        <span data-lang="zh-CN">DeepSeek V4 / Kimi K3 / Kling &amp; LTX 视频 DiT 托管接口 · GB300 / H200 / VR72 显存容量规划</span>
+                        <span data-lang="en">Managed DeepSeek V4 / Kimi K3 / Kling &amp; LTX DiT endpoints · GB300 / H200 / VR72 VRAM sizing</span>
+                      </p>
+                    </div>
+
+                    <div class="arch-svc">
+                      <div class="arch-svc-head">
+                        <span class="ms-logo" data-ms-icon="network"></span>
+                        <span class="arch-svc-name">NVLink + InfiniBand / RoCEv2</span>
+                        <span class="svc-tag ga">GA</span>
+                      </div>
+                      <p class="arch-svc-desc">
+                        <span data-lang="zh-CN">节点内 NVLink 张量并行 · 跨节点 GPUDirect RDMA 无损 IB / RoCEv2 (PFC+DCQCN) 集合通信</span>
+                        <span data-lang="en">Intra-node NVLink TP · Inter-node GPUDirect RDMA over lossless IB / RoCEv2 (PFC+DCQCN)</span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Right Full-Height Vertical Rail: 06 · Identity, Security & Governance Plane -->
+              <aside class="arch-zone zone-rail" aria-label="06 Identity, Security and Governance Plane">
+                <div class="arch-zone-head">
+                  <span class="arch-zone-title">
+                    <span class="ms-logo" data-ms-icon="agent365"></span>
+                    <span data-lang="zh-CN">06 · 身份、安全与治理控制面</span>
+                    <span data-lang="en">06 · Identity, Security &amp; Governance</span>
+                  </span>
+                  <a class="arch-zone-link" href="06-agent-governance.en.html">
+                    <span data-lang="zh-CN">06 章节 →</span>
+                    <span data-lang="en">Stage 06 →</span>
+                  </a>
+                </div>
+
+                <div class="rail-cross-pill" aria-hidden="true">
+                  <span class="step-dot">6</span>
+                  <span>
+                    <span data-lang="zh-CN">↔ 横向贯通 01–05 各层控制面策略</span>
+                    <span data-lang="en">↔ Cross-Layer Control Plane Enforcement</span>
+                  </span>
+                </div>
+
+                <div class="arch-svc svc-purple">
+                  <div class="arch-svc-head">
+                    <span class="ms-logo" data-ms-icon="agent365"></span>
+                    <span class="arch-svc-name">Agent 365</span>
+                    <span class="svc-tag prev">GA · Prev</span>
+                  </div>
+                  <p class="arch-svc-desc">
+                    <span data-lang="zh-CN">5,000万+ 跨云智能体与 35 类终端 CLI 资产目录 · CSP 多租户集中运维</span>
+                    <span data-lang="en">50M+ multi-cloud &amp; 35 endpoint CLI inventory · CSP multi-tenant fleet operations</span>
+                  </p>
+                </div>
+
+                <div class="arch-svc">
+                  <div class="arch-svc-head">
+                    <span class="ms-logo" data-ms-icon="entra"></span>
+                    <span class="arch-svc-name">Entra Agent ID</span>
+                    <span class="svc-tag ga">GA</span>
+                  </div>
+                  <p class="arch-svc-desc">
+                    <span data-lang="zh-CN">独立非人服务主体 · 强制人类责任人（Sponsor）绑定 · 动态风险条件访问</span>
+                    <span data-lang="en">Dedicated non-human principal · Mandatory human sponsor · Dynamic risk Conditional Access</span>
+                  </p>
+                </div>
+
+                <div class="arch-svc svc-blue">
+                  <div class="arch-svc-head">
+                    <span class="ms-logo" data-ms-icon="purview"></span>
+                    <span class="arch-svc-name">Purview &amp; MCP Firewall</span>
+                    <span class="svc-tag prev">GA · Prev</span>
+                  </div>
+                  <p class="arch-svc-desc">
+                    <span data-lang="zh-CN"><strong>未分类/未打标文件内联内容级 DLP</strong> · MCP 出向协议审计 · 业务结果 FinOps 归因</span>
+                    <span data-lang="en"><strong>Inline content-inspection DLP for unlabeled files</strong> · MCP egress inspection · Outcome FinOps</span>
+                  </p>
+                </div>
+
+                <div class="arch-svc svc-green">
+                  <div class="arch-svc-head">
+                    <span class="ms-logo" data-ms-icon="defender"></span>
+                    <span class="arch-svc-name">Perception &amp; MDASH</span>
+                    <span class="svc-tag prev">GA · Prev</span>
+                  </div>
+                  <p class="arch-svc-desc">
+                    <span data-lang="zh-CN">攻防与工程智能体协同自动分诊 ~80% SOC 告警 · <code>MAI-Cyber-2-Flash</code> 沙箱漏洞验证</span>
+                    <span data-lang="en">Automated ~80% SOC alert triage · <code>MAI-Cyber-2-Flash</code> sandboxed vulnerability verification</span>
+                  </p>
+                </div>
+              </aside>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT COLUMN: Structured Architectural Specification & Platform Synergy -->
+        <aside class="ms-arch-aside" aria-label="Architecture Key Specifications">
+          <div class="aside-block">
+            <h4 class="tone-purple">
+              <span data-lang="zh-CN">01 接入与编排层 · Client &amp; Orchestration</span>
+              <span data-lang="en">01 Client &amp; Orchestration Layer</span>
+            </h4>
+            <ul class="aside-bullets">
+              <li>
+                <span data-lang="zh-CN"><strong>四级任务执行模型</strong>：按延迟与自主度将交互划分为 <code>Chat</code>（同步问答）、<code>Cowork</code>（原生 Office 文档协同生成）、<code>Autopilot</code>（异步后台持久执行）与 <code>Code</code>（托管沙箱应用）。</span>
+                <span data-lang="en"><strong>Four Execution Paradigms</strong>: Aligns interaction latency and autonomy across <code>Chat</code>, <code>Cowork</code> (native Office generation), <code>Autopilot</code> (persistent background tasks), and <code>Code</code> (managed sandbox apps).</span>
+              </li>
+              <li>
+                <span data-lang="zh-CN"><strong>许可解耦与联邦身份接入（12/01）</strong>：<code>Copilot Standalone</code> 移除 M365 基础席位前置依赖，通过 Entra OIDC/SAML 联邦与 <code>Copilot Studio</code> 非侵入式集成飞书、钉钉与 Google 环境。</span>
+                <span data-lang="en"><strong>Decoupled Licensing &amp; Federated Access (Dec 1)</strong>: <code>Copilot Standalone</code> removes M365 base-seat dependencies, integrating Feishu, DingTalk &amp; Google via Entra OIDC/SAML and <code>Copilot Studio</code>.</span>
+              </li>
+              <li>
+                <span data-lang="zh-CN"><strong>标准化工具协议与多语言 SDK</strong>：预置 <code>D365 (100+)</code> 与 <code>Salesforce (38+)</code> MCP 插件，并提供基于统一 Rust 运行时的 6 语言 <code>Copilot SDK 2.0</code>。</span>
+                <span data-lang="en"><strong>Standardized MCP &amp; Multi-Language SDK</strong>: Combines prebuilt <code>D365 (100+)</code> &amp; <code>Salesforce (38+)</code> MCP tools with a unified Rust-core <code>Copilot SDK 2.0</code> across 6 languages.</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="aside-block">
+            <h4 class="tone-green">
+              <span data-lang="zh-CN">02–03 上下文与语义层 · Context &amp; Semantic Layer</span>
+              <span data-lang="en">02–03 Grounding &amp; Semantic Layer</span>
+            </h4>
+            <ul class="aside-bullets">
+              <li>
+                <span data-lang="zh-CN"><strong>受控外部实时检索（Web IQ）</strong>：通过 <code>Auto Advanced</code> 服务端多跳查询改写联合检索网页与四大垂直实体库（<code>Places 2.075亿+</code>、<code>Commerce 400亿+</code>），前置强制执行 <code>20K</code> 域名准入规则与可选零日志策略。</span>
+                <span data-lang="en"><strong>Scoped External Grounding (Web IQ)</strong>: Server-side <code>Auto Advanced</code> multi-hop retrieval spans web indices and structured APIs (<code>Places 207.5M+</code>, <code>Commerce 40B+</code>) behind <code>20K</code> URL rules and optional zero logging.</span>
+              </li>
+              <li>
+                <span data-lang="zh-CN"><strong>多云零拷贝联邦与统一语义本体（Fabric IQ）</strong>：<code>OneLake Shortcuts</code> 与 <code>Salesforce Data 360</code> 零数据搬迁挂载异构表，由 <code>Ontology</code> 显式固化实体关联与 DAX 财务指标口径，替代不可控的物理表直连 SQL 生成。</span>
+                <span data-lang="en"><strong>Zero-Copy Federation &amp; Semantic Ontology (Fabric IQ)</strong>: <code>OneLake</code> and <code>Salesforce Data 360</code> federate source tables in place while <code>Ontology</code> enforces deterministic entity joins and DAX metrics across Copilot, Excel, and third-party agents.</span>
+              </li>
+              <li>
+                <span data-lang="zh-CN"><strong>HTAP 混合负载与受控事务回写</strong>：<code>HorizonDB</code>（Serverless PostgreSQL）将跨湖仓关联查询卸载至数仓算力，配合 <code>Fabric Apps</code> 实现带人工审批与幂等校验的业务系统写回。</span>
+                <span data-lang="en"><strong>HTAP Offload &amp; Transactional Write-Back</strong>: <code>HorizonDB</code> (Serverless PostgreSQL) offloads analytical lake joins to DW compute and pairs with <code>Fabric Apps</code> for human-approved, idempotent ERP write-back.</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="aside-block">
+            <h4 class="tone-blue">
+              <span data-lang="zh-CN">04–05 运行时与推理算力层 · Runtime &amp; AI Infra</span>
+              <span data-lang="en">04–05 Runtime &amp; Inference Infrastructure</span>
+            </h4>
+            <ul class="aside-bullets">
+              <li>
+                <span data-lang="zh-CN"><strong>校准概率级联路由与在线持续优化</strong>：前置部署 <code>Decision-1.1</code>（78.8% 准确率 · <strong>$0 输出计费</strong>）分流 60%+ 常规意图与评估流量；通过 OpenTelemetry 采集生产轨迹驱动 <code>Agent Optimizer</code> 自动迭代提示词与工具 Schema。</span>
+                <span data-lang="en"><strong>Calibrated Cascade Routing &amp; Trace Optimization</strong>: Front-loads <code>Decision-1.1</code> (78.8% accuracy · <strong>$0 output tokens</strong>) to offload 60%+ triage/eval traffic, while OTel traces feed <code>Agent Optimizer</code> for automated prompt/schema tuning.</span>
+              </li>
+              <li>
+                <span data-lang="zh-CN"><strong>工作负载隔离边界匹配</strong>：按安全合规要求提供全托管 <code>Foundry PaaS</code>、客户私有 VNet <code>Foundry on AKS</code>、<code>ACA Hyper-V 动态会话</code> 与 <code>Kata microVM + Pod Snapshot</code> 四档运行时。</span>
+                <span data-lang="en"><strong>Workload-Matched Isolation Boundaries</strong>: Maps security requirements across managed <code>Foundry PaaS</code>, customer-VNet <code>Foundry on AKS</code>, <code>ACA Hyper-V Sessions</code>, and <code>Kata microVM + Pod Snapshot</code> sandboxes.</span>
+              </li>
+              <li>
+                <span data-lang="zh-CN"><strong>两阶段延迟解耦与多卡 RDMA 网络规划</strong>：采用分层 Prefix KV 与 <code>Prefill/Decode</code> 分离部署结合 <code>Maia 300</code> 稳定流式 TPOT；按全量 MoE 权重与视频 3D 激活峰值核算显存，遵循节点内 <code>NVLink TP</code>、跨节点无损 <code>IB / RoCEv2</code> 拓扑设计。</span>
+                <span data-lang="en"><strong>PD Disaggregation &amp; RDMA Network Sizing</strong>: Combines Prefix KV + <code>Prefill/Decode</code> split on <code>Maia 300</code> for stable TPOT, and sizes multi-node GPUs around full MoE weights + 3D video activations over intra-node <code>NVLink</code> and lossless <code>IB / RoCEv2</code>.</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="aside-block">
+            <h4 class="tone-slate">
+              <span data-lang="zh-CN">06 身份、安全与治理平面 · Governance Plane</span>
+              <span data-lang="en">06 Identity, Security &amp; Governance Plane</span>
+            </h4>
+            <ul class="aside-bullets">
+              <li>
+                <span data-lang="zh-CN"><strong>跨云与终端进程资产发现</strong>：<code>Agent 365</code> 统一纳管第一方、跨云及 35 类员工终端本地 CLI 进程，并开放 <strong>CSP 多租户集中策略管理</strong>。</span>
+                <span data-lang="en"><strong>Multi-Cloud &amp; Endpoint Process Inventory</strong>: <code>Agent 365</code> discovers 1P, multi-cloud, and 35 laptop-resident CLI agent classes with <strong>CSP multi-tenant policy management</strong>.</span>
+              </li>
+              <li>
+                <span data-lang="zh-CN"><strong>非人身份生命周期与内联 DLP</strong>：<code>Entra Agent ID</code> 强制关联人类责任主管并执行动态风险降权；<code>Purview</code> 内联内容检测实时阻断未打标敏感文档与 MCP 越权外发。</span>
+                <span data-lang="en"><strong>Non-Human Principal Lifecycle &amp; Inline DLP</strong>: <code>Entra Agent ID</code> enforces human sponsor binding and dynamic risk step-down while <code>Purview</code> inline content DLP and <code>MCP Firewall</code> block untagged data leaks.</span>
+              </li>
+              <li>
+                <span data-lang="zh-CN"><strong>自动化安全运营与业务价值归因</strong>：<code>Perception</code> 自动分诊 ~80% Defender 告警并联动 <code>MDASH</code> 沙箱复现漏洞；成本报表将算力消耗映射至已验证业务结果（Cost per Validated Outcome）。</span>
+                <span data-lang="en"><strong>Automated SecOps &amp; Outcome FinOps</strong>: <code>Perception</code> triages ~80% of Defender alerts alongside <code>MDASH</code> sandbox exploit verification, paired with Cost-per-Validated-Outcome FinOps attribution.</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="why-ms-box">
+            <h4>
+              <span data-lang="zh-CN">架构集成优势 · Platform Architectural Synergy</span>
+              <span data-lang="en">Platform Architectural Synergy · Why Unified Stack</span>
+            </h4>
+            <ul>
+              <li>
+                <span data-lang="zh-CN"><strong>① 统一身份与权限传播链（Entra Plane）</strong>：人类用户的 OAuth 2.0 OBO 委托权限与独立智能体的 <code>Entra Agent ID</code> 共享同一套条件访问、RBAC 与审计链，消除跨系统静态密钥风险。</span>
+                <span data-lang="en"><strong>① Unified Identity &amp; Delegation Plane</strong>: Human OAuth 2.0 OBO tokens and autonomous <code>Entra Agent ID</code> principals share Conditional Access, RBAC, and audit trails without static shared secrets.</span>
+              </li>
+              <li>
+                <span data-lang="zh-CN"><strong>② 跨层一致的数据安全与协议审计（Purview + MCP）</strong>：从入口提示词、未打标敏感文件、OneLake 行列级权限到外部 MCP 工具出向调用，复用单一 DLP 与合规审计策略。</span>
+                <span data-lang="en"><strong>② End-to-End Data &amp; Protocol Inspection</strong>: A single Purview DLP, RLS/CLS, and MCP egress policy governs prompts, unlabeled files, lakehouse tables, and external tool invocations.</span>
+              </li>
+              <li>
+                <span data-lang="zh-CN"><strong>③ 低代码编排与专业工程共享语义与评测基础设施</strong>：业务侧 <code>Copilot Studio</code> 与研发侧 <code>Microsoft Foundry</code> 直接复用同一套 <code>Microsoft IQ</code> 语义模型、网关限流与 OpenTelemetry 评测流水线。</span>
+                <span data-lang="en"><strong>③ Shared Semantics &amp; Eval Pipeline Across Studio and Foundry</strong>: Low-code workflows and custom code agents consume identical <code>Microsoft IQ</code> ontologies, AI Gateway quotas, and OTel evaluation pipelines.</span>
+              </li>
+              <li>
+                <span data-lang="zh-CN"><strong>④ 许可证与云承诺消费（MACC）集约复用</strong>：<code>Microsoft IQ</code> 免收独立平台许可费，推理、数据与安全组件统一计入企业既有 M365/D365 订阅与 Azure MACC 承诺额度。</span>
+                <span data-lang="en"><strong>④ Consolidated Licensing &amp; Azure MACC Utilization</strong>: Zero standalone <code>Microsoft IQ</code> platform fee—maximizes utilization across existing M365/D365 seats and Azure MACC commitments.</span>
+              </li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- SECTION 1: INTERACTIVE 6-STAGE ARCHITECTURE BLUEPRINT -->
+    <section id="blueprint" class="stage-section" aria-labelledby="blueprint-heading">
+      <div class="section-header">
+        <div>
+          <p class="eyebrow">END-TO-END REQUEST TOPOLOGY · INTERACTIVE INSPECTOR</p>
+          <h2 id="blueprint-heading" class="section-title">
+            <span data-lang="zh-CN">全景参考架构</span>
+            <span data-lang="en">Reference Architecture</span>
+          </h2>
+          <p class="section-sub">
+            <span data-lang="zh-CN">
+              点击架构图中的任意阶段节点（<code>01–06</code>）或下方快捷按钮，实时检视该阶段回答的<strong>核心架构命题、Ignite 2026 关键发布成熟度与合作伙伴切入扩展打法</strong>。
+            </span>
+            <span data-lang="en">
+              Click any stage node (<code>01–06</code>) inside the blueprint or selector bar to inspect its <strong>core architectural question, Ignite 2026 release maturity, and Partner Land-and-Expand motion</strong>.
+            </span>
+          </p>
+        </div>
+      </div>
+
+      <div class="blueprint-toolbar">
+        <div class="stage-pill-bar" role="tablist" aria-label="Select Architectural Stage">
+          <button type="button" class="stage-select-btn active" role="tab" aria-selected="true" data-stage-btn="01">
+            <span class="step-num">01</span>
+            <span data-lang="zh-CN">统一智能体入口</span>
+            <span data-lang="en">Unified Agent Entry</span>
+          </button>
+          <button type="button" class="stage-select-btn" role="tab" aria-selected="false" data-stage-btn="02">
+            <span class="step-num">02</span>
+            <span data-lang="zh-CN">外部实时上下文</span>
+            <span data-lang="en">Live World Context</span>
+          </button>
+          <button type="button" class="stage-select-btn" role="tab" aria-selected="false" data-stage-btn="03">
+            <span class="step-num">03</span>
+            <span data-lang="zh-CN">企业数据本体</span>
+            <span data-lang="en">Enterprise Data Ontology</span>
+          </button>
+          <button type="button" class="stage-select-btn" role="tab" aria-selected="false" data-stage-btn="04">
+            <span class="step-num">04</span>
+            <span data-lang="zh-CN">智能体工程运行时</span>
+            <span data-lang="en">Agent Runtime Engineering</span>
+          </button>
+          <button type="button" class="stage-select-btn" role="tab" aria-selected="false" data-stage-btn="05">
+            <span class="step-num">05</span>
+            <span data-lang="zh-CN">推理基础设施优化</span>
+            <span data-lang="en">Inference Infra Optimization</span>
+          </button>
+          <button type="button" class="stage-select-btn" role="tab" aria-selected="false" data-stage-btn="06">
+            <span class="step-num">06</span>
+            <span data-lang="zh-CN">全域智能体治理</span>
+            <span data-lang="en">Enterprise Agent Governance</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Crisp Inline SVG Architecture Diagram -->
+      <div class="svg-frame">
+        <svg viewBox="0 0 1240 536" role="img" aria-label="Six-Stage Enterprise Agentic AI Reference Architecture">
+          <defs>
+            <pattern id="bp-grid" width="28" height="28" patternUnits="userSpaceOnUse">
+              <path d="M 28 0 L 0 0 0 28" fill="none" stroke="#142746" stroke-width="0.8"/>
+            </pattern>
+            <linearGradient id="stage01-grad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#0ea5e9" stop-opacity="0.22"/>
+              <stop offset="100%" stop-color="#0d1e3a" stop-opacity="0.95"/>
+            </linearGradient>
+            <linearGradient id="stage04-grad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#8b5cf6" stop-opacity="0.20"/>
+              <stop offset="100%" stop-color="#0d1e3a" stop-opacity="0.95"/>
+            </linearGradient>
+            <linearGradient id="stage05-grad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.18"/>
+              <stop offset="100%" stop-color="#0d1e3a" stop-opacity="0.95"/>
+            </linearGradient>
+            <linearGradient id="stage06-grad" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#fb7185" stop-opacity="0.18"/>
+              <stop offset="50%" stop-color="#0f213d" stop-opacity="0.96"/>
+              <stop offset="100%" stop-color="#38bdf8" stop-opacity="0.16"/>
+            </linearGradient>
+            <marker id="arrow-cyan" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+              <path d="M 0 1.5 L 8.5 5 L 0 8.5 z" fill="#38bdf8"/>
+            </marker>
+            <marker id="arrow-teal" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+              <path d="M 0 1.5 L 8.5 5 L 0 8.5 z" fill="#2dd4bf"/>
+            </marker>
+            <marker id="arrow-rose" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M 0 1.5 L 8.5 5 L 0 8.5 z" fill="#fb7185"/>
+            </marker>
+          </defs>
+
+          <!-- Canvas Base -->
+          <rect x="0" y="0" width="1240" height="536" rx="12" fill="#071121"/>
+          <rect x="0" y="0" width="1240" height="536" rx="12" fill="url(#bp-grid)"/>
+
+          <!-- TOP CALLOUT BAND: Heterogeneous Customer Estate & Diamond Enterprise Demo Tenant -->
+          <g>
+            <rect x="24" y="16" width="576" height="58" rx="10" fill="#0c1b33" stroke="#38bdf8" stroke-width="1.3" stroke-dasharray="5 4"/>
+            <g data-lang="zh-CN">
+              <text x="42" y="38" fill="#38bdf8" font-size="12" font-weight="800" font-family="Cascadia Code, Consolas, monospace">HETEROGENEOUS CUSTOMER ESTATE · 异构客户存量环境（零架构迁移）</text>
+              <text x="42" y="58" fill="#cbd5e1" font-size="12.5" font-family="Segoe UI, PingFang SC, Microsoft YaHei, sans-serif">飞书 / 钉钉 / WPS / Google · Salesforce Data 360 / SAP · AWS / GCP / Databricks</text>
+            </g>
+            <g data-lang="en">
+              <text x="42" y="38" fill="#38bdf8" font-size="12" font-weight="800" font-family="Cascadia Code, Consolas, monospace">HETEROGENEOUS CUSTOMER ESTATE · IN-PLACE FEDERATION</text>
+              <text x="42" y="58" fill="#cbd5e1" font-size="12.5" font-family="Segoe UI, sans-serif">Feishu / DingTalk / WPS / Google · Salesforce Data 360 / SAP · AWS / GCP / Databricks</text>
+            </g>
+
+            <rect x="640" y="16" width="576" height="58" rx="10" fill="#0c1e34" stroke="#2dd4bf" stroke-width="1.3" stroke-dasharray="5 4"/>
+            <g data-lang="zh-CN">
+              <text x="658" y="38" fill="#2dd4bf" font-size="12" font-weight="800" font-family="Cascadia Code, Consolas, monospace">DIAMOND ENTERPRISE DEMO TENANT · 100% 脱敏全栈验证沙盘</text>
+              <text x="658" y="58" fill="#cbd5e1" font-size="12.5" font-family="Segoe UI, PingFang SC, Microsoft YaHei, sans-serif">预置 Entra Agent ID + M365 Copilot + OneLake/Ontology + Foundry + AKS 实证环境</text>
+            </g>
+            <g data-lang="en">
+              <text x="658" y="38" fill="#2dd4bf" font-size="12" font-weight="800" font-family="Cascadia Code, Consolas, monospace">DIAMOND ENTERPRISE DEMO TENANT · 100% SANITIZED BLUEPRINT</text>
+              <text x="658" y="58" fill="#cbd5e1" fill-opacity="1" font-size="12.5" font-family="Segoe UI, sans-serif">Pre-integrated Entra Agent ID + M365 Copilot + OneLake/Ontology + Foundry + AKS</text>
+            </g>
+
+            <!-- Connectors from Estate & Diamond Tenant -->
+            <line x1="126" y1="74" x2="126" y2="120" stroke="#38bdf8" stroke-width="1.6" stroke-dasharray="4 3" marker-end="url(#arrow-cyan)"/>
+            <line x1="400" y1="74" x2="400" y2="92" stroke="#2dd4bf" stroke-width="1.6" stroke-dasharray="4 3" marker-end="url(#arrow-teal)"/>
+            <line x1="712" y1="74" x2="712" y2="120" stroke="#2dd4bf" stroke-width="1.6" stroke-dasharray="4 3" marker-end="url(#arrow-teal)"/>
+            <line x1="1048" y1="74" x2="1048" y2="120" stroke="#2dd4bf" stroke-width="1.6" stroke-dasharray="4 3" marker-end="url(#arrow-teal)"/>
+          </g>
+
+          <!-- FEDERATED CONTEXT OUTER FRAME -->
+          <rect x="256" y="94" width="282" height="270" rx="14" fill="#0a172d" stroke="#2c4a7c" stroke-width="1.4" stroke-dasharray="6 4"/>
+          <g data-lang="zh-CN">
+            <text x="397" y="112" text-anchor="middle" fill="#8ea4ca" font-size="11" font-weight="700" font-family="Cascadia Code, Consolas, monospace">内外部联邦上下文层 · Microsoft IQ</text>
+          </g>
+          <g data-lang="en">
+            <text x="397" y="112" text-anchor="middle" fill="#8ea4ca" font-size="11" font-weight="700" font-family="Cascadia Code, Consolas, monospace">FEDERATED CONTEXT LAYER · MICROSOFT IQ</text>
+          </g>
+
+          <!-- FLOW ARROWS BETWEEN STAGES 01 -> (02 + 03) -> 04 -> 05 -->
+          <path d="M 230 228 L 248 228 L 248 175 L 266 175" fill="none" stroke="#38bdf8" stroke-width="2.2" marker-end="url(#arrow-cyan)"/>
+          <path d="M 230 228 L 248 228 L 248 296 L 266 296" fill="none" stroke="#38bdf8" stroke-width="2.2" marker-end="url(#arrow-cyan)"/>
+
+          <path d="M 524 175 L 548 175 L 548 228 L 566 228" fill="none" stroke="#2dd4bf" stroke-width="2.2" marker-end="url(#arrow-teal)"/>
+          <path d="M 524 296 L 548 296 L 548 228 L 566 228" fill="none" stroke="#2dd4bf" stroke-width="2.2" marker-end="url(#arrow-teal)"/>
+
+          <line x1="854" y1="228" x2="884" y2="228" stroke="#38bdf8" stroke-width="2.4" marker-start="url(#arrow-cyan)" marker-end="url(#arrow-cyan)"/>
+
+          <!-- BIDIRECTIONAL GOVERNANCE CONNECTORS (01..05 <-> 06) -->
+          <line x1="126" y1="338" x2="126" y2="388" stroke="#fb7185" stroke-width="1.8" marker-start="url(#arrow-rose)" marker-end="url(#arrow-rose)"/>
+          <line x1="397" y1="364" x2="397" y2="388" stroke="#fb7185" stroke-width="1.8" marker-start="url(#arrow-rose)" marker-end="url(#arrow-rose)"/>
+          <line x1="711" y1="338" x2="711" y2="388" stroke="#fb7185" stroke-width="1.8" marker-start="url(#arrow-rose)" marker-end="url(#arrow-rose)"/>
+          <line x1="1052" y1="338" x2="1052" y2="388" stroke="#fb7185" stroke-width="1.8" marker-start="url(#arrow-rose)" marker-end="url(#arrow-rose)"/>
+
+          <!-- STAGE 01 NODE -->
+          <g class="svg-stage-node is-selected" data-stage="01" tabindex="0" role="button" aria-label="Stage 01 Unified Agent Entry">
+            <rect class="node-bg" x="24" y="124" width="206" height="210" rx="13" fill="url(#stage01-grad)" stroke="#38bdf8" stroke-width="2"/>
+            <rect x="38" y="138" width="76" height="22" rx="6" fill="#0ea5e9"/>
+            <text x="76" y="153" text-anchor="middle" fill="#ffffff" font-size="11" font-weight="800" font-family="Cascadia Code, Consolas, monospace">STAGE 01</text>
+            <text x="216" y="153" text-anchor="end" fill="#93c5fd" font-size="10.5" font-weight="700" font-family="Cascadia Code, Consolas, monospace">GA · Frontier</text>
+
+            <g data-lang="zh-CN">
+              <text x="38" y="182" fill="#f8fafc" font-size="16" font-weight="800" font-family="Segoe UI, PingFang SC, Microsoft YaHei, sans-serif">统一智能体入口</text>
+              <text x="38" y="206" fill="#cbd5e1" font-size="12" font-family="Segoe UI, PingFang SC, Microsoft YaHei, sans-serif">• Chat · Cowork (~80% F500)</text>
+              <text x="38" y="227" fill="#cbd5e1" font-size="12" font-family="Segoe UI, PingFang SC, Microsoft YaHei, sans-serif">• Autopilot · Code (受控沙箱)</text>
+              <text x="38" y="248" fill="#38bdf8" font-size="12" font-weight="700" font-family="Segoe UI, PingFang SC, Microsoft YaHei, sans-serif">• Copilot Standalone (12/01)</text>
+              <text x="38" y="269" fill="#cbd5e1" font-size="12" font-family="Segoe UI, PingFang SC, Microsoft YaHei, sans-serif">• Office in Copilot · SDK 2.0</text>
+              <text x="38" y="290" fill="#94a3b8" font-size="11.5" font-family="Segoe UI, PingFang SC, Microsoft YaHei, sans-serif">• Plugins + MCP + APIM + OBO</text>
+              <text x="38" y="317" fill="#38bdf8" font-size="11" font-weight="700" font-family="Cascadia Code, Consolas, monospace">[点击检视架构打法]</text>
+            </g>
+            <g data-lang="en">
+              <text x="38" y="182" fill="#f8fafc" font-size="15.5" font-weight="800" font-family="Segoe UI, sans-serif">Unified Agent Entry</text>
+              <text x="38" y="206" fill="#cbd5e1" font-size="12" font-family="Segoe UI, sans-serif">• Chat · Cowork (~80% F500)</text>
+              <text x="38" y="227" fill="#cbd5e1" font-size="12" font-family="Segoe UI, sans-serif">• Autopilot · Code (Runtime)</text>
+              <text x="38" y="248" fill="#38bdf8" font-size="12" font-weight="700" font-family="Segoe UI, sans-serif">• Copilot Standalone (Dec 1)</text>
+              <text x="38" y="269" fill="#cbd5e1" font-size="12" font-family="Segoe UI, sans-serif">• Office in Copilot · SDK 2.0</text>
+              <text x="38" y="290" fill="#94a3b8" font-size="11.5" font-family="Segoe UI, sans-serif">• Plugins + MCP + APIM + OBO</text>
+              <text x="38" y="317" fill="#38bdf8" font-size="11" font-weight="700" font-family="Cascadia Code, Consolas, monospace">[Click to inspect stage]</text>
+            </g>
+          </g>
+
+          <!-- STAGE 02 NODE -->
+          <g class="svg-stage-node" data-stage="02" tabindex="0" role="button" aria-label="Stage 02 Live World Context">
+            <rect class="node-bg" x="268" y="122" width="256" height="110" rx="12" fill="#0e223d" stroke="#2dd4bf" stroke-width="1.8"/>
+            <rect x="282" y="133" width="72" height="20" rx="5" fill="#0d9488"/>
+            <text x="318" y="147" text-anchor="middle" fill="#ffffff" font-size="10.5" font-weight="800" font-family="Cascadia Code, Consolas, monospace">STAGE 02</text>
+            <text x="512" y="147" text-anchor="end" fill="#5eead4" font-size="10.5" font-weight="700" font-family="Cascadia Code, Consolas, monospace">GA · Preview</text>
+
+            <g data-lang="zh-CN">
+              <text x="282" y="172" fill="#f8fafc" font-size="15" font-weight="800" font-family="Segoe UI, PingFang SC, Microsoft YaHei, sans-serif">外部实时上下文</text>
+              <text x="282" y="194" fill="#cbd5e1" font-size="11.8" font-family="Segoe UI, PingFang SC, Microsoft YaHei, sans-serif">Web IQ Auto/Adv · Places 2.075亿+ · 400亿报价</text>
+              <text x="282" y="214" fill="#94a3b8" font-size="11.5" font-family="Segoe UI, PingFang SC, Microsoft YaHei, sans-serif">10K Scopes · KG (92% 召回) · Retriever-1 (0.76s)</text>
+            </g>
+            <g data-lang="en">
+              <text x="282" y="172" fill="#f8fafc" font-size="15" font-weight="800" font-family="Segoe UI, sans-serif">Live World Context</text>
+              <text x="282" y="194" fill="#cbd5e1" font-size="11.8" font-family="Segoe UI, sans-serif">Web IQ Auto/Adv · 207.5M+ POIs · 40B+ Offers</text>
+              <text x="282" y="214" fill="#94a3b8" font-size="11.5" font-family="Segoe UI, sans-serif">10K Scopes · KG (92% recall) · Retriever-1 (0.76s)</text>
+            </g>
+          </g>
+
+          <!-- STAGE 03 NODE -->
+          <g class="svg-stage-node" data-stage="03" tabindex="0" role="button" aria-label="Stage 03 Enterprise Data Ontology">
+            <rect class="node-bg" x="268" y="242" width="256" height="110" rx="12" fill="#0e223d" stroke="#34d399" stroke-width="1.8"/>
+            <rect x="282" y="253" width="72" height="20" rx="5" fill="#059669"/>
+            <text x="318" y="267" text-anchor="middle" fill="#ffffff" font-size="10.5" font-weight="800" font-family="Cascadia Code, Consolas, monospace">STAGE 03</text>
+            <text x="512" y="267" text-anchor="end" fill="#6ee7b7" font-size="10.5" font-weight="700" font-family="Cascadia Code, Consolas, monospace">GA · Preview</text>
+
+            <g data-lang="zh-CN">
+              <text x="282" y="292" fill="#f8fafc" font-size="15" font-weight="800" font-family="Segoe UI, PingFang SC, Microsoft YaHei, sans-serif">企业数据本体</text>
+              <text x="282" y="314" fill="#cbd5e1" font-size="11.8" font-family="Segoe UI, PingFang SC, Microsoft YaHei, sans-serif">OneLake 零拷贝 · Salesforce Data 360 双向互通</text>
+              <text x="282" y="334" fill="#94a3b8" font-size="11.5" font-family="Segoe UI, PingFang SC, Microsoft YaHei, sans-serif">Fabric IQ Ontology · HorizonDB · Diamond 脱敏沙盘</text>
+            </g>
+            <g data-lang="en">
+              <text x="282" y="292" fill="#f8fafc" font-size="15" font-weight="800" font-family="Segoe UI, sans-serif">Enterprise Data Ontology</text>
+              <text x="282" y="314" fill="#cbd5e1" font-size="11.8" font-family="Segoe UI, sans-serif">OneLake Zero-Copy · SF Data 360 Bi-Directional</text>
+              <text x="282" y="334" fill="#94a3b8" font-size="11.5" font-family="Segoe UI, sans-serif">Fabric IQ Ontology · HorizonDB · Sanitized Diamond</text>
+            </g>
+          </g>
+
+          <!-- STAGE 04 NODE -->
+          <g class="svg-stage-node" data-stage="04" tabindex="0" role="button" aria-label="Stage 04 Agent Runtime Engineering">
+            <rect class="node-bg" x="568" y="124" width="286" height="210" rx="13" fill="url(#stage04-grad)" stroke="#a78bfa" stroke-width="1.8"/>
+            <rect x="584" y="138" width="76" height="22" rx="6" fill="#7c3aed"/>
+            <text x="622" y="153" text-anchor="middle" fill="#ffffff" font-size="11" font-weight="800" font-family="Cascadia Code, Consolas, monospace">STAGE 04</text>
+            <text x="838" y="153" text-anchor="end" fill="#ddd6fe" font-size="10.5" font-weight="700" font-family="Cascadia Code, Consolas, monospace">GA · Preview</text>
+
+            <g data-lang="zh-CN">
+              <text x="584" y="182" fill="#f8fafc" font-size="16" font-weight="800" font-family="Segoe UI, PingFang SC, Microsoft YaHei, sans-serif">智能体工程运行时</text>
+              <text x="584" y="206" fill="#cbd5e1" font-size="12" font-family="Segoe UI, PingFang SC, Microsoft YaHei, sans-serif">• Eval → Insights → Agent Optimizer (GA)</text>
+              <text x="584" y="227" fill="#cbd5e1" font-size="12" font-family="Segoe UI, PingFang SC, Microsoft YaHei, sans-serif">• Managed / Programmed Training (RFT)</text>
+              <text x="584" y="248" fill="#cbd5e1" font-size="12" font-family="Segoe UI, PingFang SC, Microsoft YaHei, sans-serif">• Foundry PaaS · Foundry on AKS · ACA</text>
+              <text x="584" y="269" fill="#cbd5e1" font-size="12" font-family="Segoe UI, PingFang SC, Microsoft YaHei, sans-serif">• AKS Agent Sandbox + Pod Snapshot</text>
+              <text x="584" y="292" fill="#c4b5fd" font-size="12" font-weight="700" font-family="Segoe UI, PingFang SC, Microsoft YaHei, sans-serif">• Decision-1.1 (78.8% · $0.042 In / $0 Out)</text>
+              <text x="584" y="315" fill="#94a3b8" font-size="11.5" font-family="Segoe UI, PingFang SC, Microsoft YaHei, sans-serif">• MAI-Code-2 / Flash · GPT-6.2 Sol/Astra</text>
+            </g>
+            <g data-lang="en">
+              <text x="584" y="182" fill="#f8fafc" font-size="15.5" font-weight="800" font-family="Segoe UI, sans-serif">Agent Runtime Engineering</text>
+              <text x="584" y="206" fill="#cbd5e1" font-size="12" font-family="Segoe UI, sans-serif">• Eval → Insights → Agent Optimizer (GA)</text>
+              <text x="584" y="227" fill="#cbd5e1" font-size="12" font-family="Segoe UI, sans-serif">• Managed / Programmed Training (RFT)</text>
+              <text x="584" y="248" fill="#cbd5e1" font-size="12" font-family="Segoe UI, sans-serif">• Foundry PaaS · Foundry on AKS · ACA</text>
+              <text x="584" y="269" fill="#cbd5e1" font-size="12" font-family="Segoe UI, sans-serif">• AKS Agent Sandbox + Pod Snapshot</text>
+              <text x="584" y="292" fill="#c4b5fd" font-size="12" font-weight="700" font-family="Segoe UI, sans-serif">• Decision-1.1 (78.8% · $0.042 In / $0 Out)</text>
+              <text x="584" y="315" fill="#94a3b8" font-size="11.5" font-family="Segoe UI, sans-serif">• MAI-Code-2 / Flash · GPT-6.2 Sol/Astra</text>
+            </g>
+          </g>
+
+          <!-- STAGE 05 NODE -->
+          <g class="svg-stage-node" data-stage="05" tabindex="0" role="button" aria-label="Stage 05 Inference Infra Optimization">
+            <rect class="node-bg" x="886" y="124" width="330" height="210" rx="13" fill="url(#stage05-grad)" stroke="#fbbf24" stroke-width="1.8"/>
+            <rect x="902" y="138" width="76" height="22" rx="6" fill="#d97706"/>
+            <text x="940" y="153" text-anchor="middle" fill="#ffffff" font-size="11" font-weight="800" font-family="Cascadia Code, Consolas, monospace">STAGE 05</text>
+            <text x="1200" y="153" text-anchor="end" fill="#fde68a" font-size="10.5" font-weight="700" font-family="Cascadia Code, Consolas, monospace">GA · Preview</text>
+
+            <g data-lang="zh-CN">
+              <text x="902" y="182" fill="#f8fafc" font-size="16" font-weight="800" font-family="Segoe UI, PingFang SC, Microsoft YaHei, sans-serif">推理基础设施优化</text>
+              <text x="902" y="206" fill="#fde68a" font-size="12" font-weight="700" font-family="Segoe UI, PingFang SC, Microsoft YaHei, sans-serif">• 场景 A (API)：PD 分离 + Prefix KV 路由</text>
+              <text x="902" y="227" fill="#cbd5e1" font-size="12" font-family="Segoe UI, PingFang SC, Microsoft YaHei, sans-serif">  Maia 300 (+40% Tok/W) · Cobalt 200 (+50% CPU)</text>
+              <text x="902" y="250" fill="#fde68a" font-size="12" font-weight="700" font-family="Segoe UI, PingFang SC, Microsoft YaHei, sans-serif">• 场景 B (GPU)：Fireworks · Baseten · fal</text>
+              <text x="902" y="271" fill="#cbd5e1" font-size="12" font-family="Segoe UI, PingFang SC, Microsoft YaHei, sans-serif">  DeepSeek / Kimi / 视频 DiT 显存精算</text>
+              <text x="902" y="292" fill="#cbd5e1" font-size="12" font-family="Segoe UI, PingFang SC, Microsoft YaHei, sans-serif">  NVLink vs InfiniBand vs Ethernet RoCEv2</text>
+              <text x="902" y="315" fill="#94a3b8" font-size="11.5" font-family="Segoe UI, PingFang SC, Microsoft YaHei, sans-serif">• GB200/GB300 · VR72 机密多卡 · Catalyst</text>
+            </g>
+            <g data-lang="en">
+              <text x="902" y="182" fill="#f8fafc" font-size="15.5" font-weight="800" font-family="Segoe UI, sans-serif">Inference Infra Optimization</text>
+              <text x="902" y="206" fill="#fde68a" font-size="12" font-weight="700" font-family="Segoe UI, sans-serif">• Scenario A (API): PD Split + Prefix KV</text>
+              <text x="902" y="227" fill="#cbd5e1" font-size="12" font-family="Segoe UI, sans-serif">  Maia 300 (+40% Tok/W) · Cobalt 200 (+50% CPU)</text>
+              <text x="902" y="250" fill="#fde68a" font-size="12" font-weight="700" font-family="Segoe UI, sans-serif">• Scenario B (GPU): Fireworks · Baseten · fal</text>
+              <text x="902" y="271" fill="#cbd5e1" font-size="12" font-family="Segoe UI, sans-serif">  DeepSeek / Kimi / Video DiT VRAM Sizing</text>
+              <text x="902" y="292" fill="#cbd5e1" font-size="12" font-family="Segoe UI, sans-serif">  NVLink vs InfiniBand vs Ethernet RoCEv2</text>
+              <text x="902" y="315" fill="#94a3b8" font-size="11.5" font-family="Segoe UI, sans-serif">• GB200/GB300 · VR72 Conf GPU · Catalyst</text>
+            </g>
+          </g>
+
+          <!-- STAGE 06 CROSS-CUTTING GOVERNANCE PLANE -->
+          <g class="svg-stage-node" data-stage="06" tabindex="0" role="button" aria-label="Stage 06 Enterprise Agent Governance">
+            <rect class="node-bg" x="24" y="392" width="1192" height="126" rx="14" fill="url(#stage06-grad)" stroke="#fb7185" stroke-width="1.9"/>
+            <rect x="42" y="408" width="76" height="22" rx="6" fill="#e11d48"/>
+            <text x="80" y="423" text-anchor="middle" fill="#ffffff" font-size="11" font-weight="800" font-family="Cascadia Code, Consolas, monospace">STAGE 06</text>
+
+            <g data-lang="zh-CN">
+              <text x="130" y="424" fill="#f8fafc" font-size="16.5" font-weight="800" font-family="Segoe UI, PingFang SC, Microsoft YaHei, sans-serif">全域智能体治理</text>
+              <text x="272" y="423" fill="#fda4af" font-size="12" font-weight="700" font-family="Cascadia Code, Consolas, monospace">⇄ 横贯 01–05 全链路的身份、策略、数据防泄漏、AI FinOps 与主动安全底座</text>
+            </g>
+            <g data-lang="en">
+              <text x="130" y="424" fill="#f8fafc" font-size="16.5" font-weight="800" font-family="Segoe UI, sans-serif">Enterprise Agent Governance</text>
+              <text x="378" y="423" fill="#fda4af" font-size="12" font-weight="700" font-family="Cascadia Code, Consolas, monospace">⇄ Cross-Cutting Identity, DLP, Outcome FinOps &amp; Autonomous Cyber Defense</text>
+            </g>
+
+            <!-- 4 Governance Sub-Pillars -->
+            <rect x="42" y="442" width="276" height="60" rx="9" fill="#0b182e" stroke="#334e7b"/>
+            <rect x="334" y="442" width="276" height="60" rx="9" fill="#0b182e" stroke="#334e7b"/>
+            <rect x="626" y="442" width="276" height="60" rx="9" fill="#0b182e" stroke="#334e7b"/>
+            <rect x="918" y="442" width="280" height="60" rx="9" fill="#0b182e" stroke="#334e7b"/>
+
+            <g data-lang="zh-CN">
+              <text x="56" y="464" fill="#38bdf8" font-size="12" font-weight="800" font-family="Segoe UI, PingFang SC, Microsoft YaHei, sans-serif">1. Agent 365 全域目录与 CSP 托管</text>
+              <text x="56" y="486" fill="#cbd5e1" font-size="11.5" font-family="Segoe UI, PingFang SC, Microsoft YaHei, sans-serif">5,000万+ 跨云纳管 · 35 类影子 CLI · CSP 多租户</text>
+
+              <text x="348" y="464" fill="#2dd4bf" font-size="12" font-weight="800" font-family="Segoe UI, PingFang SC, Microsoft YaHei, sans-serif">2. 身份边界与工具零信任</text>
+              <text x="348" y="486" fill="#cbd5e1" font-size="11.5" font-family="Segoe UI, PingFang SC, Microsoft YaHei, sans-serif">Entra Agent ID · Dynamic Risk · MCP Firewall</text>
+
+              <text x="640" y="464" fill="#fbbf24" font-size="12" font-weight="800" font-family="Segoe UI, PingFang SC, Microsoft YaHei, sans-serif">3. 未打标防泄漏与结果导向 FinOps</text>
+              <text x="640" y="486" fill="#cbd5e1" font-size="11.5" font-family="Segoe UI, PingFang SC, Microsoft YaHei, sans-serif">Purview Unlabeled DLP · 工时/产出 ROI 核算</text>
+
+              <text x="932" y="464" fill="#fb7185" font-size="12" font-weight="800" font-family="Segoe UI, PingFang SC, Microsoft YaHei, sans-serif">4. 主动红蓝对抗安全智能体</text>
+              <text x="932" y="486" fill="#cbd5e1" font-size="11.5" font-family="Segoe UI, PingFang SC, Microsoft YaHei, sans-serif">Perception (覆盖 ~80% 告警) · Codename MDASH</text>
+            </g>
+
+            <g data-lang="en">
+              <text x="56" y="464" fill="#38bdf8" font-size="12" font-weight="800" font-family="Segoe UI, sans-serif">1. Agent 365 Registry &amp; CSP Fleet</text>
+              <text x="56" y="486" fill="#cbd5e1" font-size="11.5" font-family="Segoe UI, sans-serif">50M+ multi-cloud · 35 Shadow CLIs · CSP Preview</text>
+
+              <text x="348" y="464" fill="#2dd4bf" font-size="12" font-weight="800" font-family="Segoe UI, sans-serif">2. Identity &amp; Runtime Zero Trust</text>
+              <text x="348" y="486" fill="#cbd5e1" font-size="11.5" font-family="Segoe UI, sans-serif">Entra Agent ID · Dynamic Risk · MCP Firewall</text>
+
+              <text x="640" y="464" fill="#fbbf24" font-size="12" font-weight="800" font-family="Segoe UI, sans-serif">3. Unlabeled DLP &amp; Outcome FinOps</text>
+              <text x="640" y="486" fill="#cbd5e1" font-size="11.5" font-family="Segoe UI, sans-serif">Purview Unlabeled DLP · Work-Delivered ROI</text>
+
+              <text x="932" y="464" fill="#fb7185" font-size="12" font-weight="800" font-family="Segoe UI, sans-serif">4. Autonomous Cyber Defense</text>
+              <text x="932" y="486" fill="#cbd5e1" font-size="11.5" font-family="Segoe UI, sans-serif">Perception (~80% queue triage) · Codename MDASH</text>
+            </g>
+          </g>
+        </svg>
+      </div>
+
+      <!-- Dynamic Architect Stage Inspector Panel -->
+      <div id="stage-inspector" class="inspector-panel" aria-live="polite">
+        <div class="inspector-top">
+          <div class="inspector-title-group">
+            <span id="insp-step" class="inspector-stage-tag">STAGE 01</span>
+            <h3 id="insp-title" class="inspector-stage-name">
+              <span data-lang="zh-CN">统一智能体入口</span>
+              <span data-lang="en">Unified Agent Entry</span>
+            </h3>
+          </div>
+          <div id="insp-badges" class="badge-cluster">
+            <span class="badge badge-ga">GA</span>
+            <span class="badge badge-frontier">Frontier</span>
+          </div>
+        </div>
+
+        <div class="inspector-grid">
+          <div class="inspector-box">
+            <h4>
+              <span data-lang="zh-CN">A · 核心架构命题</span>
+              <span data-lang="en">A · Core Architectural Question</span>
+            </h4>
+            <p id="insp-question"></p>
+          </div>
+
+          <div class="inspector-box releases">
+            <h4>
+              <span data-lang="zh-CN">B · Ignite 2026 核心发布与成熟度</span>
+              <span data-lang="en">B · Spotlight Ignite 2026 Releases &amp; Maturity</span>
+            </h4>
+            <ul id="insp-releases" class="inspector-list"></ul>
+          </div>
+
+          <div class="inspector-box motion">
+            <h4>
+              <span data-lang="zh-CN">C · 合作伙伴切入与扩展打法</span>
+              <span data-lang="en">C · Partner Land-and-Expand Motion</span>
+            </h4>
+            <p id="insp-motion"></p>
+          </div>
+        </div>
+
+        <div class="inspector-footer">
+          <span id="insp-demo-note" class="demo-tag"></span>
+          <div class="btn-row" style="margin-top:0;">
+            <button type="button" id="insp-filter-btn" class="btn">
+              <span data-lang="zh-CN">在发布雷达中筛选本阶段 ↓</span>
+              <span data-lang="en">Filter Stage in Release Radar ↓</span>
+            </button>
+            <a id="insp-cta" class="btn btn-primary" href="01-copilot-entry.en.html">
+              <span data-lang="zh-CN">进入章节深度拆解 →</span>
+              <span data-lang="en">Open Stage Deep Dive →</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="speaker-cue">
+        <div class="speaker-cue-title">
+          <span data-lang="zh-CN">🎙️ 架构蓝图讲解提示（为什么按这 6 步排序）</span>
+          <span data-lang="en">🎙️ Blueprint Walkthrough Cue (Why These 6 Stages in Order)</span>
+        </div>
+        <p>
+          <span data-lang="zh-CN">
+            引导听众看中间“内外部联邦上下文层”：紧跟在 <code>02 外部实时上下文 (Web IQ)</code> 之后衔接 <code>03 企业数据本体 (Fabric Ontology)</code>，是因为生产级业务决策需要“外部气象/港口/市场报价信号 × 内部库存/返利/合同主数据”的联合推理；而 <code>06 全域智能体治理</code> 不是事后补丁，而是横贯 <code>01–05</code> 每一层的统一控制平面。
+          </span>
+          <span data-lang="en">
+            Point the audience to the center Federated Context Layer: placing <code>03 Enterprise Data Ontology (Fabric)</code> immediately after <code>02 Live World Context (Web IQ)</code> reflects how production business decisions combine external weather, port, and pricing feeds with internal ERP/channel metrics—while <code>06 Enterprise Agent Governance</code> spans horizontally across every layer from day one.
+          </span>
+        </p>
+      </div>
+    </section>
+
+    <!-- SECTION 2: 6-STAGE EXECUTIVE CARD GRID -->
+    <section id="stages" class="stage-section" aria-labelledby="stages-heading">
+      <div class="section-header">
+        <div>
+          <p class="eyebrow">MODULAR CHAPTER DIRECTORY · SINGLE-CONCEPT STAGES</p>
+          <h2 id="stages-heading" class="section-title">
+            <span data-lang="zh-CN">六阶深度章节</span>
+            <span data-lang="en">Six-Stage Chapters</span>
+          </h2>
+          <p class="section-sub">
+            <span data-lang="zh-CN">
+              每一章均按 Partner SA 实战四维模型拆解（<strong>底层技术机制 → 高价值业务场景 → 架构差异化优势 → 架构师落地规范</strong>），并内嵌离线交互沙盘与定量计算器。
+            </span>
+            <span data-lang="en">
+              Every chapter follows a structured Partner SA 4-dimension breakdown (<strong>Technical Mechanics → Business Scenarios → Architectural Differentiation → SA Guardrails</strong>) paired with offline simulators and calculators.
+            </span>
+          </p>
+        </div>
+      </div>
+
+      <div class="grid-3">
+        <!-- Card 01 -->
+        <article class="card exec-stage-card">
+          <div>
+            <div class="exec-card-top">
+              <span class="exec-step-chip">STAGE 01</span>
+              <span class="badge-cluster">
+                <span class="badge badge-ga">GA</span>
+                <span class="badge badge-frontier">Frontier</span>
+              </span>
+            </div>
+            <h3>
+              <span data-lang="zh-CN">统一智能体入口</span>
+              <span data-lang="en">Unified Agent Entry</span>
+            </h3>
+            <ul class="stage-bullets">
+              <li>
+                <span data-lang="zh-CN"><strong>四大工作模式协同</strong>：<code>Chat</code>、<code>Cowork</code>（<code>GA</code>，近 80% 财富 500 强采用，内置 <code>Office in Copilot</code> 多人原生共编）、<code>Autopilot</code>（<code>Frontier</code> 独立 <code>Entra Agent ID</code>）与 <code>Code</code>（运行于 <code>GA</code> 受控沙箱）。</span>
+                <span data-lang="en"><strong>Four Operating Modes</strong>: <code>Chat</code>, <code>Cowork</code> (<code>GA</code>, ~80% Fortune 500, native multiplayer <code>Office in Copilot</code>), <code>Autopilot</code> (<code>Frontier</code> with <code>Entra Agent ID</code>), and <code>Code</code> (governed <code>GA</code> runtime).</span>
+              </li>
+              <li>
+                <span data-lang="zh-CN"><strong>Copilot Standalone 商业解绑</strong>：<code>2026-12-01</code> 起解除合资格 M365 基础套件前置依赖（严格区分于 <code>FY27 Q3</code> CSP 新购默认 PayGo）。</span>
+                <span data-lang="en"><strong>Copilot Standalone Decoupling</strong>: Removes qualifying M365 base-license prerequisite starting <code>Dec 1, 2026</code> (distinct from <code>FY27 Q3</code> CSP default PayGo).</span>
+              </li>
+              <li>
+                <span data-lang="zh-CN"><strong>异构免拆迁桥接</strong>：以 <code>D365 / Salesforce Plugins + MCP + APIM + Entra OBO</code> 读写分离接入飞书、钉钉、WPS 与存量 ERP。</span>
+                <span data-lang="en"><strong>No Day-1 Rip-and-Replace</strong>: Bridge Feishu, DingTalk, WPS, and legacy ERPs via <code>D365/Salesforce Plugins + MCP + APIM + Entra OBO</code> read/write split.</span>
+              </li>
+            </ul>
+          </div>
+          <div class="exec-card-foot">
+            <span class="demo-tag">
+              <span data-lang="zh-CN">🎛️ 内嵌工具：四大模式与异构 OBO 桥接选型器</span>
+              <span data-lang="en">🎛️ Embedded: 4-Mode &amp; Heterogeneous OBO Mapper</span>
+            </span>
+            <a class="card-jump-link" href="01-copilot-entry.en.html">
+              <span data-lang="zh-CN">进入 01 · 统一智能体入口</span>
+              <span data-lang="en">Explore 01 · Unified Agent Entry</span>
+              <span aria-hidden="true">→</span>
+            </a>
+          </div>
+        </article>
+
+        <!-- Card 02 -->
+        <article class="card exec-stage-card">
+          <div>
+            <div class="exec-card-top">
+              <span class="exec-step-chip">STAGE 02</span>
+              <span class="badge-cluster">
+                <span class="badge badge-ga">GA</span>
+                <span class="badge badge-preview">Preview</span>
+                <span class="badge badge-private">Private</span>
+              </span>
+            </div>
+            <h3>
+              <span data-lang="zh-CN">外部实时上下文</span>
+              <span data-lang="en">Live World Context</span>
+            </h3>
+            <ul class="stage-bullets">
+              <li>
+                <span data-lang="zh-CN"><strong>上下文工程四原则 &amp; Microsoft IQ</strong>：以带引用的高信噪比片段替代网页噪声；<code>Work / Web / Fabric / Foundry IQ</code> 统一品牌，零新增独立 SKU。</span>
+                <span data-lang="en"><strong>Context Engineering &amp; Microsoft IQ</strong>: Cited high-SNR passages over raw HTML bloat across <code>Work / Web / Fabric / Foundry IQ</code> with zero new standalone SKU.</span>
+              </li>
+              <li>
+                <span data-lang="zh-CN"><strong>Web IQ 全新升级（<code>GA</code>）</strong>：<code>Auto / Auto Advanced</code> 多跳重写、<code>Places</code>（<code>2.075 亿+</code> POI）、<code>Weather</code>（<code>14 万</code>站）、<code>Commerce</code>（<code>400 亿+</code>报价 <code>Private Preview</code>）及免费 <code>10K</code> 域名黑白名单 <code>Scopes</code>。</span>
+                <span data-lang="en"><strong>Web IQ Agent Search (<code>GA</code>)</strong>: <code>Auto / Auto Advanced</code>, <code>Places</code> (<code>207.5M+</code> POIs), <code>Weather</code> (<code>140K</code> stations), <code>Commerce</code> (<code>40B+</code> offers), and free <code>10K</code> allow/block <code>Scopes</code>.</span>
+              </li>
+              <li>
+                <span data-lang="zh-CN"><strong>检索精度与速度双突破</strong>：<code>Foundry IQ Knowledge Graph</code> 召回率提升至 <code>92.0%</code>，<code>Microsoft-Retriever-1</code> 中位检索延迟由 <code>5.09s</code> 降至 <code>0.76s</code>。</span>
+                <span data-lang="en"><strong>Precision &amp; Latency Leap</strong>: <code>Foundry IQ Knowledge Graph</code> lifts recall to <code>92.0%</code> while <code>Microsoft-Retriever-1</code> cuts median retrieval latency from <code>5.09s</code> to <code>0.76s</code>.</span>
+              </li>
+            </ul>
+          </div>
+          <div class="exec-card-foot">
+            <span class="demo-tag">
+              <span data-lang="zh-CN">🎛️ 内嵌工具：Web IQ Scopes 门控与多跳检索模拟器</span>
+              <span data-lang="en">🎛️ Embedded: Web IQ Scopes &amp; Multi-Hop Simulator</span>
+            </span>
+            <a class="card-jump-link" href="02-web-iq-context.en.html">
+              <span data-lang="zh-CN">进入 02 · 外部实时上下文</span>
+              <span data-lang="en">Explore 02 · Live World Context</span>
+              <span aria-hidden="true">→</span>
+            </a>
+          </div>
+        </article>
+
+        <!-- Card 03 (STRICT SANITIZATION ENFORCED) -->
+        <article class="card exec-stage-card">
+          <div>
+            <div class="exec-card-top">
+              <span class="exec-step-chip">STAGE 03</span>
+              <span class="badge-cluster">
+                <span class="badge badge-ga">GA</span>
+                <span class="badge badge-preview">Preview</span>
+              </span>
+            </div>
+            <h3>
+              <span data-lang="zh-CN">企业数据本体</span>
+              <span data-lang="en">Enterprise Data Ontology</span>
+            </h3>
+            <ul class="stage-bullets">
+              <li>
+                <span data-lang="zh-CN"><strong>OneLake 跨云零拷贝</strong>：Shortcuts、Mirrored Unity Catalog 与全新 <strong><code>Salesforce Data 360</code> 双向零拷贝（<code>GA</code>）</strong> 打通模型外归档与实时交易库。</span>
+                <span data-lang="en"><strong>OneLake Cross-Cloud Zero-Copy</strong>: Shortcuts, Mirrored Unity Catalog, and <strong><code>Salesforce Data 360</code> Bi-Directional Zero-Copy (<code>GA</code>)</strong> unify externalized enterprise data.</span>
+              </li>
+              <li>
+                <span data-lang="zh-CN"><strong>Fabric IQ Ontology 跨端一致性</strong>：统一语义指标与行动护栏同步输出至 M365 Copilot、Excel、Foundry 及 <code>ChatGPT / Claude</code>（<code>Preview</code>），配合 <code>HorizonDB</code> 与 <code>Rayfin</code> 事务回写。</span>
+                <span data-lang="en"><strong>Fabric IQ Ontology &amp; HorizonDB</strong>: Single governed metric &amp; action truth across M365 Copilot, Excel, Foundry, and <code>ChatGPT / Claude</code> (<code>Preview</code>), backed by <code>HorizonDB</code> &amp; <code>Rayfin</code>.</span>
+              </li>
+              <li>
+                <span data-lang="zh-CN"><strong>实战验证</strong>：<strong>跨国智慧显示制造企业 · 全球多级渠道智能沙盘 [Diamond 脱敏环境]</strong>（零拷贝挂载 36 国代、拦截 <code>$162.5K</code> 压货套利并守护 <code>$582K</code> 毛利）。</span>
+                <span data-lang="en"><strong>Verified Showcase</strong>: <strong>Global Smart Display Manufacturer · Omnichannel Control Tower [Sanitized Diamond Case]</strong> (36-distributor zero-copy, blocking <code>$162.5K</code> rebate fraud &amp; protecting <code>$582K</code> margin).</span>
+              </li>
+            </ul>
+          </div>
+          <div class="exec-card-foot">
+            <span class="demo-tag">
+              <span data-lang="zh-CN">💎 内嵌沙盘：Diamond 脱敏渠道沙盘 &amp; 本体毛利测算器</span>
+              <span data-lang="en">💎 Embedded: Sanitized Diamond Case &amp; Margin Simulator</span>
+            </span>
+            <a class="card-jump-link" href="03-fabric-ontology.en.html">
+              <span data-lang="zh-CN">进入 03 · 企业数据本体</span>
+              <span data-lang="en">Explore 03 · Enterprise Data Ontology</span>
+              <span aria-hidden="true">→</span>
+            </a>
+          </div>
+        </article>
+
+        <!-- Card 04 -->
+        <article class="card exec-stage-card">
+          <div>
+            <div class="exec-card-top">
+              <span class="exec-step-chip">STAGE 04</span>
+              <span class="badge-cluster">
+                <span class="badge badge-ga">GA</span>
+                <span class="badge badge-preview">Preview</span>
+              </span>
+            </div>
+            <h3>
+              <span data-lang="zh-CN">智能体工程运行时</span>
+              <span data-lang="en">Agent Runtime Engineering</span>
+            </h3>
+            <ul class="stage-bullets">
+              <li>
+                <span data-lang="zh-CN"><strong>生产持续进化闭环</strong>：<code>Evaluate → Insights → Agent Optimizer (GA) → Managed/Programmed Training (Preview)</code> 自动调优 Prompt、工具与权重。</span>
+                <span data-lang="en"><strong>Continuous Improvement Loop</strong>: <code>Evaluate → Insights → Agent Optimizer (GA) → Managed/Programmed Training (Preview)</code> auto-tuning prompts, tools, and weights.</span>
+              </li>
+              <li>
+                <span data-lang="zh-CN"><strong>四维托管与沙箱选型</strong>：精准切分 <code>Foundry Agent Service</code>、客户自有集群 <code>Foundry on AKS</code>、<code>ACA Dynamic Sessions</code> 与 <code>AKS Agent Sandbox + Pod Snapshot</code>。</span>
+                <span data-lang="en"><strong>4-Way Hosting &amp; Sandbox Matrix</strong>: Architectural sizing across <code>Foundry PaaS</code>, <code>Foundry on AKS</code>, <code>ACA Dynamic Sessions</code>, and <code>AKS Agent Sandbox + Pod Snapshot</code>.</span>
+              </li>
+              <li>
+                <span data-lang="zh-CN"><strong>确定性决策与编码旗舰</strong>：<code>Microsoft-Decision-1.1</code>（<code>GA</code>，<code>78.8%</code> 准确率、<code>$0.042/1M</code> 输入、<code>$0</code> 输出 Token）搭配 <code>MAI-Code-2</code> 与 <code>GPT-6.2 Sol/Astra</code>。</span>
+                <span data-lang="en"><strong>Deterministic Gating &amp; Frontier Coding</strong>: <code>Microsoft-Decision-1.1</code> (<code>GA</code>, <code>78.8%</code> accuracy, <code>$0.042/1M</code> in, <code>$0</code> out) alongside <code>MAI-Code-2</code> &amp; <code>GPT-6.2 Sol/Astra</code>.</span>
+              </li>
+            </ul>
+          </div>
+          <div class="exec-card-foot">
+            <span class="demo-tag">
+              <span data-lang="zh-CN">🎛️ 内嵌计算器：Decision-1.1 阈值门控器 &amp; 运行时选型器</span>
+              <span data-lang="en">🎛️ Embedded: Decision-1.1 Gate &amp; 4-Way Runtime Selector</span>
+            </span>
+            <a class="card-jump-link" href="04-foundry-engineering.en.html">
+              <span data-lang="zh-CN">进入 04 · 智能体工程运行时</span>
+              <span data-lang="en">Explore 04 · Agent Runtime Engineering</span>
+              <span aria-hidden="true">→</span>
+            </a>
+          </div>
+        </article>
+
+        <!-- Card 05 -->
+        <article class="card exec-stage-card">
+          <div>
+            <div class="exec-card-top">
+              <span class="exec-step-chip">STAGE 05</span>
+              <span class="badge-cluster">
+                <span class="badge badge-ga">GA</span>
+                <span class="badge badge-preview">Preview</span>
+              </span>
+            </div>
+            <h3>
+              <span data-lang="zh-CN">推理基础设施优化</span>
+              <span data-lang="en">Inference Infra Optimization</span>
+            </h3>
+            <ul class="stage-bullets">
+              <li>
+                <span data-lang="zh-CN"><strong>场景 A · Token API 调用</strong>：通过 <code>Prefill-Decode (PD)</code> 分离、<code>Prefix KV Cache</code> 亲和路由、<code>Maia 300</code>（<code>+40% Tok/W</code>）与 <code>Cobalt 200</code> 压降 <code>TTFT / TPOT</code>。</span>
+                <span data-lang="en"><strong>Scenario A · Token API Calls</strong>: Slash <code>TTFT / TPOT</code> via <code>Prefill-Decode</code> disaggregation, <code>Prefix KV Cache</code> locality, <code>Maia 300</code> (<code>+40% Tok/W</code>), and <code>Cobalt 200</code>.</span>
+              </li>
+              <li>
+                <span data-lang="zh-CN"><strong>场景 B · 开放权重与视频模型部署</strong>：<code>Fireworks AI</code>（<code>DeepSeek V3.2/V4 Pro</code>、<code>Kimi K2.5/K2.6</code>）、<code>Baseten</code>（<code>Kimi-K3</code>、<code>GLM 5.3</code>）与 <code>fal</code>（<code>Kling v3 Pro</code>、<code>LTX-2.5 Pro</code>、<code>MiniMax H3 Max</code>）。</span>
+                <span data-lang="en"><strong>Scenario B · Open &amp; Video Models</strong>: <code>Fireworks AI</code> (<code>DeepSeek V3.2/V4 Pro</code>, <code>Kimi K2.5/K2.6</code>), <code>Baseten</code> (<code>Kimi-K3</code>, <code>GLM 5.3</code>), and <code>fal</code> (<code>Kling v3 Pro</code>, <code>LTX-2.5 Pro</code>, <code>MiniMax H3 Max</code>).</span>
+              </li>
+              <li>
+                <span data-lang="zh-CN"><strong>显存精算与多卡网络</strong>：全专家权重 + KV/视频 DiT 时空激活显存公式，及单机 <code>NVLink</code> vs 跨机 <code>InfiniBand</code> / <code>Ethernet RoCEv2</code> 选型边界。</span>
+                <span data-lang="en"><strong>VRAM &amp; Lossless Fabric Math</strong>: MoE all-expert + video DiT spatiotemporal activation VRAM sizing, plus <code>NVLink</code> vs <code>InfiniBand</code> vs <code>Ethernet RoCEv2</code> selection.</span>
+              </li>
+            </ul>
+          </div>
+          <div class="exec-card-foot">
+            <span class="demo-tag">
+              <span data-lang="zh-CN">🧮 内嵌计算器：TTFT/TPOT 模拟器 &amp; GPU 显存/RoCE 计算器</span>
+              <span data-lang="en">🧮 Embedded: TTFT/TPOT Sim &amp; GPU VRAM/RoCE Calculator</span>
+            </span>
+            <a class="card-jump-link" href="05-ai-infra-optimization.en.html">
+              <span data-lang="zh-CN">进入 05 · 推理基础设施优化</span>
+              <span data-lang="en">Explore 05 · Inference Infra Optimization</span>
+              <span aria-hidden="true">→</span>
+            </a>
+          </div>
+        </article>
+
+        <!-- Card 06 -->
+        <article class="card exec-stage-card">
+          <div>
+            <div class="exec-card-top">
+              <span class="exec-step-chip">STAGE 06</span>
+              <span class="badge-cluster">
+                <span class="badge badge-ga">GA</span>
+                <span class="badge badge-preview">Preview</span>
+                <span class="badge badge-frontier">Frontier</span>
+              </span>
+            </div>
+            <h3>
+              <span data-lang="zh-CN">全域智能体治理</span>
+              <span data-lang="en">Enterprise Agent Governance</span>
+            </h3>
+            <ul class="stage-bullets">
+              <li>
+                <span data-lang="zh-CN"><strong>多云目录与影子智能体盘点</strong>：<code>Agent 365</code> 纳管 <code>5,000 万+</code> 跨云智能体与 <strong>35 类本地客户端/CLI 影子智能体</strong>，开放 <strong>CSP 多租户管理（<code>Public Preview</code>）</strong>。</span>
+                <span data-lang="en"><strong>Multi-Cloud &amp; Shadow CLI Registry</strong>: <code>Agent 365</code> governs <code>50M+</code> multi-cloud agents plus <strong>35 shadow CLI/desktop classes</strong> with <strong>CSP Multi-Tenant Management (<code>Public Preview</code>)</strong>.</span>
+              </li>
+              <li>
+                <span data-lang="zh-CN"><strong>零信任运行时与未打标防泄漏</strong>：<code>Entra Agent ID</code>、<code>MCP Firewall</code> 与 <code>Purview</code> <strong>未手动打标敏感文件（Unlabeled DLP）</strong> 实时拦截。</span>
+                <span data-lang="en"><strong>Runtime Zero Trust &amp; Unlabeled DLP</strong>: <code>Entra Agent ID</code>, <code>MCP Firewall</code>, and <code>Purview</code> real-time blocking of sensitive uploads even when unlabeled.</span>
+              </li>
+              <li>
+                <span data-lang="zh-CN"><strong>结果导向 FinOps 与安全自治</strong>：<code>Agent 365 Cost Management &amp; Business Analytics</code> 按交付工时算账，联手 <code>Microsoft Perception</code>（<code>GA</code>）与 <code>MDASH</code> 主动防御。</span>
+                <span data-lang="en"><strong>Outcome FinOps &amp; Cyber Autonomy</strong>: <code>Agent 365 Cost Management &amp; Business Analytics</code> plus <code>Microsoft Perception</code> (<code>GA</code>) and <code>Codename MDASH</code>.</span>
+              </li>
+            </ul>
+          </div>
+          <div class="exec-card-foot">
+            <span class="demo-tag">
+              <span data-lang="zh-CN">🧮 内嵌计算器：Outcome vs Token 结果导向 AI FinOps 测算器</span>
+              <span data-lang="en">🧮 Embedded: Outcome-vs-Token AI FinOps Calculator</span>
+            </span>
+            <a class="card-jump-link" href="06-agent-governance.en.html">
+              <span data-lang="zh-CN">进入 06 · 全域智能体治理</span>
+              <span data-lang="en">Explore 06 · Enterprise Agent Governance</span>
+              <span aria-hidden="true">→</span>
+            </a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- SECTION 3: INTERACTIVE IGNITE 2026 RELEASE RADAR & PARTNER OPPORTUNITY MATRIX -->
+    <section id="release-radar" class="stage-section" aria-labelledby="radar-heading">
+      <div class="section-header">
+        <div>
+          <p class="eyebrow">IGNITE 2026 VERIFIED CATALOG · 33 CAPABILITIES</p>
+          <h2 id="radar-heading" class="section-title">
+            <span data-lang="zh-CN">发布机会雷达</span>
+            <span data-lang="en">Release Opportunity Radar</span>
+          </h2>
+          <p class="section-sub">
+            <span data-lang="zh-CN">
+              按<strong>架构阶段、发布成熟度（<code>GA / Public Preview / Frontier / Private Preview</code>）与合作伙伴销售动作</strong>三维组合过滤 Ignite 2026 已核验能力清单，快速生成客户高层对齐表。
+            </span>
+            <span data-lang="en">
+              Filter <strong>33 verified Ignite 2026 capabilities</strong> by architectural stage, release maturity (<code>GA / Public Preview / Frontier / Private Preview</code>), partner GTM motion, or keyword search.
+            </span>
+          </p>
+        </div>
+      </div>
+
+      <div class="workbench">
+        <div class="control-row">
+          <div class="field-group">
+            <label for="filter-stage">
+              <span data-lang="zh-CN">架构阶段 (Stage)</span>
+              <span data-lang="en">Architectural Stage</span>
+            </label>
+            <select id="filter-stage">
+              <option value="All" data-zh="全部阶段 (01–06)" data-en="All Stages (01–06)">全部阶段 (01–06)</option>
+              <option value="01" data-zh="01 · 统一智能体入口" data-en="01 · Unified Agent Entry">01 · 统一智能体入口</option>
+              <option value="02" data-zh="02 · 外部实时上下文" data-en="02 · Live World Context">02 · 外部实时上下文</option>
+              <option value="03" data-zh="03 · 企业数据本体" data-en="03 · Enterprise Data Ontology">03 · 企业数据本体</option>
+              <option value="04" data-zh="04 · 智能体工程运行时" data-en="04 · Agent Runtime Engineering">04 · 智能体工程运行时</option>
+              <option value="05" data-zh="05 · 推理基础设施优化" data-en="05 · Inference Infra Optimization">05 · 推理基础设施优化</option>
+              <option value="06" data-zh="06 · 全域智能体治理" data-en="06 · Enterprise Agent Governance">06 · 全域智能体治理</option>
+            </select>
+          </div>
+
+          <div class="field-group">
+            <label for="filter-maturity">
+              <span data-lang="zh-CN">成熟度状态 (Maturity)</span>
+              <span data-lang="en">Release Maturity</span>
+            </label>
+            <select id="filter-maturity">
+              <option value="All" data-zh="全部成熟度" data-en="All Maturities">全部成熟度</option>
+              <option value="GA" data-zh="GA · 正式商用" data-en="GA (Generally Available)">GA · 正式商用</option>
+              <option value="Public Preview" data-zh="Public Preview · 公开预览" data-en="Public Preview">Public Preview · 公开预览</option>
+              <option value="Frontier" data-zh="Frontier · 前沿计划" data-en="Frontier">Frontier · 前沿计划</option>
+              <option value="Private Preview" data-zh="Private Preview · 定向预览" data-en="Private Preview">Private Preview · 定向预览</option>
+            </select>
+          </div>
+
+          <div class="field-group">
+            <label for="filter-motion">
+              <span data-lang="zh-CN">伙伴打法 (Partner Motion)</span>
+              <span data-lang="en">Partner Motion</span>
+            </label>
+            <select id="filter-motion">
+              <option value="All" data-zh="全部伙伴机会" data-en="All Partner Motions">全部伙伴机会</option>
+              <option value="whitespace" data-zh="异构存量客户切入" data-en="Heterogeneous Estate Entry">异构存量客户切入</option>
+              <option value="context" data-zh="上下文与数据底座" data-en="Context &amp; Data">上下文与数据底座</option>
+              <option value="runtime" data-zh="智能体工程降本" data-en="Agent FinOps &amp; Runtime">智能体工程降本</option>
+              <option value="infra" data-zh="算力与网络现代化" data-en="GPU &amp; Infra">算力与网络现代化</option>
+              <option value="governance" data-zh="多云安全托管" data-en="Managed Governance">多云安全托管</option>
+            </select>
+          </div>
+
+          <div class="field-group">
+            <label for="filter-search">
+              <span data-lang="zh-CN">关键词检索 (Search)</span>
+              <span data-lang="en">Keyword Search</span>
+            </label>
+            <input type="search" id="filter-search" placeholder=" Standalone / Web IQ / Decision-1.1 / Kimi / CSP ...">
+          </div>
+        </div>
+
+        <div class="radar-status-bar">
+          <span id="radar-count-badge" class="count-pill">Showing 33 / 33 capabilities</span>
+          <button type="button" id="radar-reset-btn" class="ctrl-btn">
+            <span data-lang="zh-CN">↺ 重置全部筛选条件</span>
+            <span data-lang="en">↺ Reset All Filters</span>
+          </button>
+        </div>
+
+        <div class="table-wrap">
+          <table aria-label="Ignite 2026 Release Radar Matrix">
+            <thead>
+              <tr>
+                <th style="width:92px;">
+                  <span data-lang="zh-CN">阶段</span>
+                  <span data-lang="en">Stage</span>
+                </th>
+                <th style="width:240px;">
+                  <span data-lang="zh-CN">核心能力与产品组件</span>
+                  <span data-lang="en">Capability &amp; Component</span>
+                </th>
+                <th style="width:150px;">
+                  <span data-lang="zh-CN">成熟度标记</span>
+                  <span data-lang="en">Maturity</span>
+                </th>
+                <th>
+                  <span data-lang="zh-CN">关键技术指标与架构边界（已核验口径）</span>
+                  <span data-lang="en">Verified Technical Specs &amp; Architectural Guardrails</span>
+                </th>
+                <th style="width:205px;">
+                  <span data-lang="zh-CN">伙伴服务切入点</span>
+                  <span data-lang="en">Partner Motion</span>
+                </th>
+              </tr>
+            </thead>
+            <tbody id="radar-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="speaker-cue">
+        <div class="speaker-cue-title">
+          <span data-lang="zh-CN">🎙️ 发布雷达现场互动建议（口径红线提醒）</span>
+          <span data-lang="en">🎙️ Live Radar Cue (Critical Licensing &amp; Compliance Callouts)</span>
+        </div>
+        <p>
+          <span data-lang="zh-CN">
+            现场如伙伴问到商务与合规细节，可用搜索框秒查三条最易混淆的红线：① <strong>Copilot Standalone</strong>：<code>2026-12-01</code> 解除 M365 基础套件前置绑定，切勿与 <code>FY27 Q3 (2027年1–3月)</code> CSP 新购默认开启用量计费（PayGo）混为一谈；② <strong>Web IQ Health</strong>：虽对权威医疗源加权（<code>GA</code>），但<strong>不在 HIPAA BAA 覆盖范围内，严禁传入患者 PHI</strong>；③ <strong>Decision-1.1</strong>：全球标准版 <code>$0.042 / 1M</code> 输入 Token 且<strong>输出 Token 费用为 <code>$0</code></strong>，极适合高频门控与在线评测裁判。
+          </span>
+          <span data-lang="en">
+            Use the live search box during Q&amp;A to highlight three high-stakes guardrails: (1) <strong>Copilot Standalone</strong> removes the M365 base prerequisite on <code>Dec 1, 2026</code>—keep this strictly separate from <code>FY27 Q3 (Jan–Mar 2027)</code> default-on CSP PayGo; (2) <strong>Web IQ Health</strong> (<code>GA</code>) boosts authoritative clinical sources but is <strong>not covered by HIPAA BAA—never pass PHI</strong>; (3) <strong>Decision-1.1</strong> charges <code>$0.042 / 1M</code> input tokens and <strong><code>$0</code> output tokens</strong>, making high-QPS routing and LLM-as-a-Judge dramatically cheaper.
+          </span>
+        </p>
+      </div>
+    </section>
+
+    <!-- SECTION 4: PARTNER SA 60-MINUTE BRIEFING AGENDA & LAND-AND-EXPAND PLAYBOOK -->
+    <section id="briefing-playbook" class="stage-section" aria-labelledby="playbook-heading">
+      <div class="section-header">
+        <div>
+          <p class="eyebrow">THURSDAY PSA RUN-OF-SHOW · LAND-AND-EXPAND WEDGES</p>
+          <h2 id="playbook-heading" class="section-title">
+            <span data-lang="zh-CN">宣讲实战剧本</span>
+            <span data-lang="en">Briefing &amp; GTM Playbook</span>
+          </h2>
+          <p class="section-sub">
+            <span data-lang="zh-CN">
+              为下周四 60 分钟 Partner SA 专场分享编排的<strong>分钟级时间分配表（含 Diamond 脱敏环境与离线计算器穿插节奏）</strong>，以及三大客户架构切入方案（Entry Wedges）。
+            </span>
+            <span data-lang="en">
+              Minute-by-minute <strong>60-minute Thursday Partner SA run-of-show</strong> pairing each stage with live sanitized Diamond walkthroughs and calculators, followed by three high-win-rate Partner Entry Wedges.
+            </span>
+          </p>
+        </div>
+      </div>
+
+      <!-- 60-Minute Run-of-Show Table -->
+      <div class="table-wrap" style="margin-bottom:22px;">
+        <table aria-label="60-Minute Partner SA Briefing Agenda">
+          <thead>
+            <tr>
+              <th style="width:125px;">
+                <span data-lang="zh-CN">时段 (60 min)</span>
+                <span data-lang="en">Time Slot (60m)</span>
+              </th>
+              <th style="width:230px;">
+                <span data-lang="zh-CN">宣讲章节</span>
+                <span data-lang="en">Briefing Segment</span>
+              </th>
+              <th>
+                <span data-lang="zh-CN">核心交付观点（Takeaway）</span>
+                <span data-lang="en">Core Architect Takeaway</span>
+              </th>
+              <th style="width:290px;">
+                <span data-lang="zh-CN">现场互动演示 / 沙盘动作</span>
+                <span data-lang="en">Live Interactive Demo / Calculator</span>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="time-pill">00:00 – 05:00</span></td>
+              <td>
+                <strong>
+                  <span data-lang="zh-CN">00 · 全景架构蓝图</span>
+                  <span data-lang="en">00 · Architecture Blueprint</span>
+                </strong>
+              </td>
+              <td>
+                <span data-lang="zh-CN">立住主线：企业 AI 从孤立 Chatbot 升级为端到端六阶 Agentic System，锚定四大北极星指标。</span>
+                <span data-lang="en">Frame the shift from isolated chatbots to a 6-stage production Agentic System anchored on four north-star KPIs.</span>
+              </td>
+              <td>
+                <span data-lang="zh-CN">开启 <code>🎤 投屏模式</code>，点选本页 SVG 六阶节点串联端到端请求流</span>
+                <span data-lang="en">Enable <code>🎤 Stage Mode</code> &amp; click through SVG nodes <code>01–06</code></span>
+              </td>
+            </tr>
+            <tr>
+              <td><span class="time-pill">05:00 – 13:00</span></td>
+              <td>
+                <a href="01-copilot-entry.en.html">
+                  <strong>
+                    <span data-lang="zh-CN">01 · 统一智能体入口</span>
+                    <span data-lang="en">01 · Unified Agent Entry</span>
+                  </strong>
+                </a>
+              </td>
+              <td>
+                <span data-lang="zh-CN">拆解 <code>Chat / Cowork / Autopilot / Code</code> 边界，讲透 <code>12/01 Copilot Standalone</code> 免拆迁切入异构办公客户。</span>
+                <span data-lang="en">Contrast the 4 Copilot modes and position <code>Dec 1 Copilot Standalone</code> for no-rip-and-replace whitespace entry.</span>
+              </td>
+              <td>
+                <span data-lang="zh-CN">演示异构飞书/钉钉/Salesforce 经 <code>MCP + APIM + Entra OBO</code> 读写分离架构</span>
+                <span data-lang="en">Walk through heterogeneous <code>MCP + APIM + Entra OBO</code> read/write split</span>
+              </td>
+            </tr>
+            <tr>
+              <td><span class="time-pill">13:00 – 22:00</span></td>
+              <td>
+                <a href="02-web-iq-context.en.html">
+                  <strong>
+                    <span data-lang="zh-CN">02 · 外部实时上下文</span>
+                    <span data-lang="en">02 · Live World Context</span>
+                  </strong>
+                </a>
+              </td>
+              <td>
+                <span data-lang="zh-CN">阐述有效上下文四原则，重点深挖 <code>Web IQ</code>（<code>Auto Advanced</code>、<code>Places/Weather/Commerce</code> 与 <code>10K Scopes</code>）。</span>
+                <span data-lang="en">Unpack the 4 principles of context engineering and deep-dive into <code>Web IQ</code> (<code>Auto Advanced</code>, domains &amp; <code>10K Scopes</code>).</span>
+              </td>
+              <td>
+                <span data-lang="zh-CN">现场切换 <code>Web IQ Scopes</code> 黑白名单与 <code>Retriever-1 (0.76s)</code> 检索对比</span>
+                <span data-lang="en">Run live <code>Web IQ Scopes</code> allow/block &amp; <code>Retriever-1</code> latency sim</span>
+              </td>
+            </tr>
+            <tr>
+              <td><span class="time-pill">22:00 – 32:00</span></td>
+              <td>
+                <a href="03-fabric-ontology.en.html">
+                  <strong>
+                    <span data-lang="zh-CN">03 · 企业数据本体</span>
+                    <span data-lang="en">03 · Enterprise Data Ontology</span>
+                  </strong>
+                </a>
+              </td>
+              <td>
+                <span data-lang="zh-CN">从公开域外部情报平滑衔接至企业内域主数据：<code>OneLake 零拷贝 + Salesforce Data 360 + Fabric IQ Ontology + HorizonDB</code>。</span>
+                <span data-lang="en">Bridge from external signals to internal enterprise truth via <code>OneLake Zero-Copy + Fabric IQ Ontology + HorizonDB</code>.</span>
+              </td>
+              <td>
+                <span data-lang="zh-CN">演练<strong>跨国智慧显示制造企业 [Diamond 脱敏沙盘]</strong> 本体拦截压货与毛利测算滑块</span>
+                <span data-lang="en">Demo <strong>Sanitized Diamond Smart Display</strong> ontology margin &amp; rebate guardrails</span>
+              </td>
+            </tr>
+            <tr>
+              <td><span class="time-pill">32:00 – 42:00</span></td>
+              <td>
+                <a href="04-foundry-engineering.en.html">
+                  <strong>
+                    <span data-lang="zh-CN">04 · 智能体工程运行时</span>
+                    <span data-lang="en">04 · Agent Runtime Engineering</span>
+                  </strong>
+                </a>
+              </td>
+              <td>
+                <span data-lang="zh-CN">厘清 <code>Foundry PaaS / Foundry on AKS / ACA / AKS Agent Sandbox</code> 四维选型，吃透 <code>Decision-1.1</code> 三段式门控。</span>
+                <span data-lang="en">Clarify 4-way runtime selection (<code>Managed / AKS / ACA / Sandbox</code>) and <code>Decision-1.1</code> calibrated gating.</span>
+              </td>
+              <td>
+                <span data-lang="zh-CN">拖动 <code>Decision-1.1</code> 置信度阈值滑块，实时对比零输出费成本节省幅度</span>
+                <span data-lang="en">Adjust <code>Decision-1.1</code> thresholds to quantify zero-output-fee cost savings</span>
+              </td>
+            </tr>
+            <tr>
+              <td><span class="time-pill">42:00 – 52:00</span></td>
+              <td>
+                <a href="05-ai-infra-optimization.en.html">
+                  <strong>
+                    <span data-lang="zh-CN">05 · 推理基础设施优化</span>
+                    <span data-lang="en">05 · Inference Infra Optimization</span>
+                  </strong>
+                </a>
+              </td>
+              <td>
+                <span data-lang="zh-CN">双场景硬核拆解：场景 A 调优 <code>TTFT/TPOT</code>（PD 分离 + Prefix KV）；场景 B 精算 <code>DeepSeek/Kimi/视频 DiT</code> 显存与 <code>RoCEv2/IB</code> 网络。</span>
+                <span data-lang="en">Dual-scenario physics: Scenario A <code>TTFT/TPOT</code> (PD split + KV cache); Scenario B <code>DeepSeek/Kimi/Video DiT</code> VRAM &amp; <code>RoCEv2/IB</code>.</span>
+              </td>
+              <td>
+                <span data-lang="zh-CN">实测 <code>671B MoE / 视频 DiT</code> GPU 显存计算器与多机无损网络推荐拓扑</span>
+                <span data-lang="en">Run live <code>671B MoE / Video DiT</code> GPU VRAM &amp; multi-node RoCEv2/IB calculator</span>
+              </td>
+            </tr>
+            <tr>
+              <td><span class="time-pill">52:00 – 60:00</span></td>
+              <td>
+                <a href="06-agent-governance.en.html">
+                  <strong>
+                    <span data-lang="zh-CN">06 · 全域智能体治理 + Q&amp;A</span>
+                    <span data-lang="en">06 · Enterprise Agent Governance + Q&amp;A</span>
+                  </strong>
+                </a>
+              </td>
+              <td>
+                <span data-lang="zh-CN">收口于 <code>Agent 365</code>（35 类影子 CLI + CSP 多租户）、未打标 DLP、结果导向 FinOps 与 <code>Perception</code> 安全闭环。</span>
+                <span data-lang="en">Close with <code>Agent 365</code> (35 shadow CLIs + CSP multi-tenant), Unlabeled DLP, Outcome FinOps, and <code>Perception</code>.</span>
+              </td>
+              <td>
+                <span data-lang="zh-CN">演示 <code>Outcome vs Token</code> ROI 算账模型 + 发布雷达现场秒查答疑</span>
+                <span data-lang="en">Show <code>Outcome vs Token</code> ROI calculator + live Release Radar Q&amp;A</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 3 High-Win-Rate Partner Entry Wedges -->
+      <div class="grid-3">
+        <div class="card wedge-card">
+          <span class="badge badge-ga" style="margin-bottom:10px;">WEDGE 01 · WHITESPACE ENTRY</span>
+          <h3>
+            <span data-lang="zh-CN">异构客户 Copilot Standalone 轻量化切入</span>
+            <span data-lang="en">Whitespace Copilot Standalone Wedge</span>
+          </h3>
+          <p>
+            <span data-lang="zh-CN">面向主力协同在飞书、钉钉、WPS、Google Workspace 或重度使用 Salesforce 的空白大中型客户，打破“先迁全套 M365 才能谈 AI”的历史僵局。</span>
+            <span data-lang="en">Target mid-market and enterprise whitespace accounts running Feishu, DingTalk, WPS, Google Workspace, or Salesforce without requiring an upfront M365 suite migration.</span>
+          </p>
+          <div class="wedge-step">
+            <strong>
+              <span data-lang="zh-CN">🎯 首期切入（2–4 周上线）</span>
+              <span data-lang="en">🎯 Day 1–30 Land</span>
+            </strong>
+            <span data-lang="zh-CN">借 <code>2026-12-01</code> 解耦窗口交付 <code>Copilot Standalone + Cowork</code>，通过 <code>Salesforce/D365 Plugins + Azure APIM + Entra OBO</code> 构建只读快查与人工确认回写网关。</span>
+            <span data-lang="en">Deploy <code>Copilot Standalone + Cowork</code> (post-Dec 1) wired to legacy IM/CRM/ERP through <code>Business Plugins + Azure APIM + Entra OBO</code> with human-confirmed writes.</span>
+          </div>
+          <div class="wedge-step">
+            <strong>
+              <span data-lang="zh-CN">🚀 二期扩展（60–90 天深耕）</span>
+              <span data-lang="en">🚀 Day 31–90 Expand</span>
+            </strong>
+            <span data-lang="zh-CN">将高频跨部门流程升级为 <code>Autopilot</code> 常驻数字员工与 <code>Code</code> 业务看板，并顺势注入 <code>Entra Agent ID + Agent 365</code> 统一身份治理服务。</span>
+            <span data-lang="en">Promote recurring cross-team workflows to <code>Autopilot</code> delegates and <code>Code</code> apps inside <code>Copilot Managed Runtime</code>, expanding into <code>Agent 365</code> governance.</span>
+          </div>
+        </div>
+
+        <div class="card wedge-card wedge-2">
+          <span class="badge badge-preview" style="margin-bottom:10px;">WEDGE 02 · DUAL CONTEXT LOOP</span>
+          <h3>
+            <span data-lang="zh-CN">存量数据客户 Web IQ + Fabric Ontology 决策闭环</span>
+            <span data-lang="en">Web IQ + Fabric Ontology Closed-Loop Wedge</span>
+          </h3>
+          <p>
+            <span data-lang="zh-CN">面向已拥有 Databricks、Snowflake、SAP 或多国渠道数据孤岛的制造、零售与出海客户，解决“Agent 既看不见外部突变、又算不准内部毛利”的顽疾。</span>
+            <span data-lang="en">Target manufacturing, retail, and global supply-chain accounts struggling with fragmented Databricks/Salesforce/ERP silos and blind external risk signals.</span>
+          </p>
+          <div class="wedge-step">
+            <strong>
+              <span data-lang="zh-CN">🎯 首期切入（参考 Diamond 脱敏渠道沙盘）</span>
+              <span data-lang="en">🎯 Day 1–30 Land (Sanitized Diamond Pattern)</span>
+            </strong>
+            <span data-lang="zh-CN">用 <code>OneLake Shortcuts / Salesforce Data 360 零拷贝</code> 挂载存量表，叠加 <code>Web IQ (Places/Weather/Commerce + Scopes)</code> 接入外部港口与竞品价格异动，构建 10 实体 <code>Fabric IQ Ontology</code>。</span>
+            <span data-lang="en">Mount existing tables via <code>OneLake Zero-Copy / SF Data 360</code>, fuse live external signals via <code>Web IQ + 10K Scopes</code>, and model a governed <code>Fabric IQ Ontology</code>.</span>
+          </div>
+          <div class="wedge-step">
+            <strong>
+              <span data-lang="zh-CN">🚀 二期扩展（Translytical 行动闭环）</span>
+              <span data-lang="en">🚀 Day 31–90 Expand</span>
+            </strong>
+            <span data-lang="zh-CN">把统一度量同步开放给 Excel、M365 Copilot 及外部 AI 客户端，并基于 <code>HorizonDB + Rayfin / Fabric Apps</code> 落地调拨与返利审批事务回写。</span>
+            <span data-lang="en">Expose identical semantic metrics across Excel, Copilot, and ChatGPT/Claude, then build translytical write-back apps on <code>HorizonDB + Rayfin</code>.</span>
+          </div>
+        </div>
+
+        <div class="card wedge-card wedge-3">
+          <span class="badge badge-frontier" style="margin-bottom:10px;">WEDGE 03 · RUNTIME &amp; INFRA FINOPS</span>
+          <h3>
+            <span data-lang="zh-CN">高并发 Agent 客户 Decision-1.1 + GPU/RoCE 推理降本</span>
+            <span data-lang="en">Decision-1.1 + GPU/RoCE Inference FinOps Wedge</span>
+          </h3>
+          <p>
+            <span data-lang="zh-CN">面向日调用量百万级以上的数字原生企业、ISV 与金融政企客户，直击“全量调千亿推理模型烧穿预算、长上下文 TTFT 飙升、自建多机卡死在网络尾延迟”三大痛点。</span>
+            <span data-lang="en">Target high-concurrency ISVs, digital natives, and regulated enterprises hitting frontier token burn, long-prompt TTFT spikes, or multi-GPU scaling bottlenecks.</span>
+          </p>
+          <div class="wedge-step">
+            <strong>
+              <span data-lang="zh-CN">🎯 首期切入（大小模型级联与工程调优）</span>
+              <span data-lang="en">🎯 Day 1–30 Land</span>
+            </strong>
+            <span data-lang="zh-CN">在 Foundry 前置插入 <code>Microsoft-Decision-1.1</code>（<code>$0</code> 输出费三段式置信度门控）与 <code>Agent Optimizer</code>，将 60%+ 路由判别与评测流量从昂贵推理大模型卸载。</span>
+            <span data-lang="en">Insert <code>Microsoft-Decision-1.1</code> (<code>$0</code> output fee 3-band gating) + <code>Agent Optimizer</code> ahead of frontier models to offload 60%+ of routing and judge calls.</span>
+          </div>
+          <div class="wedge-step">
+            <strong>
+              <span data-lang="zh-CN">🚀 二期扩展（开放模型托管与专属 GPU 现代底座）</span>
+              <span data-lang="en">🚀 Day 31–90 Expand</span>
+            </strong>
+            <span data-lang="zh-CN">按并发拐点组合 <code>Fireworks / Baseten / fal</code> 托管端点与客户自有 <code>Foundry on AKS</code>（落地 <code>PD 分离 + Prefix KV + RoCEv2/IB</code> 无损网络），并签约 <code>Agent 365 CSP</code> 多租户托管年单。</span>
+            <span data-lang="en">Rightsize <code>Fireworks / Baseten / fal</code> managed endpoints vs customer-governed <code>Foundry on AKS</code> (<code>PD split + Prefix KV + RoCEv2/IB</code>) wrapped in an <code>Agent 365 CSP</code> managed contract.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer Chapter Pager -->
+      <nav class="chapter-pager" aria-label="Chapter Pagination">
+        <a class="pager-card" href="#blueprint">
+          <span class="pager-dir">
+            <span data-lang="zh-CN">当前总览 · HUB 00</span>
+            <span data-lang="en">CURRENT HUB · 00</span>
+          </span>
+          <span class="pager-name">
+            <span data-lang="zh-CN">↑ 返回全景参考架构图</span>
+            <span data-lang="en">↑ Back to Reference Architecture</span>
+          </span>
+        </a>
+        <a class="pager-card next" href="01-copilot-entry.en.html">
+          <span class="pager-dir">
+            <span data-lang="zh-CN">开启第一阶 · STAGE 01</span>
+            <span data-lang="en">NEXT CHAPTER · STAGE 01</span>
+          </span>
+          <span class="pager-name">
+            <span data-lang="zh-CN">下一章 · 01 统一智能体入口 →</span>
+            <span data-lang="en">Next · 01 Unified Agent Entry →</span>
+          </span>
+        </a>
+      </nav>
+    </section>
+  </main>
+
+  <!-- Page-Specific Interactive Controller (Blueprint Inspector + 33-Item Release Radar) -->
+  <script>
+    (function () {
+      "use strict";
+
+      /* ----------------------------------------------------------------------
+         1. Interactive 6-Stage Architecture Blueprint Inspector Data
+         ---------------------------------------------------------------------- */
+      const STAGE_INSPECTOR_DATA = {
+        "01": {
+          step: "STAGE 01",
+          href: "01-copilot-entry.html",
+          titleZh: "统一智能体入口",
+          titleEn: "Unified Agent Entry",
+          badges: [
+            { cls: "badge-ga", label: "GA" },
+            { cls: "badge-frontier", label: "Frontier" },
+            { cls: "badge-preview", label: "Public Preview" }
+          ],
+          questionZh: "如何在不推倒客户现有飞书、钉钉、WPS、Salesforce 或存量 ERP 的前提下，快速抢占企业统一的 AI 工作与智能体调度总入口？",
+          questionEn: "How do we capture the enterprise-wide AI front door across chat, multi-step delegation, autonomous work, and app creation—without forcing a Day-1 M365 or ERP rip-and-replace?",
+          releasesZh: [
+            "<strong>Copilot Standalone</strong>：<code>2026-12-01</code> 起解除合资格 M365 基础许可证前置要求（严格区分于 <code>FY27 Q3</code> CSP 默认 PayGo）",
+            "<strong>四大协同模式</strong>：<code>Chat</code>、<code>Cowork</code>（<code>GA</code>，~80% 财富 500 强采用 + <code>Office in Copilot</code>）、<code>Autopilot</code>（<code>Frontier</code> + <code>Entra Agent ID</code>）、<code>Code</code>（<code>Frontier</code> / <code>GA</code> 受控运行时）",
+            "<strong>生态嵌入与插件</strong>：<code>Copilot SDK 2.0</code>（<code>GA</code> 原生 Rust 6 语言运行时）+ <code>D365 (GA) / Salesforce (Preview)</code> 业务插件"
+          ],
+          releasesEn: [
+            "<strong>Copilot Standalone</strong>: Removes qualifying M365 base-license prerequisite on <code>Dec 1, 2026</code> (distinct from <code>FY27 Q3</code> default-on CSP PayGo)",
+            "<strong>Four Operating Modes</strong>: <code>Chat</code>, <code>Cowork</code> (<code>GA</code>, ~80% F500 + <code>Office in Copilot</code>), <code>Autopilot</code> (<code>Frontier</code> + <code>Entra Agent ID</code>), and <code>Code</code> (<code>Frontier</code> on <code>GA</code> Managed Runtime)",
+            "<strong>Extensibility</strong>: <code>Copilot SDK 2.0</code> (<code>GA</code> native Rust runtime for 6 languages) + <code>D365 (GA) &amp; Salesforce (Preview)</code> Business Plugins"
+          ],
+          motionZh: "以“No Day-1 Rip-and-Replace”切入空白异构客户：先落地 Copilot Standalone + Cowork，并用 Azure APIM + Functions + Entra ID OBO 封装最小权限读写分离连接器（写操作强制人工确认），二期扩展至 Autopilot 与 Studio 定制智能体。",
+          motionEn: "Lead with 'No Day-1 Rip-and-Replace' in whitespace accounts: land Copilot Standalone + Cowork wired to Feishu/DingTalk/Salesforce via Azure APIM + Functions + Entra ID OBO (explicit human confirmation on writes), then expand into Autopilot delegates.",
+          demoNoteZh: "🎛️ 章节内含：四大工作模式选型矩阵 & 异构系统 Entra OBO 桥接架构器",
+          demoNoteEn: "🎛️ Includes: 4-Mode Selector Matrix & Heterogeneous Entra OBO Connector Blueprint"
+        },
+        "02": {
+          step: "STAGE 02",
+          href: "02-web-iq-context.html",
+          titleZh: "外部实时上下文",
+          titleEn: "Live World Context",
+          badges: [
+            { cls: "badge-ga", label: "GA" },
+            { cls: "badge-preview", label: "Public Preview" },
+            { cls: "badge-private", label: "Private Preview" }
+          ],
+          questionZh: "大模型推理能力趋同后，如何消除静态知识过期、整页 HTML 噪声淹没（Lost-in-the-Middle）与不可信外网信源污染，构建高信噪比实时世界上下文？",
+          questionEn: "As foundation models converge, how do we eliminate stale cutoffs, raw HTML token bloat, and untrusted web sources to feed agents high-SNR, scoped live world context?",
+          releasesZh: [
+            "<strong>Microsoft IQ</strong>（<code>GA</code> 品牌整合，零新增独立 SKU）：统筹 Work IQ (19.5 EB)、Web IQ、Fabric IQ、Foundry IQ 与 Business Plugins",
+            "<strong>Web IQ</strong>（<code>GA</code> 取代 Grounding with Bing）：<code>Auto / Auto Advanced</code> 多跳重写、<code>Places</code>（2.075 亿+ POI）、<code>Weather</code>（14 万站）、<code>Commerce</code>（400 亿+报价 <code>Private Preview</code>）与免费 <code>10K</code> 黑白名单 <code>Scopes</code> + 远程 MCP",
+            "<strong>Foundry IQ 检索跃升</strong>：<code>Knowledge Graph</code>（<code>Preview</code>，召回率 <code>64.2% → 92.0%</code>）与 <code>Microsoft-Retriever-1</code>（<code>Public Preview</code>，中位延迟 <code>5.09s → 0.76s</code>）"
+          ],
+          releasesEn: [
+            "<strong>Microsoft IQ</strong> (<code>GA</code> umbrella, zero new SKU): Unifies Work IQ (19.5 EB), Web IQ, Fabric IQ, Foundry IQ, and MCP Business Plugins",
+            "<strong>Web IQ</strong> (<code>GA</code> replacing Grounding with Bing): <code>Auto / Auto Advanced</code>, <code>Places</code> (207.5M+ POIs), <code>Weather</code> (140K stations), <code>Commerce</code> (40B+ offers <code>Private Preview</code>), free <code>10K</code> allow/block <code>Scopes</code> &amp; remote MCP",
+            "<strong>Foundry IQ Retrieval</strong>: <code>Knowledge Graph</code> (<code>Preview</code>, recall <code>64.2% → 92.0%</code>) &amp; <code>Microsoft-Retriever-1</code> (<code>Public Preview</code>, median latency <code>5.09s → 0.76s</code>)"
+          ],
+          motionZh: "替代客户脆弱的自建爬虫或缺乏合规边界的第三方搜索 API：为金融投研、出海选址、供应链预警与电商比价智能体配置 Web IQ Scopes 企业白名单 + Zero Query Logging（注意 Health 不含 HIPAA BAA，严禁传 PHI）。",
+          motionEn: "Replace fragile custom scrapers and un-scoped search APIs: configure Web IQ Scopes (10K allow/block rules with separate Entra role) + Zero Query Logging for market research, supply chain, and commerce agents (never send PHI to Health).",
+          demoNoteZh: "🎛️ 章节内含：Web IQ Scopes 冲突裁决与 Auto Advanced 多跳检索模拟器",
+          demoNoteEn: "🎛️ Includes: Web IQ Scopes Rule Evaluator & Auto Advanced Multi-Hop Simulator"
+        },
+        "03": {
+          step: "STAGE 03",
+          href: "03-fabric-ontology.html",
+          titleZh: "企业数据本体",
+          titleEn: "Enterprise Data Ontology",
+          badges: [
+            { cls: "badge-ga", label: "GA" },
+            { cls: "badge-preview", label: "Public Preview" }
+          ],
+          questionZh: "如何不搬运 PB 级存量数仓与跨云业务库，将模型外的企业归档历史、ERP/CRM 交易与实时流转化为全公司所有智能体共享的零幻觉业务本体与行动闭环？",
+          questionEn: "Without copying petabytes across clouds, how do we turn out-of-model enterprise archives, operational DBs, and streams into a single governed semantic ontology with transactional write-back?",
+          releasesZh: [
+            "<strong>OneLake 跨云零拷贝</strong>：Shortcuts、Mirrored Unity Catalog 以及全新 <code>Salesforce Data 360</code> 双向零拷贝（<code>GA</code>）",
+            "<strong>Fabric IQ &amp; Ontology 跨智能体触达</strong>：同一套实体、关系、度量与规则面向 M365 Copilot、Excel、Foundry 及 <code>ChatGPT / Claude</code>（<code>Preview</code>）开放",
+            "<strong>Translytical 数据应用底座</strong>：<code>Rayfin &amp; Fabric Apps</code>（<code>GA</code>）、<code>Azure HorizonDB</code>（<code>GA</code>）/ <code>Fabric HorizonDB</code>（<code>Preview</code>）与 <code>Database Hub / Agents</code>（<code>GA</code>）"
+          ],
+          releasesEn: [
+            "<strong>OneLake Cross-Cloud Zero-Copy</strong>: Shortcuts, Mirrored Unity Catalog, and <code>Salesforce Data 360</code> Bi-Directional Zero-Copy (<code>GA</code>)",
+            "<strong>Fabric IQ &amp; Ontology Cross-Agent Reach</strong>: Identical governed metrics and action rules across M365 Copilot, Excel, Foundry, and <code>ChatGPT / Claude</code> (<code>Preview</code>)",
+            "<strong>Translytical Apps &amp; DBs</strong>: <code>Rayfin &amp; Fabric Apps</code> (<code>GA</code>), <code>Azure HorizonDB</code> (<code>GA</code>) / <code>Fabric HorizonDB</code> (<code>Preview</code>), and <code>Database Hub &amp; Agents</code> (<code>GA</code>)"
+          ],
+          motionZh: "依托【跨国智慧显示制造企业 · 全球多级渠道智能沙盘（Diamond 脱敏环境）】与 Zava Databricks×Fabric 零拷贝共生样板，主打“不拆客户原有 Databricks/Salesforce，用 OneLake + Ontology 统一业务口径并落地 HorizonDB 回写应用”。",
+          motionEn: "Anchor on the [Global Smart Display Manufacturer · Omnichannel Control Tower (Sanitized Diamond Case)] and Databricks×Fabric zero-copy coexistence pattern: keep existing engines intact while unifying semantics via Ontology and closing action loops via HorizonDB.",
+          demoNoteZh: "💎 章节内含：跨国智慧显示制造企业 [Diamond 脱敏环境] 渠道毛利与压货风控模拟器",
+          demoNoteEn: "💎 Includes: Global Smart Display [Sanitized Diamond Case] Margin & Rebate Guardrail Simulator"
+        },
+        "04": {
+          step: "STAGE 04",
+          href: "04-foundry-engineering.html",
+          titleZh: "智能体工程运行时",
+          titleEn: "Agent Runtime Engineering",
+          badges: [
+            { cls: "badge-ga", label: "GA" },
+            { cls: "badge-preview", label: "Public Preview" }
+          ],
+          questionZh: "如何跨越 Agent 从 Demo 到生产的工程鸿沟——实现线上自动调优，按隔离/网络合规精准选型运行时（PaaS vs AKS vs ACA vs Sandbox），并用确定性小模型替代昂贵大模型做高频判别？",
+          questionEn: "How do we bridge the PoC-to-production chasm with continuous self-optimization, right-sized runtime isolation (PaaS vs AKS vs ACA vs Sandbox), and deterministic low-cost decision gating?",
+          releasesZh: [
+            "<strong>持续优化与强化训练闭环</strong>：<code>Agent Optimizer &amp; Production Insights</code>（<code>GA</code>）+ <code>Managed &amp; Programmed Training</code>（<code>Public Preview</code>）",
+            "<strong>四维托管与硬隔离沙箱</strong>：<code>Foundry Agent Service</code>、<code>AKS AI Manager for Foundry (Foundry on AKS)</code>（<code>Preview</code>）、<code>ACA Dynamic Sessions</code> 与 <code>AKS Agent Sandbox + Pod Snapshot</code>（<code>Preview</code>）",
+            "<strong>专精决策与编码模型</strong>：<code>Microsoft-Decision-1.1</code>（<code>GA</code>，<code>78.8%</code> 准确率、<code>$0.042/1M</code> 输入、<code>$0</code> 输出费）、<code>MAI-Code-2 / Flash</code>（<code>GA</code>）与 <code>GPT-6.2 Sol/Astra</code>（<code>GA</code>）"
+          ],
+          releasesEn: [
+            "<strong>Continuous Optimization Loop</strong>: <code>Agent Optimizer &amp; Production Insights</code> (<code>GA</code>) + <code>Managed &amp; Programmed Training</code> (<code>Public Preview</code>)",
+            "<strong>4-Way Runtime &amp; Sandboxing</strong>: <code>Foundry Agent Service</code>, <code>AKS AI Manager for Foundry (Foundry on AKS)</code> (<code>Preview</code>), <code>ACA Dynamic Sessions</code>, and <code>AKS Agent Sandbox + Pod Snapshot</code> (<code>Preview</code>)",
+            "<strong>Decision &amp; Coding Models</strong>: <code>Microsoft-Decision-1.1</code> (<code>GA</code>, <code>78.8%</code> accuracy, <code>$0.042/1M</code> input, <code>$0</code> output), <code>MAI-Code-2 / Flash</code> (<code>GA</code>), and <code>GPT-6.2 Sol/Astra</code> (<code>GA</code>)"
+          ],
+          motionZh: "为客户设计两级工程降本架构：① 用 Decision-1.1 三段式置信度阈值（自动执行 / 升级复核 / 转人工）承担 60%–80% 在线路由与评测裁判；② 对数据驻留或高危代码/浏览器执行场景落地 Foundry on AKS + Kata microVM Agent Sandbox。",
+          motionEn: "Deliver a two-tier engineering motion: (1) insert Decision-1.1 3-band confidence gating (Act / Confirm / Escalate) to slash frontier model spend on routing and evals; (2) deploy Foundry on AKS + Kata microVM Agent Sandboxes for VNet-governed code/browser agents.",
+          demoNoteZh: "🎛️ 章节内含：Decision-1.1 三段式置信度门控模拟器 & 四维运行时选型向导",
+          demoNoteEn: "🎛️ Includes: Decision-1.1 Confidence Gating Simulator & 4-Way Runtime Sizing Wizard"
+        },
+        "05": {
+          step: "STAGE 05",
+          href: "05-ai-infra-optimization.html",
+          titleZh: "推理基础设施优化",
+          titleEn: "Inference Infra Optimization",
+          badges: [
+            { cls: "badge-ga", label: "GA" },
+            { cls: "badge-preview", label: "Public Preview" }
+          ],
+          questionZh: "面对长上下文 Token API 调用与开源 MoE / 视频生成模型自建部署两大硬核场景，如何从物理层面调优 TTFT/TPOT、精算 GPU 显存容量并消除多机网络通信瓶颈？",
+          questionEn: "Across high-concurrency Token APIs and dedicated open-weight MoE / video DiT GPU deployments, how do we engineer TTFT/TPOT latency, exact HBM VRAM capacity, and lossless multi-node fabrics?",
+          releasesZh: [
+            "<strong>Foundry 开放与视频模型生态</strong>：<code>Fireworks AI</code>（<code>DeepSeek V3.2/V4 Pro</code>、<code>Kimi K2.5/K2.6</code>）、<code>Baseten</code>（<code>Preview</code>：<code>Kimi-K3</code>、<code>DeepSeek V4.1-Flash</code>、<code>GLM 5.3</code>）与 <code>fal</code>（<code>Preview</code>：<code>Kling v3 Pro</code>、<code>LTX-2.5 Pro</code>、<code>MiniMax H3 Max</code>）",
+            "<strong>自研芯片与异构算力</strong>：<code>Azure Maia 300</code>（<code>GA</code>，每瓦吞吐 <code>+40%</code>）与 <code>Azure Cobalt 200</code>（<code>GA</code>，单核最高 <code>+50%</code> 卸载非 GPU 沙箱与 MCP I/O）",
+            "<strong>GPU 集群与存量现代化</strong>：<code>AKS Managed GPU Node Pools</code>（<code>GA</code>）、<code>NVIDIA GB200/GB300</code>（<code>Preview</code>）、<code>VR72</code> 多卡机密计算与 <code>Azure Catalyst</code>（<code>GA</code>）"
+          ],
+          releasesEn: [
+            "<strong>Foundry Open &amp; Video Partners</strong>: <code>Fireworks AI</code> (<code>DeepSeek V3.2/V4 Pro</code>, <code>Kimi K2.5/K2.6</code>), <code>Baseten</code> (<code>Preview</code>: <code>Kimi-K3</code>, <code>DeepSeek V4.1-Flash</code>, <code>GLM 5.3</code>), and <code>fal</code> (<code>Preview</code>: <code>Kling v3 Pro</code>, <code>LTX-2.5 Pro</code>, <code>MiniMax H3 Max</code>)",
+            "<strong>Custom Silicon &amp; Host Co-Design</strong>: <code>Azure Maia 300</code> (<code>GA</code>, <code>+40%</code> fleet tokens/watt) &amp; <code>Azure Cobalt 200</code> Arm64 VMs (<code>GA</code>, up to <code>+50%</code> CPU perf)",
+            "<strong>GPU Fleet &amp; Modernization</strong>: <code>AKS Managed GPU Node Pools</code> (<code>GA</code>), <code>NVIDIA GB200/GB300</code> (<code>Preview</code>), <code>VR72</code> Confidential Multi-GPU &amp; <code>Azure Catalyst</code> (<code>GA</code>)"
+          ],
+          motionZh: "用两把定量标尺赢得客户 Infra 团队信任：场景 A 用 PD 分离 + Prefix KV 命中率优化 API 首字与流式延迟；场景 B 为 DeepSeek 671B MoE（全专家驻留 HBM）与视频 DiT（时空 Token 激活暴涨）精算 H200/B200/GB300 卡数及 NVLink vs InfiniBand / RoCEv2 无损网络。",
+          motionEn: "Win infra stakeholders with quantitative engineering: optimize Token API TTFT/TPOT via PD disaggregation + Prefix KV locality, and size exact H200/B200/GB300 counts + NVLink vs InfiniBand/RoCEv2 fabrics for MoE all-expert weights and video DiT activations.",
+          demoNoteZh: "🧮 章节内含：Token API TTFT/TPOT 模拟器 + MoE/视频模型 GPU 显存与 RoCEv2/IB 计算器",
+          demoNoteEn: "🧮 Includes: Token API TTFT/TPOT Simulator + MoE/Video GPU VRAM & RoCEv2/IB Calculator"
+        },
+        "06": {
+          step: "STAGE 06",
+          href: "06-agent-governance.html",
+          titleZh: "全域智能体治理",
+          titleEn: "Enterprise Agent Governance",
+          badges: [
+            { cls: "badge-ga", label: "GA" },
+            { cls: "badge-preview", label: "Public Preview" },
+            { cls: "badge-frontier", label: "Frontier" }
+          ],
+          questionZh: "当企业跨云与员工桌面涌现数以千计的官方及影子 CLI 智能体时，如何向 CIO、CISO 和 CFO 交出“看得全、管得住未打标敏感数据、算得清业务产出、防得住新型攻击”的终极答卷？",
+          questionEn: "When thousands of official multi-cloud and local shadow CLI agents proliferate, how do CIOs, CISOs, and CFOs enforce unified discovery, unlabeled DLP, outcome-based ROI, and autonomous cyber defense?",
+          releasesZh: [
+            "<strong>Agent 365 全域纳管与伙伴多租户</strong>：统一注册 <code>5,000 万+</code> 跨云智能体 + <strong>35 类本地客户端/CLI 影子智能体</strong>（<code>GA</code>），推出 <strong>CSP 多租户管理（<code>Public Preview</code>）</strong>",
+            "<strong>零信任工具墙与未打标防泄漏</strong>：<code>Entra Agent ID</code>、<code>Dynamic Agent Risk</code>、<code>MCP Firewall</code>（<code>Preview</code>）与 <code>Purview Unlabeled DLP</code>（<code>GA</code> 拦截未手动打标敏感文件）",
+            "<strong>结果算账与安全智能体</strong>：<code>Agent 365 Cost Management (Preview) &amp; Business Analytics (Frontier)</code> + <code>Microsoft Perception</code>（<code>GA</code>）与 <code>Codename MDASH</code>（<code>Preview</code>）"
+          ],
+          releasesEn: [
+            "<strong>Agent 365 Unified Registry &amp; CSP</strong>: Governs <code>50M+</code> multi-cloud agents + <strong>35 local shadow CLI/client classes</strong> (<code>GA</code>) with <strong>CSP Multi-Tenant Management (<code>Public Preview</code>)</strong>",
+            "<strong>Runtime Zero Trust &amp; Unlabeled DLP</strong>: <code>Entra Agent ID</code>, <code>Dynamic Agent Risk</code>, <code>MCP Firewall</code> (<code>Preview</code>), and <code>Purview Unlabeled DLP</code> (<code>GA</code>)",
+            "<strong>Outcome FinOps &amp; Cyber Autonomy</strong>: <code>Agent 365 Cost Management (Preview) &amp; Business Analytics (Frontier)</code> + <code>Microsoft Perception</code> (<code>GA</code>) &amp; <code>Codename MDASH</code> (<code>Preview</code>)"
+          ],
+          motionZh: "这是合作伙伴最具粘性的高毛利 MSP 经常性收入引擎：以“影子 CLI 智能体安全盘点（免费 1 周评估）”切入，交付 Purview 未打标 DLP + MCP Firewall 加固，最终签约基于 Agent 365 CSP 多租户控制台的常年 AI 治理与 Perception 托管安全服务。",
+          motionEn: "Build high-margin recurring MSP revenue: open doors with a 1-week Shadow CLI Agent Discovery Audit, harden MCP Firewall + Purview Unlabeled DLP, and convert into an annual Agent 365 CSP Multi-Tenant + Perception Managed Security retainer.",
+          demoNoteZh: "🧮 章节内含：影子智能体风险审计表 & Outcome vs Token 结果导向 AI FinOps 计算器",
+          demoNoteEn: "🧮 Includes: Shadow CLI Risk Audit & Outcome-vs-Token AI FinOps ROI Calculator"
+        }
+      };
+
+      /* ----------------------------------------------------------------------
+         2. Verified 33-Item Ignite 2026 Release Radar Dataset
+         ---------------------------------------------------------------------- */
+      const MOTION_LABELS = {
+        whitespace: { zh: "异构存量客户切入", en: "Heterogeneous Estate Entry" },
+        context: { zh: "上下文与数据底座", en: "Context & Data" },
+        runtime: { zh: "智能体工程降本", en: "Agent FinOps & Runtime" },
+        infra: { zh: "算力与网络现代化", en: "GPU & Infra" },
+        governance: { zh: "多云安全托管", en: "Managed Governance" }
+      };
+
+      const RADAR_CAPABILITIES = [
+        // Stage 01
+        {
+          stage: "01",
+          href: "01-copilot-entry.html",
+          nameZh: "Copilot Standalone（独立授权解绑）",
+          nameEn: "Copilot Standalone",
+          maturities: ["GA"],
+          badgeNote: "Dec 1, 2026",
+          descZh: "自 2026-12-01 起 Microsoft 365 Copilot 与 Copilot Business 解除必须先拥有合资格 M365 基础套件的前置依赖（严格区分于 FY27 Q3 CSP 新购默认开启用量计费 PayGo）。",
+          descEn: "Removes qualifying M365 base-license prerequisite starting Dec 1, 2026 for M365 Copilot & Copilot Business (strictly distinct from FY27 Q3 default-on CSP PayGo rollout).",
+          motion: "whitespace"
+        },
+        {
+          stage: "01",
+          href: "01-copilot-entry.html",
+          nameZh: "Cowork + Office in Copilot",
+          nameEn: "Cowork + Office in Copilot",
+          maturities: ["GA"],
+          descZh: "财富 500 强近 80% 采用的多步骤任务委派模式；Office in Copilot 支持在对话内直接原生创建与多人实时共编真实 Word/Excel/PPT 文档，含在现有授权内无需切换应用。",
+          descEn: "Multi-step work delegation adopted by ~80% of Fortune 500; Office in Copilot enables native creation and real-time multiplayer co-editing of real .docx/.xlsx/.pptx files included in license.",
+          motion: "whitespace"
+        },
+        {
+          stage: "01",
+          href: "01-copilot-entry.html",
+          nameZh: "Copilot Autopilot（常驻自主代理）",
+          nameEn: "Copilot Autopilot",
+          maturities: ["Frontier"],
+          descZh: "具备独立 Entra Agent ID、专属邮箱身份、持久记忆、指定人类管理者与完整审计链的常驻个人/团队自主代理，可在 Teams 与 Outlook 跨周期推进业务（需 Frontier 与每实例 Agent 365 Frontier 授权）。",
+          descEn: "Persistent autonomous personal/team delegate with its own Entra Agent ID, mailbox, persistent memory, designated human manager, and audit trail across Teams/Outlook.",
+          motion: "whitespace"
+        },
+        {
+          stage: "01",
+          href: "01-copilot-entry.html",
+          nameZh: "Code 模式 + Copilot Managed Runtime",
+          nameEn: "Code + Copilot Managed Runtime",
+          maturities: ["Frontier", "GA"],
+          badgeNote: "Code Frontier / Runtime GA",
+          descZh: "面向业务人员的自然语言应用、数据看板与自动化构建器（搭配 Workspaces 多人协作），底层运行在已 GA 的 Copilot Managed Runtime 受控沙箱中，M365 Admin Center 全程可观测可控。",
+          descEn: "Natural-language business app, dashboard & workflow builder (paired with multiplayer Workspaces) executing inside the GA Copilot Managed Runtime sandbox with full M365 Admin Center visibility.",
+          motion: "whitespace"
+        },
+        {
+          stage: "01",
+          href: "01-copilot-entry.html",
+          nameZh: "Microsoft Copilot SDK 2.0",
+          nameEn: "Microsoft Copilot SDK 2.0",
+          maturities: ["GA"],
+          descZh: "基于高性能原生 Rust 运行时打造的多语言开发套件（覆盖 6 种主流开发语言），赋能 ISV 与企业研发将 Copilot 级智能体编排能力直接嵌入自有业务软件。",
+          descEn: "Native Rust runtime SDK supporting 6 programming languages so ISVs and enterprise developers embed Copilot agent orchestration directly inside custom applications.",
+          motion: "runtime"
+        },
+        {
+          stage: "01",
+          href: "01-copilot-entry.html",
+          nameZh: "Dynamics 365 & Salesforce 业务插件",
+          nameEn: "Dynamics 365 & Salesforce Business Plugins",
+          maturities: ["GA", "Public Preview"],
+          badgeNote: "D365 GA / SF Preview",
+          descZh: "基于开放 MCP 标准封装跨智能体复用的企业 CRM/ERP 技能包（Dynamics 365 插件含 100+ 技能 GA；Salesforce 插件含 38+ 技能 Public Preview），助力免推倒重来的异构集成。",
+          descEn: "MCP-based cross-agent enterprise skill packs—Dynamics 365 Plugin (100+ skills GA) and Salesforce Plugin (38+ skills Public Preview)—accelerating no-rip-and-replace CRM/ERP integration.",
+          motion: "whitespace"
+        },
+
+        // Stage 02
+        {
+          stage: "02",
+          href: "02-web-iq-context.html",
+          nameZh: "Microsoft IQ 企业上下文平台",
+          nameEn: "Microsoft IQ",
+          maturities: ["GA"],
+          badgeNote: "Zero New SKU",
+          descZh: "统一整合 Work IQ（19.5 EB 组织协作记忆 + OpenAI/Anthropic 连接器）、Web IQ、Fabric IQ、Foundry IQ 与 Business Plugins 的企业级上下文底座，无新增独立打包 SKU。",
+          descEn: "Unified enterprise context brand spanning Work IQ (19.5 EB M365 memory + OpenAI/Anthropic connectors), Web IQ, Fabric IQ, Foundry IQ, and Business Plugins with zero new standalone SKU.",
+          motion: "context"
+        },
+        {
+          stage: "02",
+          href: "02-web-iq-context.html",
+          nameZh: "Web IQ（Auto / Auto Advanced / Places / Weather）",
+          nameEn: "Web IQ (Auto, Auto Advanced, Places & Weather)",
+          maturities: ["GA"],
+          descZh: "全面取代旧版 Grounding with Bing：Auto/Auto Advanced 服务端多跳查询重写并返回 30K 预算高信噪比带引用证据；内置 Places（200+ 市场 2.075 亿+ POI）、Weather（243 国 14 万观测站）及远程 MCP Server。",
+          descEn: "Agent-native successor to Grounding with Bing: single-call Auto & multi-hop Auto Advanced returning cited high-SNR passages (30K budget), structured Places (207.5M+ POIs), Weather (140K stations), REST & remote MCP Server.",
+          motion: "context"
+        },
+        {
+          stage: "02",
+          href: "02-web-iq-context.html",
+          nameZh: "Web IQ Commerce（全球实时商品库）",
+          nameEn: "Web IQ Commerce",
+          maturities: ["Private Preview"],
+          descZh: "覆盖全球 400 亿+ 实时结构化商品报价（含 Commerce Search API 与 Commerce Offers API），为零售选品、动态比价与采购寻源智能体彻底绕开网页反爬与 DOM 漂移难题。",
+          descEn: "Structured access to 40B+ live product offers via Commerce Search & Commerce Offers APIs, eliminating brittle web scraping and anti-bot breakage for retail and procurement agents.",
+          motion: "context"
+        },
+        {
+          stage: "02",
+          href: "02-web-iq-context.html",
+          nameZh: "Web IQ Scopes 企业信源护栏 & Zero Logging",
+          nameEn: "Web IQ Scopes & Zero Query Logging",
+          maturities: ["GA"],
+          badgeNote: "Free Built-In",
+          descZh: "免费内置每个 Scope 高达 10,000 条允许 + 10,000 条阻断域名/URL 前缀规则（排除优先，默认 failOnMissingScope=true，独立 Entra CustomerApiAccess 权限防篡改），受监管行业可启用零查询日志。",
+          descEn: "Free built-in pre-retrieval guardrails supporting 10,000 allow + 10,000 block domain/prefix selectors per scope (exclude wins, separate Entra role) plus optional Zero Query Logging.",
+          motion: "governance"
+        },
+        {
+          stage: "02",
+          href: "02-web-iq-context.html",
+          nameZh: "Foundry IQ Knowledge Graph（知识图谱检索）",
+          nameEn: "Foundry IQ Knowledge Graph",
+          maturities: ["Public Preview"],
+          descZh: "跨非结构化文档构建多跳实体关系图谱，在复杂财报电话会评测中将证据召回率从 64.2% 跃升至 92.0%，同时将送入模型的上下文 Token 消耗从 212,718 压降至 102,288。",
+          descEn: "Multi-hop entity-relationship graph over enterprise corpora lifting complex financial evidence recall from 64.2% to 92.0% while cutting context tokens from 212,718 to 102,288.",
+          motion: "context"
+        },
+        {
+          stage: "02",
+          href: "02-web-iq-context.html",
+          nameZh: "Microsoft-Retriever-1 & SharePoint ACL 索引",
+          nameEn: "Microsoft-Retriever-1 & SharePoint ACL Indexing",
+          maturities: ["Public Preview", "GA"],
+          badgeNote: "Retriever Preview / ACL GA",
+          descZh: "专为智能体高速检索优化的模型，中位检索延迟由 5.09s 骤降至 0.76s（外部大模型 Token 由 8,873 降至 1,453），配合已 GA 的 SharePoint 文档级 ACL 权限原生继承索引。",
+          descEn: "Purpose-built retrieval model slashing median search latency from 5.09s to 0.76s (external LLM tokens 8,873 → 1,453), paired with GA SharePoint document-level ACL indexing.",
+          motion: "context"
+        },
+
+        // Stage 03
+        {
+          stage: "03",
+          href: "03-fabric-ontology.html",
+          nameZh: "Salesforce Data 360 双向零拷贝互通",
+          nameEn: "Salesforce Data 360 Bi-Directional Zero-Copy",
+          maturities: ["GA"],
+          descZh: "Microsoft Fabric OneLake 与 Salesforce Data 360 实现生产级双向零 ETL 零拷贝直连，让客户 CRM 商机/服务轨迹与企业湖仓供应链数据实时双向互操作而不产生冗余副本。",
+          descEn: "Production bi-directional zero-ETL zero-copy integration between Salesforce Data 360 and Microsoft Fabric OneLake, uniting CRM customer journeys with enterprise lakehouse supply data.",
+          motion: "context"
+        },
+        {
+          stage: "03",
+          href: "03-fabric-ontology.html",
+          nameZh: "Fabric IQ & Ontology 跨智能体语义触达",
+          nameEn: "Fabric IQ & Ontology Cross-Agent Reach",
+          maturities: ["GA", "Public Preview"],
+          badgeNote: "ChatGPT/Claude Preview",
+          descZh: "基于 OneLake 与 Power BI 语义模型统一企业实体、关系、指标与行动规则，同一受控口径原生服务 M365 Copilot、Excel 实时透视表、Foundry 及外部 ChatGPT / Claude（Preview）。",
+          descEn: "Unifies enterprise entities, semantic measures, business rules, and bound actions across M365 Copilot, live Excel PivotTables, Foundry, and external ChatGPT / Claude clients (Preview).",
+          motion: "context"
+        },
+        {
+          stage: "03",
+          href: "03-fabric-ontology.html",
+          nameZh: "Rayfin & Fabric Apps（业务行动应用）",
+          nameEn: "Rayfin & Fabric Apps",
+          maturities: ["GA"],
+          descZh: "直接在 OneLake 与 Fabric IQ 语义底座上构建与分发可交互、可回写的运营级数据应用（Operational Data Apps），闭环连接分析洞察与事务写回执行链路。",
+          descEn: "Build and distribute operational, action-capable data applications natively atop OneLake and Fabric IQ semantics to close the insight-to-execution loop.",
+          motion: "context"
+        },
+        {
+          stage: "03",
+          href: "03-fabric-ontology.html",
+          nameZh: "Azure HorizonDB & Fabric HorizonDB",
+          nameEn: "Azure HorizonDB & Fabric HorizonDB",
+          maturities: ["GA", "Public Preview"],
+          badgeNote: "Azure GA / Fabric Preview",
+          descZh: "云原生高性能 PostgreSQL 服务：Azure HorizonDB 正式 GA；Fabric HorizonDB（Preview）支持亚秒级无感唤醒、跨实时事务表与 OneLake 湖仓单查询联查（算力卸载至 DW）及 Reverse ETL。",
+          descEn: "Cloud-native PostgreSQL—Azure HorizonDB (GA) and serverless Fabric HorizonDB (Preview) with sub-second resume, single-query joins across live PG + OneLake offloaded to DW compute, and Reverse ETL.",
+          motion: "context"
+        },
+        {
+          stage: "03",
+          href: "03-fabric-ontology.html",
+          nameZh: "Database Hub & Database Agents",
+          nameEn: "Database Hub & Database Agents",
+          maturities: ["GA"],
+          descZh: "面向跨数据库资产的集中式治理中心与内建 SQL / PostgreSQL 智能数据库专家代理，自动执行慢查询诊断、索引调优、Schema 演进与安全基线巡检。",
+          descEn: "Centralized estate observability paired with autonomous SQL and PostgreSQL Database Agents for slow-query diagnostics, index tuning, schema evolution, and posture checks.",
+          motion: "context"
+        },
+
+        // Stage 04
+        {
+          stage: "04",
+          href: "04-foundry-engineering.html",
+          nameZh: "Agent Optimizer & Production Insights",
+          nameEn: "Agent Optimizer & Production Insights",
+          maturities: ["GA"],
+          descZh: "Foundry 持续优化闭环核心组件：Production Insights 自动对生产对话轨迹做失败模式聚簇，Agent Optimizer 据此自动搜索并调优系统 Prompt、工具 Schema 与模型组合。",
+          descEn: "Core of Foundry's continuous improvement loop: Production Insights clusters live failure trajectories while Agent Optimizer automatically tunes prompts, tool schemas, and model selection.",
+          motion: "runtime"
+        },
+        {
+          stage: "04",
+          href: "04-foundry-engineering.html",
+          nameZh: "Managed & Programmed Training（SFT / RFT）",
+          nameEn: "Managed & Programmed Training",
+          maturities: ["Public Preview"],
+          descZh: "将生产环境标注轨迹直接回流为领域专属模型优势：支持全托管监督/强化微调（Managed SFT/RFT）及由 Python 代码自定义奖励循环的可编程强化训练（Programmed Training）。",
+          descEn: "Turn annotated production traces into durable model gains via serverless Managed SFT/RFT and custom Python-driven Programmed Training reinforcement loops.",
+          motion: "runtime"
+        },
+        {
+          stage: "04",
+          href: "04-foundry-engineering.html",
+          nameZh: "AKS AI Manager for Foundry（Foundry on AKS）",
+          nameEn: "AKS AI Manager for Foundry (Foundry on AKS)",
+          maturities: ["Public Preview"],
+          descZh: "保持与托管版完全一致的 Foundry API 与 azd 开发体验，但将运行时与模型下沉部署至客户自有受控 AKS 集群（私有 VNet、数据驻留、预留 GPU 池及 Pod Sandboxing 轻量 VM 会话隔离）。",
+          descEn: "Preserves identical Foundry APIs and azd workflows while deploying agents and models inside customer-governed AKS clusters (private VNet, data residency, reserved GPUs & Pod Sandboxing VMs).",
+          motion: "runtime"
+        },
+        {
+          stage: "04",
+          href: "04-foundry-engineering.html",
+          nameZh: "AKS Agent Sandbox + Pod Snapshot",
+          nameEn: "AKS Agent Sandbox + Pod Snapshot",
+          maturities: ["Public Preview"],
+          descZh: "面向自主编码、浏览器与 Computer-Use 智能体的高隔离沙箱池：支持集群节点 Kata microVM 硬隔离或 ACI Serverless 沙箱（可配 Cobalt 200），并通过 Pod Snapshot 秒级恢复内存与进程状态。",
+          descEn: "Pre-warmed isolation pools for autonomous coding and computer-use agents using Kata microVMs or serverless ACI sandboxes, featuring Pod Snapshot sub-second memory/process restore.",
+          motion: "runtime"
+        },
+        {
+          stage: "04",
+          href: "04-foundry-engineering.html",
+          nameZh: "Microsoft-Decision-1.1（确定性决策与裁判模型）",
+          nameEn: "Microsoft-Decision-1.1",
+          maturities: ["GA"],
+          badgeNote: "78.8% · $0 Out",
+          descZh: "基于 Gemma 4 26B A4 与定制决策引擎：提速 >2 倍，102 项基准平均准确率 78.8%（7/9 维度领先），Global Standard 输入仅 $0.042/1M Token 且输出 Token 为 $0，支持 choice/noul 校准置信度门控与内置评测裁判。",
+          descEn: "Gemma 4 26B A4 decision & judge engine: >2x faster, 78.8% avg accuracy across 102 benchmarks, $0.042/1M input tokens & $0 output tokens, powering 3-band confidence gating and Foundry Evals.",
+          motion: "runtime"
+        },
+        {
+          stage: "04",
+          href: "04-foundry-engineering.html",
+          nameZh: "MAI-Code-2 / Flash & GPT-6.2 Sol/Astra",
+          nameEn: "MAI-Code-2 / Flash & GPT-6.2 Sol/Astra",
+          maturities: ["GA"],
+          descZh: "企业级主力编码与推理双核：MAI-Code-2 以约 40% 成本逼近前沿旗舰编码水准（客户案例准确率 81.2%→91.1%、成本降 90%），与 GPT-6.2 Sol/Astra 经 AI Gateway 与 Model Router 智能协同。",
+          descEn: "Production coding and reasoning lineup: MAI-Code-2 / Flash delivers near-frontier enterprise coding at ~40% cost alongside GPT-6.2 Sol/Astra orchestrated via AI Gateway and Model Router.",
+          motion: "runtime"
+        },
+
+        // Stage 05
+        {
+          stage: "05",
+          href: "05-ai-infra-optimization.html",
+          nameZh: "Fireworks AI on Foundry（DeepSeek & Kimi）",
+          nameEn: "Fireworks AI on Foundry",
+          maturities: ["GA"],
+          descZh: "在 Microsoft Foundry 内原生调用低延迟开放权重推理端点，涵盖旗舰级 DeepSeek V3.2 / V4 Pro 与长上下文多模态 Kimi K2.5 / K2.6，共享统一企业计费与安全边界。",
+          descEn: "Low-latency managed open-weight endpoints natively inside Microsoft Foundry featuring DeepSeek V3.2 / V4 Pro and Kimi K2.5 / K2.6 under unified enterprise billing and security.",
+          motion: "infra"
+        },
+        {
+          stage: "05",
+          href: "05-ai-infra-optimization.html",
+          nameZh: "Baseten on Foundry（Kimi-K3 / DeepSeek / GLM）",
+          nameEn: "Baseten on Foundry",
+          maturities: ["Public Preview"],
+          descZh: "Ignite 2026 新登场的 Foundry 高吞吐开放模型推理伙伴，首批上线 Kimi-K3、DeepSeek V4.1-Flash 与 GLM 5.3，为高并发多智能体工作流提供极致性价比选择。",
+          descEn: "Newly announced high-throughput open-weight inference partner on Foundry bringing Kimi-K3, DeepSeek V4.1-Flash, and GLM 5.3 for latency-critical multi-agent workloads.",
+          motion: "infra"
+        },
+        {
+          stage: "05",
+          href: "05-ai-infra-optimization.html",
+          nameZh: "fal on Foundry（企业级视频生成模型矩阵）",
+          nameEn: "fal on Foundry",
+          maturities: ["Public Preview"],
+          descZh: "首次将顶尖生成式视频 DiT 模型引入 Foundry 企业级治理体系，首批支持 Kling v3 Pro、LTX-2.5 Pro/Fast 与 MiniMax H3 Max/Turbo，赋能电商营销与数字孪生内容生产。",
+          descEn: "Brings premier generative video DiT models—Kling v3 Pro, LTX-2.5 Pro/Fast, and MiniMax H3 Max/Turbo—directly into Foundry's governed enterprise API surface.",
+          motion: "infra"
+        },
+        {
+          stage: "05",
+          href: "05-ai-infra-optimization.html",
+          nameZh: "Azure Maia 300 & Azure Cobalt 200",
+          nameEn: "Azure Maia 300 & Azure Cobalt 200",
+          maturities: ["GA"],
+          badgeNote: "+40% Tok/W · +50% CPU",
+          descZh: "全栈自研硬件协同：Maia 300 采用 SDLA 数据流架构与 2.5x HBM 带宽，集群每瓦 Token 吞吐提升 +40%（12,288 卡两层以太网超算池）；Cobalt 200 Arm64 VM 单核最高 +50%，高效承接沙箱与 MCP I/O。",
+          descEn: "Co-designed Microsoft silicon: Maia 300 SDLA accelerator delivers +40% fleet tokens/watt across 12,288-chip Ethernet superpods; Cobalt 200 Arm64 VMs deliver up to +50% CPU perf for sandboxes & I/O.",
+          motion: "infra"
+        },
+        {
+          stage: "05",
+          href: "05-ai-infra-optimization.html",
+          nameZh: "AKS 托管 GPU 节点池 & NVIDIA GB200/GB300",
+          nameEn: "AKS Managed GPU Node Pools & NVIDIA GB200/GB300",
+          maturities: ["GA", "Public Preview"],
+          badgeNote: "GPU Pools GA / GB300 Preview",
+          descZh: "自动化纳管 GPU 驱动、Mixed MIG 切分与 RDMA 网络栈，支持 NVIDIA GB200/GB300 机柜级算力、VR72 多卡机密计算 TEE 以及 Windows Server 2028 本地 GB300/MI350P vLLM 推理。",
+          descEn: "Automated GPU driver, Mixed MIG, and RDMA lifecycle on AKS (GA) plus NVIDIA GB200/GB300 rack-scale systems (Preview), VR72 multi-GPU confidential compute, and WS 2028 local vLLM.",
+          motion: "infra"
+        },
+        {
+          stage: "05",
+          href: "05-ai-infra-optimization.html",
+          nameZh: "Azure Catalyst（多智能体存量应用现代化）",
+          nameEn: "Azure Catalyst",
+          maturities: ["GA"],
+          descZh: "融合 GitHub Copilot 规则库与多智能体协同重构引擎，自动化完成老旧单体应用与传统关系库的评估、代码重写、验证及云原生迁移，打通 AI 低延迟数据供给。",
+          descEn: "Multi-agent application and database modernization service powered by GitHub Copilot rulebooks to refactor legacy estates onto cloud-native AI-ready infrastructure.",
+          motion: "infra"
+        },
+
+        // Stage 06
+        {
+          stage: "06",
+          href: "06-agent-governance.html",
+          nameZh: "Agent 365 全域注册表 & 35 类影子 CLI 发现",
+          nameEn: "Agent 365 Unified Registry & 35 Shadow CLI Discovery",
+          maturities: ["GA"],
+          badgeNote: "50M+ Agents",
+          descZh: "已纳管 5,000 万+ 智能体，统一覆盖 Microsoft、AWS、GCP、OpenAI、Anthropic、Salesforce、Databricks、Snowflake 以及员工私自运行的 35 类本地桌面/CLI 影子智能体。",
+          descEn: "Governs 50M+ registered agents across Microsoft, AWS, GCP, OpenAI, Anthropic, Salesforce, Databricks, Snowflake, plus 35 local desktop and CLI shadow agent classes.",
+          motion: "governance"
+        },
+        {
+          stage: "06",
+          href: "06-agent-governance.html",
+          nameZh: "Agent 365 CSP 多租户集中管理",
+          nameEn: "Agent 365 CSP Multi-Tenant Management",
+          maturities: ["Public Preview"],
+          descZh: "专为 CSP 与 MSP 合作伙伴打造的单屏跨客户租户治理视图，支持批量盘点影子智能体、统一下发安全基线策略与持续风险巡检，开启高粘性托管 AI 服务。",
+          descEn: "Single-pane multi-customer inventory, policy baseline enforcement, and risk posture console enabling CSP and MSP partners to deliver recurring Managed AI Governance services.",
+          motion: "governance"
+        },
+        {
+          stage: "06",
+          href: "06-agent-governance.html",
+          nameZh: "MCP Firewall & Purview 未打标敏感文件拦截",
+          nameEn: "MCP Firewall & Purview Unlabeled DLP",
+          maturities: ["Public Preview", "GA"],
+          badgeNote: "Firewall Preview / DLP GA",
+          descZh: "双重数据防泄漏铁闸：MCP Firewall（Preview）阻断提示词注入引发的越权外部工具调用与外发；Purview DLP（GA）实时拦截向 Copilot 或本地智能体上传的甚至尚未手动打标的敏感文件。",
+          descEn: "Dual data exfiltration shield: MCP Firewall (Preview) blocks unauthorized external tool calls while Purview DLP (GA) blocks sensitive files sent to Copilot or local agents even when unlabeled.",
+          motion: "governance"
+        },
+        {
+          stage: "06",
+          href: "06-agent-governance.html",
+          nameZh: "Agent 365 Cost Management & Business Analytics",
+          nameEn: "Agent 365 Cost Management & Business Analytics",
+          maturities: ["Public Preview", "Frontier"],
+          badgeNote: "Cost Preview / Analytics Frontier",
+          descZh: "重构企业 AI FinOps 算账逻辑：不仅监控跨平台许可与算力账单，更将投入关联至真实完成的业务产出与节省工时（Work Delivered vs Tokens Burned），直接支撑 CFO 续费扩购决策。",
+          descEn: "Shifts AI FinOps from raw token consumption to verified business outcomes and hours saved, giving CFOs auditable ROI telemetry across multi-vendor agent fleets.",
+          motion: "governance"
+        },
+        {
+          stage: "06",
+          href: "06-agent-governance.html",
+          nameZh: "Microsoft Perception & Codename MDASH",
+          nameEn: "Microsoft Perception & Codename MDASH",
+          maturities: ["GA", "Public Preview"],
+          badgeNote: "Perception GA / MDASH Preview",
+          descZh: "红/蓝/绿三队自治安全智能体协同：Perception（GA）内置 Triage Agent 自动覆盖约 80% 典型 Defender 告警队列并延伸至 AWS/Salesforce；MDASH（Preview）调度 100+ 智能体与 MAI-Cyber-2-Flash 挖掘复现代码漏洞并联动 Catalyst 修复。",
+          descEn: "Autonomous Red/Blue/Green security teams: Perception (GA) triages ~80% of typical Defender queues plus AWS/Salesforce alerts; Codename MDASH (Preview) orchestrates 100+ agents with MAI-Cyber-2-Flash to find and reproduce code vulnerabilities.",
+          motion: "governance"
+        }
+      ];
+
+      /* ----------------------------------------------------------------------
+         3. Blueprint Inspector Rendering & Interaction
+         ---------------------------------------------------------------------- */
+      let currentStageId = "01";
+
+      function renderInspector(stageId) {
+        const data = STAGE_INSPECTOR_DATA[stageId];
+        if (!data) return;
+        currentStageId = stageId;
+
+        // Sync SVG nodes
+        document.querySelectorAll(".svg-stage-node").forEach((node) => {
+          node.classList.toggle("is-selected", node.getAttribute("data-stage") === stageId);
+        });
+
+        // Sync Pill Buttons
+        document.querySelectorAll("[data-stage-btn]").forEach((btn) => {
+          const active = btn.getAttribute("data-stage-btn") === stageId;
+          btn.classList.toggle("active", active);
+          btn.setAttribute("aria-selected", String(active));
+        });
+
+        // Update Inspector DOM with full bilingual spans
+        const stepEl = document.getElementById("insp-step");
+        const titleEl = document.getElementById("insp-title");
+        const badgesEl = document.getElementById("insp-badges");
+        const qEl = document.getElementById("insp-question");
+        const relEl = document.getElementById("insp-releases");
+        const motionEl = document.getElementById("insp-motion");
+        const demoNoteEl = document.getElementById("insp-demo-note");
+        const ctaEl = document.getElementById("insp-cta");
+
+        stepEl.textContent = data.step;
+        titleEl.innerHTML = `<span data-lang="zh-CN">${data.titleZh}</span><span data-lang="en">${data.titleEn}</span>`;
+        badgesEl.innerHTML = data.badges
+          .map((b) => `<span class="badge ${b.cls}">${b.label}</span>`)
+          .join("");
+        qEl.innerHTML = `<span data-lang="zh-CN">${data.questionZh}</span><span data-lang="en">${data.questionEn}</span>`;
+
+        const maxLen = Math.max(data.releasesZh.length, data.releasesEn.length);
+        let liHtml = "";
+        for (let i = 0; i < maxLen; i++) {
+          liHtml += `<li><span data-lang="zh-CN">${data.releasesZh[i] || ""}</span><span data-lang="en">${data.releasesEn[i] || ""}</span></li>`;
+        }
+        relEl.innerHTML = liHtml;
+
+        motionEl.innerHTML = `<span data-lang="zh-CN">${data.motionZh}</span><span data-lang="en">${data.motionEn}</span>`;
+        demoNoteEl.innerHTML = `<span data-lang="zh-CN">${data.demoNoteZh}</span><span data-lang="en">${data.demoNoteEn}</span>`;
+        ctaEl.setAttribute("href", data.href);
+        ctaEl.innerHTML = `<span data-lang="zh-CN">进入 ${stageId} · ${data.titleZh} 深度拆解 →</span><span data-lang="en">Open ${stageId} · ${data.titleEn} Deep Dive →</span>`;
+      }
+
+      function initBlueprintInspector() {
+        document.querySelectorAll(".svg-stage-node").forEach((node) => {
+          const st = node.getAttribute("data-stage");
+          node.addEventListener("click", () => renderInspector(st));
+          node.addEventListener("keydown", (e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              renderInspector(st);
+            }
+          });
+        });
+
+        document.querySelectorAll("[data-stage-btn]").forEach((btn) => {
+          btn.addEventListener("click", () => renderInspector(btn.getAttribute("data-stage-btn")));
+        });
+
+        const filterJumpBtn = document.getElementById("insp-filter-btn");
+        if (filterJumpBtn) {
+          filterJumpBtn.addEventListener("click", () => {
+            const stageSelect = document.getElementById("filter-stage");
+            if (stageSelect) {
+              stageSelect.value = currentStageId;
+              renderRadar();
+              document.getElementById("release-radar")?.scrollIntoView({ behavior: "smooth", block: "start" });
+            }
+          });
+        }
+
+        renderInspector("01");
+      }
+
+      /* ----------------------------------------------------------------------
+         4. Interactive Release Radar Filtering & Bilingual Count Rendering
+         ---------------------------------------------------------------------- */
+      function maturityBadgeClass(mat) {
+        if (mat === "GA") return "badge-ga";
+        if (mat === "Public Preview") return "badge-preview";
+        if (mat === "Frontier") return "badge-frontier";
+        return "badge-private";
+      }
+
+      function syncLocalizedFilterControls() {
+        const lang = document.documentElement.lang || "zh-CN";
+        document.querySelectorAll("#release-radar option[data-zh][data-en]").forEach((opt) => {
+          opt.textContent = lang === "en" ? opt.getAttribute("data-en") : opt.getAttribute("data-zh");
+        });
+        const searchInput = document.getElementById("filter-search");
+        if (searchInput) {
+          searchInput.placeholder = lang === "en"
+            ? "Search capability, model, metric, SKU, or motion..."
+            : "搜索产品名、模型名、指标、价格或伙伴打法…";
+        }
+      }
+
+      function updateRadarCountBadge(shown, total) {
+        const badge = document.getElementById("radar-count-badge");
+        if (!badge) return;
+        const lang = document.documentElement.lang || "zh-CN";
+        badge.textContent = lang === "en"
+          ? `Showing ${shown} / ${total} capabilities`
+          : `Showing ${shown} / ${total} capabilities · 当前匹配 ${shown} 项`;
+      }
+
+      function renderRadar() {
+        const stageVal = document.getElementById("filter-stage")?.value || "All";
+        const matVal = document.getElementById("filter-maturity")?.value || "All";
+        const motionVal = document.getElementById("filter-motion")?.value || "All";
+        const query = (document.getElementById("filter-search")?.value || "").trim().toLowerCase();
+        const tbody = document.getElementById("radar-tbody");
+        if (!tbody) return;
+
+        const filtered = RADAR_CAPABILITIES.filter((item) => {
+          if (stageVal !== "All" && item.stage !== stageVal) return false;
+          if (matVal !== "All" && !item.maturities.includes(matVal)) return false;
+          if (motionVal !== "All" && item.motion !== motionVal) return false;
+          if (query) {
+            const mLabel = MOTION_LABELS[item.motion] || { zh: "", en: "" };
+            const haystack = [
+              item.stage,
+              item.nameZh,
+              item.nameEn,
+              item.maturities.join(" "),
+              item.badgeNote || "",
+              item.descZh,
+              item.descEn,
+              mLabel.zh,
+              mLabel.en
+            ].join(" ").toLowerCase();
+            if (!haystack.includes(query)) return false;
+          }
+          return true;
+        });
+
+        updateRadarCountBadge(filtered.length, RADAR_CAPABILITIES.length);
+
+        if (!filtered.length) {
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="5" class="empty-radar">
+                <span data-lang="zh-CN">未找到匹配的 Ignite 2026 发布项，请尝试放宽筛选条件或点击“重置全部筛选条件”。</span>
+                <span data-lang="en">No matching Ignite 2026 capabilities found. Try broadening your filters or clicking "Reset All Filters".</span>
+              </td>
+            </tr>
+          `;
+          return;
+        }
+
+        tbody.innerHTML = filtered.map((item) => {
+          const mLabel = MOTION_LABELS[item.motion] || { zh: item.motion, en: item.motion };
+          const badgesHtml = item.maturities
+            .map((m) => `<span class="badge ${maturityBadgeClass(m)}">${m}</span>`)
+            .join(" ");
+          const noteHtml = item.badgeNote
+            ? `<div style="font-size:11px;color:var(--text-soft);margin-top:4px;" class="mono">${item.badgeNote}</div>`
+            : "";
+
+          return `
+            <tr>
+              <td>
+                <a class="cap-stage-link" href="${item.href}">STAGE ${item.stage} →</a>
+              </td>
+              <td>
+                <span class="cap-name">
+                  <span data-lang="zh-CN">${item.nameZh}</span>
+                  <span data-lang="en">${item.nameEn}</span>
+                </span>
+              </td>
+              <td>
+                <div class="badge-cluster">${badgesHtml}</div>
+                ${noteHtml}
+              </td>
+              <td>
+                <span data-lang="zh-CN">${item.descZh}</span>
+                <span data-lang="en">${item.descEn}</span>
+              </td>
+              <td>
+                <span class="motion-chip">
+                  <span data-lang="zh-CN">${mLabel.zh}</span>
+                  <span data-lang="en">${mLabel.en}</span>
+                </span>
+              </td>
+            </tr>
+          `;
+        }).join("");
+      }
+
+      function initReleaseRadar() {
+        ["filter-stage", "filter-maturity", "filter-motion"].forEach((id) => {
+          document.getElementById(id)?.addEventListener("change", renderRadar);
+        });
+        document.getElementById("filter-search")?.addEventListener("input", renderRadar);
+
+        document.getElementById("radar-reset-btn")?.addEventListener("click", () => {
+          document.getElementById("filter-stage").value = "All";
+          document.getElementById("filter-maturity").value = "All";
+          document.getElementById("filter-motion").value = "All";
+          document.getElementById("filter-search").value = "";
+          renderRadar();
+        });
+
+        window.addEventListener("ignite:langchange", () => {
+          syncLocalizedFilterControls();
+          const rows = document.querySelectorAll("#radar-tbody tr");
+          const isEmpty = document.querySelector("#radar-tbody .empty-radar");
+          updateRadarCountBadge(isEmpty ? 0 : rows.length, RADAR_CAPABILITIES.length);
+        });
+
+        syncLocalizedFilterControls();
+        renderRadar();
+      }
+
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", () => {
+          initBlueprintInspector();
+          initReleaseRadar();
+        });
+      } else {
+        initBlueprintInspector();
+        initReleaseRadar();
+      }
+    })();
+  </script>
+</body>
+</html>

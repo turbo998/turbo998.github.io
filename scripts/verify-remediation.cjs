@@ -9,7 +9,7 @@ const suites=requested.length?requested:['production-site','production-routes','
 const serverScript=`
 const http=require('node:http'),fs=require('node:fs'),path=require('node:path');
 const root=${JSON.stringify(root)};
-const mime={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.js':'application/javascript; charset=utf-8','.json':'application/json; charset=utf-8','.svg':'image/svg+xml','.png':'image/png','.webp':'image/webp','.glb':'model/gltf-binary','.bin':'application/octet-stream'};
+const mime={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.js':'application/javascript; charset=utf-8','.json':'application/json; charset=utf-8','.svg':'image/svg+xml','.png':'image/png','.webp':'image/webp','.mp4':'video/mp4','.glb':'model/gltf-binary','.bin':'application/octet-stream'};
 const s=http.createServer((req,res)=>{
  const url=new URL(req.url||'/',\`http://\${req.headers.host||'127.0.0.1'}\`);
  let rel=decodeURIComponent(url.pathname).replace(/^\\/+/, '');
@@ -20,7 +20,15 @@ const s=http.createServer((req,res)=>{
   const stat=fs.statSync(file);
   const target=stat.isDirectory()?path.join(file,'index.html'):file;
   const content=fs.readFileSync(target);
-  res.writeHead(200,{'Content-Type':mime[path.extname(target).toLowerCase()]||'application/octet-stream'});
+  const ct=mime[path.extname(target).toLowerCase()]||'application/octet-stream';
+  const rg=req.headers.range&&req.headers.range.match(/bytes=(\\d+)-(\\d*)/);
+  if(rg){
+   const start=Number(rg[1]),end=rg[2]?Number(rg[2]):content.length-1;
+   res.writeHead(206,{'Content-Type':ct,'Accept-Ranges':'bytes','Content-Range':\`bytes \${start}-\${end}/\${content.length}\`,'Content-Length':end-start+1});
+   res.end(content.subarray(start,end+1));
+   return;
+  }
+  res.writeHead(200,{'Content-Type':ct,'Accept-Ranges':'bytes'});
   res.end(content);
  }catch{res.writeHead(404).end('Not found');}
 });

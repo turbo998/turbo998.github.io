@@ -176,7 +176,23 @@ const ftePages = [
   {path:'fte.html',role:'article',title:'Frontier Transformation Engineer (FTE) · Panorama, ~86-Hour Learning Path & Registration Hub',tracks:['general'],language:{declared:'en'},supplemental:true},
   {path:'zh-fte.html',role:'article',title:'Frontier Transformation Engineer (FTE) 全景介绍 · 86 小时学习路径、6 周 Sprint 与注册入口',tracks:['general'],language:{declared:'zh-CN'},supplemental:true}
 ];
-const archivePages = [...inventory.content, ...translations, ...ftePages, ...diamondPages, ...webiqPages, ...radarPages, ...infraPages, ...dataLabPages, ...phase179Pages, ...clioHarnessPages, ...harnessFrameworksPages, ...harnessCoevolutionPages, ...gpt62SolPages, ...recentSupplementPages, ...commerceTrendsPages, ...camera4dPages, ...audiovisualFoleyPages, ...physGaussianPages, ...neuralRelightPages, ...worldMemPages, ...nightlyVisualPages, ...motionPages].map(page => ({...page, tracks:[classifyPage(page), ...(page.tracks || []).filter(track => track !== classifyPage(page) && track !== 'infra')]}));
+const ignite2026Pages = [
+  {path:'ignite-2026/index.html',role:'demo',title:'Microsoft Ignite 2026 解决方案架构师专栏 · 企业智能体全栈全景蓝图（00–06）',tracks:['data-infra'],language:{declared:'zh-CN'},supplemental:true},
+  {path:'ignite-2026/index.en.html',role:'demo',title:'Microsoft Ignite 2026 Solution Architect Column · Enterprise Agentic AI Blueprint (00–06)',tracks:['data-infra'],language:{declared:'en'},supplemental:true},
+  {path:'ignite-2026/01-copilot-entry.html',role:'demo',title:'01 统一智能体入口（M365 Copilot · Copilot Studio · Work IQ）| Ignite 2026 专栏',tracks:['data-infra'],language:{declared:'zh-CN'},supplemental:true},
+  {path:'ignite-2026/01-copilot-entry.en.html',role:'demo',title:'01 Unified Agent Entry (M365 Copilot · Copilot Studio · Work IQ) | Ignite 2026 Column',tracks:['data-infra'],language:{declared:'en'},supplemental:true},
+  {path:'ignite-2026/02-web-iq-context.html',role:'demo',title:'02 外部实时世界连接（Web Grounding · Web IQ · MCP 治理）| Ignite 2026 专栏',tracks:['data-infra'],language:{declared:'zh-CN'},supplemental:true},
+  {path:'ignite-2026/02-web-iq-context.en.html',role:'demo',title:'02 Live World Context (Web Grounding · Web IQ · MCP Governance) | Ignite 2026 Column',tracks:['data-infra'],language:{declared:'en'},supplemental:true},
+  {path:'ignite-2026/03-fabric-ontology.html',role:'demo',title:'03 企业数据与业务语义（Microsoft Fabric · OneLake · Fabric IQ 本体）| Ignite 2026 专栏',tracks:['data-infra'],language:{declared:'zh-CN'},supplemental:true},
+  {path:'ignite-2026/03-fabric-ontology.en.html',role:'demo',title:'03 Enterprise Data Ontology (Microsoft Fabric · OneLake · Fabric IQ) | Ignite 2026 Column',tracks:['data-infra'],language:{declared:'en'},supplemental:true},
+  {path:'ignite-2026/04-foundry-engineering.html',role:'demo',title:'04 智能体工程化运行时（Microsoft Foundry · Model Router · Agent Service）| Ignite 2026 专栏',tracks:['data-infra'],language:{declared:'zh-CN'},supplemental:true},
+  {path:'ignite-2026/04-foundry-engineering.en.html',role:'demo',title:'04 Agent Runtime Engineering (Microsoft Foundry · Model Router · Agent Service) | Ignite 2026 Column',tracks:['data-infra'],language:{declared:'en'},supplemental:true},
+  {path:'ignite-2026/05-ai-infra-optimization.html',role:'demo',title:'05 推理算力底座优化（PD 分离 · KV Cache · Maia 300 · RoCEv2/IB）| Ignite 2026 专栏',tracks:['infra'],language:{declared:'zh-CN'},supplemental:true},
+  {path:'ignite-2026/05-ai-infra-optimization.en.html',role:'demo',title:'05 Inference Infra Optimization (PD Disaggregation · KV Cache · Maia 300) | Ignite 2026 Column',tracks:['infra'],language:{declared:'en'},supplemental:true},
+  {path:'ignite-2026/06-agent-governance.html',role:'demo',title:'06 企业级安全与治理（Microsoft Agent 365 · Entra Agent ID · Purview）| Ignite 2026 专栏',tracks:['data-infra'],language:{declared:'zh-CN'},supplemental:true},
+  {path:'ignite-2026/06-agent-governance.en.html',role:'demo',title:'06 Enterprise Agent Governance (Microsoft Agent 365 · Entra Agent ID · Purview) | Ignite 2026 Column',tracks:['data-infra'],language:{declared:'en'},supplemental:true}
+];
+const archivePages = [...inventory.content, ...translations, ...ftePages, ...ignite2026Pages, ...diamondPages, ...webiqPages, ...radarPages, ...infraPages, ...dataLabPages, ...phase179Pages, ...clioHarnessPages, ...harnessFrameworksPages, ...harnessCoevolutionPages, ...gpt62SolPages, ...recentSupplementPages, ...commerceTrendsPages, ...camera4dPages, ...audiovisualFoleyPages, ...physGaussianPages, ...neuralRelightPages, ...worldMemPages, ...nightlyVisualPages, ...motionPages].map(page => ({...page, tracks:[classifyPage(page), ...(page.tracks || []).filter(track => track !== classifyPage(page) && track !== 'infra')]}));
 function archiveNote(page, zh) {
   const t = (en, cn) => zh ? cn : en;
   const record = readingByPath.get(page.path);

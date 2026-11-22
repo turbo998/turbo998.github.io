@@ -126,15 +126,15 @@ function graphSvg(file, zh, options = {}) {
     });
     return `<svg xmlns="http://www.w3.org/2000/svg" lang="${zh ? 'zh-CN' : 'en'}" class="knowledge-graph-compact" role="img" aria-labelledby="${id}-title ${id}-desc" viewBox="0 0 360 ${y + 18}" width="360" style="width:100%;height:auto;max-width:560px;margin:0 auto;font-family:system-ui,sans-serif"><title id="${id}-title">${esc(title)}</title><desc id="${id}-desc">${esc(description.join(' → '))}</desc><rect width="360" height="${y + 18}" rx="16" fill="#081525" stroke="#284566"/>${body}</svg>`;
   }
-  const heading = wrap(title, 68);
+  const heading = wrap(title, 88);
   let body = `<rect x="24" y="16" width="292" height="24" rx="12" fill="#102742" stroke="#2d5a88"/>` + textLines([zh ? '数据流向与核心要点架构图 · 横向全景' : 'DATA FLOW & KEY TAKEAWAYS ARCHITECTURE'], 38, 32, 11.5, '#56ddcd', 700);
-  body += `<rect x="646" y="16" width="196" height="24" rx="12" fill="#0d2238" stroke="#254b6e"/>` + textLines([zh ? '──▶ 阶段数据与上下文流' : '──▶ Stage Data & Context Flow'], 660, 32, 11.5, '#7ce8d8', 600);
-  body += `<rect x="852" y="16" width="204" height="24" rx="12" fill="#15203c" stroke="#3b4278"/>` + textLines([zh ? '◆ 策略门禁与要点说明' : '◆ Policy Gate & Key Notes'], 866, 32, 11.5, '#c4b5fd', 600);
+  body += `<rect x="926" y="16" width="196" height="24" rx="12" fill="#0d2238" stroke="#254b6e"/>` + textLines([zh ? '──▶ 阶段数据与上下文流' : '──▶ Stage Data & Context Flow'], 940, 32, 11.5, '#7ce8d8', 600);
+  body += `<rect x="1132" y="16" width="204" height="24" rx="12" fill="#15203c" stroke="#3b4278"/>` + textLines([zh ? '◆ 策略门禁与要点说明' : '◆ Policy Gate & Key Notes'], 1146, 32, 11.5, '#c4b5fd', 600);
   body += textLines(heading, 24, 62, 18, '#f2f7ff', 700);
   const stageTop = 56 + heading.length * 25;
   const count = concepts.length;
   const gap = 24;
-  const totalW = 1032;
+  const totalW = 1312;
   const cardW = Math.floor((totalW - (count - 1) * gap) / count);
   const titleBudget = Math.max(20, Math.floor((cardW - 24) / 7.5));
   const detailBudget = Math.max(23, Math.floor((cardW - 22) / 6.5));
@@ -173,30 +173,30 @@ function graphSvg(file, zh, options = {}) {
     {
       accent: '#38bdf8',
       head: zh ? '要点 01 · 全链路数据流向' : 'TAKEAWAY 01 · END-TO-END DATA FLOW',
-      lines: wrap(zh ? `自左向右从「${local(first.title, true)}」递进至「${local(last.title, true)}」，明确各阶段输入与输出契约。` : `Left-to-right pipeline from ${local(first.title, false)} to ${local(last.title, false)} with explicit handoffs.`, 44)
+      lines: wrap(zh ? `自左向右从「${local(first.title, true)}」递进至「${local(last.title, true)}」，明确各阶段输入与输出契约。` : `Left-to-right pipeline from ${local(first.title, false)} to ${local(last.title, false)} with explicit handoffs.`, 56)
     },
     {
       accent: '#a78bfa',
       head: zh ? '要点 02 · 核心控制与策略门禁' : 'TAKEAWAY 02 · CONTROL & POLICY GATE',
-      lines: wrap(zh ? `核心门禁「${local(mid.title, true)}」：${local(mid.detail, true) || '在进入下游执行前完成边界与权限校验。'}` : `Core boundary at ${local(mid.title, false)}: ${local(mid.detail, false) || 'validates policy boundaries before execution.'}`, 44)
+      lines: wrap(zh ? `核心门禁「${local(mid.title, true)}」：${local(mid.detail, true) || '在进入下游执行前完成边界与权限校验。'}` : `Core boundary at ${local(mid.title, false)}: ${local(mid.detail, false) || 'validates policy boundaries before execution.'}`, 56)
     },
     {
       accent: '#34d399',
       head: zh ? '要点 03 · 证据核验与适用边界' : 'TAKEAWAY 03 · EVIDENCE & BOUNDARY',
-      lines: wrap(zh ? `${local(last.detail, true) || '核验来源产物与适用前提'} · 概念拓扑示意，非实测延迟。` : `${local(last.detail, false) || 'Inspect source artifacts and limits'} · Conceptual flow, not measured latency.`, 44)
+      lines: wrap(zh ? `${local(last.detail, true) || '核验来源产物与适用前提'} · 概念拓扑示意，非实测延迟。` : `${local(last.detail, false) || 'Inspect source artifacts and limits'} · Conceptual flow, not measured latency.`, 56)
     }
   ];
   const takeawayH = Math.max(88, ...takeaways.map(t => 36 + t.lines.length * 17));
   takeaways.forEach((card, idx) => {
-    const cx = 24 + idx * 349;
-    body += `<g data-takeaway="${idx + 1}"><rect x="${cx}" y="${takeawayTop}" width="334" height="${takeawayH}" rx="10" fill="#0b1a2e" stroke="#284466"/><rect x="${cx}" y="${takeawayTop + 12}" width="4" height="${takeawayH - 24}" rx="2" fill="${card.accent}"/>${textLines([card.head], cx + 14, takeawayTop + 25, 11.5, card.accent, 700)}${textLines(card.lines, cx + 14, takeawayTop + 46, 12, '#d5e4f5')}</g>`;
+    const cx = 24 + idx * 443;
+    body += `<g data-takeaway="${idx + 1}"><rect x="${cx}" y="${takeawayTop}" width="426" height="${takeawayH}" rx="10" fill="#0b1a2e" stroke="#284466"/><rect x="${cx}" y="${takeawayTop + 12}" width="4" height="${takeawayH - 24}" rx="2" fill="${card.accent}"/>${textLines([card.head], cx + 14, takeawayTop + 25, 11.5, card.accent, 700)}${textLines(card.lines, cx + 14, takeawayTop + 46, 12, '#d5e4f5')}</g>`;
   });
   const totalH = takeawayTop + takeawayH + 16;
-  return `<svg xmlns="http://www.w3.org/2000/svg" lang="${zh ? 'zh-CN' : 'en'}" class="knowledge-graph-wide" role="img" aria-labelledby="${id}-title ${id}-desc" viewBox="0 0 1080 ${totalH}" width="1080" style="width:100%;height:auto;max-width:1080px;margin:0 auto;font-family:system-ui,sans-serif"><title id="${id}-title">${esc(title)}</title><desc id="${id}-desc">${esc(description.join(' → '))}</desc><rect width="1080" height="${totalH}" rx="16" fill="#081525" stroke="#284566"/>${body}</svg>`;
+  return `<svg xmlns="http://www.w3.org/2000/svg" lang="${zh ? 'zh-CN' : 'en'}" class="knowledge-graph-wide" role="img" aria-labelledby="${id}-title ${id}-desc" viewBox="0 0 1360 ${totalH}" width="1360" style="width:100%;height:auto;margin:0 auto;font-family:system-ui,sans-serif"><title id="${id}-title">${esc(title)}</title><desc id="${id}-desc">${esc(description.join(' → '))}</desc><rect width="1360" height="${totalH}" rx="16" fill="#081525" stroke="#284566"/>${body}</svg>`;
 }
 function knowledgeFigure(file, zh, options = {}) {
   const topic = options.topic || classifyPath(file);
-  return `<figure class="knowledge-figure" data-knowledge-atlas="${esc(topic)}" style="margin:20px auto;max-width:1120px;padding:0 20px;box-sizing:border-box"><style>.knowledge-graph-wide{display:block}.knowledge-graph-compact{display:none}@media(max-width:600px){.knowledge-graph-wide{display:none}.knowledge-graph-compact{display:block}}</style>${graphSvg(file, zh, {...options, compact: true})}${graphSvg(file, zh, {...options, compact: false})}<figcaption style="font:13px/1.6 system-ui,sans-serif;margin:10px auto 0;max-width:1080px;color:#9fb2ca;overflow-wrap:anywhere">${zh ? '整体架构与数据流向图示：自左向右阅读阶段数据流转、策略门禁与底部三项核心要点说明（概念拓扑，不代表实测吞吐或生产排名）。' : 'Architecture & data-flow blueprint: follow the left-to-right stage handoffs, policy gates, and three key takeaway callouts below (conceptual topology, not measured latency or rankings).'}</figcaption></figure>`;
+  return `<figure class="knowledge-figure" data-knowledge-atlas="${esc(topic)}" style="margin:20px auto;width:100%;max-width:min(2880px,100%);padding:0 clamp(0px,1.2vw,20px);box-sizing:border-box"><style>.knowledge-graph-wide{display:block}.knowledge-graph-compact{display:none}@media(max-width:600px){.knowledge-graph-wide{display:none}.knowledge-graph-compact{display:block}}</style>${graphSvg(file, zh, {...options, compact: true})}${graphSvg(file, zh, {...options, compact: false})}<figcaption style="font:13px/1.6 system-ui,sans-serif;margin:10px auto 0;max-width:100%;color:#9fb2ca;overflow-wrap:anywhere">${zh ? '整体架构与数据流向图示：自左向右阅读阶段数据流转、策略门禁与底部三项核心要点说明（概念拓扑，不代表实测吞吐或生产排名）。' : 'Architecture & data-flow blueprint: follow the left-to-right stage handoffs, policy gates, and three key takeaway callouts below (conceptual topology, not measured latency or rankings).'}</figcaption></figure>`;
 }
 const mapSummaries = {
   'data-infra': [['OneLake · Fabric IQ · Mirroring','AKSClaw · E2B · VM FinOps'],['OneLake · Fabric IQ · 数据镜像','AKSClaw · E2B · VM 成本治理']],
@@ -210,25 +210,49 @@ const mapSummaries = {
   'sa-skills': [['Reusable contracts & runbooks','HVE · skills · human approval'],['可复用契约与操作手册','HVE · 技能 · 人工批准']]
 };
 function systemSvg(file, zh, compact = false) {
-  const id = `system-${crypto.createHash('sha256').update(`${file}|${zh}|${compact}`).digest('hex').slice(0, 10)}`;
-  const width = compact ? 360 : 1080; const step = compact ? 154 : 162;
-  const rows = compact ? contextTracks.length : 3; const height = 148 + rows * step;
-  let body = textLines([zh ? '八大工程赛道 + SA 技能扩展' : '8 engineering tracks + SA extension'], 24, 34, compact ? 17 : 25, '#eef5ff', 700);
-  body += textLines(zh ? ['架构理解 → 证据检查 → 演示运行 → 来源复用','共享：数据基础 · 运行时 · 测评契约 · 信任边界'] : ['Architecture → evaluation → demos → resources', 'Shared: data · runtime · test contracts · trust'], 24, 66, compact ? 13 : 18, '#bed0e4');
-  const railY = 112;
+  const ultra = compact === 'ultrawide';
+  const mode = ultra ? 'ultrawide' : (compact ? 'compact' : 'wide');
+  const id = `system-${crypto.createHash('sha256').update(`${file}|${zh}|${mode}`).digest('hex').slice(0, 10)}`;
+  const width = ultra ? 1880 : (compact ? 360 : 1320);
+  const step = ultra ? 156 : (compact ? 154 : 156);
+  const rows = compact === true ? contextTracks.length : (ultra ? 2 : 3);
+  const height = ultra ? 444 : (148 + rows * step);
+  let body = textLines([zh ? '八大工程赛道 + SA 技能扩展' : '8 engineering tracks + SA extension'], 24, 34, compact === true ? 17 : 25, '#eef5ff', 700);
+  body += textLines(zh ? ['架构理解 → 证据检查 → 演示运行 → 来源复用','共享：数据基础 · 运行时 · 测评契约 · 信任边界'] : ['Architecture → evaluation → demos → resources', 'Shared: data · runtime · test contracts · trust'], 24, 66, compact === true ? 13 : 17, '#bed0e4');
+  if (ultra) {
+    body += `<rect x="1312" y="20" width="544" height="58" rx="12" fill="#102742" stroke="#355b84"/>` + textLines([zh ? '全景宽屏导航 · 点击任一赛道卡片直达架构与工作台' : 'ULTRAWIDE SYSTEM TOPOLOGY · CLICK ANY TRACK CARD TO OPEN'], 1330, 44, 12.5, '#56ddcd', 700) + textLines([zh ? '第一排 01–05 核心技术底座 · 第二排 06–08 应用赛道 + 09 SA 共享扩展' : 'Row 1: 01–05 Core Systems · Row 2: 06–08 Interactive Tracks + 09 SA Extension'], 1330, 65, 12.5, '#c5d4e7', 500);
+  }
+  const railY = 108;
   body += `<path d="M24 ${railY} H${width - 24}" stroke="#63dbca" stroke-width="2"/>`;
+  if (ultra) {
+    body += `<path d="M24 274 H${width - 24}" stroke="#527793" stroke-width="2"/>`;
+  }
   contextTracks.forEach(([track,en,cn], index) => {
-    const col = compact ? 0 : index % 3; const row = compact ? index : Math.floor(index / 3);
-    const x = compact ? 16 : 24 + col * 350; const y = 136 + row * step; const w = compact ? 328 : 332;
+    let col, row, x, y, w;
+    if (compact === true) {
+      col = 0; row = index; x = 16; y = 136 + row * step; w = 328;
+    } else if (ultra) {
+      row = index < 5 ? 0 : 1;
+      col = row === 0 ? index : index - 5;
+      w = row === 0 ? 354 : 446;
+      x = 24 + col * (row === 0 ? 370.5 : 462);
+      y = row === 0 ? 128 : 290;
+    } else {
+      col = index % 3; row = Math.floor(index / 3); x = 24 + col * 428; y = 132 + row * step; w = 416;
+    }
     const target = track === 'sa-skills' ? `studio/${zh ? 'zh-' : ''}index.html#sa-skills` : `studio/${zh ? 'zh-' : ''}${track}.html`;
     const href = path.posix.relative(path.posix.dirname(file.replaceAll('\\','/')), target) || path.posix.basename(target);
-    const title = zh ? cn : en; const lines = wrap(title, 31);
-    body += `<path d="M${x + w / 2} ${row ? y - step + 130 : railY} V${y}" fill="none" stroke="#527793" stroke-width="2"/><a href="${esc(href)}" aria-label="${esc(title)}"><g data-track="${track}"><rect x="${x}" y="${y}" width="${w}" height="130" rx="12" fill="${track === 'sa-skills' ? '#203044' : '#10253a'}" stroke="#527793"/>${textLines([`${String(index + 1).padStart(2,'0')} / ${zh ? (track === 'sa-skills' ? '共享扩展' : '核心赛道') : (track === 'sa-skills' ? 'SHARED EXTENSION' : 'CORE TRACK')}`], x + 16, y + 23, 12, '#89dfd0', 650)}${textLines(lines, x + 16, y + 48, 18, '#eef5ff', 650)}${textLines(mapSummaries[track][zh ? 1 : 0], x + 16, y + 57 + lines.length * 23, 13, '#c5d4e7')}</g></a>`;
+    const title = zh ? cn : en; const lines = wrap(title, ultra ? 31 : (compact === true ? 31 : 36));
+    const stemTop = ultra ? (row === 0 ? railY : 274) : (row ? y - step + 130 : railY);
+    if (ultra && row === 0 && (col === 1 || col === 3)) {
+      body += `<path d="M${x + w / 2} ${y + 130} V274" fill="none" stroke="#527793" stroke-width="2"/>`;
+    }
+    body += `<path d="M${x + w / 2} ${stemTop} V${y}" fill="none" stroke="#527793" stroke-width="2"/><a href="${esc(href)}" aria-label="${esc(title)}"><g data-track="${track}"><rect x="${x}" y="${y}" width="${w}" height="130" rx="12" fill="${track === 'sa-skills' ? '#203044' : '#10253a'}" stroke="#527793"/>${textLines([`${String(index + 1).padStart(2,'0')} / ${zh ? (track === 'sa-skills' ? '共享扩展' : '核心赛道') : (track === 'sa-skills' ? 'SHARED EXTENSION' : 'CORE TRACK')}`], x + 16, y + 23, 12, '#89dfd0', 650)}${textLines(lines, x + 16, y + 48, 18, '#eef5ff', 650)}${textLines(mapSummaries[track][zh ? 1 : 0], x + 16, y + 57 + lines.length * 23, 13, '#c5d4e7')}</g></a>`;
   });
-  return `<svg xmlns="http://www.w3.org/2000/svg" lang="${zh ? 'zh-CN' : 'en'}" class="knowledge-system-${compact ? 'compact' : 'wide'}" role="img" aria-labelledby="${id}-title ${id}-desc" viewBox="0 0 ${width} ${height}" width="${width}" style="width:100%;height:auto;font-family:system-ui,sans-serif"><title id="${id}-title">${zh ? '工程枢纽整体知识图谱' : 'Engineering Hub overall knowledge map'}</title><desc id="${id}-desc">${zh ? '八大赛道共享架构、测评、演示与资料四阶段。SA 技能与 HVE 为所有赛道提供可复用契约；连线表示共享工程路径，不表示运行时数据流。' : 'Eight tracks share architecture, evaluation, demos and resources. SA skills and HVE supply reusable contracts across tracks; connecting lines show a shared engineering path, not runtime data flow.'}</desc><rect width="${width}" height="${height}" rx="16" fill="#091827"/>${body}</svg>`;
+  return `<svg xmlns="http://www.w3.org/2000/svg" lang="${zh ? 'zh-CN' : 'en'}" class="knowledge-system-${mode}" role="img" aria-labelledby="${id}-title ${id}-desc" viewBox="0 0 ${width} ${height}" width="${width}" style="width:100%;height:auto;font-family:system-ui,sans-serif"><title id="${id}-title">${zh ? '工程枢纽整体知识图谱' : 'Engineering Hub overall knowledge map'}</title><desc id="${id}-desc">${zh ? '八大赛道共享架构、测评、演示与资料四阶段。SA 技能与 HVE 为所有赛道提供可复用契约；连线表示共享工程路径，不表示运行时数据流。' : 'Eight tracks share architecture, evaluation, demos and resources. SA skills and HVE supply reusable contracts across tracks; connecting lines show a shared engineering path, not runtime data flow.'}</desc><rect width="${width}" height="${height}" rx="16" fill="#091827"/>${body}</svg>`;
 }
 function systemFigure(file, zh) {
-  return `<figure class="knowledge-figure knowledge-system" data-knowledge-atlas="system" style="margin:24px 0;max-width:100%"><style>.knowledge-system-wide{display:block}.knowledge-system-compact{display:none}@media(max-width:600px){.knowledge-system-wide{display:none}.knowledge-system-compact{display:block}}</style>${systemSvg(file,zh)}${systemSvg(file,zh,true)}<figcaption style="font:14px/1.6 system-ui,sans-serif;margin:12px 0">${zh ? '知识图谱：连线表示共享工程路径；八大核心赛道与 SA 技能扩展各有真实入口。非性能或成熟度排名。' : 'Knowledge map: connectors represent a shared engineering path. Eight core tracks and the SA extension each link to their real entry point; this is not a performance or maturity ranking.'}</figcaption></figure>`;
+  return `<figure class="knowledge-figure knowledge-system" data-knowledge-atlas="system" style="margin:24px 0;width:100%;max-width:100%"><style>.knowledge-system-wide{display:block}.knowledge-system-ultrawide,.knowledge-system-compact{display:none}@media(min-width:1520px){.knowledge-system-wide{display:none}.knowledge-system-ultrawide{display:block}}@media(max-width:600px){.knowledge-system-wide,.knowledge-system-ultrawide{display:none}.knowledge-system-compact{display:block}}</style>${systemSvg(file,zh,'ultrawide')}${systemSvg(file,zh)}${systemSvg(file,zh,true)}<figcaption style="font:14px/1.6 system-ui,sans-serif;margin:12px 0">${zh ? '知识图谱：连线表示共享工程路径；八大核心赛道与 SA 技能扩展各有真实入口。非性能或成熟度排名。' : 'Knowledge map: connectors represent a shared engineering path. Eight core tracks and the SA extension each link to their real entry point; this is not a performance or maturity ranking.'}</figcaption></figure>`;
 }
 function buildKnowledgeAtlas({root = path.join(__dirname, '..'), write} = {}) {
   const emit = write || ((file, text) => {const absolute = path.join(root, file); fs.mkdirSync(path.dirname(absolute), {recursive:true}); fs.writeFileSync(absolute,text);});

@@ -1,0 +1,1734 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="dark" data-mode="read">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Microsoft Ignite 2026 阶段 03 · 企业数据本体（Enterprise Data Ontology）：OneLake 跨云零拷贝、Salesforce Data 360 双向联邦、Fabric IQ 业务本体、HorizonDB 事务分析一体与 Diamond 预集成环境公开脱敏实战。">
+  <title>03 企业数据本体｜企业级 Agentic AI 生产落地之旅</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="assets/ignite-recap.css">
+  <style>
+    .arch-step-num {
+      display: inline-grid;
+      place-items: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      background: var(--accent-soft);
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      font-family: var(--font-mono);
+      font-size: 12.5px;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+    .compare-bars {
+      display: grid;
+      gap: 12px;
+      margin: 16px 0;
+      padding: 16px;
+      border-radius: 14px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+    }
+    .bar-row {
+      display: grid;
+      grid-template-columns: minmax(180px, 240px) 1fr minmax(96px, auto);
+      gap: 12px;
+      align-items: center;
+      font-size: 13.5px;
+    }
+    .bar-track {
+      height: 14px;
+      border-radius: 999px;
+      background: var(--surface-strong);
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .bar-fill {
+      height: 100%;
+      border-radius: 999px;
+      transition: width 0.22s ease;
+    }
+    .bar-fill.danger {
+      background: linear-gradient(90deg, #e11d48, #fb7185);
+    }
+    .bar-fill.success {
+      background: linear-gradient(90deg, #0d9488, #34d399);
+    }
+    .bar-fill.guard {
+      background: linear-gradient(90deg, #d97706, #fbbf24);
+    }
+    .preset-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .preset-chip {
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text-muted);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .preset-chip:hover,
+    .preset-chip.active {
+      border-color: var(--teal);
+      background: var(--teal-soft);
+      color: var(--teal);
+    }
+    .sanitized-banner {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 14px 18px;
+      border-radius: 12px;
+      border: 1px solid rgba(45, 212, 191, 0.4);
+      background: var(--teal-soft);
+      margin-bottom: 18px;
+      font-size: 13.5px;
+      color: var(--text);
+    }
+    .matrix-win {
+      background: rgba(45, 212, 191, 0.07);
+    }
+    .ms-arch-board code {
+      background: #eff6ff;
+      border-color: #bfdbfe;
+      color: #1e40af;
+      font-size: 0.88em;
+      padding: 1px 5px;
+    }
+    @media (max-width: 720px) {
+      .bar-row {
+        grid-template-columns: 1fr;
+        gap: 6px;
+      }
+    }
+  </style>
+  <script src="assets/ignite-recap.js" defer></script>
+</head>
+<body data-title-zh="03 企业数据本体｜企业级 Agentic AI 生产落地之旅" data-title-en="03 Enterprise Data Ontology | The Enterprise Agentic AI Journey">
+  <a class="skip-link" href="#main-content">
+    <span data-lang="zh-CN">跳至正文</span>
+    <span data-lang="en">Skip to main content</span>
+  </a>
+
+  <header class="site-header">
+    <div class="header-top">
+      <a class="brand-group" href="index.html" style="text-decoration:none">
+        <span class="brand-mark" aria-hidden="true">IG26</span>
+        <span>
+          <span class="brand-title">
+            <span data-lang="zh-CN">企业级 Agentic AI 生产落地之旅</span>
+            <span data-lang="en">The Enterprise Agentic AI Journey</span>
+          </span>
+          <span class="brand-sub">
+            <span data-lang="zh-CN">Microsoft Ignite 2026 解决方案架构师全景指南</span>
+            <span data-lang="en">Microsoft Ignite 2026 Solution Architect Blueprint</span>
+          </span>
+        </span>
+      </a>
+      <div class="header-controls">
+        <a class="ctrl-btn hub-return-link" href="../zh.html">← 个人主页</a>
+        <div class="header-search-wrap"><input type="search" class="header-search-input" placeholder="搜索章节 / 微软服务…" aria-label="搜索 Ignite 2026 章节与服务"><div class="header-search-results" hidden></div></div>
+        <button type="button" class="ctrl-btn" data-action="toggle-mode">📖 精读 / 🎤 投屏</button>
+        <button type="button" class="ctrl-btn" data-action="toggle-cues"><span data-lang="zh-CN">🎙️ 宣讲提示</span><span data-lang="en">🎙️ Speaker Cues</span></button>
+        <button type="button" class="ctrl-btn" data-action="toggle-theme">🌗 <span class="theme-label">浅色</span></button>
+        <a class="ctrl-btn language-link" href="03-fabric-ontology.en.html" hreflang="en" data-action="toggle-lang">EN / 中文</a>
+      </div>
+    </div>
+    <div class="journey-bar">
+      <nav class="journey-nav" aria-label="Journey Stages">
+        <a class="journey-link" href="index.html">
+          <span class="journey-step">00</span>
+          <span data-lang="zh-CN">全景架构蓝图</span>
+          <span data-lang="en">Architecture Blueprint</span>
+        </a>
+        <a class="journey-link" href="01-copilot-entry.html">
+          <span class="journey-step">01</span>
+          <span data-lang="zh-CN">统一智能体入口</span>
+          <span data-lang="en">Unified Agent Entry</span>
+        </a>
+        <a class="journey-link" href="02-web-iq-context.html">
+          <span class="journey-step">02</span>
+          <span data-lang="zh-CN">外部实时上下文</span>
+          <span data-lang="en">Live World Context</span>
+        </a>
+        <a class="journey-link" href="03-fabric-ontology.html" aria-current="page">
+          <span class="journey-step">03</span>
+          <span data-lang="zh-CN">企业数据本体</span>
+          <span data-lang="en">Enterprise Data Ontology</span>
+        </a>
+        <a class="journey-link" href="04-foundry-engineering.html">
+          <span class="journey-step">04</span>
+          <span data-lang="zh-CN">智能体工程运行时</span>
+          <span data-lang="en">Agent Runtime Engineering</span>
+        </a>
+        <a class="journey-link" href="05-ai-infra-optimization.html">
+          <span class="journey-step">05</span>
+          <span data-lang="zh-CN">推理基础设施优化</span>
+          <span data-lang="en">Inference Infra Optimization</span>
+        </a>
+        <a class="journey-link" href="06-agent-governance.html">
+          <span class="journey-step">06</span>
+          <span data-lang="zh-CN">全域智能体治理</span>
+          <span data-lang="en">Enterprise Agent Governance</span>
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main-content" class="page-main">
+    <!-- ==================== HERO PANEL ==================== -->
+    <section class="hero-panel">
+      <div class="hero-grid">
+        <div>
+          <p class="eyebrow">STAGE 03 · ENTERPRISE DATA ONTOLOGY</p>
+          <h1 class="hero-title">
+            <span data-lang="zh-CN">企业数据本体</span>
+            <span data-lang="en">Enterprise Data Ontology</span>
+          </h1>
+          <p class="hero-lead">
+            <span data-lang="zh-CN">承接上一章 <code>Web IQ</code> 提供的外部公开域实时情报（阶段 02），企业构建生产级 Agent 的另一核心挑战在于：<strong>超过 90% 决定经营指标与履约结果的业务上下文位于模型权重之外</strong>——分布在 PB 级历史数据湖、数百张异构 CRM/ERP 核心表及毫秒级门店 POS 与物流事件流中，要求严格的指标口径一致性。本章拆解 <strong>Microsoft Fabric（<code>OneLake</code> + <code>Fabric IQ Ontology</code> + <code>HorizonDB</code>）</strong> 如何在零 ETL 拷贝的前提下，将物理库表抽象为跨智能体复用的受治理业务本体与事务写回图谱。</span>
+            <span data-lang="en">Following <code>Web IQ</code>'s live external signals (<code>Stage 02</code>), enterprises face a core data-architecture challenge: <strong>over 90% of decision-critical business context lives outside model weights</strong>—distributed across petabyte-scale historical lakes, 500-table CRM/ERP schemas, and millisecond IoT/POS streams where metric drift cannot be tolerated. Discover how <strong>Microsoft Fabric (<code>OneLake</code> + <code>Fabric IQ Ontology</code> + <code>HorizonDB</code>)</strong> abstracts raw tables into a governed business semantic and transactional action graph without ETL duplication.</span>
+          </p>
+          <div class="pill-row">
+            <span class="pill"><span class="badge badge-ga">GA</span> Fabric IQ (Copilot &amp; Fabric Apps)</span>
+            <span class="pill"><span class="badge badge-ga">GA</span> Salesforce Data 360 Zero-Copy</span>
+            <span class="pill"><span class="badge badge-ga">GA</span> Rayfin &amp; Fabric Apps (100K+)</span>
+            <span class="pill"><span class="badge badge-ga">GA</span> Azure HorizonDB &amp; Database Hub</span>
+            <span class="pill"><span class="badge badge-preview">Preview</span> Fabric HorizonDB (Serverless PG)</span>
+            <span class="pill"><span class="badge badge-preview">Preview</span> Ontology for Excel · GitHub · ChatGPT · Claude</span>
+          </div>
+        </div>
+
+        <aside class="hero-kpi-box" aria-label="Stage 03 Key Metrics">
+          <div class="eyebrow" style="margin-bottom:4px">
+            <span data-lang="zh-CN">IGNITE 2026 核心架构指标</span>
+            <span data-lang="en">IGNITE 2026 ARCHITECTURAL KPIS</span>
+          </div>
+          <div class="kpi-grid">
+            <div class="kpi-item">
+              <span class="kpi-val mono">0-Byte Copy</span>
+              <span class="kpi-lbl">
+                <span data-lang="zh-CN"><code>OneLake Shortcuts</code> + <code>Salesforce Data 360</code> 双向零拷贝 (<code>GA</code>)</span>
+                <span data-lang="en"><code>OneLake Shortcuts</code> + <code>Salesforce Data 360</code> bi-directional (<code>GA</code>)</span>
+              </span>
+            </div>
+            <div class="kpi-item">
+              <span class="kpi-val mono">1 → N Agents</span>
+              <span class="kpi-lbl">
+                <span data-lang="zh-CN">同一本体赋能 M365 / Excel / GitHub / Foundry / ChatGPT / Claude</span>
+                <span data-lang="en">One Ontology across M365, Excel, GitHub, Foundry, ChatGPT &amp; Claude</span>
+              </span>
+            </div>
+            <div class="kpi-item">
+              <span class="kpi-val mono">Sub-Second</span>
+              <span class="kpi-lbl">
+                <span data-lang="zh-CN"><code>HorizonDB</code> Serverless PG 秒级唤醒 + 跨湖仓联查卸载至 DW</span>
+                <span data-lang="en"><code>HorizonDB</code> serverless PG resume + OneLake join offload to DW</span>
+              </span>
+            </div>
+            <div class="kpi-item">
+              <span class="kpi-val mono">$582K</span>
+              <span class="kpi-lbl">
+                <span data-lang="zh-CN">Diamond 公开脱敏全渠道本体沙盘单波次守护净毛利</span>
+                <span data-lang="en">Net margin protected in sanitized Diamond omnichannel Ontology lab</span>
+              </span>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <div class="speaker-cue">
+        <div class="speaker-cue-title">
+          <span data-lang="zh-CN">🎯 Partner SA 宣讲承接话术（从 Stage 02 Web IQ 到 Stage 03 Fabric Ontology）</span>
+          <span data-lang="en">🎯 Partner SA Talk-Track (Bridging Stage 02 Web IQ → Stage 03 Fabric Ontology)</span>
+        </div>
+        <p>
+          <span data-lang="zh-CN">“刚刚在第二章，我们通过 <code>Web IQ</code> 获取了外部鹿特丹港气象延误与市场报价信号。但当智能体面向企业内部 SAP 的 500 张物理表直接执行 Text-to-SQL 时，极易因表连接歧义算错净毛利率或遗漏渠道价保合同约束。Ignite 2026 的核心设计思路在于：<strong>前沿基础模型已高度标准化，企业智能体的核心区分度在于受治理的数据语义层</strong>——通过 <code>OneLake</code> 零拷贝挂载多云与 Salesforce，在 <code>Fabric IQ Ontology</code> 中统一定义实体、度量值与规则并复用于 Copilot、Excel、ChatGPT 与 Claude，最终由 <code>HorizonDB</code> 与 <code>Fabric Apps</code> 执行受控事务写回。”</span>
+          <span data-lang="en">"In Stage 02, <code>Web IQ</code> supplied live Rotterdam port delay and market pricing feeds. Yet when an agent turns inward and runs raw Text-to-SQL over 500 cryptic ERP tables, join ambiguity easily miscalculates gross margin or violates channel price-protection contracts. Ignite 2026's architectural principle is clear: <strong>frontier models are widely accessible; enterprise reliability depends on a governed semantic layer outside model weights</strong>. Federate multi-cloud &amp; Salesforce with zero copy in <code>OneLake</code>, model business semantics once in <code>Fabric IQ Ontology</code>—so ChatGPT, Claude, Excel, and M365 Copilot query identical verified metrics—and commit approved transactions via <code>HorizonDB</code> and <code>Fabric Apps</code>."</span>
+        </p>
+      </div>
+    </section>
+
+    <!-- ==================== SOLUTION ARCHITECTURE SPLIT-BOARD ==================== -->
+    <section class="ms-arch-board" data-knowledge-atlas="ignite-2026" id="stage03-architecture" aria-labelledby="stage03-arch-heading">
+      <div class="ms-arch-topbar">
+        <div>
+          <span class="ms-arch-kicker">STAGE 03 SOLUTION ARCHITECTURE · ONELAKE, ONTOLOGY &amp; HORIZONDB</span>
+          <h2 class="ms-arch-heading" id="stage03-arch-heading">
+            <span data-lang="zh-CN">基于 OneLake 联邦、语义本体与混合事务分析（HTAP）的数据架构</span>
+            <span data-lang="en">Microsoft Fabric Federated Data, Semantic Ontology &amp; HTAP Architecture</span>
+          </h2>
+        </div>
+        <div class="ms-arch-actions">
+          <a class="ms-arch-drawio-btn" href="drawio/03-fabric-ontology.drawio" download>
+            <span aria-hidden="true">📐</span>
+            <span data-lang="zh-CN">下载 Draw.io 架构源文件</span>
+            <span data-lang="en">Download .drawio Source</span>
+          </a>
+          <button type="button" class="ms-arch-zoom-btn" data-action="zoom-arch" aria-pressed="false">
+            <span aria-hidden="true">🔍</span>
+            <span data-lang="zh-CN">放大架构图 / 切换分栏</span>
+            <span data-lang="en">Zoom Diagram / Split View</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="ms-arch-split">
+        <!-- Left: Microsoft Solution Architecture Diagram -->
+        <div class="ms-arch-canvas">
+          <div class="arch-sub-frame">
+            <div class="arch-sub-bar">
+              <span class="arch-sub-title">
+                <span class="ms-logo" data-ms-icon="fabric"></span>
+                <span data-lang="zh-CN">Microsoft Fabric &amp; Azure 统一数据底座（Diamond 全球智慧显示渠道脱敏参考架构）</span>
+                <span data-lang="en">Microsoft Fabric &amp; Azure Unified Data Estate (Diamond Sanitized Reference Architecture)</span>
+              </span>
+              <span class="arch-sub-pill">
+                <span data-lang="zh-CN">OneLake RLS/CLS · Purview Lineage · Entra Workspace Identity</span>
+                <span data-lang="en">OneLake RLS/CLS · Purview Lineage · Entra Workspace Identity</span>
+              </span>
+            </div>
+
+            <div class="arch-main-stack">
+              <!-- Top Zone: Multi-Cloud & External Data Sources -->
+              <div class="arch-zone zone-slate">
+                <div class="arch-zone-head">
+                  <span class="arch-zone-title">
+                    <span data-lang="zh-CN">Multi-Cloud &amp; External Data Sources · 跨云异构数据源与外部数据流</span>
+                    <span data-lang="en">Multi-Cloud &amp; External Data Sources · Federated Data Estates</span>
+                  </span>
+                  <span class="arch-zone-caption">
+                    <span data-lang="zh-CN">Shortcuts / Mirroring 原地联邦 · 零数据复制</span>
+                    <span data-lang="en">In-Place Federation · Zero Data Replication</span>
+                  </span>
+                </div>
+                <div class="arch-cards-3">
+                  <div class="arch-svc">
+                    <div class="arch-svc-head">
+                      <span class="ms-logo" data-ms-icon="network"></span>
+                      <span class="arch-svc-name">
+                        <span data-lang="zh-CN">36 国分销域 / AWS S3 / GCS</span>
+                        <span data-lang="en">36 Regional Buckets / S3 / GCS</span>
+                      </span>
+                      <span class="svc-tag ga">0-Copy</span>
+                    </div>
+                    <p class="arch-svc-desc">
+                      <span data-lang="zh-CN">EDI 852 渠道库存与门店 POS 动销明细，通过 OneLake Shortcuts 跨云原地挂载</span>
+                      <span data-lang="en">EDI 852 channel inventory &amp; retail POS sell-out tables federated in place via Shortcuts</span>
+                    </p>
+                  </div>
+
+                  <div class="arch-svc">
+                    <div class="arch-svc-head">
+                      <span class="ms-logo" data-ms-icon="d365"></span>
+                      <span class="arch-svc-name">Salesforce Data 360 &amp; SAP</span>
+                      <span class="svc-tag ga">GA</span>
+                    </div>
+                    <p class="arch-svc-desc">
+                      <span data-lang="zh-CN"><strong>双向零拷贝联邦访问</strong> CRM 商机管线、ERP Sell-In 出货表与渠道价保协议</span>
+                      <span data-lang="en"><strong>Bi-directional zero-copy federation</strong> across CRM pipeline, ERP Sell-In &amp; price-protection contracts</span>
+                    </p>
+                  </div>
+
+                  <div class="arch-svc">
+                    <div class="arch-svc-head">
+                      <span class="ms-logo" data-ms-icon="webiq"></span>
+                      <span class="arch-svc-name">Databricks Unity Catalog + Web IQ</span>
+                      <span class="svc-tag ga">GA</span>
+                    </div>
+                    <p class="arch-svc-desc">
+                      <span data-lang="zh-CN">Mirrored Unity Catalog 表元数据映射 + <code>Web IQ</code> 港口拥堵与气象结构化流</span>
+                      <span data-lang="en">Mirrored Unity Catalog metadata projection + structured <code>Web IQ</code> port &amp; weather streams</span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Connector Bar 1 -->
+              <div class="arch-flow-connector">
+                <span class="arch-flow-hop">
+                  <span class="step-dot">1</span>
+                  <span data-lang="zh-CN">↓ OneLake Shortcuts / Mirroring 元数据挂载</span>
+                  <span data-lang="en">↓ OneLake Shortcuts / Mirroring Metadata Mount</span>
+                </span>
+                <span class="arch-flow-hop">
+                  <span class="step-dot">2</span>
+                  <span data-lang="zh-CN">↓ Eventhouse KQL 亚秒级流式异常检测</span>
+                  <span data-lang="en">↓ Sub-Second Eventhouse KQL Anomaly Detection</span>
+                </span>
+              </div>
+
+              <!-- Middle 2-Column Split -->
+              <div class="arch-cards-2">
+                <!-- Left Column: Unified Storage, Stream & Operational Tier -->
+                <div class="arch-zone zone-blue">
+                  <div class="arch-zone-head">
+                    <span class="arch-zone-title">
+                      <span data-lang="zh-CN">Storage, Stream &amp; HTAP Tier · 湖仓存储、流处理与事务层</span>
+                      <span data-lang="en">Storage, Stream &amp; HTAP Operational Tier</span>
+                    </span>
+                  </div>
+                  <div class="arch-col-stack">
+                    <div class="arch-svc svc-blue">
+                      <div class="arch-svc-head">
+                        <span class="ms-logo" data-ms-icon="onelake"></span>
+                        <span class="arch-svc-name">OneLake Open Lakehouse</span>
+                        <span class="svc-tag ga">GA</span>
+                      </div>
+                      <p class="arch-svc-desc">
+                        <span data-lang="zh-CN">Delta Lake ↔ Apache Iceberg UniForm 元数据互通，单一物理副本供多计算引擎读取</span>
+                        <span data-lang="en">Delta Lake ↔ Apache Iceberg UniForm metadata interoperability over a single storage copy</span>
+                      </p>
+                    </div>
+
+                    <div class="arch-svc">
+                      <div class="arch-svc-head">
+                        <span class="ms-logo" data-ms-icon="eventhouse"></span>
+                        <span class="arch-svc-name">Fabric Eventhouse (RTI)</span>
+                        <span class="svc-tag ga">GA</span>
+                      </div>
+                      <p class="arch-svc-desc">
+                        <span data-lang="zh-CN">亚秒级 KQL 时序窗口聚合，实时检测促销销量突增（2.8×）与冷链温控阈值偏移</span>
+                        <span data-lang="en">Sub-second KQL sliding-window analytics detecting 2.8× POS demand surges &amp; cold-chain drift</span>
+                      </p>
+                    </div>
+
+                    <div class="arch-svc">
+                      <div class="arch-svc-head">
+                        <span class="ms-logo" data-ms-icon="horizondb"></span>
+                        <span class="arch-svc-name">Fabric &amp; Azure HorizonDB</span>
+                        <span class="svc-tag prev">GA · Prev</span>
+                      </div>
+                      <p class="arch-svc-desc">
+                        <span data-lang="zh-CN"><strong>Serverless PostgreSQL</strong> 事务引擎，支持在线 PG 状态表与 OneLake 历史表跨引擎联合查询（卸载至 DW 算力）及 Reverse ETL</span>
+                        <span data-lang="en"><strong>Serverless PostgreSQL</strong> supporting live PG ⋈ OneLake joins (offloaded to DW compute) &amp; Reverse ETL</span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Right Column: Semantic Ontology & Operational Apps -->
+                <div class="arch-zone zone-green">
+                  <div class="arch-zone-head">
+                    <span class="arch-zone-title">
+                      <span data-lang="zh-CN">Semantic Ontology &amp; Data Apps · 语义本体与运营应用层</span>
+                      <span data-lang="en">Semantic Ontology &amp; Operational Data Apps</span>
+                    </span>
+                  </div>
+                  <div class="arch-col-stack">
+                    <div class="arch-svc svc-green">
+                      <div class="arch-svc-head">
+                        <span class="ms-logo" data-ms-icon="fabric"></span>
+                        <span class="arch-svc-name">Fabric IQ Ontology</span>
+                        <span class="svc-tag prev">GA · Prev</span>
+                        <span class="step-dot">3</span>
+                      </div>
+                      <p class="arch-svc-desc">
+                        <span data-lang="zh-CN">显式定义业务实体关系图、已验证 DAX 净毛利/返利度量值及渠道价保业务规则</span>
+                        <span data-lang="en">Explicit entity-relationship schema, verified DAX margin/rebate measures &amp; channel policy rules</span>
+                      </p>
+                    </div>
+
+                    <div class="arch-svc">
+                      <div class="arch-svc-head">
+                        <span class="ms-logo" data-ms-icon="powerbi"></span>
+                        <span class="arch-svc-name">Power BI Direct Lake &amp; Rayfin</span>
+                        <span class="svc-tag ga">GA</span>
+                      </div>
+                      <p class="arch-svc-desc">
+                        <span data-lang="zh-CN"><strong>0 DBU</strong> Direct Lake 直读 Parquet 语义报表 · <strong><code>Fabric Apps (Rayfin)</code></strong> 承载可回写运营数据应用</span>
+                        <span data-lang="en"><strong>0 DBU</strong> Direct Lake Parquet BI · <strong><code>Fabric Apps (Rayfin)</code></strong> hosting write-enabled operational apps</span>
+                      </p>
+                    </div>
+
+                    <div class="arch-svc">
+                      <div class="arch-svc-head">
+                        <span class="ms-logo" data-ms-icon="cosmos"></span>
+                        <span class="arch-svc-name">Database Hub &amp; DB Agents</span>
+                        <span class="svc-tag ga">GA</span>
+                      </div>
+                      <p class="arch-svc-desc">
+                        <span data-lang="zh-CN">跨 Azure SQL / PostgreSQL / Cosmos DB 实例统一性能可观测性与受控 Schema 演进</span>
+                        <span data-lang="en">Unified fleet observability &amp; governed schema evolution across Azure SQL, PostgreSQL &amp; Cosmos DB</span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Connector Bar 2 -->
+              <div class="arch-flow-connector">
+                <span class="arch-flow-hop">
+                  <span class="step-dot">4</span>
+                  <span data-lang="zh-CN">↓ MCP / 语义接口暴露单一受治理指标定义</span>
+                  <span data-lang="en">↓ Single Governed Metric Contract Exposed via MCP &amp; Semantic APIs</span>
+                </span>
+                <span class="arch-flow-hop">
+                  <span class="step-dot">5</span>
+                  <span data-lang="zh-CN">↓ 人机协同审批门控与幂等事务写回</span>
+                  <span data-lang="en">↓ Human-in-the-Loop Approval Gate &amp; Idempotent Write-Back</span>
+                </span>
+              </div>
+
+              <!-- Bottom Zone: Multi-Agent Consumers & Transactional Action Loop -->
+              <div class="arch-zone zone-purple">
+                <div class="arch-zone-head">
+                  <span class="arch-zone-title">
+                    <span data-lang="zh-CN">Multi-Agent Consumers &amp; Transactional Write-Back · 多智能体消费与事务回写层</span>
+                    <span data-lang="en">Multi-Agent Consumers &amp; Transactional Write-Back</span>
+                  </span>
+                  <span class="arch-zone-caption">
+                    <span data-lang="zh-CN">跨客户端指标口径一致 + 审批门控事务执行</span>
+                    <span data-lang="en">Deterministic Cross-Agent Metrics + Approval-Gated Write-Back</span>
+                  </span>
+                </div>
+                <div class="arch-cards-3">
+                  <div class="arch-svc">
+                    <div class="arch-svc-head">
+                      <span class="ms-logo" data-ms-icon="copilot"></span>
+                      <span class="arch-svc-name">M365 Copilot &amp; Excel Live</span>
+                      <span class="svc-tag ga">GA</span>
+                    </div>
+                    <p class="arch-svc-desc">
+                      <span data-lang="zh-CN">管理层自然语言查询与实时连接透视表，严格复用同一 DAX 语义模型</span>
+                      <span data-lang="en">Executive NL queries and live PivotTables backed by the exact same DAX semantic model</span>
+                    </p>
+                  </div>
+
+                  <div class="arch-svc svc-purple">
+                    <div class="arch-svc-head">
+                      <span class="ms-logo" data-ms-icon="foundry"></span>
+                      <span class="arch-svc-name">Foundry · GitHub · Claude / ChatGPT</span>
+                      <span class="svc-tag prev">Preview</span>
+                    </div>
+                    <p class="arch-svc-desc">
+                      <span data-lang="zh-CN">第一方及第三方智能体经受控连接器消费同一 Ontology，消除跨客户端 SQL 口径偏差</span>
+                      <span data-lang="en">First-party and external agents query the shared Ontology, eliminating ad-hoc SQL metric drift</span>
+                    </p>
+                  </div>
+
+                  <div class="arch-svc">
+                    <div class="arch-svc-head">
+                      <span class="ms-logo" data-ms-icon="functions"></span>
+                      <span class="arch-svc-name">ERP / WMS Action Write-Back</span>
+                      <span class="svc-tag warn">Confirm</span>
+                      <span class="step-dot">6</span>
+                    </div>
+                    <p class="arch-svc-desc">
+                      <span data-lang="zh-CN">审批确认后冻结异常渠道返利，并向 ERP / WMS 下发跨区域 48h 库存调拨单</span>
+                      <span data-lang="en">Freezes anomalous channel rebates upon approval &amp; dispatches 48h cross-border ERP/WMS transfers</span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Structured Data Flow + Design Points + Why Microsoft -->
+        <aside class="ms-arch-aside" aria-label="Stage 03 Architecture Key Points">
+          <div class="aside-block">
+            <h4 class="tone-blue">
+              <span data-lang="zh-CN">Data flow / 联邦接入、语义求值与事务写回流 (1–6)</span>
+              <span data-lang="en">Data flow / Federation, Ontology Evaluation &amp; Write-Back (1–6)</span>
+            </h4>
+            <ol class="aside-flow-list">
+              <li>
+                <span data-lang="zh-CN"><strong>跨云元数据联邦挂载</strong>：<code>OneLake Shortcuts</code> 与 <code>Salesforce Data 360 Zero Copy</code>（<code>GA</code>）在不复制底层 Parquet/表数据的前提下挂载 36 国分销桶、SAP、Mirrored UC 及 <code>Web IQ</code> 流。</span>
+                <span data-lang="en"><strong>Cross-Cloud Metadata Federation</strong>: <code>OneLake Shortcuts</code> &amp; <code>Salesforce Data 360 Zero Copy</code> (<code>GA</code>) mount 36 regional buckets, SAP, Mirrored UC &amp; <code>Web IQ</code> streams without copying storage blocks.</span>
+              </li>
+              <li>
+                <span data-lang="zh-CN"><strong>流式时序异常检测</strong>：<code>Eventhouse</code> KQL 滑动窗口实时识别德国黑五 <code>2.8×</code> 销量突增与冷链温控超限，经 Activator 触发事件路由。</span>
+                <span data-lang="en"><strong>Streaming Anomaly Detection</strong>: <code>Eventhouse</code> KQL sliding windows detect <code>2.8×</code> Black Friday POS demand surges and cold-chain threshold breaches via Activator.</span>
+              </li>
+              <li>
+                <span data-lang="zh-CN"><strong>本体关系解析与指标求值</strong>：<code>Fabric IQ Ontology</code> 按预定义实体关联路径、已验证 DAX 净毛利率公式及价保合同约束执行确定性计算。</span>
+                <span data-lang="en"><strong>Ontology Traversal &amp; Metric Evaluation</strong>: <code>Fabric IQ Ontology</code> executes deterministic calculations using canonical entity joins, verified DAX Net GM%, and contract policy constraints.</span>
+              </li>
+              <li>
+                <span data-lang="zh-CN"><strong>多智能体一致性消费</strong>：同一 Ontology 通过 MCP Server 与语义接口向 M365 Copilot、Excel、Foundry、GitHub、ChatGPT 及 Claude 输出一致结果，并强制执行 Entra OBO 行列级权限。</span>
+                <span data-lang="en"><strong>Consistent Multi-Agent Consumption</strong>: One Ontology serves M365 Copilot, Excel, Foundry, GitHub, ChatGPT &amp; Claude via MCP and semantic APIs under Entra OBO RLS/CLS enforcement.</span>
+              </li>
+              <li>
+                <span data-lang="zh-CN"><strong>HTAP 跨引擎联合求解</strong>：<code>HorizonDB</code> 将在线 PostgreSQL 事务状态表与 OneLake 历史大表关联查询（分析负载自动卸载至 DW 算力池），生成候选调拨方案。</span>
+                <span data-lang="en"><strong>HTAP Cross-Engine Optimization</strong>: <code>HorizonDB</code> joins operational PostgreSQL state tables with historical OneLake tables (analytical scans offloaded to DW compute) to rank transfer options.</span>
+              </li>
+              <li>
+                <span data-lang="zh-CN"><strong>审批门控与幂等写回</strong>：业务负责人在 <code>Fabric Apps (Rayfin)</code> 复核确认后，调用幂等连接器冻结异常返利并下发 ERP/WMS 调拨指令（基准场景单次减少 <code>$582K</code> 毛利流失）。</span>
+                <span data-lang="en"><strong>Approval-Gated Idempotent Write-Back</strong>: Following human review in <code>Fabric Apps (Rayfin)</code>, idempotent connectors freeze flagged rebates and issue ERP/WMS transfer orders (<code>$582K</code> margin preserved in baseline simulation).</span>
+              </li>
+            </ol>
+          </div>
+
+          <div class="aside-block">
+            <h4 class="tone-green">
+              <span data-lang="zh-CN">Design points / 架构师关键设计决策</span>
+              <span data-lang="en">Design points / Solution Architect Decisions</span>
+            </h4>
+            <ul class="aside-bullets">
+              <li>
+                <span data-lang="zh-CN"><strong>以零拷贝联邦替代跨云全量 ETL 同步</strong>：源端数据保留在既有 AWS S3、Databricks 与 Salesforce 存储中，消除重复存储开销与 T+1 批处理延迟。</span>
+                <span data-lang="en"><strong>In-place federation over cross-cloud ETL</strong>: Keeps source data inside existing S3, Databricks &amp; Salesforce stores, eliminating duplicate storage costs and T+1 batch latency.</span>
+              </li>
+              <li>
+                <span data-lang="zh-CN"><strong>以受控语义本体替代直接表级 Text-to-SQL</strong>：阻断大模型对数百张复杂 ERP 物理表自行拼装 JOIN 的错误风险，强制收敛至经审计的实体路径与 DAX 度量。</span>
+                <span data-lang="en"><strong>Governed Ontology over raw-table Text-to-SQL</strong>: Prevents LLMs from improvising error-prone SQL joins across hundreds of ERP tables by enforcing audited entity paths and DAX measures.</span>
+              </li>
+              <li>
+                <span data-lang="zh-CN"><strong>以 HorizonDB 衔接分析洞察与在线事务</strong>：通过 Serverless PostgreSQL 跨湖仓查询卸载与 Reverse ETL，在不拆分 OLTP/OLAP 链路的前提下支撑运营应用状态持久化。</span>
+                <span data-lang="en"><strong>Bridge OLAP insights and OLTP state via HorizonDB</strong>: Pairs Serverless PostgreSQL DW-offloaded joins with Reverse ETL and <code>Rayfin</code> to persist operational state cleanly.</span>
+              </li>
+              <li>
+                <span data-lang="zh-CN"><strong>安全策略下沉至存储与语义层</strong>：无论上层接入第一方还是第三方模型客户端，统一在 OneLake 与 Ontology 层实施 Entra OBO 身份透传与 RLS/CLS 过滤。</span>
+                <span data-lang="en"><strong>Enforce security at the storage and semantic layer</strong>: Applies Entra OBO identity propagation and OneLake RLS/CLS uniformly across both first-party and third-party model clients.</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="why-ms-box">
+            <h4>
+              <span data-lang="zh-CN">Why Microsoft · 数据与语义层架构优势</span>
+              <span data-lang="en">Why Microsoft · Data &amp; Semantic Layer Advantages</span>
+            </h4>
+            <ul>
+              <li>
+                <span data-lang="zh-CN"><strong>复用存量 Power BI 语义资产升级本体</strong>：<code>Fabric IQ</code> 直接复用既有 Fabric / Power BI 容量与 DAX 模型，无需采购独立知识图谱 SKU 或推翻重建指标库。</span>
+                <span data-lang="en"><strong>In-place promotion of existing Power BI models</strong>: <code>Fabric IQ</code> extends existing Fabric / Power BI capacities and DAX models into an Ontology without a separate graph SKU.</span>
+              </li>
+              <li>
+                <span data-lang="zh-CN"><strong>Direct Lake 零 SQL 仓库算力损耗</strong>：Mirrored Unity Catalog / Iceberg 表通过 <code>Direct Lake</code> 供数千名业务用户并发交互查询，消耗 <code>0 SQL Warehouse DBU</code>。</span>
+                <span data-lang="en"><strong>Zero SQL Warehouse DBU for Direct Lake BI</strong>: Mirrored Databricks/Iceberg tables serve thousands of concurrent M365 users at sub-second latency with <code>0 SQL Warehouse DBU</code> burn.</span>
+              </li>
+              <li>
+                <span data-lang="zh-CN"><strong>跨云数据源与跨模型生态双向开放</strong>：底层支持 S3 / GCS / Databricks / Salesforce 零拷贝，上层原生提供面向 Foundry、GitHub、Claude 与 ChatGPT 的标准连接器。</span>
+                <span data-lang="en"><strong>Open across clouds below and models above</strong>: Combines S3/GCS/Databricks/Salesforce zero-copy federation with native Ontology connectors for Foundry, GitHub, Claude &amp; ChatGPT.</span>
+              </li>
+              <li>
+                <span data-lang="zh-CN"><strong>全链路血缘与敏感度标签自动传递</strong>：从 <code>OneLake</code> Parquet 文件、<code>Ontology</code> 指标到 <code>Rayfin</code> 应用与 Office 导出件，全程保留 Microsoft Purview 血缘与加密标签。</span>
+                <span data-lang="en"><strong>End-to-end lineage &amp; label inheritance</strong>: Microsoft Purview lineage and sensitivity protection propagate automatically from OneLake files through Ontology measures to <code>Rayfin</code> apps.</span>
+              </li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ==================== SECTION 1: 3-LAYER CONTEXT ARCHITECTURE ==================== -->
+    <section id="fabric-context-arch" class="stage-section">
+      <div class="section-header">
+        <div>
+          <p class="eyebrow">01 / IGNITE 2026 FABRIC THREE-LAYER CONTEXT ARCHITECTURE</p>
+          <h2 class="section-title">
+            <span data-lang="zh-CN">三层企业数据本体架构</span>
+            <span data-lang="en">Three-Layer Enterprise Ontology Architecture</span>
+          </h2>
+          <p class="section-sub">
+            <span data-lang="zh-CN">Microsoft Ignite 2026 一口气发布 12 项 Fabric 重磅更新，打通“跨云零拷贝联邦 → 统一业务语义与本体图谱（<code>Fabric IQ</code>）→ Serverless 事务数据库与内生应用（<code>HorizonDB + Rayfin</code>）”全链路，且作为 <code>Microsoft IQ</code> 四大支柱之一<strong>无需新增独立 SKU</strong>。</span>
+            <span data-lang="en">Microsoft Ignite 2026 delivered 12 major Fabric announcements uniting cross-cloud zero-copy federation, a shared business meaning graph (<code>Fabric IQ Ontology</code>), and serverless operational PostgreSQL + apps (<code>HorizonDB + Rayfin</code>)—included under the <code>Microsoft IQ</code> umbrella with <strong>no new standalone SKU</strong>.</span>
+          </p>
+        </div>
+      </div>
+
+      <div class="svg-frame" style="margin-bottom:22px">
+        <!-- Chinese SVG Diagram -->
+        <svg data-lang="zh-CN" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1160 450" role="img" aria-labelledby="fab-svg-zh-title fab-svg-zh-desc">
+          <title id="fab-svg-zh-title">Microsoft Fabric Ignite 2026 三层企业数据本体与事务闭环架构图</title>
+          <desc id="fab-svg-zh-desc">展示外部 Web IQ 实时信号与内部 OneLake 零拷贝、Eventhouse KQL 实时流、HorizonDB PostgreSQL 汇聚至 Fabric IQ Ontology，并一致赋能 M365 Copilot、Excel、Foundry、GitHub、ChatGPT 与 Claude，同时通过 Rayfin / Fabric Apps 闭环回写事务。</desc>
+          <defs>
+            <linearGradient id="ontGradZh" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#0ea5e9" stop-opacity="0.22"/>
+              <stop offset="50%" stop-color="#2dd4bf" stop-opacity="0.24"/>
+              <stop offset="100%" stop-color="#a78bfa" stop-opacity="0.22"/>
+            </linearGradient>
+          </defs>
+          <rect width="1160" height="450" rx="14" fill="#091426"/>
+
+          <!-- Layer 1: Left / Bottom Multi-Modal Data & Signal Plane -->
+          <rect x="20" y="20" width="330" height="410" rx="12" fill="#0e1e38" stroke="#284775" stroke-width="1.5"/>
+          <text x="38" y="48" fill="#38bdf8" font-size="12" font-weight="700" font-family="Cascadia Code, Consolas, monospace">LAYER 01 · 零拷贝多源融合层</text>
+          <text x="38" y="70" fill="#eef4ff" font-size="15.5" font-weight="700">内外实时信号 + 跨云免搬运底座</text>
+
+          <rect x="36" y="86" width="298" height="72" rx="9" fill="#13294b" stroke="#38bdf8" stroke-dasharray="4 3"/>
+          <text x="50" y="109" fill="#7dd3fc" font-size="12.5" font-weight="700">🌐 Stage 02 · Web IQ 外部公开域信号 (GA)</text>
+          <text x="50" y="129" fill="#cbd5e1" font-size="12">• 港口拥堵预警 · 极端气象 · 竞品实时调价</text>
+          <text x="50" y="147" fill="#94a3b8" font-size="11.5">Auto Advanced 多跳取证 + Scopes 信源白名单</text>
+
+          <rect x="36" y="170" width="298" height="82" rx="9" fill="#112442" stroke="#2dd4bf"/>
+          <text x="50" y="193" fill="#5eead4" font-size="12.5" font-weight="700">☁️ OneLake 跨云与双向零拷贝联邦 (GA)</text>
+          <text x="50" y="213" fill="#cbd5e1" font-size="12">• Shortcuts: ADLS / AWS S3 / GCS / Iceberg</text>
+          <text x="50" y="231" fill="#cbd5e1" font-size="12">• Mirrored Databricks Unity Catalog (0-ETL)</text>
+          <text x="50" y="246" fill="#34d399" font-size="11.5" font-weight="700">• 新增：Salesforce Data 360 双向零拷贝 GA</text>
+
+          <rect x="36" y="264" width="298" height="68" rx="9" fill="#112442" stroke="#fbbf24"/>
+          <text x="50" y="287" fill="#fcd34d" font-size="12.5" font-weight="700">⚡ Eventhouse KQL 毫秒级实时智能 (GA)</text>
+          <text x="50" y="307" fill="#cbd5e1" font-size="12">• 全球门店 POS 销量突增 · 冷链温控 · EDI 852</text>
+          <text x="50" y="323" fill="#94a3b8" font-size="11.5">Eventstreams 流接入 + Activator 阈值规则触发</text>
+
+          <rect x="36" y="344" width="298" height="72" rx="9" fill="#112442" stroke="#a78bfa"/>
+          <text x="50" y="367" fill="#c4b5fd" font-size="12.5" font-weight="700">🐘 HorizonDB 新一代 Serverless PG</text>
+          <text x="50" y="387" fill="#cbd5e1" font-size="12">• Azure HorizonDB (GA) 实时镜像入湖</text>
+          <text x="50" y="405" fill="#cbd5e1" font-size="12">• Fabric HorizonDB (Preview) 秒级唤醒 + 向量检索</text>
+
+          <!-- Flow Arrows Layer 1 -> Layer 2 -->
+          <path d="M350 122 H396" stroke="#38bdf8" stroke-width="2.2"/>
+          <path d="M350 211 H396" stroke="#2dd4bf" stroke-width="2.5"/>
+          <path d="M350 298 H396" stroke="#fbbf24" stroke-width="2.2"/>
+          <path d="M350 380 H396" stroke="#a78bfa" stroke-width="2.2"/>
+
+          <!-- Layer 2: Center Core - Fabric IQ & Enterprise Ontology -->
+          <rect x="398" y="20" width="374" height="410" rx="14" fill="url(#ontGradZh)" stroke="#2dd4bf" stroke-width="2"/>
+          <rect x="414" y="34" width="342" height="28" rx="6" fill="#0b172a" stroke="#2dd4bf"/>
+          <text x="426" y="53" fill="#2dd4bf" font-size="11.5" font-weight="700" font-family="Cascadia Code, Consolas, monospace">LAYER 02 · FABRIC IQ &amp; ENTERPRISE ONTOLOGY</text>
+          <text x="416" y="86" fill="#ffffff" font-size="17" font-weight="800">统一业务语义、本体图谱与行动护栏</text>
+          <text x="416" y="106" fill="#b6c6e3" font-size="12">Microsoft IQ 核心支柱 · 零新增独立 SKU · 消除 Text-to-SQL 幻觉</text>
+
+          <rect x="416" y="120" width="338" height="74" rx="10" fill="#0c192e" stroke="#3b639c"/>
+          <text x="432" y="143" fill="#38bdf8" font-size="13" font-weight="700">1. 业务实体与语义关系图谱 (Entity Graph)</text>
+          <text x="432" y="163" fill="#dbeafe" font-size="12">国代经销商 ↔ 区域保税仓 ↔ 核心 SKU ↔ 促销合同 ↔ 海运提单</text>
+          <text x="432" y="181" fill="#93c5fd" font-size="11.5">显式绑定主键/外键路径，终结 500 张 ERP 表的歧义关联</text>
+
+          <rect x="416" y="204" width="338" height="74" rx="10" fill="#0c192e" stroke="#2dd4bf"/>
+          <text x="432" y="227" fill="#5eead4" font-size="13" font-weight="700">2. 受治理语义模型度量值 (Verified DAX Metrics)</text>
+          <text x="432" y="247" fill="#dbeafe" font-size="12">净毛利率 GM% · 真实动销比 (POS/Sell-In) · 在库价保敞口</text>
+          <text x="432" y="265" fill="#99f6e4" font-size="11.5">复用分析师已验证的 Power BI 语义模型，全渠道严格同数</text>
+
+          <rect x="416" y="288" width="338" height="74" rx="10" fill="#0c192e" stroke="#fbbf24"/>
+          <text x="432" y="311" fill="#fcd34d" font-size="13" font-weight="700">3. 业务约束规则与防线 (Policy &amp; Guardrail Rules)</text>
+          <text x="432" y="331" fill="#dbeafe" font-size="12">• 季末防压货骗补锁止（Sell-In 激增且 POS 停滞自动冻结返利）</text>
+          <text x="432" y="349" fill="#fde68a" font-size="11.5">• 渠道价保红线校验 + 行列级安全 (RLS/CLS) 与 Purview 标签继承</text>
+
+          <rect x="416" y="372" width="338" height="44" rx="9" fill="#132c4e" stroke="#a78bfa"/>
+          <text x="432" y="399" fill="#e9d5ff" font-size="12.5" font-weight="700">🔄 Translytical 联查：PG 实时表 ⋈ OneLake 历史表 → DW 算力卸载</text>
+
+          <!-- Flow Arrows Layer 2 -> Layer 3 -->
+          <path d="M772 156 H818" stroke="#2dd4bf" stroke-width="2.5"/>
+          <path d="M772 325 H818" stroke="#a78bfa" stroke-width="2.5"/>
+
+          <!-- Layer 3: Right Consumption & Translytical Action Loop -->
+          <rect x="820" y="20" width="320" height="218" rx="12" fill="#0e1e38" stroke="#284775" stroke-width="1.5"/>
+          <text x="838" y="46" fill="#2dd4bf" font-size="12" font-weight="700" font-family="Cascadia Code, Consolas, monospace">LAYER 03A · 全生态同口径消费</text>
+          <text x="838" y="68" fill="#eef4ff" font-size="15" font-weight="700">1 套本体 → 赋能每一个 AI 与终端</text>
+          <rect x="836" y="82" width="288" height="42" rx="8" fill="#122849" stroke="#34d399"/>
+          <text x="848" y="101" fill="#6ee7b7" font-size="12" font-weight="700">GA · M365 Copilot &amp; Fabric Apps / Foundry</text>
+          <text x="848" y="117" fill="#cbd5e1" font-size="11.5">原生语义问数、Data Agent 与 MCP 标准工具调用</text>
+
+          <rect x="836" y="132" width="288" height="42" rx="8" fill="#122849" stroke="#38bdf8"/>
+          <text x="848" y="151" fill="#7dd3fc" font-size="12" font-weight="700">Preview · Excel 实时透视表 &amp; GitHub Copilot</text>
+          <text x="848" y="167" fill="#cbd5e1" font-size="11.5">财务直连受控度量值；开发者代码感知企业业务本体</text>
+
+          <rect x="836" y="182" width="288" height="42" rx="8" fill="#122849" stroke="#a78bfa"/>
+          <text x="848" y="201" fill="#d8b4fe" font-size="12" font-weight="700">Preview · ChatGPT &amp; Claude 官方连接器</text>
+          <text x="848" y="217" fill="#cbd5e1" font-size="11.5">第三方对话助手返回与季度经营会 100% 一致的数字</text>
+
+          <rect x="820" y="252" width="320" height="178" rx="12" fill="#0e1e38" stroke="#3b5b8c" stroke-width="1.5"/>
+          <text x="838" y="278" fill="#fbbf24" font-size="12" font-weight="700" font-family="Cascadia Code, Consolas, monospace">LAYER 03B · 事务行动与数据库运营</text>
+          <text x="838" y="300" fill="#eef4ff" font-size="15" font-weight="700">闭环执行：从语义分析到事务写回</text>
+          <text x="838" y="324" fill="#cbd5e1" font-size="12">• <tspan fill="#34d399" font-weight="700">Rayfin &amp; Fabric Apps (GA)</tspan>：已构建 100,000+</text>
+          <text x="838" y="344" fill="#cbd5e1" font-size="12">  内建身份、HorizonDB/SQL 与审批写回后端</text>
+          <text x="838" y="366" fill="#cbd5e1" font-size="12">• <tspan fill="#34d399" font-weight="700">Copilot Managed Runtime + Fabric (GA)</tspan></text>
+          <text x="838" y="388" fill="#cbd5e1" font-size="12">• <tspan fill="#34d399" font-weight="700">Database Hub (GA)</tspan> + SQL/PG DB Agents</text>
+          <text x="838" y="408" fill="#93c5fd" font-size="11.5">• Reverse ETL 将增强黄金特征秒级回流一线应用</text>
+        </svg>
+
+        <!-- English SVG Diagram -->
+        <svg data-lang="en" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1160 450" role="img" aria-labelledby="fab-svg-en-title fab-svg-en-desc">
+          <title id="fab-svg-en-title">Microsoft Fabric Ignite 2026 3-Layer Enterprise Data Ontology &amp; Translytical Architecture</title>
+          <desc id="fab-svg-en-desc">Illustrates external Web IQ signals fusing with OneLake zero-copy sources, Eventhouse KQL streams, and HorizonDB operational PostgreSQL into Fabric IQ Ontology, serving M365 Copilot, Excel, Foundry, GitHub, ChatGPT, and Claude while closing transactional loops via Rayfin &amp; Fabric Apps.</desc>
+          <defs>
+            <linearGradient id="ontGradEn" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#0ea5e9" stop-opacity="0.22"/>
+              <stop offset="50%" stop-color="#2dd4bf" stop-opacity="0.24"/>
+              <stop offset="100%" stop-color="#a78bfa" stop-opacity="0.22"/>
+            </linearGradient>
+          </defs>
+          <rect width="1160" height="450" rx="14" fill="#091426"/>
+
+          <!-- Layer 1 -->
+          <rect x="20" y="20" width="330" height="410" rx="12" fill="#0e1e38" stroke="#284775" stroke-width="1.5"/>
+          <text x="38" y="48" fill="#38bdf8" font-size="12" font-weight="700" font-family="Cascadia Code, Consolas, monospace">LAYER 01 · ZERO-COPY FUSION PLANE</text>
+          <text x="38" y="70" fill="#eef4ff" font-size="15.5" font-weight="700">External Signals + Multi-Cloud Estate</text>
+
+          <rect x="36" y="86" width="298" height="72" rx="9" fill="#13294b" stroke="#38bdf8" stroke-dasharray="4 3"/>
+          <text x="50" y="109" fill="#7dd3fc" font-size="12.5" font-weight="700">🌐 Stage 02 · Web IQ External Signals (GA)</text>
+          <text x="50" y="129" fill="#cbd5e1" font-size="12">• Port congestion · Severe weather · Rival pricing</text>
+          <text x="50" y="147" fill="#94a3b8" font-size="11.5">Auto Advanced multi-hop + Scopes domain allowlists</text>
+
+          <rect x="36" y="170" width="298" height="82" rx="9" fill="#112442" stroke="#2dd4bf"/>
+          <text x="50" y="193" fill="#5eead4" font-size="12.5" font-weight="700">☁️ OneLake Bi-Directional Zero-Copy (GA)</text>
+          <text x="50" y="213" fill="#cbd5e1" font-size="12">• Shortcuts: ADLS / AWS S3 / GCS / Iceberg</text>
+          <text x="50" y="231" fill="#cbd5e1" font-size="12">• Mirrored Databricks Unity Catalog (0-ETL)</text>
+          <text x="50" y="246" fill="#34d399" font-size="11.5" font-weight="700">• NEW: Salesforce Data 360 Zero Copy (GA)</text>
+
+          <rect x="36" y="264" width="298" height="68" rx="9" fill="#112442" stroke="#fbbf24"/>
+          <text x="50" y="287" fill="#fcd34d" font-size="12.5" font-weight="700">⚡ Eventhouse Real-Time KQL Streams (GA)</text>
+          <text x="50" y="307" fill="#cbd5e1" font-size="12">• Millisecond retail POS surges · Cold-chain · EDI</text>
+          <text x="50" y="323" fill="#94a3b8" font-size="11.5">Eventstreams ingestion + Activator reflex rules</text>
+
+          <rect x="36" y="344" width="298" height="72" rx="9" fill="#112442" stroke="#a78bfa"/>
+          <text x="50" y="367" fill="#c4b5fd" font-size="12.5" font-weight="700">🐘 HorizonDB Operational PostgreSQL</text>
+          <text x="50" y="387" fill="#cbd5e1" font-size="12">• Azure HorizonDB (GA) live mirroring into Fabric</text>
+          <text x="50" y="405" fill="#cbd5e1" font-size="12">• Fabric HorizonDB (Preview) sub-sec resume + vector</text>
+
+          <path d="M350 122 H396" stroke="#38bdf8" stroke-width="2.2"/>
+          <path d="M350 211 H396" stroke="#2dd4bf" stroke-width="2.5"/>
+          <path d="M350 298 H396" stroke="#fbbf24" stroke-width="2.2"/>
+          <path d="M350 380 H396" stroke="#a78bfa" stroke-width="2.2"/>
+
+          <!-- Layer 2 -->
+          <rect x="398" y="20" width="374" height="410" rx="14" fill="url(#ontGradEn)" stroke="#2dd4bf" stroke-width="2"/>
+          <rect x="414" y="34" width="342" height="28" rx="6" fill="#0b172a" stroke="#2dd4bf"/>
+          <text x="426" y="53" fill="#2dd4bf" font-size="11.5" font-weight="700" font-family="Cascadia Code, Consolas, monospace">LAYER 02 · FABRIC IQ &amp; ENTERPRISE ONTOLOGY</text>
+          <text x="416" y="86" fill="#ffffff" font-size="17" font-weight="800">Shared Business Semantics &amp; Guardrails</text>
+          <text x="416" y="106" fill="#b6c6e3" font-size="12">Pillar of Microsoft IQ · Zero New SKU · Ends Raw SQL Drift</text>
+
+          <rect x="416" y="120" width="338" height="74" rx="10" fill="#0c192e" stroke="#3b639c"/>
+          <text x="432" y="143" fill="#38bdf8" font-size="13" font-weight="700">1. Business Entities &amp; Relationship Graph</text>
+          <text x="432" y="163" fill="#dbeafe" font-size="12">Distributor ↔ Regional DC ↔ SKU ↔ Promo Clause ↔ Vessel</text>
+          <text x="432" y="181" fill="#93c5fd" font-size="11.5">Canonical join paths across 500+ normalized ERP/CRM tables</text>
+
+          <rect x="416" y="204" width="338" height="74" rx="10" fill="#0c192e" stroke="#2dd4bf"/>
+          <text x="432" y="227" fill="#5eead4" font-size="13" font-weight="700">2. Governed Semantic Measures (Verified DAX)</text>
+          <text x="432" y="247" fill="#dbeafe" font-size="12">Net GM% · Sell-Out Velocity (POS/Sell-In) · Price-Protect Liability</text>
+          <text x="432" y="265" fill="#99f6e4" font-size="11.5">Reuses analyst-maintained Power BI semantic definitions</text>
+
+          <rect x="416" y="288" width="338" height="74" rx="10" fill="#0c192e" stroke="#fbbf24"/>
+          <text x="432" y="311" fill="#fcd34d" font-size="13" font-weight="700">3. Business Constraints &amp; Policy Guardrails</text>
+          <text x="432" y="331" fill="#dbeafe" font-size="12">• Anti-channel-stuffing rebate freeze when POS lags Sell-In</text>
+          <text x="432" y="349" fill="#fde68a" font-size="11.5">• Price-protection floor gate + Purview &amp; OneLake RLS/CLS</text>
+
+          <rect x="416" y="372" width="338" height="44" rx="9" fill="#132c4e" stroke="#a78bfa"/>
+          <text x="432" y="399" fill="#e9d5ff" font-size="12" font-weight="700">🔄 Translytical Join: Live PG ⋈ OneLake → Offloaded to Fabric DW</text>
+
+          <path d="M772 156 H818" stroke="#2dd4bf" stroke-width="2.5"/>
+          <path d="M772 325 H818" stroke="#a78bfa" stroke-width="2.5"/>
+
+          <!-- Layer 3 -->
+          <rect x="820" y="20" width="320" height="218" rx="12" fill="#0e1e38" stroke="#284775" stroke-width="1.5"/>
+          <text x="838" y="46" fill="#2dd4bf" font-size="12" font-weight="700" font-family="Cascadia Code, Consolas, monospace">LAYER 03A · CROSS-AGENT CONSUMPTION</text>
+          <text x="838" y="68" fill="#eef4ff" font-size="15" font-weight="700">1 Ontology → Identical Numbers Everywhere</text>
+          <rect x="836" y="82" width="288" height="42" rx="8" fill="#122849" stroke="#34d399"/>
+          <text x="848" y="101" fill="#6ee7b7" font-size="12" font-weight="700">GA · M365 Copilot, Fabric Apps &amp; Foundry</text>
+          <text x="848" y="117" fill="#cbd5e1" font-size="11.5">Semantic models in Copilot, Data Agent &amp; MCP servers</text>
+
+          <rect x="836" y="132" width="288" height="42" rx="8" fill="#122849" stroke="#38bdf8"/>
+          <text x="848" y="151" fill="#7dd3fc" font-size="12" font-weight="700">Preview · Excel Live PivotTables &amp; GitHub</text>
+          <text x="848" y="167" fill="#cbd5e1" font-size="11.5">Live finance sheets + ontology-aware coding in GitHub Copilot</text>
+
+          <rect x="836" y="182" width="288" height="42" rx="8" fill="#122849" stroke="#a78bfa"/>
+          <text x="848" y="201" fill="#d8b4fe" font-size="12" font-weight="700">Preview · ChatGPT &amp; Claude Connectors</text>
+          <text x="848" y="217" fill="#cbd5e1" font-size="11.5">External assistants match the QBR board deck figure</text>
+
+          <rect x="820" y="252" width="320" height="178" rx="12" fill="#0e1e38" stroke="#3b5b8c" stroke-width="1.5"/>
+          <text x="838" y="278" fill="#fbbf24" font-size="12" font-weight="700" font-family="Cascadia Code, Consolas, monospace">LAYER 03B · TRANSLYTICAL ACTION LOOP</text>
+          <text x="838" y="300" fill="#eef4ff" font-size="15" font-weight="700">Closing the Operational Last Mile</text>
+          <text x="838" y="324" fill="#cbd5e1" font-size="12">• <tspan fill="#34d399" font-weight="700">Rayfin &amp; Fabric Apps (GA)</tspan>: 100,000+ apps built</text>
+          <text x="838" y="344" fill="#cbd5e1" font-size="12">  with wired auth, HorizonDB/SQL &amp; write-back APIs</text>
+          <text x="838" y="366" fill="#cbd5e1" font-size="12">• <tspan fill="#34d399" font-weight="700">Copilot Managed Runtime + Fabric (GA)</tspan></text>
+          <text x="838" y="388" fill="#cbd5e1" font-size="12">• <tspan fill="#34d399" font-weight="700">Database Hub (GA)</tspan> + SQL/PG DB Agents</text>
+          <text x="838" y="408" fill="#93c5fd" font-size="11.5">• Reverse ETL pushes enriched Gold features to apps</text>
+        </svg>
+      </div>
+
+      <!-- Spotlight 1: OneLake + Salesforce Data 360 Bi-Directional Zero-Copy -->
+      <article class="spotlight-card">
+        <div class="spotlight-head">
+          <h3 class="spotlight-title">
+            <span data-lang="zh-CN">支柱一 · <code>OneLake</code> + <code>Salesforce Data 360</code> 双向零拷贝与开放表格式互操作</span>
+            <span data-lang="en">Pillar 1 · <code>OneLake</code> + <code>Salesforce Data 360</code> Bi-Directional Zero-Copy &amp; Open Table Interop</span>
+          </h3>
+          <div class="pill-row" style="margin-top:0">
+            <span class="badge badge-ga">Salesforce Zero Copy GA</span>
+            <span class="badge badge-ga">OneLake Shortcuts GA</span>
+            <span class="badge badge-preview">Salesforce in Copilot Preview</span>
+          </div>
+        </div>
+        <div class="dim-grid">
+          <div class="dim-box">
+            <div class="dim-label">
+              <span data-lang="zh-CN">⚙️ 架构机制 (Mechanics)</span>
+              <span data-lang="en">⚙️ Architecture Mechanics</span>
+            </div>
+            <ul>
+              <li>
+                <span data-lang="zh-CN"><strong>Data Federation 双向免搬运</strong>：通过正式发布的 <code>Salesforce Data 360 Zero Copy</code>，Salesforce 可直接联邦查询保存在 <code>OneLake</code> 中的受控黄金表，同时在 Fabric 内免定时管道关联 CRM 客户与商机实体。</span>
+                <span data-lang="en"><strong>Bi-Directional Data Federation</strong>: With <code>Salesforce Data 360 Zero Copy</code> (<code>GA</code>), Salesforce Data 360 queries governed <code>OneLake</code> datasets directly in place while Fabric joins CRM account/opportunity objects without brittle nightly copy pipelines.</span>
+              </li>
+              <li>
+                <span data-lang="zh-CN"><strong>全云开放格式归一</strong>：结合 <code>OneLake Shortcuts</code>（挂载 ADLS Gen2、AWS S3、GCS）、<code>Mirrored Azure Databricks Unity Catalog</code> 与 Apache Iceberg ↔ Delta Lake 元数据双向转译，维持单一物理存储副本。</span>
+                <span data-lang="en"><strong>Open Iceberg / Delta Unification</strong>: Pairs with <code>OneLake Shortcuts</code> across ADLS, AWS S3, and GCS plus <code>Mirrored Databricks Unity Catalog</code> and Iceberg ↔ Delta interop over a single physical storage footprint.</span>
+              </li>
+            </ul>
+          </div>
+          <div class="dim-box scenario">
+            <div class="dim-label">
+              <span data-lang="zh-CN">🏢 业务场景 (Business Scenarios)</span>
+              <span data-lang="en">🏢 Business Scenarios</span>
+            </div>
+            <ul>
+              <li>
+                <span data-lang="zh-CN"><strong>CRM 商机 × ERP 履约交付联动</strong>：将 Salesforce 商机阶段与 Fabric 中的 SAP 库存、海运提单、售后索赔率实时拼合，并将高价值预测评分零拷贝回推至销售一线。</span>
+                <span data-lang="en"><strong>CRM Pipeline × Supply Chain Fulfillment</strong>: Join Salesforce opportunity stages with SAP inventory, ocean freight ETA, and warranty telemetry in Fabric, exposing churn and upsell scores back to CRM sellers without ETL latency.</span>
+              </li>
+              <li>
+                <span data-lang="zh-CN"><strong>存量异构 CRM 破冰</strong>：配合 <code>Salesforce in Copilot</code>（<code>Preview</code>，预置 38+ 销售技能），客户无需先替换 CRM 即可在 M365 与 Teams 工作流中闭环推进商机。</span>
+                <span data-lang="en"><strong>No-Rip-and-Replace CRM Entry</strong>: Combined with <code>Salesforce in Copilot</code> (<code>Preview</code>, 38+ prebuilt sales skills), sellers act on live CRM + Fabric insights directly inside M365 workflows.</span>
+              </li>
+            </ul>
+          </div>
+          <div class="dim-box compete">
+            <div class="dim-label">
+              <span data-lang="zh-CN">🏆 竞争优势 (Competitive Advantage)</span>
+              <span data-lang="en">🏆 Competitive Advantage</span>
+            </div>
+            <ul>
+              <li>
+                <span data-lang="zh-CN"><strong>终结双份存储与 T+1 同步税</strong>：传统集成需维护 Reverse ETL + 中间件并承受双边对象存储计费与 24 小时数据陈旧度；双向零拷贝将源数据留在原地。</span>
+                <span data-lang="en"><strong>Eliminates Dual-Storage &amp; T+1 Sync Tax</strong>: Replaces fragile CSV/CDC connectors and duplicate cloud storage bills with live federation where governed data stays in its native estate.</span>
+              </li>
+              <li>
+                <span data-lang="zh-CN"><strong>中立多云连接器广度</strong>：横跨 AWS S3、Google Cloud Storage、Snowflake Iceberg、Databricks 与 Salesforce，消解客户对单一云锁定的顾虑。</span>
+                <span data-lang="en"><strong>Broadest Multi-Cloud Neutrality</strong>: Spans S3, GCS, Iceberg, Databricks, and Salesforce—turning competitor data silos into immediate context sources for Microsoft agents.</span>
+              </li>
+            </ul>
+          </div>
+          <div class="dim-box guidance">
+            <div class="dim-label">
+              <span data-lang="zh-CN">🧭 SA 落地要点 (SA Guardrails)</span>
+              <span data-lang="en">🧭 SA Guardrails</span>
+            </div>
+            <ul>
+              <li>
+                <span data-lang="zh-CN"><strong>严守成熟度口径边界</strong>：向客户明确区分 <code>Salesforce Data 360 Zero Copy</code>（<strong>已 GA</strong>）、<code>Salesforce in Copilot</code>（<strong>公开预览</strong>）与 <code>Sales Cloud in Teams</code>（<strong>试点 Pilot</strong>），切勿混作全量 GA 承诺。</span>
+                <span data-lang="en"><strong>Enforce Exact Maturity Boundaries</strong>: Clearly distinguish <code>Salesforce Data 360 Zero Copy</code> (<strong>GA</strong>) from <code>Salesforce in Copilot</code> (<strong>Public Preview</strong>) and <code>Sales Cloud in Teams</code> (<strong>Pilot</strong>) in commercial proposals.</span>
+              </li>
+              <li>
+                <span data-lang="zh-CN"><strong>跨云网络与出站带宽精算</strong>：零拷贝免除存储复制，但跨云高频扫描仍会产生源云出站流量，高频热表建议开启 OneLake 智能缓存策略。</span>
+                <span data-lang="en"><strong>Account for Cross-Cloud Egress</strong>: Zero-copy removes storage duplication, but cross-cloud queries can still incur source-cloud egress; enable OneLake caching for high-concurrency hot tables.</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </article>
+
+      <!-- Spotlight 2: Fabric IQ & Enterprise Ontology -->
+      <article class="spotlight-card">
+        <div class="spotlight-head">
+          <h3 class="spotlight-title">
+            <span data-lang="zh-CN">支柱二 · <code>Fabric IQ</code> 与企业数据本体（跨 Copilot · Excel · GitHub · ChatGPT · Claude 同口径）</span>
+            <span data-lang="en">Pillar 2 · <code>Fabric IQ</code> &amp; Enterprise Ontology (One Business Meaning Across Every AI)</span>
+          </h3>
+          <div class="pill-row" style="margin-top:0">
+            <span class="badge badge-ga">Copilot &amp; Fabric Apps GA</span>
+            <span class="badge badge-preview">Excel · GitHub · ChatGPT · Claude Preview</span>
+          </div>
+        </div>
+        <div class="dim-grid">
+          <div class="dim-box">
+            <div class="dim-label">
+              <span data-lang="zh-CN">⚙️ 架构机制 (Mechanics)</span>
+              <span data-lang="en">⚙️ Architecture Mechanics</span>
+            </div>
+            <ul>
+              <li>
+                <span data-lang="zh-CN"><strong>为什么裸 Text-to-SQL 在生产环境必败？</strong> 面对数百张 ERP/SAP 物理表，大模型极易连错主外键、混淆财年自然月、漏算价保返利扣减，甚至生成无护栏的危险回写。</span>
+                <span data-lang="en"><strong>Why Raw Text-to-SQL Fails on 500-Table ERPs</strong>: LLMs hallucinate join paths across normalized SAP/Oracle schemas, misapply fiscal calendars, drift on Net GM%/rebate formulas, and lack write-back safety gates.</span>
+              </li>
+              <li>
+                <span data-lang="zh-CN"><strong>三位一体业务语义层</strong>：<code>Fabric IQ</code> 将 <code>OneLake</code> 物理表、<code>Power BI</code> 语义模型（受控 DAX 度量值）与 <strong>Ontology（业务实体 + 关系 + 规则护栏 + 绑定动作）</strong> 统一封装，通过标准 MCP 与连接器对外服务，无需额外购买独立新 SKU。</span>
+                <span data-lang="en"><strong>Unified Meaning &amp; Action Graph</strong>: <code>Fabric IQ</code> fuses <code>OneLake</code> data, analyst-verified <code>Power BI</code> DAX measures, and an explicit <strong>Ontology</strong> (Entities + Relationships + Rules + Actions)—exposed via MCP and native connectors with no new standalone SKU.</span>
+              </li>
+            </ul>
+          </div>
+          <div class="dim-box scenario">
+            <div class="dim-label">
+              <span data-lang="zh-CN">🏢 业务场景 (Business Scenarios)</span>
+              <span data-lang="en">🏢 Business Scenarios</span>
+            </div>
+            <ul>
+              <li>
+                <span data-lang="zh-CN"><strong>“全公司每一个对话框都是同一个数字”</strong>：高管在 <code>ChatGPT</code> 或 <code>Claude</code>（<code>Preview</code>）中追问季度净毛利，与财务在 <code>Excel</code> 实时连接透视表（<code>Preview</code>）及 <code>M365 Copilot</code>（<code>GA</code>）看到的经营会数字分毫不差。</span>
+                <span data-lang="en"><strong>"Same Number Everywhere"</strong>: A quarterly revenue or rebate figure queried in <code>ChatGPT</code> or <code>Claude</code> (<code>Preview</code>) matches the CFO's <code>Excel</code> live PivotTable (<code>Preview</code>) and <code>M365 Copilot</code> QBR deck (<code>GA</code>) down to the cent.</span>
+              </li>
+              <li>
+                <span data-lang="zh-CN"><strong>本体感知研发提效</strong>：开发者在 <code>GitHub Copilot</code>（<code>Preview</code>）编写数据应用时，编码智能体自动理解企业标准“经销商/有效动销”定义，杜绝硬编码口径分叉。</span>
+                <span data-lang="en"><strong>Ontology-Aware Coding</strong>: Developers using <code>GitHub Copilot</code> ontologies (<code>Preview</code>) generate backend services grounded in verified corporate entity definitions rather than ad-hoc SQL joins.</span>
+              </li>
+            </ul>
+          </div>
+          <div class="dim-box compete">
+            <div class="dim-label">
+              <span data-lang="zh-CN">🏆 竞争优势 (Competitive Advantage)</span>
+              <span data-lang="en">🏆 Competitive Advantage</span>
+            </div>
+            <ul>
+              <li>
+                <span data-lang="zh-CN"><strong>从“只读语义层”跨越到“行动护栏本体”</strong>：相比传统 BI 指标层仅解决只读查数，<code>Fabric IQ Ontology</code> 原生绑定 <code>Activator</code> 实时规则与 <code>Operations Agent</code> 审批写回动作，接近企业级数字孪生控制塔而无需高昂定制实施费。</span>
+                <span data-lang="en"><strong>From Read-Only BI Metrics to Executable Ontology</strong>: Unlike passive semantic layers, <code>Fabric IQ</code> binds real-time <code>Activator</code> triggers and governed operational write-back actions—delivering ontology control-tower power directly on existing Power BI investments.</span>
+              </li>
+              <li>
+                <span data-lang="zh-CN"><strong>拥抱多模型开放生态</strong>：主动提供面向 ChatGPT 与 Claude 的官方连接器，把 Fabric 变成企业所有 AI 工具不可绕过的“唯一事实底座”。</span>
+                <span data-lang="en"><strong>Embraces Multi-Assistant Reality</strong>: Native connectors for ChatGPT, Claude, Foundry, and MCP turn Fabric into the non-negotiable semantic control plane regardless of which chat front-end a department uses.</span>
+              </li>
+            </ul>
+          </div>
+          <div class="dim-box guidance">
+            <div class="dim-label">
+              <span data-lang="zh-CN">🧭 SA 落地要点 (SA Guardrails)</span>
+              <span data-lang="en">🧭 SA Guardrails</span>
+            </div>
+            <ul>
+              <li>
+                <span data-lang="zh-CN"><strong>以存量高价值 Power BI 语义模型为抓手</strong>：PoC 切忌从零梳理全企几百个实体；优先挑选 1 个核心域（如渠道毛利/冷链履约，8–12 个核心实体）直接升维构建 Ontology，两周内即可见效。</span>
+                <span data-lang="en"><strong>Start from Trusted Semantic Models</strong>: Never boil the ocean on Day 1—promote an existing, high-trust Power BI Semantic Model (8–12 core domain entities) into a <code>Fabric IQ Ontology</code> for a 2-week high-impact PoC.</span>
+              </li>
+              <li>
+                <span data-lang="zh-CN"><strong>权限透传核验</strong>：“零新 SKU”仍需底层具备相应 Fabric 容量（F-SKU）与数据访问权限，外部连接器调用严格遵循 Entra 身份透传与 OneLake RLS/CLS。</span>
+                <span data-lang="en"><strong>Verify Underlying Licensing &amp; RLS</strong>: "No new SKU" still requires underlying Fabric capacity and user entitlements; external MCP/ChatGPT/Claude queries strictly inherit Entra identity and OneLake RLS/CLS.</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </article>
+
+      <!-- Spotlight 3: Translytical Apps & Operational Databases -->
+      <article class="spotlight-card" style="margin-bottom:0">
+        <div class="spotlight-head">
+          <h3 class="spotlight-title">
+            <span data-lang="zh-CN">支柱三 · 事务分析一体应用与新一代数据库（<code>Rayfin &amp; Fabric Apps</code> · <code>HorizonDB</code> · <code>Database Hub</code>）</span>
+            <span data-lang="en">Pillar 3 · Translytical Apps &amp; Operational Databases (<code>Rayfin &amp; Fabric Apps</code>, <code>HorizonDB</code>, <code>Database Hub</code>)</span>
+          </h3>
+          <div class="pill-row" style="margin-top:0">
+            <span class="badge badge-ga">Rayfin &amp; Fabric Apps GA</span>
+            <span class="badge badge-ga">Azure HorizonDB GA</span>
+            <span class="badge badge-preview">Fabric HorizonDB Preview</span>
+            <span class="badge badge-ga">Database Hub GA</span>
+          </div>
+        </div>
+        <div class="dim-grid">
+          <div class="dim-box">
+            <div class="dim-label">
+              <span data-lang="zh-CN">⚙️ 架构机制 (Mechanics)</span>
+              <span data-lang="en">⚙️ Architecture Mechanics</span>
+            </div>
+            <ul>
+              <li>
+                <span data-lang="zh-CN"><strong><code>HorizonDB</code> 单查询跨事务与湖仓联查</strong>：<code>Azure HorizonDB</code>（<code>GA</code>）与 <code>Fabric HorizonDB</code>（<code>Preview</code>）提供兼容 PostgreSQL 的 Serverless 数据库，秒级预配、空闲自动休眠、内置向量检索；一条 PostgreSQL 查询可直接联结实时事务表与 <code>OneLake</code> 历史湖仓表，并自动将重度分析联查卸载至 <strong>Fabric Data Warehouse 算力</strong>执行！</span>
+                <span data-lang="en"><strong>Single-Query Translytical Offload</strong>: <code>Azure HorizonDB</code> (<code>GA</code>) and <code>Fabric HorizonDB</code> (<code>Preview</code>) deliver serverless PostgreSQL with sub-second scale-from-zero and vector search; a single PG query joins live operational rows with petabyte <code>OneLake</code> tables while offloading analytical joins to <strong>Fabric Data Warehouse compute</strong>.</span>
+              </li>
+              <li>
+                <span data-lang="zh-CN"><strong>内生应用与智能体数据库运维</strong>：<code>Rayfin &amp; Fabric Apps</code>（<code>GA</code>，预览期已诞生 <strong>100,000+</strong> 应用）与 <code>Copilot Managed Runtime + Fabric</code>（<code>GA</code>）自带认证、后端与 OneLake 治理；配合 <code>Reverse ETL</code>、<code>Database Hub</code>（<code>GA</code>）及 SQL/PG <code>Database Agents</code>（<code>Preview</code>）。</span>
+                <span data-lang="en"><strong>Governed App Backend &amp; DB Agents</strong>: <code>Rayfin &amp; Fabric Apps</code> (<code>GA</code>, <strong>100,000+</strong> apps built since preview) and <code>Copilot Managed Runtime + Fabric</code> (<code>GA</code>) wire auth, DBs, and APIs under <code>OneLake Governance Hub</code>, paired with <code>Reverse ETL</code>, <code>Database Hub</code> (<code>GA</code>), and SQL/PG <code>Database Agents</code> (<code>Preview</code>).</span>
+              </li>
+            </ul>
+          </div>
+          <div class="dim-box scenario">
+            <div class="dim-label">
+              <span data-lang="zh-CN">🏢 业务场景 (Business Scenarios)</span>
+              <span data-lang="en">🏢 Business Scenarios</span>
+            </div>
+            <ul>
+              <li>
+                <span data-lang="zh-CN"><strong>智能体动态建库与经营微应用</strong>：业务团队用 <code>Copilot Code</code> / <code>Power BI Pro Data Apps</code>（<code>Preview</code>）从受控语义模型出发，一句话生成带表单录入、价保审批与源库回写的经营指挥应用。</span>
+                <span data-lang="en"><strong>Agent-Created Operational Micro-Apps</strong>: Business builders use <code>Copilot Code</code> or <code>Power BI Pro Data Apps</code> (<code>Preview</code>) to spin up governed write-back approval portals directly atop trusted semantic models and serverless <code>HorizonDB</code>.</span>
+              </li>
+              <li>
+                <span data-lang="zh-CN"><strong>存量 PostgreSQL 现代化与全局纳管</strong>：通过预览迁移服务将 <code>Azure Database for PostgreSQL</code> 平滑迁入已 GA 的 <code>Azure HorizonDB</code>，并在 <code>Database Hub</code> 一屏监控跨 Azure、Fabric、本地与异构云数据库健康度。</span>
+                <span data-lang="en"><strong>PostgreSQL Estate Modernization</strong>: Migrate existing <code>Azure Database for PostgreSQL</code> workloads to <code>Azure HorizonDB</code> (<code>GA</code>) and govern multi-cloud/on-prem fleets from <code>Database Hub</code> with VS Code PG agent diagnostics.</span>
+              </li>
+            </ul>
+          </div>
+          <div class="dim-box compete">
+            <div class="dim-label">
+              <span data-lang="zh-CN">🏆 竞争优势 (Competitive Advantage)</span>
+              <span data-lang="en">🏆 Competitive Advantage</span>
+            </div>
+            <ul>
+              <li>
+                <span data-lang="zh-CN"><strong>一套栈替代五段拼装链路</strong>：省去“独立云 PG + Debezium CDC + 消息队列 + 数仓 + 第三方 Reverse ETL + 自建前端鉴权”的脆弱胶水架构，在无损 OLTP 事务性能的同时实时刷新分析视图。</span>
+                <span data-lang="en"><strong>Replaces 5-Piece Stitched Stacks</strong>: Eliminates separate OLTP DB + CDC pipeline + warehouse + Reverse ETL SaaS + custom auth plumbing, offloading heavy joins to DW compute so OLTP latency never degrades.</span>
+              </li>
+            </ul>
+          </div>
+          <div class="dim-box guidance">
+            <div class="dim-label">
+              <span data-lang="zh-CN">🧭 SA 落地要点 (SA Guardrails)</span>
+              <span data-lang="en">🧭 SA Guardrails</span>
+            </div>
+            <ul>
+              <li>
+                <span data-lang="zh-CN"><strong>精准选型</strong>：核心生产高并发 OLTP 优先采用已 <strong>GA</strong> 的 <code>Azure HorizonDB</code> + Fabric Mirroring；突发式 Agent 状态库与内生业务微应用优先结合 <code>Rayfin / Fabric Apps</code>（<code>GA</code>）与 <code>Fabric HorizonDB</code>（<code>Preview</code>）。</span>
+                <span data-lang="en"><strong>Right-Size Operational Tier</strong>: Lead with <strong>GA</strong> <code>Azure HorizonDB</code> + Mirroring for core mission-critical OLTP, and pair <code>Rayfin &amp; Fabric Apps</code> (<code>GA</code>) with <code>Fabric HorizonDB</code> (<code>Preview</code>) for bursty agent-built workflows.</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- ==================== SECTION 2: SANITIZED DIAMOND DEMO DEEP DIVE ==================== -->
+    <section id="diamond-sanitized-cases" class="stage-section">
+      <div class="section-header">
+        <div>
+          <p class="eyebrow">02 / SANITIZED DIAMOND ENTERPRISE DEMO DEEP DIVE</p>
+          <h2 class="section-title">
+            <span data-lang="zh-CN">Diamond 脱敏双案例交互沙盘</span>
+            <span data-lang="en">Sanitized Diamond Reference Workbenches</span>
+          </h2>
+          <p class="section-sub">
+            <span data-lang="zh-CN">基于严格脱敏的 <strong>Diamond 企业级预集成演示环境蓝图</strong>（单租户 <code>Entra ID OBO</code> + <code>M365</code> + <code>Microsoft Fabric</code> + <code>Azure Databricks</code>），为您提供两大可直接复用于客户高管架构工坊的交互式参考样板。</span>
+            <span data-lang="en">Built on the strictly anonymized <strong>Diamond Enterprise Demo Blueprint</strong> (single-tenant <code>Entra ID OBO</code> + <code>M365</code> + <code>Microsoft Fabric</code> + <code>Azure Databricks</code>), explore two field-proven reference architectures ready for Partner SA customer workshops.</span>
+          </p>
+        </div>
+      </div>
+
+      <div class="sanitized-banner" role="note">
+        <span aria-hidden="true" style="font-size:18px">🛡️</span>
+        <div>
+          <span data-lang="zh-CN"><strong>公开脱敏架构快照说明</strong>：本章节还原真实跨国全渠道制造与生鲜冷链行业的数据分布、<code>DAX / KQL / SQL</code> 核算逻辑与价保合同博弈模型；所有客户品牌名称均已匿名化处理，且已 100% 剥离真实租户凭据与底层资源 GUID，仅保留清晰的逻辑命名空间（如 <code>Workspace: Global_Channel_IQ</code>、<code>Ontology: ont_global_channel_network</code>）。</span>
+          <span data-lang="en"><strong>Sanitized Public Architecture Snapshot</strong>: Preserves authentic omnichannel distribution economics, <code>DAX / KQL / SQL</code> verification formulas, and price-protection contract mechanics while 100% stripping customer brand identifiers, credentials, and internal GUIDs in favor of clean logical names (<code>Workspace: Global_Channel_IQ</code>, <code>Ontology: ont_global_channel_network</code>).</span>
+        </div>
+      </div>
+
+      <div id="diamond-cases-scope" data-tabs-scope>
+        <div class="tab-bar" role="tablist" data-tabs="diamond-cases-scope">
+          <button type="button" role="tab" class="tab-btn active" aria-selected="true" data-tab-target="panel-case-a">
+            <span data-lang="zh-CN">📺 案例 A（主工作台）· 某跨国智慧显示龙头 · 全球多级渠道智能控制塔</span>
+            <span data-lang="en">📺 Case A (Interactive Workbench) · Global Smart Display Leader · Omnichannel Control Tower</span>
+          </button>
+          <button type="button" role="tab" class="tab-btn" aria-selected="false" data-tab-target="panel-case-b">
+            <span data-lang="zh-CN">❄️ 案例 B · Zava 全渠道生鲜冷链 · Databricks × Fabric 零拷贝共生沙盘</span>
+            <span data-lang="en">❄️ Case B · Zava Omnichannel Cold-Chain · Databricks × Fabric Zero-Copy Coexistence</span>
+          </button>
+        </div>
+
+        <!-- TAB PANEL A: GLOBAL SMART DISPLAY LEADER (PRIMARY INTERACTIVE WORKBENCH) -->
+        <div id="panel-case-a" role="tabpanel" class="tab-panel" data-tab-panel>
+          <div class="card" style="margin-bottom:18px">
+            <div class="section-header" style="margin-bottom:12px">
+              <div>
+                <h3 style="margin:0 0 6px;font-size:20px">
+                  <span data-lang="zh-CN">某跨国智慧显示龙头 · 全球多级渠道智能控制塔（Diamond 预集成环境公开脱敏案例）</span>
+                  <span data-lang="en">Global Smart Display Leader · Omnichannel Control Tower (Sanitized Diamond Blueprint)</span>
+                </h3>
+                <p style="margin:0;color:var(--text-muted);font-size:14px">
+                  <span data-lang="zh-CN">覆盖全球 36 家核心国家总代与大型零售商（<code>$135.33M</code> Sell-In 出货 · <code>$108.95M</code> OMO 全渠道真实动销 · <code>15,319</code> 行细粒度核验记录）。</span>
+                  <span data-lang="en">Spanning 36 overseas national distributors and retail partners (<code>$135.33M</code> Sell-In · <code>$108.95M</code> OMO Sell-Out · <code>15,319</code> verifiable transaction rows).</span>
+                </p>
+              </div>
+              <div class="pill-row" style="margin-top:0">
+                <span class="pill mono">Workspace: Global_Channel_IQ</span>
+                <span class="pill mono">Ontology: ont_global_channel_network</span>
+              </div>
+            </div>
+
+            <div class="grid-4">
+              <div class="card" style="background:var(--surface)">
+                <span class="arch-step-num">01</span>
+                <h3>
+                  <span data-lang="zh-CN">零拷贝跨域挂载</span>
+                  <span data-lang="en">Zero-Copy Ingestion</span>
+                </h3>
+                <p>
+                  <span data-lang="zh-CN">通过 <code>OneLake Shortcuts</code> 直接挂载海外 36 家国代隔离数据区（<code>EDI 852</code> 渠道库存周报 + 零售门店 <code>POS</code> 实销流水 + 核心 ERP 出货账），实现 <strong>0 字节物理搬运</strong>与分钟级可见。</span>
+                  <span data-lang="en"><code>OneLake Shortcuts</code> mount 36 overseas national distributors' isolated data zones (<code>EDI 852</code> inventory + retail <code>POS</code> sell-out + ERP Sell-In) with <strong>zero data movement</strong>.</span>
+                </p>
+              </div>
+              <div class="card" style="background:var(--surface)">
+                <span class="arch-step-num">02</span>
+                <h3>
+                  <span data-lang="zh-CN">内外实时信号合流</span>
+                  <span data-lang="en">Live + External Fusion</span>
+                </h3>
+                <p>
+                  <span data-lang="zh-CN"><code>Eventhouse</code> KQL 毫秒级流式检测德国黑五旗舰 OLED 电视 <strong><code>2.8×</code> 终端动销突增</strong>，同时结合 <code>Web IQ</code> 港口与气象信号发现在途海运遭遇<strong>鹿特丹港拥堵延误 11 天</strong>，德国区域仓面临断货与竞品分流双重压力。</span>
+                  <span data-lang="en"><code>Eventhouse</code> KQL detects a <strong><code>2.8×</code> Black Friday OLED TV sell-out spike</strong> in Germany while <code>Web IQ</code> port/weather feeds flag an <strong>11-day Rotterdam port congestion delay</strong> on incoming sea freight.</span>
+                </p>
+              </div>
+              <div class="card" style="background:var(--surface)">
+                <span class="arch-step-num">03</span>
+                <h3>
+                  <span data-lang="zh-CN">10 实体业务本体推理</span>
+                  <span data-lang="en">10-Entity Ontology Reasoning</span>
+                </h3>
+                <p>
+                  <span data-lang="zh-CN"><code>ont_global_channel_network</code> 自动交叉比对“国代提货 Sell-In vs 终端 POS 激活率”，精准识别并<strong>冻结东南亚某国代季末异常囤货骗补 <code>$162.5K</code></strong>；同时基于《渠道在库价保条款》推演最优促销对冲策略。</span>
+                  <span data-lang="en"><code>ont_global_channel_network</code> cross-checks <code>Sell-In vs POS Sell-Out</code> velocity to <strong>intercept <code>$162.5K</code> in quarter-end distributor channel-stuffing rebate fraud</strong>, while evaluating promo options under <strong>Channel Price-Protection Clauses</strong>.</span>
+                </p>
+              </div>
+              <div class="card" style="background:var(--surface)">
+                <span class="arch-step-num">04</span>
+                <h3>
+                  <span data-lang="zh-CN">跨仓调拨与事务回写</span>
+                  <span data-lang="en">Translytical Write-Back</span>
+                </h3>
+                <p>
+                  <span data-lang="zh-CN">否决触发巨额在库价保赔付的“直接官降 MSRP”，在 Teams / <code>Fabric Apps</code> 一键批准 <strong>OMO 回音壁捆绑补贴 + 法国仓→德国仓 48h 陆运紧急调拨</strong>，经 <code>Operations Agent</code> 回写 ERP/WMS 单据。</span>
+                  <span data-lang="en">Rejects destructive MSRP cuts in favor of an <strong>OMO Soundbar Bundle + 48h France → Germany inter-warehouse allocation</strong>, committing approved fulfillment orders via <code>Fabric Apps</code> &amp; <code>HorizonDB</code>.</span>
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- INTERACTIVE ONTOLOGY POLICY SIMULATOR -->
+          <div class="workbench" id="ontology-margin-workbench">
+            <div class="section-header" style="margin-bottom:14px">
+              <div>
+                <p class="eyebrow" style="margin-bottom:4px">INTERACTIVE FABRIC IQ ONTOLOGY POLICY SIMULATOR</p>
+                <h3 style="margin:0;font-size:19px">
+                  <span data-lang="zh-CN">🎛️ 渠道价保条款 vs 本体引导 OMO 捆绑 + 法德 48h 调拨毛利推演台</span>
+                  <span data-lang="en">🎛️ Channel Price-Protection vs Ontology OMO Bundle &amp; 48h Allocation Simulator</span>
+                </h3>
+              </div>
+              <span class="badge badge-ga">ont_global_channel_network</span>
+            </div>
+
+            <div class="preset-strip" aria-label="Simulation Presets">
+              <button type="button" class="preset-chip active" data-ont-preset="default">
+                <span data-lang="zh-CN">⭐ Diamond 标准基准（2.8x 黑五突增 / 10% 官降对比 / $95 声霸补贴 → 守护 $582K）</span>
+                <span data-lang="en">⭐ Diamond Benchmark (2.8x Surge / 10% Cut vs $95 Bundle → $582K Protected)</span>
+              </button>
+              <button type="button" class="preset-chip" data-ont-preset="aggressive">
+                <span data-lang="zh-CN">🔥 高强度价格竞争（3.3x 突增 / 15% 直接官降 / $120 补贴）</span>
+                <span data-lang="en">🔥 High-Intensity Promo (3.3x Surge / 15% MSRP Cut / $120 Subsidy)</span>
+              </button>
+              <button type="button" class="preset-chip" data-ont-preset="mild">
+                <span data-lang="zh-CN">🌤️ 常规大促（1.9x 突增 / 6% 官降 / $65 补贴）</span>
+                <span data-lang="en">🌤️ Moderate Promo (1.9x Surge / 6% MSRP Cut / $65 Subsidy)</span>
+              </button>
+            </div>
+
+            <div class="control-row">
+              <div class="field-group">
+                <label for="ont-surge">
+                  <span>
+                    <span data-lang="zh-CN">德国区黑五 OLED 动销倍率</span>
+                    <span data-lang="en">Germany OLED Demand Surge</span>
+                  </span>
+                  <strong class="mono" id="ont-surge-val">2.8x</strong>
+                </label>
+                <input type="range" id="ont-surge" min="1.5" max="3.5" step="0.1" value="2.8">
+              </div>
+
+              <div class="field-group">
+                <label for="ont-cut">
+                  <span>
+                    <span data-lang="zh-CN">传统方案：直接下调官方指导价 (MSRP Cut)</span>
+                    <span data-lang="en">Naive Action: Direct MSRP Cut %</span>
+                  </span>
+                  <strong class="mono" id="ont-cut-val">10%</strong>
+                </label>
+                <input type="range" id="ont-cut" min="0" max="15" step="1" value="10">
+              </div>
+
+              <div class="field-group">
+                <label for="ont-sub">
+                  <span>
+                    <span data-lang="zh-CN">本体方案：OMO 回音壁捆绑补贴 ($/台)</span>
+                    <span data-lang="en">Ontology Action: OMO Soundbar Subsidy</span>
+                  </span>
+                  <strong class="mono" id="ont-sub-val">$95</strong>
+                </label>
+                <input type="range" id="ont-sub" min="0" max="180" step="5" value="95">
+              </div>
+            </div>
+
+            <div class="metric-strip">
+              <div class="metric-card" style="border-color:rgba(251,113,133,0.45)">
+                <span class="m-title">
+                  <span data-lang="zh-CN">⚠️ 直接官降触发渠道在库价保赔付</span>
+                  <span data-lang="en">⚠️ Channel Price-Protection Liability</span>
+                </span>
+                <span class="m-num" id="ont-liability" style="color:var(--rose)">-$497K</span>
+                <span class="m-note" id="ont-liability-note" style="color:var(--rose)">2,260 台欧洲渠道在库受保库存刚性赔付</span>
+              </div>
+
+              <div class="metric-card">
+                <span class="m-title">
+                  <span data-lang="zh-CN">📉 传统官降且无跨仓调拨净损益</span>
+                  <span data-lang="en">📉 Direct MSRP Cut Net Margin Impact</span>
+                </span>
+                <span class="m-num" id="ont-naive-net" style="color:var(--rose)">-$318K</span>
+                <span class="m-note" id="ont-naive-note" style="color:var(--text-soft)">鹿特丹延误 11 天导致增量缺货 + 价保出血</span>
+              </div>
+
+              <div class="metric-card" style="border-color:rgba(52,211,153,0.55)">
+                <span class="m-title">
+                  <span data-lang="zh-CN">🛡️ Ontology 捆绑 + 法德 48h 调拨守护净毛利</span>
+                  <span data-lang="en">🛡️ Net Margin Protected by Ontology Policy</span>
+                </span>
+                <span class="m-num" id="ont-protected" style="color:var(--green)">+$582K</span>
+                <span class="m-note" id="ont-protected-note">0 价保触发 + 调拨补货 + 声霸高毛利连带</span>
+              </div>
+
+              <div class="metric-card" style="border-color:rgba(251,191,36,0.45)">
+                <span class="m-title">
+                  <span data-lang="zh-CN">🚫 本体防压货护栏自动冻结异常返利</span>
+                  <span data-lang="en">🚫 Anti-Channel-Stuffing Rebate Blocked</span>
+                </span>
+                <span class="m-num" id="ont-rebate-block" style="color:var(--amber)">$162.5K</span>
+                <span class="m-note">
+                  <span data-lang="zh-CN">Sell-In 激增 2.6x 但 POS 实销仅 +8% 自动锁止</span>
+                  <span data-lang="en">Sell-In +2.6x vs POS +8% velocity mismatch</span>
+                </span>
+              </div>
+            </div>
+
+            <div class="compare-bars">
+              <div class="bar-row">
+                <strong>
+                  <span data-lang="zh-CN">无本体：直接官降价保赔付敞口</span>
+                  <span data-lang="en">Without Ontology: Price-Protect Bleed</span>
+                </strong>
+                <div class="bar-track"><div class="bar-fill danger" id="ont-bar-bleed" style="width:66%"></div></div>
+                <span class="mono" id="ont-bar-bleed-lbl" style="color:var(--rose);text-align:right">-$497K</span>
+              </div>
+              <div class="bar-row">
+                <strong>
+                  <span data-lang="zh-CN">Ontology：声霸捆绑 + 法德 48h 调拨净增益</span>
+                  <span data-lang="en">Ontology: Bundle + FR→DE 48h Net Advantage</span>
+                </strong>
+                <div class="bar-track"><div class="bar-fill success" id="ont-bar-gain" style="width:78%"></div></div>
+                <span class="mono" id="ont-bar-gain-lbl" style="color:var(--green);text-align:right">+$582K</span>
+              </div>
+            </div>
+
+            <pre id="ont-dax-preview" aria-live="polite"></pre>
+          </div>
+        </div>
+
+        <!-- TAB PANEL B: ZAVA DATABRICKS x FABRIC COEXISTENCE -->
+        <div id="panel-case-b" role="tabpanel" class="tab-panel" data-tab-panel hidden>
+          <div class="card">
+            <div class="section-header" style="margin-bottom:14px">
+              <div>
+                <h3 style="margin:0 0 6px;font-size:20px">
+                  <span data-lang="zh-CN">Zava 全渠道生鲜冷链 · Databricks × Fabric 零拷贝共生沙盘（Diamond 脱敏环境）</span>
+                  <span data-lang="en">Zava Omnichannel Cold-Chain · Databricks × Fabric Zero-Copy Coexistence (Sanitized Diamond Blueprint)</span>
+                </h3>
+                <p style="margin:0;color:var(--text-muted);font-size:14px">
+                  <span data-lang="zh-CN">面向已经重度投资 <strong>Azure Databricks</strong> 的政企与零售客户，Partner SA 如何用“不推倒重来、零拷贝双向赋能”赢得增量 Fabric 与 Copilot 席位？</span>
+                  <span data-lang="en">How Partner SAs win accounts already standardized on <strong>Azure Databricks</strong>: preserve heavy Spark/Unity Catalog investments while unlocking <strong>0-DBU Direct Lake BI</strong> and M365 operational action loops.</span>
+                </p>
+              </div>
+              <div class="pill-row" style="margin-top:0">
+                <span class="pill mono">Unity Catalog: zava_retail</span>
+                <span class="pill mono">0 DBU Direct Lake</span>
+              </div>
+            </div>
+
+            <div class="grid-2" style="margin-bottom:16px">
+              <div class="dim-box">
+                <div class="dim-label">
+                  <span data-lang="zh-CN">01 · Databricks Unity Catalog 严苛质检与动态脱敏</span>
+                  <span data-lang="en">01 · Databricks Unity Catalog Quality Gate &amp; Masking</span>
+                </div>
+                <ul>
+                  <li>
+                    <span data-lang="zh-CN"><strong>DLT 声明式质检拦截</strong>：在 <code>zava_retail</code> 三层奖牌管线中自动隔离冷链传感器漂移与异常负毛利脏记录（<strong><code>24,024 → 24,000</code> 条洁净黄金表记录</strong>）。</span>
+                    <span data-lang="en"><strong>DLT Quality Quarantine</strong>: Automated Spark/DLT expectations quarantine corrupt cold-chain telemetry and negative-margin anomalies (<strong><code>24,024 → 24,000</code> clean Gold rows</strong>).</span>
+                  </li>
+                  <li>
+                    <span data-lang="zh-CN"><strong>字段级血缘与 PII 动态掩码</strong>：会员手机号按角色实时脱敏为 <code>135****8240</code>，安全策略随 Entra ID 单租户身份闭环治理。</span>
+                    <span data-lang="en"><strong>Column Lineage &amp; Dynamic PII Masking</strong>: Customer phone numbers dynamically mask as <code>135****8240</code> under Entra ID role-based policies.</span>
+                  </li>
+                </ul>
+              </div>
+
+              <div class="dim-box scenario">
+                <div class="dim-label">
+                  <span data-lang="zh-CN">02 · AI/BI Genie 五步追因定位冷链损耗根源</span>
+                  <span data-lang="en">02 · AI/BI Genie 5-Step Margin Root-Cause Analysis</span>
+                </div>
+                <ul>
+                  <li>
+                    <span data-lang="zh-CN"><strong>精准下钻净利率异常</strong>：数据与履约分析师通过 Genie 自然语言连续 5 步下钻华东区生鲜净利率下滑（<strong><code>29.0% → 25.9%</code></strong>），生成完全可审计的 SQL 证明链。</span>
+                    <span data-lang="en"><strong>Auditable 5-Step SQL Drilldown</strong>: Analysts use Databricks AI/BI Genie to trace East China fresh net margin erosion (<strong><code>29.0% → 25.9%</code></strong>) with verifiable SQL proofs.</span>
+                  </li>
+                  <li>
+                    <span data-lang="zh-CN"><strong>锁定仓配瓶颈与救援货源</strong>：精准定位<strong>昆山 2 号冷库平均出库延误 <code>17.3h</code></strong> 引发高额报损，并筛选出邻近<strong>嘉兴 1 号仓 <code>1,460</code> 箱同温区富余可调拨库存</strong>。</span>
+                    <span data-lang="en"><strong>Pinpoints Bottleneck &amp; Donor Stock</strong>: Isolates a <strong><code>17.3h</code> dispatch delay at Kunshan Cold DC #2</strong> and locates <strong><code>1,460</code> transferable donor cases in nearby Jiaxing DC #1</strong>.</span>
+                  </li>
+                </ul>
+              </div>
+
+              <div class="dim-box compete">
+                <div class="dim-label">
+                  <span data-lang="zh-CN">03 · Mirrored Unity Catalog → 0 DBU Power BI Direct Lake</span>
+                  <span data-lang="en">03 · Mirrored Unity Catalog → 0 DBU Power BI Direct Lake</span>
+                </div>
+                <ul>
+                  <li>
+                    <span data-lang="zh-CN"><strong>零 ETL 元数据秒级镜像</strong>：通过 Fabric <code>Mirrored Azure Databricks Catalog</code> 将 <code>zava_retail</code> 黄金层直接映射进 <code>OneLake</code>，底层共享同一份 ADLS Delta Parquet 文件。</span>
+                    <span data-lang="en"><strong>Zero-ETL Metadata Sync</strong>: <code>Mirrored Azure Databricks Catalog</code> projects <code>zava_retail</code> Gold Delta Parquet tables into <code>OneLake</code> with zero file copying.</span>
+                  </li>
+                  <li>
+                    <span data-lang="zh-CN"><strong>高并发看数零 SQL Warehouse DBU 消耗</strong>：数千名区域店长与高管在 Power BI / M365 内采用 <code>Direct Lake</code> 亚秒级看数，无需唤醒昂贵的 SQL Warehouse 集群，将宝贵 DBU 预算 100% 留给重度 ETL 与 AI 训练。</span>
+                    <span data-lang="en"><strong>Zero SQL Warehouse DBU Burn for Org-Wide BI</strong>: Thousands of store managers and executives query via Power BI <code>Direct Lake</code> with sub-second speed and <strong><code>0 DBU</code></strong> SQL Warehouse cost.</span>
+                  </li>
+                </ul>
+              </div>
+
+              <div class="dim-box guidance">
+                <div class="dim-label">
+                  <span data-lang="zh-CN">04 · Fabric IQ 本体 + Teams + Lakebase 闭环执行</span>
+                  <span data-lang="en">04 · Fabric IQ + Teams + Lakebase Action Write-Back</span>
+                </div>
+                <ul>
+                  <li>
+                    <span data-lang="zh-CN"><strong>一线协同快速止损</strong>：通过 <code>Fabric IQ</code> 与 Teams 审批卡片一键下发“嘉兴 1 号仓 → 昆山配送圈冷链改派单”，并将履约事务状态回写至 Serverless <code>Lakebase</code> / <code>HorizonDB</code>。</span>
+                    <span data-lang="en"><strong>Closed-Loop Cold-Chain Dispatch</strong>: Regional leads approve the Jiaxing → Kunshan cold-chain reroute directly in Teams, persisting operational state to Serverless <code>Lakebase</code> / <code>HorizonDB</code>.</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <pre><span data-lang="zh-CN">-- Diamond 脱敏共生验证：Mirrored Unity Catalog (zava_retail) 在 OneLake 中零拷贝暴露
+-- 数据工程留在 Azure Databricks，全员 Direct Lake 看数消耗 0 SQL Warehouse DBU
+Catalog Mirror : zava_retail.gold.fact_coldchain_margin  -->  OneLake/Workspace: Zava_Omnichannel_IQ
+DLT Gate       : 24,024 raw rows --> 24,000 verified rows (24 corrupt temp/margin records quarantined)
+Dynamic Mask   : member_phone --> '135****8240' (Entra ID OBO group policy)
+Root Cause     : East China Net Margin 29.0% -> 25.9% | Kunshan_DC_02 delay = 17.3h | Jiaxing_DC_01 donor = 1,460 cases</span><span data-lang="en">-- Sanitized Diamond Coexistence Proof: Mirrored Unity Catalog (zava_retail) in OneLake
+-- Heavy Spark/DLT stays in Azure Databricks; org-wide Power BI Direct Lake burns 0 SQL Warehouse DBU
+Catalog Mirror : zava_retail.gold.fact_coldchain_margin  -->  OneLake/Workspace: Zava_Omnichannel_IQ
+DLT Gate       : 24,024 raw rows --> 24,000 verified rows (24 corrupt temp/margin records quarantined)
+Dynamic Mask   : member_phone --> '135****8240' (Entra ID OBO group policy)
+Root Cause     : East China Net Margin 29.0% -> 25.9% | Kunshan_DC_02 delay = 17.3h | Jiaxing_DC_01 donor = 1,460 cases</span></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SECTION 3: PLATFORM DECISION MATRIX ==================== -->
+    <section id="platform-decision-matrix" class="stage-section">
+      <div class="section-header">
+        <div>
+          <p class="eyebrow">03 / ARCHITECT DECISION MATRIX · FABRIC VS DATABRICKS VS SNOWFLAKE VS COEXISTENCE</p>
+          <h2 class="section-title">
+            <span data-lang="zh-CN">多云数据平台选型与共生矩阵</span>
+            <span data-lang="en">Data Platform Selection &amp; Coexistence Matrix</span>
+          </h2>
+          <p class="section-sub">
+            <span data-lang="zh-CN">在企业架构咨询中拒绝非黑即白的“推倒重来式”选型：根据客户既有技术栈、实时流复杂度与全员 AI/BI 覆盖面，精准切入原生闭环或零拷贝共生边界。</span>
+            <span data-lang="en">Avoid binary "rip-and-replace" pitches: align customer personas, real-time streaming needs, and M365 AI consumption scale to the highest-ROI platform boundary.</span>
+          </p>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>
+                <span data-lang="zh-CN">架构评估维度</span>
+                <span data-lang="en">Evaluation Dimension</span>
+              </th>
+              <th>
+                <span data-lang="zh-CN">Microsoft Fabric 原生闭环</span>
+                <span data-lang="en">Microsoft Fabric Native</span>
+              </th>
+              <th>
+                <span data-lang="zh-CN">Azure Databricks 原生重度工程</span>
+                <span data-lang="en">Azure Databricks Native</span>
+              </th>
+              <th>
+                <span data-lang="zh-CN">Snowflake 传统云数仓</span>
+                <span data-lang="en">Snowflake Cloud DW</span>
+              </th>
+              <th class="matrix-win">
+                <span data-lang="zh-CN">⭐ 零拷贝共生范式（Fabric × Databricks / 多云）</span>
+                <span data-lang="en">⭐ Zero-Copy Coexistence (Fabric × Databricks / Multi-Cloud)</span>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong><span data-lang="zh-CN">核心平台定位</span><span data-lang="en">Core Positioning</span></strong></td>
+              <td>
+                <span data-lang="zh-CN">端到端 SaaS 一体化湖仓、实时智能、<code>Fabric IQ</code> 业务本体与内生应用（<code>Rayfin</code>）底座</span>
+                <span data-lang="en">End-to-end SaaS lakehouse, real-time KQL, <code>Fabric IQ</code> Ontology, and governed <code>Rayfin</code> apps</span>
+              </td>
+              <td>
+                <span data-lang="zh-CN">代码优先（Spark / Python / Photon）超大规模数据清洗、复杂特征工程与 AI 研发平台</span>
+                <span data-lang="en">Code-first Spark/Photon heavy data engineering, DLT quality pipelines &amp; ML/AI platform</span>
+              </td>
+              <td>
+                <span data-lang="zh-CN">SQL 优先的企业云数仓与跨组织数据共享市场</span>
+                <span data-lang="en">SQL-centric cloud data warehouse and cross-company data cleanroom sharing</span>
+              </td>
+              <td class="matrix-win">
+                <span data-lang="zh-CN"><strong>各展所长</strong>：Databricks/Snowflake 负责既有清洗加工，零拷贝接入 Fabric 承载全员 BI、本体与业务回写</span>
+                <span data-lang="en"><strong>Best of Both</strong>: Keep heavy ETL in Databricks/Iceberg; mirror zero-copy into Fabric for Ontology, BI &amp; M365 action</span>
+              </td>
+            </tr>
+            <tr>
+              <td><strong><span data-lang="zh-CN">开放表格式与联邦</span><span data-lang="en">Open Storage &amp; Zero-Copy</span></strong></td>
+              <td>
+                <span data-lang="zh-CN"><code>OneLake</code> 开放 Delta/Iceberg + S3/GCS Shortcuts + <code>Salesforce Data 360</code> 双向零拷贝 (<code>GA</code>)</span>
+                <span data-lang="en"><code>OneLake</code> open Delta/Iceberg + S3/GCS Shortcuts + <code>Salesforce Data 360</code> Zero Copy (<code>GA</code>)</span>
+              </td>
+              <td>
+                <span data-lang="zh-CN">ADLS Gen2 开放 Delta Lake + Liquid Clustering + Unity Catalog 联邦</span>
+                <span data-lang="en">ADLS Gen2 Delta Lake + Liquid Clustering + Unity Catalog Lakehouse Federation</span>
+              </td>
+              <td>
+                <span data-lang="zh-CN">专有内部格式或托管/外部 Apache Iceberg 表</span>
+                <span data-lang="en">Proprietary micro-partitions or managed/external Apache Iceberg tables</span>
+              </td>
+              <td class="matrix-win">
+                <span data-lang="zh-CN">共享同一份 ADLS Delta Parquet 或 Iceberg 快照，<code>Mirrored Catalog</code> 秒级同步，<strong>消灭定时搬运 ETL</strong></span>
+                <span data-lang="en">Single Delta/Iceberg copy via <code>Mirrored Catalog</code> &amp; Iceberg Shortcuts—<strong>zero scheduled copy ETL</strong></span>
+              </td>
+            </tr>
+            <tr>
+              <td><strong><span data-lang="zh-CN">业务语义与 Agent 赋能</span><span data-lang="en">Semantics &amp; AI Agents</span></strong></td>
+              <td>
+                <span data-lang="zh-CN"><code>Fabric IQ Ontology</code> 跨 Copilot / Excel / GitHub / Foundry / ChatGPT / Claude 一致口径</span>
+                <span data-lang="en"><code>Fabric IQ Ontology</code> serving identical metrics to Copilot, Excel, GitHub, Foundry, ChatGPT &amp; Claude</span>
+              </td>
+              <td>
+                <span data-lang="zh-CN">Unity Catalog Metric Views + <code>AI/BI Genie</code> 深度 SQL 追因 + Mosaic AI</span>
+                <span data-lang="en">Unity Catalog Metric Views + <code>AI/BI Genie</code> conversational SQL drilldown + Mosaic AI</span>
+              </td>
+              <td>
+                <span data-lang="zh-CN">Snowflake Semantic Models + Cortex Analyst（主要局限于仓内生态）</span>
+                <span data-lang="en">Snowflake Semantic Models + Cortex Analyst (primarily warehouse-scoped)</span>
+              </td>
+              <td class="matrix-win">
+                <span data-lang="zh-CN">数据团队用 Genie 深度追因，业务与高管在 M365 / Excel / 外部助手通过 <code>Fabric IQ</code> 同口径决策</span>
+                <span data-lang="en">Analysts drill down in Genie while executives &amp; M365/Excel/external agents act on governed <code>Fabric IQ</code> metrics</span>
+              </td>
+            </tr>
+            <tr>
+              <td><strong><span data-lang="zh-CN">实时流与事务写回闭环</span><span data-lang="en">Real-Time &amp; Translytical</span></strong></td>
+              <td>
+                <span data-lang="zh-CN"><code>Eventhouse</code> KQL 毫秒时序 + <code>HorizonDB</code> Serverless PG 跨湖仓联查卸载至 DW + <code>Rayfin</code> 应用</span>
+                <span data-lang="en"><code>Eventhouse</code> KQL sub-second streams + <code>HorizonDB</code> PG/OneLake DW-offloaded joins + <code>Rayfin</code> apps</span>
+              </td>
+              <td>
+                <span data-lang="zh-CN">Structured Streaming + DLT + Serverless <code>Lakebase</code> (Postgres)</span>
+                <span data-lang="en">Structured Streaming + DLT + Serverless <code>Lakebase</code> operational Postgres</span>
+              </td>
+              <td>
+                <span data-lang="zh-CN">Snowpipe Streaming + Dynamic Tables + Unistore Hybrid Tables</span>
+                <span data-lang="en">Snowpipe Streaming + Dynamic Tables + Unistore Hybrid Tables</span>
+              </td>
+              <td class="matrix-win">
+                <span data-lang="zh-CN"><code>Eventhouse</code> 检测港口/门店实时异动，<code>Fabric Apps</code> / Teams 审批并持久化写回至 <code>HorizonDB</code> 或 <code>Lakebase</code></span>
+                <span data-lang="en"><code>Eventhouse</code> catches IoT/POS spikes; <code>Fabric Apps</code> &amp; Teams write approved actions back to <code>HorizonDB</code> / <code>Lakebase</code></span>
+              </td>
+            </tr>
+            <tr>
+              <td><strong><span data-lang="zh-CN">高并发看数与 FinOps</span><span data-lang="en">Org-Wide BI &amp; FinOps</span></strong></td>
+              <td>
+                <span data-lang="zh-CN">统一 <code>F-SKU</code> 容量池削峰填谷 + 原生 Power BI <code>Direct Lake</code> 免导入亚秒响应</span>
+                <span data-lang="en">Pooled <code>F-SKU</code> capacity smoothing + native Power BI <code>Direct Lake</code> with zero import refresh</span>
+              </td>
+              <td>
+                <span data-lang="zh-CN">按作业与 SQL Warehouse 查询负载计量 <code>DBU</code></span>
+                <span data-lang="en">Per-workload &amp; Serverless SQL Warehouse <code>DBU</code> consumption billing</span>
+              </td>
+              <td>
+                <span data-lang="zh-CN">高并发 BI 直连持续消耗 Virtual Warehouse <code>Credits</code></span>
+                <span data-lang="en">High-concurrency BI queries continuously burn Virtual Warehouse <code>Credits</code></span>
+              </td>
+              <td class="matrix-win">
+                <span data-lang="zh-CN"><strong>极致降本</strong>：Power BI <code>Direct Lake</code> 直读镜像黄金表消耗 <strong>0 DBU / 0 Credit</strong>，复用企业既有 Fabric/P-SKU</span>
+                <span data-lang="en"><strong>Optimal FinOps</strong>: Power BI <code>Direct Lake</code> over mirrored Gold tables burns <strong>0 DBU / 0 Credits</strong></span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="btn-row" style="margin-top:20px">
+        <a class="btn btn-primary" href="https://turbo998.github.io/zh-diamond.html" target="_blank" rel="noopener noreferrer">
+          <span data-lang="zh-CN">💎 访问 Diamond 企业级脱敏实战演示中心（中文）↗</span>
+          <span data-lang="en">💎 Open Diamond Sanitized Demo Hub (zh-CN) ↗</span>
+        </a>
+        <a class="btn btn-teal" href="https://turbo998.github.io/diamond.html" target="_blank" rel="noopener noreferrer">
+          <span data-lang="zh-CN">🌐 Open Sanitized Diamond Demo Hub (English) ↗</span>
+          <span data-lang="en">🌐 Open Sanitized Diamond Demo Hub (English) ↗</span>
+        </a>
+        <a class="btn" href="https://turbo998.github.io/workshops/data-lab/index.html?lang=zh-CN" target="_blank" rel="noopener noreferrer">
+          <span data-lang="zh-CN">📊 五云数据平台 TCO 与时延对比工作台 ↗</span>
+          <span data-lang="en">📊 5-Cloud Data Lab Latency &amp; TCO Workbench ↗</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- ==================== FOOTER PAGER ==================== -->
+    <nav class="chapter-pager" aria-label="Chapter Pagination">
+      <a class="pager-card" href="02-web-iq-context.html">
+        <span class="pager-dir">← STAGE 02</span>
+        <span class="pager-name">
+          <span data-lang="zh-CN">02 · 外部实时上下文 (Web IQ)</span>
+          <span data-lang="en">02 · Live World Context (Web IQ)</span>
+        </span>
+      </a>
+      <a class="pager-card next" href="04-foundry-engineering.html">
+        <span class="pager-dir">STAGE 04 →</span>
+        <span class="pager-name">
+          <span data-lang="zh-CN">04 · 智能体工程运行时 (Microsoft Foundry)</span>
+          <span data-lang="en">04 · Agent Runtime Engineering (Microsoft Foundry)</span>
+        </span>
+      </a>
+    </nav>
+  </main>
+
+  <script>
+    (function () {
+      "use strict";
+
+      const surgeEl = document.getElementById("ont-surge");
+      const cutEl = document.getElementById("ont-cut");
+      const subEl = document.getElementById("ont-sub");
+      const presetBtns = Array.from(document.querySelectorAll("[data-ont-preset]"));
+
+      const PRESETS = {
+        default: { surge: 2.8, cut: 10, sub: 95 },
+        aggressive: { surge: 3.3, cut: 15, sub: 120 },
+        mild: { surge: 1.9, cut: 6, sub: 65 }
+      };
+
+      function fmtK(val) {
+        const abs = Math.round(Math.abs(val));
+        const sign = val > 0 ? "+" : (val < 0 ? "-" : "");
+        return sign + "$" + abs.toLocaleString("en-US") + "K";
+      }
+
+      function renderOntologySim() {
+        if (!surgeEl || !cutEl || !subEl) return;
+        const lang = document.documentElement.lang === "en" ? "en" : "zh-CN";
+        const surge = parseFloat(surgeEl.value);
+        const cutPct = parseFloat(cutEl.value);
+        const bundleSub = parseFloat(subEl.value);
+
+        document.getElementById("ont-surge-val").textContent = surge.toFixed(1) + "x";
+        document.getElementById("ont-cut-val").textContent = cutPct.toFixed(0) + "%";
+        document.getElementById("ont-sub-val").textContent = "$" + bundleSub.toFixed(0);
+
+        // Sanitized Diamond Omnichannel Economics Model (calibrated to -$497K liability & +$582K protected at 2.8x / 10% / $95)
+        const protectedChannelStockUnits = 2260;
+        const wholesaleAsp = 2.2; // $2.2K ($2,200) per flagship OLED unit -> 2260 * 2.2 * 10% = $497.2K
+        const priceProtectionLiabilityK = -(protectedChannelStockUnits * wholesaleAsp * (cutPct / 100));
+
+        // Total surge demand units in Germany during Black Friday window
+        const extraDemandFactor = Math.max(0, surge - 1.0);
+        const surgeDemandUnits = Math.round(extraDemandFactor * 378); // 680 units at 2.8x
+
+        // Naive Path: 11-day Rotterdam vessel delay caps local DE supply at 280 buffer units; MSRP cut erodes unit margin
+        const localBufferUnits = Math.min(280, surgeDemandUnits);
+        const baseUnitMarginK = 0.54; // $540 base gross margin per OLED
+        const naiveSoldMarginK = localBufferUnits * (baseUnitMarginK - wholesaleAsp * (cutPct / 100));
+        const demurrageAndStockoutDragK = -61.2; // expedited port handling + unfulfilled retail penalty
+        const naiveNetImpactK = priceProtectionLiabilityK + naiveSoldMarginK + demurrageAndStockoutDragK;
+
+        // Ontology-Guided Path: 0% MSRP cut ($0 price-protection bleed) + 48h FR->DE allocation + OMO Soundbar bundle
+        const rescuedUnits = Math.max(0, surgeDemandUnits - localBufferUnits); // 400 rescued units at 2.8x
+        const attachRate = Math.min(0.84, 0.25 + (bundleSub / 256.76)); // 62% attach at $95 subsidy
+        const soundbarGrossMarginK = 0.235; // $235 gross margin per flagship soundbar
+        const netBundleLiftK = surgeDemandUnits * attachRate * (soundbarGrossMarginK - (bundleSub / 1000)) * 0.454;
+        const allocationNetContributionK = localBufferUnits * baseUnitMarginK + rescuedUnits * 0.145 - 61.2;
+        const ontologyNetImpactK = allocationNetContributionK + netBundleLiftK - (localBufferUnits * wholesaleAsp * (cutPct / 100) * 0.635);
+
+        // Clean additive advantage of Ontology vs Direct MSRP Cut (exact +$582K at 2.8x / 10% / $95, strictly >= 0 across range)
+        const avoidedBleedK = Math.abs(priceProtectionLiabilityK);
+        const transferRescueLiftK = rescuedUnits * 0.145; // +$58.0K at 2.8x after 48h road freight
+        const bundleAttachLiftK = surgeDemandUnits * attachRate * Math.max(0.02, soundbarGrossMarginK - (bundleSub / 1000)) * 0.454; // +$26.8K at 2.8x / $95
+        const netMarginProtectedK = Math.round(avoidedBleedK + transferRescueLiftK + bundleAttachLiftK);
+        const allocatedUnits = surgeDemandUnits;
+
+        const liabilityEl = document.getElementById("ont-liability");
+        const naiveNetEl = document.getElementById("ont-naive-net");
+        const protectedEl = document.getElementById("ont-protected");
+
+        liabilityEl.textContent = cutPct === 0 ? "$0K" : fmtK(priceProtectionLiabilityK);
+        naiveNetEl.textContent = fmtK(naiveNetImpactK);
+        naiveNetEl.style.color = naiveNetImpactK < 0 ? "var(--rose)" : "var(--amber)";
+        protectedEl.textContent = fmtK(netMarginProtectedK);
+        protectedEl.style.color = netMarginProtectedK >= 0 ? "var(--green)" : "var(--rose)";
+
+        document.getElementById("ont-liability-note").textContent = lang === "en"
+          ? (cutPct === 0
+              ? "0% MSRP cut triggers zero price-protection compensation"
+              : `2,260 in-stock EU distributor units × $2,200 × ${cutPct}% clause`)
+          : (cutPct === 0
+              ? "0% 官降未触发渠道在库价保赔付条款"
+              : `欧洲渠道在库 2,260 台受保库存 × $2,200 × ${cutPct}% 刚性赔付`);
+
+        document.getElementById("ont-naive-note").textContent = lang === "en"
+          ? `11-day Rotterdam delay caps supply + ${cutPct}% margin erosion`
+          : `鹿特丹港延误 11 天致断货限售 + ${cutPct}% 官降侵蚀单台毛利`;
+
+        document.getElementById("ont-protected-note").textContent = lang === "en"
+          ? `$0 price-protect bleed + ${allocatedUnits} FR→DE 48h units + ${Math.round(attachRate * 100)}% soundbar attach`
+          : `规避价保赔付 + 法→德 48h 调拨 ${allocatedUnits} 台 + ${Math.round(attachRate * 100)}% 声霸连带率`;
+
+        const bleedWidth = Math.min(100, Math.max(4, Math.round((Math.abs(priceProtectionLiabilityK) / 800) * 100)));
+        const gainWidth = Math.min(100, Math.max(8, Math.round((Math.max(0, netMarginProtectedK) / 800) * 100)));
+        document.getElementById("ont-bar-bleed").style.width = bleedWidth + "%";
+        document.getElementById("ont-bar-gain").style.width = gainWidth + "%";
+        document.getElementById("ont-bar-bleed-lbl").textContent = cutPct === 0 ? "$0K" : fmtK(priceProtectionLiabilityK);
+        document.getElementById("ont-bar-gain-lbl").textContent = fmtK(netMarginProtectedK);
+
+        const preview = document.getElementById("ont-dax-preview");
+        if (lang === "en") {
+          preview.textContent =
+`// Sanitized Fabric IQ Ontology Trace — Workspace: Global_Channel_IQ | Ontology: ont_global_channel_network
+[Context Fusion] Eventhouse KQL: DE_OLED_SellOut_Surge = ${surge.toFixed(1)}x  |  Web IQ Port Feed: Rotterdam_ETA_Delay = +11 days
+[Guardrail #1  ] Anti-Channel-Stuffing Rule: Distributor_SEA_04 (SellIn_QoQ = +260%, POS_Activation = +8%) --> BLOCKED $162.5K Rebate
+[Guardrail #2  ] Price-Protection Clause Sim (MSRP Cut = ${cutPct}%): Liability = ${cutPct === 0 ? "$0K" : fmtK(priceProtectionLiabilityK)} across 2,260 EU channel units
+[Ontology Plan ] Action = OMO_Soundbar_Bundle($${bundleSub}) + InterWarehouse_Transfer(FR_Hub -> DE_Hub, ${allocatedUnits} units, SLA=48h)
+[Verified Lift ] Net Gross Margin Protected vs Direct MSRP Cut = ${fmtK(netMarginProtectedK)} (Ready for Teams / Fabric App Approval)`;
+        } else {
+          preview.textContent =
+`// Fabric IQ 脱敏业务本体推演日志 — Workspace: Global_Channel_IQ | Ontology: ont_global_channel_network
+[内外信号合流] Eventhouse KQL: 德国 OLED 黑五动销倍率 = ${surge.toFixed(1)}x  |  Web IQ 航运气象: 鹿特丹港拥堵延误 = +11 天
+[本体护栏 #1 ] 季末防压货骗补规则: 东南亚某国代 (提货 +260% vs POS 激活 +8%) --> 自动拦截冻结异常返利 $162.5K
+[本体护栏 #2 ] 渠道在库价保条款测算 (官降 ${cutPct}%): 触发 2,260 台受保库存赔付敞口 = ${cutPct === 0 ? "$0K" : fmtK(priceProtectionLiabilityK)}
+[最优执行动作] 推荐方案 = OMO 回音壁捆绑补贴 ($${bundleSub}/台) + 跨仓紧急调拨 (法国仓 -> 德国仓 ${allocatedUnits} 台, 48h 陆运达)
+[经营净增锁定] 相较传统直接官降守护净毛利 = ${fmtK(netMarginProtectedK)} （已生成 Teams / Rayfin Fabric App 审批回写单）`;
+        }
+      }
+
+      [surgeEl, cutEl, subEl].forEach((el) => {
+        if (el) {
+          el.addEventListener("input", () => {
+            presetBtns.forEach((b) => b.classList.remove("active"));
+            renderOntologySim();
+          });
+        }
+      });
+
+      presetBtns.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const key = btn.getAttribute("data-ont-preset");
+          const cfg = PRESETS[key];
+          if (!cfg) return;
+          surgeEl.value = String(cfg.surge);
+          cutEl.value = String(cfg.cut);
+          subEl.value = String(cfg.sub);
+          presetBtns.forEach((b) => b.classList.toggle("active", b === btn));
+          renderOntologySim();
+        });
+      });
+
+      window.addEventListener("ignite:langchange", renderOntologySim);
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", renderOntologySim);
+      } else {
+        renderOntologySim();
+      }
+    })();
+  </script>
+</body>
+</html>

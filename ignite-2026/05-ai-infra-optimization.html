@@ -1,0 +1,2045 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark" data-mode="read">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>05 推理基础设施优化｜企业级 Agentic AI 生产落地之旅</title>
+  <link rel="stylesheet" href="assets/ignite-recap.css" />
+  <style>
+    /* Stage 05 Scoped Engineering Components (100% CSS-Variable Theme Aware) */
+    .scenario-jump-bar {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 20px;
+    }
+    .scenario-jump-card {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 14px 16px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: var(--surface-soft);
+      color: var(--text);
+      text-decoration: none !important;
+      transition: all 0.16s ease;
+    }
+    .scenario-jump-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-1px);
+    }
+    .scenario-num {
+      flex: none;
+      padding: 4px 9px;
+      border-radius: 8px;
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      font-weight: 800;
+      background: var(--accent-soft);
+      color: var(--accent);
+      border: 1px solid rgba(56, 189, 248, 0.35);
+    }
+    .scenario-jump-card.s2 .scenario-num {
+      background: var(--teal-soft);
+      color: var(--teal);
+      border-color: rgba(45, 212, 191, 0.35);
+    }
+    .toggle-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .toggle-chip {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 11px 13px;
+      border-radius: 11px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      cursor: pointer;
+      user-select: none;
+      transition: border-color 0.15s ease, background 0.15s ease;
+    }
+    .toggle-chip:hover {
+      border-color: var(--accent);
+    }
+    .toggle-chip input[type="checkbox"] {
+      margin-top: 3px;
+      width: 16px;
+      height: 16px;
+      accent-color: var(--accent);
+      cursor: pointer;
+      flex: none;
+    }
+    .toggle-chip-title {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.3;
+    }
+    .toggle-chip-sub {
+      display: block;
+      font-size: 11.5px;
+      color: var(--text-soft);
+      margin-top: 2px;
+    }
+    .formula-card {
+      border: 1px solid var(--border-strong);
+      border-radius: 16px;
+      background: var(--bg-elevated);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .formula-box {
+      padding: 14px 16px;
+      border-radius: 12px;
+      background: #070e1b;
+      border: 1px solid #1f365d;
+      color: #e2e8f0;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      line-height: 1.65;
+      overflow-wrap: anywhere;
+    }
+    .formula-terms {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+    }
+    .f-term {
+      padding: 9px 10px;
+      border-radius: 9px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      font-size: 12px;
+    }
+    .f-term strong {
+      display: block;
+      font-family: var(--font-mono);
+      color: var(--accent);
+      margin-bottom: 2px;
+    }
+    .sa-insight-banner {
+      padding: 12px 14px;
+      border-radius: 11px;
+      border-left: 4px solid var(--amber);
+      background: var(--amber-soft);
+      font-size: 13.5px;
+      color: var(--text);
+    }
+    .bar-stack-wrap {
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: 12px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+    }
+    .bar-track {
+      height: 22px;
+      width: 100%;
+      border-radius: 999px;
+      background: var(--surface-strong);
+      overflow: hidden;
+      display: flex;
+      margin: 8px 0;
+      border: 1px solid var(--border);
+    }
+    .bar-seg {
+      height: 100%;
+      transition: width 0.22s ease;
+    }
+    .bar-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+    .legend-dot {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 3px;
+      margin-right: 5px;
+      vertical-align: middle;
+    }
+    .advice-panel {
+      margin-top: 14px;
+      padding: 16px 18px;
+      border-radius: 14px;
+      border: 1px solid var(--border-strong);
+      background: var(--surface-soft);
+      font-size: 13.5px;
+    }
+    .advice-panel h4 {
+      margin: 0 0 8px;
+      font-size: 14.5px;
+      color: var(--accent);
+    }
+    .prefix-order-strip {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px;
+      margin-top: 10px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+    }
+    .prefix-node {
+      padding: 5px 10px;
+      border-radius: 7px;
+      background: var(--surface);
+      border: 1px solid var(--teal);
+      color: var(--teal);
+      font-weight: 700;
+    }
+    .prefix-node.dynamic {
+      border-color: var(--amber);
+      color: var(--amber);
+    }
+    @media (max-width: 780px) {
+      .scenario-jump-bar,
+      .formula-terms {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body data-title-zh="05 推理基础设施优化｜企业级 Agentic AI 生产落地之旅" data-title-en="05 Inference Infra Optimization | The Enterprise Agentic AI Journey">
+  <a href="#main-content" class="skip-link">
+    <span data-lang="zh-CN">跳至正文内容</span>
+    <span data-lang="en">Skip to main content</span>
+  </a>
+
+  <!-- Shared Sticky Site Header + 7-Item Journey Bar -->
+  <header class="site-header">
+    <div class="header-top">
+      <div class="brand-group">
+        <a href="index.html" class="brand-mark" aria-label="Home">IG26</a>
+        <div>
+          <a href="index.html" class="brand-title">
+            <span data-lang="zh-CN">企业级 Agentic AI 生产落地之旅</span>
+            <span data-lang="en">The Enterprise Agentic AI Journey</span>
+          </a>
+          <span class="brand-sub">
+            <span data-lang="zh-CN">Microsoft Ignite 2026 解决方案架构师全景指南</span>
+            <span data-lang="en">Microsoft Ignite 2026 Solution Architect Blueprint</span>
+          </span>
+        </div>
+      </div>
+      <div class="header-controls">
+        <a class="ctrl-btn hub-return-link" href="../zh.html">← 个人主页</a>
+        <div class="header-search-wrap"><input type="search" class="header-search-input" placeholder="搜索章节 / 微软服务…" aria-label="搜索 Ignite 2026 章节与服务"><div class="header-search-results" hidden></div></div>
+        <button type="button" class="ctrl-btn" data-action="toggle-mode">📖 精读 / 🎤 投屏</button>
+        <button type="button" class="ctrl-btn" data-action="toggle-cues"><span data-lang="zh-CN">🎙️ 宣讲提示</span><span data-lang="en">🎙️ Speaker Cues</span></button>
+        <button type="button" class="ctrl-btn" data-action="toggle-theme">🌗 <span class="theme-label">浅色</span></button>
+        <a class="ctrl-btn language-link" href="05-ai-infra-optimization.en.html" hreflang="en" data-action="toggle-lang">EN / 中文</a>
+      </div>
+    </div>
+    <div class="journey-bar">
+      <nav class="journey-nav" aria-label="Journey Stages">
+        <a href="index.html" class="journey-link">
+          <span class="journey-step">00</span>
+          <span data-lang="zh-CN">全景架构蓝图</span>
+          <span data-lang="en">Architecture Blueprint</span>
+        </a>
+        <a href="01-copilot-entry.html" class="journey-link">
+          <span class="journey-step">01</span>
+          <span data-lang="zh-CN">统一智能体入口</span>
+          <span data-lang="en">Unified Agent Entry</span>
+        </a>
+        <a href="02-web-iq-context.html" class="journey-link">
+          <span class="journey-step">02</span>
+          <span data-lang="zh-CN">外部实时上下文</span>
+          <span data-lang="en">Live World Context</span>
+        </a>
+        <a href="03-fabric-ontology.html" class="journey-link">
+          <span class="journey-step">03</span>
+          <span data-lang="zh-CN">企业数据本体</span>
+          <span data-lang="en">Enterprise Data Ontology</span>
+        </a>
+        <a href="04-foundry-engineering.html" class="journey-link">
+          <span class="journey-step">04</span>
+          <span data-lang="zh-CN">智能体工程运行时</span>
+          <span data-lang="en">Agent Runtime Engineering</span>
+        </a>
+        <a href="05-ai-infra-optimization.html" class="journey-link" aria-current="page">
+          <span class="journey-step">05</span>
+          <span data-lang="zh-CN">推理基础设施优化</span>
+          <span data-lang="en">Inference Infra Optimization</span>
+        </a>
+        <a href="06-agent-governance.html" class="journey-link">
+          <span class="journey-step">06</span>
+          <span data-lang="zh-CN">全域智能体治理</span>
+          <span data-lang="en">Enterprise Agent Governance</span>
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main-content" class="page-main">
+    <!-- Hero Panel -->
+    <section class="hero-panel">
+      <div class="hero-grid">
+        <div>
+          <p class="eyebrow">STAGE 05 · INFERENCE INFRA OPTIMIZATION</p>
+          <h1 class="hero-title">
+            <span data-lang="zh-CN">推理基础设施优化</span>
+            <span data-lang="en">Inference Infra Optimization</span>
+          </h1>
+          <p class="hero-lead">
+            <span data-lang="zh-CN">当企业智能体从 10 人级 PoC 跃迁至 50,000 并发多步工具调用与多模态生视频工作流，<strong>首字延迟（<code>TTFT</code>）/ 逐字生成延迟（<code>TPOT</code>）、GPU HBM 显存容量墙与多机集合通信微突发抖动</strong> 将成为生产落地的生死线。本章围绕 Partner SA 架构评审中最高频的两大真实客户场景展开：① <strong>Token API 调用优化</strong> 与 ② <strong>GPU 专有模型及生视频模型显存精算与多卡网络优化</strong>。</span>
+            <span data-lang="en">When enterprise agents scale from 10 pilot users to 50,000 concurrent multi-step turns and multimodal video workflows, <strong>inference latency (<code>TTFT</code> / <code>TPOT</code>), GPU HBM capacity walls, and multi-node collective network jitter</strong> become the make-or-break bottlenecks. This chapter frames full-stack AI Infra optimization around two concrete Partner SA scenarios: ① <strong>Token API Invocation Optimization</strong> and ② <strong>Dedicated GPU Model &amp; Video Generation Deployment</strong>.</span>
+          </p>
+          <div class="pill-row">
+            <span class="pill"><span class="badge badge-ga">Architecture</span> PD Disaggregation + Prefix KV Cache</span>
+            <span class="pill"><span class="badge badge-preview">Public Preview</span> Baseten &amp; fal on Foundry + Fireworks AI</span>
+            <span class="pill"><span class="badge badge-ga">GA</span> Azure Cobalt 200 (+50% Arm64)</span>
+            <span class="pill"><span class="badge badge-preview">Silicon</span> Azure Maia 300 SDLA (+40% Tok/W)</span>
+          </div>
+          <div class="scenario-jump-bar">
+            <a href="#scenario-token-api" class="scenario-jump-card">
+              <span class="scenario-num">SCENARIO 01</span>
+              <div>
+                <strong>
+                  <span data-lang="zh-CN">Token API 调用延迟与吞吐优化</span>
+                  <span data-lang="en">Token API Latency &amp; Throughput Optimization</span>
+                </strong>
+                <div style="font-size:12.5px;color:var(--text-muted);margin-top:3px;">
+                  <span data-lang="zh-CN">Prefill vs Decode 物理瓶颈 · PD 分离 · 前缀 KV 缓存 · Maia 300 / Cobalt 200</span>
+                  <span data-lang="en">Prefill vs Decode physics · PD split · Prefix KV Cache · Maia 300 / Cobalt 200</span>
+                </div>
+              </div>
+            </a>
+            <a href="#scenario-gpu-deploy" class="scenario-jump-card s2">
+              <span class="scenario-num">SCENARIO 02</span>
+              <div>
+                <strong>
+                  <span data-lang="zh-CN">GPU 部署开源大模型与生视频模型</span>
+                  <span data-lang="en">Dedicated GPU Open-Weight &amp; Video Deployment</span>
+                </strong>
+                <div style="font-size:12.5px;color:var(--text-muted);margin-top:3px;">
+                  <span data-lang="zh-CN">DeepSeek / Kimi / Video DiT 显存公式精算 · NVLink vs InfiniBand &amp; RoCEv2</span>
+                  <span data-lang="en">DeepSeek / Kimi / Video DiT VRAM math · NVLink vs InfiniBand &amp; RoCEv2</span>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <aside class="hero-kpi-box" aria-label="Stage 05 Key Metrics">
+          <strong style="font-size:13.5px;color:var(--teal);text-transform:uppercase;letter-spacing:0.6px;">
+            <span data-lang="zh-CN">Ignite 2026 推理底座核心指标</span>
+            <span data-lang="en">Ignite 2026 AI Infra Benchmarks</span>
+          </strong>
+          <div class="kpi-grid">
+            <div class="kpi-item">
+              <span class="kpi-val">PD 分离 + KV</span>
+              <span class="kpi-lbl">
+                <span data-lang="zh-CN">彻底消除 TTFT 与 TPOT 跨阶段争用抖动</span>
+                <span data-lang="en">Eliminates TTFT &amp; TPOT prefill-decode interference</span>
+              </span>
+            </div>
+            <div class="kpi-item">
+              <span class="kpi-val">Fireworks · Baseten · fal</span>
+              <span class="kpi-lbl">
+                <span data-lang="zh-CN">Foundry 托管 DeepSeek / Kimi 与生视频模型</span>
+                <span data-lang="en">New Foundry open-weight DeepSeek / Kimi &amp; video ecosystem</span>
+              </span>
+            </div>
+            <div class="kpi-item">
+              <span class="kpi-val">NVLink + RoCEv2 / IB</span>
+              <span class="kpi-lbl">
+                <span data-lang="zh-CN">节点内 Scale-Up 与跨节点无损 RDMA 通信分层</span>
+                <span data-lang="en">Scale-Up NVLink vs Lossless Scale-Out RDMA fabric</span>
+              </span>
+            </div>
+            <div class="kpi-item">
+              <span class="kpi-val">+40% Tok/W</span>
+              <span class="kpi-lbl">
+                <span data-lang="zh-CN">Azure Maia 300 SDLA + Cobalt 200 (GA) +50% CPU 卸载</span>
+                <span data-lang="en">Azure Maia 300 SDLA + Cobalt 200 (GA) +50% CPU offload</span>
+              </span>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <div class="speaker-cue">
+        <div class="speaker-cue-title">
+          🎙️ <span data-lang="zh-CN">Partner SA 讲师串场话术（30 秒切入硬件与网络本质）</span>
+          <span data-lang="en">Partner SA Speaker Cue (30-Second Infra Pivot)</span>
+        </div>
+        <p>
+          <span data-lang="zh-CN">“前面四站我们搭好了智能体入口、内外部上下文与运行时。但一旦推向数万员工生产并发，客户基础架构负责人一定会问两个尖锐问题：第一，调 API 时为什么挂了 40 个 MCP 工具和长文档后，首字要等 6 秒、流式吐字还会一卡一顿？第二，如果我们想用 DeepSeek、Kimi 或者生视频模型，到底是调 Foundry 上的 Fireworks / Baseten / fal 托管接口划算，还是自己在 AKS 上挂 H200 / GB300 划算？如果自建，多少张卡能放下？选 RoCEv2 还是 InfiniBand？这一章我们直接给可计算的工程答案。”</span>
+          <span data-lang="en">“In Stages 01–04 we wired up the agent front door, live context, enterprise ontology, and Foundry runtime. Yet the moment a customer scales to 50,000 concurrent turns, the Head of Infrastructure asks two hard engineering questions: First, why does attaching 40 MCP tool schemas and long RAG passages spike TTFT to 6 seconds and cause choppy streaming TPOT? Second, for DeepSeek, Kimi, or video generation, when do we use Fireworks, Baseten, or fal on Foundry versus self-hosting GPUs on AKS—and how many GPUs and what RDMA fabric do we actually need? Let's walk through both scenarios with exact math.”</span>
+        </p>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         SOLUTION ARCHITECTURE SPLIT-BOARD: STAGE 05 AI INFRASTRUCTURE & FABRIC
+         ====================================================================== -->
+    <section class="ms-arch-board" data-knowledge-atlas="ignite-2026" id="stage05-architecture" aria-labelledby="stage05-arch-heading">
+      <div class="ms-arch-topbar">
+        <div>
+          <span class="ms-arch-kicker">STAGE 05 SOLUTION ARCHITECTURE · TOKEN PD/KV PIPELINE &amp; MULTI-NODE GPU ROCEV2/IB</span>
+          <h2 class="ms-arch-heading" id="stage05-arch-heading">
+            <span data-lang="zh-CN">双场景推理基础设施架构：Token PD/KV 时延解耦与多节点 GPU 无损互联</span>
+            <span data-lang="en">Dual-Scenario Inference Architecture: Disaggregated PD/KV &amp; Lossless Multi-GPU Fabric</span>
+          </h2>
+        </div>
+        <div class="ms-arch-actions">
+          <a class="ms-arch-drawio-btn" href="drawio/05-ai-infra-optimization.drawio" download>
+            <span aria-hidden="true">📐</span>
+            <span data-lang="zh-CN">下载 Draw.io 架构源文件</span>
+            <span data-lang="en">Download .drawio Source</span>
+          </a>
+          <button type="button" class="ms-arch-zoom-btn" data-action="zoom-arch" aria-pressed="false">
+            <span aria-hidden="true">🔍</span>
+            <span data-lang="zh-CN">放大架构图 / 全宽视图</span>
+            <span data-lang="en">Zoom Diagram / Full Width</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="ms-arch-split">
+        <!-- Left: Microsoft Solution Architecture Blueprint Canvas -->
+        <div class="ms-arch-canvas" role="region" aria-label="Stage 05 Azure AI Infrastructure Solution Architecture Diagram">
+          <div class="arch-sub-frame">
+            <div class="arch-sub-bar">
+              <span class="arch-sub-title">
+                <span class="ms-logo" data-ms-icon="azure"></span>
+                <span data-lang="zh-CN">Azure AI Infrastructure &amp; Custom Silicon · 异构加速计算与无损网络架构</span>
+                <span data-lang="en">Azure AI Infrastructure, Custom Silicon &amp; RDMA Network Stack</span>
+              </span>
+              <span class="arch-sub-pill">
+                <span data-lang="zh-CN">PTU Provisioned SLA · AKS Fleet Cilium (GA) · Azure Monitor P99 Telemetry</span>
+                <span data-lang="en">PTU Provisioned SLA · AKS Fleet Cilium (GA) · Azure Monitor P99 Telemetry</span>
+              </span>
+            </div>
+
+            <div class="arch-main-stack">
+              <!-- Top Zone: Ingress, Host Offload & Cascade Gate -->
+              <div class="arch-zone zone-slate">
+                <div class="arch-zone-head">
+                  <span class="arch-zone-title">
+                    <span data-lang="zh-CN">Ingress, Host Offload &amp; Cascade Gate · 前缀亲和接入、主机侧卸载与前置门控</span>
+                    <span data-lang="en">Ingress, Host CPU Offload &amp; Pre-Inference Cascade Gate</span>
+                  </span>
+                  <span class="arch-zone-caption">
+                    <span data-lang="zh-CN">一致性前缀哈希 · Arm64 主机卸载 · $0 输出分流</span>
+                    <span data-lang="en">Consistent Prefix Hash · Arm64 Offload · $0 Output Gate</span>
+                  </span>
+                </div>
+                <div class="arch-cards-3">
+                  <div class="arch-svc svc-blue">
+                    <div class="arch-svc-head">
+                      <span class="ms-logo" data-ms-icon="ai-gateway"></span>
+                      <span class="arch-svc-name">AI Gateway &amp; Session Router</span>
+                      <span class="svc-tag ga">GA</span>
+                      <span class="step-dot" title="Step 1">1</span>
+                    </div>
+                    <p class="arch-svc-desc">
+                      <span data-lang="zh-CN">基于一致性前缀哈希执行 <strong>KV Locality 亲和路由</strong>，提升多轮长上下文对话对既有 KV 缓存块的命中率与 PTU 利用率。</span>
+                      <span data-lang="en">Consistent prefix-hash <strong>KV Locality routing</strong> maximizing KV block cache hit rates across multi-turn sessions and PTU pools.</span>
+                    </p>
+                  </div>
+
+                  <div class="arch-svc">
+                    <div class="arch-svc-head">
+                      <span class="ms-logo" data-ms-icon="silicon"></span>
+                      <span class="arch-svc-name">Azure Cobalt 200 Host Pool</span>
+                      <span class="svc-tag ga">GA</span>
+                    </div>
+                    <p class="arch-svc-desc">
+                      <span data-lang="zh-CN">自研 Arm64 服务器 CPU（<strong>+50% 整数与并发吞吐</strong>），卸载主机侧 MCP JSON 序列化、分词与沙箱编排开销。</span>
+                      <span data-lang="en">Custom Arm64 host CPU (<strong>+50% compute throughput</strong>) offloading MCP JSON serialization, tokenization, and sandbox orchestration.</span>
+                    </p>
+                  </div>
+
+                  <div class="arch-svc svc-purple">
+                    <div class="arch-svc-head">
+                      <span class="ms-logo" data-ms-icon="foundry-models"></span>
+                      <span class="arch-svc-name">Decision-1.1 Cascade Gate</span>
+                      <span class="svc-tag ga">GA</span>
+                      <span class="step-dot" title="Step 2">2</span>
+                    </div>
+                    <p class="arch-svc-desc">
+                      <span data-lang="zh-CN">前置拦截常规意图分类与合规校验请求（<strong><code>$0</code> 输出计费</strong>），减少后端大参数推理集群无效负载。</span>
+                      <span data-lang="en">Filters routine classification and safety checks at the edge (<strong><code>$0</code> output token cost</strong>), preserving backend GPU capacity.</span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="arch-flow-connector" aria-hidden="true">
+                <span class="arch-flow-hop">
+                  <span data-lang="zh-CN">↓ 长上下文在线 Token 推理路由至场景一（分层 KV + PD 分离集群）</span>
+                  <span data-lang="en">↓ Long-context online token calls → Scenario 1 (Tiered KV + Disaggregated PD)</span>
+                </span>
+                <span class="arch-flow-hop">
+                  <span data-lang="zh-CN">↓ 开源大参数 MoE / 多模态生视频路由至场景二（多卡 GPU 集群）</span>
+                  <span data-lang="en">↓ Open-weight MoE / Video DiT workloads → Scenario 2 (Multi-GPU Fabric)</span>
+                </span>
+              </div>
+
+              <!-- Middle Zone A: Scenario 1 Token API Pipeline -->
+              <div class="arch-zone zone-blue">
+                <div class="arch-zone-head">
+                  <span class="arch-zone-title">
+                    <span data-lang="zh-CN">场景一：在线 Token 推理管线 · 解耦 TTFT（算力受限）与 TPOT（访存带宽受限）</span>
+                    <span data-lang="en">Scenario 1: Online Token Pipeline · Decoupling Compute-Bound TTFT &amp; Memory-Bound TPOT</span>
+                  </span>
+                  <span class="arch-zone-caption">
+                    <span data-lang="zh-CN">分层 Prefix KV 复用 → PD 物理拆池 → Maia 300 解码</span>
+                    <span data-lang="en">Tiered Prefix KV Reuse → PD Disaggregation → Maia 300 Decode</span>
+                  </span>
+                </div>
+                <div class="arch-cards-3">
+                  <div class="arch-svc svc-blue">
+                    <div class="arch-svc-head">
+                      <span class="ms-logo" data-ms-icon="cosmos"></span>
+                      <span class="arch-svc-name">Tiered Prefix KV Cache</span>
+                      <span class="svc-tag prev">HBM→DRAM/NVMe</span>
+                      <span class="step-dot" title="Step 3">3</span>
+                    </div>
+                    <p class="arch-svc-desc">
+                      <span data-lang="zh-CN">在 HBM / 主机 DRAM / 本地 NVMe 间分层驻留 System Prompt 与 Tool Schema 静态前缀，规避 <strong>70%–90% 重复 Prefill FLOPs</strong>。</span>
+                      <span data-lang="en">Caches static System + Tool Schema KV blocks across HBM/DRAM/NVMe tiers, bypassing <strong>70%–90% redundant Prefill FLOPs</strong>.</span>
+                    </p>
+                  </div>
+
+                  <div class="arch-svc svc-blue">
+                    <div class="arch-svc-head">
+                      <span class="ms-logo" data-ms-icon="gpu"></span>
+                      <span class="arch-svc-name">Disaggregated Prefill Pool</span>
+                      <span class="svc-tag prev">Compute-Bound</span>
+                      <span class="step-dot" title="Step 4">4</span>
+                    </div>
+                    <p class="arch-svc-desc">
+                      <span data-lang="zh-CN">独立高 FLOPs 节点池处理增量输入预填充，计算完成后通过 <strong>RDMA 零拷贝传输 KV 状态块</strong>至解码池。</span>
+                      <span data-lang="en">Dedicated high-FLOPs pool computes incremental prompt prefill and transfers KV blocks via <strong>RDMA</strong> to Decode nodes.</span>
+                    </p>
+                  </div>
+
+                  <div class="arch-svc svc-blue">
+                    <div class="arch-svc-head">
+                      <span class="ms-logo" data-ms-icon="silicon"></span>
+                      <span class="arch-svc-name">Decode Pool · Azure Maia 300</span>
+                      <span class="svc-tag amber">2.5× HBM BW</span>
+                    </div>
+                    <p class="arch-svc-desc">
+                      <span data-lang="zh-CN">自研 SDLA 数据流架构配合投机解码（Speculative Decoding），提供 <strong>2.5× HBM 带宽与 +40% Tok/W 能效</strong>，稳定自回归 <code>TPOT</code>。</span>
+                      <span data-lang="en">Custom SDLA dataflow accelerator + speculative decoding delivering <strong>2.5× HBM bandwidth &amp; +40% Tok/W</strong> for steady <code>TPOT</code>.</span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Middle Zone B: Scenario 2 Open-Weight MoE & Video DiT GPU Pipeline -->
+              <div class="arch-zone zone-amber">
+                <div class="arch-zone-head">
+                  <span class="arch-zone-title">
+                    <span data-lang="zh-CN">场景二：开源大参数 MoE 与视频生成 DiT 模型 · 显存容量规划与多机互联拓扑</span>
+                    <span data-lang="en">Scenario 2: Open-Weight MoE &amp; Video DiT · HBM Sizing &amp; Multi-Node Network Topology</span>
+                  </span>
+                  <span class="arch-zone-caption">
+                    <span data-lang="zh-CN">Foundry Serverless 托管池 vs AKS 专有多卡 · GPUDirect RDMA</span>
+                    <span data-lang="en">Foundry Serverless Partners vs AKS Dedicated GPUs · GPUDirect RDMA</span>
+                  </span>
+                </div>
+                <div class="arch-cards-3">
+                  <div class="arch-svc svc-amber">
+                    <div class="arch-svc-head">
+                      <span class="ms-logo" data-ms-icon="foundry"></span>
+                      <span class="arch-svc-name">
+                        <span data-lang="zh-CN">Fireworks · Baseten · fal 托管端点</span>
+                        <span data-lang="en">Fireworks · Baseten · fal Endpoints</span>
+                      </span>
+                      <span class="svc-tag prev">Preview</span>
+                      <span class="step-dot" title="Step 5">5</span>
+                    </div>
+                    <p class="arch-svc-desc">
+                      <span data-lang="zh-CN">通过 Foundry 统一计费与鉴权按量调用 <strong>DeepSeek V4 / V4.1-Flash</strong>、<strong>Kimi K2.6 / K3</strong> 及 <strong>Kling v3 / LTX-2.5 / MiniMax</strong> 视频生成模型。</span>
+                      <span data-lang="en">Serverless Foundry APIs for <strong>DeepSeek V4 / V4.1-Flash</strong>, <strong>Kimi K2.6 / K3</strong>, and <strong>Kling v3 / LTX-2.5 / MiniMax</strong> video DiTs.</span>
+                    </p>
+                  </div>
+
+                  <div class="arch-svc svc-amber">
+                    <div class="arch-svc-head">
+                      <span class="ms-logo" data-ms-icon="aks"></span>
+                      <span class="arch-svc-name">AKS Managed GPU Pools</span>
+                      <span class="svc-tag ga">GA · Prev</span>
+                    </div>
+                    <p class="arch-svc-desc">
+                      <span data-lang="zh-CN">专有部署 <strong>GB200/GB300 · H200 · MI350P · VR72 机密 GPU</strong> + Mixed MIG 切分；按全量 MoE 专家权重 + 3D 时空激活峰值核算聚合 HBM。</span>
+                      <span data-lang="en">Dedicated <strong>GB200/GB300 · H200 · MI350P · VR72 Confidential GPUs</strong> + Mixed MIG; sized for full MoE weights + 3D spatiotemporal activations.</span>
+                    </p>
+                  </div>
+
+                  <div class="arch-svc svc-amber">
+                    <div class="arch-svc-head">
+                      <span class="ms-logo" data-ms-icon="network"></span>
+                      <span class="arch-svc-name">NVLink + InfiniBand / RoCEv2</span>
+                      <span class="svc-tag ga">Lossless RDMA</span>
+                      <span class="step-dot" title="Step 6">6</span>
+                    </div>
+                    <p class="arch-svc-desc">
+                      <span data-lang="zh-CN">机内 <strong>NVLink 承载 TP</strong>；跨机通过 <strong>GPUDirect RDMA</strong> 在 <strong>IB (SHARP)</strong> 或轨道优化无损 <strong>RoCEv2 (PFC + ECN/DCQCN)</strong> 上运行 MoE EP <code>All-to-All</code> 与视频 <code>Ulysses/Ring</code> 序列并行。</span>
+                      <span data-lang="en">Intra-node <strong>NVLink for TP</strong>; inter-node <strong>GPUDirect RDMA</strong> over <strong>IB (SHARP)</strong> or rail-optimized lossless <strong>RoCEv2 (PFC + ECN/DCQCN)</strong> for MoE EP <code>All-to-All</code> &amp; video <code>Ulysses/Ring</code> SP.</span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="arch-flow-connector" aria-hidden="true">
+                <span class="arch-flow-hop">
+                  <span data-lang="zh-CN">↑↓ 上游依赖系统异步解耦与现代化重构 · 7×24 生产环境故障定位</span>
+                  <span data-lang="en">↑↓ Upstream dependency modernization · 24×7 automated P99 incident diagnostics</span>
+                </span>
+              </div>
+
+              <!-- Bottom Zone: Legacy Estate Modernization & Hybrid SRE -->
+              <div class="arch-zone zone-green">
+                <div class="arch-zone-head">
+                  <span class="arch-zone-title">
+                    <span data-lang="zh-CN">Upstream Dependency Modernization &amp; Hybrid SRE · 上游系统重构与混合云可观测运维</span>
+                    <span data-lang="en">Upstream Dependency Modernization &amp; Hybrid SRE Operations</span>
+                  </span>
+                  <span class="arch-zone-caption">
+                    <span data-lang="zh-CN">消除工具调用链慢 I/O · 边缘本地 vLLM 协同</span>
+                    <span data-lang="en">Eliminate Tool-Chain I/O Bottlenecks · Edge Local vLLM</span>
+                  </span>
+                </div>
+                <div class="arch-cards-2">
+                  <div class="arch-svc svc-green">
+                    <div class="arch-svc-head">
+                      <span class="ms-logo" data-ms-icon="functions"></span>
+                      <span class="arch-svc-name">Azure Catalyst</span>
+                      <span class="svc-tag ga">GA</span>
+                      <span class="step-dot" title="Step 7">7</span>
+                    </div>
+                    <p class="arch-svc-desc">
+                      <span data-lang="zh-CN">自动化分析并重构存量单体应用与慢速数据库查询接口，消除多轮工具调用链中的外部同步 I/O 阻塞。</span>
+                      <span data-lang="en">Automates refactoring of legacy monoliths and slow database APIs to remove synchronous I/O bottlenecks in agent tool chains.</span>
+                    </p>
+                  </div>
+
+                  <div class="arch-svc svc-green">
+                    <div class="arch-svc-head">
+                      <span class="ms-logo" data-ms-icon="monitor"></span>
+                      <span class="arch-svc-name">Azure SRE Agent &amp; Windows Server 2028</span>
+                      <span class="svc-tag ga">GA · Prev</span>
+                    </div>
+                    <p class="arch-svc-desc">
+                      <span data-lang="zh-CN">基于遥测拓扑自动定位 P99 尾延迟与集群故障根因，并协同 Windows Server 2028 原生本地 <code>vLLM</code> 承载边缘低时延推理。</span>
+                      <span data-lang="en">Correlates cluster telemetry for automated P99 root-cause triage alongside hybrid edge local <code>vLLM</code> inference on Windows Server 2028.</span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Structured Data Flow, Design Points & Why Microsoft -->
+        <aside class="ms-arch-aside" aria-label="Stage 05 Architecture Notes">
+          <div class="aside-block">
+            <h4 class="tone-blue">
+              <span data-lang="zh-CN">Data flow · 双场景推理执行链路 (1–7)</span>
+              <span data-lang="en">Data flow · Dual-Scenario Execution Path (1–7)</span>
+            </h4>
+            <ol class="aside-flow-list">
+              <li>
+                <span data-lang="zh-CN"><strong>前缀哈希亲和接入：</strong><code>AI Gateway</code> 按会话与共享前缀哈希路由至目标实例以最大化 KV 缓存命中，<code>Cobalt 200</code> 卸载主机侧协议解析与分词计算。</span>
+                <span data-lang="en"><strong>Prefix-affinity ingress:</strong> <code>AI Gateway</code> routes sessions by prefix hash to maximize KV cache locality while <code>Cobalt 200</code> offloads host serialization and tokenization.</span>
+              </li>
+              <li>
+                <span data-lang="zh-CN"><strong>前置校准概率过滤：</strong><code>Decision-1.1</code>（<code>$0</code> 输出计费）在网关侧完成高频分类与合规门控，仅将复杂生成请求放行至后端 GPU 池。</span>
+                <span data-lang="en"><strong>Pre-inference cascade filter:</strong> <code>Decision-1.1</code> (<code>$0</code> output cost) resolves routine triage and policy checks before consuming backend GPU compute.</span>
+              </li>
+              <li>
+                <span data-lang="zh-CN"><strong>多级存储前缀 KV 复用：</strong>HBM / DRAM / NVMe 分层缓存直接复用 System Prompt 与 MCP Schema 的 KV 张量，省去 70%–90% 重复 Prefill 计算。</span>
+                <span data-lang="en"><strong>Tiered Prefix KV reuse:</strong> HBM/DRAM/NVMe cache layers reuse static System + MCP Schema KV tensors, cutting 70%–90% redundant Prefill compute.</span>
+              </li>
+              <li>
+                <span data-lang="zh-CN"><strong>Prefill / Decode 算存分离：</strong>专用 Prefill 节点计算增量输入并经 RDMA 传输 KV 块至高访存带宽 <code>Maia 300</code> 解码池，隔离长输入对流式 <code>TPOT</code> 的抖动干扰。</span>
+                <span data-lang="en"><strong>Disaggregated Prefill/Decode:</strong> Compute-dense Prefill nodes stream incremental KV blocks over RDMA to high-bandwidth <code>Maia 300</code> Decode pools for jitter-free <code>TPOT</code>.</span>
+              </li>
+              <li>
+                <span data-lang="zh-CN"><strong>Serverless 托管伙伴池弹性调用：</strong>波动型或中低并发的 DeepSeek、Kimi 与生视频请求直接调用 Foundry 托管 <code>Fireworks / Baseten / fal</code> 接口。</span>
+                <span data-lang="en"><strong>Serverless partner burst endpoints:</strong> Variable or moderate-volume DeepSeek, Kimi, and video DiT traffic calls managed <code>Fireworks / Baseten / fal</code> endpoints in Foundry.</span>
+              </li>
+              <li>
+                <span data-lang="zh-CN"><strong>多节点无损 RDMA 自托管集群：</strong>高吞吐稳态负载部署于 <code>AKS GPU</code>，采用机内 <code>NVLink</code>（TP）+ 跨机无损 <code>IB/RoCEv2</code>（EP / 序列并行）分层通信。</span>
+                <span data-lang="en"><strong>Multi-node lossless RDMA cluster:</strong> High-utilization workloads run on <code>AKS GPU</code> pools using intra-node <code>NVLink</code> (TP) and inter-node lossless <code>IB/RoCEv2</code> (EP/SP).</span>
+              </li>
+              <li>
+                <span data-lang="zh-CN"><strong>上游慢依赖治理与自动化排障：</strong><code>Azure Catalyst</code> 重构慢速业务 API，<code>SRE Agent</code> 持续监控 GPU 硬件健康度、PFC 死锁指标与端到端 P99 SLA。</span>
+                <span data-lang="en"><strong>Upstream refactoring &amp; automated SRE:</strong> <code>Azure Catalyst</code> modernizes slow upstream APIs while <code>SRE Agent</code> monitors GPU health, RDMA telemetry, and P99 SLAs.</span>
+              </li>
+            </ol>
+          </div>
+
+          <div class="aside-block">
+            <h4 class="tone-amber">
+              <span data-lang="zh-CN">Design points · 架构师关键设计决策</span>
+              <span data-lang="en">Design points / Solution Architect Decisions</span>
+            </h4>
+            <ul class="aside-bullets">
+              <li>
+                <span data-lang="zh-CN"><strong>物理拆池消除 TTFT 与 TPOT 跨阶段资源争用：</strong>将算力密集型（Compute-Bound）Prefill 与显存带宽密集型（Memory-Bandwidth-Bound）Decode 拆分为独立弹性池，避免长文档 RAG 抢占解码流。</span>
+                <span data-lang="en"><strong>Isolate Compute-Bound Prefill from Memory-Bound Decode:</strong> Disaggregating Prefill and Decode pools prevents long-context RAG requests from stalling active token generation streams.</span>
+              </li>
+              <li>
+                <span data-lang="zh-CN"><strong>区分稀疏 MoE 与生视频 DiT 的显存瓶颈：</strong>MoE 单 Token 虽仅激活 <code>37B</code> 参数，但全量 <code>671B–1T</code> 专家权重须常驻聚合 HBM；14B–30B 视频 DiT 则受十万级 3D 时空 Token 激活值主导，须配置 <code>Ulysses/Ring</code> 序列并行。</span>
+                <span data-lang="en"><strong>Size HBM differently for sparse MoE vs video DiT:</strong> MoE requires aggregate HBM for all <code>671B–1T</code> total weights despite <code>37B</code> active parameters, whereas 14B–30B video DiTs are dominated by 100K+ 3D token activations requiring <code>Ulysses/Ring</code> SP.</span>
+              </li>
+              <li>
+                <span data-lang="zh-CN"><strong>严格对齐并行策略与物理网络层级：</strong>高频逐层同步的 <code>TP</code> 限制在单节点 <code>NVLink</code> 域内；跨节点 MoE <code>All-to-All</code> 与序列并行须运行在 <code>IB (SHARP)</code> 或启用 <code>PFC + ECN/DCQCN</code> 的轨道优化无损 <code>RoCEv2</code> 上。</span>
+                <span data-lang="en"><strong>Align parallelism dimensions to physical fabric tiers:</strong> Confine per-layer synchronous <code>TP</code> inside intra-node <code>NVLink</code>; run cross-node MoE <code>All-to-All</code> and video SP over <code>IB (SHARP)</code> or rail-optimized lossless <code>RoCEv2 (PFC + ECN/DCQCN)</code>.</span>
+              </li>
+              <li>
+                <span data-lang="zh-CN"><strong>按持续 GPU 利用率判定托管与自建临界点：</strong>周均 GPU 利用率低于 45%–55% 时优先使用 Foundry 托管端点按量计费；高于该阈值或有 VNet 机密计算要求时再采用 <code>AKS GPU + Mixed MIG</code>。</span>
+                <span data-lang="en"><strong>Select Serverless vs AKS GPU by utilization breakeven:</strong> Favor Foundry serverless partner APIs below 45%–55% sustained weekly GPU utilization; transition to <code>AKS GPU + Mixed MIG</code> for steady high load or confidential VNet residency.</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="why-ms-box">
+            <h4>
+              <span data-lang="zh-CN">Why Microsoft · 异构算力与无损网络优势</span>
+              <span data-lang="en">Why Microsoft · Custom Silicon &amp; RDMA Fabric Advantages</span>
+            </h4>
+            <ul>
+              <li>
+                <span data-lang="zh-CN"><strong>主机 CPU、推理芯片与门控模型协同降本：</strong><code>Cobalt 200</code>（+50% CPU）+ <code>Maia 300</code>（2.5× HBM 带宽、+40% Tok/W）+ <code>Decision-1.1</code>（$0 输出）联合降低单位有效推理成本。</span>
+                <span data-lang="en"><strong>Co-engineered host CPU, AI silicon &amp; cascade routing:</strong> <code>Cobalt 200</code> (+50% CPU), <code>Maia 300</code> (+40% Tok/W), and <code>Decision-1.1</code> ($0 output) jointly reduce cost per effective turn.</span>
+              </li>
+              <li>
+                <span data-lang="zh-CN"><strong>统一网关纳管第一方、开源 MoE 与多模态视频模型：</strong>在单一 Foundry 控制面、配额与企业账单体系下按需组合 GPT-6.2、DeepSeek V4、Kimi K3 及 Kling/LTX/MiniMax。</span>
+                <span data-lang="en"><strong>Unified gateway across 1P, open MoE &amp; video DiTs:</strong> Operate GPT-6.2, DeepSeek V4, Kimi K3, and Kling/LTX/MiniMax under a single Foundry quota, auth, and billing contract.</span>
+              </li>
+              <li>
+                <span data-lang="zh-CN"><strong>云原生超算级 RDMA 与机密多卡 GPU 底座：</strong>同时提供 InfiniBand SHARP、轨道优化无损 RoCEv2 以及 <code>VR72 / GB300</code> 硬件级机密多卡 GPU 节点池。</span>
+                <span data-lang="en"><strong>Cloud-scale lossless RDMA &amp; Confidential GPUs:</strong> Delivers InfiniBand SHARP, rail-optimized lossless RoCEv2, and <code>VR72 / GB300</code> hardware-attested confidential multi-GPU clusters.</span>
+              </li>
+              <li>
+                <span data-lang="zh-CN"><strong>覆盖存量应用解耦与集群自治运维全生命周期：</strong><code>Azure Catalyst</code> 与 <code>SRE Agent</code> 将优化范围延伸至模型之外的上游业务 API 时延与生产集群稳定性。</span>
+                <span data-lang="en"><strong>Full-stack dependency refactoring &amp; SRE automation:</strong> <code>Azure Catalyst</code> and <code>SRE Agent</code> address upstream API tail latency and 24×7 GPU cluster reliability alongside model serving.</span>
+              </li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         SECTION 1: SCENARIO 1 — TOKEN API INVOCATION LATENCY OPTIMIZATION
+         ====================================================================== -->
+    <section id="scenario-token-api" class="stage-section">
+      <div class="section-header">
+        <div>
+          <p class="eyebrow">SCENARIO 01 · TOKEN INVOCATION LATENCY</p>
+          <h2 class="section-title">
+            <span data-lang="zh-CN">Token 调用延迟优化</span>
+            <span data-lang="en">Token Invocation Latency Optimization</span>
+          </h2>
+          <p class="section-sub">
+            <span data-lang="zh-CN">深入拆解大模型两阶段推理物理瓶颈：受算力限制（Compute-Bound）的 <strong>Prefill 首字延迟（<code>TTFT</code>）</strong> 与受显存带宽限制（HBM Bandwidth-Bound）的 <strong>Decode 逐字延迟（<code>TPOT</code> / <code>ITL</code>）</strong>，通过四层全栈协同消除长上下文智能体卡顿。</span>
+            <span data-lang="en">Deconstructing two-phase LLM inference physics: <strong>Compute-bound Prefill (<code>TTFT</code>)</strong> versus <strong>HBM memory-bandwidth-bound Decode (<code>TPOT</code> / <code>ITL</code>)</strong>, and eliminating multi-turn agent stalls via a 4-layer optimization stack.</span>
+          </p>
+        </div>
+        <span class="badge badge-ga">TTFT &amp; TPOT Stack</span>
+      </div>
+
+      <!-- Inline SVG: Physics of Two-Phase LLM Inference & PD Disaggregation -->
+      <div class="svg-frame" role="img" aria-label="Two-Phase LLM Inference Physics and Prefill-Decode Disaggregation Diagram">
+        <svg viewBox="0 0 1160 410" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="prefillGrad" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#0ea5e9" stop-opacity="0.28" />
+              <stop offset="100%" stop-color="#38bdf8" stop-opacity="0.12" />
+            </linearGradient>
+            <linearGradient id="decodeGrad" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#14b8a6" stop-opacity="0.28" />
+              <stop offset="100%" stop-color="#2dd4bf" stop-opacity="0.12" />
+            </linearGradient>
+            <linearGradient id="warnGrad" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#fb7185" stop-opacity="0.24" />
+              <stop offset="100%" stop-color="#f59e0b" stop-opacity="0.14" />
+            </linearGradient>
+            <marker id="arrSky" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M 0 1 L 10 5 L 0 9 z" fill="#38bdf8" />
+            </marker>
+            <marker id="arrTeal" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M 0 1 L 10 5 L 0 9 z" fill="#2dd4bf" />
+            </marker>
+          </defs>
+
+          <!-- Top Lane: Unoptimized Colocated Batching -->
+          <rect x="16" y="14" width="1128" height="122" rx="14" fill="url(#warnGrad)" stroke="#fb7185" stroke-opacity="0.55" />
+          <g data-lang="zh-CN">
+            <text x="34" y="40" fill="#fda4af" font-size="13" font-weight="800" font-family="Segoe UI, PingFang SC, sans-serif">❌ 传统混部批处理痛点（Prefill 与 Decode 同卡混跑争用）</text>
+            <text x="34" y="64" fill="#e2e8f0" font-size="12.5" font-family="Segoe UI, PingFang SC, sans-serif">30K–100K Agent 输入（系统指令 + MCP 工具 Schema + RAG 上下文）触发 O(N²) 注意力算力尖峰 → 抢占全部 Tensor Core，</text>
+            <text x="34" y="84" fill="#cbd5e1" font-size="12.5" font-family="Segoe UI, PingFang SC, sans-serif">不仅自身排队导致 TTFT 飙升至数秒，更直接阻塞同批次正在流式输出的其它会话（Prefill-Decode Interference），导致 TPOT P99 长尾剧烈抖动！</text>
+          </g>
+          <g data-lang="en">
+            <text x="34" y="40" fill="#fda4af" font-size="13" font-weight="800" font-family="Segoe UI, sans-serif">❌ Legacy Co-Located Batching Bottleneck (Prefill-Decode Interference)</text>
+            <text x="34" y="64" fill="#e2e8f0" font-size="12.5" font-family="Segoe UI, sans-serif">30K–100K Agent prompt (System + MCP Schemas + RAG) triggers O(N²) FLOPS spikes → monopolizes Tensor Cores,</text>
+            <text x="34" y="84" fill="#cbd5e1" font-size="12.5" font-family="Segoe UI, sans-serif">spiking queuing TTFT AND stalling active streaming users on the same GPU batch (P99 TPOT jitter jumps 5–8×)!</text>
+          </g>
+          <rect x="34" y="96" width="350" height="26" rx="6" fill="#3f1d2e" stroke="#fb7185" />
+          <text x="48" y="114" fill="#fecdd3" font-size="11.5" font-weight="700" font-family="Cascadia Code, Consolas, monospace">Heavy 64K Prefill (Compute-Bound O(N²))</text>
+          <rect x="396" y="96" width="210" height="26" rx="6" fill="#451a03" stroke="#fbbf24" />
+          <text x="410" y="114" fill="#fde68a" font-size="11.5" font-weight="700" font-family="Cascadia Code, Consolas, monospace">⏸ Decode Stalled (+135ms)</text>
+          <rect x="618" y="96" width="270" height="26" rx="6" fill="#3f1d2e" stroke="#fb7185" />
+          <text x="632" y="114" fill="#fecdd3" font-size="11.5" font-weight="700" font-family="Cascadia Code, Consolas, monospace">Next Agent Turn Re-Prefills 80%!</text>
+          <rect x="900" y="96" width="226" height="26" rx="6" fill="#1e293b" stroke="#64748b" />
+          <text x="914" y="114" fill="#cbd5e1" font-size="11.5" font-family="Cascadia Code, Consolas, monospace">CPU JSON/MCP Wait Stall</text>
+
+          <!-- Bottom Lane: 4-Layer Optimized Architecture -->
+          <rect x="16" y="154" width="1128" height="242" rx="16" fill="#0b172a" stroke="#243b63" stroke-width="1.5" />
+          <g data-lang="zh-CN">
+            <text x="34" y="182" fill="#38bdf8" font-size="13.5" font-weight="800" font-family="Segoe UI, PingFang SC, sans-serif">✅ Ignite 2026 四层协同优化流水线：前缀 KV 命中 + PD 算存分离 + 级联路由 + Maia 300 / Cobalt 200 协同</text>
+          </g>
+          <g data-lang="en">
+            <text x="34" y="182" fill="#38bdf8" font-size="13.5" font-weight="800" font-family="Segoe UI, sans-serif">✅ Ignite 2026 4-Layer Optimized Pipeline: Prefix KV Hit + PD Disaggregation + Cascade Routing + Maia 300 / Cobalt 200</text>
+          </g>
+
+          <!-- Stage Box 1: Cobalt 200 + Decision-1.1 + Prefix Prompt -->
+          <rect x="32" y="200" width="248" height="176" rx="12" fill="#11223d" stroke="#38bdf8" />
+          <text x="46" y="223" fill="#38bdf8" font-size="12" font-weight="800" font-family="Cascadia Code, Consolas, monospace">1. HOST &amp; CASCADE GATE</text>
+          <g data-lang="zh-CN">
+            <text x="46" y="245" fill="#eef4ff" font-size="12.5" font-weight="700">Cobalt 200 (GA) + Decision-1.1</text>
+            <text x="46" y="266" fill="#b6c6e3" font-size="11.5">• Arm64 +50% 性能卸载 MCP JSON</text>
+            <text x="46" y="285" fill="#b6c6e3" font-size="11.5">• Decision-1.1 ($0 输出) 秒级意图分流</text>
+            <text x="46" y="304" fill="#b6c6e3" font-size="11.5">• 固定前缀排布 (System→MCP→Ontology)</text>
+          </g>
+          <g data-lang="en">
+            <text x="46" y="245" fill="#eef4ff" font-size="12.5" font-weight="700">Cobalt 200 (GA) + Decision-1.1</text>
+            <text x="46" y="266" fill="#b6c6e3" font-size="11.5">• Arm64 +50% perf offloads MCP I/O</text>
+            <text x="46" y="285" fill="#b6c6e3" font-size="11.5">• Decision-1.1 ($0 output) triage gate</text>
+            <text x="46" y="304" fill="#b6c6e3" font-size="11.5">• Frozen prefix (System→MCP→Ontology)</text>
+          </g>
+          <rect x="46" y="320" width="220" height="42" rx="8" fill="#091526" stroke="#2dd4bf" />
+          <text x="56" y="338" fill="#2dd4bf" font-size="11" font-weight="700" font-family="Cascadia Code, Consolas, monospace">Tiered Prefix KV Cache Pool</text>
+          <text x="56" y="354" fill="#94a3b8" font-size="10.5" font-family="Cascadia Code, Consolas, monospace">GPU HBM ↔ Host DRAM ↔ NVMe (80%+ Hit)</text>
+
+          <line x1="280" y1="288" x2="316" y2="288" stroke="#38bdf8" stroke-width="2.2" marker-end="url(#arrSky)" />
+
+          <!-- Stage Box 2: Dedicated Prefill Pool -->
+          <rect x="320" y="200" width="356" height="176" rx="12" fill="url(#prefillGrad)" stroke="#38bdf8" />
+          <text x="336" y="223" fill="#7dd3fc" font-size="12" font-weight="800" font-family="Cascadia Code, Consolas, monospace">2. PREFILL POOL · DRIVES TTFT (COMPUTE-BOUND)</text>
+          <g data-lang="zh-CN">
+            <text x="336" y="246" fill="#eef4ff" font-size="12.5" font-weight="700">算力密集型预填充池（仅计算新增 Delta Token）</text>
+            <text x="336" y="268" fill="#dbeafe" font-size="11.5">• 命中不可变前缀 KV 后，跳过 70%–90% 重复矩阵乘计算</text>
+            <text x="336" y="287" fill="#dbeafe" font-size="11.5">• FlashAttention-3 / Chunked Prefill 跑满 Tensor Core FLOPS</text>
+            <text x="336" y="306" fill="#dbeafe" font-size="11.5">• 生成的新增 KV 块经单边 RDMA Write 直传解码池</text>
+          </g>
+          <g data-lang="en">
+            <text x="336" y="246" fill="#eef4ff" font-size="12.5" font-weight="700">Compute-Optimized Prefill Pool (Delta Tokens Only)</text>
+            <text x="336" y="268" fill="#dbeafe" font-size="11.5">• Prefix KV hit skips 70%–90% redundant prefill FLOPS</text>
+            <text x="336" y="287" fill="#dbeafe" font-size="11.5">• Saturates Tensor Core TFLOPS without decode interference</text>
+            <text x="336" y="306" fill="#dbeafe" font-size="11.5">• Streams KV blocks via zero-copy RDMA Write to Decode</text>
+          </g>
+          <rect x="336" y="322" width="324" height="40" rx="8" fill="#091526" stroke="#38bdf8" />
+          <text x="348" y="340" fill="#38bdf8" font-size="11" font-weight="700" font-family="Cascadia Code, Consolas, monospace">TTFT ≈ Queue_P + FLOPS(Delta_Prompt) / TFLOPS_eff</text>
+          <text x="348" y="355" fill="#94a3b8" font-size="10.5" font-family="Cascadia Code, Consolas, monospace">75%–85% faster TTFT on multi-turn agent loops</text>
+
+          <!-- RDMA KV Transfer Arrow -->
+          <line x1="676" y1="288" x2="736" y2="288" stroke="#2dd4bf" stroke-width="2.5" stroke-dasharray="5 3" marker-end="url(#arrTeal)" />
+          <text x="682" y="275" fill="#2dd4bf" font-size="10.5" font-weight="700" font-family="Cascadia Code, Consolas, monospace">RDMA KV</text>
+
+          <!-- Stage Box 3: Dedicated Decode Pool -->
+          <rect x="740" y="200" width="386" height="176" rx="12" fill="url(#decodeGrad)" stroke="#2dd4bf" />
+          <text x="756" y="223" fill="#5eead4" font-size="12" font-weight="800" font-family="Cascadia Code, Consolas, monospace">3. DECODE POOL · DRIVES TPOT (HBM BW-BOUND)</text>
+          <g data-lang="zh-CN">
+            <text x="756" y="246" fill="#eef4ff" font-size="12.5" font-weight="700">带宽密集型解码池（Maia 300 2.5× HBM + 投机解码）</text>
+            <text x="756" y="268" fill="#ccfbf1" font-size="11.5">• 每生成一个 Token 均需遍历读取激活权重 + 历史 KV Cache</text>
+            <text x="756" y="287" fill="#ccfbf1" font-size="11.5">• PagedAttention 连续批处理 + Draft-Target 投机解码摊薄访存</text>
+            <text x="756" y="306" fill="#ccfbf1" font-size="11.5">• Maia 300 SDLA 数据流架构：2.5× HBM 带宽，+40% Tok/W</text>
+          </g>
+          <g data-lang="en">
+            <text x="756" y="246" fill="#eef4ff" font-size="12.5" font-weight="700">Bandwidth-Optimized Decode Pool (Maia 300 + SpecDecode)</text>
+            <text x="756" y="268" fill="#ccfbf1" font-size="11.5">• Every token reads active weights + KV Cache from HBM</text>
+            <text x="756" y="287" fill="#ccfbf1" font-size="11.5">• PagedAttention + Speculative Decoding amortizes HBM reads</text>
+            <text x="756" y="306" fill="#ccfbf1" font-size="11.5">• Maia 300 SDLA dataflow: 2.5× HBM BW &amp; +40% fleet Tok/W</text>
+          </g>
+          <rect x="756" y="322" width="354" height="40" rx="8" fill="#091526" stroke="#2dd4bf" />
+          <text x="768" y="340" fill="#2dd4bf" font-size="11" font-weight="700" font-family="Cascadia Code, Consolas, monospace">TPOT ≈ (Active_Weights + KV_Bytes) / HBM_Bandwidth</text>
+          <text x="768" y="355" fill="#94a3b8" font-size="10.5" font-family="Cascadia Code, Consolas, monospace">Zero prefill stall → Smooth 12–22 ms/tok P99 streaming</text>
+        </svg>
+      </div>
+
+      <!-- 4-Layer Optimization Stack (Partner SA 4-Dimension Breakdown with Tabs) -->
+      <div style="margin-top:22px;">
+        <div class="tab-bar" role="tablist" data-tabs="token-opt-tabs" aria-label="4-Layer Token Latency Optimization Stack">
+          <button type="button" class="tab-btn active" role="tab" aria-selected="true" data-tab-target="opt-pd">
+            <span data-lang="zh-CN">① PD 预填充-解码分离</span>
+            <span data-lang="en">① PD Disaggregation</span>
+          </button>
+          <button type="button" class="tab-btn" role="tab" aria-selected="false" data-tab-target="opt-kv">
+            <span data-lang="zh-CN">② 前缀缓存与会话 KV 亲和</span>
+            <span data-lang="en">② Prefix &amp; Session KV Locality</span>
+          </button>
+          <button type="button" class="tab-btn" role="tab" aria-selected="false" data-tab-target="opt-cascade">
+            <span data-lang="zh-CN">③ 级联路由与投机解码</span>
+            <span data-lang="en">③ Cascade Routing &amp; SpecDecode</span>
+          </button>
+          <button type="button" class="tab-btn" role="tab" aria-selected="false" data-tab-target="opt-silicon">
+            <span data-lang="zh-CN">④ Maia 300 与 Cobalt 200 协同</span>
+            <span data-lang="en">④ Maia 300 &amp; Cobalt 200 Co-Design</span>
+          </button>
+        </div>
+
+        <div id="token-opt-tabs" data-tabs-scope>
+          <!-- Layer 1: PD Disaggregation -->
+          <div id="opt-pd" class="tab-panel spotlight-card" data-tab-panel>
+            <div class="spotlight-head">
+              <h3 class="spotlight-title">
+                <span data-lang="zh-CN">第一层：Prefill-Decode (PD) 算存分离架构</span>
+                <span data-lang="en">Layer 1: Prefill-Decode (PD) Disaggregation</span>
+              </h3>
+              <span class="badge badge-ga">Zero P/D Interference</span>
+            </div>
+            <div class="dim-grid">
+              <div class="dim-box">
+                <div class="dim-label">⚙️ <span data-lang="zh-CN">架构机制</span><span data-lang="en">Architecture Mechanics</span></div>
+                <ul>
+                  <li><span data-lang="zh-CN">将计算密集型 <strong>Prefill 实例池</strong> 与显存带宽敏感型 <strong>Decode 实例池</strong> 物理拆解，独立设置并行策略（例如 Prefill 高并发算力切分、Decode 大 Batch + 高 HBM 带宽）。</span><span data-lang="en">Physically decouples compute-intensive <strong>Prefill pools</strong> from memory-bandwidth-sensitive <strong>Decode pools</strong> with independent parallelism &amp; batching policies.</span></li>
+                  <li><span data-lang="zh-CN">Prefill 完成后通过高速 RDMA 单边传输将分页 KV 块流式推送至 Decode 节点，彻底根除长上下文请求插入导致的解码流停顿（Prefill-Decode Interference）。</span><span data-lang="en">Streams prefilled paged KV blocks over high-speed RDMA to Decode nodes so incoming 64K RAG turns never pause ongoing streaming tokens.</span></li>
+                </ul>
+              </div>
+              <div class="dim-box scenario">
+                <div class="dim-label">🏢 <span data-lang="zh-CN">业务场景</span><span data-lang="en">Business Scenarios</span></div>
+                <ul>
+                  <li><span data-lang="zh-CN"><strong>长上下文合同审查与研发 Coding Agent</strong>：输入高达 48K–128K Token，输出仅数百 Token（高 P/D 比，例如 <code>4P:1D</code> 弹性扩缩）。</span><span data-lang="en"><strong>Long-Context Legal &amp; Coding Agents</strong>: 48K–128K input prompts paired with concise tool calls (high Prefill-to-Decode ratio, e.g., <code>4P:1D</code> pool scaling).</span></li>
+                  <li><span data-lang="zh-CN"><strong>实时语音客服（GPT Live 1 / Realtime Flash 1）</strong>：严苛要求 <code>TPOT P99 &lt; 25ms</code>，绝不允许后台知识库检索大 Prompt 拖慢实时语音流。</span><span data-lang="en"><strong>Real-Time Voice Agents</strong>: Strict <code>P99 TPOT &lt; 25ms</code> SLA where heavy background RAG prompts cannot jitter live audio synthesis.</span></li>
+                </ul>
+              </div>
+              <div class="dim-box compete">
+                <div class="dim-label">🏆 <span data-lang="zh-CN">竞争优势</span><span data-lang="en">Competitive Advantage</span></div>
+                <ul>
+                  <li><span data-lang="zh-CN">相比传统单体混部推理引擎，在相同 <code>TTFT</code> 与 <code>TPOT</code> 双重 SLA 约束下，GPU 集群有效好吞吐（Goodput）可提升 <strong>1.8× – 2.6×</strong>。</span><span data-lang="en">Delivers <strong>1.8× – 2.6× higher GPU Goodput</strong> under strict dual <code>TTFT</code> + <code>TPOT</code> SLAs compared to monolithic colocated serving.</span></li>
+                </ul>
+              </div>
+              <div class="dim-box guidance">
+                <div class="dim-label">🧭 <span data-lang="zh-CN">SA 落地要点</span><span data-lang="en">SA Implementation Guardrails</span></div>
+                <ul>
+                  <li><span data-lang="zh-CN">在 Foundry 托管侧优先为高并发稳态生产流配置 <strong>Provisioned Throughput (<code>PTU</code>)</strong> 锁定确定性延迟；自建 AKS 侧结合 <code>vLLM / SGLang + Mooncake/NIXL</code> 启用跨节点 RDMA KV 传输。</span><span data-lang="en">Use Foundry <strong>Provisioned Throughput (<code>PTU</code>)</strong> for deterministic enterprise SLAs; on self-hosted AKS, pair <code>vLLM / SGLang</code> with RDMA KV transport over RoCEv2/IB.</span></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Layer 2: Prefix Caching & Session KV Locality -->
+          <div id="opt-kv" class="tab-panel spotlight-card" data-tab-panel hidden>
+            <div class="spotlight-head">
+              <h3 class="spotlight-title">
+                <span data-lang="zh-CN">第二层：不可变前缀缓存（Prefix Caching）与多级 KV Cache 亲和</span>
+                <span data-lang="en">Layer 2: Prefix Caching &amp; Tiered Session KV Cache Locality</span>
+              </h3>
+              <span class="badge badge-ga">70%–90% Prefill Cut</span>
+            </div>
+            <div class="dim-grid">
+              <div class="dim-box">
+                <div class="dim-label">⚙️ <span data-lang="zh-CN">架构机制</span><span data-lang="en">Architecture Mechanics</span></div>
+                <ul>
+                  <li><span data-lang="zh-CN">基于 RadixAttention / Hash Block 匹配前缀 Token 块；结合会话亲和一致性哈希路由与 <strong>三级 KV 存储池（GPU HBM → Host DRAM → 本地 NVMe）</strong>，跨轮次直接复用已计算的 KV 张量。</span><span data-lang="en">Matches prefix token blocks via RadixAttention/block hashing alongside session-affinity routing and <strong>3-tier KV pools (GPU HBM → Host DRAM → NVMe)</strong>.</span></li>
+                  <li><span data-lang="zh-CN">必须遵循严格的 <strong>不可变前缀优先排布铁律</strong>：<code>系统指令 → 字典序固定的 MCP 工具 Schema → 静态业务本体规则 → 动态用户消息与本轮检索片段</code>。</span><span data-lang="en">Requires strict <strong>immutable-first prompt ordering</strong>: <code>System Prompt → Sorted Frozen MCP Tool Schemas → Static Domain Ontology → Dynamic Turn Context</code>.</span></li>
+                </ul>
+              </div>
+              <div class="dim-box scenario">
+                <div class="dim-label">🏢 <span data-lang="zh-CN">业务场景</span><span data-lang="en">Business Scenarios</span></div>
+                <ul>
+                  <li><span data-lang="zh-CN"><strong>多步 ReAct / 工具编排智能体</strong>：单次任务连续执行 6–12 轮工具调用，前 90% 的上下文完全不变或仅在尾部追加，KV 命中率稳定超 80%。</span><span data-lang="en"><strong>Multi-Step ReAct &amp; Tool Agents</strong>: 6–12 consecutive tool turns where 80%+ of prior context and tool schemas remain identical.</span></li>
+                </ul>
+              </div>
+              <div class="dim-box compete">
+                <div class="dim-label">🏆 <span data-lang="zh-CN">竞争优势</span><span data-lang="en">Competitive Advantage</span></div>
+                <ul>
+                  <li><span data-lang="zh-CN">首字延迟 <code>TTFT</code> 直降 <strong>65%–85%</strong>，同时大幅削减缓存命中的输入 Token 计费成本（Cached Input Token Discount）。</span><span data-lang="en">Slashes <code>TTFT</code> by <strong>65%–85%</strong> while unlocking deep Cached Input Token billing discounts on Foundry APIs.</span></li>
+                </ul>
+              </div>
+              <div class="dim-box guidance">
+                <div class="dim-label">🧭 <span data-lang="zh-CN">SA 落地要点</span><span data-lang="en">SA Implementation Guardrails</span></div>
+                <ul>
+                  <li><span data-lang="zh-CN"><strong>最高频反模式警告</strong>：严禁在 System Prompt 第 1 行拼入精确到秒的 <code>current_time</code>、随机 <code>trace_id</code> 或每轮乱序序列化 JSON 工具列表——这会导致后续几万 Token 的前缀缓存 <strong>100% 失效</strong>！动态元信息一律后置到尾部消息。</span><span data-lang="en"><strong>Top Anti-Pattern Alert</strong>: Never inject per-second timestamps, random UUIDs, or unsorted JSON tool keys at the top of the System Prompt—doing so invalidates <strong>100%</strong> of downstream KV cache! Append dynamic metadata at the tail.</span></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Layer 3: Cascaded Routing & Speculative Decoding -->
+          <div id="opt-cascade" class="tab-panel spotlight-card" data-tab-panel hidden>
+            <div class="spotlight-head">
+              <h3 class="spotlight-title">
+                <span data-lang="zh-CN">第三层：级联路由（Decision-1.1 / Model Router）与投机解码</span>
+                <span data-lang="en">Layer 3: Cascaded Routing, PagedAttention &amp; Speculative Decoding</span>
+              </h3>
+              <span class="badge badge-ga">Zero-Waste Compute</span>
+            </div>
+            <div class="dim-grid">
+              <div class="dim-box">
+                <div class="dim-label">⚙️ <span data-lang="zh-CN">架构机制</span><span data-lang="en">Architecture Mechanics</span></div>
+                <ul>
+                  <li><span data-lang="zh-CN">入口使用 <strong><code>Microsoft-Decision-1.1</code>（<code>GA</code>，输入仅 <code>$0.042/1M</code>，输出 Token <code>$0</code>）</strong> 与 <strong><code>Model Router</code></strong> 完成意图分类、安全门控与复杂度分流，避免用重型推理模型处理简单路由轮次。</span><span data-lang="en">Offloads classification, guardrails, and discrete routing to <strong><code>Microsoft-Decision-1.1</code> (<code>GA</code>, <code>$0.042/1M</code> input, <code>$0</code> output tokens)</strong> + <strong><code>Model Router</code></strong>.</span></li>
+                  <li><span data-lang="zh-CN">解码阶段采用 PagedAttention 连续批处理消除显存碎片，并结合 <strong>投机解码（Speculative Decoding / MTP 多 Token 预测）</strong>：一次 HBM 权重读取并行验证 3–5 个候选 Token，突破访存带宽上限。</span><span data-lang="en">Pairs PagedAttention continuous batching with <strong>Draft-Target / MTP Speculative Decoding</strong> to verify 3–5 tokens per single HBM weight read pass.</span></li>
+                </ul>
+              </div>
+              <div class="dim-box scenario">
+                <div class="dim-label">🏢 <span data-lang="zh-CN">业务场景</span><span data-lang="en">Business Scenarios</span></div>
+                <ul>
+                  <li><span data-lang="zh-CN"><strong>全企业工单分诊与结构化 JSON 提取</strong>：70% 的高频判断轮次由 <code>Decision-1.1</code> 毫秒级收敛，仅 30% 复杂长链推理升级至 <code>GPT-6.2 Sol</code> 或 <code>MAI-Code-2</code>。</span><span data-lang="en"><strong>Enterprise Ticket Triage &amp; JSON Extraction</strong>: 70% high-frequency decisions handled by <code>Decision-1.1</code>; only 30% complex synthesis escalates to frontier models.</span></li>
+                </ul>
+              </div>
+              <div class="dim-box compete">
+                <div class="dim-label">🏆 <span data-lang="zh-CN">竞争优势</span><span data-lang="en">Competitive Advantage</span></div>
+                <ul>
+                  <li><span data-lang="zh-CN">在不损失端到端业务准确率的前提下，整体 Token 成本下降 <strong>55%–75%</strong>，结构化代码/JSON 生成的流式 <code>TPOT</code> 提速 <strong>1.8×–2.4×</strong>。</span><span data-lang="en">Cuts blended token spend by <strong>55%–75%</strong> while accelerating structured JSON/code <code>TPOT</code> by <strong>1.8×–2.4×</strong> via high speculative acceptance rates.</span></li>
+                </ul>
+              </div>
+              <div class="dim-box guidance">
+                <div class="dim-label">🧭 <span data-lang="zh-CN">SA 落地要点</span><span data-lang="en">SA Implementation Guardrails</span></div>
+                <ul>
+                  <li><span data-lang="zh-CN">代码补全、SQL/KQL 生成与 Schema 固定的工具参数生成具有极高的草稿命中率，优先开启 Speculative Decoding / MTP。</span><span data-lang="en">Enable Speculative Decoding / MTP especially on code, SQL/KQL, and schema-constrained MCP tool calls where draft token acceptance exceeds 80%.</span></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Layer 4: Microsoft Silicon & Host Co-Design -->
+          <div id="opt-silicon" class="tab-panel spotlight-card" data-tab-panel hidden>
+            <div class="spotlight-head">
+              <h3 class="spotlight-title">
+                <span data-lang="zh-CN">第四层：微软自研芯片与主机协同（<code>Azure Maia 300</code> + <code>Cobalt 200</code> <code>GA</code>）</span>
+                <span data-lang="en">Layer 4: Microsoft Silicon &amp; Host Co-Design (<code>Maia 300</code> + <code>Cobalt 200</code> <code>GA</code>)</span>
+              </h3>
+              <span class="badge badge-ga">Cobalt 200 GA · Maia 300</span>
+            </div>
+            <div class="dim-grid">
+              <div class="dim-box">
+                <div class="dim-label">⚙️ <span data-lang="zh-CN">架构机制</span><span data-lang="en">Architecture Mechanics</span></div>
+                <ul>
+                  <li><span data-lang="zh-CN"><strong><code>Azure Maia 300</code></strong>：采用软件定义线性代数（<code>SDLA</code>）数据流架构，提供 <strong>2.5× HBM 显存带宽</strong> 直击 Decode <code>TPOT</code> 内存墙；单机柜闭环液冷高密集成 <strong>96 颗加速器（167 kW）</strong>，整集群每瓦特吞吐提升 <strong>+40% Tokens/Watt</strong>。</span><span data-lang="en"><strong><code>Azure Maia 300</code></strong>: Software-Defined Linear Algebra (<code>SDLA</code>) dataflow architecture with <strong>2.5× HBM bandwidth</strong> directly attacking the Decode <code>TPOT</code> wall, <strong>96 accelerators per 167 kW liquid-cooled rack</strong>, and <strong>+40% fleet tokens/watt</strong>.</span></li>
+                  <li><span data-lang="zh-CN"><strong><code>Azure Cobalt 200</code>（<code>GA</code>）</strong>：Arm64 云原生处理器性能提升高达 <strong>+50%</strong>，专门承载智能体沙箱、MCP JSON 解析与向量前后处理，彻底消除“昂贵 GPU 空等慢速主机 CPU I/O”的木桶短板。</span><span data-lang="en"><strong><code>Azure Cobalt 200</code> (<code>GA</code>)</strong>: Up to <strong>+50% Arm64 CPU performance</strong>—offloading agent sandboxes, JSON/MCP parsing, and vector pre/post-processing so expensive GPUs never stall waiting on CPU I/O.</span></li>
+                </ul>
+              </div>
+              <div class="dim-box scenario">
+                <div class="dim-label">🏢 <span data-lang="zh-CN">业务场景</span><span data-lang="en">Business Scenarios</span></div>
+                <ul>
+                  <li><span data-lang="zh-CN"><strong>大规模混合负载 Agentic 平台</strong>：在 AKS 中使用 <code>Cobalt 200</code> 节点池运行数千个轻量 Agent 编排器与 MCP 网关，仅将纯张量前向计算交由后端 Maia / GPU 池执行。</span><span data-lang="en"><strong>High-Scale Hybrid Agentic Platforms</strong>: Run thousands of stateful agent orchestrators, sandboxes, and MCP gateways on <code>Cobalt 200</code> AKS node pools while keeping GPU/Maia pools 100% focused on tensor math.</span></li>
+                </ul>
+              </div>
+              <div class="dim-box compete">
+                <div class="dim-label">🏆 <span data-lang="zh-CN">竞争优势</span><span data-lang="en">Competitive Advantage</span></div>
+                <ul>
+                  <li><span data-lang="zh-CN">全栈垂直整合（芯片 + 167kW 液冷机柜 + 12,288 卡两层 AI 以太网超节点 + Foundry 调度器）持续压低 Azure 第一方与托管模型的长期单百万 Token 成本。</span><span data-lang="en">End-to-end vertical co-design (silicon + 167 kW liquid rack + 12,288-accelerator 2-tier Ethernet superpod + Foundry runtime) drives structural TCO leadership per million tokens.</span></li>
+                </ul>
+              </div>
+              <div class="dim-box guidance">
+                <div class="dim-label">🧭 <span data-lang="zh-CN">SA 落地要点</span><span data-lang="en">SA Implementation Guardrails</span></div>
+                <ul>
+                  <li><span data-lang="zh-CN">审计客户现有 Agent 应用容器镜像，推动无状态网关、MCP Server 与 Python/Rust 工具沙箱编译多架构镜像（<code>linux/arm64</code>）迁移至 <code>Cobalt 200</code> VM，立竿见影降低宿主机成本。</span><span data-lang="en">Build multi-arch (<code>linux/arm64</code>) images for MCP servers, API gateways, and agent sandboxes to immediately capture <code>Cobalt 200</code> price-performance gains.</span></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- INTERACTIVE SIMULATOR A: Token API TTFT & TPOT Optimizer -->
+      <div class="workbench" id="sim-token-workbench" aria-labelledby="sim-token-heading">
+        <div class="section-header" style="margin-bottom:14px;">
+          <div>
+            <span class="badge badge-preview">Interactive Simulator A</span>
+            <h3 id="sim-token-heading" style="margin:6px 0 4px;font-size:19px;">
+              <span data-lang="zh-CN">Token API 调用 <code>TTFT</code> 与 <code>TPOT</code> 实时优化测算台</span>
+              <span data-lang="en">Token API <code>TTFT</code> &amp; <code>TPOT</code> Live Optimization Workbench</span>
+            </h3>
+            <p style="margin:0;font-size:13.5px;color:var(--text-muted);">
+              <span data-lang="zh-CN">调节上下文长度、生成 Token 数、并发会话与三大基础设施优化开关，直观验证端到端响应时间及 PayGo vs PTU 选型拐点。</span>
+              <span data-lang="en">Adjust prompt/tool context size, output tokens, concurrent agent sessions, and optimization switches to model TTFT, TPOT, P99 stall reduction, and PayGo vs PTU sizing.</span>
+            </p>
+          </div>
+        </div>
+
+        <div class="control-row">
+          <div class="field-group">
+            <label for="tok-prompt">
+              <span>
+                <span data-lang="zh-CN">输入上下文 + 工具 Schema</span>
+                <span data-lang="en">Prompt + Tool Schema Tokens</span>
+              </span>
+              <strong class="mono" id="tok-prompt-val">48K</strong>
+            </label>
+            <input type="range" id="tok-prompt" min="4" max="128" step="4" value="48" />
+          </div>
+
+          <div class="field-group">
+            <label for="tok-output">
+              <span>
+                <span data-lang="zh-CN">单轮生成输出 Token</span>
+                <span data-lang="en">Output Generation Tokens</span>
+              </span>
+              <strong class="mono" id="tok-output-val">512</strong>
+            </label>
+            <input type="range" id="tok-output" min="128" max="2048" step="64" value="512" />
+          </div>
+
+          <div class="field-group">
+            <label for="tok-conc">
+              <span>
+                <span data-lang="zh-CN">并发活跃智能体会话数</span>
+                <span data-lang="en">Concurrent Agent Sessions</span>
+              </span>
+              <strong class="mono" id="tok-conc-val">32</strong>
+            </label>
+            <input type="range" id="tok-conc" min="1" max="128" step="1" value="32" />
+          </div>
+        </div>
+
+        <div class="toggle-grid">
+          <label class="toggle-chip">
+            <input type="checkbox" id="opt-chk-kv" checked />
+            <span>
+              <span class="toggle-chip-title">
+                <span data-lang="zh-CN">不可变前缀 KV Cache（80% 命中）</span>
+                <span data-lang="en">Immutable Prefix KV Cache (80% Hit)</span>
+              </span>
+              <span class="toggle-chip-sub">
+                <span data-lang="zh-CN">复用 System + 固定 MCP Schema + 本体前缀</span>
+                <span data-lang="en">Reuses frozen System + MCP Schema + Ontology KV</span>
+              </span>
+            </span>
+          </label>
+
+          <label class="toggle-chip">
+            <input type="checkbox" id="opt-chk-pd" checked />
+            <span>
+              <span class="toggle-chip-title">
+                <span data-lang="zh-CN">PD 算存分离（Prefill / Decode 解耦）</span>
+                <span data-lang="en">PD Disaggregation (Prefill / Decode Split)</span>
+              </span>
+              <span class="toggle-chip-sub">
+                <span data-lang="zh-CN">RDMA 异步传输 KV，消除长 Prompt 阻塞流式输出</span>
+                <span data-lang="en">RDMA KV handoff eliminates prefill-decode stalls</span>
+              </span>
+            </span>
+          </label>
+
+          <label class="toggle-chip">
+            <input type="checkbox" id="opt-chk-ptu" />
+            <span>
+              <span class="toggle-chip-title">
+                <span data-lang="zh-CN">Maia 300 SDLA / PTU 预置吞吐保障</span>
+                <span data-lang="en">Maia 300 / PTU Provisioned Throughput</span>
+              </span>
+              <span class="toggle-chip-sub">
+                <span data-lang="zh-CN">2.5× HBM 带宽加速 Decode + 零多租户排队限流</span>
+                <span data-lang="en">2.5× HBM bandwidth + zero PayGo burst queuing</span>
+              </span>
+            </span>
+          </label>
+        </div>
+
+        <div class="metric-strip">
+          <div class="metric-card">
+            <span class="m-title"><span data-lang="zh-CN">预估首字延迟 TTFT</span><span data-lang="en">Estimated TTFT</span></span>
+            <span class="m-num" id="res-ttft">--</span>
+            <span class="m-note" id="res-ttft-note">--</span>
+          </div>
+          <div class="metric-card">
+            <span class="m-title"><span data-lang="zh-CN">逐字生成延迟 TPOT</span><span data-lang="en">Streaming TPOT</span></span>
+            <span class="m-num" id="res-tpot">--</span>
+            <span class="m-note" id="res-tpot-note">--</span>
+          </div>
+          <div class="metric-card">
+            <span class="m-title"><span data-lang="zh-CN">P99 长尾卡顿削减</span><span data-lang="en">P99 Tail Stall Reduction</span></span>
+            <span class="m-num" id="res-p99">--</span>
+            <span class="m-note" id="res-p99-note">--</span>
+          </div>
+          <div class="metric-card">
+            <span class="m-title"><span data-lang="zh-CN">单轮端到端总耗时</span><span data-lang="en">End-to-End Turn Latency</span></span>
+            <span class="m-num" id="res-e2e">--</span>
+            <span class="m-note" id="res-e2e-note">--</span>
+          </div>
+        </div>
+
+        <div class="bar-stack-wrap">
+          <div style="display:flex;justify-content:space-between;font-size:12.5px;font-weight:700;">
+            <span>
+              <span data-lang="zh-CN">单轮时间结构拆解（对比未优化混部基线）</span>
+              <span data-lang="en">Turn Latency Breakdown (vs Unoptimized Co-Located Baseline)</span>
+            </span>
+            <span class="mono" id="res-speedup-label">--</span>
+          </div>
+          <div class="bar-track" aria-hidden="true">
+            <div class="bar-seg" id="bar-ttft" style="width:25%;background:#38bdf8;"></div>
+            <div class="bar-seg" id="bar-decode" style="width:35%;background:#2dd4bf;"></div>
+          </div>
+          <div class="bar-legend">
+            <span><i class="legend-dot" style="background:#38bdf8;"></i><span data-lang="zh-CN">Prefill 首字阶段 (TTFT)</span><span data-lang="en">Prefill Phase (TTFT)</span></span>
+            <span><i class="legend-dot" style="background:#2dd4bf;"></i><span data-lang="zh-CN">Decode 流式生成阶段 (Output × TPOT)</span><span data-lang="en">Decode Phase (Output × TPOT)</span></span>
+            <span><i class="legend-dot" style="background:var(--surface-strong);border:1px solid var(--border-strong);"></i><span data-lang="zh-CN">已消除的等待与重复计算耗时</span><span data-lang="en">Saved Queuing &amp; Redundant Compute Time</span></span>
+          </div>
+        </div>
+
+        <div class="advice-panel">
+          <h4 id="tok-advice-title">🧭 Partner SA Architecture Advice</h4>
+          <p id="tok-advice-body" style="margin:0 0 10px;color:var(--text);"></p>
+          <div style="font-size:12px;color:var(--text-soft);font-weight:700;">
+            <span data-lang="zh-CN">✅ 强制执行的 Prompt 前缀排布检查单（保障 80%+ KV Cache 命中率）：</span>
+            <span data-lang="en">✅ Mandatory Prompt Prefix Ordering Checklist (Preserves 80%+ KV Cache Hit Rate):</span>
+          </div>
+          <div class="prefix-order-strip">
+            <span class="prefix-node">[1] Frozen System Prompt</span>
+            <span>→</span>
+            <span class="prefix-node">[2] Alphabetically Sorted MCP Schemas</span>
+            <span>→</span>
+            <span class="prefix-node">[3] Static Domain Ontology</span>
+            <span>→</span>
+            <span class="prefix-node dynamic">[4] Dynamic User Query + Live RAG + Timestamp (Tail Only!)</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         SECTION 2: SCENARIO 2 — GPU SIZING & MULTI-NODE ROCE/IB OPTIMIZATION
+         ====================================================================== -->
+    <section id="scenario-gpu-deploy" class="stage-section">
+      <div class="section-header">
+        <div>
+          <p class="eyebrow">SCENARIO 02 · DEDICATED GPU SIZING &amp; LOSSLESS FABRIC</p>
+          <h2 class="section-title">
+            <span data-lang="zh-CN">GPU 显存精算与多机通信优化</span>
+            <span data-lang="en">GPU Model Sizing &amp; Multi-Node Fabric Optimization</span>
+          </h2>
+          <p class="section-sub">
+            <span data-lang="zh-CN">结合 Ignite 2026 Foundry 全新开源推理与多模态生视频生态（<code>Fireworks AI</code> · <code>Baseten</code> · <code>fal</code> 与 <code>Foundry on AKS</code> 自建 GPU），精准回答架构师两大硬核追问：<strong>① 多少 GPU 显存能放下模型？</strong> <strong>② 多卡多节点如何选型优化 <code>NVLink</code> / <code>InfiniBand</code> / <code>RoCEv2</code>？</strong></span>
+            <span data-lang="en">Grounded in Ignite 2026's expanded Foundry open-weight &amp; video model wave (<code>Fireworks AI</code> · <code>Baseten</code> · <code>fal</code> + self-hosted <code>Foundry on AKS</code>), answering two core engineering questions: <strong>① How much GPU VRAM fits the model?</strong> and <strong>② How do multi-node clusters optimize <code>NVLink</code>, <code>InfiniBand</code> &amp; <code>RoCEv2</code>?</strong></span>
+          </p>
+        </div>
+        <span class="badge badge-preview">Open-Weight &amp; Video Wave</span>
+      </div>
+
+      <!-- Ignite 2026 Foundry Open-Weight & Video Ecosystem Context -->
+      <div class="grid-4" style="margin-bottom:24px;">
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+            <strong>Fireworks AI on Foundry</strong>
+            <span class="badge badge-ga">GA</span>
+          </div>
+          <p>
+            <span data-lang="zh-CN">面向超大规模开源 MoE 推理与编程场景的高速托管服务，原生提供 <strong><code>DeepSeek V3.2 / V4 Pro</code></strong> 与 <strong><code>Kimi K2.5 / K2.6</code></strong> 极速低延迟调用，统一纳入 Azure 账单与评测闭环。</span>
+            <span data-lang="en">High-speed managed inference for <strong><code>DeepSeek V3.2 / V4 Pro</code></strong> and <strong><code>Kimi K2.5 / K2.6</code></strong> under unified Azure billing, AI Gateway, and Foundry Evaluations.</span>
+          </p>
+        </div>
+
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+            <strong>Baseten on Foundry</strong>
+            <span class="badge badge-preview">Public Preview</span>
+          </div>
+          <p>
+            <span data-lang="zh-CN">Ignite 2026 全新官宣上线！将最新一代前沿开源权重模型 <strong><code>Kimi-K3</code></strong>、<strong><code>DeepSeek V4.1-Flash</code></strong> 与 <strong><code>GLM 5.3</code></strong> 直接引入 Foundry 统一治理、Entra 认证与配额体系。</span>
+            <span data-lang="en">Newly announced at Ignite 2026! Brings <strong><code>Kimi-K3</code></strong>, <strong><code>DeepSeek V4.1-Flash</code></strong>, and <strong><code>GLM 5.3</code></strong> straight into Foundry governance, Entra auth, and enterprise billing.</span>
+          </p>
+        </div>
+
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+            <strong>fal on Foundry</strong>
+            <span class="badge badge-preview">Public Preview</span>
+          </div>
+          <p>
+            <span data-lang="zh-CN">Ignite 2026 全新官宣上线！一键接入顶级商用与开源<strong>生视频模型矩阵</strong>：<strong><code>Kling v3 Pro</code></strong>、<strong><code>LTX-2.5 Fast / Pro</code></strong>、<strong><code>MiniMax H3 Max / Turbo</code></strong>，赋能多模态内容与营销生产流水线。</span>
+            <span data-lang="en">Newly announced at Ignite 2026! Delivers premier <strong>video generation models</strong>—<strong><code>Kling v3 Pro</code></strong>, <strong><code>LTX-2.5 Fast / Pro</code></strong>, and <strong><code>MiniMax H3 Max / Turbo</code></strong>—alongside multimodal DiT pipelines.</span>
+          </p>
+        </div>
+
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+            <strong>Foundry on AKS &amp; Sovereign GPU</strong>
+            <span class="badge badge-ga">GA / Preview</span>
+          </div>
+          <p>
+            <span data-lang="zh-CN">当数据主权、私有微调权重或高稳态利用率需要专属算力时，依托 <strong><code>AKS 托管 GPU 节点池</code>（<code>GA</code>）</strong>、<strong><code>GB200/GB300</code>（<code>Preview</code>）</strong>、<strong><code>Mixed MIG</code>（<code>Preview</code>）</strong>、<strong><code>VR72</code> 机密计算</strong> 或本地 <strong><code>Windows Server 2028</code>（<code>GB300/MI350P</code> 原生 <code>vLLM</code>）</strong> 部署。</span>
+            <span data-lang="en">For strict sovereignty, private SFT/RFT weights, or high steady utilization: deploy on <strong><code>AKS Managed GPU Node Pools</code> (<code>GA</code>)</strong>, <strong><code>NVIDIA GB200/GB300</code> (<code>Preview</code>)</strong>, <strong><code>Mixed MIG</code> (<code>Preview</code>)</strong>, <strong><code>VR72</code> Confidential Compute</strong>, or on-prem <strong><code>Windows Server 2028</code></strong> (<code>vLLM</code>).</span>
+          </p>
+        </div>
+      </div>
+
+      <!-- PART 2A: Exact Engineering Formulas for LLM/MoE & Video DiT VRAM Sizing -->
+      <h3 style="font-size:20px;margin:8px 0 12px;">
+        <span data-lang="zh-CN">2A · 如何计算多少 GPU 显存能放下模型？（LLM/MoE 与生视频 DiT 双公式精算）</span>
+        <span data-lang="en">2A · How Many GPUs Fit the Model? (Exact LLM/MoE &amp; Video DiT VRAM Engineering Formulas)</span>
+      </h3>
+
+      <div class="grid-2" style="margin-bottom:20px;">
+        <!-- Formula 1: Dense & MoE LLMs -->
+        <div class="formula-card">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;">
+            <strong style="font-size:16px;color:var(--accent);">
+              <span data-lang="zh-CN">公式一：稠密与 MoE 大语言模型（如 DeepSeek-V3/V4 671B · Kimi-K2.6/K3）</span>
+              <span data-lang="en">Formula 1: Dense &amp; MoE LLMs (e.g., DeepSeek-V3/V4 671B · Kimi-K2.6/K3)</span>
+            </strong>
+            <span class="badge badge-ga">Weight-Dominated</span>
+          </div>
+          <div class="formula-box">
+            VRAM<sub>LLM</sub> = ( P<sub>total</sub> × b<sub>weight</sub> ) + ( B × S × L × d<sub>kv</sub> × b<sub>kv</sub> ) + 15% Overhead<br/>
+            <span style="color:#94a3b8;">• DeepSeek-V3/V4 (671B FP8, MLA): 671 GB + ~18.4 GB (8×64K) + 15% ≈ 793 GB → 8× H200 (1,128 GB)</span>
+          </div>
+          <div class="formula-terms">
+            <div class="f-term">
+              <strong>P<sub>total</sub> × b<sub>weight</sub></strong>
+              <span data-lang="zh-CN">全量专家静态权重（BF16=2B, FP8=1B, INT4=0.5B）</span>
+              <span data-lang="en">All expert weights (BF16=2B, FP8=1B, INT4=0.5B)</span>
+            </div>
+            <div class="f-term">
+              <strong>B × S × L × d<sub>kv</sub> × b<sub>kv</sub></strong>
+              <span data-lang="zh-CN">并发 KV 缓存（DeepSeek MLA 压缩 80%–90%）</span>
+              <span data-lang="en">KV Cache (80%–90% smaller with DeepSeek MLA)</span>
+            </div>
+            <div class="f-term">
+              <strong>+15% Overhead</strong>
+              <span data-lang="zh-CN">CUDA Graph、NCCL 通信缓冲与激活工作区</span>
+              <span data-lang="en">CUDA context, NCCL buffers &amp; activations</span>
+            </div>
+          </div>
+          <div class="sa-insight-banner">
+            <strong>💡 <span data-lang="zh-CN">Partner SA 核心洞察：</span><span data-lang="en">Crucial SA Insight:</span></strong>
+            <span data-lang="zh-CN">尽管 MoE 模型每个 Token 仅激活约 <code>37B</code> 参数（因此前向算力飞快），但<strong>全部 <code>671B</code> 总参数必须常驻聚合 GPU HBM 显存中</strong>（FP8 约 <code>671 GB</code>，BF16 高达 <code>1,342 GB</code>）！一旦因显存不足将专家卸载至主机内存/PCIe，<code>TPOT</code> 延迟将瞬间劣化 10–30 倍。</span>
+            <span data-lang="en">Even though an MoE model activates only ~<code>37B</code> parameters per token (making compute fast), <strong>all <code>671B</code> total parameters must reside in aggregate GPU HBM</strong> (~<code>671 GB</code> in FP8, ~<code>1,342 GB</code> in BF16)—offloading experts over PCIe destroys streaming <code>TPOT</code>!</span>
+          </div>
+        </div>
+
+        <!-- Formula 2: Video Generation DiT Models -->
+        <div class="formula-card">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;">
+            <strong style="font-size:16px;color:var(--teal);">
+              <span data-lang="zh-CN">公式二：生视频扩散 Transformer 模型（14B–30B Video DiT 流水线）</span>
+              <span data-lang="en">Formula 2: Video Generation DiT Models (14B–30B Multimodal Video Pipelines)</span>
+            </strong>
+            <span class="badge badge-preview">Activation-Spike Dominated</span>
+          </div>
+          <div class="formula-box">
+            VRAM<sub>Video</sub> = ( W<sub>DiT</sub> + W<sub>Text/VLM</sub> + W<sub>3D-VAE</sub> ) + ( N<sub>tokens</sub>(T,H,W) × d × α<sub>attn/CFG</sub> ) + Overhead<br/>
+            <span style="color:#94a3b8;">• N<sub>tokens</sub> = (T / p<sub>t</sub>) × (H / p<sub>h</sub>) × (W / p<sub>w</sub>)  [10s 1080p @ 24fps ⇒ ~122,000 3D Tokens!]</span>
+          </div>
+          <div class="formula-terms">
+            <div class="f-term">
+              <strong style="color:var(--teal);">W<sub>DiT</sub> + W<sub>Text</sub> + W<sub>VAE</sub></strong>
+              <span data-lang="zh-CN">主干 DiT + T5/VLM 编码器 + 3D 因果 VAE 权重</span>
+              <span data-lang="en">DiT backbone + Text/VLM encoder + 3D-VAE weights</span>
+            </div>
+            <div class="f-term">
+              <strong style="color:var(--teal);">N<sub>tokens</sub> × d × α<sub>CFG</sub></strong>
+              <span data-lang="zh-CN">3D 时空潜变量注意力与双倍 CFG 激活尖峰</span>
+              <span data-lang="en">3D spatio-temporal attention &amp; 2× CFG workspace</span>
+            </div>
+            <div class="f-term">
+              <strong style="color:var(--teal);">3D-VAE Decode Spike</strong>
+              <span data-lang="zh-CN">全帧像素还原尖峰（需开启 Tiled VAE 分块解码）</span>
+              <span data-lang="en">Pixel reconstruction spike (mitigated via Tiled VAE)</span>
+            </div>
+          </div>
+          <div class="sa-insight-banner">
+            <strong>💡 <span data-lang="zh-CN">Partner SA 核心洞察：</span><span data-lang="en">Crucial SA Insight:</span></strong>
+            <span data-lang="zh-CN">14B–30B 生视频模型的静态权重在 FP8 下仅占 <code>14–30 GB</code>（BF16 <code>28–60 GB</code>），看似单张 80GB 显卡就能装下；但生成一段 <strong>5s–10s 720p/1080p 24fps 视频</strong> 会产生<strong>数万至十余万个 3D 时空 Token</strong>，导致注意力中间激活与 3D VAE 解码显存尖峰瞬间冲破单卡 80GB 上限——必须开启<strong>序列/上下文并行（<code>Ulysses + Ring Attention</code>）</strong>与 Tiled VAE！</span>
+            <span data-lang="en">A 14B–30B video model's weights may only take <code>14–30 GB</code> in FP8 (<code>28–60 GB</code> in BF16), yet generating a <strong>5s–10s 720p/1080p 24fps clip</strong> produces <strong>tens of thousands of 3D spatio-temporal tokens</strong>, causing attention &amp; 3D-VAE decode spikes that OOM a single 80GB GPU unless <strong>Sequence Parallelism (<code>Ulysses + Ring Attention</code>)</strong> and Tiled VAE are enabled!</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- INTERACTIVE SIMULATOR B: GPU VRAM Capacity & Parallelism Sizing Calculator -->
+      <div class="workbench" id="sim-vram-workbench" aria-labelledby="sim-vram-heading">
+        <div class="section-header" style="margin-bottom:14px;">
+          <div>
+            <span class="badge badge-teal" style="background:var(--teal-soft);color:var(--teal);border:1px solid var(--teal);">Interactive Simulator B</span>
+            <h3 id="sim-vram-heading" style="margin:6px 0 4px;font-size:19px;">
+              <span data-lang="zh-CN">GPU 显存容量精算、节点拓扑与并行度推荐器</span>
+              <span data-lang="en">GPU VRAM Capacity, Node Topology &amp; Parallelism Calculator</span>
+            </h3>
+            <p style="margin:0;font-size:13.5px;color:var(--text-muted);">
+              <span data-lang="zh-CN">选择模型预设、量化精度、上下文/视频规格、并发度与目标 Azure GPU，实时计算显存三项构成、标准 1/2/4/8 卡拓扑及托管 vs 自建盈亏建议。</span>
+              <span data-lang="en">Select model preset, precision, context/video spec, batch concurrency, and Azure GPU SKU to compute exact HBM breakdown, valid 1/2/4/8-GPU topology, parallelism strategy, and Managed vs Self-Hosted guidance.</span>
+            </p>
+          </div>
+        </div>
+
+        <div class="control-row">
+          <div class="field-group">
+            <label for="vram-preset">
+              <span data-lang="zh-CN">模型架构预设</span>
+              <span data-lang="en">Model Architecture Preset</span>
+            </label>
+            <select id="vram-preset">
+              <option value="deepseek671" data-zh="① DeepSeek-V3 / V4 (671B MoE · MLA)" data-en="① DeepSeek-V3 / V4 (671B MoE · MLA)">① DeepSeek-V3 / V4 (671B MoE · MLA)</option>
+              <option value="kimi1t" data-zh="② Kimi-K3 / K2.6 级 (1T MoE · 长窗口多模态)" data-en="② Kimi-K3 / K2.6 Class (1T MoE · Multimodal)">② Kimi-K3 / K2.6 级 (1T MoE · 长窗口多模态)</option>
+              <option value="videodit30" data-zh="③ 企业级生视频 DiT 30B (720p / 1080p)" data-en="③ Enterprise Video DiT 30B (720p / 1080p)">③ 企业级生视频 DiT 30B (720p / 1080p)</option>
+              <option value="videodit14" data-zh="④ 极速生视频 DiT 14B Fast (720p 敏捷生成)" data-en="④ Video DiT 14B Fast (720p Rapid Gen)">④ 极速生视频 DiT 14B Fast (720p 敏捷生成)</option>
+              <option value="dense70" data-zh="⑤ 稠密大模型 Dense 70B (企业私有 SFT)" data-en="⑤ Dense 70B Enterprise SFT (GQA)">⑤ 稠密大模型 Dense 70B (企业私有 SFT)</option>
+            </select>
+          </div>
+
+          <div class="field-group">
+            <label for="vram-precision">
+              <span data-lang="zh-CN">权重与计算精度</span>
+              <span data-lang="en">Quantization / Precision</span>
+            </label>
+            <select id="vram-precision">
+              <option value="bf16" data-zh="BF16 半精度 [2.0 Bytes/param]" data-en="BF16 Full Half [2.0 Bytes/param]">BF16 半精度 [2.0 Bytes/param]</option>
+              <option value="fp8" selected data-zh="FP8 原生推理 [1.0 Byte/param] (推荐)" data-en="FP8 Native [1.0 Byte/param] (Recommended)">FP8 原生推理 [1.0 Byte/param] (推荐)</option>
+              <option value="int4" data-zh="INT4 AWQ 权重量化 [0.5 Bytes/param]" data-en="INT4 AWQ Quantized [0.5 Bytes/param]">INT4 AWQ 权重量化 [0.5 Bytes/param]</option>
+            </select>
+          </div>
+
+          <div class="field-group">
+            <label for="vram-spec">
+              <span id="vram-spec-lbl-zh" data-lang="zh-CN">上下文窗口 / 视频规格</span>
+              <span id="vram-spec-lbl-en" data-lang="en">Context Length / Video Spec</span>
+            </label>
+            <select id="vram-spec">
+              <option value="low" data-zh="16K 上下文 / 720p · 5s (24fps)" data-en="16K Context / 720p · 5s (24fps)">16K 上下文 / 720p · 5s (24fps)</option>
+              <option value="mid" selected data-zh="64K 上下文 / 720p · 10s (24fps)" data-en="64K Context / 720p · 10s (24fps)">64K 上下文 / 720p · 10s (24fps)</option>
+              <option value="high" data-zh="128K 上下文 / 1080p · 10s (24fps)" data-en="128K Context / 1080p · 10s (24fps)">128K 上下文 / 1080p · 10s (24fps)</option>
+            </select>
+          </div>
+
+          <div class="field-group">
+            <label for="vram-batch">
+              <span>
+                <span data-lang="zh-CN">并发 Batch / 视频流数</span>
+                <span data-lang="en">Concurrent Batch / Streams</span>
+              </span>
+              <strong class="mono" id="vram-batch-val">8</strong>
+            </label>
+            <input type="range" id="vram-batch" min="1" max="32" step="1" value="8" />
+          </div>
+
+          <div class="field-group">
+            <label for="vram-gpu">
+              <span data-lang="zh-CN">目标 Azure GPU 规格</span>
+              <span data-lang="en">Target Azure GPU SKU</span>
+            </label>
+            <select id="vram-gpu">
+              <option value="h100" data-zh="NVIDIA H100 80GB HBM3" data-en="NVIDIA H100 80GB HBM3">NVIDIA H100 80GB HBM3</option>
+              <option value="h200" selected data-zh="NVIDIA H200 141GB HBM3e" data-en="NVIDIA H200 141GB HBM3e">NVIDIA H200 141GB HBM3e</option>
+              <option value="b200" data-zh="NVIDIA B200 192GB HBM3e" data-en="NVIDIA B200 192GB HBM3e">NVIDIA B200 192GB HBM3e</option>
+              <option value="gb300" data-zh="NVIDIA GB300 288GB (NVL72 Preview)" data-en="NVIDIA GB300 288GB (NVL72 Preview)">NVIDIA GB300 288GB (NVL72 Preview)</option>
+              <option value="mi350p" data-zh="AMD Instinct MI350P 288GB HBM3e" data-en="AMD Instinct MI350P 288GB HBM3e">AMD Instinct MI350P 288GB HBM3e</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="metric-strip">
+          <div class="metric-card">
+            <span class="m-title"><span data-lang="zh-CN">所需总显存 Total VRAM</span><span data-lang="en">Total VRAM Required</span></span>
+            <span class="m-num" id="vram-total-num">--</span>
+            <span class="m-note" id="vram-breakdown-note">--</span>
+          </div>
+          <div class="metric-card">
+            <span class="m-title"><span data-lang="zh-CN">推荐合规 GPU 数量与拓扑</span><span data-lang="en">Minimum Valid GPU Topology</span></span>
+            <span class="m-num" id="vram-gpus-num">--</span>
+            <span class="m-note" id="vram-cluster-cap">--</span>
+          </div>
+          <div class="metric-card">
+            <span class="m-title"><span data-lang="zh-CN">HBM 安全余量 Headroom</span><span data-lang="en">HBM Headroom %</span></span>
+            <span class="m-num" id="vram-headroom-num">--</span>
+            <span class="m-note" id="vram-verdict-note">--</span>
+          </div>
+          <div class="metric-card">
+            <span class="m-title"><span data-lang="zh-CN">单机 vs 跨机通信判定</span><span data-lang="en">Single vs Multi-Node Verdict</span></span>
+            <span class="m-num" id="vram-domain-num" style="font-size:17px;">--</span>
+            <span class="m-note" id="vram-fabric-note">--</span>
+          </div>
+        </div>
+
+        <div class="bar-stack-wrap">
+          <div style="display:flex;justify-content:space-between;font-size:12.5px;font-weight:700;">
+            <span>
+              <span data-lang="zh-CN">聚合 GPU HBM 容量占用构成（含安全余量水位）</span>
+              <span data-lang="en">Aggregate Cluster HBM Capacity Breakdown</span>
+            </span>
+            <span class="mono" id="vram-bar-caption">--</span>
+          </div>
+          <div class="bar-track" aria-hidden="true">
+            <div class="bar-seg" id="vbar-weights" style="width:50%;background:#38bdf8;"></div>
+            <div class="bar-seg" id="vbar-kv" style="width:18%;background:#a78bfa;"></div>
+            <div class="bar-seg" id="vbar-ovh" style="width:10%;background:#fbbf24;"></div>
+          </div>
+          <div class="bar-legend">
+            <span><i class="legend-dot" style="background:#38bdf8;"></i><span id="leg-weights">--</span></span>
+            <span><i class="legend-dot" style="background:#a78bfa;"></i><span id="leg-kv">--</span></span>
+            <span><i class="legend-dot" style="background:#fbbf24;"></i><span id="leg-ovh">--</span></span>
+            <span><i class="legend-dot" style="background:var(--surface-strong);border:1px solid var(--border-strong);"></i><span id="leg-free">--</span></span>
+          </div>
+        </div>
+
+        <div class="advice-panel">
+          <h4 id="vram-parallel-title">🔀 Parallelism &amp; Foundry Managed vs Self-Hosted Breakeven</h4>
+          <p id="vram-parallel-body" style="margin:0 0 8px;color:var(--text);"></p>
+          <p id="vram-breakeven-body" style="margin:0;color:var(--text-muted);"></p>
+        </div>
+      </div>
+
+      <!-- PART 2B: Multi-GPU & Multi-Node Network Communication Optimization -->
+      <div style="margin-top:28px;">
+        <h3 style="font-size:20px;margin:0 0 10px;">
+          <span data-lang="zh-CN">2B · 多卡与多节点如何优化网络通信？（Scale-Up <code>NVLink</code> vs Scale-Out <code>InfiniBand</code> &amp; <code>Ethernet RoCEv2</code>）</span>
+          <span data-lang="en">2B · Multi-GPU &amp; Multi-Node Fabric Optimization (Scale-Up <code>NVLink</code> vs Scale-Out <code>InfiniBand</code> &amp; <code>Ethernet RoCEv2</code>)</span>
+        </h3>
+        <p style="margin:0 0 16px;color:var(--text-muted);font-size:14.5px;">
+          <span data-lang="zh-CN">一旦模型总显存突破单台 8 卡服务器上限（或采用生视频序列并行 / MoE 大专家并行 / PD 跨机 KV 传输），网络架构必须严格遵循<strong>“节点内高带宽 Scale-Up + 跨节点零拷贝无损 RDMA Scale-Out”</strong>双层铁律。</span>
+          <span data-lang="en">Whenever VRAM or throughput scales beyond a single 8-GPU server (for MoE Expert Parallelism, Video Sequence Parallelism, or PD KV transfer), network design must strictly separate <strong>Intra-Node Scale-Up NVLink</strong> from <strong>Inter-Node Zero-Copy Lossless RDMA Scale-Out</strong>.</span>
+        </p>
+
+        <!-- Inline SVG: Two-Tier Interconnect Hierarchy (NVLink + GPUDirect RDMA + Rail-Optimized RoCEv2/IB) -->
+        <div class="svg-frame" role="img" aria-label="Scale-Up NVLink vs Scale-Out GPUDirect RDMA Rail-Optimized Topology">
+          <svg viewBox="0 0 1160 390" xmlns="http://www.w3.org/2000/svg">
+            <!-- Node 0 -->
+            <rect x="20" y="18" width="430" height="216" rx="14" fill="#0d1c34" stroke="#38bdf8" stroke-width="1.5" />
+            <text x="38" y="43" fill="#38bdf8" font-size="12.5" font-weight="800" font-family="Cascadia Code, Consolas, monospace">NODE 0 · INTRA-NODE SCALE-UP DOMAIN</text>
+            <g data-lang="zh-CN">
+              <text x="38" y="64" fill="#eef4ff" font-size="12" font-weight="700">8× GPU NVLink / NVSwitch 全互连域（900–1,800 GB/s · GB300 扩至 72 卡 NVL72）</text>
+              <text x="38" y="83" fill="#b6c6e3" font-size="11.5">✅ 严禁跨机跑 TP：张量并行（TP）每层均需同步阻塞 AllReduce，必须锁在 NVLink 域内！</text>
+            </g>
+            <g data-lang="en">
+              <text x="38" y="64" fill="#eef4ff" font-size="12" font-weight="700">8× GPU NVLink / NVSwitch Domain (900–1,800 GB/s · 72-GPU on GB200/GB300 NVL72)</text>
+              <text x="38" y="83" fill="#b6c6e3" font-size="11.5">✅ Confine Tensor Parallelism (TP) inside NVLink—TP runs blocking AllReduce every layer!</text>
+            </g>
+            <!-- GPU Boxes Node 0 -->
+            <rect x="38" y="98" width="90" height="44" rx="7" fill="#162b4d" stroke="#38bdf8" />
+            <text x="53" y="124" fill="#e0f2fe" font-size="11.5" font-weight="700" font-family="Cascadia Code, Consolas, monospace">GPU 0..1</text>
+            <rect x="138" y="98" width="90" height="44" rx="7" fill="#162b4d" stroke="#38bdf8" />
+            <text x="153" y="124" fill="#e0f2fe" font-size="11.5" font-weight="700" font-family="Cascadia Code, Consolas, monospace">GPU 2..3</text>
+            <rect x="238" y="98" width="90" height="44" rx="7" fill="#162b4d" stroke="#38bdf8" />
+            <text x="253" y="124" fill="#e0f2fe" font-size="11.5" font-weight="700" font-family="Cascadia Code, Consolas, monospace">GPU 4..5</text>
+            <rect x="338" y="98" width="94" height="44" rx="7" fill="#162b4d" stroke="#38bdf8" />
+            <text x="353" y="124" fill="#e0f2fe" font-size="11.5" font-weight="700" font-family="Cascadia Code, Consolas, monospace">GPU 6..7</text>
+
+            <!-- GPUDirect RDMA Bypass Bar -->
+            <rect x="38" y="158" width="394" height="60" rx="9" fill="#091526" stroke="#2dd4bf" />
+            <text x="52" y="179" fill="#2dd4bf" font-size="11.5" font-weight="800" font-family="Cascadia Code, Consolas, monospace">GPUDirect RDMA (PCIe P2P BAR1 Zero-Copy · Kernel Bypass)</text>
+            <g data-lang="zh-CN">
+              <text x="52" y="198" fill="#cbd5e1" font-size="11">绕过主机 CPU 与 Linux TCP/IP 内核栈，8× 400G/800G 网卡直读/直写 GPU HBM (~2–5 μs)</text>
+            </g>
+            <g data-lang="en">
+              <text x="52" y="198" fill="#cbd5e1" font-size="11">Bypasses Host CPU &amp; OS TCP/IP stack: 8× 400G/800G NICs DMA directly to/from GPU HBM (~2–5 μs)</text>
+            </g>
+
+            <!-- Node N -->
+            <rect x="710" y="18" width="430" height="216" rx="14" fill="#0d1c34" stroke="#38bdf8" stroke-width="1.5" />
+            <text x="728" y="43" fill="#38bdf8" font-size="12.5" font-weight="800" font-family="Cascadia Code, Consolas, monospace">NODE N · INTRA-NODE SCALE-UP DOMAIN</text>
+            <g data-lang="zh-CN">
+              <text x="728" y="64" fill="#eef4ff" font-size="12" font-weight="700">跨机 Scale-Out 仅承载四类低频或异步集合通信流量：</text>
+              <text x="728" y="83" fill="#b6c6e3" font-size="11.5">① PP 流水线点对点 · ② MoE EP All-to-All · ③ 生视频 Ulysses/Ring · ④ PD KV RDMA</text>
+            </g>
+            <g data-lang="en">
+              <text x="728" y="64" fill="#eef4ff" font-size="12" font-weight="700">Inter-Node Scale-Out Carries 4 Targeted Traffic Patterns:</text>
+              <text x="728" y="83" fill="#b6c6e3" font-size="11.5">① PP P2P · ② MoE EP All-to-All · ③ Video DiT Ulysses/Ring · ④ PD KV RDMA</text>
+            </g>
+            <rect x="728" y="98" width="90" height="44" rx="7" fill="#162b4d" stroke="#38bdf8" />
+            <text x="743" y="124" fill="#e0f2fe" font-size="11.5" font-weight="700" font-family="Cascadia Code, Consolas, monospace">GPU 0..1</text>
+            <rect x="828" y="98" width="90" height="44" rx="7" fill="#162b4d" stroke="#38bdf8" />
+            <text x="843" y="124" fill="#e0f2fe" font-size="11.5" font-weight="700" font-family="Cascadia Code, Consolas, monospace">GPU 2..3</text>
+            <rect x="928" y="98" width="90" height="44" rx="7" fill="#162b4d" stroke="#38bdf8" />
+            <text x="943" y="124" fill="#e0f2fe" font-size="11.5" font-weight="700" font-family="Cascadia Code, Consolas, monospace">GPU 4..5</text>
+            <rect x="1028" y="98" width="94" height="44" rx="7" fill="#162b4d" stroke="#38bdf8" />
+            <text x="1043" y="124" fill="#e0f2fe" font-size="11.5" font-weight="700" font-family="Cascadia Code, Consolas, monospace">GPU 6..7</text>
+
+            <rect x="728" y="158" width="394" height="60" rx="9" fill="#091526" stroke="#2dd4bf" />
+            <text x="742" y="179" fill="#2dd4bf" font-size="11.5" font-weight="800" font-family="Cascadia Code, Consolas, monospace">8× 400G/800G RDMA NICs (ConnectX-7/8 · SuperNIC · Maia NIC)</text>
+            <g data-lang="zh-CN">
+              <text x="742" y="198" fill="#cbd5e1" font-size="11">1:1 网卡配比 · 第 i 号网卡直连第 i 号轨道交换机（Rail-Optimized 1 跳通信）</text>
+            </g>
+            <g data-lang="en">
+              <text x="742" y="198" fill="#cbd5e1" font-size="11">1:1 GPU-to-NIC ratio · NIC i wired to Rail Leaf Switch i (1-hop intra-rail collective)</text>
+            </g>
+
+            <!-- Center Callout -->
+            <rect x="468" y="54" width="224" height="148" rx="12" fill="#152442" stroke="#a78bfa" />
+            <text x="484" y="78" fill="#c4b5fd" font-size="11.5" font-weight="800" font-family="Cascadia Code, Consolas, monospace">MAIA 300 AI SUPERPOD</text>
+            <g data-lang="zh-CN">
+              <text x="484" y="100" fill="#eef4ff" font-size="12" font-weight="700">12,288 卡两层定制以太网</text>
+              <text x="484" y="120" fill="#cbd5e1" font-size="11">• 微软定制 AI 以太网传输层</text>
+              <text x="484" y="139" fill="#cbd5e1" font-size="11">• 96 卡 / 167kW 液冷机柜</text>
+              <text x="484" y="158" fill="#cbd5e1" font-size="11">• AKS Fleet Cilium (GA) 网格</text>
+              <text x="484" y="177" fill="#cbd5e1" font-size="11">• Azure Catalyst (GA) 应用现代化</text>
+            </g>
+            <g data-lang="en">
+              <text x="484" y="100" fill="#eef4ff" font-size="12" font-weight="700">12,288-Accel 2-Tier Ethernet</text>
+              <text x="484" y="120" fill="#cbd5e1" font-size="11">• Custom Microsoft AI transport</text>
+              <text x="484" y="139" fill="#cbd5e1" font-size="11">• 96 accel / 167kW liquid rack</text>
+              <text x="484" y="158" fill="#cbd5e1" font-size="11">• AKS Fleet Cilium (GA) mesh</text>
+              <text x="484" y="177" fill="#cbd5e1" font-size="11">• Azure Catalyst (GA) upstream</text>
+            </g>
+
+            <!-- Rail-Optimized Lossless Scale-Out Fabric -->
+            <line x1="235" y1="234" x2="360" y2="266" stroke="#2dd4bf" stroke-width="2.2" />
+            <line x1="925" y1="234" x2="800" y2="266" stroke="#2dd4bf" stroke-width="2.2" />
+
+            <rect x="20" y="266" width="1120" height="108" rx="14" fill="#0b1d33" stroke="#2dd4bf" stroke-width="1.5" />
+            <text x="40" y="292" fill="#2dd4bf" font-size="13" font-weight="800" font-family="Cascadia Code, Consolas, monospace">INTER-NODE LOSSLESS SCALE-OUT FABRIC · RAIL-OPTIMIZED LEAF-SPINE (400G / 800G)</text>
+            <g data-lang="zh-CN">
+              <text x="40" y="317" fill="#eef4ff" font-size="12.5" font-weight="700">选项 A · InfiniBand (Quantum-2 NDR 400G / XDR 800G)：链路层原生 Credit 无损流控 (~0.6–1.5 μs) + 硬件 SHARP 网内归约 + 自适应路由</text>
+              <text x="40" y="340" fill="#cbd5e1" font-size="12.5">选项 B · Ethernet RoCEv2 / AI Ethernet (UDP 4791)：PFC 无损队列 + ECN/DCQCN 拥塞限速 + 轨道优化拓扑 + 动态喷洒 (DLB / Packet Spraying) 防哈希极化</text>
+              <text x="40" y="360" fill="#fbbf24" font-size="11.5">⚡ 推理与 PD 分离 KV 传输、多租户云隔离、训推存一网融合及异构 GPU (MI350P / 自研 ASIC) 场景中，RoCEv2 / 增强型 AI 以太网具备极高性价比与生态开放优势！</text>
+            </g>
+            <g data-lang="en">
+              <text x="40" y="317" fill="#eef4ff" font-size="12.5" font-weight="700">Option A · InfiniBand (NDR 400G / XDR 800G): Link-layer credit lossless flow control (~0.6–1.5 μs) + Hardware SHARP aggregation + Adaptive Routing</text>
+              <text x="40" y="340" fill="#cbd5e1" font-size="12.5">Option B · Ethernet RoCEv2 / AI Ethernet (UDP 4791): PFC lossless queues + ECN/DCQCN rate control + Rail-Optimized Leaf-Spine + DLB / Packet Spraying</text>
+              <text x="40" y="360" fill="#fbbf24" font-size="11.5">⚡ For inference, PD KV RDMA transfer, multi-tenant isolation, converged storage, and heterogeneous silicon (MI350P / Maia 300), AI Ethernet / RoCEv2 excels!</text>
+            </g>
+          </svg>
+        </div>
+
+        <!-- Architect Decision Matrix Table: InfiniBand vs RoCEv2 vs Enhanced AI Ethernet -->
+        <div class="table-wrap" style="margin-top:18px;">
+          <table>
+            <thead>
+              <tr>
+                <th><span data-lang="zh-CN">架构评估维度</span><span data-lang="en">Evaluation Dimension</span></th>
+                <th><span data-lang="zh-CN">标准 Ethernet RoCEv2（400G/800G）</span><span data-lang="en">Standard Ethernet RoCEv2 (400G/800G)</span></th>
+                <th><span data-lang="zh-CN">增强型 AI 以太网（Spectrum-X / UEC / Maia Superpod）</span><span data-lang="en">Enhanced AI Ethernet (Spectrum-X / UEC / Maia Superpod)</span></th>
+                <th><span data-lang="zh-CN">InfiniBand（NDR 400G / XDR 800G）</span><span data-lang="en">InfiniBand (NDR 400G / XDR 800G)</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong><span data-lang="zh-CN">最佳适用负载</span><span data-lang="en">Primary Workload Fit</span></strong></td>
+                <td>
+                  <span data-lang="zh-CN">在线大模型/生视频推理、PD 分离单向 RDMA KV 传输、≤512 卡微调与后训练、高性能并行存储融合网</span>
+                  <span data-lang="en">LLM/Video inference, PD disaggregated RDMA KV transfer, ≤512-GPU SFT/RL, converged storage fabric</span>
+                </td>
+                <td>
+                  <span data-lang="zh-CN">多租户智算云、千卡至万卡混合训推大池（如微软 <code>Maia 300</code> 12,288 卡两层以太网超节点）</span>
+                  <span data-lang="en">Multi-tenant AI cloud, 1K–10K+ mixed training/inference pools (e.g., <code>Maia 300</code> 12,288-accel 2-tier Ethernet superpod)</span>
+                </td>
+                <td>
+                  <span data-lang="zh-CN">单租户千卡至万卡极限同步预训练、重度 MoE <code>All-to-All</code> 专家并行（<code>IBGDA</code>）、Turnkey 超算</span>
+                  <span data-lang="en">Single-tenant 1K–10K+ tightly synchronous frontier pretraining, heavy MoE <code>All-to-All</code> (<code>IBGDA</code>), turnkey HPC</span>
+                </td>
+              </tr>
+              <tr>
+                <td><strong><span data-lang="zh-CN">无损防丢包机制</span><span data-lang="en">Lossless Flow Control</span></strong></td>
+                <td>
+                  <span data-lang="zh-CN"><strong>PFC（802.1Qbb）</strong>无损优先级队列 + <strong>ECN 水位标记 / DCQCN</strong> 端到端降速 + PFC 死锁看门狗（需精细调优）</span>
+                  <span data-lang="en"><strong>PFC (802.1Qbb)</strong> lossless queue + <strong>ECN marking / DCQCN</strong> rate control + PFC deadlock watchdog</span>
+                </td>
+                <td>
+                  <span data-lang="zh-CN">硬件遥测端到端拥塞控制 + 64B 包裁剪（Packet Trimming）+ SuperNIC 硬件乱序直写（Direct Data Placement）</span>
+                  <span data-lang="en">Hardware telemetry congestion control + 64B Packet Trimming + SuperNIC out-of-order Direct Data Placement</span>
+                </td>
+                <td>
+                  <span data-lang="zh-CN"><strong>物理/链路层原生基于信用（Credit-based）无损流控</strong>，天然零丢包、零 PFC 暂停风暴风险</span>
+                  <span data-lang="en"><strong>Native link-layer credit-based flow control</strong>—inherently lossless with zero PFC pause storm risk</span>
+                </td>
+              </tr>
+              <tr>
+                <td><strong><span data-lang="zh-CN">负载均衡与路由</span><span data-lang="en">Load Balancing &amp; Routing</span></strong></td>
+                <td>
+                  <span data-lang="zh-CN"><strong>轨道优化叶脊拓扑（Rail-Optimized）</strong> + 交换机动态负载均衡（<code>DLB</code>）消除静态五元组 ECMP 大象流哈希极化</span>
+                  <span data-lang="en"><strong>Rail-Optimized Leaf-Spine</strong> + switch Dynamic Load Balancing (<code>DLB</code>) overcoming static 5-tuple ECMP hash collisions</span>
+                </td>
+                <td>
+                  <span data-lang="zh-CN"><strong>逐包动态喷洒（Packet Spraying）</strong>跑满全部上行脊链路带宽，多租户混合负载吞吐提升高达 1.6×</span>
+                  <span data-lang="en"><strong>Packet-by-packet spraying</strong> across all Spine links; up to 1.6× higher throughput under noisy multi-tenant loads</span>
+                </td>
+                <td>
+                  <span data-lang="zh-CN">原生硬件级细粒度 <strong>Adaptive Routing</strong> + <strong>SHARP</strong> 交换机网内浮点集合归约（集合通信提速 10%–20%+）</span>
+                  <span data-lang="en">Native hardware <strong>Adaptive Routing</strong> + <strong>SHARP</strong> in-network collective reduction (+10%–20%+ collective throughput)</span>
+                </td>
+              </tr>
+              <tr>
+                <td><strong><span data-lang="zh-CN">云原生服务网格与周边协同</span><span data-lang="en">Cloud-Native &amp; Upstream Integration</span></strong></td>
+                <td colspan="3">
+                  <span data-lang="zh-CN">复用标准 BGP/EVPN/SONiC 多租户隔离体系；在南北向与智能体东西向服务层配合 <strong><code>AKS Fleet Cilium</code>（<code>GA</code>）</strong> 与 <strong><code>AKS Agent Grid</code></strong> 治理微服务流量，并通过 <strong><code>Azure Catalyst</code>（<code>GA</code>）</strong> 将外围遗留单体应用与数据库现代化上云，打通低延迟数据供给闭环。</span>
+                  <span data-lang="en">Integrates seamlessly with BGP/EVPN/SONiC multi-tenant ops; pairs with <strong><code>AKS Fleet Cilium</code> (<code>GA</code>)</strong> &amp; <strong><code>AKS Agent Grid</code></strong> at the service mesh layer, while <strong><code>Azure Catalyst</code> (<code>GA</code>)</strong> modernizes legacy upstream apps onto Azure to feed low-latency agent pipelines.</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Clean Reference Button to Qi Chen's AI Infra H5 Academy -->
+        <div class="card" style="margin-top:18px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+          <div>
+            <strong style="font-size:15.5px;display:block;margin-bottom:4px;">
+              <span data-lang="zh-CN">📚 延伸深潜：AI Infra 智算网络与硬件体系全景课程（Qi Chen H5 Academy）</span>
+              <span data-lang="en">📚 Deep-Dive Reference: AI Infra Hardware, RDMA/RoCEv2 &amp; Cluster Networking Academy</span>
+            </strong>
+            <span style="font-size:13.5px;color:var(--text-muted);">
+              <span data-lang="zh-CN">查阅完整的《InfiniBand vs Ethernet RoCEv2 选型决策》、《PFC 风暴防御与 ECN 水位调参》及《万卡轨道优化拓扑》交互式图解讲义。</span>
+              <span data-lang="en">Explore interactive deep dives on InfiniBand vs RoCEv2 architecture, PFC pause-storm prevention, ECN/DCQCN tuning, and 10K-GPU Rail-Optimized topologies.</span>
+            </span>
+          </div>
+          <a href="https://turbo998.github.io/h5-academy/index.html" target="_blank" rel="noopener noreferrer" class="btn btn-teal">
+            <span data-lang="zh-CN">打开 AI Infra H5 学院 ↗</span>
+            <span data-lang="en">Open AI Infra H5 Academy ↗</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Chapter Pager -->
+    <nav class="chapter-pager" aria-label="Chapter Pagination">
+      <a href="04-foundry-engineering.html" class="pager-card prev">
+        <span class="pager-dir">← STAGE 04</span>
+        <span class="pager-name">
+          <span data-lang="zh-CN">智能体工程运行时</span>
+          <span data-lang="en">Agent Runtime Engineering</span>
+        </span>
+      </a>
+      <a href="06-agent-governance.html" class="pager-card next">
+        <span class="pager-dir">STAGE 06 →</span>
+        <span class="pager-name">
+          <span data-lang="zh-CN">全域智能体治理</span>
+          <span data-lang="en">Enterprise Agent Governance</span>
+        </span>
+      </a>
+    </nav>
+  </main>
+
+  <script src="assets/ignite-recap.js"></script>
+  <script>
+    (function () {
+      "use strict";
+
+      function getLang() {
+        return document.documentElement.lang === "en" ? "en" : "zh-CN";
+      }
+
+      function syncSelectOptions() {
+        const lang = getLang();
+        const isVideo = ["videodit30", "videodit14"].includes(document.getElementById("vram-preset").value);
+        const specSel = document.getElementById("vram-spec");
+        const specLabels = {
+          low: isVideo
+            ? { zh: "720p · 5s 视频 (24fps · ~32K 3D Tokens)", en: "720p · 5s Clip (24fps · ~32K 3D Tokens)" }
+            : { zh: "16K 上下文窗口 (标准工具轮次)", en: "16K Context Window (Standard Agent Turn)" },
+          mid: isVideo
+            ? { zh: "720p · 10s 视频 (24fps · ~65K 3D Tokens)", en: "720p · 10s Clip (24fps · ~65K 3D Tokens)" }
+            : { zh: "64K 上下文窗口 (深度 RAG + 多工具)", en: "64K Context Window (Deep RAG + MCP)" },
+          high: isVideo
+            ? { zh: "1080p · 10s 高清视频 (24fps · ~122K 3D Tokens)", en: "1080p · 10s HD Clip (24fps · ~122K 3D Tokens)" }
+            : { zh: "128K 超长上下文 (代码库 / 全卷合同)", en: "128K Long Context (Repo / Full Contract)" }
+        };
+        Array.from(specSel.options).forEach((opt) => {
+          const item = specLabels[opt.value];
+          if (item) {
+            opt.dataset.zh = item.zh;
+            opt.dataset.en = item.en;
+          }
+        });
+
+        document.querySelectorAll("select option[data-zh]").forEach((opt) => {
+          opt.textContent = lang === "en" ? opt.dataset.en : opt.dataset.zh;
+        });
+      }
+
+      /* ----------------------------------------------------------------------
+         Simulator A: Token API TTFT & TPOT Optimizer
+         ---------------------------------------------------------------------- */
+      function updateTokenSim() {
+        const lang = getLang();
+        const promptK = Number(document.getElementById("tok-prompt").value);
+        const outTok = Number(document.getElementById("tok-output").value);
+        const conc = Number(document.getElementById("tok-conc").value);
+        const useKv = document.getElementById("opt-chk-kv").checked;
+        const usePd = document.getElementById("opt-chk-pd").checked;
+        const usePtu = document.getElementById("opt-chk-ptu").checked;
+
+        document.getElementById("tok-prompt-val").textContent = promptK + "K";
+        document.getElementById("tok-output-val").textContent = String(outTok);
+        document.getElementById("tok-conc-val").textContent = String(conc);
+
+        const attnScale = 1 + (promptK / 64) * 0.42;
+
+        // Baseline (Unoptimized colocated PayGo)
+        const basePrefillComputeMs = promptK * 24 * attnScale;
+        const baseQueueMs = Math.pow(conc / 14, 1.35) * (promptK * 5.2) + 95;
+        const baseTtft = Math.round(basePrefillComputeMs + baseQueueMs);
+        const baseInterference = 1 + Math.min(2.3, (conc / 26) * (promptK / 28));
+        const baseTpot = (21.5 + conc * 0.16) * baseInterference;
+        const baseE2e = (baseTtft + outTok * baseTpot) / 1000;
+
+        // Optimized Calculation
+        const effPromptK = useKv ? (promptK * 0.20 + promptK * 0.80 * 0.06) : promptK;
+        const effAttnScale = useKv ? (1 + (promptK / 64) * 0.14) : attnScale;
+        const ptuComputeBoost = usePtu ? 0.76 : 1.0;
+
+        let optQueueMs = Math.pow(conc / (usePd ? 28 : 14), 1.25) * (effPromptK * (usePd ? 2.1 : 4.8));
+        if (usePtu) optQueueMs *= 0.28;
+        const rdmaHandoffMs = usePd ? Math.round(8 + promptK * 0.18) : 0;
+
+        const optTtft = Math.max(65, Math.round((effPromptK * 24 * effAttnScale * ptuComputeBoost) + optQueueMs + rdmaHandoffMs + 38));
+
+        const pdInterference = usePd ? (1.03 + conc * 0.0012) : (1 + Math.min(2.1, (conc / 28) * (effPromptK / 24)));
+        const hbmFactor = usePtu ? 0.58 : 1.0; // Maia 300 2.5x HBM bandwidth + dedicated PTU slice
+        const optTpot = Math.max(8.5, (20.5 + conc * (usePd ? 0.055 : 0.14)) * pdInterference * hbmFactor);
+
+        const optE2e = (optTtft + outTok * optTpot) / 1000;
+
+        // P99 Tail Stall Reduction
+        let stallReduction = 0;
+        if (usePd) stallReduction += 56;
+        if (useKv) stallReduction += 21;
+        if (usePtu) stallReduction += 15;
+        stallReduction = Math.min(92, stallReduction);
+
+        const ttftSavedPct = Math.max(0, Math.round((1 - optTtft / baseTtft) * 100));
+        const tokPerSec = (1000 / optTpot).toFixed(1);
+
+        document.getElementById("res-ttft").textContent = optTtft.toLocaleString() + " ms";
+        document.getElementById("res-ttft-note").textContent = lang === "en"
+          ? (ttftSavedPct > 0 ? `▼ ${ttftSavedPct}% vs ${baseTtft.toLocaleString()} ms baseline` : "Unoptimized baseline")
+          : (ttftSavedPct > 0 ? `较基线 ${baseTtft.toLocaleString()} ms 降低 ${ttftSavedPct}%` : "当前为未优化混部基线");
+
+        document.getElementById("res-tpot").textContent = optTpot.toFixed(1) + " ms/tok";
+        document.getElementById("res-tpot-note").textContent = lang === "en"
+          ? `~${tokPerSec} tok/s per stream (Base: ${baseTpot.toFixed(1)} ms)`
+          : `单流约 ${tokPerSec} tok/s（基线 ${baseTpot.toFixed(1)} ms）`;
+
+        document.getElementById("res-p99").textContent = stallReduction > 0 ? `-${stallReduction}%` : "0%";
+        document.getElementById("res-p99-note").textContent = lang === "en"
+          ? (usePd ? "PD split isolates decode streams" : "Enable PD split to stop decode stalls")
+          : (usePd ? "PD 分离已隔离流式解码抖动" : "建议开启 PD 分离消除解码卡顿");
+
+        document.getElementById("res-e2e").textContent = optE2e.toFixed(2) + " s";
+        document.getElementById("res-e2e-note").textContent = lang === "en"
+          ? `Baseline E2E: ${baseE2e.toFixed(2)} s (${(baseE2e / optE2e).toFixed(1)}× faster)`
+          : `未优化基线 ${baseE2e.toFixed(2)} s（提速 ${(baseE2e / optE2e).toFixed(1)}×）`;
+
+        const ttftWidth = Math.min(100, Math.max(4, ((optTtft / 1000) / baseE2e) * 100));
+        const decWidth = Math.min(100 - ttftWidth, Math.max(5, (((outTok * optTpot) / 1000) / baseE2e) * 100));
+        document.getElementById("bar-ttft").style.width = ttftWidth.toFixed(1) + "%";
+        document.getElementById("bar-decode").style.width = decWidth.toFixed(1) + "%";
+        document.getElementById("res-speedup-label").textContent = lang === "en"
+          ? `Optimized ${(optE2e).toFixed(2)}s / Baseline ${baseE2e.toFixed(2)}s`
+          : `优化后 ${optE2e.toFixed(2)}s / 混部基线 ${baseE2e.toFixed(2)}s`;
+
+        // Partner SA Commercial & Architectural Advice
+        const estTpmM = ((conc * (promptK * 1000 + outTok) * 2.2) / 1e6).toFixed(2);
+        const recommendPtu = conc >= 24 || promptK >= 48;
+        const advTitle = document.getElementById("tok-advice-title");
+        const advBody = document.getElementById("tok-advice-body");
+
+        if (lang === "en") {
+          advTitle.textContent = `🧭 Partner SA Sizing Advice (~${estTpmM}M Peak TPM Workload)`;
+          advBody.innerHTML = recommendPtu
+            ? `At <strong>${conc} concurrent sessions × ${promptK}K context</strong> (~<code>${estTpmM}M TPM</code>), bursty PayGo traffic faces noisy-neighbor queuing. Anchor baseline traffic on <strong>Foundry Provisioned Throughput (PTU)</strong> (backed by <code>Maia 300</code> high-HBM decode pools) with <strong>PayGo Spillover</strong> via Foundry AI Gateway, and offload pre-routing to <code>Microsoft-Decision-1.1</code> (<code>$0</code> output tokens).`
+            : `At <strong>${conc} concurrent sessions × ${promptK}K context</strong> (~<code>${estTpmM}M TPM</code>), <strong>Foundry Global Standard (PayGo)</strong> with strict <strong>Immutable Prefix Caching</strong> is the most cost-effective starting point. Reserve PTU once sustained hourly utilization exceeds 55%–60% or P99 voice/UX SLAs tighten.`;
+        } else {
+          advTitle.textContent = `🧭 Partner SA 架构选型建议（预估峰值负载 ~${estTpmM}M TPM）`;
+          advBody.innerHTML = recommendPtu
+            ? `当前处于 <strong>${conc} 并发会话 × ${promptK}K 长上下文</strong>（峰值约 <code>${estTpmM}M TPM</code>）生产高压区间，纯按量 PayGo 极易触发多租户排队抖动。建议通过 Foundry AI Gateway 采用 <strong>“PTU 预置吞吐保底稳态流量 + PayGo 弹性溢出削峰”</strong> 混合部署，配合后端 <code>Maia 300</code> 高带宽解码池，并在入口前置 <code>Microsoft-Decision-1.1</code>（<code>$0</code> 输出 Token）拦截简单分流轮次。`
+            : `当前处于 <strong>${conc} 并发会话 × ${promptK}K 上下文</strong>（约 <code>${estTpmM}M TPM</code>）轻量或波峰波谷明显区间，优先采用 <strong>Foundry Global Standard (PayGo)</strong> 并严格落实 <strong>80%+ 前缀缓存排布</strong> 即可获得极佳性价比；待稳态小时级容量利用率超过 55%–60% 时再平滑切换 PTU。`;
+        }
+      }
+
+      /* ----------------------------------------------------------------------
+         Simulator B: GPU VRAM Capacity & Parallelism Sizing Calculator
+         ---------------------------------------------------------------------- */
+      const GPU_SKUS = {
+        h100: { name: "H100", mem: 80, perNode: 8, rackDomain: 8 },
+        h200: { name: "H200", mem: 141, perNode: 8, rackDomain: 8 },
+        b200: { name: "B200", mem: 192, perNode: 8, rackDomain: 8 },
+        gb300: { name: "GB300", mem: 288, perNode: 8, rackDomain: 72 },
+        mi350p: { name: "MI350P", mem: 288, perNode: 8, rackDomain: 8 }
+      };
+
+      const BYTES_MAP = { bf16: 2.0, fp8: 1.0, int4: 0.5 };
+
+      function roundValidTopology(rawGpus, rackDomain) {
+        const tiers = rackDomain === 72
+          ? [1, 2, 4, 8, 16, 24, 32, 48, 72, 144]
+          : [1, 2, 4, 8, 16, 24, 32, 48, 64, 128];
+        for (let i = 0; i < tiers.length; i++) {
+          if (tiers[i] >= rawGpus) return tiers[i];
+        }
+        return Math.ceil(rawGpus / 8) * 8;
+      }
+
+      function updateVramSim() {
+        syncSelectOptions();
+        const lang = getLang();
+        const preset = document.getElementById("vram-preset").value;
+        const prec = document.getElementById("vram-precision").value;
+        const spec = document.getElementById("vram-spec").value;
+        const batch = Number(document.getElementById("vram-batch").value);
+        const gpuKey = document.getElementById("vram-gpu").value;
+
+        document.getElementById("vram-batch-val").textContent = String(batch);
+
+        const wBytes = BYTES_MAP[prec];
+        const kvBytes = prec === "bf16" ? 2.0 : 1.0; // FP8 KV cache used with FP8/INT4 serving
+        const seqTokens = spec === "low" ? 16384 : (spec === "mid" ? 65536 : 131072);
+        const gpu = GPU_SKUS[gpuKey];
+
+        let weightsGB = 0;
+        let kvOrActGB = 0;
+        let isVideo = false;
+        let partnerManagedName = "";
+
+        if (preset === "deepseek671") {
+          weightsGB = 671 * wBytes;
+          // DeepSeek MLA: 61 layers * 576 latent KV dim
+          kvOrActGB = (batch * seqTokens * 61 * 576 * kvBytes) / 1e9;
+          partnerManagedName = "Fireworks AI (DeepSeek V3.2 / V4 Pro) / Baseten (DeepSeek V4.1-Flash)";
+        } else if (preset === "kimi1t") {
+          weightsGB = 1012 * wBytes; // ~1T MoE + multimodal vision tower
+          kvOrActGB = (batch * seqTokens * 72 * 640 * kvBytes) / 1e9 + 4.5;
+          partnerManagedName = "Baseten on Foundry (Kimi-K3) / Fireworks AI (Kimi K2.5 / K2.6)";
+        } else if (preset === "dense70") {
+          weightsGB = 70 * wBytes;
+          // Standard GQA: 80 layers * 2 (K+V) * 8 kv_heads * 128 dim = 163,840 elems/token
+          kvOrActGB = (batch * seqTokens * 163840 * kvBytes) / 1e9;
+          partnerManagedName = "Foundry Serverless / Model Router";
+        } else if (preset === "videodit30") {
+          isVideo = true;
+          // 30B DiT + 12.5B Text/VLM + 3D Causal VAE (VAE/Text stay >=1B precision for visual quality)
+          weightsGB = 30 * wBytes + 12.5 * Math.max(1.0, wBytes);
+          const perStreamSpike = spec === "low" ? 26 : (spec === "mid" ? 48 : 86);
+          const precActFactor = prec === "bf16" ? 1.18 : 1.0;
+          // Concurrent streams scaled (with Ulysses/Ring memory sharing across parallel group)
+          kvOrActGB = perStreamSpike * precActFactor * (1 + (batch - 1) * 0.55);
+          partnerManagedName = "fal on Foundry (Kling v3 Pro / LTX-2.5 Pro / MiniMax H3 Max)";
+        } else if (preset === "videodit14") {
+          isVideo = true;
+          weightsGB = 14 * wBytes + 9.5 * Math.max(1.0, wBytes);
+          const perStreamSpike = spec === "low" ? 16 : (spec === "mid" ? 30 : 56);
+          const precActFactor = prec === "bf16" ? 1.18 : 1.0;
+          kvOrActGB = perStreamSpike * precActFactor * (1 + (batch - 1) * 0.52);
+          partnerManagedName = "fal on Foundry (LTX-2.5 Fast / MiniMax H3 Turbo)";
+        }
+
+        const overheadGB = (weightsGB + kvOrActGB) * 0.15;
+        const totalVram = weightsGB + kvOrActGB + overheadGB;
+
+        // Require at least ~8% safety margin per GPU to avoid runtime CUDA OOM
+        const rawGpus = Math.max(1, Math.ceil(totalVram / (gpu.mem * 0.91)));
+        const validGpus = roundValidTopology(rawGpus, gpu.rackDomain);
+        const clusterCap = validGpus * gpu.mem;
+        const headroomPct = Math.max(0, ((clusterCap - totalVram) / clusterCap) * 100);
+        const nodes = Math.ceil(validGpus / gpu.perNode);
+
+        document.getElementById("vram-total-num").textContent = Math.round(totalVram).toLocaleString() + " GB";
+        document.getElementById("vram-breakdown-note").textContent = lang === "en"
+          ? `W: ${weightsGB.toFixed(0)}G + ${isVideo ? "3D-Act" : "KV"}: ${kvOrActGB.toFixed(0)}G + Ovh: ${overheadGB.toFixed(0)}G`
+          : `权重 ${weightsGB.toFixed(0)}G + ${isVideo ? "时空激活" : "KV"} ${kvOrActGB.toFixed(0)}G + 开销 ${overheadGB.toFixed(0)}G`;
+
+        document.getElementById("vram-gpus-num").textContent = `${validGpus} × ${gpu.name}`;
+        document.getElementById("vram-cluster-cap").textContent = lang === "en"
+          ? `${nodes} Node${nodes > 1 ? "s" : ""} · ${clusterCap.toLocaleString()} GB Aggregate HBM`
+          : `${nodes} 台计算节点 · 总显存 ${clusterCap.toLocaleString()} GB`;
+
+        document.getElementById("vram-headroom-num").textContent = headroomPct.toFixed(1) + "%";
+        document.getElementById("vram-verdict-note").textContent = lang === "en"
+          ? `${Math.round(clusterCap - totalVram).toLocaleString()} GB free HBM buffer`
+          : `剩余 ${Math.round(clusterCap - totalVram).toLocaleString()} GB 安全显存余量`;
+
+        let domainText = "";
+        let fabricNote = "";
+        if (validGpus <= 8) {
+          domainText = lang === "en" ? "Single-Node NVLink" : "单机 NVLink 域内闭环";
+          fabricNote = lang === "en" ? "Zero inter-node RDMA traffic needed" : "无需跨节点网络通信，延迟最低";
+        } else if (gpuKey === "gb300" && validGpus <= 72) {
+          domainText = lang === "en" ? "NVL72 Rack Scale-Up" : "GB300 NVL72 机柜内互连";
+          fabricNote = lang === "en" ? `${validGpus} GPUs inside 72-GPU NVLink domain` : `${validGpus} 卡全部处于单机柜 NVLink 高速域`;
+        } else {
+          domainText = lang === "en" ? `Multi-Node (${nodes} Nodes)` : `跨节点分布式 (${nodes} 节点)`;
+          fabricNote = lang === "en" ? "Requires 400G/800G RoCEv2 or InfiniBand" : "必须启用 400G/800G RoCEv2 或 IB RDMA";
+        }
+        document.getElementById("vram-domain-num").textContent = domainText;
+        document.getElementById("vram-fabric-note").textContent = fabricNote;
+
+        // Stacked Bar Update
+        const wPct = Math.min(100, (weightsGB / clusterCap) * 100);
+        const kPct = Math.min(100 - wPct, (kvOrActGB / clusterCap) * 100);
+        const oPct = Math.min(100 - wPct - kPct, (overheadGB / clusterCap) * 100);
+        document.getElementById("vbar-weights").style.width = wPct.toFixed(1) + "%";
+        document.getElementById("vbar-kv").style.width = kPct.toFixed(1) + "%";
+        document.getElementById("vbar-ovh").style.width = oPct.toFixed(1) + "%";
+        document.getElementById("vram-bar-caption").textContent = `${Math.round(totalVram).toLocaleString()} GB / ${clusterCap.toLocaleString()} GB`;
+
+        document.getElementById("leg-weights").textContent = lang === "en"
+          ? `Weights: ${weightsGB.toFixed(0)} GB`
+          : `模型权重: ${weightsGB.toFixed(0)} GB`;
+        document.getElementById("leg-kv").textContent = lang === "en"
+          ? `${isVideo ? "3D Spatio-Temporal & VAE" : "KV Cache"}: ${kvOrActGB.toFixed(0)} GB`
+          : `${isVideo ? "3D 时空潜变量与 VAE 尖峰" : "KV 缓存"}: ${kvOrActGB.toFixed(0)} GB`;
+        document.getElementById("leg-ovh").textContent = lang === "en"
+          ? `15% Runtime Overhead: ${overheadGB.toFixed(0)} GB`
+          : `15% 运行时开销: ${overheadGB.toFixed(0)} GB`;
+        document.getElementById("leg-free").textContent = lang === "en"
+          ? `HBM Headroom: ${Math.max(0, clusterCap - totalVram).toFixed(0)} GB`
+          : `HBM 安全余量: ${Math.max(0, clusterCap - totalVram).toFixed(0)} GB`;
+
+        // Parallelism & Breakeven Guidance
+        const pTitle = document.getElementById("vram-parallel-title");
+        const pBody = document.getElementById("vram-parallel-body");
+        const bBody = document.getElementById("vram-breakeven-body");
+
+        let parallelSpecZh = "";
+        let parallelSpecEn = "";
+
+        if (isVideo) {
+          const spDeg = Math.min(8, validGpus);
+          const dpReplicas = Math.max(1, Math.floor(validGpus / spDeg));
+          parallelSpecZh = `推荐并行策略：启用 <strong>USP 混合序列并行（<code>Ulysses All-to-All</code> + <code>Ring Attention</code>，并行度=${spDeg}）+ Tiled 3D-VAE 分块解码</strong>${dpReplicas > 1 ? ` × <code>DP=${dpReplicas}</code> 多流副本` : ""}，将十万级 3D 时空 Token 激活显存均摊至多卡 HBM，同时并发缩短单条视频生成等待时间。`;
+          parallelSpecEn = `Recommended Parallelism: Use <strong>Unified Sequence Parallelism (<code>Ulysses All-to-All</code> + <code>Ring Attention</code>, degree=${spDeg}) + Tiled 3D-VAE</strong>${dpReplicas > 1 ? ` × <code>DP=${dpReplicas}</code> stream replicas` : ""} to shard 3D spatio-temporal activations across GPUs and slash per-clip generation latency.`;
+        } else if (validGpus <= 8) {
+          parallelSpecZh = `推荐并行策略：单节点内直接采用 <strong><code>TP=${validGpus}</code>（NVLink 高速张量并行）</strong>${preset.startsWith("deepseek") || preset.startsWith("kimi") ? ` + 节点内 <code>EP=${validGpus}</code> 专家切分` : ""}，全部集合通信封闭在 900–1,800 GB/s NVSwitch 域内完成。`;
+          parallelSpecEn = `Recommended Parallelism: Run intra-node <strong><code>TP=${validGpus}</code> over NVLink</strong>${preset.startsWith("deepseek") || preset.startsWith("kimi") ? ` + intra-node <code>EP=${validGpus}</code> expert sharding` : ""}, keeping 100% of blocking collectives inside high-speed NVSwitch.`;
+        } else {
+          parallelSpecZh = `推荐并行策略：节点内锁定 <strong><code>TP=8</code>（NVLink）</strong>，跨 ${nodes} 台节点启用 <strong><code>EP=${validGpus}</code> 专家并行（DeepEP / RDMA All-to-All）或 <code>PP=${nodes}</code> 流水线并行</strong>，底层配置轨道优化 400G/800G RoCEv2（PFC + ECN/DCQCN）或 InfiniBand。`;
+          parallelSpecEn = `Recommended Parallelism: Confine <strong><code>TP=8</code> inside each node's NVLink domain</strong>, and scale across ${nodes} nodes via <strong><code>EP=${validGpus}</code> Expert Parallelism (DeepEP RDMA All-to-All) or <code>PP=${nodes}</code></strong> over Rail-Optimized 400G/800G RoCEv2 or InfiniBand.`;
+        }
+
+        if (lang === "en") {
+          pTitle.textContent = "🔀 Recommended Parallelism & Managed API vs Self-Hosted AKS Breakeven";
+          pBody.innerHTML = parallelSpecEn;
+          bBody.innerHTML = `<strong>💰 Partner SA Breakeven Tip:</strong> Provisioning <code>${validGpus} × ${gpu.name}</code> dedicated GPUs on <code>Foundry on AKS</code> only beats serverless pricing once <strong>24×7 steady GPU duty cycle exceeds ~58%–65%</strong> (or when strict VNet/<code>VR72</code> confidential sovereignty or custom SFT weights apply). Below that threshold—or during rapid model upgrades—call <strong><code>${partnerManagedName}</code></strong> directly on Microsoft Foundry with zero idle GPU waste!`;
+        } else {
+          pTitle.textContent = "🔀 并行切分处方与「托管 API vs AKS 自建 GPU」盈亏平衡铁律";
+          pBody.innerHTML = parallelSpecZh;
+          bBody.innerHTML = `<strong>💰 Partner SA 商业选型拐点：</strong>在 <code>Foundry on AKS</code> 专属拉起 <code>${validGpus} × ${gpu.name}</code> 仅当 <strong>7×24 小时稳态算力饱和度稳定超过 58%–65%</strong>（或存在严格私有 VNet 隔离 / <code>VR72</code> 机密计算 / 私有微调权重合规要求）时具备 TCO 优势；在业务爬坡期、波峰波谷明显或需快速追新模型时，直接在 Foundry 调用 <strong><code>${partnerManagedName}</code></strong> 可实现零空闲显卡浪费！`;
+        }
+      }
+
+      // Bind Event Listeners
+      ["tok-prompt", "tok-output", "tok-conc", "opt-chk-kv", "opt-chk-pd", "opt-chk-ptu"].forEach((id) => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener("input", updateTokenSim);
+        if (el) el.addEventListener("change", updateTokenSim);
+      });
+
+      ["vram-preset", "vram-precision", "vram-spec", "vram-batch", "vram-gpu"].forEach((id) => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener("input", updateVramSim);
+        if (el) el.addEventListener("change", updateVramSim);
+      });
+
+      window.addEventListener("ignite:langchange", () => {
+        updateTokenSim();
+        updateVramSim();
+      });
+
+      // Initial render
+      updateTokenSim();
+      updateVramSim();
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,2087 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" data-mode="read">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>01 Unified Agent Entry | The Enterprise Agentic AI Journey</title>
+  <link rel="stylesheet" href="assets/ignite-recap.css" />
+  <style>
+    /* Stage 01 Scoped Interactive Enhancements (Zero External Dependencies) */
+    .mode-selector-bar {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+    .mode-pick-btn {
+      text-align: left;
+      padding: 13px 15px;
+      border-radius: 13px;
+      border: 1.5px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      cursor: pointer;
+      transition: all 0.16s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .mode-pick-btn:hover {
+      border-color: var(--accent);
+      transform: translateY(-1px);
+    }
+    .mode-pick-btn.active {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+      box-shadow: 0 8px 24px rgba(14, 165, 233, 0.16);
+    }
+    .mode-pick-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      width: 100%;
+    }
+    .mode-pick-name {
+      font-family: var(--font-mono);
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--text);
+    }
+    .mode-pick-btn.active .mode-pick-name {
+      color: var(--accent);
+    }
+    .mode-pick-tag {
+      font-size: 12.5px;
+      color: var(--text-muted);
+      line-height: 1.35;
+    }
+    .svg-node-interactive {
+      cursor: pointer;
+      transition: opacity 0.18s ease, filter 0.18s ease;
+    }
+    .svg-node-interactive:hover {
+      filter: brightness(1.12);
+    }
+    .svg-node-interactive.dimmed {
+      opacity: 0.42;
+    }
+    .svg-node-interactive.focused rect.node-box {
+      stroke-width: 2.8;
+    }
+    .callout-split {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      margin: 16px 0 20px;
+    }
+    .milestone-card {
+      border-radius: 15px;
+      padding: 18px 20px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      position: relative;
+    }
+    .milestone-card.dec01 {
+      border-left: 4px solid var(--green);
+    }
+    .milestone-card.fy27q3 {
+      border-left: 4px solid var(--amber);
+    }
+    .milestone-date {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .preset-chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .preset-chip {
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text-muted);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .preset-chip:hover,
+    .preset-chip.active {
+      border-color: var(--teal);
+      background: var(--teal-soft);
+      color: var(--teal);
+    }
+    .advisor-output-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 14px;
+    }
+    .advisor-card {
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: var(--surface);
+      padding: 16px 18px;
+    }
+    .advisor-card h4 {
+      margin: 0 0 8px;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .advisor-card ul {
+      margin: 0;
+      padding-left: 18px;
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+    .advisor-card li {
+      margin-bottom: 6px;
+    }
+    .ms-arch-board code {
+      background: #f1f5f9;
+      border-color: #cbd5e1;
+      color: #0f172a;
+      padding: 1px 5px;
+      font-size: 0.88em;
+    }
+    .ms-arch-zoom-btn[aria-pressed="true"] {
+      border-color: #0067b8;
+      background: #eff6ff;
+      color: #0067b8;
+    }
+    .ms-arch-board.is-zoomed .zoom-lbl-default,
+    .ms-arch-board:not(.is-zoomed) .zoom-lbl-active {
+      display: none;
+    }
+    .why-ms-box strong {
+      color: #0f172a;
+    }
+    .site-footer {
+      width: 100%;
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 var(--gutter) 48px;
+      color: var(--text-soft);
+      font-size: 12.5px;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    @media (max-width: 960px) {
+      .mode-selector-bar {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .callout-split,
+      .advisor-output-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    @media (max-width: 580px) {
+      .mode-selector-bar {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body data-title-zh="01 统一智能体入口｜企业级 Agentic AI 生产落地之旅" data-title-en="01 Unified Agent Entry | The Enterprise Agentic AI Journey">
+  <a class="skip-link" href="#main-content">
+    <span data-lang="zh-CN">跳至正文内容</span>
+    <span data-lang="en">Skip to main content</span>
+  </a>
+
+  <!-- Shared Sticky Site Header + 7-Item Journey Navigation -->
+  <header class="site-header">
+    <div class="header-top">
+      <a class="brand-group" href="index.en.html" style="text-decoration:none;">
+        <span class="brand-mark" aria-hidden="true">IG26</span>
+        <div>
+          <span class="brand-title">
+            <span data-lang="zh-CN">企业级 Agentic AI 生产落地之旅</span>
+            <span data-lang="en">The Enterprise Agentic AI Journey</span>
+          </span>
+          <span class="brand-sub">
+            <span data-lang="zh-CN">Microsoft Ignite 2026 解决方案架构师全景指南</span>
+            <span data-lang="en">Microsoft Ignite 2026 Solution Architect Blueprint</span>
+          </span>
+        </div>
+      </a>
+      <div class="header-controls">
+        <a class="ctrl-btn hub-return-link" href="../index.html">← Main Site</a>
+        <div class="header-search-wrap"><input type="search" class="header-search-input" placeholder="Search stages / services…" aria-label="Search Ignite 2026 stages and services"><div class="header-search-results" hidden></div></div>
+        <button type="button" class="ctrl-btn" data-action="toggle-mode">📖 Reading / 🎤 Stage</button>
+        <button type="button" class="ctrl-btn" data-action="toggle-cues"><span data-lang="zh-CN">🎙️ 宣讲提示</span><span data-lang="en">🎙️ Speaker Cues</span></button>
+        <button type="button" class="ctrl-btn" data-action="toggle-theme">🌗 <span class="theme-label">Light</span></button>
+        <a class="ctrl-btn language-link" href="01-copilot-entry.html" hreflang="zh-CN" data-action="toggle-lang">中文 / EN</a>
+      </div>
+    </div>
+    <div class="journey-bar">
+      <nav class="journey-nav" aria-label="Stage Navigation">
+        <a class="journey-link" href="index.en.html">
+          <span class="journey-step">00</span>
+          <span data-lang="zh-CN">全景架构蓝图</span>
+          <span data-lang="en">Architecture Blueprint</span>
+        </a>
+        <a class="journey-link" href="01-copilot-entry.en.html" aria-current="page">
+          <span class="journey-step">01</span>
+          <span data-lang="zh-CN">统一智能体入口</span>
+          <span data-lang="en">Unified Agent Entry</span>
+        </a>
+        <a class="journey-link" href="02-web-iq-context.en.html">
+          <span class="journey-step">02</span>
+          <span data-lang="zh-CN">外部实时上下文</span>
+          <span data-lang="en">Live World Context</span>
+        </a>
+        <a class="journey-link" href="03-fabric-ontology.en.html">
+          <span class="journey-step">03</span>
+          <span data-lang="zh-CN">企业数据本体</span>
+          <span data-lang="en">Enterprise Data Ontology</span>
+        </a>
+        <a class="journey-link" href="04-foundry-engineering.en.html">
+          <span class="journey-step">04</span>
+          <span data-lang="zh-CN">智能体工程运行时</span>
+          <span data-lang="en">Agent Runtime Engineering</span>
+        </a>
+        <a class="journey-link" href="05-ai-infra-optimization.en.html">
+          <span class="journey-step">05</span>
+          <span data-lang="zh-CN">推理基础设施优化</span>
+          <span data-lang="en">Inference Infra Optimization</span>
+        </a>
+        <a class="journey-link" href="06-agent-governance.en.html">
+          <span class="journey-step">06</span>
+          <span data-lang="zh-CN">全域智能体治理</span>
+          <span data-lang="en">Enterprise Agent Governance</span>
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main-content" class="page-main">
+    <!-- ==================== HERO PANEL ==================== -->
+    <section class="hero-panel" aria-labelledby="hero-heading">
+      <div class="hero-grid">
+        <div>
+          <p class="eyebrow">STAGE 01 · UNIFIED AGENT ENTRY</p>
+          <h1 id="hero-heading" class="hero-title">
+            <span data-lang="zh-CN">统一智能体入口</span>
+            <span data-lang="en">Unified Agent Entry</span>
+          </h1>
+          <p class="hero-lead">
+            <span data-lang="zh-CN">Microsoft 365 Copilot 已正式从“应用侧边栏聊天助手”跃迁为企业级 <strong>Agentic Work Operating System（智能体工作操作系统）</strong>——横向贯通 <code>Chat</code>、<code>Cowork</code>、<code>Autopilot</code>、<code>Code</code> 四大人机协同范式；同时自 <strong>2026-12-01</strong> 起通过 <strong><code>Copilot Standalone</code></strong> 解除 M365 基础坐席前置绑定，在不推翻现有飞书/钉钉/WPS/Google Workspace 底座的前提下抢占异构企业 AI 总入口。</span>
+            <span data-lang="en">Microsoft 365 Copilot evolves from an in-app sidebar assistant into an enterprise <strong>Agentic Work Operating System</strong> spanning four distinct collaboration paradigms (<code>Chat</code>, <code>Cowork</code>, <code>Autopilot</code>, <code>Code</code>), while <strong><code>Copilot Standalone</code></strong> removes the M365 base-seat prerequisite on <strong>December 1, 2026</strong> to win heterogeneous whitespace accounts without Day-1 rip-and-replace.</span>
+          </p>
+          <div class="pill-row">
+            <span class="pill"><span class="badge badge-ga">GA</span> Home + Auto</span>
+            <span class="pill"><span class="badge badge-ga">GA</span> Cowork + Office in Copilot</span>
+            <span class="pill"><span class="badge badge-frontier">Frontier</span> Autopilot + Workspaces</span>
+            <span class="pill"><span class="badge badge-frontier">Frontier</span> Copilot Code <span data-lang="zh-CN">(12月 GA)</span><span data-lang="en">(Dec GA)</span></span>
+            <span class="pill"><span class="badge badge-ga">GA</span> Managed Runtime</span>
+            <span class="pill"><span class="badge badge-ga">GA</span> Copilot SDK 2.0</span>
+          </div>
+        </div>
+
+        <aside class="hero-kpi-box" aria-label="Stage 01 Key Metrics">
+          <div style="font-size:12.5px;font-weight:800;color:var(--teal);text-transform:uppercase;letter-spacing:0.6px;">
+            <span data-lang="zh-CN">Ignite 2026 核心量化锚点</span>
+            <span data-lang="en">Ignite 2026 Core Anchors</span>
+          </div>
+          <div class="kpi-grid">
+            <div class="kpi-item">
+              <span class="kpi-val"><span data-lang="zh-CN">4 大作业模式</span><span data-lang="en">4 Work Modes</span></span>
+              <span class="kpi-lbl">Chat / Cowork / Autopilot / Code</span>
+            </div>
+            <div class="kpi-item">
+              <span class="kpi-val">~80%</span>
+              <span class="kpi-lbl">
+                <span data-lang="zh-CN">财富 500 强已采用 Cowork (GA)</span>
+                <span data-lang="en">Fortune 500 on Cowork (GA)</span>
+              </span>
+            </div>
+            <div class="kpi-item">
+              <span class="kpi-val">2026-12-01</span>
+              <span class="kpi-lbl">
+                <span data-lang="zh-CN">Copilot Standalone 解耦基础许可</span>
+                <span data-lang="en">Standalone Decouples M365 Prereq</span>
+              </span>
+            </div>
+            <div class="kpi-item">
+              <span class="kpi-val">6 Languages</span>
+              <span class="kpi-lbl">
+                <span data-lang="zh-CN">Copilot SDK 2.0 原生 Rust 运行时 GA</span>
+                <span data-lang="en">Copilot SDK 2.0 Native Rust (GA)</span>
+              </span>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <div class="speaker-cue">
+        <div class="speaker-cue-title">
+          <span>🎙️</span>
+          <span data-lang="zh-CN">下周四 Partner SA 宣讲开场话术（30 秒定调）</span>
+          <span data-lang="en">Thursday Partner SA Briefing — Opening Talk Track (30s Hook)</span>
+        </div>
+        <p data-lang="zh-CN">“各位架构师同事，今年 Ignite 2026 最核心的架构演进在于：<strong>企业采购的不再是孤立聊天侧边栏，而是统一的智能体工作入口与运行时平台</strong>。过去与单点 SaaS 助手比拼对话摘要易陷入同质化竞争；现在 Copilot 按任务复杂度划分为四个递进执行模式——同步问答（Chat）、多步任务编排（Cowork + 原生 Office 共编）、常驻异步代理（Autopilot）、以及自然语言应用构建与 ISV 内嵌（Code + SDK 2.0）。同时，12 月 1 日起 Copilot Standalone 解除 M365 基础坐席前置依赖，即使客户当前全员运行飞书、钉钉或 Google Workspace，也可在不迁移现有协作套件的前提下首日切入核心业务流程。”</p>
+        <p data-lang="en">"Fellow Solution Architects, the core architectural shift at Ignite 2026 is straightforward: <strong>enterprises are no longer adopting isolated sidebar chatbots—they are standardizing on a unified Agentic Work Entry &amp; Runtime layer</strong>. Copilot structures enterprise execution across four progressive tiers: synchronous Assist (Chat), multi-step Delegate (Cowork with native Office in Copilot), persistent Automate (Autopilot with Entra Agent ID), and Build/Embed (Code + Rust-based SDK 2.0). Starting December 1, Copilot Standalone removes the qualifying M365 base-seat prerequisite—enabling in-place integration across Google Workspace, Feishu, DingTalk, and Salesforce environments."</p>
+      </div>
+    </section>
+
+    <!-- ==================== STAGE 01 SOLUTION ARCHITECTURE SPLIT-BOARD ==================== -->
+    <section class="ms-arch-board" data-knowledge-atlas="ignite-2026" id="stage01-architecture" aria-labelledby="stage01-arch-heading">
+      <div class="ms-arch-topbar">
+        <div>
+          <span class="ms-arch-kicker">STAGE 01 SOLUTION ARCHITECTURE · EXECUTION MODES, FEDERATED SSO &amp; MCP MEDIATION</span>
+          <h2 id="stage01-arch-heading" class="ms-arch-heading">
+            <span data-lang="zh-CN">统一接入与任务编排架构：四级执行模式与异构系统联邦集成</span>
+            <span data-lang="en">Client &amp; Orchestration Architecture: Copilot Execution Modes &amp; Federated Integration</span>
+          </h2>
+        </div>
+        <div class="ms-arch-actions">
+          <a class="ms-arch-drawio-btn" href="drawio/01-copilot-entry.drawio" download="01-copilot-entry.drawio">
+            <span data-lang="zh-CN">📐 下载 .drawio 源文件</span>
+            <span data-lang="en">📐 Download .drawio</span>
+          </a>
+          <button type="button" class="ms-arch-zoom-btn" data-action="zoom-arch" aria-pressed="false">
+            <span class="zoom-lbl-default"><span data-lang="zh-CN">🔍 放大架构图</span><span data-lang="en">🔍 Zoom Diagram</span></span>
+            <span class="zoom-lbl-active"><span data-lang="zh-CN">🗗 恢复左右分栏</span><span data-lang="en">🗗 Restore Split View</span></span>
+          </button>
+        </div>
+      </div>
+
+      <div class="ms-arch-split">
+        <!-- Left: Solution Architecture Diagram -->
+        <div class="ms-arch-canvas">
+          <div class="arch-main-stack">
+            <!-- Top Zone: 01A Client Interaction & Execution Modes -->
+            <div class="arch-zone zone-purple">
+              <div class="arch-zone-head">
+                <span class="arch-zone-title">
+                  <span class="ms-logo" data-ms-icon="microsoft"></span>
+                  <span data-lang="zh-CN">01A · 交互接入与四级执行模式层（Execution Modes Layer）</span>
+                  <span data-lang="en">01A · Client Interaction &amp; Four Execution Modes</span>
+                </span>
+                <span class="arch-zone-caption">
+                  <span data-lang="zh-CN">Sync Q&amp;A · Artifact Co-Authoring · Async Autonomous · Embedded App</span>
+                  <span data-lang="en">Sync Q&amp;A · Artifact Co-Authoring · Async Autonomous · Embedded App</span>
+                </span>
+              </div>
+              <div class="arch-cards-3">
+                <div class="arch-svc svc-purple">
+                  <div class="arch-svc-head">
+                    <span class="ms-logo" data-ms-icon="copilot"></span>
+                    <span class="arch-svc-name">Copilot Chat &amp; Cowork</span>
+                    <span class="svc-tag ga">GA</span>
+                  </div>
+                  <p class="arch-svc-desc">
+                    <span data-lang="zh-CN"><code>Home+Auto</code> 意图路由 · <strong><code>Office in Copilot</code></strong> 原生生成结构化 Word/Excel/PPT 文档</span>
+                    <span data-lang="en"><code>Home+Auto</code> intent routing · <strong><code>Office in Copilot</code></strong> native structured Word/Excel/PPT authoring</span>
+                  </p>
+                </div>
+
+                <div class="arch-svc svc-amber">
+                  <div class="arch-svc-head">
+                    <span class="ms-logo" data-ms-icon="entra"></span>
+                    <span class="arch-svc-name">Copilot Autopilot</span>
+                    <span class="svc-tag front">Frontier</span>
+                  </div>
+                  <p class="arch-svc-desc">
+                    <span data-lang="zh-CN">绑定独立 <strong><code>Entra Agent ID</code></strong> 与专属邮箱主体，跨 Teams/Outlook 维护长周期任务状态</span>
+                    <span data-lang="en">Bound to dedicated <strong><code>Entra Agent ID</code></strong> &amp; mailbox principal for long-running stateful tasks</span>
+                  </p>
+                </div>
+
+                <div class="arch-svc svc-blue">
+                  <div class="arch-svc-head">
+                    <span class="ms-logo" data-ms-icon="github"></span>
+                    <span class="arch-svc-name">Copilot Code &amp; SDK 2.0</span>
+                    <span class="svc-tag front">GA · Front</span>
+                  </div>
+                  <p class="arch-svc-desc">
+                    <span data-lang="zh-CN">托管于受管 <strong><code>Managed Runtime</code></strong> 沙箱的内部微应用 · Rust 核心 6 语言嵌入式 SDK</span>
+                    <span data-lang="en">Internal apps hosted in <strong><code>Managed Runtime</code></strong> sandbox · Rust-core 6-language embedded SDK</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Connector Bar 1–2 -->
+            <div class="arch-flow-connector">
+              <span class="arch-flow-hop">
+                <span class="step-dot">1</span>
+                <span data-lang="zh-CN">↓ 同步会话请求 / 异步任务委托</span>
+                <span data-lang="en">↓ Sync Query / Async Task Delegation</span>
+              </span>
+              <span class="arch-flow-hop">
+                <span class="step-dot">2</span>
+                <span data-lang="zh-CN">↓ Standalone 独立订阅 + OIDC/SAML 身份联邦（2026-12-01）</span>
+                <span data-lang="en">↓ Standalone Licensing + OIDC/SAML Federation (2026-12-01)</span>
+              </span>
+            </div>
+
+            <!-- Middle Azure & Copilot Control Plane Outer Frame -->
+            <div class="arch-sub-frame">
+              <div class="arch-sub-bar">
+                <span class="arch-sub-title">
+                  <span class="ms-logo" data-ms-icon="azure"></span>
+                  <span>Microsoft Azure &amp; Copilot Mediation Plane</span>
+                </span>
+                <span class="arch-sub-pill">
+                  <span class="ms-logo" data-ms-icon="entra" style="width:14px;height:14px;"></span>
+                  <span>OAuth 2.0 OBO · Agent 365 · Purview DLP · Key Vault</span>
+                </span>
+              </div>
+
+              <div class="arch-cards-2">
+                <!-- Green Zone: Workflow Orchestration & Prebuilt MCP Connectors -->
+                <div class="arch-zone zone-green">
+                  <div class="arch-zone-head">
+                    <span class="arch-zone-title">
+                      <span data-lang="zh-CN">工作流编排与标准化连接器（Orchestration &amp; Connectors）</span>
+                      <span data-lang="en">Workflow Orchestration &amp; MCP Connectors</span>
+                    </span>
+                  </div>
+                  <div class="arch-col-stack">
+                    <div class="arch-svc svc-green">
+                      <div class="arch-svc-head">
+                        <span class="ms-logo" data-ms-icon="copilot-studio"></span>
+                        <span class="arch-svc-name">Copilot Studio</span>
+                        <span class="svc-tag ga">GA</span>
+                      </div>
+                      <p class="arch-svc-desc">
+                        <span data-lang="zh-CN">有状态多步审批状态机、Adaptive Cards 交互卡片与 1,000+ 系统连接器</span>
+                        <span data-lang="en">Stateful multi-step approval state machines, Adaptive Cards &amp; 1,000+ connectors</span>
+                      </p>
+                    </div>
+
+                    <div class="arch-svc">
+                      <div class="arch-svc-head">
+                        <span class="ms-logo" data-ms-icon="d365"></span>
+                        <span class="arch-svc-name">D365 &amp; Salesforce Plugins</span>
+                        <span class="svc-tag prev">GA · Prev</span>
+                      </div>
+                      <p class="arch-svc-desc">
+                        <span data-lang="zh-CN">D365 100+ 预置工具 (<code>GA</code>) · Salesforce 38+ 预置工具 (<code>Preview</code>) 基于标准 MCP 暴露</span>
+                        <span data-lang="en">D365 100+ tools (<code>GA</code>) · Salesforce 38+ tools (<code>Preview</code>) exposed via governed MCP</span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Blue Zone: API Gateway, Token Exchange & Protocol Mediation -->
+                <div class="arch-zone zone-blue">
+                  <div class="arch-zone-head">
+                    <span class="arch-zone-title">
+                      <span data-lang="zh-CN">API 网关、令牌交换与协议适配（API &amp; Security Gateway）</span>
+                      <span data-lang="en">API Gateway, Token Exchange &amp; Mediation</span>
+                    </span>
+                  </div>
+                  <div class="arch-col-stack">
+                    <div class="arch-svc svc-blue">
+                      <div class="arch-svc-head">
+                        <span class="step-dot">3</span>
+                        <span class="ms-logo" data-ms-icon="frontdoor"></span>
+                        <span class="arch-svc-name">Azure Front Door &amp; APIM</span>
+                        <span class="svc-tag ga">GA</span>
+                      </div>
+                      <p class="arch-svc-desc">
+                        <span data-lang="zh-CN">边缘 WAF 防护 · <strong>MCP Gateway</strong> · OAuth 2.0 OBO 用户级令牌交换与速率配额治理</span>
+                        <span data-lang="en">Edge WAF · <strong>MCP Gateway</strong> · OAuth 2.0 OBO user-scoped token exchange &amp; rate quotas</span>
+                      </p>
+                    </div>
+
+                    <div class="arch-svc">
+                      <div class="arch-svc-head">
+                        <span class="step-dot">4</span>
+                        <span class="ms-logo" data-ms-icon="functions"></span>
+                        <span class="arch-svc-name">Azure Functions Adapter</span>
+                        <span class="svc-tag ga">GA</span>
+                      </div>
+                      <p class="arch-svc-desc">
+                        <span data-lang="zh-CN">异构 Webhook/REST 协议转换、请求幂等键（Idempotency Key）校验与<strong>读写通道隔离</strong></span>
+                        <span data-lang="en">Webhook/REST translation, idempotency key validation &amp; <strong>read/write path separation</strong></span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Connector Bar 5–6 -->
+            <div class="arch-flow-connector">
+              <span class="arch-flow-hop">
+                <span class="step-dot">5</span>
+                <span data-lang="zh-CN">↓ Read 通道：继承调用者 ACL 只读查询</span>
+                <span data-lang="en">↓ Read Path: Caller-ACL Scoped Retrieval</span>
+              </span>
+              <span class="arch-flow-hop">
+                <span class="step-dot">6</span>
+                <span data-lang="zh-CN">⇅ Write 通道：两阶段人工确认与幂等事务提交</span>
+                <span data-lang="en">⇅ Write Path: Two-Phase Human Approval &amp; Idempotent Commit</span>
+              </span>
+            </div>
+
+            <!-- Bottom Zone: Heterogeneous Enterprise Systems -->
+            <div class="arch-zone zone-slate">
+              <div class="arch-zone-head">
+                <span class="arch-zone-title">
+                  <span data-lang="zh-CN">企业存量异构系统层（非侵入式集成 · 保持现有办公与业务底座）</span>
+                  <span data-lang="en">Existing Heterogeneous Enterprise Systems (Non-Invasive Integration)</span>
+                </span>
+                <span class="arch-zone-caption">
+                  <span data-lang="zh-CN">OIDC/SAML 身份联邦 · 读写权限分离</span>
+                  <span data-lang="en">OIDC/SAML Federation · Read/Write Privilege Split</span>
+                </span>
+              </div>
+              <div class="arch-cards-4">
+                <div class="arch-svc">
+                  <div class="arch-svc-head">
+                    <span class="ms-logo" data-ms-icon="teams"></span>
+                    <span class="arch-svc-name">
+                      <span data-lang="zh-CN">飞书 / 钉钉 / WPS</span>
+                      <span data-lang="en">Feishu / DingTalk / WPS</span>
+                    </span>
+                    <span class="svc-tag prev">Read</span>
+                  </div>
+                  <p class="arch-svc-desc">
+                    <span data-lang="zh-CN">IM 事件 Webhook · 日历与待办上下文同步</span>
+                    <span data-lang="en">IM event webhooks · Calendar &amp; approval context sync</span>
+                  </p>
+                </div>
+
+                <div class="arch-svc">
+                  <div class="arch-svc-head">
+                    <span class="ms-logo" data-ms-icon="apim"></span>
+                    <span class="arch-svc-name">Salesforce / ServiceNow</span>
+                    <span class="svc-tag prev">Read</span>
+                  </div>
+                  <p class="arch-svc-desc">
+                    <span data-lang="zh-CN">客户商机记录 · ITSM 工单按权限检索</span>
+                    <span data-lang="en">CRM opportunity records · Scoped ITSM ticket lookup</span>
+                  </p>
+                </div>
+
+                <div class="arch-svc svc-amber">
+                  <div class="arch-svc-head">
+                    <span class="ms-logo" data-ms-icon="d365"></span>
+                    <span class="arch-svc-name">
+                      <span data-lang="zh-CN">SAP / 核心 ERP</span>
+                      <span data-lang="en">SAP / Core ERP</span>
+                    </span>
+                    <span class="svc-tag warn">Confirm</span>
+                  </div>
+                  <p class="arch-svc-desc">
+                    <span data-lang="zh-CN">价格变更与退换货事务须二次审批后提交</span>
+                    <span data-lang="en">Order repricing &amp; returns gated by two-phase approval</span>
+                  </p>
+                </div>
+
+                <div class="arch-svc svc-purple">
+                  <div class="arch-svc-head">
+                    <span class="ms-logo" data-ms-icon="agent365"></span>
+                    <span class="arch-svc-name">Agent 365 &amp; Admin</span>
+                    <span class="svc-tag ga">GA</span>
+                  </div>
+                  <p class="arch-svc-desc">
+                    <span data-lang="zh-CN">跨系统调用链审计日志与配额预算控制</span>
+                    <span data-lang="en">Cross-system invocation audit logs &amp; quota caps</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Request & Control Flow + Architectural Decisions + Platform Synergy -->
+        <aside class="ms-arch-aside">
+          <div class="aside-block">
+            <h4 class="tone-blue">
+              <span data-lang="zh-CN">调用与控制流 · Request &amp; Control Flow (1–6)</span>
+              <span data-lang="en">Request &amp; Control Flow (1–6)</span>
+            </h4>
+            <ol class="aside-flow-list" data-lang="zh-CN">
+              <li>终端用户或嵌入式宿主应用按任务时长选择 <code>Chat / Cowork / Autopilot / Code</code> 发起请求或异步委托。</li>
+              <li><code>Copilot Standalone</code>（2026-12-01）通过 Entra OIDC/SAML 联邦对接客户既有飞书/钉钉/Okta IdP，无需前置采购 M365 基础套件。</li>
+              <li>请求经 <code>Front Door + APIM (MCP Gateway)</code> 完成 WAF 校验、速率配额控制及 OAuth 2.0 <strong>OBO 用户级委托令牌交换</strong>。</li>
+              <li><code>Copilot Studio</code>、预置 MCP 插件与 <code>Functions Adapter</code> 执行协议转换、<code>Idempotency-Key</code> 幂等去重与读写路由分离。</li>
+              <li><strong>只读通道（Read Path）</strong>严格携带当前用户委托权限拉取飞书/钉钉文档纪要与 Salesforce/ServiceNow 业务实体。</li>
+              <li><strong>事务回写通道（Write Path）</strong>针对 SAP/ERP 订单变更强制下发 Adaptive Card 人工审批，确认后提交事务并写入 <code>Agent 365</code> 审计日志。</li>
+            </ol>
+            <ol class="aside-flow-list" data-lang="en">
+              <li>End users or embedded host apps initiate synchronous queries or async delegations through <code>Chat / Cowork / Autopilot / Code</code>.</li>
+              <li><code>Copilot Standalone</code> (Dec 1, 2026) federates existing Feishu/DingTalk/Okta IdPs via Entra OIDC/SAML without requiring M365 base licenses.</li>
+              <li><code>Front Door + APIM (MCP Gateway)</code> enforces WAF rules, rate quotas, and user-delegated OAuth 2.0 <strong>OBO token exchange</strong>.</li>
+              <li><code>Copilot Studio</code>, prebuilt MCP plugins, and <code>Functions Adapter</code> handle protocol mediation, <code>Idempotency-Key</code> checks, and read/write separation.</li>
+              <li><strong>Read Path</strong> retrieves Feishu/DingTalk context and Salesforce/ServiceNow records strictly within the caller's delegated ACLs.</li>
+              <li><strong>Write Path</strong> gates SAP/ERP state mutations behind Adaptive Card human approval and records immutable audit trails in <code>Agent 365</code>.</li>
+            </ol>
+          </div>
+
+          <div class="aside-block">
+            <h4 class="tone-purple">
+              <span data-lang="zh-CN">关键架构设计决策 · Key Architectural Decisions</span>
+              <span data-lang="en">Key Architectural Decisions</span>
+            </h4>
+            <ul class="aside-bullets" data-lang="zh-CN">
+              <li><strong>按执行语义划分四种模式</strong>：同步低延迟问答走 <code>Chat</code>；复杂文档结构化交付走 <code>Cowork</code>；跨日异步值守走绑定独立 <code>Entra Agent ID</code> 的 <code>Autopilot</code>（需 Frontier + Agent 365 许可）；定制前端交互走 <code>Code</code>。</li>
+              <li><strong>许可层与身份层解耦（12/01）</strong>：区分 2026-12-01 <code>Standalone</code> 许可解绑与 FY27 Q3 CSP 默认启用 UBB 按量计费两项机制，支持在不迁移存量 IM/OA 的前提下分阶段上线。</li>
+              <li><strong>禁用共享高权限静态凭据</strong>：全链路采用用户级 OBO 令牌透传最小权限；外部系统写操作强制实施“预检预览 → 人工确认 → 幂等提交”两阶段协议。</li>
+              <li><strong>多语言运行时内核统一</strong>：<code>Copilot SDK 2.0</code> 基于单一 Rust 核心封装 Python、TypeScript、.NET、Java、Go 等 6 语言接口（GA），避免原型与生产双栈重写。</li>
+            </ul>
+            <ul class="aside-bullets" data-lang="en">
+              <li><strong>Execution-Model Partitioning</strong>: Route low-latency Q&amp;A to <code>Chat</code>, structured document authoring to <code>Cowork</code>, persistent async jobs to <code>Autopilot</code> (with dedicated <code>Entra Agent ID</code>), and custom micro-apps to <code>Code</code>.</li>
+              <li><strong>Licensing &amp; Identity Decoupling (Dec 1)</strong>: Separates Dec 1, 2026 <code>Standalone</code> seat decoupling from FY27 Q3 CSP UBB default-on billing, enabling phased adoption alongside existing IM/OA tools.</li>
+              <li><strong>Eliminate Shared Service-Account Secrets</strong>: Enforces user-delegated OBO tokens on all reads and a two-phase preview → human sign-off → idempotent commit protocol on ERP writes.</li>
+              <li><strong>Single Native SDK Runtime</strong>: <code>Copilot SDK 2.0</code> wraps one Rust core across 6 languages (GA), removing Python-to-.NET/Java/Go rewrite overhead for ISVs and enterprise teams.</li>
+            </ul>
+          </div>
+
+          <div class="why-ms-box">
+            <h4>
+              <span data-lang="zh-CN">架构集成优势 · Platform Integration Rationale</span>
+              <span data-lang="en">Platform Integration Rationale</span>
+            </h4>
+            <ul data-lang="zh-CN">
+              <li><strong>原生 OOXML 文档结构保真</strong>：<code>Office in Copilot</code> 直接操作原生 <code>.docx/.xlsx/.pptx</code> 对象模型（含公式、透视表与企业母版），避免纯文本导出导致的格式失真。</li>
+              <li><strong>非人主体身份与未打标内容 DLP 联动</strong>：<code>Entra Agent ID</code> 为后台智能体提供独立身份审计，配合 Purview 内容级检测实时拦截未打标敏感文档越权引用。</li>
+              <li><strong>跨生态 MCP 工具契约复用</strong>：<code>D365 (100+ GA)</code> 与 <code>Salesforce (38+ Preview)</code> 预置插件基于统一 MCP 网关治理，可在 Copilot 与自建智能体间直接复用。</li>
+              <li><strong>受管沙箱与配额集中治理</strong>：<code>Managed Runtime + Agent 365</code> 统一收敛业务自建微应用的运行时隔离、API 审计与部门级消费上限。</li>
+            </ul>
+            <ul data-lang="en">
+              <li><strong>Native OOXML Document Fidelity</strong>: <code>Office in Copilot</code> manipulates native <code>.docx/.xlsx/.pptx</code> object graphs (formulas, PivotTables, corporate slide masters) without lossy markdown conversion.</li>
+              <li><strong>Non-Human Principal Identity + Content DLP</strong>: Pairs dedicated <code>Entra Agent ID</code> principals with inline Purview content inspection to block unauthorized use of unlabeled sensitive files.</li>
+              <li><strong>Reusable Governed MCP Tool Contracts</strong>: Prebuilt <code>D365 (100+ GA)</code> and <code>Salesforce (38+ Preview)</code> plugins register once behind APIM MCP Gateway for reuse across agents.</li>
+              <li><strong>Centralized Sandbox &amp; Quota Governance</strong>: <code>Managed Runtime + Agent 365</code> unifies runtime isolation, audit logging, and departmental UBB budget caps for user-built apps.</li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ==================== SECTION 1: 4-MODE EXPLORER ==================== -->
+    <section class="stage-section" id="sec-four-modes" aria-labelledby="sec1-title">
+      <div class="section-header">
+        <div>
+          <span class="eyebrow">01.1 · OPERATING PARADIGMS</span>
+          <h2 id="sec1-title" class="section-title">
+            <span data-lang="zh-CN">Copilot 四大作业模式架构探针</span>
+            <span data-lang="en">Copilot Four-Mode Architecture Explorer</span>
+          </h2>
+          <p class="section-sub">
+            <span data-lang="zh-CN">点击下方模式切换器或架构图节点，逐一拆解 <code>Chat</code>、<code>Cowork</code>、<code>Autopilot</code>、<code>Code + SDK 2.0</code> 在交互节奏、身份沙箱边界与商业许可上的本质分野。</span>
+            <span data-lang="en">Select any operating mode button or SVG blueprint node below to inspect how <code>Chat</code>, <code>Cowork</code>, <code>Autopilot</code>, and <code>Code + SDK 2.0</code> differ across execution cadence, identity/sandbox boundary, and licensing.</span>
+          </p>
+        </div>
+        <span class="badge badge-ga">Work OS Spectrum</span>
+      </div>
+
+      <div class="speaker-cue">
+        <div class="speaker-cue-title">
+          <span>🎯</span>
+          <span data-lang="zh-CN">讲师演示提示：用“三分钟黄金演示链”讲透 Cowork 与 Autopilot 差异</span>
+          <span data-lang="en">Presenter Cue: The 3-Minute Golden Demo Chain &amp; Frontier Qualification</span>
+        </div>
+        <p data-lang="zh-CN">现场投屏建议先点 <strong>Cowork (GA)</strong>：强调“把邮件+会议+CRM 整包交出去，直接在 Copilot 内生成带真实公式透视表的 <code>.xlsx</code> 和可多人共编的 <code>.pptx</code>，文件落 OneDrive 自动继承 Purview 标签，无需额外购买许可证”。再切到 <strong>Autopilot (Frontier)</strong> 形成强烈对比：Cowork 用的是员工本人的委托会话，人走任务停；而 Autopilot 拥有独立的 <code>Entra Agent ID</code>、独立企业邮箱与指定人类主管，但务必向伙伴强调商业红线——<strong>每个 Autopilot 实例均须开通 Frontier 资格并配备独立的 Agent 365 Frontier 许可证</strong>。</p>
+        <p data-lang="en">Start on <strong>Cowork (GA)</strong>: emphasize delegating an entire outcome across emails, meetings, and CRM to produce real native <code>.xlsx</code> formulas/PivotTables and multiplayer <code>.pptx</code> decks right inside Copilot—stored in OneDrive inheriting Purview sensitivity labels at zero extra license cost. Then contrast with <strong>Autopilot (Frontier)</strong>: Cowork acts within the user's delegated session, whereas Autopilot holds its own <code>Entra Agent ID</code>, dedicated mailbox, persistent memory, and human manager—requiring <strong>Frontier enrollment plus one Agent 365 Frontier license per Autopilot instance</strong>.</p>
+      </div>
+
+      <!-- Interactive 4-Mode Workbench -->
+      <div class="workbench" id="modes-workbench">
+        <div class="mode-selector-bar" role="tablist" aria-label="Copilot Operating Modes">
+          <button type="button" class="mode-pick-btn active" role="tab" aria-selected="true" data-mode-pick="chat">
+            <span class="mode-pick-top">
+              <span class="mode-pick-name">01 · Chat</span>
+              <span class="badge badge-ga">GA</span>
+            </span>
+            <span class="mode-pick-tag">
+              <span data-lang="zh-CN">辅助 Assist｜Home + Auto 统一路由</span>
+              <span data-lang="en">Assist | Home + Auto Routing</span>
+            </span>
+          </button>
+
+          <button type="button" class="mode-pick-btn" role="tab" aria-selected="false" data-mode-pick="cowork">
+            <span class="mode-pick-top">
+              <span class="mode-pick-name">02 · Cowork</span>
+              <span class="badge badge-ga">GA</span>
+            </span>
+            <span class="mode-pick-tag">
+              <span data-lang="zh-CN">委派 Delegate｜Office in Copilot 共编</span>
+              <span data-lang="en">Delegate | Office in Copilot Co-Edit</span>
+            </span>
+          </button>
+
+          <button type="button" class="mode-pick-btn" role="tab" aria-selected="false" data-mode-pick="autopilot">
+            <span class="mode-pick-top">
+              <span class="mode-pick-name">03 · Autopilot</span>
+              <span class="badge badge-frontier">Frontier</span>
+            </span>
+            <span class="mode-pick-tag">
+              <span data-lang="zh-CN">值守 Automate｜独立 Entra Agent ID</span>
+              <span data-lang="en">Automate | Dedicated Entra Agent ID</span>
+            </span>
+          </button>
+
+          <button type="button" class="mode-pick-btn" role="tab" aria-selected="false" data-mode-pick="code">
+            <span class="mode-pick-top">
+              <span class="mode-pick-name">04 · Code + SDK 2.0</span>
+              <span class="badge badge-frontier">Frontier / GA</span>
+            </span>
+            <span class="mode-pick-tag">
+              <span data-lang="zh-CN">构建 Build｜Managed Runtime + Rust SDK</span>
+              <span data-lang="en">Build | Managed Runtime + Rust SDK</span>
+            </span>
+          </button>
+        </div>
+
+        <!-- Interactive SVG Comparison Spectrum -->
+        <div class="svg-frame" style="margin-bottom:18px;">
+          <svg viewBox="0 0 1160 320" role="img" aria-labelledby="svg-modes-title">
+            <title id="svg-modes-title">Copilot 4-Mode Agentic Work OS Spectrum (Chat, Cowork, Autopilot, Code + SDK 2.0)</title>
+            <defs>
+              <linearGradient id="axisGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#38bdf8" />
+                <stop offset="35%" stop-color="#2dd4bf" />
+                <stop offset="70%" stop-color="#a78bfa" />
+                <stop offset="100%" stop-color="#fbbf24" />
+              </linearGradient>
+            </defs>
+
+            <!-- Top Unified Orchestration Spine -->
+            <rect x="24" y="16" width="1112" height="44" rx="10" fill="#102240" stroke="#2a4a7f" stroke-width="1.5" />
+            <text x="44" y="43" fill="#38bdf8" font-family="Cascadia Code, Consolas, monospace" font-size="13" font-weight="700">COPILOT HOME + AUTO ORCHESTRATOR (GA)</text>
+            <text x="410" y="43" fill="#b6c6e3" font-family="Segoe UI, PingFang SC, sans-serif" font-size="12.5">Work IQ (19.5 EB) · Purview DLP · Entra Identity · Agent 365 FinOps &amp; Audit</text>
+
+            <!-- 4 Mode Interactive Columns -->
+            <!-- Mode 1: Chat -->
+            <g class="svg-node-interactive focused" data-svg-mode="chat">
+              <rect class="node-box" x="24" y="76" width="263" height="184" rx="14" fill="#0d1e38" stroke="#38bdf8" stroke-width="2.8" />
+              <rect x="38" y="90" width="54" height="20" rx="5" fill="rgba(52,211,153,0.18)" stroke="#34d399" />
+              <text x="65" y="104" text-anchor="middle" fill="#34d399" font-family="Cascadia Code, monospace" font-size="10.5" font-weight="700">GA</text>
+              <text x="102" y="105" fill="#eef4ff" font-family="Cascadia Code, monospace" font-size="15" font-weight="800">01 · Chat</text>
+              <text x="38" y="132" fill="#38bdf8" font-family="Segoe UI, PingFang SC, sans-serif" font-size="12.5" font-weight="700">Synchronous Assist · 秒级同步问答</text>
+              <line x1="38" y1="144" x2="273" y2="144" stroke="#213a63" />
+              <text x="38" y="166" fill="#dbeafe" font-family="Segoe UI, PingFang SC, sans-serif" font-size="12">• Home + Auto 动态推理深度路由</text>
+              <text x="38" y="188" fill="#dbeafe" font-family="Segoe UI, PingFang SC, sans-serif" font-size="12">• 组织策略下支持 OpenAI/Anthropic</text>
+              <text x="38" y="210" fill="#dbeafe" font-family="Segoe UI, PingFang SC, sans-serif" font-size="12">• Today (Brief 含在许可内 / Feed)</text>
+              <rect x="38" y="224" width="235" height="24" rx="6" fill="#13294b" />
+              <text x="155" y="240" text-anchor="middle" fill="#8ea4ca" font-family="Cascadia Code, monospace" font-size="11">Identity: User OBO Session</text>
+            </g>
+
+            <!-- Mode 2: Cowork -->
+            <g class="svg-node-interactive dimmed" data-svg-mode="cowork">
+              <rect class="node-box" x="307" y="76" width="263" height="184" rx="14" fill="#0d1e38" stroke="#2dd4bf" stroke-width="1.6" />
+              <rect x="321" y="90" width="54" height="20" rx="5" fill="rgba(52,211,153,0.18)" stroke="#34d399" />
+              <text x="348" y="104" text-anchor="middle" fill="#34d399" font-family="Cascadia Code, monospace" font-size="10.5" font-weight="700">GA</text>
+              <text x="385" y="105" fill="#eef4ff" font-family="Cascadia Code, monospace" font-size="15" font-weight="800">02 · Cowork</text>
+              <text x="321" y="132" fill="#2dd4bf" font-family="Segoe UI, PingFang SC, sans-serif" font-size="12.5" font-weight="700">Async Co-Execution · 多步委派共编</text>
+              <line x1="321" y1="144" x2="556" y2="144" stroke="#213a63" />
+              <text x="321" y="166" fill="#dbeafe" font-family="Segoe UI, PingFang SC, sans-serif" font-size="12">• Office in Copilot 原生 .docx/.xlsx/.pptx</text>
+              <text x="321" y="188" fill="#dbeafe" font-family="Segoe UI, PingFang SC, sans-serif" font-size="12">• 真实公式/透视表 + 多人实时共编</text>
+              <text x="321" y="210" fill="#dbeafe" font-family="Segoe UI, PingFang SC, sans-serif" font-size="12">• Workspaces (Frontier) 团队接力空间</text>
+              <rect x="321" y="224" width="235" height="24" rx="6" fill="#13294b" />
+              <text x="438" y="240" text-anchor="middle" fill="#8ea4ca" font-family="Cascadia Code, monospace" font-size="11">OneDrive ACL + Sensitivity Labels</text>
+            </g>
+
+            <!-- Mode 3: Autopilot -->
+            <g class="svg-node-interactive dimmed" data-svg-mode="autopilot">
+              <rect class="node-box" x="590" y="76" width="263" height="184" rx="14" fill="#0d1e38" stroke="#a78bfa" stroke-width="1.6" />
+              <rect x="604" y="90" width="76" height="20" rx="5" fill="rgba(167,139,250,0.18)" stroke="#a78bfa" />
+              <text x="642" y="104" text-anchor="middle" fill="#a78bfa" font-family="Cascadia Code, monospace" font-size="10.5" font-weight="700">FRONTIER</text>
+              <text x="690" y="105" fill="#eef4ff" font-family="Cascadia Code, monospace" font-size="15" font-weight="800">03 · Autopilot</text>
+              <text x="604" y="132" fill="#a78bfa" font-family="Segoe UI, PingFang SC, sans-serif" font-size="12.5" font-weight="700">24×7 Autonomous · 具身常驻代理</text>
+              <line x1="604" y1="144" x2="839" y2="144" stroke="#213a63" />
+              <text x="604" y="166" fill="#dbeafe" font-family="Segoe UI, PingFang SC, sans-serif" font-size="12">• 独立 Entra Agent ID + 专属邮箱账号</text>
+              <text x="604" y="188" fill="#dbeafe" font-family="Segoe UI, PingFang SC, sans-serif" font-size="12">• 跨会话持久记忆 + 指定人类管理者</text>
+              <text x="604" y="210" fill="#dbeafe" font-family="Segoe UI, PingFang SC, sans-serif" font-size="12">• Teams/Outlook 全天候事件触发跟进</text>
+              <rect x="604" y="224" width="235" height="24" rx="6" fill="#1e1b4b" />
+              <text x="721" y="240" text-anchor="middle" fill="#c4b5fd" font-family="Cascadia Code, monospace" font-size="11">Agent 365 Frontier / Instance</text>
+            </g>
+
+            <!-- Mode 4: Code + SDK 2.0 -->
+            <g class="svg-node-interactive dimmed" data-svg-mode="code">
+              <rect class="node-box" x="873" y="76" width="263" height="184" rx="14" fill="#0d1e38" stroke="#fbbf24" stroke-width="1.6" />
+              <rect x="887" y="90" width="96" height="20" rx="5" fill="rgba(251,191,36,0.16)" stroke="#fbbf24" />
+              <text x="935" y="104" text-anchor="middle" fill="#fbbf24" font-family="Cascadia Code, monospace" font-size="10" font-weight="700">DEC GA / SDK GA</text>
+              <text x="992" y="105" fill="#eef4ff" font-family="Cascadia Code, monospace" font-size="14.5" font-weight="800">04 · Code + SDK</text>
+              <text x="887" y="132" fill="#fbbf24" font-family="Segoe UI, PingFang SC, sans-serif" font-size="12.5" font-weight="700">App Builder &amp; LOB Embed · 沙箱构建</text>
+              <line x1="887" y1="144" x2="1122" y2="144" stroke="#213a63" />
+              <text x="887" y="166" fill="#dbeafe" font-family="Segoe UI, PingFang SC, sans-serif" font-size="12">• 自然语言生成全栈业务应用/看板/工作流</text>
+              <text x="887" y="188" fill="#dbeafe" font-family="Segoe UI, PingFang SC, sans-serif" font-size="12">• Copilot Managed Runtime (GA) 隔离托管</text>
+              <text x="887" y="210" fill="#dbeafe" font-family="Segoe UI, PingFang SC, sans-serif" font-size="12">• Copilot SDK 2.0 (GA) Rust 6 语言内嵌</text>
+              <rect x="887" y="224" width="235" height="24" rx="6" fill="#2b2111" />
+              <text x="1004" y="240" text-anchor="middle" fill="#fde68a" font-family="Cascadia Code, monospace" font-size="11">Managed Runtime Sandbox + Admin</text>
+            </g>
+
+            <!-- Bottom Autonomy & Horizon Progression Bar -->
+            <line x1="36" y1="286" x2="1120" y2="286" stroke="url(#axisGrad)" stroke-width="4" stroke-linecap="round" />
+            <circle cx="155" cy="286" r="6" fill="#38bdf8" />
+            <circle cx="438" cy="286" r="6" fill="#2dd4bf" />
+            <circle cx="721" cy="286" r="6" fill="#a78bfa" />
+            <circle cx="1004" cy="286" r="6" fill="#fbbf24" />
+            <text x="36" y="308" fill="#8ea4ca" font-family="Cascadia Code, monospace" font-size="11">Seconds (In-Turn Q&amp;A)</text>
+            <text x="378" y="308" fill="#8ea4ca" font-family="Cascadia Code, monospace" font-size="11">Minutes–Hours (Deliverable Co-Gen)</text>
+            <text x="665" y="308" fill="#8ea4ca" font-family="Cascadia Code, monospace" font-size="11">24×7 Continuous (Event/Policy Loop)</text>
+            <text x="920" y="308" fill="#8ea4ca" font-family="Cascadia Code, monospace" font-size="11">Reusable Software &amp; Embedded Harness</text>
+          </svg>
+        </div>
+
+        <!-- Dynamic 4-Dimension Partner SA Spotlight Panel rendered by JS + synced with langchange -->
+        <div id="mode-detail-container" aria-live="polite"></div>
+      </div>
+
+      <!-- Structured 4-Mode Comparison Matrix Table -->
+      <h3 style="margin:26px 0 12px;font-size:18px;">
+        <span data-lang="zh-CN">四大作业模式全维度架构对比矩阵</span>
+        <span data-lang="en">Full 4-Mode Architectural &amp; Commercial Comparison Matrix</span>
+      </h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th><span data-lang="zh-CN">模式与成熟度</span><span data-lang="en">Mode &amp; Maturity</span></th>
+              <th><span data-lang="zh-CN">交互节奏</span><span data-lang="en">Interaction Cadence</span></th>
+              <th><span data-lang="zh-CN">身份与沙箱边界</span><span data-lang="en">Identity &amp; Sandbox Boundary</span></th>
+              <th><span data-lang="zh-CN">Ignite 2026 核心突破</span><span data-lang="en">Core Ignite 2026 Breakthrough</span></th>
+              <th><span data-lang="zh-CN">典型业务场景</span><span data-lang="en">Business Scenario</span></th>
+              <th><span data-lang="zh-CN">竞争优势与许可规则</span><span data-lang="en">Competitive Edge &amp; Licensing</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <strong><code>Chat</code></strong><br />
+                <span class="badge badge-ga">GA</span>
+              </td>
+              <td>
+                <span data-lang="zh-CN">毫秒/秒级同步回合问答（人在回路即时引导）</span>
+                <span data-lang="en">Low-latency synchronous turn-by-turn Q&amp;A (human-driven)</span>
+              </td>
+              <td>
+                <span data-lang="zh-CN">员工本人 Entra OBO 委托令牌；严格遵循调用者只读权限范围</span>
+                <span data-lang="en">User's Entra OBO token; strictly scoped to caller's existing ACLs</span>
+              </td>
+              <td>
+                <span data-lang="zh-CN"><code>Home + Auto</code>（GA）统一意图起点，按任务复杂度自动路由模型与推理深度；支持受策略管控切换 OpenAI / Anthropic</span>
+                <span data-lang="en"><code>Home + Auto</code> (GA) unifies entry &amp; auto-routes model/reasoning depth; policy-governed OpenAI / Anthropic picker</span>
+              </td>
+              <td>
+                <span data-lang="zh-CN">跨邮件/会议/合同秒级检索综述、客户拜访前 2 分钟速览、<code>Today Brief</code> 晨间优先级梳理</span>
+                <span data-lang="en">Cross-mail/meeting/contract synthesis, 2-min pre-call prep, <code>Today Brief</code> morning prioritization</span>
+              </td>
+              <td>
+                <span data-lang="zh-CN">免去员工手挑模型与写复杂 Prompt；包含于 M365 Copilot 基础订阅（<code>Today Brief</code> 含在许可内，<code>Feed</code> 消耗 Credits）</span>
+                <span data-lang="en">Zero manual model/prompt guesswork; included in M365 Copilot seat (<code>Today Brief</code> included; <code>Feed</code> uses Copilot Credits)</span>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <strong><code>Cowork</code></strong><br />
+                <span class="badge badge-ga">GA</span>
+              </td>
+              <td>
+                <span data-lang="zh-CN">分钟至小时级多步异步规划与人机分段共创</span>
+                <span data-lang="en">Minutes-to-hours multi-step async planning &amp; human-in-the-loop co-execution</span>
+              </td>
+              <td>
+                <span data-lang="zh-CN">员工会话委托执行；产出文件直存 OneDrive / SharePoint，自动继承敏感度标签与 DLP</span>
+                <span data-lang="en">User-delegated execution; native files land in OneDrive / SharePoint inheriting Purview labels &amp; DLP</span>
+              </td>
+              <td>
+                <span data-lang="zh-CN"><strong><code>Office in Copilot</code>（GA）</strong>在对话内直接生成与多人实时共编真实原生 <code>.docx</code>、<code>.xlsx</code>（真实公式/透视表）、<code>.pptx</code>；配合 <code>Workspaces</code>（Frontier）团队接力</span>
+                <span data-lang="en"><strong><code>Office in Copilot</code> (GA)</strong> creates &amp; co-edits real native <code>.docx</code>, <code>.xlsx</code> formulas/PivotTables, and <code>.pptx</code> decks inside Copilot; paired with multiplayer <code>Workspaces</code> (Frontier)</span>
+              </td>
+              <td>
+                <span data-lang="zh-CN">周度经营复盘包、RFP 投标方案书 + 报价测算表生成、D365 ERP 采购寻源到下单（Source-to-Pay）协同</span>
+                <span data-lang="en">Weekly executive review packs, RFP proposal + Excel margin model co-authoring, D365 ERP Source-to-Pay execution</span>
+              </td>
+              <td>
+                <span data-lang="zh-CN">彻底终结“AI 吐 Markdown → 手工复制粘贴调格式”断层；近 80% 财富 500 强采用；<code>Office in Copilot</code> 含于现有 Copilot 许可内（长任务消耗按规则计入）</span>
+                <span data-lang="en">Eliminates Markdown copy-paste reformatting; ~80% Fortune 500 adoption; <code>Office in Copilot</code> included in existing Copilot license without app switching</span>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <strong><code>Autopilot</code></strong><br />
+                <span class="badge badge-frontier">Frontier</span>
+              </td>
+              <td>
+                <span data-lang="zh-CN">7×24 全天候常驻自主运行（事件/排程/邮件触发）</span>
+                <span data-lang="en">24×7 persistent autonomous operation (event, schedule, or inbox triggered)</span>
+              </td>
+              <td>
+                <span data-lang="zh-CN">拥有独立 <strong><code>Entra Agent ID</code></strong>、专属 M365 邮箱账号、跨会话持久记忆、指定人类主管（Human Manager）与全量审计日志</span>
+                <span data-lang="en">Dedicated <strong><code>Entra Agent ID</code></strong>, own M365 mailbox/identity, persistent cross-session memory, designated human manager &amp; full audit trail</span>
+              </td>
+              <td>
+                <span data-lang="zh-CN">团队可在 Teams 中直接“雇佣（Hire）”专属 Autopilot 实例，以自身数字身份跨 Teams 与 Outlook 持续推进长周期流程</span>
+                <span data-lang="en">Teams "hire" persistent Autopilot instances in Teams that act in their own name across Teams &amp; Outlook with human escalation rules</span>
+              </td>
+              <td>
+                <span data-lang="zh-CN">供应商交期异常自动催办、销售商机停滞巡检与跟进提醒、IT/HR 服务台工单初筛与跨时区交接值守</span>
+                <span data-lang="en">Supplier SLA chase &amp; exception triage, stalled CRM deal hygiene follow-up, 24×7 IT/HR ticket intake &amp; cross-timezone handoff</span>
+              </td>
+              <td>
+                <span data-lang="zh-CN">非无主脚本，天然纳入 Entra 零信任与责任人治理；<strong>商业红线：须申请 Frontier 准入，且每个 Autopilot 实例需独立配备 Agent 365 Frontier 许可证</strong></span>
+                <span data-lang="en">Zero-trust governed digital colleague with accountable human sponsor; <strong>requires Frontier enrollment + Agent 365 Frontier license per Autopilot instance</strong></span>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <strong><code>Code</code> + <code>SDK 2.0</code></strong><br />
+                <span class="badge badge-frontier">Code: Frontier</span>
+                <span class="badge badge-ga">Runtime &amp; SDK: GA</span>
+              </td>
+              <td>
+                <span data-lang="zh-CN">按需自然语言构建持久化微应用，或由研发内嵌至核心生产系统</span>
+                <span data-lang="en">On-demand natural-language app creation + developer embedding into production LOB software</span>
+              </td>
+              <td>
+                <span data-lang="zh-CN">运行于 <strong><code>Copilot Managed Runtime</code>（GA）</strong>受控云端隔离沙箱（及 Windows 本地沙箱），受 M365 Admin Center 全局可视化管控</span>
+                <span data-lang="en">Hosted inside <strong><code>Copilot Managed Runtime</code> (GA)</strong> isolated sandbox with full M365 Admin Center visibility &amp; lifecycle policy</span>
+              </td>
+              <td>
+                <span data-lang="zh-CN"><code>Copilot Code</code>（计划 12 月 GA）让业务人员一句话生成应用/看板/自动化流；<strong><code>Copilot SDK 2.0</code>（GA）</strong>提供原生 Rust 运行时覆盖 6 大语言（Python / TS / .NET / Go / Java / Rust）</span>
+                <span data-lang="en"><code>Copilot Code</code> (upcoming Dec GA) builds full-stack apps/dashboards from natural language; <strong><code>Copilot SDK 2.0</code> (GA)</strong> ships native Rust runtime across 6 languages</span>
+              </td>
+              <td>
+                <span data-lang="zh-CN">业务部门自建返利审批追踪台、门店巡检看板；ISV 将 Copilot 智能体引擎原生嵌入自研 ERP/HIS/MES 客户端</span>
+                <span data-lang="en">Business-built rebate trackers &amp; store audit dashboards; ISVs embedding Copilot harness natively inside vertical ERP/HIS/MES apps</span>
+              </td>
+              <td>
+                <span data-lang="zh-CN">彻底解决 Vibe Coding 影子 IT 失控痛点（Managed Runtime 统一纳管），同时给 ISV 伙伴提供官方级 Rust 高性能内嵌底座</span>
+                <span data-lang="en">Eliminates ungoverned shadow Vibe-Coding via Managed Runtime governance while giving ISVs a high-performance Rust-backed embeddable SDK</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ==================== SECTION 2: COPILOT STANDALONE & HETEROGENEOUS BLUEPRINT ==================== -->
+    <section class="stage-section" id="sec-standalone" aria-labelledby="sec2-title">
+      <div class="section-header">
+        <div>
+          <span class="eyebrow">01.2 · WHITESPACE GAME-CHANGER</span>
+          <h2 id="sec2-title" class="section-title">
+            <span data-lang="zh-CN">Copilot Standalone 与异构企业集成蓝图</span>
+            <span data-lang="en">Copilot Standalone &amp; Heterogeneous Integration Blueprint</span>
+          </h2>
+          <p class="section-sub">
+            <span data-lang="zh-CN">精准厘清 <code>2026-12-01</code> 坐席解耦与 <code>FY27 Q3</code> 用量计费两大商业节点，通过“读/写权限分离 + APIM OBO 令牌交换”架构拿下飞书、钉钉、WPS、Google Workspace 与异构 ERP/CRM 客户。</span>
+            <span data-lang="en">Distinguish the exact <code>December 1, 2026</code> seat-decoupling milestone from <code>FY27 Q3</code> CSP consumption billing, and win Google Workspace, Feishu, DingTalk, WPS, and SAP/Salesforce accounts with zero Day-1 rip-and-replace.</span>
+          </p>
+        </div>
+        <span class="badge badge-ga">No Day-1 Rip &amp; Replace</span>
+      </div>
+
+      <div class="speaker-cue">
+        <div class="speaker-cue-title">
+          <span>⚠️</span>
+          <span data-lang="zh-CN">讲师商务防错必讲：切勿混淆“12 月 1 日解耦基础坐席”与“FY27 Q3 默认开启用量计费”</span>
+          <span data-lang="en">Presenter Commercial Guardrail: Never Conflate Dec 1, 2026 vs. FY27 Q3</span>
+        </div>
+        <p data-lang="zh-CN">向合作伙伴架构师交底时，务必把这两个时间点拆得一清二楚：① <strong>2026 年 12 月 1 日</strong>是<strong>准入门槛解耦</strong>——客户买 <code>Microsoft 365 Copilot</code> 或 <code>Copilot Business</code> 不再强制要求先买 M365 E3/E5/Business Standard，直接打开飞书/钉钉/WPS/Google Workspace 空白客户大门；② <strong>FY27 Q3（2027 年 1–3 月）</strong>是<strong>CSP 新订阅默认开启按量计费（PayGo / UBB）</strong>，用于承载溢出智能体调用，且可通过 Agent 365 设置预算上限。把这两件事讲准，客户 CIO 与采购才敢放心签单。</p>
+        <p data-lang="en">Make sure Partner SAs never blur these two commercial milestones: (1) <strong>December 1, 2026</strong> removes the qualifying M365 E3/E5/Business Standard base-license prerequisite for <code>Microsoft 365 Copilot</code> and <code>Copilot Business</code>—unlocking Google Workspace, Feishu, DingTalk, and WPS whitespace accounts immediately; (2) <strong>FY27 Q3 (Jan–Mar 2027)</strong> enables Pay-as-you-go / UBB consumption billing by default on new CSP subscriptions for elastic overflow &amp; agentic workloads, governed by budget caps in Agent 365 Cost Management.</p>
+      </div>
+
+      <!-- Commercial Clarification Callout Split -->
+      <div class="callout-split">
+        <div class="milestone-card dec01">
+          <div class="milestone-date" style="color:var(--green);">
+            <span>📅 2026-12-01</span>
+            <span class="badge badge-ga">Base-Seat Decoupling</span>
+          </div>
+          <h3 style="margin:0 0 8px;font-size:17.5px;">
+            <span data-lang="zh-CN">解除 M365 基础套件前置绑定（Copilot Standalone）</span>
+            <span data-lang="en">Removal of Qualifying M365 Base-License Prerequisite</span>
+          </h3>
+          <p style="margin:0 0 10px;font-size:14px;color:var(--text-muted);">
+            <span data-lang="zh-CN"><code>Microsoft 365 Copilot</code> 与 <code>Copilot Business</code> 可作为独立订阅直接采购，不再要求客户预先持有 M365 E3 / E5 / Business Standard / Business Premium 坐席。</span>
+            <span data-lang="en"><code>Microsoft 365 Copilot</code> and <code>Copilot Business</code> can be purchased standalone without requiring qualifying M365 E3 / E5 / Business Standard / Business Premium base seats.</span>
+          </p>
+          <ul style="margin:0;padding-left:18px;font-size:13.5px;color:var(--text-muted);">
+            <li>
+              <span data-lang="zh-CN"><strong>核心适用客群</strong>：全员使用 Google Workspace、飞书（Feishu）、钉钉（DingTalk）、WPS 或自建邮件/OA 的异构存量企业。</span>
+              <span data-lang="en"><strong>Target Estate</strong>: Enterprises standardized on Google Workspace, Feishu, DingTalk, WPS, or custom mail/collaboration stacks.</span>
+            </li>
+            <li>
+              <span data-lang="zh-CN"><strong>销售策略转变</strong>：先为销售/财务/供应链高价值岗位按需开通 Copilot + 业务插件交付成果，彻底绕开耗时数年的“替换全员 OA”政治阻力。</span>
+              <span data-lang="en"><strong>GTM Shift</strong>: Land high-ROI Sales, Finance, and Supply Chain personas first without triggering multi-year collaboration migration battles.</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="milestone-card fy27q3">
+          <div class="milestone-date" style="color:var(--amber);">
+            <span>📅 FY27 Q3 (2027-01 – 2027-03)</span>
+            <span class="badge badge-preview">CSP UBB Default-On</span>
+          </div>
+          <h3 style="margin:0 0 8px;font-size:17.5px;">
+            <span data-lang="zh-CN">CSP 新订阅默认启用按量弹性计费（PayGo / UBB）</span>
+            <span data-lang="en">Default-On PayGo / UBB Consumption on New CSP Subscriptions</span>
+          </h3>
+          <p style="margin:0 0 10px;font-size:14px;color:var(--text-muted);">
+            <span data-lang="zh-CN">面向 CSP 渠道新建订阅默认打通用量计费管道（Usage-Based Billing），支撑跨 <code>Cowork</code>、<code>Code</code>、<code>Managed Runtime</code>、<code>Copilot Studio</code> 的弹性智能体消耗。</span>
+            <span data-lang="en">New CSP subscriptions enable usage-based billing (PayGo / Copilot Credits meter) by default to support elastic agentic consumption across <code>Cowork</code>, <code>Code</code>, <code>Managed Runtime</code>, and <code>Copilot Studio</code>.</span>
+          </p>
+          <ul style="margin:0;padding-left:18px;font-size:13.5px;color:var(--text-muted);">
+            <li>
+              <span data-lang="zh-CN"><strong>财务可控承诺</strong>：“默认打通计费管道”绝不等于“无上限扣费”——IT 管理员可在 <code>Agent 365 Cost Management</code>（Preview）中预设部门配额、硬性封顶与告警阈值。</span>
+              <span data-lang="en"><strong>FinOps Guardrail</strong>: Default-on meter wiring never means uncapped spend—IT admins enforce hard caps, budgets, and alerts in <code>Agent 365 Cost Management</code> (Preview).</span>
+            </li>
+            <li>
+              <span data-lang="zh-CN"><strong>伙伴服务增值</strong>：为 Partner 托管 AI 运营服务（Managed FinOps &amp; Agent Ops）创造持续经常性收入（ACR + 服务费）。</span>
+              <span data-lang="en"><strong>Partner Recurring Margin</strong>: Unlocks ongoing Partner Managed AI FinOps &amp; Agent Optimization retainers alongside CSP ACR growth.</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Inline SVG Reference Architecture: Day-1 Value Without Rip-and-Replace -->
+      <h3 style="margin:20px 0 10px;font-size:17.5px;">
+        <span data-lang="zh-CN">异构企业“零推翻（No Rip-and-Replace）”桥接参考架构（读写分离 + OBO 最小权限）</span>
+        <span data-lang="en">Reference Architecture: Day-1 Value Without Rip-and-Replace (Read/Write Split + OBO Governance)</span>
+      </h3>
+      <div class="svg-frame" style="margin-bottom:20px;">
+        <svg viewBox="0 0 1180 390" role="img" aria-labelledby="svg-standalone-title">
+          <title id="svg-standalone-title">Copilot Standalone Heterogeneous Enterprise Integration Architecture</title>
+          <defs>
+            <marker id="arrowBlue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M 0 1 L 10 5 L 0 9 z" fill="#38bdf8" />
+            </marker>
+            <marker id="arrowGreen" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M 0 1 L 10 5 L 0 9 z" fill="#34d399" />
+            </marker>
+            <marker id="arrowAmber" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M 0 1 L 10 5 L 0 9 z" fill="#fbbf24" />
+            </marker>
+          </defs>
+
+          <!-- Top Identity & Security Bar -->
+          <rect x="20" y="14" width="1140" height="38" rx="9" fill="#102342" stroke="#2d4f85" />
+          <text x="38" y="38" fill="#38bdf8" font-family="Cascadia Code, monospace" font-size="12.5" font-weight="700">IDENTITY &amp; ZERO-TRUST PLANE:</text>
+          <text x="276" y="38" fill="#dbeafe" font-family="Segoe UI, PingFang SC, sans-serif" font-size="12">Microsoft Entra ID (OIDC Federation with Okta / Feishu / DingTalk IdP) · Entra Agent ID · Purview DLP · Agent 365 Audit</text>
+
+          <!-- Stage Box 1: Business User Surfaces -->
+          <rect x="20" y="72" width="172" height="236" rx="13" fill="#0d1d36" stroke="#38bdf8" stroke-width="1.8" />
+          <text x="34" y="98" fill="#38bdf8" font-family="Cascadia Code, monospace" font-size="11.5" font-weight="700">1. ENTRY SURFACES</text>
+          <text x="34" y="120" fill="#eef4ff" font-family="Segoe UI, PingFang SC, sans-serif" font-size="13.5" font-weight="700">业务用户触点</text>
+          <rect x="32" y="134" width="148" height="34" rx="7" fill="#142b4d" />
+          <text x="106" y="155" text-anchor="middle" fill="#dbeafe" font-size="11.5" font-family="Segoe UI, sans-serif">Copilot App / Web</text>
+          <rect x="32" y="176" width="148" height="34" rx="7" fill="#142b4d" />
+          <text x="106" y="197" text-anchor="middle" fill="#dbeafe" font-size="11.5" font-family="Segoe UI, sans-serif">Office in Copilot (.xlsx/.pptx)</text>
+          <rect x="32" y="218" width="148" height="34" rx="7" fill="#142b4d" />
+          <text x="106" y="239" text-anchor="middle" fill="#dbeafe" font-size="11.5" font-family="Segoe UI, sans-serif">Teams / Standalone Portal</text>
+          <rect x="32" y="260" width="148" height="34" rx="7" fill="#1e293b" stroke="#fbbf24" stroke-width="1" />
+          <text x="106" y="281" text-anchor="middle" fill="#fde68a" font-size="11" font-family="Cascadia Code, monospace">Embedded SDK 2.0 App</text>
+
+          <!-- Arrow 1->2 -->
+          <line x1="192" y1="190" x2="218" y2="190" stroke="#38bdf8" stroke-width="2" marker-end="url(#arrowBlue)" />
+
+          <!-- Stage Box 2: Copilot Orchestrator & Studio -->
+          <rect x="222" y="72" width="182" height="236" rx="13" fill="#0d1d36" stroke="#2dd4bf" stroke-width="1.8" />
+          <text x="236" y="98" fill="#2dd4bf" font-family="Cascadia Code, monospace" font-size="11.5" font-weight="700">2. ORCHESTRATION</text>
+          <text x="236" y="120" fill="#eef4ff" font-family="Segoe UI, PingFang SC, sans-serif" font-size="13.5" font-weight="700">Copilot 编排中枢</text>
+          <rect x="234" y="134" width="158" height="44" rx="7" fill="#132c47" />
+          <text x="313" y="153" text-anchor="middle" fill="#eef4ff" font-size="11.5" font-weight="700" font-family="Segoe UI, sans-serif">Home + Auto &amp; Cowork</text>
+          <text x="313" y="170" text-anchor="middle" fill="#8ea4ca" font-size="10.5" font-family="Segoe UI, sans-serif">Intent &amp; Multi-Step Plan</text>
+          <rect x="234" y="188" width="158" height="48" rx="7" fill="#132c47" />
+          <text x="313" y="208" text-anchor="middle" fill="#eef4ff" font-size="11.5" font-weight="700" font-family="Segoe UI, sans-serif">Copilot Studio</text>
+          <text x="313" y="225" text-anchor="middle" fill="#8ea4ca" font-size="10.5" font-family="Segoe UI, sans-serif">Custom Flows &amp; Approval Card</text>
+          <rect x="234" y="246" width="158" height="48" rx="7" fill="#132c47" />
+          <text x="313" y="266" text-anchor="middle" fill="#2dd4bf" font-size="11.5" font-weight="700" font-family="Segoe UI, sans-serif">Managed Runtime (GA)</text>
+          <text x="313" y="283" text-anchor="middle" fill="#8ea4ca" font-size="10.5" font-family="Segoe UI, sans-serif">Isolated App Execution</text>
+
+          <!-- Arrow 2->3 -->
+          <line x1="404" y1="190" x2="430" y2="190" stroke="#38bdf8" stroke-width="2" marker-end="url(#arrowBlue)" />
+
+          <!-- Stage Box 3: Business Plugins + MCP Servers -->
+          <rect x="434" y="72" width="196" height="236" rx="13" fill="#0d1d36" stroke="#a78bfa" stroke-width="1.8" />
+          <text x="448" y="98" fill="#a78bfa" font-family="Cascadia Code, monospace" font-size="11.5" font-weight="700">3. SKILLS &amp; MCP</text>
+          <text x="448" y="120" fill="#eef4ff" font-family="Segoe UI, PingFang SC, sans-serif" font-size="13.5" font-weight="700">预置业务插件与 MCP</text>
+          <rect x="446" y="134" width="172" height="50" rx="7" fill="#1a2448" stroke="#34d399" stroke-width="1" />
+          <text x="532" y="154" text-anchor="middle" fill="#34d399" font-size="11.5" font-weight="700" font-family="Segoe UI, sans-serif">Dynamics 365 Plugins (GA)</text>
+          <text x="532" y="172" text-anchor="middle" fill="#dbeafe" font-size="10.5" font-family="Segoe UI, sans-serif">Sales &amp; ERP · 100+ Prebuilt Skills</text>
+          <rect x="446" y="192" width="172" height="50" rx="7" fill="#1a2448" stroke="#38bdf8" stroke-width="1" />
+          <text x="532" y="212" text-anchor="middle" fill="#38bdf8" font-size="11.5" font-weight="700" font-family="Segoe UI, sans-serif">Salesforce Plugin (Preview)</text>
+          <text x="532" y="230" text-anchor="middle" fill="#dbeafe" font-size="10.5" font-family="Segoe UI, sans-serif">38+ Prebuilt Sales Skills</text>
+          <rect x="446" y="250" width="172" height="44" rx="7" fill="#1a2448" />
+          <text x="532" y="270" text-anchor="middle" fill="#c4b5fd" font-size="11.5" font-weight="700" font-family="Cascadia Code, monospace">Enterprise MCP Servers</text>
+          <text x="532" y="285" text-anchor="middle" fill="#8ea4ca" font-size="10" font-family="Segoe UI, sans-serif">Reusable Tool &amp; Schema Contract</text>
+
+          <!-- Arrow 3->4 -->
+          <line x1="630" y1="190" x2="656" y2="190" stroke="#38bdf8" stroke-width="2" marker-end="url(#arrowBlue)" />
+
+          <!-- Stage Box 4: Azure APIM Gateway -->
+          <rect x="660" y="72" width="170" height="236" rx="13" fill="#0d1d36" stroke="#38bdf8" stroke-width="1.8" />
+          <text x="674" y="98" fill="#38bdf8" font-family="Cascadia Code, monospace" font-size="11.5" font-weight="700">4. POLICY GATEWAY</text>
+          <text x="674" y="120" fill="#eef4ff" font-family="Segoe UI, PingFang SC, sans-serif" font-size="13.5" font-weight="700">Azure APIM 网关</text>
+          <rect x="672" y="136" width="146" height="44" rx="7" fill="#13294b" />
+          <text x="745" y="155" text-anchor="middle" fill="#eef4ff" font-size="11" font-weight="700" font-family="Cascadia Code, monospace">OAuth2 / OBO Exchange</text>
+          <text x="745" y="171" text-anchor="middle" fill="#8ea4ca" font-size="10" font-family="Segoe UI, sans-serif">User-Scoped Token Swap</text>
+          <rect x="672" y="188" width="146" height="44" rx="7" fill="#13294b" />
+          <text x="745" y="207" text-anchor="middle" fill="#eef4ff" font-size="11" font-weight="700" font-family="Cascadia Code, monospace">Rate Limit &amp; Quota</text>
+          <text x="745" y="223" text-anchor="middle" fill="#8ea4ca" font-size="10" font-family="Segoe UI, sans-serif">Protect Legacy ERP/OA</text>
+          <rect x="672" y="240" width="146" height="52" rx="7" fill="#13294b" />
+          <text x="745" y="260" text-anchor="middle" fill="#38bdf8" font-size="11" font-weight="700" font-family="Cascadia Code, monospace">MCP Firewall &amp; Audit</text>
+          <text x="745" y="278" text-anchor="middle" fill="#8ea4ca" font-size="10" font-family="Segoe UI, sans-serif">Payload &amp; PII Inspection</text>
+
+          <!-- Dual-Lane Split Arrows 4 -> 5 (Read vs Write) -->
+          <line x1="830" y1="145" x2="862" y2="145" stroke="#34d399" stroke-width="2.4" marker-end="url(#arrowGreen)" />
+          <line x1="830" y1="242" x2="862" y2="242" stroke="#fbbf24" stroke-width="2.4" stroke-dasharray="5,3" marker-end="url(#arrowAmber)" />
+
+          <!-- Stage Box 5: Functions / Logic Apps Adapter Split -->
+          <rect x="866" y="72" width="142" height="110" rx="11" fill="#0c2624" stroke="#34d399" stroke-width="1.6" />
+          <text x="878" y="95" fill="#34d399" font-family="Cascadia Code, monospace" font-size="10.5" font-weight="700">READ LANE (AUTO)</text>
+          <text x="878" y="115" fill="#eef4ff" font-size="12" font-weight="700" font-family="Segoe UI, PingFang SC, sans-serif">最小权限只读查询</text>
+          <text x="878" y="135" fill="#b6c6e3" font-size="11" font-family="Segoe UI, sans-serif">Functions Adapter</text>
+          <text x="878" y="153" fill="#b6c6e3" font-size="11" font-family="Segoe UI, sans-serif">OBO Scoped GET</text>
+          <text x="878" y="170" fill="#34d399" font-size="10.5" font-family="Cascadia Code, monospace">Zero Cross-ACL Leak</text>
+
+          <rect x="866" y="196" width="142" height="112" rx="11" fill="#2a1f10" stroke="#fbbf24" stroke-width="1.6" />
+          <text x="878" y="219" fill="#fbbf24" font-family="Cascadia Code, monospace" font-size="10.5" font-weight="700">WRITE LANE (HITL)</text>
+          <text x="878" y="239" fill="#eef4ff" font-size="12" font-weight="700" font-family="Segoe UI, PingFang SC, sans-serif">人工确认受控回写</text>
+          <text x="878" y="259" fill="#fde68a" font-size="11" font-family="Segoe UI, sans-serif">Logic Apps + Card</text>
+          <text x="878" y="277" fill="#fde68a" font-size="11" font-family="Segoe UI, sans-serif">Explicit User Sign-off</text>
+          <text x="878" y="294" fill="#fbbf24" font-size="10.5" font-family="Cascadia Code, monospace">Idempotent Commit</text>
+
+          <!-- Arrows 5 -> 6 -->
+          <line x1="1008" y1="145" x2="1034" y2="145" stroke="#34d399" stroke-width="2.2" marker-end="url(#arrowGreen)" />
+          <line x1="1008" y1="242" x2="1034" y2="242" stroke="#fbbf24" stroke-width="2.2" marker-end="url(#arrowAmber)" />
+
+          <!-- Stage Box 6: Heterogeneous Target Systems -->
+          <rect x="1038" y="72" width="122" height="236" rx="13" fill="#0d1d36" stroke="#9fb5d6" stroke-width="1.6" />
+          <text x="1050" y="96" fill="#eef4ff" font-family="Cascadia Code, monospace" font-size="11" font-weight="700">6. EXISTING</text>
+          <text x="1050" y="114" fill="#eef4ff" font-size="12.5" font-weight="700" font-family="Segoe UI, PingFang SC, sans-serif">异构存量系统</text>
+          <rect x="1048" y="128" width="102" height="36" rx="6" fill="#162b4d" />
+          <text x="1099" y="150" text-anchor="middle" fill="#dbeafe" font-size="11" font-family="Segoe UI, PingFang SC, sans-serif">飞书 / 钉钉 / WPS</text>
+          <rect x="1048" y="172" width="102" height="36" rx="6" fill="#162b4d" />
+          <text x="1099" y="194" text-anchor="middle" fill="#dbeafe" font-size="11" font-family="Segoe UI, sans-serif">Google Workspace</text>
+          <rect x="1048" y="216" width="102" height="36" rx="6" fill="#162b4d" />
+          <text x="1099" y="238" text-anchor="middle" fill="#dbeafe" font-size="11" font-family="Segoe UI, sans-serif">SAP / Salesforce</text>
+          <rect x="1048" y="260" width="102" height="36" rx="6" fill="#162b4d" />
+          <text x="1099" y="282" text-anchor="middle" fill="#dbeafe" font-size="11" font-family="Segoe UI, PingFang SC, sans-serif">自研 ERP / MES</text>
+
+          <!-- Bottom Architecture Guardrail Legend -->
+          <rect x="20" y="326" width="1140" height="46" rx="10" fill="#0b172c" stroke="#1e365d" />
+          <circle cx="44" cy="349" r="6" fill="#34d399" />
+          <text x="58" y="353" fill="#b6c6e3" font-size="12" font-family="Segoe UI, PingFang SC, sans-serif">Read Path: OBO user-delegated token, never shared service-account superkey</text>
+          <circle cx="545" cy="349" r="6" fill="#fbbf24" />
+          <text x="559" y="353" fill="#fde68a" font-size="12" font-family="Segoe UI, PingFang SC, sans-serif">Write Path: Mandatory Adaptive Card human confirmation + APIM audit trace before mutating SAP / Salesforce / Feishu</text>
+        </svg>
+      </div>
+
+      <!-- Full 4-Dimension Spotlight Card for Copilot Standalone -->
+      <article class="spotlight-card">
+        <div class="spotlight-head">
+          <div>
+            <h3 class="spotlight-title">
+              <span data-lang="zh-CN">核心亮点四维拆解：Copilot Standalone + 异构业务插件桥接</span>
+              <span data-lang="en">4-Dimension Spotlight: Copilot Standalone + Heterogeneous Business Plugins</span>
+            </h3>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <span class="badge badge-ga">Standalone: 2026-12-01</span>
+            <span class="badge badge-ga">D365 Plugin 100+ Skills</span>
+            <span class="badge badge-preview">Salesforce Plugin 38+ Skills</span>
+          </div>
+        </div>
+
+        <div class="dim-grid">
+          <div class="dim-box">
+            <div class="dim-label">
+              <span>⚙️</span>
+              <span data-lang="zh-CN">架构机制 · Architecture Mechanics</span>
+              <span data-lang="en">Architecture Mechanics</span>
+            </div>
+            <ul data-lang="zh-CN">
+              <li><strong>身份联邦免迁移</strong>：通过 Microsoft Entra ID 与客户现有 IdP（飞书/钉钉企业认证、Okta、Google Identity）建立 OIDC/SAML 联邦，无需搬迁存量邮箱与即时通讯记录即可开通 Copilot Standalone。</li>
+              <li><strong>预置插件 + 标准 MCP 协议层</strong>：开箱即用调用 <code>Dynamics 365 Sales/ERP</code>（GA，100+ 技能）与 <code>Salesforce in Copilot</code>（Preview，38+ 技能），对自建 ERP/飞书审批统一封装为标准 MCP Server。</li>
+              <li><strong>APIM OBO 读写分离</strong>：查询通道采用 Entra On-Behalf-Of（OBO）透传用户级权限，杜绝共用高权 Service Principal 导致越权；写入通道强制经 Copilot Studio 审批卡片人工确认后由 Logic Apps 幂等提交。</li>
+            </ul>
+            <ul data-lang="en">
+              <li><strong>Zero-Migration Identity Federation</strong>: Federate Microsoft Entra ID with existing IdPs (Google Identity, Okta, Feishu/DingTalk SSO) via OIDC/SAML—activating Copilot Standalone without migrating legacy mail or chat archives.</li>
+              <li><strong>Prebuilt Business Plugins + Standard MCP</strong>: Leverage turnkey <code>Dynamics 365 Sales &amp; ERP</code> (GA, 100+ skills) and <code>Salesforce in Copilot</code> (Preview, 38+ skills), while wrapping custom ERP/OA APIs behind reusable MCP Servers.</li>
+              <li><strong>APIM OBO Read/Write Separation</strong>: Read paths enforce user-scoped Entra On-Behalf-Of (OBO) tokens (never over-privileged shared service keys); write paths require explicit human confirmation cards and idempotent Logic Apps execution.</li>
+            </ul>
+          </div>
+
+          <div class="dim-box scenario">
+            <div class="dim-label">
+              <span>🏢</span>
+              <span data-lang="zh-CN">业务场景 · Business Scenarios</span>
+              <span data-lang="en">Business Scenarios</span>
+            </div>
+            <ul data-lang="zh-CN">
+              <li><strong>飞书/钉钉办公 + Salesforce 销售铁军</strong>：大客户销售在 Copilot 内拉取 Salesforce 38+ 技能洞察商机风险、汇总飞书周报纪要，通过 <code>Cowork + Office in Copilot</code> 一键产出可编辑提案 <code>.pptx</code> 与报价测算 <code>.xlsx</code>。</li>
+              <li><strong>制造业采购与财务 Source-to-Pay</strong>：无需改造底层 ERP 界面，采购专员在 Cowork 与 Excel 中比对供应商交期与历史核价，确认后回写采购申请单并向钉钉/飞书推送审批通知。</li>
+              <li><strong>跨国车企/零售总部-分支异构协同</strong>：海外团队用 M365、中国区团队用飞书/WPS，通过统一 Copilot Standalone 门户与共享 MCP 工具链拉齐经营周报口径。</li>
+            </ul>
+            <ul data-lang="en">
+              <li><strong>Feishu/DingTalk + Salesforce Revenue Teams</strong>: Account executives pull Salesforce deal risk insights (38+ skills) alongside Feishu meeting notes, then delegate to <code>Cowork + Office in Copilot</code> to generate editable customer <code>.pptx</code> proposals and <code>.xlsx</code> pricing models.</li>
+              <li><strong>Manufacturing Finance Source-to-Pay</strong>: Procurement specialists reconcile supplier quotes and PO exceptions inside Cowork &amp; Excel, writing approved requisitions back to SAP/D365 while triggering DingTalk/Feishu notifications.</li>
+              <li><strong>Multinational Hybrid HQ-Subsidiary Alignment</strong>: Global HQ on M365 and regional subsidiaries on Google Workspace or WPS share one governed Copilot Standalone workflow and MCP skill catalog.</li>
+            </ul>
+          </div>
+
+          <div class="dim-box compete">
+            <div class="dim-label">
+              <span>⚔️</span>
+              <span data-lang="zh-CN">竞争优势 · Competitive Advantage</span>
+              <span data-lang="en">Competitive Advantage</span>
+            </div>
+            <ul data-lang="zh-CN">
+              <li><strong>对比 Slack AI / 飞书智能伙伴 / Google Gemini Workspace</strong>：竞品深锁在单一 IM 或网页文档内，无法原生生成带复杂财务公式与透视表的行业标准 <code>.xlsx/.pptx</code>，更缺乏跨多云 Agent 的 <code>Agent 365</code> 统一审计与成本封顶。</li>
+              <li><strong>对比垂直 SaaS 自带 Bot（Salesforce Agentforce 等）</strong>：单一 SaaS Bot 受限于自有库表且按会话计费，难以贯通 CRM 业务数据与正式办公文档之间的交付链路；Copilot 同时编排跨系统 CRM/ERP 技能与原生 Office 文档生成。</li>
+              <li><strong>对比开源自建 Dify / LangChain 门户</strong>：省去重复造轮子的身份鉴权、多模型动态路由、Office 渲染引擎与未打标敏感文件 DLP 拦截底座。</li>
+            </ul>
+            <ul data-lang="en">
+              <li><strong>vs. Slack AI / Google Gemini Workspace / Local OA Bots</strong>: Rivals are trapped inside chat threads or web docs—unable to natively author complex financial <code>.xlsx</code> PivotTables/decks or govern multi-cloud agents under <code>Agent 365</code>.</li>
+              <li><strong>vs. Siloed SaaS Bots (e.g., standalone CRM bots)</strong>: Single-SaaS bots are blind outside their own database and cannot bridge the "last-mile deliverable gap" into editable Word/Excel/PowerPoint client artifacts.</li>
+              <li><strong>vs. DIY Open-Source Agent Portals</strong>: Eliminates months of custom plumbing for OBO token exchange, Auto model routing, native Office co-authoring, and Purview DLP protection on unlabeled files.</li>
+            </ul>
+          </div>
+
+          <div class="dim-box guidance">
+            <div class="dim-label">
+              <span>🧭</span>
+              <span data-lang="zh-CN">SA 落地要点 · 2 周空白客户 PoC 作战手册</span>
+              <span data-lang="en">SA Field Playbook · 2-Week Whitespace PoC</span>
+            </div>
+            <ul data-lang="zh-CN">
+              <li><strong>Day 1–3（身份与只读打通）</strong>：配置 Entra 外部 IdP 联邦 + 开通 25–50 个高价值岗位 Standalone 试用坐席；通过 Azure APIM 挂载 1 个核心 CRM/ERP 只读 MCP 接口。</li>
+              <li><strong>Day 4–7（黄金场景闭环）</strong>：锁定 1 个高频痛点（如“大客户周度商机复盘 + 投标 PPT/报价表生成”），跑通 <code>Cowork + Office in Copilot</code> 端到端交付。</li>
+              <li><strong>Day 8–11（受控回写与安全验真）</strong>：接入 1 个带人工审批卡片的受控回写动作，现场演示 APIM OBO 权限隔离与 Purview 敏感文件拦截，打消 CISO 顾虑。</li>
+              <li><strong>Day 12–14（ROI 算账与扩单）</strong>：用节省工时（如每名销售每周省 3.5 小时）对齐 <code>Agent 365</code> 预算护栏，锁定首期 300+ 坐席商业合同。</li>
+            </ul>
+            <ul data-lang="en">
+              <li><strong>Days 1–3 (Federation &amp; Read-Only Wiring)</strong>: Federate Entra ID with customer IdP, provision 25–50 high-value Standalone pilot seats, and expose 1 read-only CRM/ERP MCP endpoint behind Azure APIM.</li>
+              <li><strong>Days 4–7 (Golden Deliverable Loop)</strong>: Deliver 1 high-visibility workflow (e.g., deal risk brief → native editable <code>.pptx</code> + <code>.xlsx</code> margin sheet via <code>Cowork + Office in Copilot</code>).</li>
+              <li><strong>Days 8–11 (HITL Write-Back &amp; Security Proof)</strong>: Add 1 human-confirmed write-back card and demonstrate OBO least-privilege enforcement + Purview unlabeled-file DLP to win CISO sign-off.</li>
+              <li><strong>Days 12–14 (Outcome ROI &amp; Expansion)</strong>: Quantify hours saved per persona (e.g., 3.5 hrs/rep/week) with <code>Agent 365</code> budget caps to close a 300+ seat production rollout.</li>
+            </ul>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- ==================== SECTION 3: INTERACTIVE PARTNER QUALIFICATION & WEDGE ADVISOR ==================== -->
+    <section class="stage-section" id="sec-wedge-advisor" aria-labelledby="sec3-title">
+      <div class="section-header">
+        <div>
+          <span class="eyebrow">01.3 · FIELD QUALIFICATION WORKBENCH</span>
+          <h2 id="sec3-title" class="section-title">
+            <span data-lang="zh-CN">合作伙伴客户架构评估与切入路径顾问</span>
+            <span data-lang="en">Partner Customer Qualification &amp; Entry Architecture Advisor</span>
+          </h2>
+          <p class="section-sub">
+            <span data-lang="zh-CN">选择目标客户的<strong>现有协作技术栈</strong>与<strong>首要业务痛点</strong>，即时生成最佳 Copilot 模式组合、商务许可核查清单、集成架构路径与排他性竞争设问（Trap-Setting Questions）。</span>
+            <span data-lang="en">Select your customer's <strong>current collaboration stack</strong> and <strong>primary pain point</strong> to generate the recommended Copilot mode combination, SKU verification checklist, integration pattern, and competitive trap-setting discovery questions.</span>
+          </p>
+        </div>
+        <span class="badge badge-preview">Interactive SA Tool</span>
+      </div>
+
+      <div class="speaker-cue">
+        <div class="speaker-cue-title">
+          <span>📞</span>
+          <span data-lang="zh-CN">架构师沟通建议：首次技术交流聚焦单一高价值切入场景</span>
+          <span data-lang="en">Presenter Coaching Tip: Focus Initial Discovery on One High-Impact Scenario</span>
+        </div>
+        <p data-lang="zh-CN">提醒现场合作伙伴 SA：千万不要在第一次拜访时把 Chat、Cowork、Autopilot、Code、SDK 全部背诵一遍！用下面这个顾问工具——先听客户信号，选定<strong>唯一一个最痛切入口</strong>，抛出右侧的“排他性设问”让竞品露出短板，最后收口“30 分钟真实业务数据 Demo + 邀请 IT 管理员共同确认租户资格”。</p>
+        <p data-lang="en">Coach Partner SAs never to dump all four modes and ten SKUs in a first customer meeting. Use this advisor live: identify the collaboration stack and #1 business pain, lead with one sharp wedge, ask the competitive trap-setting questions below, and close on a 30-minute real-scenario workshop with both the business owner and IT admin.</p>
+      </div>
+
+      <div class="workbench" id="advisor-workbench">
+        <div class="preset-chip-row" aria-label="Quick Customer Personas">
+          <button type="button" class="preset-chip active" data-preset-stack="whitespace" data-preset-pain="crossdept">
+            <span data-lang="zh-CN">⚡ 典型样本 1：飞书/钉钉客户 + 销售投标跨部门协同</span>
+            <span data-lang="en">⚡ Preset 1: Feishu/GWS Whitespace + Cross-Team RFP Delivery</span>
+          </button>
+          <button type="button" class="preset-chip" data-preset-stack="m365" data-preset-pain="alwayson">
+            <span data-lang="zh-CN">⚡ 典型样本 2：存量 M365 E5 客户 + 7×24 供应链跟单值守</span>
+            <span data-lang="en">⚡ Preset 2: M365 E5 Base + 24×7 Supply Chain Follow-Up</span>
+          </button>
+          <button type="button" class="preset-chip" data-preset-stack="isv" data-preset-pain="lobapp">
+            <span data-lang="zh-CN">⚡ 典型样本 3：行业 ISV 软件商 + 垂直 SaaS 内嵌智能体</span>
+            <span data-lang="en">⚡ Preset 3: Vertical ISV + Embedded Agent Harness</span>
+          </button>
+          <button type="button" class="preset-chip" data-preset-stack="m365" data-preset-pain="personal">
+            <span data-lang="zh-CN">⚡ 典型样本 4：存量 M365 仅用免费聊天 + 高管效率突破</span>
+            <span data-lang="en">⚡ Preset 4: M365 Base Using Free Chat + Executive Velocity</span>
+          </button>
+        </div>
+
+        <div class="control-row">
+          <div class="field-group">
+            <label for="adv-stack">
+              <span data-lang="zh-CN">1. 客户当前协作与技术底座</span>
+              <span data-lang="en">1. Customer Collaboration Stack</span>
+            </label>
+            <select id="adv-stack"></select>
+          </div>
+          <div class="field-group">
+            <label for="adv-pain">
+              <span data-lang="zh-CN">2. 业务部门首要痛点信号</span>
+              <span data-lang="en">2. Primary Business Pain Point</span>
+            </label>
+            <select id="adv-pain"></select>
+          </div>
+        </div>
+
+        <div id="advisor-output" aria-live="polite"></div>
+      </div>
+
+      <!-- Chapter Footer Pager -->
+      <nav class="chapter-pager" aria-label="Chapter Pagination">
+        <a class="pager-card prev" href="index.en.html">
+          <span class="pager-dir">← STAGE 00</span>
+          <span class="pager-name">
+            <span data-lang="zh-CN">00 全景架构蓝图</span>
+            <span data-lang="en">00 Architecture Blueprint</span>
+          </span>
+        </a>
+        <a class="pager-card next" href="02-web-iq-context.en.html">
+          <span class="pager-dir">STAGE 02 →</span>
+          <span class="pager-name">
+            <span data-lang="zh-CN">02 外部实时上下文</span>
+            <span data-lang="en">02 Live World Context</span>
+          </span>
+        </a>
+      </nav>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div>
+      <span data-lang="zh-CN">Microsoft Ignite 2026 解决方案架构师专栏 · 阶段 01：统一智能体入口</span>
+      <span data-lang="en">Microsoft Ignite 2026 Solution Architect Series · Stage 01: Unified Agent Entry</span>
+    </div>
+    <div class="mono">01-copilot-entry.html · Zero External Dependencies</div>
+  </footer>
+
+  <script src="assets/ignite-recap.js" defer></script>
+  <script>
+    (function () {
+      "use strict";
+
+      /* ====================================================================
+         1. Interactive 4-Mode Explorer Data & Renderer
+         ==================================================================== */
+      const MODES_DATA = {
+        chat: {
+          badgeClass: "badge-ga",
+          badgeText: "GA",
+          title: {
+            "zh-CN": "模式 01 · Chat（Home + Auto 统一智能辅助入口）",
+            "en": "Mode 01 · Chat (Home + Auto Unified Assist Entry)"
+          },
+          metrics: [
+            {
+              title: { "zh-CN": "核心交互延迟", "en": "Interaction Cadence" },
+              num: "< 2s TTFT",
+              note: { "zh-CN": "同步低延迟多轮对话", "en": "Synchronous low-latency turns" }
+            },
+            {
+              title: { "zh-CN": "组织记忆规模", "en": "Work IQ Graph Scale" },
+              num: "19.5 EB",
+              note: { "zh-CN": "每周 900 亿邮件 + 150 亿消息", "en": "90B mails + 15B Teams msgs/wk" }
+            },
+            {
+              title: { "zh-CN": "模型与推理调度", "en": "Model Routing" },
+              num: "Auto (GA)",
+              note: { "zh-CN": "动态匹配推理深度 + OpenAI/Anthropic", "en": "Dynamic reasoning + OpenAI/Anthropic" }
+            }
+          ],
+          mechanics: {
+            "zh-CN": [
+              "<strong>Home + Auto 合一入口（GA）</strong>：将 Chat 快速问答与向 Cowork 的一键升级收纳于同一工作台；<code>Auto</code> 路由器根据问题复杂度动态调节模型档位与思维链深度，兼顾首字响应与推理质量。",
+              "<strong>多模型策略管控</strong>：在企业管理员策略许可下，员工可按场景切换第一方与 OpenAI / Anthropic 模型，所有请求均受租户商业数据保护（EDP）边界约束。",
+              "<strong>Work IQ 重要性排序 + Today 晨间流</strong>：从碎片化邮件、会议纪要与文档中精准提炼高权重信号；新增 <code>Today</code>（Private Preview：<code>Brief</code> 每日简报含在基础许可内，<code>Feed</code> 动态流按 Credits 计费）。"
+            ],
+            "en": [
+              "<strong>Home + Auto Unified Start (GA)</strong>: Combines instant Q&A and seamless handoff to Cowork on one home surface; <code>Auto</code> dynamically selects model tier and reasoning depth per prompt to balance speed, quality, and cost.",
+              "<strong>Governed Multi-Model Choice</strong>: Employees can also pick OpenAI or Anthropic models where allowed by tenant policy, fully covered under Enterprise Data Protection.",
+              "<strong>Work IQ Salience Ranking + Today</strong>: Separates high-priority org signals from noise across mails, meetings, and files; pairs with <code>Today</code> (Private Preview: <code>Brief</code> included in M365 Copilot license; <code>Feed</code> uses Copilot Credits)."
+            ]
+          },
+          scenarios: {
+            "zh-CN": [
+              "高管晨间 3 分钟通过 <code>Today Brief</code> 排定当日审批与风险跟进优先级，无需逐封翻阅百封未读邮件。",
+              "销售代表在客户电话响起前 90 秒，跨上次会议转录、法务红线批注与最新邮件往来生成精准应答提纲。",
+              "新入职项目经理快速梳理过去三个月跨部门项目群的历史决策脉络与待办卡点。"
+            ],
+            "en": [
+              "Executives review <code>Today Brief</code> in 3 minutes each morning to triage urgent approvals and deal risks with one-click draft actions.",
+              "Account executives synthesize last meeting transcripts, legal redlines, and overnight email threads 90 seconds before a customer call.",
+              "Newly onboarded PMs reconstruct 90 days of cross-functional project decisions without pinging ten colleagues."
+            ]
+          },
+          compete: {
+            "zh-CN": [
+              "<strong>对比通用公网大模型企业版（ChatGPT Enterprise / Claude Enterprise）</strong>：免除手工上传文件或脆弱连接器同步，原生运行在 19.5 EB 实时权限感知的 Work IQ 图谱之上。",
+              "<strong>对比传统手工模型选择器</strong>：<code>Auto</code> 消除普通业务员工“选错昂贵推理模型慢半天、选错轻量模型答不准”的体验割裂。"
+            ],
+            "en": [
+              "<strong>vs. Standalone Frontier Chatbots</strong>: Zero manual file uploads or brittle connector syncs—grounded natively in live ACL-trimmed Work IQ organizational context.",
+              "<strong>vs. Manual Model Pickers</strong>: <code>Auto</code> eliminates latency/accuracy misfires for non-technical staff while preserving governed model choice for power users."
+            ]
+          },
+          guidance: {
+            "zh-CN": [
+              "<strong>切忌停留在“写邮件摘要”演示</strong>：演示 Chat 时必须紧接着点一下“交给 Cowork 生成正式 PPT/Excel”，用 30 秒展示从“问答”到“交付”的质变。",
+              "<strong>安全前置检查</strong>：为存量 M365 客户启用 Purview DLP 未打标敏感文件实时拦截策略（Preview），消除过度共享顾虑。"
+            ],
+            "en": [
+              "<strong>Never Stop at Email Summarization</strong>: Always pivot a Chat lookup straight into Cowork deliverable generation within 30 seconds so buyers see Work OS outcomes, not commodity chat.",
+              "<strong>Pre-Deployment Hygiene</strong>: Pair pilot rollout with Purview DLP blocking for sensitive files—even unlabeled ones (Preview)—to preempt oversharing objections."
+            ]
+          }
+        },
+        cowork: {
+          badgeClass: "badge-ga",
+          badgeText: "GA · ~80% F500",
+          title: {
+            "zh-CN": "模式 02 · Cowork + Office in Copilot（多步异步委派与原生文档共编）",
+            "en": "Mode 02 · Cowork + Office in Copilot (Async Delegation & Native Co-Editing)"
+          },
+          metrics: [
+            {
+              title: { "zh-CN": "财富 500 强渗透率", "en": "Fortune 500 Adoption" },
+              num: "~80%",
+              note: { "zh-CN": "已正式 GA 规模化投产", "en": "Generally Available in production" }
+            },
+            {
+              title: { "zh-CN": "原生交付画布", "en": "Native Deliverable Canvas" },
+              num: ".docx/.xlsx/.pptx",
+              note: { "zh-CN": "真实公式/透视表 + 多人共编", "en": "Live formulas, PivotTables & multiplayer" }
+            },
+            {
+              title: { "zh-CN": "预置 CRM/ERP 技能", "en": "Prebuilt Business Skills" },
+              num: "100+ / 38+",
+              note: { "zh-CN": "D365 (GA) + Salesforce (Preview)", "en": "D365 (GA) + Salesforce (Preview)" }
+            }
+          ],
+          mechanics: {
+            "zh-CN": [
+              "<strong>多步任务图拆解与人在回路确认</strong>：你定义目标交付物，Cowork 自动规划检索、数据分析、跨插件调用与草拟步骤，在关键分支节点请求人工审阅纠偏。",
+              "<strong>Office in Copilot（GA）原生内核</strong>：在 Copilot 界面内直接创建并实时多人协同编辑真正的 Word、带动态公式与数据透视表的 Excel、以及企业版式 PowerPoint——文件直接存放在 OneDrive/SharePoint，完整继承权限、敏感度标签与版本历史。",
+              "<strong>Workspaces（Frontier）多人多智能体空间</strong>：由 Copilot Notebooks 升级演进，让跨部门成员与智能体在同一共享项目空间接力上下文，告别重复贴背景。"
+            ],
+            "en": [
+              "<strong>Multi-Step Task Planning with HITL Checkpoints</strong>: Users specify the target outcome; Cowork plans retrieval, plugin calls, calculation, and drafting steps while surfacing mid-flight checkpoints.",
+              "<strong>Office in Copilot (GA) Native Engine</strong>: Creates and co-edits real native Word docs, Excel workbooks (live formulas & PivotTables), and PowerPoint decks right inside Copilot—saved in OneDrive inheriting ACLs, sensitivity labels, and version history.",
+              "<strong>Workspaces (Frontier) Multiplayer Relay</strong>: Evolved from Copilot Notebooks so cross-functional teams and agents collaborate in a persistent shared workspace without re-explaining context."
+            ]
+          },
+          scenarios: {
+            "zh-CN": [
+              "<strong>销售大单攻坚包</strong>：整合 Salesforce/D365 商机记录、客户会议纪要与产品白皮书，一次委派同步产出定制化高层汇报 <code>.pptx</code> 与毛利测算 <code>.xlsx</code>。",
+              "<strong>财务与采购 Source-to-Pay</strong>：调用 Dynamics 365 ERP 插件（GA）在 Cowork 与 Excel 内完成供应商比价、异常对账与请购单准备。",
+              "<strong>跨部门季度经营复盘（QBR）</strong>：市场、销售、供应链在同一个 <code>Workspace</code> 内与 Cowork 多人共编定稿季度经营分析材料。"
+            ],
+            "en": [
+              "<strong>Enterprise Deal Pursuit Pack</strong>: Synthesize D365/Salesforce deal insights, call transcripts, and product specs into a customer-ready <code>.pptx</code> deck + live <code>.xlsx</code> margin model in one delegation.",
+              "<strong>Finance & Procurement Source-to-Pay</strong>: Run Dynamics 365 ERP plugin skills (GA) directly across Cowork and Excel for vendor variance checks and PO preparation.",
+              "<strong>Cross-Department QBR Relay</strong>: Marketing, Sales, and Ops co-edit quarterly business review artifacts simultaneously with Cowork inside shared <code>Workspaces</code>."
+            ]
+          },
+          compete: {
+            "zh-CN": [
+              "<strong>原生 Office OOXML 格式保真度优势</strong>：企业合同、财务模型与经营汇报的标准载体为 <code>.docx/.xlsx/.pptx</code>。第三方平台导出的静态文件遇到复杂嵌套公式与企业母版易发生版式失真，而 Office in Copilot 支持在线原生共编且包含在现有 Copilot 订阅内。",
+              "<strong>原生继承企业合规链</strong>：文档生成时即落入 OneDrive 合规存储边界，避免在第三方 Agent 对象存储中产生非受控副本。"
+            ],
+            "en": [
+              "<strong>Native Office OOXML Format Fidelity</strong>: Enterprise contracts and financial models rely on <code>.docx/.xlsx/.pptx</code>. Whereas third-party exports often break formulas or slide masters, Office in Copilot co-edits live native files in place—included in the existing Copilot license.",
+              "<strong>Zero Unmanaged File Sprawl</strong>: Artifacts are created directly inside OneDrive/SharePoint governance rather than external agent object buckets."
+            ]
+          },
+          guidance: {
+            "zh-CN": [
+              "<strong>下周四最佳必演王牌</strong>：这是针对所有未购或仅浅层使用 Copilot 客户的“三分钟一锤定音演示”（拉上下文 → Cowork 拆解 → 现场点开原生 Excel 改一个参数看透视表联动）。",
+              "<strong>区分 GA 与 Frontier</strong>：<code>Cowork</code> 与 <code>Office in Copilot</code> 已全面 GA 可立即承诺交付；若客户看中 <code>Workspaces</code> 团队空间，提醒须核实 Frontier 资格。"
+            ],
+            "en": [
+              "<strong>Your #1 Live Demo Anchor</strong>: Lead every attach/whitespace workshop with the 3-minute Cowork → live Excel formula/PPTX co-edit flow.",
+              "<strong>Maturity Hygiene</strong>: <code>Cowork</code> and <code>Office in Copilot</code> are GA today; qualify Frontier enrollment when positioning multiplayer <code>Workspaces</code>."
+            ]
+          }
+        },
+        autopilot: {
+          badgeClass: "badge-frontier",
+          badgeText: "Frontier",
+          title: {
+            "zh-CN": "模式 03 · Autopilot（具独立身份与持久记忆的 7×24 常驻代理）",
+            "en": "Mode 03 · Autopilot (Persistent Autonomous Delegate with Entra Agent ID)"
+          },
+          metrics: [
+            {
+              title: { "zh-CN": "数字身份架构", "en": "Digital Identity" },
+              num: "Entra Agent ID",
+              note: { "zh-CN": "独立 M365 邮箱 + 专属权限", "en": "Dedicated M365 mailbox & RBAC" }
+            },
+            {
+              title: { "zh-CN": "责任归属机制", "en": "Accountability Model" },
+              num: "1 Human Mgr",
+              note: { "zh-CN": "强制绑定人类管理者与全审计链", "en": "Mandatory human manager & audit log" }
+            },
+            {
+              title: { "zh-CN": "商业授权规则", "en": "Commercial Rule" },
+              num: "Per Instance",
+              note: { "zh-CN": "Frontier 准入 + Agent 365 Frontier 许可", "en": "Frontier + Agent 365 Frontier SKU/instance" }
+            }
+          ],
+          mechanics: {
+            "zh-CN": [
+              "<strong>一等公民级数字员工身份</strong>：每个 Autopilot 实例都分配独立的 <code>Entra Agent ID</code> 与专属 M365 账号/邮箱，以自身名义在 Teams 和 Outlook 中收发消息、参加协作，而非冒用某位人类员工的个人令牌。",
+              "<strong>跨会话持久记忆与策略驱动</strong>：内置长周期状态记忆库，能够跨数天、数周追踪未闭环事项；遇到超出授权阈值或高风险决策时，自动升级给指定的人类管理者（Designated Human Manager）拍板。",
+              "<strong>全链路可观测性</strong>：每一次外部邮件发送、工具调用与权限变更均实时写入 <code>Agent 365</code> 审计与风险中心。"
+            ],
+            "en": [
+              "<strong>First-Class Digital Colleague Identity</strong>: Every Autopilot instance holds its own <code>Entra Agent ID</code> and dedicated M365 account/mailbox—operating in its own name across Teams and Outlook rather than piggybacking on a human's personal token.",
+              "<strong>Persistent Memory & Policy Escalation</strong>: Retains cross-session state across days or weeks to chase multi-party workflows, automatically escalating edge cases to its designated human manager.",
+              "<strong>End-to-End Auditability</strong>: Every message sent, skill invoked, and policy check is logged into <code>Agent 365</code> risk & cost telemetry."
+            ]
+          },
+          scenarios: {
+            "zh-CN": [
+              "<strong>供应链异常催办专员</strong>：持续监控在途订单与交期回执邮件，一旦发现延误自动在 Outlook 发函向承运商核实 ETA，并在 Teams 频道向采购经理汇报替代方案。",
+              "<strong>销售漏斗卫生巡检官</strong>：每周自动扫描 CRM 中超过 14 天无实质进展的重点商机，在 Teams 私聊销售核对最新进展并汇总周度风险简报。",
+              "<strong>项目PMO 跨部门督办员</strong>：按里程碑日历自动跟进法务、安全、财务会签状态，收齐材料后自动通知项目负责人。"
+            ],
+            "en": [
+              "<strong>Supply Chain SLA Coordinator</strong>: Continuously monitors shipment confirmations in Outlook, chases carriers on delayed ETAs, and posts exception options to the logistics manager in Teams.",
+              "<strong>Sales Pipeline Hygiene Delegate</strong>: Audits stalled CRM opportunities every week, interviews reps via Teams chat for blockers, and compiles verified forecast rollups.",
+              "<strong>PMO Sign-Off Chaser</strong>: Tracks legal, security, and finance review gates across weeks and escalates bottlenecks to the human program lead."
+            ]
+          },
+          compete: {
+            "zh-CN": [
+              "<strong>对比 RPA 机器人与共享服务账号脚本</strong>：传统 RPA 依赖脆弱 UI 抓取与高危共享管理员账号，一旦出错无法追责；Autopilot 具备原生语义理解、独立 Entra 最小权限与强制绑定的人类责任人。",
+              "<strong>对比开源自主 Agent（如 OpenClaw / 自建后台 Daemon）</strong>：无需自己搭邮件网关、持久记忆库与安全沙箱，天然融入企业 Teams/Outlook 组织架构图。"
+            ],
+            "en": [
+              "<strong>vs. Legacy RPA & Shared Service Accounts</strong>: Replaces brittle UI scraping and risky shared admin credentials with semantic reasoning, scoped <code>Entra Agent ID</code>, and explicit human sponsorship.",
+              "<strong>vs. Ungoverned Autonomous Daemons</strong>: Native citizen of Teams, Outlook, Entra Conditional Access, and Purview DLP out of the box."
+            ]
+          },
+          guidance: {
+            "zh-CN": [
+              "<strong>商务报价必核红线</strong>：务必提前告知客户与销售团队——Autopilot 目前属于 <strong>Frontier 计划</strong>，不仅租户需完成 Frontier 注册，而且<strong>团队每“雇佣”一个 Autopilot 实例，都需要为其配置一份独立的 Agent 365 Frontier 许可证</strong>。",
+              "<strong>从只读催办切入</strong>：首期试点优先选择“自动收集状态 + 生成草稿待主管点发送”的半自主规则，跑顺信任后再放开外部自动发信。"
+            ],
+            "en": [
+              "<strong>Mandatory Commercial Check</strong>: Clearly set customer expectations—Autopilot requires <strong>Frontier program enrollment AND a dedicated Agent 365 Frontier license per hired Autopilot instance</strong>.",
+              "<strong>Start with Draft-and-Escalate Policies</strong>: Configure Week-1 pilots to gather cross-team updates and stage external emails for human-manager approval before enabling full external auto-send."
+            ]
+          }
+        },
+        code: {
+          badgeClass: "badge-ga",
+          badgeText: "Runtime & SDK GA · Code Dec GA",
+          title: {
+            "zh-CN": "模式 04 · Copilot Code + Managed Runtime + Copilot SDK 2.0",
+            "en": "Mode 04 · Copilot Code + Managed Runtime + Copilot SDK 2.0"
+          },
+          metrics: [
+            {
+              title: { "zh-CN": "企业级托管沙箱", "en": "Enterprise Hosting" },
+              num: "Managed Runtime",
+              note: { "zh-CN": "已正式 GA · M365 Admin 统一治理", "en": "GA · M365 Admin Center governed" }
+            },
+            {
+              title: { "zh-CN": "SDK 2.0 原生内核", "en": "SDK 2.0 Engine" },
+              num: "Rust Native",
+              note: { "zh-CN": "已正式 GA · 覆盖 6 大主流语言", "en": "GA · Python/TS/.NET/Go/Java/Rust" }
+            },
+            {
+              title: { "zh-CN": "Copilot Code 节奏", "en": "Copilot Code Status" },
+              num: "Dec 2026 GA",
+              note: { "zh-CN": "当前 Frontier 开放体验", "en": "Frontier today, planned Dec GA" }
+            }
+          ],
+          mechanics: {
+            "zh-CN": [
+              "<strong>Copilot Code 自然语言应用构建（Frontier，计划 12 月 GA）</strong>：业务人员只需描述业务目标，即可自动构建交互式全栈轻应用、数据看板、项目追踪器与自动化流（支持 Windows 本地隔离沙箱与云端部署）。",
+              "<strong>Copilot Managed Runtime（GA）治理底座</strong>：统一安全托管由 Cowork、Copilot Code 与 Copilot Studio 生成的应用，提供租户级隔离运行环境、Fabric 数据联动与 M365 Admin Center 全生命周期管控。",
+              "<strong>Microsoft Copilot SDK 2.0（GA）</strong>：基于高性能<strong>原生 Rust 运行时</strong>打造的生产级 Agent Harness，原生提供 <strong>Python、TypeScript/Node.js、.NET、Go、Java、Rust</strong> 六种语言绑定，并同步衔接 <code>MAI-Code-2 / Flash</code>（GA）编码模型与本地 CLI Defender 防护。"
+            ],
+            "en": [
+              "<strong>Copilot Code App Builder (Frontier, planned Dec GA)</strong>: Knowledge workers describe desired outcomes in natural language to build interactive apps, dashboards, trackers, and workflows.",
+              "<strong>Copilot Managed Runtime (GA)</strong>: Securely hosts and governs apps built across Cowork, Copilot Code, and Copilot Studio with isolated execution, Fabric integration, and M365 Admin Center visibility.",
+              "<strong>Microsoft Copilot SDK 2.0 (GA)</strong>: Production-grade agent harness built on a high-performance <strong>native Rust runtime</strong> supporting <strong>Python, TypeScript/Node.js, .NET, Go, Java, and Rust</strong>—paired with <code>MAI-Code-2 / Flash</code> (GA) and Defender CLI runtime protection."
+            ]
+          },
+          scenarios: {
+            "zh-CN": [
+              "<strong>业务敏捷自建（Citizen Builder）</strong>：渠道运营总监用一句话生成“全国经销商季度返利核销追踪看板”，直接发布在 <code>Managed Runtime</code> 供大区经理安全访问。",
+              "<strong>ISV 垂直行业软件深度内嵌</strong>：医疗 HIS、工业 MES、财税 SaaS 厂商使用 <code>Copilot SDK 2.0</code> 将多步规划、MCP 工具调用与上下文编排原生嵌入自有客户端。",
+              "<strong>存量系统现代化联动</strong>：研发团队结合 GitHub Copilot 现代化 Rulebooks 与 <code>Azure Catalyst</code>（GA）批量重构老旧内部工具。"
+            ],
+            "en": [
+              "<strong>Governed Business Self-Service</strong>: Channel operations leads generate an interactive distributor rebate tracker in natural language and publish it safely inside <code>Managed Runtime</code>.",
+              "<strong>ISV Vertical LOB Embedding</strong>: ERP, healthcare, and manufacturing ISVs embed Copilot's multi-step agent harness straight into their desktop/web apps using <code>Copilot SDK 2.0</code>.",
+              "<strong>Legacy Tool Modernization</strong>: Engineering teams combine GitHub Copilot rulebooks + <code>MAI-Code-2</code> + <code>Azure Catalyst</code> (GA) to modernize aging internal portals."
+            ]
+          },
+          compete: {
+            "zh-CN": [
+              "<strong>对比外部 Vibe Coding 工具（Lovable / Bolt / Cursor 散装导出）</strong>：外部工具生成的应用一旦上线就脱离企业身份、DLP 与审计监管，沦为高危影子 IT；<code>Copilot Code + Managed Runtime</code> 让业务创新从第一行代码起就在 IT 治理围栏内。",
+              "<strong>对比零散开源 Agent 框架</strong>：<code>Copilot SDK 2.0</code> 用单一 Rust 内核统一 6 种企业开发语言行为一致性，避免 Python 原型到 Java/.NET 生产重写鸿沟。"
+            ],
+            "en": [
+              "<strong>vs. Consumer Vibe-Coding Tools</strong>: Unmanaged vibe-coded apps create instant shadow-IT security holes; <code>Copilot Code + Managed Runtime</code> keeps citizen apps inside Entra, Purview, and M365 Admin Center from birth.",
+              "<strong>vs. Fragmented Polyglot Frameworks</strong>: <code>Copilot SDK 2.0</code> unifies Python prototyping and .NET/Java/Go/Rust production deployment on one identical Rust runtime core."
+            ]
+          },
+          guidance: {
+            "zh-CN": [
+              "<strong>双轨话术分层</strong>：对业务与 IT 主管主讲 <code>Copilot Code + Managed Runtime</code>（敏捷且可控）；对有自研团队的企业架构师或 ISV 伙伴主推 <code>Copilot SDK 2.0 (GA)</code>。",
+              "<strong>用量成本预期管理</strong>：Managed Runtime 与 Code 应用运行纳入 <code>Agent 365 Cost Management</code>（Preview）统一配额监控。"
+            ],
+            "en": [
+              "<strong>Audience-Tailored Pitch</strong>: Position <code>Copilot Code + Managed Runtime</code> to LOB & IT leaders (speed without shadow IT), and lead with <code>Copilot SDK 2.0 (GA)</code> for enterprise dev teams and ISV partners.",
+              "<strong>FinOps Governance</strong>: Wire Managed Runtime consumption straight into <code>Agent 365 Cost Management</code> (Preview) alerts."
+            ]
+          }
+        }
+      };
+
+      let currentMode = "chat";
+
+      function getLang() {
+        return document.documentElement.lang === "en" ? "en" : "zh-CN";
+      }
+
+      function renderModeDetail() {
+        const lang = getLang();
+        const data = MODES_DATA[currentMode];
+        const container = document.getElementById("mode-detail-container");
+        if (!container || !data) return;
+
+        const labels = lang === "en"
+          ? {
+              arch: "Architecture Mechanics",
+              scen: "Business Scenarios",
+              comp: "Competitive Advantage",
+              guid: "SA Field Playbook"
+            }
+          : {
+              arch: "架构机制 · Architecture Mechanics",
+              scen: "业务场景 · Business Scenarios",
+              comp: "竞争优势 · Competitive Advantage",
+              guid: "SA 落地要点 · SA Field Playbook"
+            };
+
+        const metricsHtml = data.metrics.map((m) => `
+          <div class="metric-card">
+            <span class="m-title">${m.title[lang]}</span>
+            <span class="m-num">${m.num}</span>
+            <span class="m-note">${m.note[lang]}</span>
+          </div>
+        `).join("");
+
+        const listHtml = (arr) => arr.map((item) => `<li>${item}</li>`).join("");
+
+        container.innerHTML = `
+          <div class="metric-strip" style="margin:0 0 16px;">${metricsHtml}</div>
+          <article class="spotlight-card" style="margin-bottom:0;">
+            <div class="spotlight-head">
+              <h3 class="spotlight-title">${data.title[lang]}</h3>
+              <span class="badge ${data.badgeClass}">${data.badgeText}</span>
+            </div>
+            <div class="dim-grid">
+              <div class="dim-box">
+                <div class="dim-label">⚙️ ${labels.arch}</div>
+                <ul>${listHtml(data.mechanics[lang])}</ul>
+              </div>
+              <div class="dim-box scenario">
+                <div class="dim-label">🏢 ${labels.scen}</div>
+                <ul>${listHtml(data.scenarios[lang])}</ul>
+              </div>
+              <div class="dim-box compete">
+                <div class="dim-label">⚔️ ${labels.comp}</div>
+                <ul>${listHtml(data.compete[lang])}</ul>
+              </div>
+              <div class="dim-box guidance">
+                <div class="dim-label">🧭 ${labels.guid}</div>
+                <ul>${listHtml(data.guidance[lang])}</ul>
+              </div>
+            </div>
+          </article>
+        `;
+      }
+
+      function setActiveMode(modeKey) {
+        if (!MODES_DATA[modeKey]) return;
+        currentMode = modeKey;
+        document.querySelectorAll("[data-mode-pick]").forEach((btn) => {
+          const active = btn.getAttribute("data-mode-pick") === modeKey;
+          btn.classList.toggle("active", active);
+          btn.setAttribute("aria-selected", String(active));
+        });
+        document.querySelectorAll("[data-svg-mode]").forEach((node) => {
+          const active = node.getAttribute("data-svg-mode") === modeKey;
+          node.classList.toggle("focused", active);
+          node.classList.toggle("dimmed", !active);
+          const rect = node.querySelector("rect.node-box");
+          if (rect) rect.setAttribute("stroke-width", active ? "2.8" : "1.6");
+        });
+        renderModeDetail();
+      }
+
+      /* ====================================================================
+         2. Interactive Partner Qualification & Entry Wedge Advisor
+         ==================================================================== */
+      const STACK_OPTIONS = [
+        {
+          value: "m365",
+          "zh-CN": "存量 M365 E3 / E5 客户（M365 E3/E5 Installed Base）",
+          "en": "M365 E3/E5 Installed Base"
+        },
+        {
+          value: "whitespace",
+          "zh-CN": "飞书 / 钉钉 / WPS / Google Workspace 空白客户（Whitespace）",
+          "en": "Google Workspace / Feishu / DingTalk Whitespace"
+        },
+        {
+          value: "isv",
+          "zh-CN": "ISV 行业软件商 / 自研垂直业务系统（ISV / Custom Vertical SaaS）",
+          "en": "ISV / Custom Vertical SaaS"
+        }
+      ];
+
+      const PAIN_OPTIONS = [
+        {
+          value: "personal",
+          "zh-CN": "个人办公效率与跨源检索（Individual Productivity）",
+          "en": "Individual Productivity & Grounded Synthesis"
+        },
+        {
+          value: "crossdept",
+          "zh-CN": "跨部门长链路协同交付（Cross-Team Multi-Step Delivery）",
+          "en": "Cross-Team Multi-Step Deliverable Co-Execution"
+        },
+        {
+          value: "alwayson",
+          "zh-CN": "7×24 值守流程代理（24×7 Autonomous Process Delegate）",
+          "en": "24×7 Autonomous Process Monitoring & Follow-Up"
+        },
+        {
+          value: "lobapp",
+          "zh-CN": "业务部门自建轻应用或内嵌智能体（LOB Micro-App / Embed）",
+          "en": "Business-Led Micro-App Creation & LOB Embedding"
+        }
+      ];
+
+      function buildAdvisorPlan(stack, pain, lang) {
+        const isEn = lang === "en";
+
+        // Mode combination by pain + stack
+        const modeMap = {
+          personal: {
+            "zh-CN": [
+              "<strong>主切入模式</strong>：<code>Chat (Home + Auto, GA)</code> + <code>Office in Copilot (GA)</code> 快速文档转化",
+              "<strong>增值延伸</strong>：面向高管申请 <code>Today (Private Preview)</code> 每日优先简报（<code>Brief</code> 含在订阅内）",
+              stack === "isv"
+                ? "<strong>ISV 增强</strong>：结合 <code>Copilot SDK 2.0 (GA)</code> 在宿主软件侧边栏提供原生业务问答"
+                : "<strong>上下文底座</strong>：<code>Work IQ (GA)</code> 实时组织上下文重要性排序"
+            ],
+            "en": [
+              "<strong>Primary Wedge</strong>: <code>Chat (Home + Auto, GA)</code> + instant pivot into <code>Office in Copilot (GA)</code>",
+              "<strong>Executive Add-On</strong>: Nominate leadership for <code>Today (Private Preview)</code> morning <code>Brief</code> (included in seat)",
+              stack === "isv"
+                ? "<strong>ISV Extension</strong>: Embed context-aware in-app Q&A via <code>Copilot SDK 2.0 (GA)</code>"
+                : "<strong>Context Engine</strong>: <code>Work IQ (GA)</code> salience ranking across mails, chats & files"
+            ]
+          },
+          crossdept: {
+            "zh-CN": [
+              "<strong>主切入王牌</strong>：<code>Cowork (GA)</code> + <strong><code>Office in Copilot (GA)</code></strong>（对话内直接生成共编原生 <code>.docx/.xlsx/.pptx</code>）",
+              "<strong>业务技能挂载</strong>：<code>Dynamics 365 Sales/ERP Plugins (GA, 100+ 技能)</code> 或 <code>Salesforce in Copilot (Preview, 38+ 技能)</code>",
+              "<strong>团队接力升级</strong>：若客户符合 Frontier 资格，叠加 <code>Workspaces (Frontier)</code> 实现多人多智能体共享空间交接"
+            ],
+            "en": [
+              "<strong>Primary Wedge</strong>: <code>Cowork (GA)</code> + <strong><code>Office in Copilot (GA)</code></strong> (real native <code>.docx/.xlsx/.pptx</code> multiplayer co-editing)",
+              "<strong>Business Plugins</strong>: Attach <code>Dynamics 365 Plugins (GA, 100+ skills)</code> or <code>Salesforce in Copilot (Preview, 38+ skills)</code>",
+              "<strong>Multiplayer Upgrade</strong>: Add <code>Workspaces (Frontier)</code> for cross-department human+agent handoffs where Frontier-eligible"
+            ]
+          },
+          alwayson: {
+            "zh-CN": [
+              "<strong>主切入模式</strong>：<strong><code>Autopilot (Frontier)</code></strong> 常驻具身代理（独立 <code>Entra Agent ID</code> + 专属邮箱 + 持久记忆）",
+              "<strong>人机闭环配合</strong>：复杂交付阶段自动交棒给 <code>Cowork (GA)</code> 产出周度汇总报表，异常分支升级给指定人类管理者",
+              "<strong>可观测护栏</strong>：配套 <code>Agent 365 Cost Management (Preview)</code> 与审计看板追踪 7×24 运行成效"
+            ],
+            "en": [
+              "<strong>Primary Wedge</strong>: <strong><code>Autopilot (Frontier)</code></strong> persistent delegate (own <code>Entra Agent ID</code>, dedicated mailbox & cross-session memory)",
+              "<strong>Human-in-the-Loop Relay</strong>: Hands structured rollups to <code>Cowork (GA)</code> and escalates policy exceptions to its designated human manager",
+              "<strong>Governance Guardrail</strong>: Pair with <code>Agent 365 Cost Management (Preview)</code> & risk telemetry"
+            ]
+          },
+          lobapp: {
+            "zh-CN": [
+              stack === "isv"
+                ? "<strong>主切入王牌</strong>：<strong><code>Microsoft Copilot SDK 2.0 (GA)</code></strong>（原生 Rust 运行时，支持 Python / TS / .NET / Go / Java / Rust 内嵌）"
+                : "<strong>主切入王牌</strong>：<code>Copilot Code (Frontier, 12月 GA)</code> 自然语言构建应用/看板 + <strong><code>Copilot Managed Runtime (GA)</code></strong> 受控托管",
+              "<strong>编码与现代化加速</strong>：联动 <code>MAI-Code-2 / Flash (GA)</code> 与 <code>Copilot Studio</code> 自定义工作流",
+              "<strong>安全底线</strong>：所有自建轻应用默认纳入 M365 Admin Center 与 Defender 本地/云端运行时保护"
+            ],
+            "en": [
+              stack === "isv"
+                ? "<strong>Primary Wedge</strong>: <strong><code>Microsoft Copilot SDK 2.0 (GA)</code></strong> (native Rust runtime across Python, TS, .NET, Go, Java, Rust)"
+                : "<strong>Primary Wedge</strong>: <code>Copilot Code (Frontier, Dec GA)</code> app/dashboard builder + <strong><code>Copilot Managed Runtime (GA)</code></strong> sandbox",
+              "<strong>Engineering Velocity</strong>: Pair with <code>MAI-Code-2 / Flash (GA)</code> and <code>Copilot Studio</code> custom connectors",
+              "<strong>Zero Shadow IT</strong>: Full lifecycle visibility in M365 Admin Center + Defender runtime protection"
+            ]
+          }
+        };
+
+        // Licensing check by stack + pain
+        const skuItemsZh = [];
+        const skuItemsEn = [];
+        if (stack === "m365") {
+          skuItemsZh.push("<strong>基础底座</strong>：已具备 M365 E3/E5 合资格底座，可直接加购 <code>Microsoft 365 Copilot</code> 坐席；<code>Office in Copilot</code> 与 <code>Home + Auto</code> 已含在许可内。");
+          skuItemsEn.push("<strong>Base Seat</strong>: Existing M365 E3/E5 qualifies today—attach <code>Microsoft 365 Copilot</code> directly; <code>Office in Copilot</code> & <code>Home + Auto</code> are included.");
+        } else if (stack === "whitespace") {
+          skuItemsZh.push("<strong>Standalone 独立部署（2026-12-01 生效）</strong>：无需前置采购 M365 E3/E5，直接按需配置独立 <code>Microsoft 365 Copilot</code> 或 <code>Copilot Business</code> 坐席接入核心岗位。");
+          skuItemsEn.push("<strong>Standalone Deployment (Effective 2026-12-01)</strong>: Provision <code>Microsoft 365 Copilot</code> or <code>Copilot Business</code> without M365 E3/E5 base seats.");
+        } else {
+          skuItemsZh.push("<strong>ISV / 研发授权</strong>：<code>Microsoft Copilot SDK 2.0</code> 已 GA；生产调用结合 GitHub Copilot / Microsoft Foundry 或客户侧 Copilot 身份授权架构核定。");
+          skuItemsEn.push("<strong>ISV / Builder Licensing</strong>: <code>Microsoft Copilot SDK 2.0</code> is GA; pair with GitHub Copilot / Foundry or customer tenant Copilot entitlements per deployment model.");
+        }
+
+        if (pain === "alwayson") {
+          skuItemsZh.push("<strong>Autopilot 刚性商务校验</strong>：必须先确认租户开通 <code>Frontier</code> 计划，且<strong>每个雇佣的 Autopilot 实例必须单独购买 1 份 <code>Agent 365 Frontier</code> 许可证</strong>。");
+          skuItemsEn.push("<strong>Mandatory Autopilot Rule</strong>: Verify tenant <code>Frontier</code> enrollment AND budget <strong>one <code>Agent 365 Frontier</code> license per Autopilot instance</strong>.");
+        } else if (pain === "lobapp") {
+          skuItemsZh.push("<strong>托管与弹性用量</strong>：<code>Copilot Managed Runtime (GA)</code> 与溢出的智能体运行消耗可衔接 CSP PayGo/UBB（<strong>FY27 Q3 新 CSP 订阅默认打通</strong>），用 <code>Agent 365</code> 设置硬性预算上限。");
+          skuItemsEn.push("<strong>Runtime & Elastic Meter</strong>: Govern <code>Copilot Managed Runtime (GA)</code> usage via CSP PayGo/UBB (default-on for new CSP subs in <strong>FY27 Q3</strong>) with hard caps in <code>Agent 365</code>.");
+        } else {
+          skuItemsZh.push("<strong>CSP 弹性补充</strong>：区分 <code>2026-12-01</code> 坐席解耦与 <code>FY27 Q3</code> 新 CSP 订阅默认开启 UBB 用量计费；对 Preview/Frontier 特性提前拉齐 IT 预期。");
+          skuItemsEn.push("<strong>Commercial Clarity</strong>: Keep <code>2026-12-01</code> Standalone decoupling distinct from <code>FY27 Q3</code> default-on CSP UBB; set clear IT expectations on Preview/Frontier items.");
+        }
+
+        // Integration pattern by stack
+        const integrationMap = {
+          m365: {
+            "zh-CN": [
+              "直接复用存量 Entra ID、OneDrive/SharePoint 权限树与 Purview 敏感度标签，零身份改造当天上线。",
+              "通过预置 <code>D365 Sales/ERP (GA)</code> 或 <code>Salesforce (Preview)</code> 插件拉通核心业务系统，外部自建 API 走标准 MCP Server + APIM OBO。"
+            ],
+            "en": [
+              "Zero identity rework—inherit existing Entra ID, OneDrive/SharePoint ACLs, and Purview sensitivity labels on Day 1.",
+              "Enable turnkey <code>D365 (GA)</code> or <code>Salesforce (Preview)</code> plugins; expose custom internal APIs via MCP Servers behind Azure APIM OBO."
+            ]
+          },
+          whitespace: {
+            "zh-CN": [
+              "<strong>No Rip-and-Replace 架构</strong>：Entra ID 与飞书/钉钉/Google Identity 建立 OIDC 联邦，保留客户原 IM 与邮箱不动。",
+              "通过 <code>Azure APIM (OAuth2 OBO 最小权限交换 + 限流审计)</code> → <code>Azure Functions / Logic Apps</code> 桥接飞书审批、钉钉待办、SAP 与 Salesforce，严格执行<strong>自动只读 + 人工确认回写</strong>。"
+            ],
+            "en": [
+              "<strong>No Rip-and-Replace</strong>: Federate Entra ID with Google Identity / Okta / Feishu / DingTalk SSO while leaving existing chat & mail untouched.",
+              "Bridge heterogeneous OA/CRM/ERP via <code>Azure APIM (OBO token swap + rate limit)</code> → <code>Functions / Logic Apps</code> with strict <strong>read-only vs. human-confirmed write-back</strong> separation."
+            ]
+          },
+          isv: {
+            "zh-CN": [
+              "在宿主软件后端集成 <code>Copilot SDK 2.0</code> 原生 Rust Harness（支持 Python/TS/.NET/Go/Java/Rust），将领域业务接口声明为类型化 MCP 工具。",
+              "涉及文档导出与经营报表环节，联动 <code>Office in Copilot</code> / Graph API 输出原生可编辑 Office 交付件，并用 <code>Entra Agent ID</code> 统一标识智能体调用。"
+            ],
+            "en": [
+              "Embed <code>Copilot SDK 2.0</code> native Rust harness inside your vertical SaaS backend (6 languages) and expose domain transactions as typed MCP tools.",
+              "Hand off reporting workflows into native Office deliverables and register agent identities via <code>Entra Agent ID</code> for enterprise buyer trust."
+            ]
+          }
+        };
+
+        // Trap-setting discovery questions
+        const trapMap = {
+          personal: {
+            "zh-CN": [
+              "“当员工向现有 AI 助手提问时，如果需要人工挑模型，有多少人因为选错模型导致响应太慢或答案失真？”（指向 <code>Home + Auto</code>）",
+              "“如果员工把一份还没来得及打密级标签的薪酬或并购文档丢给 AI，贵司现在的工具能在引用前实时拦截吗？”（指向 <code>Purview 未打标文件 DLP</code>）"
+            ],
+            "en": [
+              "\"When employees use your current chatbot, how often do non-technical users pick the wrong model tier—wasting money or getting shallow answers?\" (Sets up <code>Home + Auto</code>)",
+              "\"If a user uploads a sensitive M&A or payroll file that hasn't been manually labeled yet, can your current AI tool block it before grounding?\" (Sets up <code>Purview unlabeled DLP</code>)"
+            ]
+          },
+          crossdept: {
+            "zh-CN": [
+              "“贵司团队每周花多少小时把 AI 聊出来的文字手工复制进 Excel 重写公式透视表、或者重新排 PPT 母版？”（对比纯网页对话工具，验证 <code>Office in Copilot</code> 原生文档共编价值）",
+              "“跨部门交接复杂投标方案时，接手同事能否在同一个带完整权限继承的空间里直接改同一个真 Excel 和 PPT，而不用重贴十遍背景？”（立住 <code>Cowork + Workspaces</code>）"
+            ],
+            "en": [
+              "\"How many hours a week do your teams spend copy-pasting AI text into Excel just to rebuild broken formulas, PivotTables, and PowerPoint slide masters?\" (Traps chat-only rivals; wins with <code>Office in Copilot</code>)",
+              "\"When Sales, Legal, and Finance co-work a complex RFP, does the AI output stay inside OneDrive inheriting exact sensitivity labels without creating shadow copies?\""
+            ]
+          },
+          alwayson: {
+            "zh-CN": [
+              "“贵司现有的后台自动化脚本或 Bot，使用的是共享高权限服务账号，还是具备独立可审计身份、独立邮箱且绑定了明确人类责任主管？”（对比传统 RPA 与未纳管开源 Agent，突出 <code>Autopilot + Entra Agent ID</code>）",
+              "“当后台 Agent 跨多天跟进外部供应商时，遇到金额超限能否自动暂停并升级给指定主管在 Teams 里一键拍板？”"
+            ],
+            "en": [
+              "\"Do your background bots run on risky shared service accounts, or does each autonomous agent hold its own auditable identity, mailbox, and accountable human manager?\" (Traps RPA & shadow bots; wins with <code>Autopilot + Entra Agent ID</code>)",
+              "\"When an automated workflow hits an ambiguous contract exception at 2 AM, how does it preserve multi-week memory and cleanly escalate to a human sponsor?\""
+            ]
+          },
+          lobapp: {
+            "zh-CN": [
+              "“业务部门用外部 Vibe Coding 工具几分钟生成的看板和小工具，IT 部门能在统一后台看清谁在访问什么敏感数据、并一键关停高风险实例吗？”（立住 <code>Copilot Code + Managed Runtime GA</code>）",
+              stack === "isv"
+                ? "“贵司研发团队把 Python 写的 Agent 原型迁移到 .NET / Java / Go 生产系统时，是否因为重写底座导致行为漂移？”（立住 <code>Copilot SDK 2.0 Rust 原生 6 语言统一内核</code>）"
+                : "“自建智能体上线后，财务和 IT 能否按‘实际完成的业务产出’而不是单纯‘烧了多少 Token’来核算部门 ROI？”（铺垫 <code>Agent 365</code>）"
+            ],
+            "en": [
+              "\"When business users spin up vibe-coded trackers and micro-apps, can IT see every app in one admin center, enforce DLP, and quarantine risky instances instantly?\" (Sets up <code>Copilot Code + Managed Runtime GA</code>)",
+              stack === "isv"
+                ? "\"How much engineering time do you lose rewriting Python agent prototypes into .NET, Java, Go, or Rust for production?\" (Sets up <code>Copilot SDK 2.0</code> single Rust core)"
+                : "\"Can your CIO measure these custom micro-apps by business hours saved rather than raw tokens burned?\" (Bridges to <code>Agent 365</code>)"
+            ]
+          }
+        };
+
+        const headers = isEn
+          ? {
+              c1: "🎯 Recommended Copilot Mode Wedge",
+              c2: "💳 Licensing & SKU Verification",
+              c3: "🔌 Reference Integration Pattern",
+              c4: "🪤 Competitive Trap-Setting Questions"
+            }
+          : {
+              c1: "🎯 推荐切入模式组合（Entry Wedge）",
+              c2: "💳 商业授权与前置核查（SKU Check）",
+              c3: "🔌 推荐集成架构路径（Integration Pattern）",
+              c4: "🪤 高杀伤力排他设问（Trap-Setting Questions）"
+            };
+
+        return {
+          headers,
+          modes: modeMap[pain][lang],
+          skus: isEn ? skuItemsEn : skuItemsZh,
+          integration: integrationMap[stack][lang],
+          traps: trapMap[pain][lang]
+        };
+      }
+
+      function populateAdvisorSelects() {
+        const lang = getLang();
+        const stackSel = document.getElementById("adv-stack");
+        const painSel = document.getElementById("adv-pain");
+        if (!stackSel || !painSel) return;
+
+        const curStack = stackSel.value || "whitespace";
+        const curPain = painSel.value || "crossdept";
+
+        stackSel.innerHTML = STACK_OPTIONS.map(
+          (o) => `<option value="${o.value}">${o[lang]}</option>`
+        ).join("");
+        painSel.innerHTML = PAIN_OPTIONS.map(
+          (o) => `<option value="${o.value}">${o[lang]}</option>`
+        ).join("");
+
+        stackSel.value = curStack;
+        painSel.value = curPain;
+      }
+
+      function renderAdvisor() {
+        const lang = getLang();
+        const stackSel = document.getElementById("adv-stack");
+        const painSel = document.getElementById("adv-pain");
+        const out = document.getElementById("advisor-output");
+        if (!stackSel || !painSel || !out) return;
+
+        const stack = stackSel.value || "whitespace";
+        const pain = painSel.value || "crossdept";
+        const plan = buildAdvisorPlan(stack, pain, lang);
+
+        document.querySelectorAll(".preset-chip").forEach((chip) => {
+          const match =
+            chip.getAttribute("data-preset-stack") === stack &&
+            chip.getAttribute("data-preset-pain") === pain;
+          chip.classList.toggle("active", match);
+        });
+
+        const toLi = (arr) => arr.map((x) => `<li>${x}</li>`).join("");
+
+        out.innerHTML = `
+          <div class="advisor-output-grid">
+            <div class="advisor-card">
+              <h4 style="color:var(--accent);">${plan.headers.c1}</h4>
+              <ul>${toLi(plan.modes)}</ul>
+            </div>
+            <div class="advisor-card">
+              <h4 style="color:var(--amber);">${plan.headers.c2}</h4>
+              <ul>${toLi(plan.skus)}</ul>
+            </div>
+            <div class="advisor-card">
+              <h4 style="color:var(--teal);">${plan.headers.c3}</h4>
+              <ul>${toLi(plan.integration)}</ul>
+            </div>
+            <div class="advisor-card">
+              <h4 style="color:var(--purple);">${plan.headers.c4}</h4>
+              <ul>${toLi(plan.traps)}</ul>
+            </div>
+          </div>
+        `;
+      }
+
+      function initStage01() {
+        document.querySelectorAll("[data-mode-pick]").forEach((btn) => {
+          btn.addEventListener("click", () => setActiveMode(btn.getAttribute("data-mode-pick")));
+        });
+        document.querySelectorAll("[data-svg-mode]").forEach((node) => {
+          node.addEventListener("click", () => setActiveMode(node.getAttribute("data-svg-mode")));
+        });
+
+        populateAdvisorSelects();
+        const stackSel = document.getElementById("adv-stack");
+        const painSel = document.getElementById("adv-pain");
+        if (stackSel) stackSel.addEventListener("change", renderAdvisor);
+        if (painSel) painSel.addEventListener("change", renderAdvisor);
+
+        document.querySelectorAll(".preset-chip").forEach((chip) => {
+          chip.addEventListener("click", () => {
+            if (stackSel && painSel) {
+              stackSel.value = chip.getAttribute("data-preset-stack");
+              painSel.value = chip.getAttribute("data-preset-pain");
+              renderAdvisor();
+            }
+          });
+        });
+
+        setActiveMode("chat");
+        renderAdvisor();
+
+        window.addEventListener("ignite:langchange", () => {
+          renderModeDetail();
+          populateAdvisorSelects();
+          renderAdvisor();
+        });
+      }
+
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initStage01);
+      } else {
+        initStage01();
+      }
+    })();
+  </script>
+</body>
+</html>

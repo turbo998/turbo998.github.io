@@ -1,0 +1,1820 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="dark" data-mode="read">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Microsoft Ignite 2026 阶段 04 · 智能体工程运行时（Agent Runtime Engineering）：Microsoft Foundry 持续改进闭环、四类智能体托管与隔离沙箱选型矩阵（Managed / Foundry on AKS / ACA / AKS Agent Sandbox）及 Microsoft-Decision-1.1 置信度门控沙盘。">
+  <title>04 智能体工程运行时｜企业级 Agentic AI 生产落地之旅</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="assets/ignite-recap.css">
+  <style>
+    .preset-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .preset-chip {
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text-muted);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .preset-chip:hover,
+    .preset-chip.active {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+      color: var(--accent);
+    }
+    .runtime-rec-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.35fr) minmax(280px, 1fr);
+      gap: 16px;
+      margin-top: 14px;
+    }
+    .rec-primary {
+      min-width: 0;
+      padding: 18px 20px;
+      border-radius: 14px;
+      background: var(--surface);
+      border: 1.5px solid var(--accent);
+    }
+    .rec-scores {
+      min-width: 0;
+      padding: 16px 18px;
+      border-radius: 14px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      display: grid;
+      gap: 10px;
+      align-content: center;
+    }
+    .score-line {
+      display: grid;
+      grid-template-columns: 148px 1fr 42px;
+      gap: 10px;
+      align-items: center;
+      font-size: 12.5px;
+    }
+    .score-track {
+      height: 10px;
+      border-radius: 999px;
+      background: var(--surface-strong);
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .score-fill {
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--accent-strong), var(--teal));
+      transition: width 0.22s ease;
+    }
+    .dec-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+      gap: 16px;
+      margin-top: 14px;
+    }
+    .dec-panel {
+      min-width: 0;
+      padding: 18px;
+      border-radius: 14px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+    }
+    .prob-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .prob-item {
+      display: grid;
+      grid-template-columns: minmax(150px, 210px) 1fr 56px;
+      gap: 10px;
+      align-items: center;
+      font-size: 13px;
+    }
+    .prob-track {
+      position: relative;
+      height: 13px;
+      border-radius: 999px;
+      background: var(--surface-strong);
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .prob-fill {
+      height: 100%;
+      border-radius: 999px;
+      transition: width 0.2s ease;
+    }
+    .band-bar {
+      display: flex;
+      height: 22px;
+      border-radius: 999px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      margin: 12px 0 8px;
+    }
+    .band-seg {
+      display: grid;
+      place-items: center;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      color: #ffffff;
+      transition: width 0.22s ease;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+    .band-auto { background: #059669; }
+    .band-confirm { background: #0284c7; }
+    .band-human { background: #d97706; }
+    .band-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+    .gate-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+    }
+    .gate-pill.auto { background: var(--green-soft); color: var(--green); border: 1px solid rgba(52, 211, 153, 0.4); }
+    .gate-pill.confirm { background: var(--accent-soft); color: var(--accent); border: 1px solid rgba(56, 189, 248, 0.4); }
+    .gate-pill.human { background: var(--amber-soft); color: var(--amber); border: 1px solid rgba(251, 191, 36, 0.4); }
+    .journey-trail {
+      text-align: center;
+      font-size: 12.5px;
+      font-family: var(--font-mono);
+      color: var(--text-soft);
+      margin-top: 22px;
+    }
+    .ms-arch-board code {
+      background: #eff6ff;
+      border-color: #bfdbfe;
+      color: #1e40af;
+      font-size: 0.88em;
+      padding: 1px 5px;
+    }
+    @media (max-width: 960px) {
+      .runtime-rec-grid,
+      .dec-layout {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .prob-item {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 4px;
+      }
+    }
+  </style>
+  <script src="assets/ignite-recap.js" defer></script>
+</head>
+<body data-title-zh="04 智能体工程运行时｜企业级 Agentic AI 生产落地之旅" data-title-en="04 Agent Runtime Engineering | The Enterprise Agentic AI Journey">
+  <a class="skip-link" href="#main-content">
+    <span data-lang="zh-CN">跳至正文</span>
+    <span data-lang="en">Skip to main content</span>
+  </a>
+
+  <header class="site-header">
+    <div class="header-top">
+      <a class="brand-group" href="index.html" style="text-decoration:none">
+        <span class="brand-mark" aria-hidden="true">IG26</span>
+        <span>
+          <span class="brand-title">
+            <span data-lang="zh-CN">企业级 Agentic AI 生产落地之旅</span>
+            <span data-lang="en">The Enterprise Agentic AI Journey</span>
+          </span>
+          <span class="brand-sub">
+            <span data-lang="zh-CN">Microsoft Ignite 2026 解决方案架构师全景指南</span>
+            <span data-lang="en">Microsoft Ignite 2026 Solution Architect Blueprint</span>
+          </span>
+        </span>
+      </a>
+      <div class="header-controls">
+        <a class="ctrl-btn hub-return-link" href="../zh.html">← 个人主页</a>
+        <div class="header-search-wrap"><input type="search" class="header-search-input" placeholder="搜索章节 / 微软服务…" aria-label="搜索 Ignite 2026 章节与服务"><div class="header-search-results" hidden></div></div>
+        <button type="button" class="ctrl-btn" data-action="toggle-mode">📖 精读 / 🎤 投屏</button>
+        <button type="button" class="ctrl-btn" data-action="toggle-cues"><span data-lang="zh-CN">🎙️ 宣讲提示</span><span data-lang="en">🎙️ Speaker Cues</span></button>
+        <button type="button" class="ctrl-btn" data-action="toggle-theme">🌗 <span class="theme-label">浅色</span></button>
+        <a class="ctrl-btn language-link" href="04-foundry-engineering.en.html" hreflang="en" data-action="toggle-lang">EN / 中文</a>
+      </div>
+    </div>
+    <div class="journey-bar">
+      <nav class="journey-nav" aria-label="Journey Stages">
+        <a class="journey-link" href="index.html">
+          <span class="journey-step">00</span>
+          <span data-lang="zh-CN">全景架构蓝图</span>
+          <span data-lang="en">Architecture Blueprint</span>
+        </a>
+        <a class="journey-link" href="01-copilot-entry.html">
+          <span class="journey-step">01</span>
+          <span data-lang="zh-CN">统一智能体入口</span>
+          <span data-lang="en">Unified Agent Entry</span>
+        </a>
+        <a class="journey-link" href="02-web-iq-context.html">
+          <span class="journey-step">02</span>
+          <span data-lang="zh-CN">外部实时上下文</span>
+          <span data-lang="en">Live World Context</span>
+        </a>
+        <a class="journey-link" href="03-fabric-ontology.html">
+          <span class="journey-step">03</span>
+          <span data-lang="zh-CN">企业数据本体</span>
+          <span data-lang="en">Enterprise Data Ontology</span>
+        </a>
+        <a class="journey-link" href="04-foundry-engineering.html" aria-current="page">
+          <span class="journey-step">04</span>
+          <span data-lang="zh-CN">智能体工程运行时</span>
+          <span data-lang="en">Agent Runtime Engineering</span>
+        </a>
+        <a class="journey-link" href="05-ai-infra-optimization.html">
+          <span class="journey-step">05</span>
+          <span data-lang="zh-CN">推理基础设施优化</span>
+          <span data-lang="en">Inference Infra Optimization</span>
+        </a>
+        <a class="journey-link" href="06-agent-governance.html">
+          <span class="journey-step">06</span>
+          <span data-lang="zh-CN">全域智能体治理</span>
+          <span data-lang="en">Enterprise Agent Governance</span>
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main-content" class="page-main">
+    <!-- ==================== HERO PANEL ==================== -->
+    <section class="hero-panel">
+      <div class="hero-grid">
+        <div>
+          <p class="eyebrow">STAGE 04 · AGENT RUNTIME ENGINEERING</p>
+          <h1 class="hero-title">
+            <span data-lang="zh-CN">智能体工程运行时</span>
+            <span data-lang="en">Agent Runtime Engineering</span>
+          </h1>
+          <p class="hero-lead">
+            <span data-lang="zh-CN">当统一工作入口（<code>01</code>）与内外部联邦上下文（<code>02 + 03</code>）就绪后，<strong>阶段 04 聚焦智能体从原型验证走向生产运行的工程体系</strong>：依托 <strong>Microsoft Foundry</strong> 建立可观测、评估与自动调优闭环，在四类托管与隔离沙箱运行时（<code>Managed</code>、<code>Foundry on AKS</code>、<code>ACA</code>、<code>AKS Agent Sandbox</code>）间按负载与隔离等级选型，并通过 <strong><code>Microsoft-Decision-1.1</code>（<code>GA</code>）</strong> 降低高频判别路由的时延与 Token 开销。</span>
+            <span data-lang="en">With unified entry (<code>01</code>) and federated external/internal context (<code>02 + 03</code>) in place, <strong>Stage 04 addresses production runtime engineering</strong>: turning prototype workflows into continuously evaluated and optimized agent systems on <strong>Microsoft Foundry</strong>, selecting the right execution sandbox (<code>Managed</code>, <code>Foundry on AKS</code>, <code>ACA</code>, <code>AKS Agent Sandbox</code>), and cutting routing latency and token spend with <strong><code>Microsoft-Decision-1.1</code> (<code>GA</code>)</strong>.</span>
+          </p>
+          <div class="pill-row">
+            <span class="pill"><span class="badge badge-ga">GA</span> Evaluate · Insights · Agent Optimizer</span>
+            <span class="pill"><span class="badge badge-ga">GA</span> Microsoft-Decision-1.1 ($0 Output)</span>
+            <span class="pill"><span class="badge badge-ga">GA</span> MAI-Code-2 / Flash &amp; GPT-6.2 Sol / Astra</span>
+            <span class="pill"><span class="badge badge-ga">GA</span> AI Gateway &amp; GPT Live 1 Voice</span>
+            <span class="pill"><span class="badge badge-preview">Preview</span> Foundry on AKS &amp; AKS Agent Sandbox</span>
+            <span class="pill"><span class="badge badge-preview">Preview</span> Managed / Programmed Training &amp; Quota UI</span>
+          </div>
+        </div>
+
+        <aside class="hero-kpi-box" aria-label="Stage 04 Key Metrics">
+          <div class="eyebrow" style="margin-bottom:4px">
+            <span data-lang="zh-CN">IGNITE 2026 核心工程指标</span>
+            <span data-lang="en">IGNITE 2026 ENGINEERING KPIS</span>
+          </div>
+          <div class="kpi-grid">
+            <div class="kpi-item">
+              <span class="kpi-val mono">Evaluate → Train</span>
+              <span class="kpi-lbl">
+                <span data-lang="zh-CN"><code>Agent Optimizer</code> (<code>GA</code>) 生产轨迹闭环自优化</span>
+                <span data-lang="en">Closed-loop <code>Agent Optimizer</code> (<code>GA</code>) flywheel</span>
+              </span>
+            </div>
+            <div class="kpi-item">
+              <span class="kpi-val mono">
+                <span data-lang="zh-CN">4 种托管运行时</span>
+                <span data-lang="en">4 Hosting Runtimes</span>
+              </span>
+              <span class="kpi-lbl">
+                <span data-lang="zh-CN"><code>Managed / Foundry on AKS / ACA / AKS Sandbox</code></span>
+                <span data-lang="en"><code>Managed / Foundry on AKS / ACA / AKS Sandbox</code></span>
+              </span>
+            </div>
+            <div class="kpi-item">
+              <span class="kpi-val mono">78.8%</span>
+              <span class="kpi-lbl">
+                <span data-lang="zh-CN"><code>Decision-1.1</code> 横跨 102 项基准得分（提速 <code>&gt;2x</code>）</span>
+                <span data-lang="en"><code>Decision-1.1</code> across 102 benchmarks (<code>&gt;2x</code> faster)</span>
+              </span>
+            </div>
+            <div class="kpi-item">
+              <span class="kpi-val mono">$0.042 / $0</span>
+              <span class="kpi-lbl">
+                <span data-lang="zh-CN"><code>Decision-1.1</code> 每百万输入 / <strong>输出 Token $0 免费</strong></span>
+                <span data-lang="en"><code>Decision-1.1</code> per 1M input / <strong>$0 output tokens</strong></span>
+              </span>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <div class="speaker-cue">
+        <div class="speaker-cue-title">
+          <span data-lang="zh-CN">🎯 Partner SA 宣讲核心切入点（跨越企业智能体生产落地三大障碍）</span>
+          <span data-lang="en">🎯 Partner SA Talk-Track (Solving the Three Production Blockers)</span>
+        </div>
+        <p>
+          <span data-lang="zh-CN">“为什么 70% 的客户智能体 Demo 很惊艳，上线三个月却陷入停滞？因为遇到了三大工程拦路虎：① 缺乏生产轨迹驱动的自动评估与调优，全靠工程师手改 Prompt 盲人摸象；② 安全团队禁止智能体在共享容器里直接跑 Bash、操作浏览器或让敏感 Prompt 离开自有 VNet；③ 每次简单的意图分类和护栏校验都去调昂贵的旗舰推理大模型，账单和延迟双双失控。今天第四幕，Foundry 用<strong>持续改进飞轮 + 四维沙箱矩阵 + <code>Decision-1.1</code> 零输出计费判别模型</strong>一次性解决这三个问题。”</span>
+          <span data-lang="en">"Why do 70% of enterprise agent PoCs stall before scale? Three engineering blockers: (1) manual prompt guesswork with no closed-loop production evaluation, (2) security teams blocking untrusted code/browser execution or requiring sovereign VNet GPU residency, and (3) burning $10/1M frontier reasoning tokens on every simple triage or guardrail check. Stage 04 equips Partner SAs with the exact three-part blueprint: Foundry's <strong>continuous improvement flywheel</strong>, the <strong>4-way sandbox runtime matrix</strong>, and <strong><code>Microsoft-Decision-1.1</code></strong>."</span>
+        </p>
+      </div>
+    </section>
+
+    <!-- ==================== SOLUTION ARCHITECTURE SPLIT-BOARD ==================== -->
+    <section class="ms-arch-board" data-knowledge-atlas="ignite-2026" id="stage04-architecture" aria-labelledby="stage04-arch-heading">
+      <div class="ms-arch-topbar">
+        <div>
+          <span class="ms-arch-kicker">STAGE 04 SOLUTION ARCHITECTURE · FOUNDRY RUNTIME, SANDBOXES &amp; DECISION-1.1</span>
+          <h2 class="ms-arch-heading" id="stage04-arch-heading">
+            <span data-lang="zh-CN">置信度门控路由、四类隔离运行时与持续评估优化架构</span>
+            <span data-lang="en">Foundry Confidence-Gated Routing, Isolated Runtimes &amp; Continuous Optimization Architecture</span>
+          </h2>
+        </div>
+        <div class="ms-arch-actions">
+          <a class="ms-arch-drawio-btn" href="drawio/04-foundry-engineering.drawio" download>
+            <span aria-hidden="true">📐</span>
+            <span data-lang="zh-CN">下载 Draw.io 架构源文件</span>
+            <span data-lang="en">Download .drawio Source</span>
+          </a>
+          <button type="button" class="ms-arch-zoom-btn" data-action="zoom-arch" aria-pressed="false">
+            <span aria-hidden="true">🔍</span>
+            <span data-lang="zh-CN">放大架构图 / 切换分栏</span>
+            <span data-lang="en">Zoom Diagram / Split View</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="ms-arch-split">
+        <!-- Left: Microsoft Solution Architecture Diagram (Azure Subscription Boundary) -->
+        <div class="ms-arch-canvas">
+          <div class="arch-sub-frame">
+            <div class="arch-sub-bar">
+              <span class="arch-sub-title">
+                <span class="ms-logo" data-ms-icon="azure"></span>
+                <span data-lang="zh-CN">Microsoft Azure · 客户订阅与私有虚拟网络边界（Customer Subscription / VNet）</span>
+                <span data-lang="en">Microsoft Azure · Customer Subscription &amp; Private VNet Boundary</span>
+              </span>
+              <span class="arch-sub-pill">
+                <span data-lang="zh-CN">Entra Agent ID · Key Vault · Quota &amp; Fleet Cost Controls · Private Endpoint</span>
+                <span data-lang="en">Entra Agent ID · Key Vault · Quota &amp; Fleet Cost Controls · Private Endpoint</span>
+              </span>
+            </div>
+
+            <div class="arch-main-stack">
+              <!-- Top Zone: Ingress & Calibrated Routing Layer -->
+              <div class="arch-zone zone-blue">
+                <div class="arch-zone-head">
+                  <span class="arch-zone-title">
+                    <span data-lang="zh-CN">Ingress &amp; Calibrated Routing Layer · API 网关、安全策略与校准概率门控</span>
+                    <span data-lang="en">Ingress, Safety Policy &amp; Calibrated Confidence Routing Layer</span>
+                  </span>
+                  <span class="arch-zone-caption">
+                    <span data-lang="zh-CN">TPM 配额限流 · 注入拦截 · 校准概率三段分流</span>
+                    <span data-lang="en">TPM Quotas · Anti-Injection · 3-Band Confidence Triage</span>
+                  </span>
+                </div>
+                <div class="arch-cards-3">
+                  <div class="arch-svc">
+                    <div class="arch-svc-head">
+                      <span class="ms-logo" data-ms-icon="ai-gateway"></span>
+                      <span class="arch-svc-name">Foundry AI Gateway (APIM)</span>
+                      <span class="svc-tag ga">GA</span>
+                      <span class="step-dot">1</span>
+                    </div>
+                    <p class="arch-svc-desc">
+                      <span data-lang="zh-CN">统一模型推理入口、TPM 配额治理、语义缓存与跨区域自动故障转移</span>
+                      <span data-lang="en">Unified model ingress, TPM quota enforcement, semantic caching &amp; multi-region failover</span>
+                    </p>
+                  </div>
+
+                  <div class="arch-svc">
+                    <div class="arch-svc-head">
+                      <span class="ms-logo" data-ms-icon="guardrails"></span>
+                      <span class="arch-svc-name">Input / Output Guardrails</span>
+                      <span class="svc-tag ga">GA</span>
+                    </div>
+                    <p class="arch-svc-desc">
+                      <span data-lang="zh-CN">Prompt Shields 提示注入检测 · PII 敏感字段脱敏 · Groundedness 事实核验</span>
+                      <span data-lang="en">Prompt Shields injection defense · PII redaction · Groundedness verification</span>
+                    </p>
+                  </div>
+
+                  <div class="arch-svc svc-blue">
+                    <div class="arch-svc-head">
+                      <span class="ms-logo" data-ms-icon="foundry-models"></span>
+                      <span class="arch-svc-name">Microsoft-Decision-1.1</span>
+                      <span class="svc-tag ga">GA · $0 Out</span>
+                      <span class="step-dot">2</span>
+                    </div>
+                    <p class="arch-svc-desc">
+                      <span data-lang="zh-CN"><code>/v1/systemone</code> 校准概率判别端点（基准准确率 <code>78.8%</code>，<code>$0.042/1M</code> 输入，<strong><code>$0</code> 输出计费</strong>）</span>
+                      <span data-lang="en"><code>/v1/systemone</code> calibrated probability classifier (<code>78.8%</code> accuracy, <code>$0.042/1M</code> in, <strong><code>$0</code> out</strong>)</span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Connector Bar -->
+              <div class="arch-flow-connector">
+                <span class="arch-flow-hop">
+                  <span class="step-dot">3</span>
+                  <span data-lang="zh-CN">↓ 确定性工具直执 [p ≥ τ_high]</span>
+                  <span data-lang="en">↓ Deterministic Auto-Act [p ≥ τ_high]</span>
+                </span>
+                <span class="arch-flow-hop">
+                  <span class="step-dot">4</span>
+                  <span data-lang="zh-CN">↓ 升级前沿模型编排 [τ_low ≤ p &lt; τ_high]</span>
+                  <span data-lang="en">↓ Escalate to Frontier Agent [τ_low ≤ p &lt; τ_high]</span>
+                </span>
+                <span class="arch-flow-hop">
+                  <span class="step-dot">5</span>
+                  <span data-lang="zh-CN">↓ 转交人工专家审批 [p &lt; τ_low]</span>
+                  <span data-lang="en">↓ Escalate to Human Review [p &lt; τ_low]</span>
+                </span>
+              </div>
+
+              <!-- Middle 2-Column Split -->
+              <div class="arch-cards-2">
+                <!-- Left Column: Microsoft Foundry Core Agent & Model Engine -->
+                <div class="arch-zone zone-green">
+                  <div class="arch-zone-head">
+                    <span class="arch-zone-title">
+                      <span data-lang="zh-CN">Foundry Orchestration &amp; Model Tier · 编排与模型层</span>
+                      <span data-lang="en">Foundry Orchestration &amp; Model Tier</span>
+                    </span>
+                  </div>
+                  <div class="arch-col-stack">
+                    <div class="arch-svc svc-green">
+                      <div class="arch-svc-head">
+                        <span class="ms-logo" data-ms-icon="foundry-agent"></span>
+                        <span class="arch-svc-name">Foundry Agent Service</span>
+                        <span class="svc-tag ga">GA</span>
+                      </div>
+                      <p class="arch-svc-desc">
+                        <span data-lang="zh-CN">托管有状态会话线程、长期记忆状态机与受控 MCP 工具路由</span>
+                        <span data-lang="en">Managed stateful threads, durable memory state &amp; governed MCP tool orchestration</span>
+                      </p>
+                    </div>
+
+                    <div class="arch-svc">
+                      <div class="arch-svc-head">
+                        <span class="ms-logo" data-ms-icon="foundry"></span>
+                        <span class="arch-svc-name">MAI-Code-2 · GPT-6.2 · Live-1</span>
+                        <span class="svc-tag ga">GA</span>
+                      </div>
+                      <p class="arch-svc-desc">
+                        <span data-lang="zh-CN"><code>MAI-Code-2</code>（约 40% 推理成本达前沿编码精度）· <code>GPT-6.2 Sol/Astra</code> · <code>GPT Live 1</code> 低延迟全双工语音</span>
+                        <span data-lang="en"><code>MAI-Code-2</code> (~40% cost near-frontier coding) · <code>GPT-6.2 Sol/Astra</code> · <code>GPT Live 1</code> low-latency duplex voice</span>
+                      </p>
+                    </div>
+
+                    <div class="arch-svc">
+                      <div class="arch-svc-head">
+                        <span class="ms-logo" data-ms-icon="foundry-iq"></span>
+                        <span class="arch-svc-name">Foundry IQ &amp; Idempotent Tools</span>
+                        <span class="svc-tag ga">GA</span>
+                      </div>
+                      <p class="arch-svc-desc">
+                        <span data-lang="zh-CN">混合检索增强与携带幂等键（Idempotency Key）的企业 API 执行</span>
+                        <span data-lang="en">Hybrid enterprise retrieval &amp; business API execution with idempotency keys</span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Right Column: Specialized Execution & Sandbox Runtimes -->
+                <div class="arch-zone zone-purple">
+                  <div class="arch-zone-head">
+                    <span class="arch-zone-title">
+                      <span data-lang="zh-CN">Compute &amp; Isolation Runtimes · 四类计算与隔离沙箱</span>
+                      <span data-lang="en">Compute &amp; Kernel-Isolated Sandbox Runtimes</span>
+                    </span>
+                  </div>
+                  <div class="arch-col-stack">
+                    <div class="arch-svc">
+                      <div class="arch-svc-head">
+                        <span class="ms-logo" data-ms-icon="aks"></span>
+                        <span class="arch-svc-name">Foundry on AKS (AI Manager)</span>
+                        <span class="svc-tag prev">Preview</span>
+                      </div>
+                      <p class="arch-svc-desc">
+                        <span data-lang="zh-CN">将一致的 Foundry 控制与数据面部署至客户私有 VNet AKS 集群及专属 GPU 节点池</span>
+                        <span data-lang="en">Deploys identical Foundry APIs onto customer-managed private VNet AKS &amp; dedicated GPU pools</span>
+                      </p>
+                    </div>
+
+                    <div class="arch-svc svc-purple">
+                      <div class="arch-svc-head">
+                        <span class="ms-logo" data-ms-icon="aks"></span>
+                        <span class="arch-svc-name">AKS Agent Sandbox</span>
+                        <span class="svc-tag prev">Preview</span>
+                      </div>
+                      <p class="arch-svc-desc">
+                        <span data-lang="zh-CN"><strong>Kata Containers 微虚机内核隔离</strong> / ACI Serverless + <strong><code>Pod Snapshot</code></strong> 内存快照亚秒级克隆恢复</span>
+                        <span data-lang="en"><strong>Kata microVM kernel isolation</strong> / ACI Serverless + <strong><code>Pod Snapshot</code></strong> sub-second memory restore</span>
+                      </p>
+                    </div>
+
+                    <div class="arch-svc">
+                      <div class="arch-svc-head">
+                        <span class="ms-logo" data-ms-icon="aca"></span>
+                        <span class="arch-svc-name">ACA &amp; Dynamic Sessions</span>
+                        <span class="svc-tag ga">GA</span>
+                      </div>
+                      <p class="arch-svc-desc">
+                        <span data-lang="zh-CN">KEDA 事件驱动缩零容器运行时 + Hyper-V 硬件隔离不可信代码执行器</span>
+                        <span data-lang="en">KEDA scale-to-zero containers + Hyper-V hardware-isolated untrusted code execution</span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Bottom Zone: Continuous Evaluation & Optimization Pipeline -->
+              <div class="arch-zone zone-amber">
+                <div class="arch-zone-head">
+                  <span class="arch-zone-title">
+                    <span data-lang="zh-CN">Continuous Evaluation, Optimization &amp; Distillation · 持续评测、寻优与蒸馏管线 [⑥ ⑦]</span>
+                    <span data-lang="en">Continuous Evaluation, Optimization &amp; Distillation Pipeline [⑥ ⑦]</span>
+                  </span>
+                  <span class="arch-zone-caption">
+                    <span data-lang="zh-CN">OpenTelemetry 标准遥测接入 GA · 回归门禁灰度发布</span>
+                    <span data-lang="en">OpenTelemetry Trace Ingestion GA · Regression-Gated Rollout</span>
+                  </span>
+                </div>
+                <div class="arch-cards-3">
+                  <div class="arch-svc">
+                    <div class="arch-svc-head">
+                      <span class="ms-logo" data-ms-icon="monitor"></span>
+                      <span class="arch-svc-name">Evaluate &amp; Production Insights</span>
+                      <span class="svc-tag ga">GA</span>
+                      <span class="step-dot">6</span>
+                    </div>
+                    <p class="arch-svc-desc">
+                      <span data-lang="zh-CN">多轮工具调用轨迹质量评分 + 生产环境失败模式自动聚类与根因归因</span>
+                      <span data-lang="en">Multi-turn tool trajectory scoring + automated production failure clustering &amp; root-cause analysis</span>
+                    </p>
+                  </div>
+
+                  <div class="arch-svc svc-amber">
+                    <div class="arch-svc-head">
+                      <span class="ms-logo" data-ms-icon="foundry-agent"></span>
+                      <span class="arch-svc-name">Agent Optimizer</span>
+                      <span class="svc-tag ga">GA</span>
+                    </div>
+                    <p class="arch-svc-desc">
+                      <span data-lang="zh-CN">基于专家标注与评测基准自动搜索最优 System Prompt、Tool Schema 与模型组合</span>
+                      <span data-lang="en">Searches optimal system prompts, tool schemas &amp; model tiers against SME-calibrated rubrics</span>
+                    </p>
+                  </div>
+
+                  <div class="arch-svc">
+                    <div class="arch-svc-head">
+                      <span class="ms-logo" data-ms-icon="foundry-models"></span>
+                      <span class="arch-svc-name">Managed &amp; Programmed Training</span>
+                      <span class="svc-tag prev">Preview</span>
+                      <span class="step-dot">7</span>
+                    </div>
+                    <p class="arch-svc-desc">
+                      <span data-lang="zh-CN">通过 SFT / RFT 强化微调将高分前沿推理轨迹蒸馏至低延迟专用小模型</span>
+                      <span data-lang="en">Distills verified frontier traces into low-latency specialist models via SFT &amp; RFT</span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Structured Data Flow + Design Points + Why Microsoft -->
+        <aside class="ms-arch-aside" aria-label="Stage 04 Architecture Key Points">
+          <div class="aside-block">
+            <h4 class="tone-blue">
+              <span data-lang="zh-CN">Data flow / 门控分流与持续优化管线 (1–7)</span>
+              <span data-lang="en">Data flow / Gated Routing &amp; Optimization Pipeline (1–7)</span>
+            </h4>
+            <ol class="aside-flow-list">
+              <li>
+                <span data-lang="zh-CN"><strong>API 网关与内联安全检查</strong>：请求经 <code>Foundry AI Gateway (APIM)</code> 执行 TPM 配额、语义缓存与跨区容灾，并由 <code>Guardrails</code> 执行提示注入拦截与 PII 脱敏。</span>
+                <span data-lang="en"><strong>Gateway &amp; Inline Safety Policy</strong>: <code>Foundry AI Gateway (APIM)</code> enforces TPM quotas, semantic cache &amp; failover while <code>Guardrails</code> block prompt injection and redact PII.</span>
+              </li>
+              <li>
+                <span data-lang="zh-CN"><strong>校准概率判别评分</strong>：<code>Microsoft-Decision-1.1</code> 经 <code>/v1/systemone</code> 输出各候选动作的校准置信度分布（输出 Token <strong><code>$0</code> 计费</strong>，延迟较生成式路由降低 <code>&gt;50%</code>）。</span>
+                <span data-lang="en"><strong>Calibrated Probability Scoring</strong>: <code>Microsoft-Decision-1.1</code> evaluates <code>/v1/systemone</code> calibrated action probabilities at <strong><code>$0</code> output token cost</strong> (<code>&gt;2×</code> faster than generative routers).</span>
+              </li>
+              <li>
+                <span data-lang="zh-CN"><strong>高置信确定性执行（<code>p ≥ τ_high</code>）</strong>：落在高置信区间的标准化意图直接触发确定性工具调用，无需消耗高成本前沿推理模型配额。</span>
+                <span data-lang="en"><strong>Deterministic Fast Path (<code>p ≥ τ_high</code>)</strong>: High-confidence standard intents execute deterministic APIs directly without invoking frontier reasoning models.</span>
+              </li>
+              <li>
+                <span data-lang="zh-CN"><strong>中等置信升级编排（<code>τ_low ≤ p &lt; τ_high</code>）</strong>：多步骤复杂任务升级至 <code>Foundry Agent Service</code> 调度 <code>MAI-Code-2</code> / <code>GPT-6.2</code>，并按隔离等级分发至对应计算沙箱。</span>
+                <span data-lang="en"><strong>Frontier Agent Escalation (<code>τ_low ≤ p &lt; τ_high</code>)</strong>: Multi-step tasks escalate to <code>Foundry Agent Service</code> (<code>MAI-Code-2</code> / <code>GPT-6.2</code>) inside the appropriate isolated runtime.</span>
+              </li>
+              <li>
+                <span data-lang="zh-CN"><strong>低置信人工复核（<code>p &lt; τ_low</code>）</strong>：低置信度或高风险写操作自动附带结构化上下文与候选建议转交人工审批队列。</span>
+                <span data-lang="en"><strong>Human-in-the-Loop Escalation (<code>p &lt; τ_low</code>)</strong>: Low-confidence or high-impact mutations route to human specialists with structured context and candidate evidence.</span>
+              </li>
+              <li>
+                <span data-lang="zh-CN"><strong>OpenTelemetry 遥测评估与自动寻优</strong>：线上 OTel Trace 流入 <code>Evaluate &amp; Insights</code> 识别失败簇，驱动 <code>Agent Optimizer</code> 离线寻优 Prompt 与 Tool Schema（未见测试集提升 <code>+9.2</code> 分）。</span>
+                <span data-lang="en"><strong>OTel Trace Evaluation &amp; Auto-Optimization</strong>: Live OTel traces feed <code>Evaluate &amp; Insights</code> failure clustering and <code>Agent Optimizer</code> prompt/schema search (<code>+9.2 pts</code> unseen lift).</span>
+              </li>
+              <li>
+                <span data-lang="zh-CN"><strong>轨迹蒸馏与回归灰度发布</strong>：通过 <code>Managed / Programmed Training</code>（SFT/RFT）将通过验证的高质量轨迹蒸馏至专用小模型，经离线评测门禁与人工审批后灰度上线。</span>
+                <span data-lang="en"><strong>Trace Distillation &amp; Regression-Gated Rollout</strong>: <code>Managed / Programmed Training</code> (SFT/RFT) distills verified traces into compact models, promoted behind regression gates and human sign-off.</span>
+              </li>
+            </ol>
+          </div>
+
+          <div class="aside-block">
+            <h4 class="tone-purple">
+              <span data-lang="zh-CN">Design points / 架构师关键设计决策</span>
+              <span data-lang="en">Design points / Solution Architect Decisions</span>
+            </h4>
+            <ul class="aside-bullets">
+              <li>
+                <span data-lang="zh-CN"><strong>前置校准概率分类器控制推理成本与延迟</strong>：以 <code>Decision-1.1</code> 三阈值门控替代全量前沿模型意图分类，路由层开销降低 85% 以上且中位时延控制在 ~240 ms。</span>
+                <span data-lang="en"><strong>Front-load calibrated probability triage</strong>: Replaces 100% frontier LLM classification with <code>Decision-1.1</code> 3-band thresholds, cutting routing spend by 85%+ at ~240 ms P50 latency.</span>
+              </li>
+              <li>
+                <span data-lang="zh-CN"><strong>按安全隔离等级与负载形态选择运行时</strong>：托管 PaaS 承载常规编排、<code>Foundry on AKS</code> 满足私有 VNet/GPU 合规驻留、<code>ACA</code> 承载事件驱动缩零任务、<code>AKS Agent Sandbox</code> 提供 Kata 微虚机内核隔离。</span>
+                <span data-lang="en"><strong>Match runtime to isolation boundary &amp; load profile</strong>: Managed PaaS for standard orchestration, <code>Foundry on AKS</code> for private VNet GPUs, <code>ACA</code> for scale-to-zero bursts, and <code>AKS Agent Sandbox</code> for Kata microVM isolation.</span>
+              </li>
+              <li>
+                <span data-lang="zh-CN"><strong>基于 OpenTelemetry 解耦评估管线与开发框架</strong>：支持 LangGraph、Semantic Kernel 或自研框架通过标准 OTel Span 无侵入接入评测与 <code>Agent Optimizer</code>（评分人机一致率 <code>65% → 81%</code>）。</span>
+                <span data-lang="en"><strong>Decouple evaluation from SDK choice via OpenTelemetry</strong>: Ingests standard OTel spans from LangGraph, Semantic Kernel, or custom code into <code>Agent Optimizer</code> (<code>65% → 81%</code> SME rubric alignment).</span>
+              </li>
+              <li>
+                <span data-lang="zh-CN"><strong>外部写操作强制幂等设计与预算熔断</strong>：所有业务系统变更接口须校验幂等键，结合输入/工具/输出四节点策略检查与 <code>Fleet &amp; Cost Controls</code> 配额上限防止异常循环消耗。</span>
+                <span data-lang="en"><strong>Enforce idempotent mutations &amp; budget circuit breakers</strong>: Requires idempotency keys on external writes, 4-stage guardrail checks, and <code>Fleet &amp; Cost Controls</code> caps against runaway loops.</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="why-ms-box">
+            <h4>
+              <span data-lang="zh-CN">Why Microsoft · 运行时与工程平台优势</span>
+              <span data-lang="en">Why Microsoft · Runtime &amp; Engineering Platform Advantages</span>
+            </h4>
+            <ul>
+              <li>
+                <span data-lang="zh-CN"><strong>公有云托管与私有 AKS 保持同一套 SDK 契约</strong>：应用代码无需重写即可在全托管 Foundry 服务与客户自持 <code>Foundry on AKS</code> 专属集群之间迁移。</span>
+                <span data-lang="en"><strong>Unified API contract across Managed PaaS and private AKS</strong>: Workloads move between turnkey Foundry PaaS and customer-managed <code>Foundry on AKS</code> VNet GPU clusters without code rewrites.</span>
+              </li>
+              <li>
+                <span data-lang="zh-CN"><strong>路由、专项与旗舰三级模型成本梯度</strong>：<code>Decision-1.1</code>（<code>$0</code> 输出）+ <code>MAI-Code-2</code>（~40% 成本实现近前沿编码）+ <code>GPT-6.2 Sol</code>（12h Prompt Cache）组合优化单任务 TCO。</span>
+                <span data-lang="en"><strong>Three-tier first-party model cost hierarchy</strong>: Combines <code>Decision-1.1</code> (<code>$0</code> output), <code>MAI-Code-2</code> (~40% cost near-frontier coding), and <code>GPT-6.2 Sol</code> (12h cache TTL) to optimize per-task TCO.</span>
+              </li>
+              <li>
+                <span data-lang="zh-CN"><strong>内核级微虚机隔离与亚秒级内存状态恢复</strong>：<code>AKS Agent Sandbox</code> 集成 Kata microVM、<code>Pod Snapshot</code> 与 <code>Cobalt 200</code> Arm64 算力，兼顾不可信代码安全隔离与有状态会话冷启动速度。</span>
+                <span data-lang="en"><strong>Kernel microVM isolation with sub-second snapshot restore</strong>: <code>AKS Agent Sandbox</code> pairs Kata microVMs, <code>Pod Snapshot</code>, and <code>Cobalt 200</code> Arm64 nodes for secure stateful code &amp; UI agents.</span>
+              </li>
+              <li>
+                <span data-lang="zh-CN"><strong>评估、寻优与强化蒸馏同平台闭环</strong>：统一集成 11,000+ 模型目录、<code>AI Gateway</code>（<code>GA</code>）、OTel 评测与 SFT/RFT 训练管线，降低多工具链集成运维成本。</span>
+                <span data-lang="en"><strong>Integrated Evaluate → Optimize → Distill lifecycle</strong>: Unifies 11,000+ models, <code>AI Gateway</code> (<code>GA</code>), OTel trajectory evals, and SFT/RFT distillation in a single control plane.</span>
+              </li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ==================== SECTION 1: FOUNDRY FLYWHEEL & MODEL PORTFOLIO ==================== -->
+    <section id="foundry-flywheel" class="stage-section">
+      <div class="section-header">
+        <div>
+          <p class="eyebrow">01 / FOUNDRY PRODUCTION CONTINUOUS IMPROVEMENT LOOP &amp; MODEL PORTFOLIO</p>
+          <h2 class="section-title">
+            <span data-lang="zh-CN">持续改进闭环与旗舰模型矩阵</span>
+            <span data-lang="en">Continuous Improvement &amp; Model Portfolio</span>
+          </h2>
+          <p class="section-sub">
+            <span data-lang="zh-CN">Ignite 2026 将 Microsoft Foundry 的核心叙事从“挑哪个模型”升级为“<strong>让生产环境中的每一个智能体越用越聪明、越跑越省钱</strong>”——同时人类始终掌握是否发布变更的最终审批权。</span>
+            <span data-lang="en">Ignite 2026 shifts the Foundry conversation from "which model to pick" to <strong>continuous post-deployment improvement powered by live traces and SME feedback</strong>—while humans retain final approval over every production promotion.</span>
+          </p>
+        </div>
+      </div>
+
+      <div class="svg-frame" style="margin-bottom:22px">
+        <!-- Chinese Flywheel SVG -->
+        <svg data-lang="zh-CN" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1160 420" role="img" aria-labelledby="fnd-svg-zh-title fnd-svg-zh-desc">
+          <title id="fnd-svg-zh-title">Microsoft Foundry 生产级持续改进工程飞轮与企业控制平面</title>
+          <desc id="fnd-svg-zh-desc">展示 Evaluate 评估、Observe 观测与专家标注、Optimize 自动优化、Train 模型蒸馏微调四步闭环，以及底层 AI Gateway、Model Router、Quota 与 Guardrails 控制平面。</desc>
+          <rect width="1160" height="420" rx="14" fill="#091426"/>
+
+          <!-- Top Title Strip -->
+          <rect x="24" y="18" width="1112" height="44" rx="9" fill="#102341" stroke="#2c4f82"/>
+          <text x="42" y="45" fill="#38bdf8" font-size="13" font-weight="700">🔄 MICROSOFT FOUNDRY 持续改进闭环（支持自有与外部 OpenTelemetry 智能体零迁移接入 GA · 人工审批上线）</text>
+
+          <!-- 4 Flywheel Stage Cards -->
+          <rect x="24" y="80" width="260" height="196" rx="12" fill="#0e1e38" stroke="#34d399" stroke-width="1.6"/>
+          <text x="40" y="108" fill="#34d399" font-size="12" font-weight="700" font-family="Cascadia Code, Consolas, monospace">STEP 01 · EVALUATE (GA)</text>
+          <text x="40" y="132" fill="#ffffff" font-size="16" font-weight="800">多轮轨迹评估与红队门禁</text>
+          <text x="40" y="156" fill="#cbd5e1" font-size="12">• 完整多轮对话 + 工具调用轨迹评估</text>
+          <text x="40" y="178" fill="#cbd5e1" font-size="12">• 语音 Task Completion Audio (79.8%)</text>
+          <text x="40" y="200" fill="#cbd5e1" font-size="12">• Decision-1 评估 Judge (Preview)：</text>
+          <text x="40" y="219" fill="#6ee7b7" font-size="11.5" font-weight="700">  $0.12/千次 · 0.59s (对比 $34.39 / 4.98s)</text>
+          <text x="40" y="254" fill="#94a3b8" font-size="11.5">CI/CD 离线回归 + 安全对抗红队基线</text>
+
+          <path d="M284 178 H308" stroke="#38bdf8" stroke-width="2.5"/>
+
+          <rect x="308" y="80" width="260" height="196" rx="12" fill="#0e1e38" stroke="#38bdf8" stroke-width="1.6"/>
+          <text x="324" y="108" fill="#38bdf8" font-size="12" font-weight="700" font-family="Cascadia Code, Consolas, monospace">STEP 02 · OBSERVE (GA)</text>
+          <text x="324" y="132" fill="#ffffff" font-size="16" font-weight="800">生产遥测聚类与专家标注</text>
+          <text x="324" y="156" fill="#cbd5e1" font-size="12">• 外部 Agent 经 OpenTelemetry 接入 GA</text>
+          <text x="324" y="178" fill="#cbd5e1" font-size="12">• Insights 自动聚类幻觉、延迟与工具报错</text>
+          <text x="324" y="200" fill="#cbd5e1" font-size="12">• HITL 专家在线标注生成评分标准：</text>
+          <text x="324" y="219" fill="#7dd3fc" font-size="11.5" font-weight="700">  HelpSteer3 人类偏好一致率 65% → 81%</text>
+          <text x="324" y="254" fill="#94a3b8" font-size="11.5">Application Insights 全链路分布式追踪</text>
+
+          <path d="M568 178 H592" stroke="#2dd4bf" stroke-width="2.5"/>
+
+          <rect x="592" y="80" width="260" height="196" rx="12" fill="#0e1e38" stroke="#2dd4bf" stroke-width="1.6"/>
+          <text x="608" y="108" fill="#2dd4bf" font-size="12" font-weight="700" font-family="Cascadia Code, Consolas, monospace">STEP 03 · OPTIMIZE (GA)</text>
+          <text x="608" y="132" fill="#ffffff" font-size="16" font-weight="800">Agent Optimizer 自动调优</text>
+          <text x="608" y="156" fill="#cbd5e1" font-size="12">• 自动迭代 System Prompt 与工具描述</text>
+          <text x="608" y="178" fill="#cbd5e1" font-size="12">• 自动比选最优底层模型与推理参数组合</text>
+          <text x="608" y="200" fill="#cbd5e1" font-size="12">• Skill / Agent Optimizer 实测未见集：</text>
+          <text x="608" y="219" fill="#5eead4" font-size="11.5" font-weight="700">  平均提升 +9.2 分，最高提升 +19.9 分</text>
+          <text x="608" y="254" fill="#94a3b8" font-size="11.5">告别手改提示词盲猜 · 人工确认后发布</text>
+
+          <path d="M852 178 H876" stroke="#a78bfa" stroke-width="2.5"/>
+
+          <rect x="876" y="80" width="260" height="196" rx="12" fill="#0e1e38" stroke="#a78bfa" stroke-width="1.6"/>
+          <text x="892" y="108" fill="#c4b5fd" font-size="12" font-weight="700" font-family="Cascadia Code, Consolas, monospace">STEP 04 · TRAIN (PREVIEW)</text>
+          <text x="892" y="132" fill="#ffffff" font-size="16" font-weight="800">模型蒸馏与强化微调训练</text>
+          <text x="892" y="156" fill="#cbd5e1" font-size="12">• Managed Training：托管 SFT 与 RFT</text>
+          <text x="892" y="178" fill="#cbd5e1" font-size="12">• Programmed Training：自写 Python</text>
+          <text x="892" y="196" fill="#cbd5e1" font-size="12">  训练循环，由 Foundry 按需供给 GPU</text>
+          <text x="892" y="219" fill="#d8b4fe" font-size="11.5" font-weight="700">• 将昂贵前沿轨迹蒸馏入小巧领域模型</text>
+          <text x="892" y="254" fill="#94a3b8" font-size="11.5">RL Environments (Private Preview)</text>
+
+          <!-- Feedback Return Loop Arrow -->
+          <path d="M1006 276 V294 H154 V276" fill="none" stroke="#38bdf8" stroke-width="1.8" stroke-dasharray="6 4"/>
+          <text x="435" y="291" fill="#7dd3fc" font-size="11.5" font-weight="700">◀ 持续回流至 Evaluate 门禁验证，人工审批后灰度上线生产 ◀</text>
+
+          <!-- Bottom Control Plane & Model Catalog -->
+          <rect x="24" y="310" width="1112" height="92" rx="12" fill="#112442" stroke="#3b5e96"/>
+          <text x="42" y="335" fill="#fbbf24" font-size="12" font-weight="700" font-family="Cascadia Code, Consolas, monospace">ENTERPRISE CONTROL PLANE &amp; 11,000+ MODEL CATALOG</text>
+          <text x="42" y="360" fill="#eef4ff" font-size="13" font-weight="700">• AI Gateway (GA)  ·  Model Router (调度 45+ 模型：Quality / Balanced / Cost)  ·  四重 Guardrails（输入 / 工具调用 / 工具返回 / 最终输出）</text>
+          <text x="42" y="384" fill="#cbd5e1" font-size="12.5">• 旗舰与高性价比模型：MAI-Code-2 / Flash (GA) · Microsoft-Decision-1.1 (GA) · GPT-6.2 Astra &amp; Sol (GA) · GPT Live 1 (GA) · Quota &amp; Cost Controls (Preview)</text>
+        </svg>
+
+        <!-- English Flywheel SVG -->
+        <svg data-lang="en" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1160 420" role="img" aria-labelledby="fnd-svg-en-title fnd-svg-en-desc">
+          <title id="fnd-svg-en-title">Microsoft Foundry Production Continuous Improvement Loop &amp; Control Plane</title>
+          <desc id="fnd-svg-en-desc">Shows the closed-loop Evaluate, Observe, Optimize, and Train engineering stages atop AI Gateway, Model Router, Quota Management, Fleet/Cost Controls, and 11,000+ models.</desc>
+          <rect width="1160" height="420" rx="14" fill="#091426"/>
+
+          <rect x="24" y="18" width="1112" height="44" rx="9" fill="#102341" stroke="#2c4f82"/>
+          <text x="42" y="45" fill="#38bdf8" font-size="13" font-weight="700">🔄 MICROSOFT FOUNDRY CONTINUOUS IMPROVEMENT FLYWHEEL (Zero-Migration OpenTelemetry Onboarding GA · Human-Gated Promotion)</text>
+
+          <rect x="24" y="80" width="260" height="196" rx="12" fill="#0e1e38" stroke="#34d399" stroke-width="1.6"/>
+          <text x="40" y="108" fill="#34d399" font-size="12" font-weight="700" font-family="Cascadia Code, Consolas, monospace">STEP 01 · EVALUATE (GA)</text>
+          <text x="40" y="132" fill="#ffffff" font-size="16" font-weight="800">Multi-Turn &amp; Trajectory Evals</text>
+          <text x="40" y="156" fill="#cbd5e1" font-size="12">• Full multi-turn &amp; tool-call trajectory gates</text>
+          <text x="40" y="178" fill="#cbd5e1" font-size="12">• Voice Task Completion Audio (79.8% acc)</text>
+          <text x="40" y="200" fill="#cbd5e1" font-size="12">• Decision-1 Eval Judge (Preview):</text>
+          <text x="40" y="219" fill="#6ee7b7" font-size="11.5" font-weight="700">  $0.12/1K evals · 0.59s (vs $34.39 / 4.98s)</text>
+          <text x="40" y="254" fill="#94a3b8" font-size="11.5">CI/CD regression + red-teaming safety checks</text>
+
+          <path d="M284 178 H308" stroke="#38bdf8" stroke-width="2.5"/>
+
+          <rect x="308" y="80" width="260" height="196" rx="12" fill="#0e1e38" stroke="#38bdf8" stroke-width="1.6"/>
+          <text x="324" y="108" fill="#38bdf8" font-size="12" font-weight="700" font-family="Cascadia Code, Consolas, monospace">STEP 02 · OBSERVE (GA)</text>
+          <text x="324" y="132" fill="#ffffff" font-size="16" font-weight="800">Insights &amp; SME Annotation</text>
+          <text x="324" y="156" fill="#cbd5e1" font-size="12">• External agent OpenTelemetry onboarding GA</text>
+          <text x="324" y="178" fill="#cbd5e1" font-size="12">• Insights clusters failure &amp; latency spikes</text>
+          <text x="324" y="200" fill="#cbd5e1" font-size="12">• HITL rubric generation (Public Preview):</text>
+          <text x="324" y="219" fill="#7dd3fc" font-size="11.5" font-weight="700">  HelpSteer3 human agreement 65% → 81%</text>
+          <text x="324" y="254" fill="#94a3b8" font-size="11.5">Backed by Application Insights distributed traces</text>
+
+          <path d="M568 178 H592" stroke="#2dd4bf" stroke-width="2.5"/>
+
+          <rect x="592" y="80" width="260" height="196" rx="12" fill="#0e1e38" stroke="#2dd4bf" stroke-width="1.6"/>
+          <text x="608" y="108" fill="#2dd4bf" font-size="12" font-weight="700" font-family="Cascadia Code, Consolas, monospace">STEP 03 · OPTIMIZE (GA)</text>
+          <text x="608" y="132" fill="#ffffff" font-size="16" font-weight="800">Agent Optimizer Auto-Tuning</text>
+          <text x="608" y="156" fill="#cbd5e1" font-size="12">• Iterates system prompts &amp; tool schemas</text>
+          <text x="608" y="178" fill="#cbd5e1" font-size="12">• Benchmarks model &amp; parameter swaps</text>
+          <text x="608" y="200" fill="#cbd5e1" font-size="12">• Unseen benchmark lift from live traces:</text>
+          <text x="608" y="219" fill="#5eead4" font-size="11.5" font-weight="700">  +9.2 pts average, up to +19.9 pts max</text>
+          <text x="608" y="254" fill="#94a3b8" font-size="11.5">Replaces manual prompt guesswork</text>
+
+          <path d="M852 178 H876" stroke="#a78bfa" stroke-width="2.5"/>
+
+          <rect x="876" y="80" width="260" height="196" rx="12" fill="#0e1e38" stroke="#a78bfa" stroke-width="1.6"/>
+          <text x="892" y="108" fill="#c4b5fd" font-size="12" font-weight="700" font-family="Cascadia Code, Consolas, monospace">STEP 04 · TRAIN (PREVIEW)</text>
+          <text x="892" y="132" fill="#ffffff" font-size="16" font-weight="800">Distillation, SFT &amp; RFT</text>
+          <text x="892" y="156" fill="#cbd5e1" font-size="12">• Managed Training: turnkey SFT &amp; RFT</text>
+          <text x="892" y="178" fill="#cbd5e1" font-size="12">• Programmed Training: custom Python</text>
+          <text x="892" y="196" fill="#cbd5e1" font-size="12">  training loops on Foundry-managed GPUs</text>
+          <text x="892" y="219" fill="#d8b4fe" font-size="11.5" font-weight="700">• Distills frontier traces into compact specialists</text>
+          <text x="892" y="254" fill="#94a3b8" font-size="11.5">RL Environments (Private Preview)</text>
+
+          <path d="M1006 276 V294 H154 V276" fill="none" stroke="#38bdf8" stroke-width="1.8" stroke-dasharray="6 4"/>
+          <text x="415" y="291" fill="#7dd3fc" font-size="11.5" font-weight="700">◀ Validated against Evaluate regression gates before human-approved rollout ◀</text>
+
+          <rect x="24" y="310" width="1112" height="92" rx="12" fill="#112442" stroke="#3b5e96"/>
+          <text x="42" y="335" fill="#fbbf24" font-size="12" font-weight="700" font-family="Cascadia Code, Consolas, monospace">ENTERPRISE CONTROL PLANE &amp; 11,000+ MODEL CATALOG</text>
+          <text x="42" y="360" fill="#eef4ff" font-size="13" font-weight="700">• AI Gateway (GA)  ·  Model Router (45+ models across Quality / Balanced / Cost)  ·  4-Point Guardrails (Input, Tool Call, Tool Output, Final Response)</text>
+          <text x="42" y="384" fill="#cbd5e1" font-size="12.5">• Flagship Portfolio: MAI-Code-2 / Flash (GA) · Microsoft-Decision-1.1 (GA) · GPT-6.2 Astra &amp; Sol (GA) · GPT Live 1 (GA) · Quota &amp; Cost Controls (Preview)</text>
+        </svg>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="spotlight-head" style="padding-bottom:10px;margin-bottom:12px">
+            <h3 style="margin:0">
+              <span data-lang="zh-CN">1. <code>MAI-Code-2 / Flash</code> 与企业编码实证</span>
+              <span data-lang="en">1. <code>MAI-Code-2 / Flash</code> Enterprise Economics</span>
+            </h3>
+            <span class="badge badge-ga">GA</span>
+          </div>
+          <p>
+            <span data-lang="zh-CN">微软第一方模型家族主打极致“价格—性能比”：<code>MAI-Code-2</code> 以约 <strong>40% 成本</strong>达成 <code>GPT-6.1 Sol</code> 约 <strong>98%</strong> 的日常企业编码与重构质量（已上线 GitHub Copilot 与 Foundry）。客户实测：<strong>Alaska Airlines</strong> 微调 <code>MAI-Code-2-Flash</code> 后分类准确率从 <code>81.2%</code> 跃升至 <code>91.1%</code>；<strong>Docusign</strong> 将 AI 处理成本降低 <code>90%</code>；<strong>AT&amp;T</strong> 定制版在 5G 网络分析上超越通用大模型且成本降至 1/50。</span>
+            <span data-lang="en">Microsoft's first-party <code>MAI-Code-2</code> delivers ~<strong>98%</strong> of <code>GPT-6.1 Sol</code> enterprise coding/refactoring quality at ~<strong>40% cost</strong>. Reported customer outcomes: <strong>Alaska Airlines</strong> raised classification accuracy from <code>81.2% → 91.1%</code> fine-tuning <code>MAI-Code-2-Flash</code>, <strong>Docusign</strong> cut AI processing costs by <code>90%</code>, and <strong>Whitney AI</strong> used <code>4.5×</code> fewer tokens with ~250 training examples.</span>
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="spotlight-head" style="padding-bottom:10px;margin-bottom:12px">
+            <h3 style="margin:0">
+              <span data-lang="zh-CN">2. <code>GPT-6.2 Astra &amp; Sol</code> + 全双工语音矩阵</span>
+              <span data-lang="en">2. <code>GPT-6.2 Astra &amp; Sol</code> + Voice Agents</span>
+            </h3>
+            <span class="badge badge-ga">GA</span>
+          </div>
+          <p>
+            <span data-lang="zh-CN"><strong><code>GPT-6.2 Astra</code>（<code>GA</code>）</strong>在 <em>Agents' Last Exam</em> 较前代提升 <code>+5.2</code> 分而成本不到 1/3，专攻高标准财务工作簿、法务与跨应用 Computer-Use；<strong><code>GPT-6.2 Sol</code>（<code>GA</code>）</strong>在 <em>FrontierCode 2.0</em> 与 Astra 差距不足 <code>0.5</code> 分，成本仅约 <strong>1/5</strong>，并支持可选 <strong>12 小时 Prompt Cache TTL</strong>（默认 30 分钟）。语音侧 <code>GPT Live 1</code>（<code>GA</code>）与高性价比 <code>Realtime Flash 1</code>（<code>Preview</code>，<code>τ³-Voice</code> 得分 <code>70.9</code>，HD V3 新增中文）原生打通 Web、Teams Phone、Twilio 与 Genesys。</span>
+            <span data-lang="en"><strong><code>GPT-6.2 Astra</code> (<code>GA</code>)</strong> scores <code>+5.2 pts</code> higher on <em>Agents' Last Exam</em> at <code>&lt;1/3</code> the cost of GPT-6 Astra; <strong><code>GPT-6.2 Sol</code> (<code>GA</code>)</strong> comes within <code>0.5 pts</code> on <em>FrontierCode 2.0</em> at ~<strong>1/5 the cost</strong> with opt-in <strong>12-hour cache-write TTL</strong>. For voice, <code>GPT Live 1</code> (<code>GA</code>) and <code>Realtime Flash 1</code> (<code>Preview</code>, <code>70.9</code> on <code>τ³-Voice</code>) integrate across Web, Teams Phone, Twilio, and Genesys.</span>
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="spotlight-head" style="padding-bottom:10px;margin-bottom:12px">
+            <h3 style="margin:0">
+              <span data-lang="zh-CN">3. <code>AI Gateway</code> · <code>Model Router</code> · 开放生态</span>
+              <span data-lang="en">3. <code>AI Gateway</code>, <code>Model Router</code> &amp; 11K+ Catalog</span>
+            </h3>
+            <span class="badge badge-ga">Gateway GA</span>
+          </div>
+          <p>
+            <span data-lang="zh-CN"><code>AI Gateway</code> 正式 <strong>GA</strong>；将部署模型设为 <code>auto</code> 即可启用 <code>Model Router</code>（<code>Preview</code>），在 <strong>45+ 模型</strong>间按 <code>Quality</code>、<code>Balanced</code>（默认）与 <code>Cost</code> 三档自动路由。目录覆盖 11,000+ 模型，Ignite 新增 <code>Baseten on Foundry</code>（<code>Public Preview</code>：<code>Kimi-K3</code>、<code>DeepSeek V4.1-Flash</code>、<code>GLM 5.3</code>）。</span>
+            <span data-lang="en"><code>AI Gateway</code> is now <strong>GA</strong>, paired with <code>Model Router</code> (<code>model="auto"</code> across <strong>45+ models</strong> in <code>Quality / Balanced / Cost</code> modes) and an 11,000+ catalog expanded by <code>Baseten on Foundry</code> (<code>Public Preview</code>: <code>Kimi-K3</code>, <code>DeepSeek V4.1-Flash</code>, <code>GLM 5.3</code>).</span>
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="spotlight-head" style="padding-bottom:10px;margin-bottom:12px">
+            <h3 style="margin:0">
+              <span data-lang="zh-CN">4. 自助配额申请与 <code>Fleet / Cost Controls</code></span>
+              <span data-lang="en">4. Self-Service Quota &amp; <code>Fleet / Cost Controls</code></span>
+            </h3>
+            <span class="badge badge-preview">Public Preview</span>
+          </div>
+          <p>
+            <span data-lang="zh-CN"><code>Foundry &gt; Manage &gt; Quota</code>（<code>Public Preview</code>）支持 15 秒内在线提交 Global 与 Data Zone 的 Standard（TPM）或 Provisioned（PTU）提额申请并自动审批符合策略的请求；<code>Fleet &amp; Cost Controls</code>（<code>Public Preview</code>）支持按项目、智能体与模型设置美元或 Token 预算硬拦截（注：成本账单数据通常延迟 8–24 小时，PayGo 最长 72 小时）。</span>
+            <span data-lang="en"><code>Foundry &gt; Manage &gt; Quota</code> (<code>Public Preview</code>) streamlines Standard TPM and Provisioned PTU increase requests with automated policy checks, while <code>Fleet &amp; Cost Controls</code> (<code>Public Preview</code>) enforces dollar or token budgets per project/agent/model (note 8–24h typical / up to 72h PayGo billing data lag).</span>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SECTION 2: 4-WAY RUNTIME & SANDBOX MATRIX ==================== -->
+    <section id="runtime-selection" class="stage-section">
+      <div class="section-header">
+        <div>
+          <p class="eyebrow">02 / FOUR-WAY AGENT HOSTING &amp; SANDBOX SELECTION MATRIX</p>
+          <h2 class="section-title">
+            <span data-lang="zh-CN">四类智能体托管运行时选型</span>
+            <span data-lang="en">Agent Hosting &amp; Sandbox Selection</span>
+          </h2>
+          <p class="section-sub">
+            <span data-lang="zh-CN">不存在“一套运行时包打天下”：架构师需根据客户的<strong>数据驻留主权、不可信代码/浏览器内核隔离要求、突发缩至零弹性以及存量 GPU / AKS 资产</strong>，在微软四大生产运行时之间做出清晰取舍。</span>
+            <span data-lang="en">No single runtime fits every security or compute envelope. Guide customers across Microsoft's four complementary hosting and sandbox patterns based on data residency, kernel isolation, scale-to-zero elasticity, and GPU ownership.</span>
+          </p>
+        </div>
+      </div>
+
+      <!-- INTERACTIVE WORKLOAD ARCHITECTURE SELECTOR -->
+      <div class="workbench" id="runtime-selector-workbench">
+        <div class="section-header" style="margin-bottom:12px">
+          <div>
+            <p class="eyebrow" style="margin-bottom:4px">INTERACTIVE WORKLOAD ARCHITECTURE SELECTOR</p>
+            <h3 style="margin:0;font-size:19px">
+              <span data-lang="zh-CN">🧭 Partner SA 智能体运行时与隔离沙箱选型决策器</span>
+              <span data-lang="en">🧭 Partner SA Runtime &amp; Sandbox Architecture Advisor</span>
+            </h3>
+          </div>
+        </div>
+
+        <div class="preset-strip" aria-label="Workload Presets">
+          <button type="button" class="preset-chip active" data-rt-preset="standard">
+            <span data-lang="zh-CN">① 企业标准知识与业务流 Agent (80% 场景)</span>
+            <span data-lang="en">① Standard Enterprise Knowledge &amp; Workflow (80%)</span>
+          </button>
+          <button type="button" class="preset-chip" data-rt-preset="sovereign">
+            <span data-lang="zh-CN">② 金融/政企严格数据驻留 + 自有预留 GPU</span>
+            <span data-lang="en">② Strict Financial Residency + Reserved AKS GPUs</span>
+          </button>
+          <button type="button" class="preset-chip" data-rt-preset="serverless">
+            <span data-lang="zh-CN">③ 突发事件驱动微服务 + 轻量代码计算片段</span>
+            <span data-lang="en">③ Bursty Event Webhooks + Lightweight Code Snippets</span>
+          </button>
+          <button type="button" class="preset-chip" data-rt-preset="sandbox">
+            <span data-lang="zh-CN">④ 自主 Coding / 浏览器操控 / 重度有状态 Bash</span>
+            <span data-lang="en">④ Autonomous Coding, Browser UI &amp; Stateful Bash</span>
+          </button>
+        </div>
+
+        <div class="control-row">
+          <div class="field-group">
+            <label for="rt-residency">
+              <span data-lang="zh-CN">数据主权与网络边界</span>
+              <span data-lang="en">Data Residency &amp; VNet Control</span>
+            </label>
+            <select id="rt-residency">
+              <option value="managed" data-zh="标准企业合规（托管 PaaS + VNet 出站控制）" data-en="Standard Enterprise (Managed PaaS + VNet Egress)">标准企业合规（托管 PaaS + VNet 出站控制）</option>
+              <option value="cluster" data-zh="严苛驻留（Prompt/状态/模型不出客户自有集群）" data-en="Strict Sovereign (Prompts/State Stay in Customer Cluster)">严苛驻留（Prompt/状态/模型不出客户自有集群）</option>
+            </select>
+          </div>
+
+          <div class="field-group">
+            <label for="rt-tool">
+              <span data-lang="zh-CN">工具执行与沙箱隔离等级</span>
+              <span data-lang="en">Tool Execution &amp; Isolation Profile</span>
+            </label>
+            <select id="rt-tool">
+              <option value="api" data-zh="REST / MCP 接口编排与受控企业知识检索" data-en="REST / MCP Orchestration &amp; Governed RAG">REST / MCP 接口编排与受控企业知识检索</option>
+              <option value="snippet" data-zh="单次短平快不可信 Python / JS 代码解释片段" data-en="Short Stateless Untrusted Python / JS Snippets">单次短平快不可信 Python / JS 代码解释片段</option>
+              <option value="heavy" data-zh="有状态重度自主执行（Git 仓库编译 / Bash / 浏览器 UI）" data-en="Stateful Repo Build, Bash &amp; Browser/Computer-Use">有状态重度自主执行（Git 仓库编译 / Bash / 浏览器 UI）</option>
+            </select>
+          </div>
+
+          <div class="field-group">
+            <label for="rt-scale">
+              <span data-lang="zh-CN">流量曲线与冷启动要求</span>
+              <span data-lang="en">Traffic Pattern &amp; Cold-Start SLA</span>
+            </label>
+            <select id="rt-scale">
+              <option value="steady" data-zh="全天候平稳企业交互负载" data-en="Steady Business-Hours / 24x7 Workload">全天候平稳企业交互负载</option>
+              <option value="burst" data-zh="突发事件/队列驱动（空闲自动缩容至零省成本）" data-en="Spiky KEDA Event-Driven (Must Scale to Zero)">突发事件/队列驱动（空闲自动缩容至零省成本）</option>
+              <option value="snapshot" data-zh="长程多步挂起与毫秒级内存快照唤醒 (Pod Snapshot)" data-en="Long-Lived Sessions + Sub-Sec Memory Restore (Pod Snapshot)">长程多步挂起与毫秒级内存快照唤醒 (Pod Snapshot)</option>
+            </select>
+          </div>
+
+          <div class="field-group">
+            <label for="rt-infra">
+              <span data-lang="zh-CN">底层算力与运维偏好</span>
+              <span data-lang="en">Compute &amp; Ops Preference</span>
+            </label>
+            <select id="rt-infra">
+              <option value="zeroops" data-zh="零集群运维（Turnkey Serverless / PaaS）" data-en="Zero K8s Ops (Turnkey PaaS / Serverless)">零集群运维（Turnkey Serverless / PaaS）</option>
+              <option value="gpu" data-zh="消化客户自有预留 GPU 或开放权重自托管" data-en="Consume Customer-Reserved GPUs &amp; Open-Weight Models">消化客户自有预留 GPU 或开放权重自托管</option>
+              <option value="arm" data-zh="高密度 Cobalt 200 Arm64 沙箱池 / ACI 弹性溢出" data-en="High-Density Cobalt 200 Arm64 Pool + ACI Burst">高密度 Cobalt 200 Arm64 沙箱池 + ACI 弹性溢出</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="runtime-rec-grid" aria-live="polite">
+          <div class="rec-primary">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:8px">
+              <span class="eyebrow" style="margin:0" id="rt-rec-tag">RECOMMENDED PRIMARY ARCHITECTURE</span>
+              <span class="badge badge-ga" id="rt-rec-badge">GA</span>
+            </div>
+            <h4 style="margin:0 0 8px;font-size:20px;color:var(--accent)" id="rt-rec-title">Foundry Agent Service (Managed PaaS)</h4>
+            <p style="margin:0 0 12px;color:var(--text-muted);font-size:14px" id="rt-rec-desc"></p>
+            <div style="padding:12px 14px;border-radius:10px;background:var(--bg-elevated);border:1px solid var(--border);font-size:13px" id="rt-rec-guardrail"></div>
+          </div>
+
+          <div class="rec-scores">
+            <div style="font-size:12px;font-weight:800;color:var(--text-soft);text-transform:uppercase;letter-spacing:0.5px">
+              <span data-lang="zh-CN">四维架构匹配度评分</span>
+              <span data-lang="en">Architecture Fit Score</span>
+            </div>
+            <div class="score-line">
+              <span>Foundry Managed</span>
+              <div class="score-track"><div class="score-fill" id="sc-managed" style="width:94%"></div></div>
+              <strong class="mono" id="sc-managed-lbl">94%</strong>
+            </div>
+            <div class="score-line">
+              <span>Foundry on AKS</span>
+              <div class="score-track"><div class="score-fill" id="sc-faks" style="width:58%"></div></div>
+              <strong class="mono" id="sc-faks-lbl">58%</strong>
+            </div>
+            <div class="score-line">
+              <span>ACA + Dyn Sessions</span>
+              <div class="score-track"><div class="score-fill" id="sc-aca" style="width:72%"></div></div>
+              <strong class="mono" id="sc-aca-lbl">72%</strong>
+            </div>
+            <div class="score-line">
+              <span>AKS Agent Sandbox</span>
+              <div class="score-track"><div class="score-fill" id="sc-sandbox" style="width:45%"></div></div>
+              <strong class="mono" id="sc-sandbox-lbl">45%</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- COMPREHENSIVE 4-COLUMN COMPARISON TABLE -->
+      <div class="table-wrap" style="margin-top:18px">
+        <table>
+          <thead>
+            <tr>
+              <th>
+                <span data-lang="zh-CN">对比维度</span>
+                <span data-lang="en">Dimension</span>
+              </th>
+              <th>
+                <code>Foundry Agent Service</code><br>
+                <span class="badge badge-ga" style="margin-top:4px">Managed PaaS · GA</span>
+              </th>
+              <th>
+                <code>Foundry on AKS</code><br>
+                <span class="badge badge-private" style="margin-top:4px">AKS AI Manager · Limited Preview</span>
+              </th>
+              <th>
+                <code>ACA &amp; Dynamic Sessions</code><br>
+                <span class="badge badge-ga" style="margin-top:4px">Serverless · GA</span>
+              </th>
+              <th>
+                <code>AKS Agent Sandbox</code><br>
+                <span class="badge badge-preview" style="margin-top:4px">K8s Sandbox + Snapshot · Preview</span>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong><span data-lang="zh-CN">开发与控制面体验</span><span data-lang="en">Developer &amp; API Plane</span></strong></td>
+              <td>
+                <span data-lang="zh-CN">零基础设施开箱即用，托管会话线程/状态快照、内置 Microsoft IQ 与 MCP 工具编排</span>
+                <span data-lang="en">Zero-infra turnkey PaaS with managed threads, memory snapshots, Microsoft IQ &amp; MCP wiring</span>
+              </td>
+              <td>
+                <span data-lang="zh-CN"><strong>100% 沿用相同 Foundry SDK / API 与 <code>azd</code> 模板</strong>，但将开放权重模型与 Hosted Agent 部署至客户自有 AKS 集群</span>
+                <span data-lang="en"><strong>Exact same Foundry APIs &amp; <code>azd</code> workflow</strong>, deploying open-weight models &amp; hosted agents onto customer-owned AKS</span>
+              </td>
+              <td>
+                <span data-lang="zh-CN">任意多语言容器镜像（Python / Node / .NET / Go）+ KEDA 事件驱动自动扩缩容</span>
+                <span data-lang="en">Polyglot container microservices with KEDA event triggers (Service Bus, Kafka, HTTP)</span>
+              </td>
+              <td>
+                <span data-lang="zh-CN">基于开源 Kubernetes Agent Sandbox 标准扩展，面向重度工具执行会话的预热池化控制器</span>
+                <span data-lang="en">Built on Kubernetes Agent Sandbox spec with pre-warmed stateful execution pools</span>
+              </td>
+            </tr>
+            <tr>
+              <td><strong><span data-lang="zh-CN">安全与内核隔离边界</span><span data-lang="en">Isolation Boundary</span></strong></td>
+              <td>
+                <span data-lang="zh-CN">微软托管多租户逻辑隔离 + 私有终结点（Private Link）与 VNet 出站网络管控</span>
+                <span data-lang="en">Managed logical isolation + Private Endpoints &amp; VNet egress network rules</span>
+              </td>
+              <td>
+                <span data-lang="zh-CN">Prompt 与会话状态不出客户私有 VNet/合规区域；<strong>单 Agent 会话默认运行于 AKS Pod Sandboxing 轻量级 VM</strong></span>
+                <span data-lang="en">Prompts/state remain inside private VNet/region; <strong>each session isolated in AKS Pod Sandboxing lightweight VMs</strong></span>
+              </td>
+              <td>
+                <span data-lang="zh-CN"><code>Dynamic Sessions</code> 提供<strong>亚秒级 Hyper-V 硬件虚拟化沙箱</strong>，专跑不可信 Python/JS 计算片段</span>
+                <span data-lang="en"><code>Dynamic Sessions</code> enforce <strong>Hyper-V micro-boundary isolation</strong> for untrusted Python/JS code interpreter calls</span>
+              </td>
+              <td>
+                <span data-lang="zh-CN">双模式强内核隔离：集群自有节点 <strong>Kata microVM</strong> 隔离，或按需弹出 <strong>ACI Serverless 沙箱</strong></span>
+                <span data-lang="en">Dual kernel isolation: <strong>Kata microVMs</strong> on cluster nodes OR burst to <strong>ACI serverless sandboxes</strong></span>
+              </td>
+            </tr>
+            <tr>
+              <td><strong><span data-lang="zh-CN">状态保持与冷启动性能</span><span data-lang="en">State &amp; Cold-Start</span></strong></td>
+              <td>
+                <span data-lang="zh-CN">托管持久线程状态与长期记忆检索，免容器冷启动</span>
+                <span data-lang="en">Always-warm managed state &amp; memory store with zero container cold-start</span>
+              </td>
+              <td>
+                <span data-lang="zh-CN">集群内就近访问私有数据与本地 GPU 推理池，消除跨公网往返延迟</span>
+                <span data-lang="en">Co-located with in-cluster data stores and reserved GPU node pools</span>
+              </td>
+              <td>
+                <span data-lang="zh-CN">支持空闲缩至 <code>0</code> 副本极致省钱；<code>Dynamic Sessions</code> 预热池百毫秒分配</span>
+                <span data-lang="en">KEDA scale-to-zero cost savings + pre-warmed sub-second session allocation</span>
+              </td>
+              <td>
+                <span data-lang="zh-CN"><strong><code>Pod Snapshot</code> 内存与进程状态快照恢复</strong>：在用户等待审批期间挂起完整开发环境并毫秒级恢复现场</span>
+                <span data-lang="en"><strong><code>Pod Snapshot</code> memory &amp; process checkpoint restore</strong> resumes full stateful workspaces instantly</span>
+              </td>
+            </tr>
+            <tr>
+              <td><strong><span data-lang="zh-CN">底层算力协同</span><span data-lang="en">Compute Optimization</span></strong></td>
+              <td>
+                <span data-lang="zh-CN">全托管算力配额（Standard PayGo TPM 或 Provisioned PTU）</span>
+                <span data-lang="en">Turnkey Azure capacity via Standard PayGo TPM or Provisioned PTU</span>
+              </td>
+              <td>
+                <span data-lang="zh-CN">直接消耗客户已采购的<strong>预留 GPU 节点池</strong>（H100 / H200 / GB300 / Mixed MIG）</span>
+                <span data-lang="en">Directly utilizes customer-reserved AKS GPU pools &amp; sovereign regions</span>
+              </td>
+              <td>
+                <span data-lang="zh-CN">Consumption 按秒计费或 Dedicated 工作负载配置</span>
+                <span data-lang="en">Serverless per-second consumption or Dedicated workload profiles</span>
+              </td>
+              <td>
+                <span data-lang="zh-CN">黄金搭档 <strong><code>Azure Cobalt 200</code> Arm64 节点池（<code>GA</code>，CPU 性能最高 +50%）</strong> 高密度承载海量非 GPU 沙箱</span>
+                <span data-lang="en">Pairs ideally with <strong><code>Azure Cobalt 200</code> Arm64 pools (<code>GA</code>, up to +50% CPU perf)</strong> for dense sandbox fleets</span>
+              </td>
+            </tr>
+            <tr>
+              <td><strong><span data-lang="zh-CN">最佳适用工作负载</span><span data-lang="en">Best-Fit Workloads</span></strong></td>
+              <td>
+                <span data-lang="zh-CN"><strong>覆盖 80% 企业标准场景</strong>：知识问答、CRM/ERP 流程协同、客服助手与多智能体编排</span>
+                <span data-lang="en"><strong>80% of standard enterprise agents</strong>: RAG knowledge assistants, CRM/ERP workflows &amp; MCP orchestration</span>
+              </td>
+              <td>
+                <span data-lang="zh-CN">严苛金融/医疗/主权云数据不出域、混合部署开放权重模型与自有 GPU 降本复用</span>
+                <span data-lang="en">Strict financial/sovereign data residency &amp; dedicated GPU utilization</span>
+              </td>
+              <td>
+                <span data-lang="zh-CN">突发 Webhook 异步 Agent、LangGraph/自定义微服务编排与轻量数据分析沙箱</span>
+                <span data-lang="en">Bursty webhook microservices, custom agent frameworks &amp; lightweight calc sandboxes</span>
+              </td>
+              <td>
+                <span data-lang="zh-CN"><strong>自主 Coding Agent</strong>（完整仓库克隆编译）、<strong>Browser / Computer-Use UI 智能体</strong>与长时 Bash 工具链</span>
+                <span data-lang="en"><strong>Autonomous Coding Agents</strong>, Browser/Computer-Use UI agents &amp; long-running bash/repo toolchains</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ==================== SECTION 3: MICROSOFT-DECISION-1.1 SPOTLIGHT ==================== -->
+    <section id="decision-1-1-spotlight" class="stage-section">
+      <div class="section-header">
+        <div>
+          <p class="eyebrow">03 / SPOTLIGHT DEEP DIVE · MICROSOFT-DECISION-1.1 (GA)</p>
+          <h2 class="section-title">
+            <span data-lang="zh-CN">专用判别模型与置信度门控</span>
+            <span data-lang="en">Decision-1.1 &amp; Confidence Gating</span>
+          </h2>
+          <p class="section-sub">
+            <span data-lang="zh-CN">生产级智能体系统中，80% 的高频调用并非长篇开放式创作，而是<strong>意图路由、工具选择、合规判别与质量评审</strong>。<code>Microsoft-Decision-1.1</code>（<code>GA</code>）将“结构化判别”从昂贵的通用生成模型中彻底解耦。</span>
+            <span data-lang="en">In production agent fleets, 80% of high-frequency calls are structured decisions—intent routing, policy checks, visual triage, and eval scoring—not open-ended essays. <code>Microsoft-Decision-1.1</code> (<code>GA</code>) decouples fast calibrated judgment from expensive generative LLMs.</span>
+          </p>
+        </div>
+      </div>
+
+      <!-- 4-Dimension Spotlight Card -->
+      <article class="spotlight-card">
+        <div class="spotlight-head">
+          <h3 class="spotlight-title">
+            <span data-lang="zh-CN"><code>Microsoft-Decision-1.1</code> — 多模态校准判别与零输出计费引擎</span>
+            <span data-lang="en"><code>Microsoft-Decision-1.1</code> — Multimodal Calibrated Decision &amp; $0-Output Engine</span>
+          </h3>
+          <div class="pill-row" style="margin-top:0">
+            <span class="badge badge-ga">GA in Foundry</span>
+            <span class="pill mono">$0.042 / 1M Input · $0 Output</span>
+            <span class="pill mono">78.8% Avg (102 Benchmarks)</span>
+          </div>
+        </div>
+
+        <div class="dim-grid">
+          <div class="dim-box">
+            <div class="dim-label">
+              <span data-lang="zh-CN">⚙️ 架构机制 (Mechanics)</span>
+              <span data-lang="en">⚙️ Architecture Mechanics</span>
+            </div>
+            <ul>
+              <li>
+                <span data-lang="zh-CN"><strong><code>Gemma 4 26B A4</code> 稀疏激活底座 + 定制引擎</strong>：经专项判别后训练与推理内核深度优化，端到端吞吐与响应速度较初代提升 <strong><code>&gt;2x</code></strong>，直接驱动 Microsoft Copilot 的 <code>Auto</code> 路由层。</span>
+                <span data-lang="en"><strong><code>Gemma 4 26B A4</code> Base + Custom Engine</strong>: Specialized decision post-training and custom inference kernel deliver <strong><code>&gt;2x</code> faster</strong> execution than Decision-1.0, powering Copilot's <code>Auto</code> router.</span>
+              </li>
+              <li>
+                <span data-lang="zh-CN"><strong>多模态结构化协议（<code>/providers/microsoft/v1/systemone</code>）</strong>：原生支持文本与图像输入（<code>[assets]</code> 占位符绑定图片），提供互斥单选概率分布 <strong><code>choice</code></strong> 与多标签独立是/否概率 <strong><code>noul</code></strong> 两种确定性契约，并内置担任 <strong>Foundry Evaluations Judge</strong>。</span>
+                <span data-lang="en"><strong>Multimodal Structured Contract (<code>/providers/microsoft/v1/systemone</code>)</strong>: Accepts text + image <code>[assets]</code> and outputs calibrated probabilities in <strong><code>choice</code></strong> (mutually exclusive single-select) or <strong><code>noul</code></strong> (independent multi-label yes-probabilities) modes, plus native Foundry Evaluations Judge integration.</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="dim-box scenario">
+            <div class="dim-label">
+              <span data-lang="zh-CN">🏢 业务场景 (Business Scenarios)</span>
+              <span data-lang="en">🏢 Business Scenarios</span>
+            </div>
+            <ul>
+              <li>
+                <span data-lang="zh-CN"><strong>前置意图与级联工具分流</strong>：在 40+ 企业 MCP 工具与多智能体队列前毫秒级判定路由目标，仅将复杂长尾请求升级给 <code>GPT-6.2 Sol / Astra</code>。</span>
+                <span data-lang="en"><strong>Front-Door Intent &amp; Cascade Routing</strong>: Triage user intents across 40+ MCP tools and specialist sub-agents in ~200ms, escalating only complex multi-step cases to <code>GPT-6.2 Sol / Astra</code>.</span>
+              </li>
+              <li>
+                <span data-lang="zh-CN"><strong>多模态定损审核与大规模评估裁判</strong>：冷链货损/票据图像合规初筛、ERP 高风险退款策略门控，以及每千次仅 <code>$0.12</code>（中位耗时 <code>0.59s</code>）的生产 Trace 批量质量评估。</span>
+                <span data-lang="en"><strong>Visual Triage &amp; High-Volume Eval Judging</strong>: Cargo damage photo triage, ERP refund policy gating, and CI/CD trace judging at <code>$0.12 / 1,000</code> evaluations (<code>0.59s</code> median latency).</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="dim-box compete">
+            <div class="dim-label">
+              <span data-lang="zh-CN">🏆 竞争优势 (Competitive Advantage)</span>
+              <span data-lang="en">🏆 Competitive Advantage</span>
+            </div>
+            <ul>
+              <li>
+                <span data-lang="zh-CN"><strong>102 项基准验证 + 颠覆性定价</strong>：横跨 <strong>102 个保留基准（38.5 万+ 测试题）平均准确率达 <code>78.8%</code></strong>，在 9 大企业决策类别中斩获 7 项第一；Global Standard 输入仅 <strong><code>$0.042 / 1M Tokens</code>，输出 Token <code>$0</code> 全免</strong>！</span>
+                <span data-lang="en"><strong>78.8% Across 102 Benchmarks at Fraction-of-a-Cent Cost</strong>: Tested on <strong>385K+ items</strong> (leading 7 of 9 categories) at <strong><code>$0.042 / 1M</code> input tokens and <code>$0</code> output tokens</strong>—orders of magnitude cheaper and faster than calling GPT/Claude chat models on every triage hop.</span>
+              </li>
+              <li>
+                <span data-lang="zh-CN"><strong>告别脆弱传统小模型维护地狱</strong>：无需像传统 BERT / XGBoost 分类器那样每改一条业务规则就重新标注数千条样本重训，零样本指令修改即时生效且原生支持图文多模态。</span>
+                <span data-lang="en"><strong>Replaces Brittle Bespoke BERT Fleets</strong>: Zero-shot schema updates and multimodal vision support eliminate maintaining dozens of fragile task-specific classifiers whenever business policies change.</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="dim-box guidance">
+            <div class="dim-label">
+              <span data-lang="zh-CN">🧭 SA 落地要点 (SA Guardrails)</span>
+              <span data-lang="en">🧭 SA Guardrails</span>
+            </div>
+            <ul>
+              <li>
+                <span data-lang="zh-CN"><strong>校准置信度三段式门控（拒绝盲目取 Argmax）</strong>：利用返回的校准概率设定双阈值——<code>p ≥ τ_high</code> 自动执行、<code>τ_low ≤ p &lt; τ_high</code> 升级前沿大模型或二次确认、<code>p &lt; τ_low</code> 转交人工专员。</span>
+                <span data-lang="en"><strong>Enforce 3-Band Confidence Thresholds</strong>: Never blindly trust argmax on high-stakes actions—gate on calibrated probability (<code>≥ τ_high</code> Auto-Act, <code>τ_low–τ_high</code> Escalate to Frontier LLM/Confirm, <code>&lt; τ_low</code> Human Specialist).</span>
+              </li>
+              <li>
+                <span data-lang="zh-CN"><strong>明确能力边界</strong>：<code>Decision-1 / 1.1</code> 只输出结构化判别与概率，<strong>不生成自然语言评分理由（Rationale）</strong>，作为评估裁判时亦不替代专门的内容安全（Safety）评估器。</span>
+                <span data-lang="en"><strong>Know Explicit Boundaries</strong>: Outputs structured scores/choices <strong>without natural-language rationales</strong>, and as an eval judge does not replace dedicated Foundry safety evaluators.</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </article>
+
+      <!-- INTERACTIVE DECISION-1.1 CONFIDENCE GATE & COST SIMULATOR -->
+      <div class="workbench" id="decision-simulator-workbench">
+        <div class="section-header" style="margin-bottom:14px">
+          <div>
+            <p class="eyebrow" style="margin-bottom:4px">INTERACTIVE DECISION-1.1 THREE-BAND GATE &amp; FINOPS SIMULATOR</p>
+            <h3 style="margin:0;font-size:19px">
+              <span data-lang="zh-CN">🎛️ <code>Microsoft-Decision-1.1</code> 三段式置信度门控与级联降本推演台</span>
+              <span data-lang="en">🎛️ <code>Microsoft-Decision-1.1</code> Confidence Gate &amp; Cascade FinOps Simulator</span>
+            </h3>
+          </div>
+          <span class="pill mono">/providers/microsoft/v1/systemone</span>
+        </div>
+
+        <div class="control-row">
+          <div class="field-group">
+            <label for="dec-scenario">
+              <span data-lang="zh-CN">选择企业判别场景</span>
+              <span data-lang="en">Select Enterprise Scenario</span>
+            </label>
+            <select id="dec-scenario">
+              <option value="itsm" data-zh="① ITSM 与账单工单意图路由 (choice 单选分布)" data-en="① ITSM &amp; Billing Ticket Intent Routing (choice)">① ITSM 与账单工单意图路由 (choice 单选分布)</option>
+              <option value="cargo" data-zh="② 多模态货损照片定损分流 (choice + [assets] 图像)" data-en="② Multimodal Cargo Damage Photo Triage (choice + [assets])">② 多模态货损照片定损分流 (choice + [assets] 图像)</option>
+              <option value="erp" data-zh="③ 高风险 ERP 退款合规门控 (noul 多标签独立概率)" data-en="③ High-Risk ERP Refund Policy Gate (noul multi-label)">③ 高风险 ERP 退款合规门控 (noul 多标签独立概率)</option>
+              <option value="judge" data-zh="④ 生产环境在线质量评估护栏 (LLM-as-a-Judge)" data-en="④ Production Online Quality Guardrail (Eval Judge)">④ 生产环境在线质量评估护栏 (LLM-as-a-Judge)</option>
+            </select>
+          </div>
+
+          <div class="field-group">
+            <label for="dec-high">
+              <span>
+                <span data-lang="zh-CN">自动放行阈值 <code>τ_high</code></span>
+                <span data-lang="en">Auto-Act Threshold <code>τ_high</code></span>
+              </span>
+              <strong class="mono" id="dec-high-val">0.85</strong>
+            </label>
+            <input type="range" id="dec-high" min="0.70" max="0.95" step="0.01" value="0.85">
+          </div>
+
+          <div class="field-group">
+            <label for="dec-low">
+              <span>
+                <span data-lang="zh-CN">转人工阈值 <code>τ_low</code></span>
+                <span data-lang="en">Human Escalation <code>τ_low</code></span>
+              </span>
+              <strong class="mono" id="dec-low-val">0.50</strong>
+            </label>
+            <input type="range" id="dec-low" min="0.30" max="0.65" step="0.01" value="0.50">
+          </div>
+
+          <div class="field-group">
+            <label for="dec-vol">
+              <span>
+                <span data-lang="zh-CN">月度调用规模 (100K–50M)</span>
+                <span data-lang="en">Monthly Volume (100K–50M)</span>
+              </span>
+              <strong class="mono" id="dec-vol-val">10.0M</strong>
+            </label>
+            <input type="range" id="dec-vol" min="0" max="9" step="1" value="6">
+          </div>
+        </div>
+
+        <div class="dec-layout">
+          <!-- Left: Calibrated Probabilities + 3-Band Split -->
+          <div class="dec-panel">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-bottom:8px">
+              <span class="pill mono" id="dec-mode-badge">mode: choice</span>
+              <span class="gate-pill auto" id="dec-sample-action">✅ Act Automatically</span>
+            </div>
+            <p style="margin:0 0 10px;font-size:13.5px;color:var(--text)" id="dec-sample-input"></p>
+
+            <div class="prob-list" id="dec-prob-bars"></div>
+
+            <hr style="border:0;border-top:1px solid var(--border);margin:16px 0 12px">
+            <div style="font-size:12.5px;font-weight:700;color:var(--text-muted)">
+              <span data-lang="zh-CN">全量生产流量三段式门控分流占比（随 <code>τ_high</code> / <code>τ_low</code> 动态重算）</span>
+              <span data-lang="en">Fleet-Wide 3-Band Traffic Routing Split (Live Function of <code>τ_high</code> / <code>τ_low</code>)</span>
+            </div>
+            <div class="band-bar" aria-label="3-Band Traffic Split">
+              <div class="band-seg band-auto" id="band-auto" style="width:74%">74%</div>
+              <div class="band-seg band-confirm" id="band-confirm" style="width:18%">18%</div>
+              <div class="band-seg band-human" id="band-human" style="width:8%">8%</div>
+            </div>
+            <div class="band-legend">
+              <span>🟢 <strong id="leg-auto">74%</strong> <span data-lang="zh-CN">Decision-1.1 直接自动执行</span><span data-lang="en">Auto-Act (Decision-1.1 Only)</span></span>
+              <span>🔵 <strong id="leg-confirm">18%</strong> <span data-lang="zh-CN">升级 GPT-6.2 Sol 复核/确认</span><span data-lang="en">Cascade to GPT-6.2 Sol / Confirm</span></span>
+              <span>🟠 <strong id="leg-human">8%</strong> <span data-lang="zh-CN">路由至人工专家队列</span><span data-lang="en">Route to Human Specialist</span></span>
+            </div>
+          </div>
+
+          <!-- Right: Live /v1/systemone Contract Preview -->
+          <div class="dec-panel" style="padding:14px">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+              <span style="font-size:12px;font-weight:800;color:var(--teal);font-family:var(--font-mono)">POST /providers/microsoft/v1/systemone</span>
+              <span class="badge badge-ga">$0 Output Tokens</span>
+            </div>
+            <pre id="dec-json-preview"></pre>
+          </div>
+        </div>
+
+        <!-- Cost & Latency Comparison Strip -->
+        <div class="metric-strip">
+          <div class="metric-card">
+            <span class="m-title">
+              <span data-lang="zh-CN">100% 通用旗舰大模型路由月度账单</span>
+              <span data-lang="en">100% Frontier LLM Routing Monthly Cost</span>
+            </span>
+            <span class="m-num" id="dec-cost-frontier" style="color:var(--rose)">$42,000</span>
+            <span class="m-note" style="color:var(--text-soft)">
+              <span data-lang="zh-CN">每次分类均消耗输入 + 思维链输出 Token</span>
+              <span data-lang="en">Pays frontier input + reasoning output on 100% calls</span>
+            </span>
+          </div>
+
+          <div class="metric-card" style="border-color:rgba(45,212,191,0.5)">
+            <span class="m-title">
+              <span data-lang="zh-CN"><code>Decision-1.1</code> 三段式级联月度总成本</span>
+              <span data-lang="en"><code>Decision-1.1</code> Cascade Monthly Spend</span>
+            </span>
+            <span class="m-num" id="dec-cost-cascade" style="color:var(--teal)">$6,486</span>
+            <span class="m-note" id="dec-cost-breakdown">Decision-1.1 底盘仅 $504 + 灰区升级复核</span>
+          </div>
+
+          <div class="metric-card" style="border-color:rgba(52,211,153,0.55)">
+            <span class="m-title">
+              <span data-lang="zh-CN">综合推理成本降幅 &amp; 年化节省</span>
+              <span data-lang="en">Net Cost Reduction &amp; Annual Savings</span>
+            </span>
+            <span class="m-num" id="dec-savings-pct" style="color:var(--green)">-84.6%</span>
+            <span class="m-note" id="dec-savings-annual">年化节省约 $426K / 年</span>
+          </div>
+
+          <div class="metric-card">
+            <span class="m-title">
+              <span data-lang="zh-CN">加权中位路由延迟对比 (P50 Latency)</span>
+              <span data-lang="en">Weighted Median Latency (P50)</span>
+            </span>
+            <span class="m-num" id="dec-latency" style="color:var(--accent)">240 ms</span>
+            <span class="m-note">
+              <span data-lang="zh-CN">对比纯旗舰大模型 ~1,650 ms 提速 <strong>6.8×</strong></span>
+              <span data-lang="en">vs ~1,650 ms pure frontier chat (<strong>~6.8× faster</strong>)</span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <p class="journey-trail">
+      <span data-lang="zh-CN">演进链路：← 02 外部实时上下文 · 03 企业数据本体 · <strong>04 智能体工程运行时</strong> · 05 推理基础设施优化 →</span>
+      <span data-lang="en">Journey Flow: ← 02 Live World Context · 03 Enterprise Data Ontology · <strong>04 Agent Runtime Engineering</strong> · 05 Inference Infra Optimization →</span>
+    </p>
+
+    <!-- ==================== FOOTER PAGER ==================== -->
+    <nav class="chapter-pager" aria-label="Chapter Pagination">
+      <a class="pager-card" href="03-fabric-ontology.html">
+        <span class="pager-dir">← STAGE 03</span>
+        <span class="pager-name">
+          <span data-lang="zh-CN">03 · 企业数据本体 (Fabric IQ Ontology)</span>
+          <span data-lang="en">03 · Enterprise Data Ontology (Fabric IQ)</span>
+        </span>
+      </a>
+      <a class="pager-card next" href="05-ai-infra-optimization.html">
+        <span class="pager-dir">STAGE 05 →</span>
+        <span class="pager-name">
+          <span data-lang="zh-CN">05 · 推理基础设施优化 (05-ai-infra-optimization.html)</span>
+          <span data-lang="en">05 · Inference Infra Optimization (05-ai-infra-optimization.html)</span>
+        </span>
+      </a>
+    </nav>
+  </main>
+
+  <script>
+    (function () {
+      "use strict";
+
+      function syncSelectOptionLabels(lang) {
+        document.querySelectorAll("select option[data-zh][data-en]").forEach((opt) => {
+          opt.textContent = lang === "en" ? opt.getAttribute("data-en") : opt.getAttribute("data-zh");
+        });
+      }
+
+      /* ---------------- 1. 4-Way Runtime Selector ---------------- */
+      const resEl = document.getElementById("rt-residency");
+      const toolEl = document.getElementById("rt-tool");
+      const scaleEl = document.getElementById("rt-scale");
+      const infraEl = document.getElementById("rt-infra");
+      const rtPresetBtns = Array.from(document.querySelectorAll("[data-rt-preset]"));
+
+      const RT_PRESETS = {
+        standard: { residency: "managed", tool: "api", scale: "steady", infra: "zeroops" },
+        sovereign: { residency: "cluster", tool: "api", scale: "steady", infra: "gpu" },
+        serverless: { residency: "managed", tool: "snippet", scale: "burst", infra: "zeroops" },
+        sandbox: { residency: "managed", tool: "heavy", scale: "snapshot", infra: "arm" }
+      };
+
+      const RT_META = {
+        managed: {
+          badgeClass: "badge badge-ga",
+          badgeText: "GA · Turnkey PaaS",
+          titleZh: "首选：Foundry Agent Service（全托管 PaaS 运行时）",
+          titleEn: "Primary: Foundry Agent Service (Managed PaaS Runtime)",
+          descZh: "零 Kubernetes 运维成本，内置托管会话状态、内存快照、VNet 出站网络控制以及与 Microsoft IQ / MCP 工具的原生身份透传。覆盖 80% 标准企业知识问答与跨系统业务流智能体。",
+          descEn: "Zero cluster ops with managed threads, memory snapshots, VNet egress controls, and native Microsoft IQ + MCP wiring. Ideal default for 80% of enterprise knowledge and workflow agents.",
+          guardZh: "💡 SA 架构配搭建议：若工作流偶发需要执行单次 Python 数据透视脚本，可直接按需挂载 ACA Dynamic Sessions 作为旁路计算工具，无需将整个智能体迁入自建容器。",
+          guardEn: "💡 SA Wiring Tip: Attach ACA Dynamic Sessions on-demand if the agent occasionally runs untrusted Python data-analysis snippets—no need to self-host the entire agent."
+        },
+        faks: {
+          badgeClass: "badge badge-private",
+          badgeText: "Limited Preview · Sovereign AKS",
+          titleZh: "首选：Foundry on AKS（AKS AI Manager for Foundry）",
+          titleEn: "Primary: Foundry on AKS (AKS AI Manager for Foundry)",
+          descZh: "研发侧 100% 保持 Foundry API 与 azd 体验不变，底层将开放权重模型与 Hosted Agent 直接下沉至客户自有 AKS 集群。Prompt 与会话状态严格留在私有 VNet/驻留区域，直接消耗客户预留 GPU，且每个会话默认运行在 AKS Pod Sandboxing 轻量级 VM 中。",
+          descEn: "Preserves 100% of Foundry developer APIs and azd templates while running open-weight models and hosted agents inside customer-owned AKS clusters—keeping prompts/state in private VNets, utilizing reserved GPUs, and isolating sessions in AKS Pod Sandboxing VMs.",
+          guardZh: "💡 SA 架构配搭建议：当前处于 Limited Preview，面向严苛金融/政企客户建议先核实预览准入资格，并结合 Managed GPU Node Pools (GA) 与 Mixed MIG 提升预留卡利用率。",
+          guardEn: "💡 SA Wiring Tip: Currently in Limited Preview—verify customer onboarding eligibility first and pair with AKS Managed GPU Node Pools (GA) + Mixed MIG."
+        },
+        aca: {
+          badgeClass: "badge badge-ga",
+          badgeText: "GA · Serverless KEDA",
+          titleZh: "首选：Azure Container Apps (ACA) + Dynamic Sessions",
+          titleEn: "Primary: Azure Container Apps (ACA) + Dynamic Sessions",
+          descZh: "依托 KEDA 事件驱动缩至 0 副本消除空闲算力浪费，支持任意自建多语言微服务编排（LangGraph / Semantic Kernel / 自定义 Webhook），并由 Hyper-V 硬件隔离的 Dynamic Sessions 亚秒级执行不可信 Python/JS 片段。",
+          descEn: "Serverless KEDA scale-to-zero containers for spiky event-driven polyglot microservices, paired with sub-second Hyper-V isolated Dynamic Sessions for untrusted Python/JS code interpreter calls.",
+          guardZh: "💡 SA 架构配搭建议：开启 OpenTelemetry 将 ACA 智能体 Trace 一键回传至 Application Insights 并注册进 Foundry (GA)，照样享受 Insights 聚类与 Agent Optimizer 持续调优！",
+          guardEn: "💡 SA Wiring Tip: Emit OpenTelemetry traces to Application Insights and register the ACA agent in Foundry (GA) to unlock full Insights & Agent Optimizer closed-loop tuning."
+        },
+        sandbox: {
+          badgeClass: "badge badge-preview",
+          badgeText: "Preview · Kata / ACI + Snapshot",
+          titleZh: "首选：AKS Agent Sandbox（Kata microVM / ACI + Pod Snapshot）",
+          titleEn: "Primary: AKS Agent Sandbox (Kata microVM / ACI + Pod Snapshot)",
+          descZh: "专为自主 Coding Agent、浏览器/桌面操控（Computer-Use）及长程有状态 Bash/Git 工具链打造：采用自有节点 Kata microVM 内核级隔离或 ACI Serverless 弹性沙箱，配合 Pod Snapshot 实现毫秒级内存与进程状态断点恢复。",
+          descEn: "Purpose-built for autonomous Coding Agents, Browser/Computer-Use UI agents, and stateful bash/repo toolchains—combining Kata microVM kernel isolation or ACI serverless burst with Pod Snapshot memory/process restore.",
+          guardZh: "💡 SA 架构配搭建议：强烈建议将非 GPU 的高并发沙箱池部署在全新 GA 的 Azure Cobalt 200 Arm64 节点池上（CPU 性能最高 +50%，网络带宽 +15%），大幅摊薄单会话驻留成本。",
+          guardEn: "💡 SA Wiring Tip: Host dense non-GPU sandbox pools on newly GA Azure Cobalt 200 Arm64 node pools (up to +50% CPU performance) to maximize per-session TCO efficiency."
+        }
+      };
+
+      function renderRuntimeAdvisor() {
+        const lang = document.documentElement.lang === "en" ? "en" : "zh-CN";
+        const res = resEl.value;
+        const tool = toolEl.value;
+        const scale = scaleEl.value;
+        const infra = infraEl.value;
+
+        let scores = { managed: 55, faks: 45, aca: 52, sandbox: 42 };
+
+        if (res === "cluster") {
+          scores.faks += 38;
+          scores.sandbox += 18;
+          scores.managed -= 28;
+        } else {
+          scores.managed += 22;
+          scores.aca += 14;
+        }
+
+        if (tool === "api") {
+          scores.managed += 20;
+          scores.faks += 12;
+        } else if (tool === "snippet") {
+          scores.aca += 28;
+          scores.managed += 8;
+        } else if (tool === "heavy") {
+          scores.sandbox += 40;
+          scores.faks += 12;
+          scores.managed -= 15;
+        }
+
+        if (scale === "burst") {
+          scores.aca += 22;
+        } else if (scale === "snapshot") {
+          scores.sandbox += 24;
+        } else {
+          scores.managed += 8;
+          scores.faks += 8;
+        }
+
+        if (infra === "gpu") {
+          scores.faks += 24;
+        } else if (infra === "arm") {
+          scores.sandbox += 18;
+        } else {
+          scores.managed += 12;
+          scores.aca += 10;
+        }
+
+        Object.keys(scores).forEach((k) => {
+          scores[k] = Math.max(18, Math.min(98, scores[k]));
+        });
+
+        const winner = Object.keys(scores).reduce((a, b) => (scores[a] >= scores[b] ? a : b));
+        const meta = RT_META[winner];
+
+        const badgeEl = document.getElementById("rt-rec-badge");
+        badgeEl.className = meta.badgeClass;
+        badgeEl.textContent = meta.badgeText;
+        document.getElementById("rt-rec-title").textContent = lang === "en" ? meta.titleEn : meta.titleZh;
+        document.getElementById("rt-rec-desc").textContent = lang === "en" ? meta.descEn : meta.descZh;
+        document.getElementById("rt-rec-guardrail").textContent = lang === "en" ? meta.guardEn : meta.guardZh;
+
+        ["managed", "faks", "aca", "sandbox"].forEach((k) => {
+          document.getElementById("sc-" + k).style.width = scores[k] + "%";
+          document.getElementById("sc-" + k + "-lbl").textContent = scores[k] + "%";
+        });
+      }
+
+      [resEl, toolEl, scaleEl, infraEl].forEach((el) => {
+        if (el) {
+          el.addEventListener("change", () => {
+            rtPresetBtns.forEach((b) => b.classList.remove("active"));
+            renderRuntimeAdvisor();
+          });
+        }
+      });
+
+      rtPresetBtns.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const cfg = RT_PRESETS[btn.getAttribute("data-rt-preset")];
+          if (!cfg) return;
+          resEl.value = cfg.residency;
+          toolEl.value = cfg.tool;
+          scaleEl.value = cfg.scale;
+          infraEl.value = cfg.infra;
+          rtPresetBtns.forEach((b) => b.classList.toggle("active", b === btn));
+          renderRuntimeAdvisor();
+        });
+      });
+
+      /* ---------------- 2. Decision-1.1 Gate & FinOps Simulator ---------------- */
+      const VOLUMES = [0.1, 0.25, 0.5, 1, 2.5, 5, 10, 20, 35, 50]; // in millions
+      const decScenarioEl = document.getElementById("dec-scenario");
+      const decHighEl = document.getElementById("dec-high");
+      const decLowEl = document.getElementById("dec-low");
+      const decVolEl = document.getElementById("dec-vol");
+
+      const DEC_SCENARIOS = {
+        itsm: {
+          mode: "choice",
+          avgInputTok: 950,
+          frontierAvgOutTok: 140,
+          inputZh: "示例工单输入：“欧洲区 SAP 月结批次报税率科目校验异常，财务总监要求今晚关账前重跑对账单并核实重复扣款。”",
+          inputEn: "Sample Ticket: \"EU SAP month-end tax ledger check failed; regional controller needs reconciliation rerun and duplicate debit check before tonight's close.\"",
+          topProb: 0.91,
+          candidates: [
+            { zh: "route_erp_finance_ops (财务月结专队列)", en: "route_erp_finance_ops (SAP Close Ops)", p: 0.91 },
+            { zh: "route_billing_refund (客户账单退款)", en: "route_billing_refund (Billing Refund)", p: 0.06 },
+            { zh: "route_it_access_reset (账号权限申请)", en: "route_it_access_reset (IAM Helpdesk)", p: 0.02 },
+            { zh: "route_general_faq (常规知识库问答)", en: "route_general_faq (General FAQ)", p: 0.01 }
+          ],
+          baseAutoAt85: 76,
+          baseHumanAt50: 7,
+          hasAsset: false
+        },
+        cargo: {
+          mode: "choice + [assets]",
+          avgInputTok: 1450,
+          frontierAvgOutTok: 165,
+          inputZh: "多模态输入：[assets: container_seal_04.jpg] + “鹿特丹到港冷柜外箱边角压痕約 3cm，铅封完好，内部温控曲线全程 -18.2°C 正常。”",
+          inputEn: "Multimodal Input: [assets: container_seal_04.jpg] + \"Rotterdam reefer outer carton corner dent ~3cm, seal intact, internal temp log steady at -18.2°C.\"",
+          topProb: 0.82,
+          candidates: [
+            { zh: "cosmetic_packaging_accept (外箱轻擦正常签收)", en: "cosmetic_packaging_accept (Fast-Track Receive)", p: 0.82 },
+            { zh: "partial_claim_inspect (抽检开箱定损)", en: "partial_claim_inspect (Open-Box Inspection)", p: 0.14 },
+            { zh: "coldchain_breach_quarantine (冷链断链隔离)", en: "coldchain_breach_quarantine (Quarantine Lot)", p: 0.03 },
+            { zh: "full_cargo_reject (整柜拒收索赔)", en: "full_cargo_reject (Full Reject Claim)", p: 0.01 }
+          ],
+          baseAutoAt85: 68,
+          baseHumanAt50: 11,
+          hasAsset: true
+        },
+        erp: {
+          mode: "noul (multi-label)",
+          avgInputTok: 1150,
+          frontierAvgOutTok: 155,
+          inputZh: "多标签合规门控输入：“经销商申请季度返利冲抵 $48,000，附补充协议扫描件，收款银行账户昨天刚由总部变更为第三方离岸账户。”",
+          inputEn: "Policy Gate Input: \"Distributor requests $48,000 rebate credit offset with addendum scan; beneficiary bank account changed yesterday to an offshore entity.\"",
+          topProb: 0.94,
+          candidates: [
+            { zh: "flag_beneficiary_bank_change (账户异动风控)", en: "flag_beneficiary_bank_change", p: 0.94 },
+            { zh: "exceeds_auto_approval_cap (超自动审批额度)", en: "exceeds_auto_approval_cap", p: 0.89 },
+            { zh: "missing_pos_sellout_proof (缺终端实销凭证)", en: "missing_pos_sellout_proof", p: 0.61 },
+            { zh: "sanctioned_region_entity (制裁名单命中)", en: "sanctioned_region_entity", p: 0.04 }
+          ],
+          baseAutoAt85: 71,
+          baseHumanAt50: 12,
+          hasAsset: false
+        },
+        judge: {
+          mode: "choice (Eval Judge)",
+          avgInputTok: 1600,
+          frontierAvgOutTok: 180,
+          inputZh: "生产 Trace 在线质检输入：核验客服 Agent 回复是否严格引用 Fabric IQ 授权返利口径且未泄露内部底价折扣表。",
+          inputEn: "Online Trace Judge Input: Verify whether the agent response cites governed Fabric IQ rebate metrics accurately without leaking internal floor-discount tiers.",
+          topProb: 0.88,
+          candidates: [
+            { zh: "pass_grounded_compliant (口径精准合规放行)", en: "pass_grounded_compliant", p: 0.88 },
+            { zh: "minor_tone_rewrite (表述需微调重生成)", en: "minor_tone_rewrite", p: 0.09 },
+            { zh: "block_ungrounded_metric (拦截口径漂移幻觉)", en: "block_ungrounded_metric", p: 0.03 }
+          ],
+          baseAutoAt85: 81,
+          baseHumanAt50: 5,
+          hasAsset: false
+        }
+      };
+
+      function fmtVol(m) {
+        if (m < 1) return Math.round(m * 1000) + "K";
+        return m % 1 === 0 ? m.toFixed(0) + "M" : m.toFixed(1) + "M";
+      }
+
+      function fmtMoney(n) {
+        if (n >= 1000000) return "$" + (n / 1000000).toFixed(2) + "M";
+        if (n >= 10000) return "$" + Math.round(n).toLocaleString("en-US");
+        return "$" + n.toFixed(0);
+      }
+
+      function renderDecisionSim() {
+        const lang = document.documentElement.lang === "en" ? "en" : "zh-CN";
+        let tauHigh = parseFloat(decHighEl.value);
+        let tauLow = parseFloat(decLowEl.value);
+        if (tauLow > tauHigh - 0.06) {
+          tauLow = Math.max(0.30, +(tauHigh - 0.06).toFixed(2));
+          decLowEl.value = tauLow.toFixed(2);
+        }
+
+        const volM = VOLUMES[parseInt(decVolEl.value, 10)] || 10;
+        const scKey = decScenarioEl.value;
+        const sc = DEC_SCENARIOS[scKey];
+
+        document.getElementById("dec-high-val").textContent = tauHigh.toFixed(2);
+        document.getElementById("dec-low-val").textContent = tauLow.toFixed(2);
+        document.getElementById("dec-vol-val").textContent = fmtVol(volM);
+        document.getElementById("dec-mode-badge").textContent = "mode: " + sc.mode;
+        document.getElementById("dec-sample-input").textContent = lang === "en" ? sc.inputEn : sc.inputZh;
+
+        // Sample Case Gate Badge
+        const sampleBadge = document.getElementById("dec-sample-action");
+        if (sc.topProb >= tauHigh) {
+          sampleBadge.className = "gate-pill auto";
+          sampleBadge.textContent = lang === "en"
+            ? `✅ Act Automatically (p=${sc.topProb.toFixed(2)} ≥ ${tauHigh.toFixed(2)})`
+            : `✅ 自动执行放行 (p=${sc.topProb.toFixed(2)} ≥ ${tauHigh.toFixed(2)})`;
+        } else if (sc.topProb >= tauLow) {
+          sampleBadge.className = "gate-pill confirm";
+          sampleBadge.textContent = lang === "en"
+            ? `⚠️ Escalate to GPT-6.2 Sol / Confirm (${tauLow.toFixed(2)} ≤ p < ${tauHigh.toFixed(2)})`
+            : `⚠️ 灰区升级 GPT-6.2 Sol 复核 (${tauLow.toFixed(2)} ≤ p < ${tauHigh.toFixed(2)})`;
+        } else {
+          sampleBadge.className = "gate-pill human";
+          sampleBadge.textContent = lang === "en"
+            ? `🧑‍💼 Route to Human Specialist (p=${sc.topProb.toFixed(2)} < ${tauLow.toFixed(2)})`
+            : `🧑‍💼 转交人工专员兜底 (p=${sc.topProb.toFixed(2)} < ${tauLow.toFixed(2)})`;
+        }
+
+        // Render candidate probability bars
+        const barsHtml = sc.candidates.map((c) => {
+          const pct = Math.round(c.p * 100);
+          const color = c.p >= tauHigh
+            ? "linear-gradient(90deg,#059669,#34d399)"
+            : (c.p >= tauLow ? "linear-gradient(90deg,#0284c7,#38bdf8)" : "linear-gradient(90deg,#475569,#94a3b8)");
+          const label = lang === "en" ? c.en : c.zh;
+          return `
+            <div class="prob-item">
+              <span style="font-weight:600">${label}</span>
+              <div class="prob-track"><div class="prob-fill" style="width:${pct}%;background:${color}"></div></div>
+              <strong class="mono" style="text-align:right">${c.p.toFixed(2)}</strong>
+            </div>
+          `;
+        }).join("");
+        document.getElementById("dec-prob-bars").innerHTML = barsHtml;
+
+        // Fleet-wide 3-Band Split as function of tauHigh and tauLow
+        const autoPct = Math.max(36, Math.min(91, Math.round(sc.baseAutoAt85 - (tauHigh - 0.85) * 145)));
+        const humanPct = Math.max(2, Math.min(32, Math.round(sc.baseHumanAt50 + (tauLow - 0.50) * 58)));
+        const confirmPct = Math.max(4, 100 - autoPct - humanPct);
+        const normAuto = 100 - confirmPct - humanPct;
+
+        document.getElementById("band-auto").style.width = normAuto + "%";
+        document.getElementById("band-auto").textContent = normAuto + "%";
+        document.getElementById("band-confirm").style.width = confirmPct + "%";
+        document.getElementById("band-confirm").textContent = confirmPct + "%";
+        document.getElementById("band-human").style.width = humanPct + "%";
+        document.getElementById("band-human").textContent = humanPct + "%";
+
+        document.getElementById("leg-auto").textContent = normAuto + "%";
+        document.getElementById("leg-confirm").textContent = confirmPct + "%";
+        document.getElementById("leg-human").textContent = humanPct + "%";
+
+        // Monthly Cost Calculation
+        // Baseline Frontier LLM: $2.50 / 1M input + $10.00 / 1M output on 100% of monthly requests
+        const frontierPerCall = (sc.avgInputTok * 2.50 + sc.frontierAvgOutTok * 10.0) / 1000000;
+        const frontierMonthly = volM * 1000000 * frontierPerCall;
+
+        // Decision-1.1 Cascade: $0.042 / 1M input + $0 output on 100% calls, PLUS GPT-6.2 Sol fallback ONLY on confirmPct% gray-zone!
+        const dec11PerCall = (sc.avgInputTok * 0.042 + 0) / 1000000;
+        const dec11BaseMonthly = volM * 1000000 * dec11PerCall;
+        const escalatedMonthly = volM * 1000000 * (confirmPct / 100) * (frontierPerCall * 0.72); // GPT-6.2 Sol efficient tier
+        const cascadeMonthly = dec11BaseMonthly + escalatedMonthly;
+
+        const savingsPct = ((frontierMonthly - cascadeMonthly) / frontierMonthly) * 100;
+        const annualSaved = (frontierMonthly - cascadeMonthly) * 12;
+        const weightedP50Ms = Math.round(185 + (confirmPct / 100) * 920);
+
+        document.getElementById("dec-cost-frontier").textContent = fmtMoney(frontierMonthly);
+        document.getElementById("dec-cost-cascade").textContent = fmtMoney(cascadeMonthly);
+        document.getElementById("dec-savings-pct").textContent = "-" + savingsPct.toFixed(1) + "%";
+        document.getElementById("dec-latency").textContent = weightedP50Ms + " ms";
+
+        document.getElementById("dec-cost-breakdown").textContent = lang === "en"
+          ? `Decision-1.1 base ${fmtMoney(dec11BaseMonthly)} ($0 out) + ${confirmPct}% gray-zone escalation`
+          : `Decision-1.1 全量底盘仅 ${fmtMoney(dec11BaseMonthly)}（输出 $0）+ ${confirmPct}% 灰区升级`;
+
+        document.getElementById("dec-savings-annual").textContent = lang === "en"
+          ? `Saves ~${fmtMoney(annualSaved)} / year vs 100% frontier routing`
+          : `较全量调用旗舰模型年化节省约 ${fmtMoney(annualSaved)} / 年`;
+
+        // Render /providers/microsoft/v1/systemone JSON Contract
+        const taskType = scKey === "erp" ? "noul" : "choice";
+        const optionsObj = {};
+        sc.candidates.forEach((c) => {
+          const key = c.en.split(" ")[0];
+          optionsObj[key] = c.p;
+        });
+        const assetLine = sc.hasAsset
+          ? `\n  "assets": [{ "id": "container_seal_04.jpg", "mime_type": "image/jpeg" }],`
+          : "";
+
+        document.getElementById("dec-json-preview").textContent =
+`// Request -> POST /providers/microsoft/v1/systemone
+{
+  "model": "microsoft-decision-1.1",
+  "task": "${taskType}",${assetLine}
+  "input": "${(lang === "en" ? sc.inputEn : sc.inputZh).replace(/"/g, "'").slice(0, 86)}...",
+  "candidates": ${JSON.stringify(sc.candidates.map((c) => c.en.split(" ")[0]))}
+}
+
+// Calibrated Response (Input: $0.042/1M | Output: $0.00/1M)
+{
+  "scores": ${JSON.stringify(optionsObj, null, 2).replace(/\n/g, "\n  ")},
+  "gate_policy": { "tau_high": ${tauHigh.toFixed(2)}, "tau_low": ${tauLow.toFixed(2)} }
+}`;
+      }
+
+      [decScenarioEl, decHighEl, decLowEl, decVolEl].forEach((el) => {
+        if (el) {
+          el.addEventListener("input", renderDecisionSim);
+          el.addEventListener("change", renderDecisionSim);
+        }
+      });
+
+      function refreshAll() {
+        const lang = document.documentElement.lang === "en" ? "en" : "zh-CN";
+        syncSelectOptionLabels(lang);
+        renderRuntimeAdvisor();
+        renderDecisionSim();
+      }
+
+      window.addEventListener("ignite:langchange", refreshAll);
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", refreshAll);
+      } else {
+        refreshAll();
+      }
+    })();
+  </script>
+</body>
+</html>
