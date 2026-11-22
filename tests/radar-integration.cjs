@@ -9040,6 +9040,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r756File),'utf8');
       assert.ok(txt.includes('4,420.00')&&txt.includes('4,600.00')&&txt.includes('9,020.00')&&txt.includes('75.00')&&txt.includes('250.00')&&txt.includes('325.00')&&txt.includes('8,695.00')&&txt.includes('96.40%')&&txt.includes('not_measured'),r756File+': contains exact 11-22 R20 R756 ggframework+jumpstarter+kicad+localop closed-form parameters');
     }
+    // 2026-11-22 Night Round 21 (R757: AgentSwarms-fyi/agentswarms + Zijian-Ni/awesome-ai-agents-2026 + yuhp/opencode-models-discovery + techygarg/lattice) verification
+    const r757PathA=4480.00+46.0*100.00;
+    assert.equal(r757PathA.toFixed(2),'9080.00','11-22 R21 R757 Path A total');
+    const r757PathC=75.00+2.5*100.00;
+    assert.equal(r757PathC.toFixed(2),'325.00','11-22 R21 R757 Path C total');
+    assert.equal((r757PathA-r757PathC).toFixed(2),'8755.00','11-22 R21 R757 savings vs Path A');
+    assert.equal(((r757PathA-r757PathC)/r757PathA*100).toFixed(2),'96.42','11-22 R21 R757 pct savings vs Path A');
+    for(const r757File of ['workshops/github-trending-radar/docs/agentswarms-awesome-ai-agents-2026-opencode-discovery-lattice-selection-faq.md','workshops/github-trending-radar/docs/agentswarms-awesome-ai-agents-2026-opencode-discovery-lattice-selection-faq.en.md','assets/github-ai-radar-2026-11-22-r21-r757-agentswarms-agents2026-opencode-lattice.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-22-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r757File),'utf8');
+      assert.ok(txt.includes('4,480.00')&&txt.includes('4,600.00')&&txt.includes('9,080.00')&&txt.includes('75.00')&&txt.includes('250.00')&&txt.includes('325.00')&&txt.includes('8,755.00')&&txt.includes('96.42%')&&txt.includes('not_measured'),r757File+': contains exact 11-22 R21 R757 agentswarms+agents2026+opencode+lattice closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
