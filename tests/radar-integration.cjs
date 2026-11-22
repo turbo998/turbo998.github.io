@@ -9128,6 +9128,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r764File),'utf8');
       assert.ok(txt.includes('4,460.00')&&txt.includes('4,600.00')&&txt.includes('9,060.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,750.00')&&txt.includes('96.58%')&&txt.includes('not_measured'),r764File+': contains exact 11-22 R28 R764 aidevops+agyfast+agentbox+tucano closed-form parameters');
     }
+    // 2026-11-22 Night Round 29 (R765 Milestone: xang1234/stock-screener + brycewang-stanford/StatsPAI + selimfirat/pysad + daniel3303/Equibles) verification
+    const r765PathA=4640.00+46.0*100.00;
+    assert.equal(r765PathA.toFixed(2),'9240.00','11-22 R29 R765 Path A total');
+    const r765PathC=75.00+2.5*100.00;
+    assert.equal(r765PathC.toFixed(2),'325.00','11-22 R29 R765 Path C total');
+    assert.equal((r765PathA-r765PathC).toFixed(2),'8915.00','11-22 R29 R765 savings vs Path A');
+    assert.equal(((r765PathA-r765PathC)/r765PathA*100).toFixed(2),'96.48','11-22 R29 R765 pct savings vs Path A');
+    for(const r765File of ['workshops/github-trending-radar/docs/stock-screener-statspai-pysad-equibles-selection-faq.md','workshops/github-trending-radar/docs/stock-screener-statspai-pysad-equibles-selection-faq.en.md','assets/github-ai-radar-2026-11-22-r29-r765-stockscreener-statspai-pysad-equibles.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-22-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r765File),'utf8');
+      assert.ok(txt.includes('4,640.00')&&txt.includes('4,600.00')&&txt.includes('9,240.00')&&txt.includes('75.00')&&txt.includes('250.00')&&txt.includes('325.00')&&txt.includes('8,915.00')&&txt.includes('96.48%')&&txt.includes('not_measured'),r765File+': contains exact 11-22 R29 R765 stockscreener+statspai+pysad+equibles closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
