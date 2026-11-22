@@ -8831,6 +8831,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r737File),'utf8');
       assert.ok(txt.includes('4,120.00')&&txt.includes('4,450.00')&&txt.includes('8,570.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,260.00')&&txt.includes('96.38%')&&txt.includes('not_measured'),r737File+': contains exact 11-22 R1 R737 fastanything+skilldistill+pibot+openartifact closed-form parameters');
     }
+    // 2026-11-22 Night Round 2 (R738: ThreatDefence/agentic-attack-detections + ccarter01011/traxagent-claude-plugin + XGrowthLab/xhub + eliransu/enterplace) verification
+    const r738PathA=4180.00+45.0*100.00;
+    assert.equal(r738PathA.toFixed(2),'8680.00','11-22 R2 R738 Path A total');
+    const r738PathC=70.00+2.4*100.00;
+    assert.equal(r738PathC.toFixed(2),'310.00','11-22 R2 R738 Path C total');
+    assert.equal((r738PathA-r738PathC).toFixed(2),'8370.00','11-22 R2 R738 savings vs Path A');
+    assert.equal(((r738PathA-r738PathC)/r738PathA*100).toFixed(2),'96.43','11-22 R2 R738 pct savings vs Path A');
+    for(const r738File of ['workshops/github-trending-radar/docs/agentic-attack-detections-traxagent-xhub-enterplace-selection-faq.md','workshops/github-trending-radar/docs/agentic-attack-detections-traxagent-xhub-enterplace-selection-faq.en.md','assets/github-ai-radar-2026-11-22-r2-r738-agenticdetections-traxagent-xhub-enterplace.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-22-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r738File),'utf8');
+      assert.ok(txt.includes('4,180.00')&&txt.includes('4,500.00')&&txt.includes('8,680.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,370.00')&&txt.includes('96.43%')&&txt.includes('not_measured'),r738File+': contains exact 11-22 R2 R738 agenticdetections+traxagent+xhub+enterplace closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
