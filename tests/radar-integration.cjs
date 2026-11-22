@@ -9051,6 +9051,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r757File),'utf8');
       assert.ok(txt.includes('4,480.00')&&txt.includes('4,600.00')&&txt.includes('9,080.00')&&txt.includes('75.00')&&txt.includes('250.00')&&txt.includes('325.00')&&txt.includes('8,755.00')&&txt.includes('96.42%')&&txt.includes('not_measured'),r757File+': contains exact 11-22 R21 R757 agentswarms+agents2026+opencode+lattice closed-form parameters');
     }
+    // 2026-11-22 Night Round 22 (R758: markrai/scrumboy + chu0119/Pojun + WrongStack/WrongStack + emarco177/documentation-helper) verification
+    const r758PathA=4380.00+45.0*100.00;
+    assert.equal(r758PathA.toFixed(2),'8880.00','11-22 R22 R758 Path A total');
+    const r758PathC=75.00+2.5*100.00;
+    assert.equal(r758PathC.toFixed(2),'325.00','11-22 R22 R758 Path C total');
+    assert.equal((r758PathA-r758PathC).toFixed(2),'8555.00','11-22 R22 R758 savings vs Path A');
+    assert.equal(((r758PathA-r758PathC)/r758PathA*100).toFixed(2),'96.34','11-22 R22 R758 pct savings vs Path A');
+    for(const r758File of ['workshops/github-trending-radar/docs/scrumboy-pojun-wrongstack-documentation-helper-selection-faq.md','workshops/github-trending-radar/docs/scrumboy-pojun-wrongstack-documentation-helper-selection-faq.en.md','assets/github-ai-radar-2026-11-22-r22-r758-scrumboy-pojun-wrongstack-dochelper.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-22-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r758File),'utf8');
+      assert.ok(txt.includes('4,380.00')&&txt.includes('4,500.00')&&txt.includes('8,880.00')&&txt.includes('75.00')&&txt.includes('250.00')&&txt.includes('325.00')&&txt.includes('8,555.00')&&txt.includes('96.34%')&&txt.includes('not_measured'),r758File+': contains exact 11-22 R22 R758 scrumboy+pojun+wrongstack+dochelper closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
