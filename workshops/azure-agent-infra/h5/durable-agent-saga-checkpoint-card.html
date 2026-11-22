@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Durable Agent SAGA Checkpoint Card</title>
+  <style>
+    body{margin:0;background:#0a142b;color:#e6eeff;font-family:Segoe UI,Arial,sans-serif}
+    .wrap{max-width:1080px;margin:0 auto;padding:18px}
+    .grid{display:grid;grid-template-columns:1.02fr .98fr;gap:14px}
+    .card{background:#112242;border:1px solid #36578f;border-radius:12px;padding:12px}
+    h1{margin:0 0 8px;font-size:22px}
+    h2{margin:0 0 8px;font-size:15px;color:#9fc9ff}
+    .sub{font-size:12px;color:#bed2f7}
+    label{display:block;font-size:12px;margin:8px 0 4px;color:#d6e4ff}
+    input[type=range]{width:100%}
+    .kpi{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:10px}
+    .kpi div{background:#0b1732;border:1px solid #2f4a7a;border-radius:8px;padding:10px}
+    .val{font-size:20px;color:#7fd5ff;font-weight:700}
+    svg{width:100%;height:auto;background:#08152d;border:1px solid #325286;border-radius:10px}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Durable Agent SAGA: Checkpoint Compaction + Replay Window + Tenant FinOps</h1>
+  <p class="sub">Quick workshop simulator for recovery latency, amplification cost, and release-gate posture.</p>
+  <div class="grid">
+    <section class="card">
+      <h2>Control Plane Topology (SVG)</h2>
+      <svg viewBox="0 0 920 430" aria-label="durable saga topology">
+        <defs>
+          <marker id="m" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+            <path d="M0,0 L8,3 L0,6 Z" fill="#7fd5ff"/>
+          </marker>
+        </defs>
+        <rect x="28" y="170" width="160" height="60" rx="10" fill="#21345f" stroke="#6688d2"/>
+        <text x="108" y="205" text-anchor="middle" fill="#e6edff" font-size="14">APIM Contract Gate</text>
+
+        <rect x="224" y="148" width="190" height="92" rx="10" fill="#1b466b" stroke="#4ea1ce"/>
+        <text x="319" y="180" text-anchor="middle" fill="#def2ff" font-size="14">Durable Orchestrator</text>
+        <text x="319" y="203" text-anchor="middle" fill="#a6d2ff" font-size="12">idempotency + replay control</text>
+
+        <rect x="448" y="72" width="182" height="84" rx="10" fill="#24503f" stroke="#58be84"/>
+        <text x="539" y="102" text-anchor="middle" fill="#ddfee9" font-size="14">Checkpoint Store</text>
+        <text x="539" y="126" text-anchor="middle" fill="#a7f3d0" font-size="12">compaction tiers</text>
+
+        <rect x="448" y="248" width="182" height="90" rx="10" fill="#5b3b2b" stroke="#d79d74"/>
+        <text x="539" y="279" text-anchor="middle" fill="#ffeedf" font-size="14">ACA Session Pool</text>
+        <text x="539" y="303" text-anchor="middle" fill="#fdba74" font-size="12">warm/cold rebind</text>
+
+        <rect x="668" y="70" width="220" height="96" rx="10" fill="#2a3e68" stroke="#83a4e2"/>
+        <text x="778" y="101" text-anchor="middle" fill="#e3edff" font-size="14">FinOps Ledger</text>
+        <text x="778" y="124" text-anchor="middle" fill="#cbd9ff" font-size="12">retry/replay/compensation</text>
+        <text x="778" y="145" text-anchor="middle" fill="#cbd9ff" font-size="12">tenant attribution</text>
+
+        <rect x="668" y="244" width="220" height="96" rx="10" fill="#2b3f5a" stroke="#8ea8d7"/>
+        <text x="778" y="275" text-anchor="middle" fill="#e4edff" font-size="14">OTel + Release Gate</text>
+        <text x="778" y="298" text-anchor="middle" fill="#d0dcff" font-size="12">correctness + latency + cost</text>
+        <text x="778" y="319" text-anchor="middle" fill="#d0dcff" font-size="12">pass / throttle / rollback</text>
+
+        <line x1="188" y1="198" x2="224" y2="194" stroke="#7fd5ff" stroke-width="2.2" marker-end="url(#m)"/>
+        <line x1="414" y1="178" x2="448" y2="114" stroke="#7fd5ff" stroke-width="2.2" marker-end="url(#m)"/>
+        <line x1="414" y1="208" x2="448" y2="292" stroke="#7fd5ff" stroke-width="2.2" marker-end="url(#m)"/>
+        <line x1="630" y1="112" x2="668" y2="114" stroke="#7fd5ff" stroke-width="2.2" marker-end="url(#m)"/>
+        <line x1="630" y1="292" x2="668" y2="290" stroke="#7fd5ff" stroke-width="2.2" marker-end="url(#m)"/>
+      </svg>
+    </section>
+    <section class="card">
+      <h2>Recovery + Cost Estimator</h2>
+      <label>Checkpoint compaction efficiency (%) <span id="compV" class="val">68</span></label>
+      <input id="comp" type="range" min="20" max="95" value="68">
+
+      <label>Replay window pressure (%) <span id="repV" class="val">34</span></label>
+      <input id="rep" type="range" min="0" max="100" value="34">
+
+      <label>Session warm-rebind hit (%) <span id="warmV" class="val">78</span></label>
+      <input id="warm" type="range" min="10" max="100" value="78">
+
+      <label>Retry storm intensity (%) <span id="retryV" class="val">22</span></label>
+      <input id="retry" type="range" min="0" max="100" value="22">
+
+      <div class="kpi">
+        <div><div>Recovery p95</div><div id="rto" class="val">0 ms</div></div>
+        <div><div>Amplification ratio</div><div id="amp" class="val">0.00</div></div>
+        <div><div>Blended cost / run</div><div id="cost" class="val">$0.00</div></div>
+        <div><div>Gate recommendation</div><div id="gate" class="val" style="font-size:15px">-</div></div>
+      </div>
+      <p class="sub">Heuristic model only; calibrate with measured replay and tenant ledger telemetry.</p>
+    </section>
+  </div>
+</div>
+<script>
+const $ = id => document.getElementById(id);
+function calc(){
+  const comp = +$('comp').value/100;
+  const rep = +$('rep').value/100;
+  const warm = +$('warm').value/100;
+  const retry = +$('retry').value/100;
+
+  const rto = 980 - comp*360 + rep*410 - warm*190 + retry*230;
+  const amp = Math.max(0.05, 0.18 + rep*0.42 + retry*0.37 - comp*0.21);
+  const cost = Math.max(0.22, 0.46 + amp*0.55 - comp*0.08 - warm*0.05);
+
+  $('compV').textContent = Math.round(comp*100);
+  $('repV').textContent = Math.round(rep*100);
+  $('warmV').textContent = Math.round(warm*100);
+  $('retryV').textContent = Math.round(retry*100);
+
+  $('rto').textContent = `${Math.max(120, rto).toFixed(0)} ms`;
+  $('amp').textContent = amp.toFixed(2);
+  $('cost').textContent = `$${cost.toFixed(2)}`;
+
+  let gate = "PASS";
+  if (rto > 1300 || amp > 0.75) gate = "THROTTLE";
+  if (rto > 1700 || amp > 1.00) gate = "BLOCK + ROLLBACK";
+  $('gate').textContent = gate;
+}
+['comp','rep','warm','retry'].forEach(id => $(id).addEventListener('input', calc));
+calc();
+</script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Durable + ACA FinOps Attribution Card</title>
+  <style>
+    body{margin:0;background:#0b1125;color:#e8efff;font-family:Segoe UI,Arial,sans-serif}
+    .w{max-width:1100px;margin:0 auto;padding:18px}
+    .g{display:grid;grid-template-columns:1.08fr .92fr;gap:14px}
+    .c{background:#121b38;border:1px solid #2f4372;border-radius:12px;padding:12px}
+    h1{font-size:22px;margin:0 0 8px} h2{font-size:15px;color:#9dc3ff;margin:0 0 8px}
+    label{display:block;font-size:12px;color:#c8d9ff;margin:8px 0 4px}
+    input[type=range]{width:100%}
+    .k{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:10px}
+    .k div{background:#0c1430;border:1px solid #2f4372;border-radius:8px;padding:10px}
+    .v{font-weight:700;color:#7dd3fc} .n{font-size:12px;color:#b8caef}
+    svg{width:100%;height:auto;background:#091229;border:1px solid #2f4372;border-radius:10px}
+  </style>
+</head>
+<body>
+<div class="w">
+  <h1>Durable Execution + ACA Dynamic Sessions + Tenant FinOps Attribution</h1>
+  <p class="n">Zero-dependency visual card for replay safety, sandbox isolation, and chargeback readiness.</p>
+  <div class="g">
+    <section class="c">
+      <h2>Reference Flow (SVG)</h2>
+      <svg viewBox="0 0 900 420" aria-label="durable aca finops flow">
+        <defs><marker id="m" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#7dd3fc"/></marker></defs>
+        <rect x="35" y="155" width="165" height="60" rx="10" fill="#1f2b54" stroke="#5d7bc4"/><text x="117" y="189" text-anchor="middle" fill="#e2e8ff" font-size="14">Agent Requests</text>
+        <rect x="235" y="130" width="190" height="92" rx="10" fill="#153553" stroke="#3d87b7"/><text x="330" y="162" text-anchor="middle" fill="#dbeafe" font-size="14">Durable Orchestrator</text><text x="330" y="184" text-anchor="middle" fill="#93c5fd" font-size="12">checkpoint + replay</text>
+        <rect x="465" y="78" width="185" height="88" rx="10" fill="#234530" stroke="#57a977"/><text x="557" y="112" text-anchor="middle" fill="#dcfce7" font-size="14">ACA Session Pool</text><text x="557" y="133" text-anchor="middle" fill="#a7f3d0" font-size="12">tenant-isolated sandbox</text>
+        <rect x="465" y="208" width="185" height="90" rx="10" fill="#4a2f1e" stroke="#df915f"/><text x="557" y="241" text-anchor="middle" fill="#ffedd5" font-size="14">Replay & Recovery</text><text x="557" y="263" text-anchor="middle" fill="#fdba74" font-size="12">idempotency checks</text>
+        <rect x="695" y="140" width="170" height="82" rx="10" fill="#25324f" stroke="#6f8ed2"/><text x="780" y="171" text-anchor="middle" fill="#e0e7ff" font-size="14">FinOps Ledger</text><text x="780" y="194" text-anchor="middle" fill="#c7d2fe" font-size="12">tenant chargeback</text>
+        <line x1="200" y1="186" x2="235" y2="176" stroke="#7dd3fc" stroke-width="2.2" marker-end="url(#m)"/>
+        <line x1="425" y1="168" x2="465" y2="123" stroke="#7dd3fc" stroke-width="2.2" marker-end="url(#m)"/>
+        <line x1="425" y1="190" x2="465" y2="251" stroke="#7dd3fc" stroke-width="2.2" marker-end="url(#m)"/>
+        <line x1="650" y1="122" x2="695" y2="166" stroke="#7dd3fc" stroke-width="2.2" marker-end="url(#m)"/>
+        <line x1="650" y1="251" x2="695" y2="200" stroke="#7dd3fc" stroke-width="2.2" marker-end="url(#m)"/>
+      </svg>
+    </section>
+    <section class="c">
+      <h2>Replay + Cost Attribution Estimator</h2>
+      <label>Checkpoint replay ratio (%) <span id="replayv" class="v">12</span></label><input id="replay" type="range" min="0" max="40" value="12">
+      <label>Session pool warm ratio (%) <span id="warmv" class="v">68</span></label><input id="warm" type="range" min="20" max="95" value="68">
+      <label>Tenants with hard budget caps (%) <span id="capv" class="v">55</span></label><input id="cap" type="range" min="10" max="100" value="55">
+      <label>Cross-service failure fanout score (0–100) <span id="fanv" class="v">30</span></label><input id="fan" type="range" min="0" max="100" value="30">
+      <div class="k">
+        <div><p>Recovery p95</p><p id="rto" class="v">0 s</p></div>
+        <div><p>Session startup p95</p><p id="start" class="v">0 ms</p></div>
+        <div><p>Unattributed spend risk</p><p id="risk" class="v">0%</p></div>
+        <div><p>Control action</p><p id="gate" class="v">-</p></div>
+      </div>
+      <p class="n">Heuristic workshop calculator for design review, not audited production forecasting.</p>
+    </section>
+  </div>
+</div>
+<script>
+const $=id=>document.getElementById(id);
+function c(){
+  const replay=+$('replay').value/100,warm=+$('warm').value/100,cap=+$('cap').value/100,fan=+$('fan').value/100;
+  const rto=(18+replay*65+fan*42).toFixed(1);
+  const start=Math.round((620*(1-warm)) + 140 + fan*120);
+  const risk=Math.round((1-cap)*100*(0.45+fan*0.4));
+  const gate=(risk>22||Number(rto)>40)?"Tighten ledger + replay gate":"Expand autonomous scope";
+  $('replayv').textContent=Math.round(replay*100); $('warmv').textContent=Math.round(warm*100); $('capv').textContent=Math.round(cap*100); $('fanv').textContent=Math.round(fan*100);
+  $('rto').textContent=`${rto} s`; $('start').textContent=`${start} ms`; $('risk').textContent=`${risk}%`; $('gate').textContent=gate;
+}
+['replay','warm','cap','fan'].forEach(id=>$(id).addEventListener('input',c)); c();
+</script>
+</body>
+</html>

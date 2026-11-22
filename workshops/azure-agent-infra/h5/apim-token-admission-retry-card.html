@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>APIM Token Admission Retry Card</title>
+  <style>
+    body{margin:0;background:#0b1227;color:#e8eeff;font-family:Segoe UI,Arial,sans-serif}
+    .w{max-width:1080px;margin:0 auto;padding:18px}
+    .g{display:grid;grid-template-columns:1.06fr .94fr;gap:14px}
+    .c{background:#121c3a;border:1px solid #314574;border-radius:12px;padding:12px}
+    h1{margin:0 0 8px;font-size:22px} h2{margin:0 0 8px;font-size:15px;color:#9dc5ff}
+    label{display:block;font-size:12px;margin:8px 0 4px;color:#c9daff} input[type=range]{width:100%}
+    .k{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:10px}
+    .k div{background:#0c1533;border:1px solid #314574;border-radius:8px;padding:10px}
+    .v{font-weight:700;color:#7dd3fc}.n{font-size:12px;color:#b9ccef}
+    svg{width:100%;height:auto;background:#091229;border:1px solid #314574;border-radius:10px}
+  </style>
+</head>
+<body>
+<div class="w">
+  <h1>APIM Token Admission + Retry-After Backoff + PTU/PAYG Burst Governance</h1>
+  <p class="n">Zero-dependency H5 quick card for rate-control and cost-protection architecture reviews.</p>
+  <div class="g">
+    <section class="c">
+      <h2>Control Plane (SVG)</h2>
+      <svg viewBox="0 0 900 420" aria-label="apim token gate flow">
+        <defs><marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#7dd3fc"/></marker></defs>
+        <rect x="35" y="150" width="165" height="60" rx="10" fill="#1f2b54" stroke="#5f7cc5"/><text x="117" y="184" text-anchor="middle" fill="#e2e8ff" font-size="14">Tenants / Clients</text>
+        <rect x="230" y="122" width="196" height="96" rx="10" fill="#163553" stroke="#3e89b8"/><text x="328" y="154" text-anchor="middle" fill="#dbeafe" font-size="14">APIM AI Gateway</text><text x="328" y="178" text-anchor="middle" fill="#93c5fd" font-size="12">TPM/TPS + Retry-After</text>
+        <rect x="460" y="72" width="184" height="86" rx="10" fill="#244532" stroke="#56a978"/><text x="552" y="104" text-anchor="middle" fill="#dcfce7" font-size="14">PTU Baseline</text><text x="552" y="127" text-anchor="middle" fill="#a7f3d0" font-size="12">reserved throughput</text>
+        <rect x="460" y="205" width="184" height="88" rx="10" fill="#4c3020" stroke="#dc9162"/><text x="552" y="238" text-anchor="middle" fill="#ffedd5" font-size="14">PAYG Spillover</text><text x="552" y="261" text-anchor="middle" fill="#fdba74" font-size="12">burst absorption</text>
+        <rect x="690" y="140" width="172" height="82" rx="10" fill="#25334f" stroke="#7090d4"/><text x="776" y="171" text-anchor="middle" fill="#e0e7ff" font-size="14">Budget + OTel</text><text x="776" y="194" text-anchor="middle" fill="#c7d2fe" font-size="12">gate feedback loop</text>
+        <line x1="200" y1="180" x2="230" y2="172" stroke="#7dd3fc" stroke-width="2.2" marker-end="url(#a)"/>
+        <line x1="426" y1="164" x2="460" y2="115" stroke="#7dd3fc" stroke-width="2.2" marker-end="url(#a)"/>
+        <line x1="426" y1="188" x2="460" y2="248" stroke="#7dd3fc" stroke-width="2.2" marker-end="url(#a)"/>
+        <line x1="644" y1="114" x2="690" y2="168" stroke="#7dd3fc" stroke-width="2.2" marker-end="url(#a)"/>
+        <line x1="644" y1="248" x2="690" y2="200" stroke="#7dd3fc" stroke-width="2.2" marker-end="url(#a)"/>
+      </svg>
+    </section>
+    <section class="c">
+      <h2>Admission Estimator</h2>
+      <label>Tenant demand (k TPM) <span id="demv" class="v">820</span></label><input id="dem" type="range" min="100" max="2000" value="820">
+      <label>Reserved PTU capacity (k TPM) <span id="ptuv" class="v">640</span></label><input id="ptu" type="range" min="100" max="2000" value="640">
+      <label>Retry-After compliance (%) <span id="retryv" class="v">74</span></label><input id="retry" type="range" min="20" max="100" value="74">
+      <label>Token gate strictness (0–100) <span id="gatev" class="v">58</span></label><input id="gate" type="range" min="0" max="100" value="58">
+      <div class="k">
+        <div><p>Spillover share</p><p id="spill" class="v">0%</p></div>
+        <div><p>429 rate (est.)</p><p id="rate" class="v">0%</p></div>
+        <div><p>Blended cost / 1M</p><p id="cost" class="v">$0.00</p></div>
+        <div><p>Policy action</p><p id="act" class="v">-</p></div>
+      </div>
+      <p class="n">Heuristic workshop calculator. Validate with measured replay datasets before production change windows.</p>
+    </section>
+  </div>
+</div>
+<script>
+const $=id=>document.getElementById(id);
+function calc(){
+  const dem=+$('dem').value, ptu=+$('ptu').value, retry=+$('retry').value/100, gate=+$('gate').value/100;
+  const spill=Math.max(0,dem-ptu)/dem;
+  const rate=Math.min(0.45,spill*(1-retry)*(1-gate*0.45));
+  const cost=(8.2 + spill*3.4 + rate*4.8 - gate*1.2).toFixed(2);
+  const act=(rate>0.08||spill>0.35)?"Raise strictness or add PTU":"Expand canary traffic";
+  $('demv').textContent=dem; $('ptuv').textContent=ptu; $('retryv').textContent=Math.round(retry*100); $('gatev').textContent=Math.round(gate*100);
+  $('spill').textContent=`${Math.round(spill*100)}%`; $('rate').textContent=`${(rate*100).toFixed(1)}%`; $('cost').textContent=`$${cost}`; $('act').textContent=act;
+}
+['dem','ptu','retry','gate'].forEach(id=>$(id).addEventListener('input',calc)); calc();
+</script>
+</body>
+</html>

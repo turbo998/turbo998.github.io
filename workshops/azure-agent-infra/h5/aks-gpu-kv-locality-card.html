@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AKS GPU KV Locality Card</title>
+  <style>
+    body{margin:0;background:#081226;color:#e8efff;font-family:Segoe UI,Arial,sans-serif}
+    .wrap{max-width:1080px;margin:0 auto;padding:18px}
+    .grid{display:grid;grid-template-columns:1.06fr .94fr;gap:14px}
+    .card{background:#10203f;border:1px solid #37568c;border-radius:12px;padding:12px}
+    h1{margin:0 0 8px;font-size:22px}
+    h2{margin:0 0 8px;font-size:15px;color:#9dc6ff}
+    .sub{color:#b9cfff;font-size:12px}
+    label{display:block;font-size:12px;margin:9px 0 4px;color:#d2e2ff}
+    input[type=range]{width:100%}
+    .kpi{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:10px}
+    .kpi div{background:#0a1630;border:1px solid #304b7a;border-radius:8px;padding:10px}
+    .val{font-size:20px;font-weight:700;color:#7ed3ff}
+    svg{width:100%;height:auto;background:#071227;border:1px solid #32507f;border-radius:10px}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <h1>AKS GPU Prefix Cache Locality + Long/Short Lane Isolation</h1>
+  <p class="sub">Interactive card for estimating TTFT impact from cache hit, session locality, and lane isolation.</p>
+  <div class="grid">
+    <section class="card">
+      <h2>Architecture Flow (SVG)</h2>
+      <svg viewBox="0 0 920 430" aria-label="kv locality architecture">
+        <defs>
+          <marker id="m" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+            <path d="M0,0 L8,3 L0,6 Z" fill="#7ed3ff"/>
+          </marker>
+        </defs>
+        <rect x="30" y="168" width="150" height="60" rx="10" fill="#1f2f56" stroke="#6186cc"/>
+        <text x="105" y="203" text-anchor="middle" fill="#e5edff" font-size="14">Client SDK</text>
+
+        <rect x="220" y="150" width="190" height="92" rx="10" fill="#184267" stroke="#46a0d0"/>
+        <text x="315" y="180" text-anchor="middle" fill="#d8efff" font-size="14">APIM + Envoy Gateway</text>
+        <text x="315" y="205" text-anchor="middle" fill="#9ecfff" font-size="12">session hash + lane class</text>
+
+        <rect x="448" y="82" width="180" height="82" rx="10" fill="#234f3f" stroke="#58bc83"/>
+        <text x="538" y="113" text-anchor="middle" fill="#dcfee8" font-size="14">Short Lane Pods</text>
+        <text x="538" y="136" text-anchor="middle" fill="#a7f3d0" font-size="12">vLLM / SGLang</text>
+
+        <rect x="448" y="250" width="180" height="82" rx="10" fill="#5a3b2b" stroke="#d49a72"/>
+        <text x="538" y="281" text-anchor="middle" fill="#ffeedd" font-size="14">Long Lane Pods</text>
+        <text x="538" y="304" text-anchor="middle" fill="#fdba74" font-size="12">strict admission</text>
+
+        <rect x="664" y="76" width="220" height="98" rx="10" fill="#273a63" stroke="#7fa1e1"/>
+        <text x="774" y="109" text-anchor="middle" fill="#e3ecff" font-size="14">KV Cache Shards</text>
+        <text x="774" y="133" text-anchor="middle" fill="#cbd8ff" font-size="12">session locality + prefix reuse</text>
+        <text x="774" y="154" text-anchor="middle" fill="#cbd8ff" font-size="12">eviction guardrails</text>
+
+        <rect x="664" y="244" width="220" height="100" rx="10" fill="#2c3d58" stroke="#8aa4d2"/>
+        <text x="774" y="277" text-anchor="middle" fill="#e3edff" font-size="14">OTel + FinOps</text>
+        <text x="774" y="300" text-anchor="middle" fill="#c9d8ff" font-size="12">TTFT / queue / hit ratio / cost</text>
+        <text x="774" y="322" text-anchor="middle" fill="#c9d8ff" font-size="12">release gate feedback</text>
+
+        <line x1="180" y1="198" x2="220" y2="196" stroke="#7ed3ff" stroke-width="2.2" marker-end="url(#m)"/>
+        <line x1="410" y1="187" x2="448" y2="122" stroke="#7ed3ff" stroke-width="2.2" marker-end="url(#m)"/>
+        <line x1="410" y1="206" x2="448" y2="288" stroke="#7ed3ff" stroke-width="2.2" marker-end="url(#m)"/>
+        <line x1="628" y1="122" x2="664" y2="124" stroke="#7ed3ff" stroke-width="2.2" marker-end="url(#m)"/>
+        <line x1="628" y1="292" x2="664" y2="292" stroke="#7ed3ff" stroke-width="2.2" marker-end="url(#m)"/>
+      </svg>
+    </section>
+    <section class="card">
+      <h2>Capacity + Latency Estimator</h2>
+      <label>Prefix cache hit ratio (%) <span id="hitv" class="val">68</span></label>
+      <input id="hit" type="range" min="10" max="95" value="68">
+
+      <label>Session locality score (%) <span id="locv" class="val">74</span></label>
+      <input id="loc" type="range" min="10" max="100" value="74">
+
+      <label>Long-request token share (%) <span id="longv" class="val">22</span></label>
+      <input id="long" type="range" min="0" max="80" value="22">
+
+      <label>Lane isolation strictness (0-100) <span id="lanev" class="val">61</span></label>
+      <input id="lane" type="range" min="0" max="100" value="61">
+
+      <div class="kpi">
+        <div><div>Estimated TTFT p95</div><div id="ttft" class="val">0 ms</div></div>
+        <div><div>Queue wait p95</div><div id="queue" class="val">0 ms</div></div>
+        <div><div>Blended $ / 1M tokens</div><div id="cost" class="val">$0.00</div></div>
+        <div><div>Recommended action</div><div id="action" class="val" style="font-size:15px">-</div></div>
+      </div>
+      <p class="sub">Heuristic estimator for architecture workshops; calibrate with measured lane traces.</p>
+    </section>
+  </div>
+</div>
+<script>
+const $ = id => document.getElementById(id);
+function calc(){
+  const hit = +$('hit').value/100;
+  const loc = +$('loc').value/100;
+  const longShare = +$('long').value/100;
+  const lane = +$('lane').value/100;
+
+  const ttft = 620 - hit*210 - loc*130 + longShare*180 - lane*95;
+  const queue = 260 - lane*140 + longShare*170 - hit*55;
+  const cost = 10.8 - hit*1.7 - lane*0.9 + longShare*1.1;
+
+  $('hitv').textContent = Math.round(hit*100);
+  $('locv').textContent = Math.round(loc*100);
+  $('longv').textContent = Math.round(longShare*100);
+  $('lanev').textContent = Math.round(lane*100);
+
+  $('ttft').textContent = `${Math.max(180, ttft).toFixed(0)} ms`;
+  $('queue').textContent = `${Math.max(30, queue).toFixed(0)} ms`;
+  $('cost').textContent = `$${Math.max(4.2, cost).toFixed(2)}`;
+
+  let action = "Keep current lane policy";
+  if (ttft > 760 || queue > 260) action = "Tighten lane isolation + affinity";
+  if (hit < 0.45) action = "Increase prefix-cache locality first";
+  if (longShare > 0.35 && lane < 0.55) action = "Split long lane and cap queue depth";
+  $('action').textContent = action;
+}
+['hit','loc','long','lane'].forEach(id => $(id).addEventListener('input', calc));
+calc();
+</script>
+</body>
+</html>

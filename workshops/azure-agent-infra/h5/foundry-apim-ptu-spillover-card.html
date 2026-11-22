@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PTU Baseline + PAYG Spillover Card</title>
+  <style>
+    :root { color-scheme: light dark; }
+    body { font-family: Segoe UI, Arial, sans-serif; margin: 0; background: #0b1020; color: #e9eefc; }
+    .wrap { max-width: 1100px; margin: 0 auto; padding: 20px; }
+    .grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 16px; }
+    .card { background: #121a33; border: 1px solid #2a3a66; border-radius: 12px; padding: 14px; }
+    h1 { font-size: 22px; margin: 0 0 8px; }
+    h2 { font-size: 15px; margin: 0 0 8px; color: #9ec2ff; }
+    p { margin: 6px 0; line-height: 1.45; }
+    .kpi { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+    .kpi div { background: #0d1430; border: 1px solid #2a3a66; border-radius: 8px; padding: 10px; }
+    label { font-size: 12px; color: #c3d4ff; display: block; margin: 8px 0 4px; }
+    input[type="range"] { width: 100%; }
+    .val { font-weight: 700; color: #7dd3fc; }
+    svg { width: 100%; height: auto; display: block; background: #0a122a; border-radius: 10px; border: 1px solid #2a3a66; }
+    .note { font-size: 12px; color: #b6c6ef; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Foundry + APIM Multi-Region PTU Baseline with Global Standard PAYG Spillover</h1>
+    <p class="note">Zero-dependency quick card for SA workshops: token-level admission, Retry-After backoff, and cost inflection estimation.</p>
+    <div class="grid">
+      <section class="card">
+        <h2>Interactive Architecture Flow (SVG)</h2>
+        <svg viewBox="0 0 900 420" aria-label="PTU spillover architecture">
+          <defs>
+            <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+              <path d="M0,0 L8,3 L0,6 Z" fill="#7dd3fc"></path>
+            </marker>
+          </defs>
+          <rect x="30" y="140" width="150" height="60" rx="10" fill="#1c2a54" stroke="#4f6fb2"></rect>
+          <text x="105" y="174" text-anchor="middle" fill="#dbeafe" font-size="14">Client / Agent</text>
+
+          <rect x="230" y="120" width="180" height="90" rx="10" fill="#1b3452" stroke="#3d7aa8"></rect>
+          <text x="320" y="150" text-anchor="middle" fill="#dbeafe" font-size="14">APIM AI Gateway</text>
+          <text x="320" y="174" text-anchor="middle" fill="#9ec2ff" font-size="12">TPM/TPS + Retry-After</text>
+
+          <rect x="470" y="70" width="180" height="80" rx="10" fill="#23452f" stroke="#4b9f6f"></rect>
+          <text x="560" y="104" text-anchor="middle" fill="#dcfce7" font-size="14">PTU Baseline</text>
+          <text x="560" y="126" text-anchor="middle" fill="#a7f3d0" font-size="12">low-latency SLA lane</text>
+
+          <rect x="470" y="190" width="180" height="90" rx="10" fill="#4a2f1d" stroke="#d97745"></rect>
+          <text x="560" y="226" text-anchor="middle" fill="#ffedd5" font-size="14">Global Standard PAYG</text>
+          <text x="560" y="248" text-anchor="middle" fill="#fed7aa" font-size="12">burst spillover lane</text>
+
+          <rect x="710" y="130" width="160" height="80" rx="10" fill="#26304d" stroke="#6b87c7"></rect>
+          <text x="790" y="162" text-anchor="middle" fill="#e0e7ff" font-size="14">Telemetry + FinOps</text>
+          <text x="790" y="184" text-anchor="middle" fill="#c7d2fe" font-size="12">cost + quality gates</text>
+
+          <line x1="180" y1="170" x2="230" y2="165" stroke="#7dd3fc" stroke-width="2.2" marker-end="url(#arrow)"></line>
+          <line x1="410" y1="152" x2="470" y2="108" stroke="#7dd3fc" stroke-width="2.2" marker-end="url(#arrow)"></line>
+          <line x1="410" y1="178" x2="470" y2="232" stroke="#7dd3fc" stroke-width="2.2" marker-end="url(#arrow)"></line>
+          <line x1="650" y1="108" x2="710" y2="152" stroke="#7dd3fc" stroke-width="2.2" marker-end="url(#arrow)"></line>
+          <line x1="650" y1="232" x2="710" y2="186" stroke="#7dd3fc" stroke-width="2.2" marker-end="url(#arrow)"></line>
+        </svg>
+      </section>
+
+      <section class="card">
+        <h2>Capacity & Cost Inflection Estimator</h2>
+        <label>Urgent interactive share (%) <span id="urgentVal" class="val">35</span></label>
+        <input id="urgent" type="range" min="10" max="90" value="35">
+        <label>PTU blended cost ($/1M) <span id="ptuVal" class="val">14.2</span></label>
+        <input id="ptu" type="range" min="8" max="24" step="0.1" value="14.2">
+        <label>PAYG spillover cost ($/1M) <span id="paygVal" class="val">9.1</span></label>
+        <input id="payg" type="range" min="5" max="18" step="0.1" value="9.1">
+        <label>Retry-After backoff hit ratio (%) <span id="retryVal" class="val">8</span></label>
+        <input id="retry" type="range" min="0" max="30" value="8">
+        <div class="kpi" style="margin-top:10px">
+          <div><p>Weighted TTFT p95</p><p class="val" id="ttft">0 ms</p></div>
+          <div><p>Blended unit cost</p><p class="val" id="cost">$0.00 / 1M</p></div>
+          <div><p>Suggested gate</p><p class="val" id="gate">-</p></div>
+          <div><p>Spillover ratio</p><p class="val" id="spill">0%</p></div>
+        </div>
+        <p class="note">Heuristic only: use as a SA workshop starter before full benchmark replay.</p>
+      </section>
+    </div>
+  </div>
+  <script>
+    const el = id => document.getElementById(id);
+    function calc() {
+      const urgent = Number(el('urgent').value) / 100;
+      const ptu = Number(el('ptu').value);
+      const payg = Number(el('payg').value);
+      const retry = Number(el('retry').value) / 100;
+      const ttft = Math.round((urgent * 520 + (1 - urgent) * 140) * (1 + retry * 0.25));
+      const cost = (urgent * ptu + (1 - urgent) * payg).toFixed(2);
+      const spill = Math.round((1 - urgent) * 100);
+      const gate = ttft > 320 || Number(cost) > 11 ? 'Tighten TPM/TPS + Backoff' : 'Promote next ring';
+      el('urgentVal').textContent = Math.round(urgent * 100);
+      el('ptuVal').textContent = ptu.toFixed(1);
+      el('paygVal').textContent = payg.toFixed(1);
+      el('retryVal').textContent = Math.round(retry * 100);
+      el('ttft').textContent = `${ttft} ms`;
+      el('cost').textContent = `$${cost} / 1M`;
+      el('spill').textContent = `${spill}%`;
+      el('gate').textContent = gate;
+    }
+    ['urgent', 'ptu', 'payg', 'retry'].forEach(id => el(id).addEventListener('input', calc));
+    calc();
+  </script>
+</body>
+</html>

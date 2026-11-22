@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AKS GPU Lane Isolation Card</title>
+  <style>
+    body{margin:0;background:#0b1227;color:#e8eeff;font-family:Segoe UI,Arial,sans-serif}
+    .w{max-width:1080px;margin:0 auto;padding:18px}
+    .g{display:grid;grid-template-columns:1.05fr .95fr;gap:14px}
+    .c{background:#121c3a;border:1px solid #324675;border-radius:12px;padding:12px}
+    h1{margin:0 0 8px;font-size:22px} h2{margin:0 0 8px;font-size:15px;color:#9dc5ff}
+    label{display:block;font-size:12px;margin:8px 0 4px;color:#c8daff} input[type=range]{width:100%}
+    .k{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:10px}
+    .k div{background:#0c1533;border:1px solid #324675;border-radius:8px;padding:10px}
+    .v{font-weight:700;color:#7dd3fc}.n{font-size:12px;color:#b7caef}
+    svg{width:100%;height:auto;background:#091229;border:1px solid #324675;border-radius:10px}
+  </style>
+</head>
+<body>
+<div class="w">
+  <h1>AKS GPU Lane Isolation + Prefix Cache Warm-Pool Planner</h1>
+  <p class="n">Zero-dependency H5 card for long/short request splitting and session-sticky cache locality.</p>
+  <div class="g">
+    <section class="c">
+      <h2>Lane Topology (SVG)</h2>
+      <svg viewBox="0 0 900 420" aria-label="aks lane split flow">
+        <defs><marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#7dd3fc"/></marker></defs>
+        <rect x="38" y="152" width="160" height="60" rx="10" fill="#1f2c54" stroke="#617ec8"/><text x="118" y="186" text-anchor="middle" fill="#e2e8ff" font-size="14">Session Requests</text>
+        <rect x="230" y="126" width="192" height="94" rx="10" fill="#173654" stroke="#3f8ab9"/><text x="326" y="158" text-anchor="middle" fill="#dbeafe" font-size="14">Ingress Router</text><text x="326" y="181" text-anchor="middle" fill="#93c5fd" font-size="12">sticky hash + SLA lane</text>
+        <rect x="458" y="76" width="184" height="86" rx="10" fill="#244533" stroke="#57aa79"/><text x="550" y="108" text-anchor="middle" fill="#dcfce7" font-size="14">Short Lane</text><text x="550" y="131" text-anchor="middle" fill="#a7f3d0" font-size="12">decode-optimized pool</text>
+        <rect x="458" y="208" width="184" height="90" rx="10" fill="#4b3020" stroke="#dc9161"/><text x="550" y="241" text-anchor="middle" fill="#ffedd5" font-size="14">Long Lane</text><text x="550" y="264" text-anchor="middle" fill="#fdba74" font-size="12">prefill-heavy pool</text>
+        <rect x="690" y="140" width="170" height="82" rx="10" fill="#25334f" stroke="#7191d5"/><text x="775" y="171" text-anchor="middle" fill="#e0e7ff" font-size="14">SLO + Cost Loop</text><text x="775" y="194" text-anchor="middle" fill="#c7d2fe" font-size="12">p95 + chargeback</text>
+        <line x1="198" y1="182" x2="230" y2="174" stroke="#7dd3fc" stroke-width="2.2" marker-end="url(#a)"/>
+        <line x1="422" y1="164" x2="458" y2="118" stroke="#7dd3fc" stroke-width="2.2" marker-end="url(#a)"/>
+        <line x1="422" y1="188" x2="458" y2="252" stroke="#7dd3fc" stroke-width="2.2" marker-end="url(#a)"/>
+        <line x1="642" y1="118" x2="690" y2="168" stroke="#7dd3fc" stroke-width="2.2" marker-end="url(#a)"/>
+        <line x1="642" y1="252" x2="690" y2="200" stroke="#7dd3fc" stroke-width="2.2" marker-end="url(#a)"/>
+      </svg>
+    </section>
+    <section class="c">
+      <h2>Lane Capacity Estimator</h2>
+      <label>Long-request share (%) <span id="longv" class="v">32</span></label><input id="long" type="range" min="5" max="80" value="32">
+      <label>Warm-pool reservation (%) <span id="warmv" class="v">44</span></label><input id="warm" type="range" min="0" max="90" value="44">
+      <label>Session stickiness hit ratio (%) <span id="hitv" class="v">70</span></label><input id="hit" type="range" min="20" max="95" value="70">
+      <label>Lane queue pressure (0-100) <span id="qv" class="v">36</span></label><input id="q" type="range" min="0" max="100" value="36">
+      <div class="k">
+        <div><p>Short-lane p95</p><p id="p95s" class="v">0 ms</p></div>
+        <div><p>Long-lane p95</p><p id="p95l" class="v">0 ms</p></div>
+        <div><p>Cache hit benefit</p><p id="benefit" class="v">0%</p></div>
+        <div><p>Control decision</p><p id="act" class="v">-</p></div>
+      </div>
+      <p class="n">Heuristic planning card; validate with measured per-lane traces before rollout.</p>
+    </section>
+  </div>
+</div>
+<script>
+const $=id=>document.getElementById(id);
+function calc(){
+  const l=+$('long').value/100,w=+$('warm').value/100,h=+$('hit').value/100,q=+$('q').value/100;
+  const p95s=Math.round((155+q*160-l*45)*(1-w*0.2));
+  const p95l=Math.round((410+q*220+l*150-h*110)*(1-w*0.12));
+  const benefit=Math.max(0,Math.round((h*0.7+w*0.3)*100 - q*18));
+  const act=(p95s>260||p95l>620||benefit<40)?"Raise warm pool / split lanes":"Increase autonomous traffic share";
+  $('longv').textContent=Math.round(l*100); $('warmv').textContent=Math.round(w*100); $('hitv').textContent=Math.round(h*100); $('qv').textContent=Math.round(q*100);
+  $('p95s').textContent=`${p95s} ms`; $('p95l').textContent=`${p95l} ms`; $('benefit').textContent=`${benefit}%`; $('act').textContent=act;
+}
+['long','warm','hit','q'].forEach(id=>$(id).addEventListener('input',calc)); calc();
+</script>
+</body>
+</html>

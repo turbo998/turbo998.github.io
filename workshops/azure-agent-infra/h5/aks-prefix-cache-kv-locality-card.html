@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AKS Prefix-Cache KV Locality Card</title>
+  <style>
+    body{margin:0;font-family:Segoe UI,Arial,sans-serif;background:#0a1022;color:#e8eeff}
+    .wrap{max-width:1100px;margin:0 auto;padding:18px}
+    .grid{display:grid;grid-template-columns:1.05fr .95fr;gap:14px}
+    .card{background:#111a35;border:1px solid #2f426e;border-radius:12px;padding:12px}
+    h1{font-size:22px;margin:0 0 8px}
+    h2{font-size:15px;color:#9ec2ff;margin:0 0 8px}
+    .kpis{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+    .kpis div{background:#0c1430;border:1px solid #2f426e;border-radius:8px;padding:10px}
+    .v{font-weight:700;color:#7dd3fc}
+    label{display:block;font-size:12px;margin:8px 0 4px;color:#c8d8ff}
+    input[type=range]{width:100%}
+    svg{width:100%;height:auto;background:#0a122a;border:1px solid #2f426e;border-radius:10px}
+    .note{font-size:12px;color:#b7c9ef}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <h1>AKS GPU / KAITO Prefix-Cache Affinity & Long/Short Isolation</h1>
+  <p class="note">Zero-dependency SA quick card: session-aware routing, KV locality, and throughput/cost guardrails.</p>
+  <div class="grid">
+    <section class="card">
+      <h2>Topology Flow (SVG)</h2>
+      <svg viewBox="0 0 900 420" aria-label="AKS KV locality architecture">
+        <defs><marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#7dd3fc"/></marker></defs>
+        <rect x="30" y="150" width="160" height="60" rx="10" fill="#1d2a51" stroke="#5b78c2"></rect>
+        <text x="110" y="184" text-anchor="middle" fill="#e2e8ff" font-size="14">Client Sessions</text>
+
+        <rect x="230" y="130" width="180" height="92" rx="10" fill="#173552" stroke="#3f85b5"></rect>
+        <text x="320" y="160" text-anchor="middle" fill="#dbeafe" font-size="14">APIM + Router</text>
+        <text x="320" y="183" text-anchor="middle" fill="#93c5fd" font-size="12">session-id hash + SLO class</text>
+
+        <rect x="455" y="75" width="190" height="90" rx="10" fill="#20442f" stroke="#59aa78"></rect>
+        <text x="550" y="108" text-anchor="middle" fill="#dcfce7" font-size="14">Short Pool (Decode)</text>
+        <text x="550" y="131" text-anchor="middle" fill="#a7f3d0" font-size="12">low-latency interaction</text>
+
+        <rect x="455" y="205" width="190" height="90" rx="10" fill="#4b2f1e" stroke="#dd8a59"></rect>
+        <text x="550" y="238" text-anchor="middle" fill="#ffedd5" font-size="14">Long Pool (Prefill)</text>
+        <text x="550" y="261" text-anchor="middle" fill="#fdba74" font-size="12">context-heavy requests</text>
+
+        <rect x="695" y="140" width="170" height="82" rx="10" fill="#24314f" stroke="#6c8cd0"></rect>
+        <text x="780" y="171" text-anchor="middle" fill="#e0e7ff" font-size="14">OTel + FinOps</text>
+        <text x="780" y="194" text-anchor="middle" fill="#c7d2fe" font-size="12">hit ratio / GPU cost</text>
+
+        <line x1="190" y1="180" x2="230" y2="176" stroke="#7dd3fc" stroke-width="2.2" marker-end="url(#a)"/>
+        <line x1="410" y1="166" x2="455" y2="120" stroke="#7dd3fc" stroke-width="2.2" marker-end="url(#a)"/>
+        <line x1="410" y1="190" x2="455" y2="245" stroke="#7dd3fc" stroke-width="2.2" marker-end="url(#a)"/>
+        <line x1="645" y1="120" x2="695" y2="165" stroke="#7dd3fc" stroke-width="2.2" marker-end="url(#a)"/>
+        <line x1="645" y1="245" x2="695" y2="199" stroke="#7dd3fc" stroke-width="2.2" marker-end="url(#a)"/>
+      </svg>
+    </section>
+    <section class="card">
+      <h2>Capacity Estimator</h2>
+      <label>Session KV locality hit ratio (%) <span id="hitv" class="v">72</span></label>
+      <input id="hit" type="range" min="30" max="95" value="72">
+      <label>Long-context request share (%) <span id="longv" class="v">28</span></label>
+      <input id="long" type="range" min="5" max="70" value="28">
+      <label>GPU pods per pool <span id="podsv" class="v">16</span></label>
+      <input id="pods" type="range" min="4" max="48" value="16">
+      <label>Queueing pressure (0–100) <span id="qv" class="v">34</span></label>
+      <input id="q" type="range" min="0" max="100" value="34">
+      <div class="kpis" style="margin-top:10px">
+        <div><p>Expected TTFT p95</p><p id="ttft" class="v">0 ms</p></div>
+        <div><p>Token throughput</p><p id="tps" class="v">0 tok/s</p></div>
+        <div><p>Cost / 1M output</p><p id="cost" class="v">$0.00</p></div>
+        <div><p>Routing action</p><p id="gate" class="v">-</p></div>
+      </div>
+      <p class="note">Heuristic workshop model, not a production benchmark replacement.</p>
+    </section>
+  </div>
+</div>
+<script>
+const $=id=>document.getElementById(id);
+function calc(){
+  const h=+$('hit').value/100,l=+$('long').value/100,p=+$('pods').value,q=+$('q').value/100;
+  const ttft=Math.round((420*(1-h)+165*l)*(1+q*0.35));
+  const tps=Math.round((p*260*(h+0.35))*(1-l*0.3)*(1-q*0.25));
+  const cost=(8.4+(l*5.1)+(q*1.8)-(h*2.6)).toFixed(2);
+  const gate=(ttft>300||h<0.6)?"Increase locality/queue split":"Promote traffic share";
+  $('hitv').textContent=Math.round(h*100); $('longv').textContent=Math.round(l*100); $('podsv').textContent=p; $('qv').textContent=Math.round(q*100);
+  $('ttft').textContent=`${ttft} ms`; $('tps').textContent=`${tps} tok/s`; $('cost').textContent=`$${cost}`; $('gate').textContent=gate;
+}
+['hit','long','pods','q'].forEach(id=>$(id).addEventListener('input',calc)); calc();
+</script>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Foundry APIM Cost Inflection Card</title>
+  <style>
+    body{margin:0;background:#0b1228;color:#e8eeff;font-family:Segoe UI,Arial,sans-serif}
+    .w{max-width:1080px;margin:0 auto;padding:18px}
+    .g{display:grid;grid-template-columns:1.04fr .96fr;gap:14px}
+    .c{background:#121c3a;border:1px solid #334777;border-radius:12px;padding:12px}
+    h1{margin:0 0 8px;font-size:22px} h2{margin:0 0 8px;font-size:15px;color:#9dc5ff}
+    label{display:block;font-size:12px;margin:8px 0 4px;color:#cadbff} input[type=range]{width:100%}
+    .k{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:10px}
+    .k div{background:#0c1533;border:1px solid #334777;border-radius:8px;padding:10px}
+    .v{font-weight:700;color:#7dd3fc}.n{font-size:12px;color:#b7caef}
+    svg{width:100%;height:auto;background:#091229;border:1px solid #334777;border-radius:10px}
+  </style>
+</head>
+<body>
+<div class="w">
+  <h1>Foundry + APIM PTU/PAYG Cost-Inflection & Ring Budget Governance</h1>
+  <p class="n">Zero-dependency card for token gate, retry backoff, and budget ring promotion controls.</p>
+  <div class="g">
+    <section class="c">
+      <h2>Budget Ring Loop (SVG)</h2>
+      <svg viewBox="0 0 900 420" aria-label="cost inflection loop">
+        <defs><marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#7dd3fc"/></marker></defs>
+        <rect x="36" y="154" width="160" height="60" rx="10" fill="#1f2c54" stroke="#617fc9"/><text x="116" y="188" text-anchor="middle" fill="#e2e8ff" font-size="14">Tenant Traffic</text>
+        <rect x="228" y="126" width="196" height="94" rx="10" fill="#173654" stroke="#3f8ab9"/><text x="326" y="158" text-anchor="middle" fill="#dbeafe" font-size="14">APIM Ring Policy</text><text x="326" y="181" text-anchor="middle" fill="#93c5fd" font-size="12">TPM/TPS + Retry-After</text>
+        <rect x="460" y="76" width="184" height="86" rx="10" fill="#244533" stroke="#57aa79"/><text x="552" y="108" text-anchor="middle" fill="#dcfce7" font-size="14">PTU Lane</text><text x="552" y="131" text-anchor="middle" fill="#a7f3d0" font-size="12">predictable baseline</text>
+        <rect x="460" y="208" width="184" height="90" rx="10" fill="#4b3020" stroke="#dc9161"/><text x="552" y="241" text-anchor="middle" fill="#ffedd5" font-size="14">PAYG Lane</text><text x="552" y="264" text-anchor="middle" fill="#fdba74" font-size="12">burst buffer</text>
+        <rect x="690" y="140" width="170" height="82" rx="10" fill="#25334f" stroke="#7191d5"/><text x="775" y="171" text-anchor="middle" fill="#e0e7ff" font-size="14">FinOps Ring Ledger</text><text x="775" y="194" text-anchor="middle" fill="#c7d2fe" font-size="12">cost inflection feedback</text>
+        <line x1="196" y1="184" x2="228" y2="174" stroke="#7dd3fc" stroke-width="2.2" marker-end="url(#a)"/>
+        <line x1="424" y1="164" x2="460" y2="118" stroke="#7dd3fc" stroke-width="2.2" marker-end="url(#a)"/>
+        <line x1="424" y1="188" x2="460" y2="252" stroke="#7dd3fc" stroke-width="2.2" marker-end="url(#a)"/>
+        <line x1="644" y1="118" x2="690" y2="168" stroke="#7dd3fc" stroke-width="2.2" marker-end="url(#a)"/>
+        <line x1="644" y1="252" x2="690" y2="200" stroke="#7dd3fc" stroke-width="2.2" marker-end="url(#a)"/>
+      </svg>
+    </section>
+    <section class="c">
+      <h2>Cost Inflection Estimator</h2>
+      <label>PTU baseline utilization (%) <span id="utilv" class="v">62</span></label><input id="util" type="range" min="20" max="95" value="62">
+      <label>PAYG spillover share (%) <span id="spillv" class="v">24</span></label><input id="spill" type="range" min="0" max="80" value="24">
+      <label>Retry-After compliance (%) <span id="retryv" class="v">76</span></label><input id="retry" type="range" min="20" max="100" value="76">
+      <label>Budget gate strictness (0-100) <span id="gatev" class="v">57</span></label><input id="gate" type="range" min="0" max="100" value="57">
+      <div class="k">
+        <div><p>Cost/1M blended</p><p id="cost" class="v">$0.00</p></div>
+        <div><p>429 exposure</p><p id="rate" class="v">0%</p></div>
+        <div><p>Inflection risk</p><p id="risk" class="v">low</p></div>
+        <div><p>Action</p><p id="act" class="v">-</p></div>
+      </div>
+      <p class="n">Heuristic model for architecture workshops; validate with measured per-ring traces.</p>
+    </section>
+  </div>
+</div>
+<script>
+const $=id=>document.getElementById(id);
+function calc(){
+  const util=+$('util').value/100, spill=+$('spill').value/100, retry=+$('retry').value/100, gate=+$('gate').value/100;
+  const cost=(7.9 + (1-util)*2.8 + spill*4.2 - retry*0.9 - gate*0.8).toFixed(2);
+  const rate=Math.max(0,spill*(1-retry)*(1-gate*0.4)*100);
+  const risk=(Number(cost)>10.6||rate>7.5)?"high":"medium";
+  const act=(risk==="high")?"Increase PTU or tighten ring gates":"Expand traffic in next ring";
+  $('utilv').textContent=Math.round(util*100); $('spillv').textContent=Math.round(spill*100); $('retryv').textContent=Math.round(retry*100); $('gatev').textContent=Math.round(gate*100);
+  $('cost').textContent=`$${cost}`; $('rate').textContent=`${rate.toFixed(1)}%`; $('risk').textContent=risk; $('act').textContent=act;
+}
+['util','spill','retry','gate'].forEach(id=>$(id).addEventListener('input',calc)); calc();
+</script>
+</body>
+</html>
