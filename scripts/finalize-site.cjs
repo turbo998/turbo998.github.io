@@ -95,7 +95,7 @@ function finalizeSite() {
     'workshops/benchmarks/rocev2-load-balancing-congestion-selection-cards.html'
   ]);
   for(const file of htmlFiles()) {
-    if(singleEditionSealed.has(file)||(!pairs.has(file)&&/^(?:(?:animation|generative-visual-lab)\/demos\/|h5-academy\/)/.test(file)))continue;
+    if(singleEditionSealed.has(file)||(!pairs.has(file)&&/^(?:(?:animation|generative-visual-lab)\/demos\/|h5-academy\/|workshops\/azure-agent-infra\/(?:h5\/|test-report-cards\.html$))/.test(file)))continue;
     const absolute=path.join(root,file);let html=fs.readFileSync(absolute,'utf8');
     const motionExhibit=Object.values(motionDemoRoutes).includes(file);
     if(file==='articles/harness-engineering.html'&&!html.includes('agent-harness-coevolution.html')) {
