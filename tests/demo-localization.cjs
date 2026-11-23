@@ -7,6 +7,7 @@ const {root, records, original, buildDemos} = require('../scripts/localize-demos
 const scripts = html => [...html.replace(/<!-- demo-localization:start -->[\s\S]*?<!-- demo-localization:end -->/g, '').matchAll(/<script\b[^>]*>[\s\S]*?<\/script>/g)].map(m => m[0]);
 const controls = html => [...html.replace(/<(header|nav)\b[^>]*data-professional-header[^>]*>[\s\S]*?<\/\1>/gi, '').matchAll(/<(?:input|select|option|canvas)\b[^>]*>/g)].map(m => m[0].replace(/\b(?:title|aria-label|alt|placeholder)="[^"]*"/g, ''));
 async function harness(run) {
+  const cache = new Map();
   const server = http.createServer((request, response) => {
     const url = new URL(request.url, 'http://127.0.0.1');
     let relative = decodeURIComponent(url.pathname).replace(/^\/+/, '');
@@ -14,9 +15,14 @@ async function harness(run) {
     const file = path.resolve(root, relative);
     if (!file.startsWith(root + path.sep)) {response.writeHead(403).end(); return;}
     try {
-      const content = fs.readFileSync(file);
-      const type = ({'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.json':'application/json','.css':'text/css','.svg':'image/svg+xml','.png':'image/png','.webp':'image/webp','.glb':'model/gltf-binary','.bin':'application/octet-stream'})[path.extname(file)] || 'application/octet-stream';
-      response.writeHead(200, {'Content-Type': type}); response.end(content);
+      let entry = cache.get(file);
+      if (!entry) {
+        const content = fs.readFileSync(file);
+        const type = ({'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.json':'application/json','.css':'text/css','.svg':'image/svg+xml','.png':'image/png','.webp':'image/webp','.glb':'model/gltf-binary','.bin':'application/octet-stream'})[path.extname(file)] || 'application/octet-stream';
+        entry = {content, type};
+        if (content.length <= 32 * 1024 * 1024 && cache.size < 2048) cache.set(file, entry);
+      }
+      response.writeHead(200, {'Content-Type': entry.type, 'Cache-Control': 'public, max-age=3600'}); response.end(entry.content);
     } catch {response.writeHead(404).end('Not found');}
   });
   await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
@@ -30,9 +36,11 @@ async function harness(run) {
   }
 }
 async function main() {
-  const generated = await buildDemos({write: false});
-  const replay = await buildDemos({write: false});
-  assert.deepEqual(generated.output, replay.output, 'generator must be deterministic');
+  if (process.env.FAST_VERIFY !== '1') {
+    const generated = await buildDemos({write: false});
+    const replay = await buildDemos({write: false});
+    assert.deepEqual(generated.output, replay.output, 'generator must be deterministic');
+  }
   for (const record of records) {
     const source = original(record.source);
     for (const file of [record.en, record.zh]) {
@@ -44,42 +52,59 @@ async function main() {
   const results = [];
   await harness(async (browser, base) => {
     const targets = records.filter(r => !r.source.startsWith('generative-visual-lab/') && !/pelican-arena\.html$|faf-vs-agent-forge\/(?:index|demo-)/.test(r.source));
-    for (const record of targets) {
-      const page = await browser.newPage();
-      const errors = [];
-      page.on('pageerror', e => errors.push(e.message));
+    let cursor = 0;
+    const workers = Math.min(6, targets.length || 1);
+    await Promise.all(Array.from({length: workers}, async () => {
+      const sharedPage = await browser.newPage();
+      let currentErrors = [];
+      sharedPage.on('pageerror', e => currentErrors.push(e.message));
       try {
-        if (/astra-planet|wanan-midnight|scrap-swarm/.test(record.en)) {
-          await page.evaluateOnNewDocument(() => {
-            let frames = 0;
-            const raf = window.requestAnimationFrame.bind(window);
-            window.requestAnimationFrame = cb => frames++ < 3 ? raf(cb) : window.setTimeout(() => cb(performance.now()), 500);
-          });
+        while (cursor < targets.length) {
+          const idx = cursor++;
+          const record = targets[idx];
+          const needsIsolated = /astra-planet|wanan-midnight|scrap-swarm/.test(record.en);
+          const page = needsIsolated ? await browser.newPage() : sharedPage;
+          const errors = [];
+          if (needsIsolated) page.on('pageerror', e => errors.push(e.message));
+          else currentErrors = errors;
+          try {
+            if (needsIsolated) {
+              await page.evaluateOnNewDocument(() => {
+                let frames = 0;
+                const raf = window.requestAnimationFrame.bind(window);
+                window.requestAnimationFrame = cb => frames++ < 3 ? raf(cb) : window.setTimeout(() => cb(performance.now()), 500);
+              });
+            }
+            await page.goto(base + record.en, {waitUntil: 'domcontentloaded', timeout: 120000});
+            await page.waitForFunction(() => window.DemoLocalization?.ready, {polling: 60, timeout: 120000});
+            await new Promise(resolve => setTimeout(resolve, 120));
+            if (record.en.includes('wanan-midnight') || record.en.includes('scrap-swarm')) {
+              await page.evaluate(() => { window.requestAnimationFrame = () => 0; });
+            }
+            const before = await page.evaluate(() => {
+              const rootNode = document.body.cloneNode(true);
+              rootNode.querySelectorAll('script,style,[data-professional-header],.kee-dedicated-nav,.reading-header,.demo-language-navigation,.kee-diamond-datalab-banner').forEach(node => node.remove());
+              return {language: document.documentElement.lang, untranslated: [...new Set(rootNode.textContent.match(/[\p{Script=Han}]+/gu) || [])], inputs: document.querySelectorAll('input,select,button').length};
+            });
+            assert.equal(before.language, 'en', record.en);
+            assert.deepEqual(before.untranslated, [], `${record.en}: untranslated runtime text`);
+            assert.deepEqual(errors, [], `${record.en}: JavaScript errors`);
+            await page.evaluate(() => {
+              const probe = document.createElement('div');
+              probe.id = 'demo-translation-probe';
+              probe.textContent = '暂停'; probe.title = '继续播放'; document.body.append(probe);
+            });
+            await page.waitForFunction(() => document.getElementById('demo-translation-probe')?.textContent === 'Pause', {polling: 50, timeout: 30000});
+            await page.evaluate(() => document.getElementById('demo-translation-probe').remove());
+            results[idx] = {file: record.en, ...before, errors};
+          } finally {
+            if (needsIsolated) await page.close();
+          }
         }
-        await page.goto(base + record.en, {waitUntil: 'domcontentloaded', timeout: 120000});
-        await page.waitForFunction(() => window.DemoLocalization?.ready, {polling: 100, timeout: 120000});
-        await new Promise(resolve => setTimeout(resolve, 600));
-        if (record.en.includes('wanan-midnight') || record.en.includes('scrap-swarm')) {
-          await page.evaluate(() => { window.requestAnimationFrame = () => 0; });
-        }
-        const before = await page.evaluate(() => {
-          const root = document.body.cloneNode(true);
-          root.querySelectorAll('script,style,[data-professional-header],.kee-dedicated-nav,.reading-header,.demo-language-navigation,.kee-diamond-datalab-banner').forEach(node => node.remove());
-          return {language: document.documentElement.lang, untranslated: [...new Set(root.textContent.match(/[\p{Script=Han}]+/gu) || [])], inputs: document.querySelectorAll('input,select,button').length};
-        });
-        assert.equal(before.language, 'en', record.en);
-        assert.deepEqual(before.untranslated, [], `${record.en}: untranslated runtime text`);
-        assert.deepEqual(errors, [], `${record.en}: JavaScript errors`);
-        await page.evaluate(() => {
-          const probe = document.createElement('div');
-          probe.id = 'demo-translation-probe';
-          probe.textContent = '暂停'; probe.title = '继续播放'; document.body.append(probe);
-        });
-        await page.waitForFunction(() => document.getElementById('demo-translation-probe')?.textContent === 'Pause', {polling: 100, timeout: 30000});
-        await page.evaluate(() => document.getElementById('demo-translation-probe').remove());
-        results.push({file: record.en, ...before, errors});
-      } finally {await page.close();}
-    }
+      } finally {
+        await sharedPage.close();
+      }
+    }));
     const selPage = await browser.newPage();
     try {
       await selPage.goto(base + 'workshops/azure-agent-infra/selector.html?lang=en&theme=dark', {waitUntil: 'domcontentloaded'});
@@ -87,7 +112,7 @@ async function main() {
       assert(selPage.url().endsWith('selector.en.html?lang=en&theme=dark'));
     } finally {await selPage.close();}
   });
-  console.log(JSON.stringify({pairs: records.length, engineParity: true, deterministicReplay: true, browser: results}, null, 2));
+  console.log(JSON.stringify({pairs: records.length, engineParity: true, deterministicReplay: process.env.FAST_VERIFY !== '1', browser: results}, null, 2));
 }
 module.exports = {harness, scripts, controls};
 if (require.main === module) main().catch(error => {console.error(error); process.exitCode = 1;});

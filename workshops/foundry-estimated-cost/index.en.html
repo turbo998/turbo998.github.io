@@ -1,0 +1,1325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Azure Monitor FoundryModelEstimatedCost (Preview) — Readiness, Accuracy &amp; Partner FinOps Guide</title>
+<meta name="description" content="Sanitized 2026-11-23 live empirical evaluation and interactive FinOps simulator for Azure Monitor FoundryModelEstimatedCost (Preview): 0.0000% retail variance on supported chat/reasoning models, eliminating +68.73% DIY KQL over-estimation under 55.1% prompt cache hit, 1.1000x DataZone uplift, and five preview guardrails.">
+<style>
+:root {
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --surface-alt: #f1f5f9;
+  --surface-code: #0f172a;
+  --text: #0f172a;
+  --text-muted: #475569;
+  --border: #cbd5e1;
+  --primary: #0284c7;
+  --primary-soft: #e0f2fe;
+  --accent: #4f46e5;
+  --accent-soft: #eef2ff;
+  --ok: #059669;
+  --ok-soft: #d1fae5;
+  --warn: #d97706;
+  --warn-soft: #fef3c7;
+  --bad: #e11d48;
+  --bad-soft: #ffe4e6;
+  --shadow: 0 10px 28px rgba(15, 23, 42, 0.06);
+  --radius-lg: 16px;
+  --radius-md: 12px;
+  --font-sans: "Segoe UI", Aptos, system-ui, -apple-system, sans-serif;
+  --font-mono: "Cascadia Code", "JetBrains Mono", Consolas, monospace;
+}
+html[data-theme="dark"] {
+  --bg: #0b1120;
+  --surface: #111c33;
+  --surface-alt: #1a2846;
+  --surface-code: #070d19;
+  --text: #f1f5f9;
+  --text-muted: #94a3b8;
+  --border: #2c3e63;
+  --primary: #38bdf8;
+  --primary-soft: rgba(56, 189, 248, 0.15);
+  --accent: #818cf8;
+  --accent-soft: rgba(129, 140, 248, 0.16);
+  --ok: #34d399;
+  --ok-soft: rgba(52, 211, 153, 0.15);
+  --warn: #fbbf24;
+  --warn-soft: rgba(251, 191, 36, 0.16);
+  --bad: #fb7185;
+  --bad-soft: rgba(251, 113, 133, 0.16);
+  --shadow: 0 14px 34px rgba(2, 6, 23, 0.45);
+}
+*, *::before, *::after { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  line-height: 1.65;
+  overflow-x: hidden;
+}
+a { color: var(--primary); text-decoration: none; }
+a:hover { text-decoration: underline; }
+code, pre { font-family: var(--font-mono); }
+.fl-shell {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 24px 20px 64px;
+}
+.fl-hero {
+  background: linear-gradient(135deg, var(--surface) 0%, var(--surface-alt) 100%);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 28px 30px;
+  box-shadow: var(--shadow);
+  margin-bottom: 24px;
+}
+.fl-hero-top {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.fl-badge-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.fl-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 11px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+.fl-badge img { width: 15px; height: 15px; display: inline-block; }
+.fl-badge-primary { background: var(--primary-soft); color: var(--primary); }
+.fl-badge-ok { background: var(--ok-soft); color: var(--ok); }
+.fl-badge-warn { background: var(--warn-soft); color: var(--warn); }
+.fl-badge-bad { background: var(--bad-soft); color: var(--bad); }
+.fl-badge-accent { background: var(--accent-soft); color: var(--accent); }
+.fl-toolbar-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.fl-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+.fl-btn:hover { border-color: var(--primary); text-decoration: none; }
+.fl-btn-primary {
+  background: var(--primary);
+  color: #ffffff;
+  border-color: var(--primary);
+}
+html[data-theme="dark"] .fl-btn-primary { color: #081120; }
+.fl-hero h1 {
+  margin: 0 0 12px;
+  font-size: clamp(1.5rem, 2.7vw, 2.22rem);
+  line-height: 1.25;
+}
+.fl-lead {
+  margin: 0 0 20px;
+  color: var(--text-muted);
+  font-size: 1rem;
+  max-width: 980px;
+}
+.fl-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+.fl-kpi {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  min-width: 0;
+}
+.fl-kpi-val {
+  font-size: 1.32rem;
+  font-weight: 800;
+  color: var(--primary);
+  line-height: 1.2;
+}
+.fl-kpi-val.is-ok { color: var(--ok); }
+.fl-kpi-val.is-bad { color: var(--bad); }
+.fl-kpi-label {
+  margin-top: 4px;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+.fl-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 22px;
+  padding: 6px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+}
+.fl-tab {
+  flex: 1 1 180px;
+  padding: 10px 14px;
+  border: none;
+  border-radius: 9px;
+  background: transparent;
+  color: var(--text-muted);
+  font-family: inherit;
+  font-size: 0.92rem;
+  font-weight: 700;
+  cursor: pointer;
+  text-align: center;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.fl-tab[aria-selected="true"] {
+  background: var(--primary);
+  color: #ffffff;
+}
+html[data-theme="dark"] .fl-tab[aria-selected="true"] { color: #07111f; }
+.fl-panel { display: none; }
+.fl-panel.is-active { display: block; }
+.fl-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  margin-bottom: 20px;
+}
+.fl-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
+}
+.fl-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 22px;
+  box-shadow: var(--shadow);
+  margin-bottom: 20px;
+  min-width: 0;
+}
+.fl-grid-2 > .fl-card, .fl-grid-3 > .fl-card { margin-bottom: 0; }
+.fl-card h2 {
+  margin: 0 0 10px;
+  font-size: 1.24rem;
+  line-height: 1.32;
+}
+.fl-card h3 {
+  margin: 0 0 8px;
+  font-size: 1.05rem;
+  line-height: 1.35;
+}
+.fl-muted { color: var(--text-muted); font-size: 0.92rem; margin: 0 0 14px; }
+.fl-figure {
+  margin: 0;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: #091220;
+}
+.fl-figure img, .fl-figure svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.fl-figure figcaption {
+  padding: 10px 14px;
+  font-size: 0.83rem;
+  color: var(--text-muted);
+  background: var(--surface-alt);
+  border-top: 1px solid var(--border);
+}
+.fl-callout {
+  border-left: 4px solid var(--primary);
+  background: var(--surface-alt);
+  padding: 13px 16px;
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  margin: 14px 0;
+  font-size: 0.92rem;
+}
+.fl-callout-warn { border-left-color: var(--warn); background: var(--warn-soft); color: var(--text); }
+.fl-callout-ok { border-left-color: var(--ok); background: var(--ok-soft); color: var(--text); }
+.fl-callout-bad { border-left-color: var(--bad); background: var(--bad-soft); color: var(--text); }
+.fl-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+}
+.fl-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.87rem;
+}
+.fl-table th, .fl-table td {
+  padding: 10px 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+  overflow-wrap: anywhere;
+}
+.fl-table th {
+  background: var(--surface-alt);
+  font-weight: 700;
+  font-size: 0.8rem;
+  letter-spacing: 0.02em;
+}
+.fl-table tr:last-child td { border-bottom: none; }
+.fl-preset-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+.fl-preset-btn {
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface-alt);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 0.81rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.fl-preset-btn.is-active {
+  background: var(--primary);
+  color: #ffffff;
+  border-color: var(--primary);
+}
+html[data-theme="dark"] .fl-preset-btn.is-active { color: #07111f; }
+.fl-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin-bottom: 18px;
+}
+.fl-field {
+  background: var(--surface-alt);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  min-width: 0;
+}
+.fl-field label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.84rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.fl-field select, .fl-field input[type="range"] {
+  width: 100%;
+  font-family: inherit;
+  font-size: 0.9rem;
+}
+.fl-field select {
+  padding: 7px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+}
+.fl-sim-results {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin-bottom: 16px;
+}
+.fl-sim-box {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 15px 16px;
+  background: var(--surface-alt);
+  min-width: 0;
+}
+.fl-sim-box.is-highlight {
+  border-color: var(--ok);
+  background: var(--ok-soft);
+}
+.fl-sim-box.is-danger {
+  border-color: var(--bad);
+  background: var(--bad-soft);
+}
+.fl-sim-title {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+.fl-sim-usd {
+  font-family: var(--font-mono);
+  font-size: 1.36rem;
+  font-weight: 800;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+.fl-sim-sub {
+  font-size: 0.79rem;
+  color: var(--text-muted);
+  margin-top: 6px;
+}
+.fl-bar-compare {
+  background: var(--surface-alt);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  margin-bottom: 16px;
+}
+.fl-bar-row { margin-bottom: 12px; }
+.fl-bar-row:last-child { margin-bottom: 0; }
+.fl-bar-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 0.83rem;
+  font-weight: 700;
+  margin-bottom: 5px;
+  flex-wrap: wrap;
+}
+.fl-bar-track {
+  width: 100%;
+  height: 14px;
+  background: var(--border);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.fl-bar-fill {
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.2s ease;
+}
+.fl-code-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+.fl-code {
+  margin: 0;
+  padding: 14px 16px;
+  border-radius: var(--radius-md);
+  background: var(--surface-code);
+  color: #e2e8f0;
+  font-size: 0.82rem;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  border: 1px solid #1e293b;
+}
+.fl-list { margin: 0; padding-left: 18px; }
+.fl-list li { margin-bottom: 8px; font-size: 0.91rem; }
+.fl-filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.fl-faq-item {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  margin-bottom: 12px;
+  background: var(--surface-alt);
+}
+.fl-faq-item summary {
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+.fl-faq-item p {
+  margin: 10px 0 0;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+.fl-footer-note {
+  margin-top: 28px;
+  padding: 18px 20px;
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  font-size: 0.86rem;
+  color: var(--text-muted);
+}
+@media (max-width: 940px) {
+  .fl-kpi-grid, .fl-grid-3, .fl-sim-results { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .fl-grid-2, .fl-form-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 640px) {
+  .fl-shell { padding: 14px 12px 48px; }
+  .fl-hero { padding: 20px 16px; }
+  .fl-card { padding: 16px; }
+  .fl-kpi-grid, .fl-grid-3, .fl-sim-results { grid-template-columns: 1fr; }
+  .fl-table th, .fl-table td { padding: 8px; font-size: 0.8rem; }
+}
+</style>
+<script src="../../assets/editorial/search-index.js" defer></script><script src="../../assets/editorial/search.js" defer></script><style id="site-remediation-style">/* Embedded by integrate-dedicated.cjs so sealed report CSP remains unchanged. */
+.kee-dedicated-nav {
+  all: initial; box-sizing: border-box; position: relative; display: flex;
+  flex-wrap: wrap; align-items: center; gap: 6px 14px; width: 100%;
+  padding: 12px 18px; margin: 0 0 16px; border: 1px solid #314361;
+  background: #101A30; color: #EEF3FF; font: 13px/1.5 system-ui, sans-serif;
+  text-align: left; isolation: isolate; color-scheme: dark;
+}
+.kee-dedicated-nav a {
+  all: revert; box-sizing: border-box; display: inline-block; padding: 4px 0;
+  color: #9AABFF; background: transparent; font: inherit; text-decoration: underline;
+  text-underline-offset: 3px; border: 0; border-radius: 0; box-shadow: none;
+}
+.kee-dedicated-nav a:focus-visible { outline: 3px solid #56DDCD; outline-offset: 3px; }
+.kee-dedicated-nav .kee-dedicated-identity { font-weight: 700; color: #EEF3FF; }
+.kee-dedicated-nav .kee-dedicated-language {
+  all: revert; display: block; flex-basis: 100%; color: #ADBBD1; font: 12px/1.5 system-ui, sans-serif;
+}
+.kee-dedicated-native-link { display: block; padding: 22px; color: #1858a8; background: #f8fafc; font: 15px/1.6 system-ui, sans-serif; }
+.kee-dedicated-native-link a { color: #1858a8; text-decoration: underline; }
+@media print { .kee-dedicated-nav { display: none; } }
+
+/* Professional primary navigation: long section names reflow, never scroll inside the header. */
+[data-professional-header]{box-sizing:border-box;display:grid!important;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:18px!important;width:100%;max-width:none;height:auto!important;min-height:0!important;padding:18px 24px!important;margin:0 0 16px;position:relative;overflow:visible!important;background:#101A30;color:#EEF3FF;border:1px solid #314361;font:13px/1.5 system-ui,sans-serif;isolation:isolate;color-scheme:dark}
+[data-professional-header] *{box-sizing:border-box;min-width:0;max-height:none}
+[data-professional-header] a{font:inherit;text-decoration:none;color:#9AABFF;overflow-wrap:anywhere;white-space:normal}
+[data-professional-header] .professional-identity{font-weight:750;color:#EEF3FF;white-space:nowrap;font-size:14px;margin:0}
+[data-professional-header] .professional-primary{display:grid;grid-template-columns:1.45fr repeat(5,minmax(0,1fr));gap:6px;align-items:stretch;min-width:0}
+@media(max-width:960px) and (min-width:601px){[data-professional-header] .professional-primary{gap:5px}[data-professional-header] .professional-primary a{padding:8px 6px;font-size:11.5px}}
+[data-professional-header] .professional-primary a{display:flex;align-items:center;justify-content:center;padding:10px 9px;border:1px solid #314361;border-radius:12px;background:#172440;text-align:center;line-height:1.4;min-height:44px}
+[data-professional-header] .professional-primary a[aria-current=page]{background:#23375a;border-color:#56DDCD;color:#56DDCD}
+[data-professional-header] .professional-controls{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:4px;font-size:12px;margin:0;position:static}
+[data-professional-header] .professional-controls>a{display:flex;align-items:center;justify-content:center;padding:8px;min-height:40px;min-width:32px;border-radius:10px}
+[data-professional-header] .professional-context{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px 18px;padding-top:12px;border-top:1px solid #314361;font-size:12px;color:#ADBBD1;min-width:0;line-height:1.6}
+[data-professional-header] .professional-context>*{min-width:0;overflow-wrap:anywhere}
+[data-professional-header] .professional-context .kee-dedicated-language{flex-basis:100%;color:#ADBBD1}
+[data-professional-header] a:focus-visible{outline:3px solid #56DDCD;outline-offset:3px}
+[data-professional-header] a:hover{text-decoration:underline}
+[data-professional-header][data-perimeter-theme=light],:root[data-theme=light] .reading-header[data-professional-header]{background:#fff;color:#172440;border-color:#d4deee;color-scheme:light}
+[data-professional-header][data-perimeter-theme=light] a,:root[data-theme=light] .reading-header[data-professional-header] a{color:#3752a0}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a,:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a{background:#edf2ff;border-color:#d4deee}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a[aria-current],:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a[aria-current]{background:#dff6f0;color:#127b72;border-color:#127b72}
+@media(max-width:1150px){[data-professional-header]{grid-template-columns:minmax(0,1fr) auto;gap:12px!important}[data-professional-header] .professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header] .professional-controls{grid-column:2;grid-row:1}}
+@media(max-width:600px){[data-professional-header]{padding:14px 16px!important;gap:12px!important}[data-professional-header] .professional-primary{grid-template-columns:repeat(2,minmax(0,1fr))}[data-professional-header] .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:13px}[data-professional-header] .professional-controls{gap:0}[data-professional-header] .professional-controls>a{padding:6px;min-width:28px}}
+@media print{[data-professional-header]{display:none!important}}
+
+html{scroll-padding-top:164px}@media(max-width:600px){html{scroll-padding-top:260px}}.reading-header,.kee-dedicated-nav,[data-professional-header]{position:sticky;top:0;z-index:1000;-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
+
+:root{--search-bg:#101a30;--search-soft:#172440;--search-ink:#eef3ff;--search-muted:#adbbd1;--search-line:#293956;--search-accent:#9aabff;--header-offset:144px}
+:root[data-reading-shell][data-theme=light],[data-perimeter-theme=light]{--search-bg:#fff;--search-soft:#e8eefb;--search-ink:#17233e;--search-muted:#4c5e7c;--search-line:#d5ddec;--search-accent:#354ec8}
+html{scroll-padding-top:var(--header-offset,108px)!important}
+.site-search,.site-search *{box-sizing:border-box!important;font-family:"Segoe UI",sans-serif;letter-spacing:normal;text-transform:none}
+.site-search{position:relative;display:flex;align-items:center;gap:5px;min-width:0;width:230px;max-width:100%;margin:0!important;padding:0!important;line-height:1.4;border:1px solid var(--search-line);border-radius:9px;background:var(--search-soft);color:var(--search-ink);isolation:isolate}
+.site-search input[type=search]{display:block;flex:1;min-width:0;width:100%;height:42px;margin:0;padding:9px 8px!important;font-size:12px!important;line-height:1.5;border:0!important;border-radius:9px;background:transparent!important;color:var(--search-ink)!important;box-shadow:none!important;appearance:none}
+.site-search input::placeholder{color:var(--search-muted);opacity:1}.site-search input:focus-visible{outline:2px solid var(--search-accent);outline-offset:2px}
+.site-search kbd{font:11px Consolas,monospace;color:var(--search-muted);padding:1px 5px;border:1px solid var(--search-line);border-radius:4px}
+.site-search button[type=submit]{flex:none;width:38px;min-width:38px;height:42px;min-height:42px;padding:0;margin:0;border:0;border-radius:8px;background:transparent;color:var(--search-accent);font-size:24px;cursor:pointer;box-shadow:none}
+.search-label,.search-status{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.site-search .search-results{position:absolute;top:calc(100% + 10px);right:0;z-index:1100;width:min(480px,calc(100vw - 32px));max-height:min(560px,65vh);overflow-y:auto;border:1px solid var(--search-line);border-radius:12px;background:var(--search-bg);color:var(--search-ink);padding:10px;box-shadow:0 12px 32px #0005;text-align:left}
+.site-search .search-results[hidden]{display:none!important}.search-results .search-group{margin:8px 6px 4px;font:11px/1.5 Consolas,monospace;color:var(--search-muted)}
+.site-search .search-results a{display:block!important;padding:10px!important;margin:3px 0!important;border:1px solid transparent!important;border-radius:7px;background:transparent;color:var(--search-ink)!important;font-size:13px!important;text-decoration:none!important;white-space:normal;overflow-wrap:anywhere;text-align:left!important;line-height:1.5!important}
+.site-search .search-results a[aria-selected=true],.site-search .search-results a:hover{border-color:var(--search-accent)!important;background:var(--search-soft)}
+.search-results a small{display:block;font-size:10px;color:var(--search-muted);margin-top:4px}.search-results p{margin:10px;font-size:13px;color:var(--search-muted)}
+.search-archive-summary{padding:20px;border:1px solid var(--search-line);border-radius:10px;background:var(--search-bg);color:var(--search-ink);margin:24px 0}.search-archive-summary h2{font-size:24px;margin:0 0 12px}.search-archive-summary li{margin:12px 0}.search-archive-summary a{color:var(--search-accent)}
+[data-professional-header]{position:sticky!important;top:0!important;z-index:1000!important;background:var(--search-bg)!important;--header-glass:rgba(16,26,48,.9);grid-template-columns:auto minmax(0,1fr) 230px auto!important}
+[data-professional-header][data-perimeter-theme=light],:root[data-reading-shell][data-theme=light] [data-professional-header]{--header-glass:rgba(255,255,255,.94)}
+[data-professional-header] .professional-mobile{display:none}.professional-mobile summary{min-width:38px;min-height:42px;display:grid;place-items:center;cursor:pointer;list-style:none}.professional-mobile summary::-webkit-details-marker{display:none}
+[data-professional-header] .professional-context{display:none}
+.professional-context-bar{padding:12px 24px;border-bottom:1px solid var(--search-line);background:var(--search-bg);color:var(--search-muted);font:12px/1.6 "Segoe UI",sans-serif;display:flex;flex-wrap:wrap;gap:8px 18px;overflow-wrap:anywhere}.professional-context-bar a{color:var(--search-accent)}
+@supports((backdrop-filter:blur(16px)) or (-webkit-backdrop-filter:blur(16px))){.site-header,[data-professional-header]{background:var(--header-glass)!important;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}}
+@media(max-width:1250px) and (min-width:701px){.header-inner{grid-template-columns:minmax(0,1fr) 230px auto!important;padding:12px 0;gap:12px!important}.desktop-nav{grid-row:2;grid-column:1/-1}.header-inner>.site-search{grid-column:2;grid-row:1}.header-inner>.controls{grid-column:3;grid-row:1}[data-professional-header]{grid-template-columns:minmax(0,1fr) 230px auto!important;gap:12px!important}[data-professional-header]>.professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header]>.site-search{grid-column:2;grid-row:1}[data-professional-header]>.professional-controls{grid-column:3;grid-row:1}:root{--header-offset:184px}}
+@media(max-width:700px){.header-inner{grid-template-columns:minmax(0,1fr) auto!important;padding:10px 0;gap:8px!important}.header-inner>.site-search{grid-row:2;grid-column:1/-1;width:100%}.header-inner>.controls{grid-column:2;grid-row:1}.site-search .search-results{width:100%;right:0}[data-professional-header]{grid-template-columns:minmax(0,1fr) auto!important;padding:10px 16px!important;gap:8px!important}[data-professional-header]>.professional-primary{display:none!important}[data-professional-header]>.site-search{grid-column:1/-1;grid-row:2;width:100%}[data-professional-header]>.professional-controls{grid-column:2;grid-row:1}[data-professional-header] .professional-mobile{display:block}[data-professional-header] .professional-mobile[open]>.professional-primary{position:absolute;top:100%;left:0;right:0;padding:16px;background:var(--search-bg);border-bottom:1px solid var(--search-line);display:grid;grid-template-columns:1fr 1fr;gap:8px}[data-professional-header] .professional-mobile .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:12px!important}:root{--header-offset:136px}}
+@media(prefers-reduced-transparency:reduce){.site-header,[data-professional-header]{background:var(--search-bg)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}}
+@media print{.site-search,.professional-context-bar{display:none!important}}
+
+@media(min-width:1251px){.header-inner{display:grid!important;grid-template-columns:auto minmax(0,1fr) 230px auto!important;gap:18px!important}.header-inner .desktop-nav{min-width:0}}
+
+html:has(.kee-dedicated-app-root){height:auto!important;overflow-x:hidden!important;overflow-y:auto!important}
+html:has([data-professional-header]),html:has(.site-header){max-width:100%!important;overflow-x:clip!important;overflow-y:visible!important}
+body:has([data-professional-header]),body:has(.site-header){height:auto!important;max-width:100%!important;overflow-x:clip!important;overflow-y:visible!important;padding-top:0!important}
+.table-scroll{overflow-y:visible!important;max-height:none!important}
+@media screen and (max-width:932px){body:has(>[data-professional-header])>.card,body:has(>[data-professional-header])>.deck-header{max-width:calc(100vw - 24px)!important;box-sizing:border-box!important}body:has(>[data-professional-header])>.card{zoom:min(1,calc((100vw - 24px)/900))}}
+.demo-language-navigation{display:none!important}
+.stage-column,.telemetry-panel,.scene-pill,#timeline-slider{min-width:0}
+@media(max-width:1180px){.workspace,.template-tabs{grid-template-columns:minmax(0,1fr)!important}}
+
+.in-arena-frame .professional-context-bar,.in-arena-frame [data-knowledge-atlas]{display:none!important}
+.knowledge-graph-wide{display:block}.knowledge-graph-compact{display:none}@media(max-width:600px){.knowledge-graph-wide{display:none}.knowledge-graph-compact{display:block}}
+</style></head>
+<body><nav class="kee-dedicated-nav" data-professional-header><a class="professional-identity reading-brand kee-dedicated-identity identity" href="../../index.html">Qi Chen · @turbo998</a><div class="professional-primary" role="navigation" aria-label="Primary sections"><a href="../../studio/index.html" data-section="hub" data-nav-en-href="../../studio/index.html" data-nav-zh-href="../../studio/zh-index.html" data-nav-en-label="Frontier Transformation Engineering Hub" data-nav-zh-label="Frontier Transformation Engineering Hub" aria-current="page">Frontier Transformation Engineering Hub</a><a href="../../diamond.html" data-section="diamond" data-nav-en-href="../../diamond.html" data-nav-zh-href="../../zh-diamond.html" data-nav-en-label="Diamond Live Demos" data-nav-zh-label="Diamond 架构演示">Diamond Live Demos</a><a href="../../benchmarks.html" data-section="benchmarks" data-nav-en-href="../../benchmarks.html" data-nav-zh-href="../../zh-benchmarks.html" data-nav-en-label="Benchmarks &amp; Evaluation" data-nav-zh-label="基准评测中心">Benchmarks &amp; Evaluation</a><a href="../../github-radar.html" data-section="radar" data-nav-en-href="../../github-radar.html" data-nav-zh-href="../../zh-github-radar.html" data-nav-en-label="GitHub AI Radar" data-nav-zh-label="GitHub AI 开源评估">GitHub AI Radar</a><a href="../../openrouter.html" data-section="routing" data-nav-en-href="../../openrouter.html" data-nav-zh-href="../../zh-openrouter.html" data-nav-en-label="Model Routing &amp; Telemetry" data-nav-zh-label="OpenRouter 模型遥测">Model Routing &amp; Telemetry</a><a href="../../about.html" data-section="profile" data-nav-en-href="../../about.html" data-nav-zh-href="../../zh-about.html" data-nav-en-label="Frontier Transformation Engineer" data-nav-zh-label="Frontier Transformation Engineer">Frontier Transformation Engineer</a></div><form class="site-search" role="search" action="../../studio/archive.html" method="get" data-search-root="../../index.html" data-search-language="en"><label class="search-label" for="site-search-input">Search architecture, benchmarks, demos...</label><input id="site-search-input" name="q" type="search" placeholder="Search architecture, benchmarks, demos..." autocomplete="off" spellcheck="false" aria-keyshortcuts="/ Control+k Meta+k"><kbd aria-hidden="true">/</kbd><button type="submit" aria-label="Search all content">⌕</button><div class="search-results" id="site-search-results" hidden></div><span class="search-status" role="status" aria-live="polite"></span></form><div class="reading-controls professional-controls" aria-label="Site language and appearance"><a href="index.en.html" hreflang="en" lang="en" aria-current="page">EN</a><a href="index.html" data-reading-language hreflang="zh-CN" lang="zh-CN">中文</a><details class="professional-mobile"><summary aria-label="Open navigation">☰</summary><div class="professional-primary" role="navigation" aria-label="Mobile navigation"><a href="../../studio/index.html" data-section="hub" data-nav-en-href="../../studio/index.html" data-nav-zh-href="../../studio/zh-index.html" data-nav-en-label="Frontier Transformation Engineering Hub" data-nav-zh-label="Frontier Transformation Engineering Hub" aria-current="page">Frontier Transformation Engineering Hub</a><a href="../../diamond.html" data-section="diamond" data-nav-en-href="../../diamond.html" data-nav-zh-href="../../zh-diamond.html" data-nav-en-label="Diamond Live Demos" data-nav-zh-label="Diamond 架构演示">Diamond Live Demos</a><a href="../../benchmarks.html" data-section="benchmarks" data-nav-en-href="../../benchmarks.html" data-nav-zh-href="../../zh-benchmarks.html" data-nav-en-label="Benchmarks &amp; Evaluation" data-nav-zh-label="基准评测中心">Benchmarks &amp; Evaluation</a><a href="../../github-radar.html" data-section="radar" data-nav-en-href="../../github-radar.html" data-nav-zh-href="../../zh-github-radar.html" data-nav-en-label="GitHub AI Radar" data-nav-zh-label="GitHub AI 开源评估">GitHub AI Radar</a><a href="../../openrouter.html" data-section="routing" data-nav-en-href="../../openrouter.html" data-nav-zh-href="../../zh-openrouter.html" data-nav-en-label="Model Routing &amp; Telemetry" data-nav-zh-label="OpenRouter 模型遥测">Model Routing &amp; Telemetry</a><a href="../../about.html" data-section="profile" data-nav-en-href="../../about.html" data-nav-zh-href="../../zh-about.html" data-nav-en-label="Frontier Transformation Engineer" data-nav-zh-label="Frontier Transformation Engineer">Frontier Transformation Engineer</a></div></details><a data-reading-theme="light" href="index.en.html?theme=light" aria-label="Light theme">☀</a><a data-reading-theme="dark" href="index.en.html?theme=dark" aria-label="Dark theme">◐</a></div><div class="professional-context" aria-label="Back to context"><a href="../../studio/index.html">← Engineering Hub</a> · <a href="../../studio/infra.html">Parent topic</a></div></nav><div class="professional-context-bar"><a href="../../studio/index.html">← Engineering Hub</a> · <a class="reading-context" href="../../studio/infra.html">Parent topic</a></div><!-- site-remediation-knowledge:start --><figure class="knowledge-figure" data-knowledge-atlas="infra" style="margin:20px auto;width:100%;max-width:min(2880px,100%);padding:0 clamp(0px,1.2vw,20px);box-sizing:border-box"><style>.knowledge-graph-wide{display:block!important}.knowledge-graph-compact{display:none!important}@media(max-width:600px){.knowledge-graph-wide{display:none!important}.knowledge-graph-compact{display:block!important}}</style><svg xmlns="http://www.w3.org/2000/svg" lang="en" class="knowledge-graph-compact" role="img" aria-labelledby="knowledge-2d0cab33313a-compact-title knowledge-2d0cab33313a-compact-desc" viewBox="0 0 360 973" width="360" style="width:100%;height:auto;max-width:560px;margin:0 auto;font-family:system-ui,sans-serif"><title id="knowledge-2d0cab33313a-compact-title">Azure Monitor FoundryModelEstimatedCost · Telemetry Pipeline, Cache-Aware Pricing &amp; FinOps Guardrails</title><desc id="knowledge-2d0cab33313a-compact-desc">Models - Usage · PT1M–P1D (&lt;2m): Free Azure Monitor metric on AIServices &amp; standalone OpenAI with 93-day retention → prices tokens → Prompt-Cache Discount &amp; 1.10× DataZone: Eliminates +68.73% naive DIY KQL over-estimation at 55.1% gpt-4.1-mini cache hit → verifies accuracy → 0.0000% Retail Variance (1–121 Burst): Verified across gpt-5.4 ($0.69022), gpt-5.4-mini, gpt-4.1 &amp; 3P Kimi-K2.6 reasoning → enforces guardrails → REST Metrics API + PT5M metricAlerts: Avoids DS Export 95.1% drop, HTTP 400 ProjectId=* trap &amp; $0 embedding/image blind spots</desc><rect width="360" height="973" rx="16" fill="#081525" stroke="#284566"/><rect x="16" y="14" width="256" height="22" rx="11" fill="#112844" stroke="#2d5a88"/><text x="28" y="29" fill="#56ddcd" font-size="11.5" font-weight="700"><tspan x="28" dy="0">REFERENCE ARCHITECTURE</tspan></text><text x="20" y="58" fill="#eef5ff" font-size="17" font-weight="700"><tspan x="20" dy="0">Azure Monitor</tspan><tspan x="20" dy="23.799999999999997">FoundryModelEstimatedCost</tspan><tspan x="20" dy="23.799999999999997">· Telemetry Pipeline,</tspan><tspan x="20" dy="23.799999999999997">Cache-Aware Pricing &amp;</tspan><tspan x="20" dy="23.799999999999997">FinOps Guardrails</tspan></text><text x="20" y="180" fill="#a9b8ce" font-size="12" font-weight="400"><tspan x="20" dy="0">Component, protocol &amp; SLA summary</tspan></text><g data-concept="1"><rect x="16" y="205" width="328" height="153" rx="12" fill="#0e2036" stroke="#38597d"/><rect x="16" y="205" width="328" height="4" rx="2" fill="#38bdf8"/><text x="30" y="228" fill="#38bdf8" font-size="11.5" font-weight="700"><tspan x="30" dy="0">01 · PLATFORM METRIC</tspan></text><text x="30" y="251" fill="#f0f6ff" font-size="16" font-weight="700"><tspan x="30" dy="0">Models - Usage · PT1M–P1D</tspan><tspan x="30" dy="22.4">(&lt;2m)</tspan></text><text x="30" y="301" fill="#c4d5e8" font-size="12.5" font-weight="400"><tspan x="30" dy="0">Free Azure Monitor metric on</tspan><tspan x="30" dy="17.5">AIServices &amp; standalone OpenAI</tspan><tspan x="30" dy="17.5">with 93-day retention</tspan></text></g><g data-relationship="prices tokens"><path d="M34 360 V398" fill="none" stroke="#56ddcd" stroke-width="2.2"/><path d="M29 392 L34 399 L39 392" fill="none" stroke="#56ddcd" stroke-width="2.2"/><text x="50" y="382" fill="#8eeadf" font-size="12" font-weight="600"><tspan x="50" dy="0">01→02 prices tokens</tspan></text></g><g data-concept="2"><rect x="16" y="404" width="328" height="153" rx="12" fill="#122842" stroke="#38597d"/><rect x="16" y="404" width="328" height="4" rx="2" fill="#34d399"/><text x="30" y="427" fill="#34d399" font-size="11.5" font-weight="700"><tspan x="30" dy="0">02 · CACHE &amp; SKU ENGINE</tspan></text><text x="30" y="450" fill="#f0f6ff" font-size="16" font-weight="700"><tspan x="30" dy="0">Prompt-Cache Discount &amp;</tspan><tspan x="30" dy="22.4">1.10× DataZone</tspan></text><text x="30" y="500" fill="#c4d5e8" font-size="12.5" font-weight="400"><tspan x="30" dy="0">Eliminates +68.73% naive DIY KQL</tspan><tspan x="30" dy="17.5">over-estimation at 55.1%</tspan><tspan x="30" dy="17.5">gpt-4.1-mini cache hit</tspan></text></g><g data-relationship="verifies accuracy"><path d="M34 559 V597" fill="none" stroke="#56ddcd" stroke-width="2.2"/><path d="M29 591 L34 598 L39 591" fill="none" stroke="#56ddcd" stroke-width="2.2"/><text x="50" y="581" fill="#8eeadf" font-size="12" font-weight="600"><tspan x="50" dy="0">02→03 verifies accuracy</tspan></text></g><g data-concept="3"><rect x="16" y="603" width="328" height="153" rx="12" fill="#0e2036" stroke="#38597d"/><rect x="16" y="603" width="328" height="4" rx="2" fill="#a78bfa"/><text x="30" y="626" fill="#a78bfa" font-size="11.5" font-weight="700"><tspan x="30" dy="0">03 · EMPIRICAL PARITY</tspan></text><text x="30" y="649" fill="#f0f6ff" font-size="16" font-weight="700"><tspan x="30" dy="0">0.0000% Retail Variance</tspan><tspan x="30" dy="22.4">(1–121 Burst)</tspan></text><text x="30" y="699" fill="#c4d5e8" font-size="12.5" font-weight="400"><tspan x="30" dy="0">Verified across gpt-5.4</tspan><tspan x="30" dy="17.5">($0.69022), gpt-5.4-mini,</tspan><tspan x="30" dy="17.5">gpt-4.1 &amp; 3P Kimi-K2.6 reasoning</tspan></text></g><g data-relationship="enforces guardrails"><path d="M34 758 V796" fill="none" stroke="#56ddcd" stroke-width="2.2"/><path d="M29 790 L34 797 L39 790" fill="none" stroke="#56ddcd" stroke-width="2.2"/><text x="50" y="780" fill="#8eeadf" font-size="12" font-weight="600"><tspan x="50" dy="0">03→04 enforces guardrails</tspan></text></g><g data-concept="4"><rect x="16" y="802" width="328" height="153" rx="12" fill="#122842" stroke="#38597d"/><rect x="16" y="802" width="328" height="4" rx="2" fill="#f59e0b"/><text x="30" y="825" fill="#f59e0b" font-size="11.5" font-weight="700"><tspan x="30" dy="0">04 · FINOPS GUARDRAILS</tspan></text><text x="30" y="848" fill="#f0f6ff" font-size="16" font-weight="700"><tspan x="30" dy="0">REST Metrics API + PT5M</tspan><tspan x="30" dy="22.4">metricAlerts</tspan></text><text x="30" y="898" fill="#c4d5e8" font-size="12.5" font-weight="400"><tspan x="30" dy="0">Avoids DS Export 95.1% drop,</tspan><tspan x="30" dy="17.5">HTTP 400 ProjectId=* trap &amp; $0</tspan><tspan x="30" dy="17.5">embedding/image blind spots</tspan></text></g></svg><svg xmlns="http://www.w3.org/2000/svg" lang="en" class="knowledge-graph-wide" role="img" aria-labelledby="knowledge-2d0cab33313a-title knowledge-2d0cab33313a-desc" viewBox="0 0 1360 461" width="1360" style="width:100%;height:auto;margin:0 auto;font-family:system-ui,sans-serif"><title id="knowledge-2d0cab33313a-title">Azure Monitor FoundryModelEstimatedCost · Telemetry Pipeline, Cache-Aware Pricing &amp; FinOps Guardrails</title><desc id="knowledge-2d0cab33313a-desc">Models - Usage · PT1M–P1D (&lt;2m): Free Azure Monitor metric on AIServices &amp; standalone OpenAI with 93-day retention → prices tokens → Prompt-Cache Discount &amp; 1.10× DataZone: Eliminates +68.73% naive DIY KQL over-estimation at 55.1% gpt-4.1-mini cache hit → verifies accuracy → 0.0000% Retail Variance (1–121 Burst): Verified across gpt-5.4 ($0.69022), gpt-5.4-mini, gpt-4.1 &amp; 3P Kimi-K2.6 reasoning → enforces guardrails → REST Metrics API + PT5M metricAlerts: Avoids DS Export 95.1% drop, HTTP 400 ProjectId=* trap &amp; $0 embedding/image blind spots</desc><rect width="1360" height="461" rx="16" fill="#081525" stroke="#284566"/><rect x="24" y="16" width="308" height="24" rx="12" fill="#102742" stroke="#2d5a88"/><text x="38" y="32" fill="#56ddcd" font-size="11.5" font-weight="700"><tspan x="38" dy="0">REFERENCE ARCHITECTURE &amp; ENGINEERING SUMMARY</tspan></text><rect x="926" y="16" width="196" height="24" rx="12" fill="#0d2238" stroke="#254b6e"/><text x="940" y="32" fill="#7ce8d8" font-size="11.5" font-weight="600"><tspan x="940" dy="0">──▶ Data &amp; Protocol Plane</tspan></text><rect x="1132" y="16" width="204" height="24" rx="12" fill="#15203c" stroke="#3b4278"/><text x="1146" y="32" fill="#c4b5fd" font-size="11.5" font-weight="600"><tspan x="1146" dy="0">◆ Design Decisions &amp; SLAs</tspan></text><text x="24" y="62" fill="#f2f7ff" font-size="18" font-weight="700"><tspan x="24" dy="0">Azure Monitor FoundryModelEstimatedCost · Telemetry Pipeline, Cache-Aware Pricing &amp;</tspan><tspan x="24" dy="25.2">FinOps Guardrails</tspan></text><g data-concept="1"><rect x="24" y="106" width="310" height="182" rx="12" fill="#0d1e34" stroke="#335277" stroke-width="1.2"/><rect x="24" y="106" width="310" height="5" rx="2.5" fill="#38bdf8"/><rect x="34" y="119" width="290" height="22" rx="6" fill="#081424" stroke="#223b59"/><text x="40" y="134" fill="#38bdf8" font-size="11.5" font-weight="700"><tspan x="40" dy="0">01 · PLATFORM METRIC</tspan></text><text x="36" y="160" fill="#f4f8ff" font-size="13.5" font-weight="700"><tspan x="36" dy="0">Models - Usage · PT1M–P1D (&lt;2m)</tspan></text><path d="M36 175 H322" stroke="#233b57" stroke-width="1"/><text x="36" y="193" fill="#c5d6e8" font-size="12" font-weight="400"><tspan x="36" dy="0">Free Azure Monitor metric on AIServices &amp;</tspan><tspan x="36" dy="16.799999999999997">standalone OpenAI with 93-day retention</tspan></text></g><g data-relationship="prices tokens"><path d="M336 197 H354" fill="none" stroke="#56ddcd" stroke-width="2.4"/><path d="M348 192 L355 197 L348 202" fill="none" stroke="#56ddcd" stroke-width="2.4"/><rect x="24" y="296" width="310" height="30" rx="8" fill="#0b2239" stroke="#2b5b6c"/><text x="34" y="315" fill="#7ce8d8" font-size="11.5" font-weight="600"><tspan x="34" dy="0">01→02 prices tokens</tspan></text></g><g data-concept="2"><rect x="358" y="106" width="310" height="182" rx="12" fill="#112640" stroke="#335277" stroke-width="1.2"/><rect x="358" y="106" width="310" height="5" rx="2.5" fill="#34d399"/><rect x="368" y="119" width="290" height="22" rx="6" fill="#081424" stroke="#223b59"/><text x="374" y="134" fill="#34d399" font-size="11.5" font-weight="700"><tspan x="374" dy="0">02 · CACHE &amp; SKU ENGINE</tspan></text><text x="370" y="160" fill="#f4f8ff" font-size="13.5" font-weight="700"><tspan x="370" dy="0">Prompt-Cache Discount &amp; 1.10×</tspan><tspan x="370" dy="18.9">DataZone</tspan></text><path d="M370 194 H656" stroke="#233b57" stroke-width="1"/><text x="370" y="212" fill="#c5d6e8" font-size="12" font-weight="400"><tspan x="370" dy="0">Eliminates +68.73% naive DIY KQL</tspan><tspan x="370" dy="16.799999999999997">over-estimation at 55.1% gpt-4.1-mini</tspan><tspan x="370" dy="16.799999999999997">cache hit</tspan></text></g><g data-relationship="verifies accuracy"><path d="M670 197 H688" fill="none" stroke="#56ddcd" stroke-width="2.4"/><path d="M682 192 L689 197 L682 202" fill="none" stroke="#56ddcd" stroke-width="2.4"/><rect x="358" y="296" width="310" height="30" rx="8" fill="#0b2239" stroke="#2b5b6c"/><text x="368" y="315" fill="#7ce8d8" font-size="11.5" font-weight="600"><tspan x="368" dy="0">02→03 verifies accuracy</tspan></text></g><g data-concept="3"><rect x="692" y="106" width="310" height="182" rx="12" fill="#0d1e34" stroke="#335277" stroke-width="1.2"/><rect x="692" y="106" width="310" height="5" rx="2.5" fill="#a78bfa"/><rect x="702" y="119" width="290" height="22" rx="6" fill="#081424" stroke="#223b59"/><text x="708" y="134" fill="#a78bfa" font-size="11.5" font-weight="700"><tspan x="708" dy="0">03 · EMPIRICAL PARITY</tspan></text><text x="704" y="160" fill="#f4f8ff" font-size="13.5" font-weight="700"><tspan x="704" dy="0">0.0000% Retail Variance (1–121</tspan><tspan x="704" dy="18.9">Burst)</tspan></text><path d="M704 194 H990" stroke="#233b57" stroke-width="1"/><text x="704" y="212" fill="#c5d6e8" font-size="12" font-weight="400"><tspan x="704" dy="0">Verified across gpt-5.4 ($0.69022),</tspan><tspan x="704" dy="16.799999999999997">gpt-5.4-mini, gpt-4.1 &amp; 3P Kimi-K2.6</tspan><tspan x="704" dy="16.799999999999997">reasoning</tspan></text></g><g data-relationship="enforces guardrails"><path d="M1004 197 H1022" fill="none" stroke="#56ddcd" stroke-width="2.4"/><path d="M1016 192 L1023 197 L1016 202" fill="none" stroke="#56ddcd" stroke-width="2.4"/><rect x="692" y="296" width="310" height="30" rx="8" fill="#0b2239" stroke="#2b5b6c"/><text x="702" y="315" fill="#7ce8d8" font-size="11.5" font-weight="600"><tspan x="702" dy="0">03→04 enforces guardrails</tspan></text></g><g data-concept="4"><rect x="1026" y="106" width="310" height="182" rx="12" fill="#112640" stroke="#335277" stroke-width="1.2"/><rect x="1026" y="106" width="310" height="5" rx="2.5" fill="#f59e0b"/><rect x="1036" y="119" width="290" height="22" rx="6" fill="#081424" stroke="#223b59"/><text x="1042" y="134" fill="#f59e0b" font-size="11.5" font-weight="700"><tspan x="1042" dy="0">04 · FINOPS GUARDRAILS</tspan></text><text x="1038" y="160" fill="#f4f8ff" font-size="13.5" font-weight="700"><tspan x="1038" dy="0">REST Metrics API + PT5M metricAlerts</tspan></text><path d="M1038 175 H1324" stroke="#233b57" stroke-width="1"/><text x="1038" y="193" fill="#c5d6e8" font-size="12" font-weight="400"><tspan x="1038" dy="0">Avoids DS Export 95.1% drop, HTTP 400</tspan><tspan x="1038" dy="16.799999999999997">ProjectId=* trap &amp; $0 embedding/image</tspan><tspan x="1038" dy="16.799999999999997">blind spots</tspan></text></g><rect x="1026" y="296" width="310" height="30" rx="8" fill="#0e2538" stroke="#2e5470"/><text x="1036" y="315" fill="#93c5fd" font-size="11.5" font-weight="600"><tspan x="1036" dy="0">04 Output · Verified SLA &amp; Audit</tspan></text><g data-takeaway="1"><rect x="24" y="340" width="426" height="105" rx="10" fill="#0b1a2e" stroke="#284466"/><rect x="24" y="352" width="4" height="81" rx="2" fill="#38bdf8"/><text x="38" y="364" fill="#38bdf8" font-size="11.5" font-weight="700"><tspan x="38" dy="0">01 · Query Metrics REST API Directly, Not</tspan><tspan x="38" dy="16.099999999999998">AzureMetrics</tspan></text><text x="38" y="398" fill="#d5e4f5" font-size="12" font-weight="400"><tspan x="38" dy="0">Diagnostic Settings export drops ~95.1% of cost</tspan><tspan x="38" dy="16.799999999999997">records; bind dashboards and PT5M alerts to native</tspan><tspan x="38" dy="16.799999999999997">platform metrics.</tspan></text></g><g data-takeaway="2"><rect x="467" y="340" width="426" height="105" rx="10" fill="#0b1a2e" stroke="#284466"/><rect x="467" y="352" width="4" height="81" rx="2" fill="#a78bfa"/><text x="481" y="364" fill="#a78bfa" font-size="11.5" font-weight="700"><tspan x="481" dy="0">02 · Native Metric Fixes Prompt-Cache</tspan><tspan x="481" dy="16.099999999999998">Over-Billing Math</tspan></text><text x="481" y="398" fill="#d5e4f5" font-size="12" font-weight="400"><tspan x="481" dy="0">Naive total-token KQL over-estimates cached</tspan><tspan x="481" dy="16.799999999999997">workloads by +68.73% because cached input tokens</tspan><tspan x="481" dy="16.799999999999997">bill at steep discounts.</tspan></text></g><g data-takeaway="3"><rect x="910" y="340" width="426" height="105" rx="10" fill="#0b1a2e" stroke="#284466"/><rect x="910" y="352" width="4" height="81" rx="2" fill="#34d399"/><text x="924" y="364" fill="#34d399" font-size="11.5" font-weight="700"><tspan x="924" dy="0">03 · Pair With AgentModelEstimatedCost &amp; Scope</tspan><tspan x="924" dy="16.099999999999998">Guards</tspan></text><text x="924" y="398" fill="#d5e4f5" font-size="12" font-weight="400"><tspan x="924" dy="0">Query per-model without ProjectId eq '*', supplement</tspan><tspan x="924" dy="16.799999999999997">embeddings/images separately, and use</tspan><tspan x="924" dy="16.799999999999997">AgentModelEstimatedCost per project.</tspan></text></g></svg><figcaption style="font:13px/1.6 system-ui,sans-serif;margin:10px auto 0;max-width:100%;color:#9fb2ca;overflow-wrap:anywhere">Page architecture summary: component boundaries, stage protocol contracts, and three engineering selection takeaways.</figcaption></figure><!-- site-remediation-knowledge:end --><main class="fl-shell">
+  <header class="fl-hero">
+    <div class="fl-hero-top">
+      <div class="fl-badge-row">
+        <span class="fl-badge fl-badge-primary">
+          <img src="../../ignite-2026/assets/icons/monitor.svg" alt="" width="15" height="15">
+          Azure Monitor · Models - Usage
+        </span>
+        <span class="fl-badge fl-badge-accent">
+          <img src="../../ignite-2026/assets/icons/foundry.svg" alt="" width="15" height="15">
+          FoundryModelEstimatedCost (Preview)
+        </span>
+        <span class="fl-badge fl-badge-ok">2026-11-23 Live Verification · 0.0000% Retail Variance</span>
+      </div>
+      <div class="fl-toolbar-actions">
+        <a class="fl-btn" href="index.html" hreflang="zh-CN">Chinese Edition (ZH)</a>
+        <button type="button" class="fl-btn" id="themeToggle" aria-label="Toggle dark or light theme">Toggle Dark/Light</button>
+        <a class="fl-btn fl-btn-primary" href="https://github.com/turbo998/Azure-Foundry-Quick-Start/blob/main/foundry-model-estimated-cost-guide.en.md" target="_blank" rel="noopener">Full Empirical Guide (GitHub) ↗</a>
+      </div>
+    </div>
+    <h1>Azure Monitor <code>FoundryModelEstimatedCost</code> (Preview) — Readiness, Accuracy &amp; Partner FinOps Guide</h1>
+    <p class="fl-lead">
+      Interactive evaluation workbench for partners and AI Solution Architects answering <strong>whether <code>FoundryModelEstimatedCost</code> is production-ready today, how accurate its USD numbers are, what preview blind spots remain, and how to pair it with Azure Cost Management</strong>. Across 2026-11-23 live tests, it achieved <strong>0.0000% variance</strong> against public retail PayGo rates on supported chat/reasoning models and eliminated a <strong>+68.73% DIY KQL over-estimation error</strong> under <strong>55.1% prompt cache hit</strong>.
+    </p>
+    <div class="fl-kpi-grid">
+      <div class="fl-kpi">
+        <div class="fl-kpi-val is-ok">0.0000%</div>
+        <div class="fl-kpi-label">Retail PayGo variance on supported chat/reasoning models (GPT-5.4, 4.1, Kimi-K2.6, DataZone)</div>
+      </div>
+      <div class="fl-kpi">
+        <div class="fl-kpi-val is-bad">+68.73% Error Fixed</div>
+        <div class="fl-kpi-label">Applies 75% cache discount under 55.1% cache hit ($0.00352 vs naive KQL $0.00594)</div>
+      </div>
+      <div class="fl-kpi">
+        <div class="fl-kpi-val">&lt; 2 min · $0</div>
+        <div class="fl-kpi-label">Free standard Azure Monitor metric · PT1M–P1D grains · 93-day retention</div>
+      </div>
+      <div class="fl-kpi">
+        <div class="fl-kpi-val is-bad">95.1% Drop Avoided</div>
+        <div class="fl-kpi-label">Never export via Diagnostic Settings to AzureMetrics; query Metrics REST directly</div>
+      </div>
+    </div>
+  </header>
+
+  <div class="fl-tabs" role="tablist" aria-label="FoundryModelEstimatedCost FinOps Navigation">
+    <button type="button" class="fl-tab" role="tab" id="tab-overview" aria-selected="true" aria-controls="panel-overview" data-tab="overview">1. Readiness &amp; Architecture</button>
+    <button type="button" class="fl-tab" role="tab" id="tab-simulator" aria-selected="false" aria-controls="panel-simulator" data-tab="simulator">2. Prompt-Cache &amp; SKU Simulator</button>
+    <button type="button" class="fl-tab" role="tab" id="tab-benchmarks" aria-selected="false" aria-controls="panel-benchmarks" data-tab="benchmarks">3. 2026-11-23 Accuracy Matrix</button>
+    <button type="button" class="fl-tab" role="tab" id="tab-playbooks" aria-selected="false" aria-controls="panel-playbooks" data-tab="playbooks">4. Guardrails &amp; Partner Playbook</button>
+  </div>
+
+  <!-- Panel 1: Overview & Architecture -->
+  <section class="fl-panel is-active" id="panel-overview" role="tabpanel" aria-labelledby="tab-overview">
+    <span id="overview" hidden></span>
+    <div class="fl-card">
+      <h2>At a Glance: <code>FoundryModelEstimatedCost</code> Control-Plane Architecture &amp; Live Findings</h2>
+      <p class="fl-muted">Zero sidecar billing proxies or custom log parsers required: the metric is registered natively on <code>Microsoft.CognitiveServices/accounts</code> for both Microsoft Foundry (<code>AIServices</code>) and standalone <code>OpenAI</code> accounts.</p>
+      <figure class="fl-figure">
+        <img src="../../assets/foundry-estimated-cost-overview.en.svg" alt="FoundryModelEstimatedCost live accuracy and partner FinOps blueprint overview" width="1200" height="630" loading="eager">
+        <figcaption>Figure 1: Sanitized 2026-11-23 live verification blueprint covering metric contract, 0.0000% retail reconciliation, 55.1% prompt-cache discount accuracy, and two-speed partner FinOps governance.</figcaption>
+      </figure>
+    </div>
+
+    <div class="fl-grid-2">
+      <div class="fl-card">
+        <h3>Platform Metric Specification (Control-Plane Contract)</h3>
+        <div class="fl-table-wrap">
+          <table class="fl-table">
+            <tbody>
+              <tr>
+                <th>Resource Provider</th>
+                <td><code>Microsoft.CognitiveServices/accounts</code> (both <code>kind: AIServices</code> and standalone <code>kind: OpenAI</code>)</td>
+              </tr>
+              <tr>
+                <th>Category &amp; Unit</th>
+                <td><code>Models - Usage</code> · <code>Total</code> aggregation in <code>USD</code> (free standard platform metric)</td>
+              </tr>
+              <tr>
+                <th>Grains &amp; Retention</th>
+                <td><code>PT1M</code>, <code>PT5M</code>, <code>PT15M</code>, <code>PT30M</code>, <code>PT1H</code>, <code>PT6H</code>, <code>PT12H</code>, <code>P1D</code> · <strong>93-day</strong> retention</td>
+              </tr>
+              <tr>
+                <th>Ingestion Latency</th>
+                <td>Measured <strong>&lt; 2 minutes</strong> (ideal for <code>PT5M</code> near-real-time anomaly circuit-breakers)</td>
+              </tr>
+              <tr>
+                <th>Dimensions</th>
+                <td><code>ModelDeploymentName</code>, <code>ModelName</code>, <code>ModelVersion</code>, <code>ProjectId</code> (note: <code>ProjectId</code> currently emits <code>'N/A'</code> on standard/project <code>/openai/v1</code> calls)</td>
+              </tr>
+              <tr>
+                <th>Sibling Project Metric</th>
+                <td><code>AgentModelEstimatedCost</code> on <code>Microsoft.CognitiveServices/accounts/projects</code> provides <code>AgentName</code> + <code>AgentVersion</code> attribution</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="fl-card">
+        <h3>Executive Guidance for Partners (SA Verdict)</h3>
+        <div class="fl-callout fl-callout-ok">
+          <strong>Production-Ready Today:</strong><br>
+          Deploy immediately for PayGo chat and reasoning models (both 1P GPT-5.4 / GPT-4.1 families and 3P partner models such as <code>MoonshotAI/Kimi-K2.6</code>) to drive <strong>sub-5-minute spend spike alerts (<code>metricAlerts</code>)</strong> and <strong>cache-aware, DataZone-aware (1.1000×) operational showback dashboards</strong>.
+        </div>
+        <div class="fl-callout fl-callout-warn">
+          <strong>Pair with Azure Cost Management (Preview Boundaries):</strong><br>
+          Embeddings (<code>text-embedding-3-large</code>) and Image Generation (<code>FLUX.2-pro</code>, <code>FLUX.2-flex</code>, <code>gpt-image-*</code>) emit <strong><code>$0</code></strong> in Preview; PTU reservation hours, fine-tuning training/hosting, negotiated EA/MCA/MACC custom discounts, and downstream AI Search / Cosmos DB charges are excluded. <strong>Keep Azure Cost Management / FOCUS exports as your T+1 invoice source of truth.</strong>
+        </div>
+      </div>
+    </div>
+
+    <div class="fl-card">
+      <h2>Data-Plane Inference &amp; Two-Speed Partner FinOps Topology</h2>
+      <p class="fl-muted">Why multiplying <code>InputTokens</code> inside Log Analytics <code>AzureMetrics</code> both drops bursts and over-estimates cached workloads:</p>
+      <figure class="fl-figure">
+        <svg viewBox="0 0 1080 310" role="img" aria-labelledby="flow-en-title flow-en-desc">
+          <title id="flow-en-title">FoundryModelEstimatedCost Two-Speed Telemetry and Billing Reconciliation Topology</title>
+          <desc id="flow-en-desc">Compares the recommended Microsoft.Insights/metrics fast loop, the unsupported Diagnostic Settings AzureMetrics anti-pattern, and the T+1 Azure Cost Management invoice loop.</desc>
+          <rect width="1080" height="310" fill="#0b1526"/>
+          <!-- Left: Foundry Data Plane -->
+          <rect x="26" y="36" width="270" height="238" rx="12" fill="#13233d" stroke="#38bdf8" stroke-width="1.5"/>
+          <text x="44" y="66" fill="#7dd3fc" font-family="Segoe UI, sans-serif" font-size="14" font-weight="700">Inference Data Plane</text>
+          <text x="44" y="92" fill="#e2e8f0" font-family="Consolas, monospace" font-size="11.5">/openai/v1/responses &amp; chat</text>
+          <text x="44" y="118" fill="#cbd5e1" font-family="Segoe UI, sans-serif" font-size="11.3">• GlobalStandard (1.0000x)</text>
+          <text x="44" y="140" fill="#cbd5e1" font-family="Segoe UI, sans-serif" font-size="11.3">• DataZoneStandard (1.1000x)</text>
+          <text x="44" y="162" fill="#34d399" font-family="Segoe UI, sans-serif" font-size="11.3">• Prompt Cache Discount Aware</text>
+          <text x="44" y="184" fill="#cbd5e1" font-family="Segoe UI, sans-serif" font-size="11.3">• 3P Models (Kimi-K2.6, etc.)</text>
+          <rect x="44" y="204" width="234" height="52" rx="8" fill="#1d2849" stroke="#6366f1"/>
+          <text x="56" y="225" fill="#c7d2fe" font-family="Segoe UI, sans-serif" font-size="10.8" font-weight="700">Foundry Agent Service Project</text>
+          <text x="56" y="244" fill="#a5b4fc" font-family="Consolas, monospace" font-size="10.2">AgentModelEstimatedCost</text>
+
+          <!-- Arrows -->
+          <line x1="296" y1="88" x2="376" y2="68" stroke="#10b981" stroke-width="2.5"/>
+          <polygon points="376,68 365,64 368,74" fill="#10b981"/>
+          <line x1="296" y1="155" x2="376" y2="155" stroke="#f43f5e" stroke-width="2" stroke-dasharray="6,5"/>
+          <polygon points="376,155 366,150 366,160" fill="#f43f5e"/>
+          <line x1="296" y1="224" x2="376" y2="242" stroke="#38bdf8" stroke-width="2.5"/>
+          <polygon points="376,242 368,235 365,245" fill="#38bdf8"/>
+
+          <!-- Track 1: Recommended Fast Loop -->
+          <rect x="382" y="24" width="672" height="84" rx="11" fill="#0c2924" stroke="#10b981" stroke-width="1.6"/>
+          <text x="402" y="51" fill="#34d399" font-family="Segoe UI, sans-serif" font-size="13.2" font-weight="700">✓ Fast Loop (&lt; 2 min): Azure Monitor Metrics REST API + PT5M metricAlerts</text>
+          <text x="402" y="73" fill="#d1fae5" font-family="Consolas, monospace" font-size="10.9">GET .../providers/Microsoft.Insights/metrics?metricnames=FoundryModelEstimatedCost&amp;$filter=ModelDeploymentName eq '*'</text>
+          <text x="402" y="94" fill="#a7f3d0" font-family="Segoe UI, sans-serif" font-size="11">Retains full dimensions, applies 75% cache discount &amp; 1.10x DataZone uplift, 0.0000% drop on 121-call burst</text>
+
+          <!-- Track 2: Forbidden Anti-Pattern -->
+          <rect x="382" y="118" width="672" height="74" rx="11" fill="#2c121d" stroke="#f43f5e" stroke-width="1.4"/>
+          <text x="402" y="144" fill="#fda4af" font-family="Segoe UI, sans-serif" font-size="13.2" font-weight="700">✕ Anti-Pattern: Diagnostic Settings Export to Log Analytics AzureMetrics (DS Export: No)</text>
+          <text x="402" y="166" fill="#fecdd3" font-family="Segoe UI, sans-serif" font-size="10.9">Measured flaws: (1) strips model/deployment dimensions; (2) dropped up to 95.1% of burst points; (3) DIY KQL +68.73% error</text>
+
+          <!-- Track 3: Slow Loop Billing -->
+          <rect x="382" y="202" width="672" height="84" rx="11" fill="#10233b" stroke="#38bdf8" stroke-width="1.5"/>
+          <text x="402" y="229" fill="#7dd3fc" font-family="Segoe UI, sans-serif" font-size="13.2" font-weight="700">✓ Slow Loop (T+1 Authoritative Invoice): Azure Cost Management + FOCUS Export</text>
+          <text x="402" y="251" fill="#cbd5e1" font-family="Segoe UI, sans-serif" font-size="11">Covers excluded items: negotiated EA / MCA / MACC discounts, PTU reservation hours, fine-tuning training/hosting,</text>
+          <text x="402" y="272" fill="#cbd5e1" font-family="Segoe UI, sans-serif" font-size="11">Embeddings (text-embedding-3-large), Image Gen (FLUX.2 / gpt-image-*), and downstream AI Search / Cosmos DB spend</text>
+        </svg>
+        <figcaption>Figure 2: Pair sub-2-minute Azure Monitor metric guardrails with T+1 Azure Cost Management invoice reconciliation.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- Panel 2: Interactive FinOps Simulator -->
+  <section class="fl-panel" id="panel-simulator" role="tabpanel" aria-labelledby="tab-simulator">
+    <span id="simulator" hidden></span>
+    <div class="fl-card">
+      <h2>Interactive FinOps Prompt-Cache, SKU &amp; DIY-KQL Variance Simulator</h2>
+      <p class="fl-muted">Load a live-verified 2026-11-23 workload preset or drag the sliders to compare <code>FoundryModelEstimatedCost</code>, naive <code>InputTokens</code> KQL math, and net enterprise invoice estimates.</p>
+
+      <div class="fl-preset-bar" role="group" aria-label="Live verification workload presets">
+        <button type="button" class="fl-preset-btn is-active" data-preset="cache-mini">★ Live Case: gpt-4.1-mini · 55.1% Cache Hit (5 Calls)</button>
+        <button type="button" class="fl-preset-btn" data-preset="gpt54-burst">Live Case: gpt-5.4 · 121-Call Burst ($0.69022)</button>
+        <button type="button" class="fl-preset-btn" data-preset="kimi-3p">Live Case: MoonshotAI/Kimi-K2.6 (3P Reasoning)</button>
+        <button type="button" class="fl-preset-btn" data-preset="datazone-uplift">SKU Uplift: gpt-4.1 DataZoneStandard (1.1000x)</button>
+        <button type="button" class="fl-preset-btn" data-preset="blindspot-embed">Preview Blind Spot: text-embedding-3-large / FLUX.2 ($0)</button>
+      </div>
+
+      <div class="fl-form-grid">
+        <div class="fl-field">
+          <label for="simModel"><span>1. Model &amp; Modality (ModelName)</span><span id="simRateBadge" class="fl-badge fl-badge-primary">$0.40 / $1.60 /1M</span></label>
+          <select id="simModel">
+            <option value="gpt-4.1-mini" selected>gpt-4.1-mini ($0.40 in / $0.10 cached [75% off] / $1.60 out)</option>
+            <option value="gpt-5.4">gpt-5.4 ($2.50 in / $0.25 cached [90% off] / $15.00 out)</option>
+            <option value="gpt-5.4-mini">gpt-5.4-mini ($0.75 in / $0.075 cached [90% off] / $4.50 out)</option>
+            <option value="gpt-4.1">gpt-4.1 ($2.00 in / $0.50 cached [75% off] / $8.00 out)</option>
+            <option value="kimi-k2.6">MoonshotAI/Kimi-K2.6 (3P Partner · $0.95 in / $4.00 out)</option>
+            <option value="embedding-blindspot">text-embedding-3-large (Embedding Blind Spot · $0.13 /1M · Emits $0)</option>
+            <option value="image-blindspot">FLUX.2-pro / gpt-image-* (Image Blind Spot · Emits $0)</option>
+          </select>
+        </div>
+
+        <div class="fl-field">
+          <label for="simSku"><span>2. Deployment SKU</span><span id="simSkuBadge" class="fl-badge fl-badge-ok">1.0000x Multiplier</span></label>
+          <select id="simSku">
+            <option value="global" selected>GlobalStandard — Standard Global PayGo (1.0000x baseline)</option>
+            <option value="datazone">DataZoneStandard — Data-Residency PayGo (Verified 1.1000x = +10%)</option>
+            <option value="ptu">ProvisionedManaged (PTU) — Reservation Hours (Excluded, emits $0)</option>
+          </select>
+        </div>
+
+        <div class="fl-field">
+          <label for="simInputTokens"><span>3. Total Input Tokens (Monitor InputTokens)</span><code id="simInputVal">14,640</code></label>
+          <input type="range" id="simInputTokens" min="500" max="500000" step="100" value="14640">
+        </div>
+
+        <div class="fl-field">
+          <label for="simCachePct"><span>4. Prompt Cache Hit Ratio (Cached Input %)</span><code id="simCacheVal">55.1% (8,064 cached)</code></label>
+          <input type="range" id="simCachePct" min="0" max="95" step="1" value="55">
+        </div>
+
+        <div class="fl-field">
+          <label for="simOutputTokens"><span>5. Output &amp; Reasoning Tokens (OutputTokens)</span><code id="simOutputVal">52</code></label>
+          <input type="range" id="simOutputTokens" min="0" max="50000" step="10" value="52">
+        </div>
+
+        <div class="fl-field">
+          <label for="simScale"><span>6. Traffic Scale &amp; Negotiated Discount (EA/MACC)</span><code id="simDiscountVal">1x Batch · 0% Discount</code></label>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+            <select id="simScale" aria-label="Traffic scale multiplier">
+              <option value="1" selected>Single Verified Batch (1x)</option>
+              <option value="1000">Daily Production Scale (1,000x)</option>
+              <option value="30000">Monthly Production Scale (30,000x)</option>
+            </select>
+            <select id="simDiscount" aria-label="Negotiated EA or MACC discount">
+              <option value="0" selected>Public Retail Rate (0% off)</option>
+              <option value="12">Enterprise Agreement (-12%)</option>
+              <option value="25">Strategic MACC Tier (-25%)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="fl-sim-results" aria-live="polite">
+        <div class="fl-sim-box is-highlight" id="simMetricBox">
+          <div class="fl-sim-title">FoundryModelEstimatedCost Emitted USD</div>
+          <div class="fl-sim-usd" id="simMetricUsd">$0.00352000</div>
+          <div class="fl-sim-sub" id="simMetricNote">Applies 75% discount on 8,064 cached tokens · 0.0000% retail variance</div>
+        </div>
+
+        <div class="fl-sim-box is-danger" id="simKqlBox">
+          <div class="fl-sim-title">Naive DIY Token KQL Estimate (Uncached Math)</div>
+          <div class="fl-sim-usd" id="simKqlUsd">$0.00593920</div>
+          <div class="fl-sim-sub" id="simKqlNote">Error: +68.73% over-estimate (bills all 14,640 InputTokens at full price)</div>
+        </div>
+
+        <div class="fl-sim-box">
+          <div class="fl-sim-title">Retail / Net Invoice Reference (Cost Mgmt)</div>
+          <div class="fl-sim-usd" id="simNetUsd">$0.00352000</div>
+          <div class="fl-sim-sub" id="simNetNote">Matches retail PayGo; reconcile EA/MACC discounts &amp; blind spots in billing</div>
+        </div>
+      </div>
+
+      <div class="fl-bar-compare">
+        <div class="fl-bar-row">
+          <div class="fl-bar-head">
+            <span>FoundryModelEstimatedCost (Azure Monitor Platform Metric)</span>
+            <code id="barMetricLabel">$0.00352000</code>
+          </div>
+          <div class="fl-bar-track"><div class="fl-bar-fill" id="barMetricFill" style="width:59.3%;background:var(--ok);"></div></div>
+        </div>
+        <div class="fl-bar-row">
+          <div class="fl-bar-head">
+            <span>Naive DIY Token KQL (<code>InputTokens * UncachedRate + OutputTokens * OutRate</code>)</span>
+            <code id="barKqlLabel">$0.00593920 (+68.73%)</code>
+          </div>
+          <div class="fl-bar-track"><div class="fl-bar-fill" id="barKqlFill" style="width:100%;background:var(--bad);"></div></div>
+        </div>
+        <div class="fl-bar-row">
+          <div class="fl-bar-head">
+            <span>Actual Retail / Net Enterprise Reference (Excl. PTU &amp; Search/Cosmos DB)</span>
+            <code id="barNetLabel">$0.00352000</code>
+          </div>
+          <div class="fl-bar-track"><div class="fl-bar-fill" id="barNetFill" style="width:59.3%;background:var(--primary);"></div></div>
+        </div>
+      </div>
+
+      <div class="fl-callout fl-callout-ok" id="simVerdictBox">
+        <strong>Architect Diagnostic Verdict:</strong> Under the verified <strong>gpt-4.1-mini · 55.1% Prompt Cache Hit</strong> workload, Azure Monitor's <code>InputTokens</code> (<code>14,640</code>) blends <code>8,064</code> cached tokens with <code>6,576</code> uncached tokens. Hand-rolled KQL over-estimates spend by <strong>+68.73%</strong>, whereas <code>FoundryModelEstimatedCost</code> reads server-side rating metadata and reports <strong>$0.00352000 (0.0000% variance)</strong>.
+      </div>
+    </div>
+  </section>
+
+  <!-- Panel 3: Empirical Benchmarks -->
+  <section class="fl-panel" id="panel-benchmarks" role="tabpanel" aria-labelledby="tab-benchmarks">
+    <span id="benchmarks" hidden></span>
+    <div class="fl-card">
+      <h2>2026-11-23 Live Verification Matrix (Sanitized · Zero Internal IDs or Codenames)</h2>
+      <p class="fl-muted">Every figure below was captured directly via <code>Microsoft.Insights/metrics</code> REST API on live Azure deployments and reconciled against published retail PayGo pricing.</p>
+
+      <div class="fl-filter-row" role="group" aria-label="Filter verification cases">
+        <button type="button" class="fl-preset-btn is-active" data-filter="all">All Verified Cases (9)</button>
+        <button type="button" class="fl-preset-btn" data-filter="exact">0.0000% Exact Match (6)</button>
+        <button type="button" class="fl-preset-btn" data-filter="cache">Prompt Cache &amp; SKU Uplift (2)</button>
+        <button type="button" class="fl-preset-btn" data-filter="blindspot">Preview $0 Blind Spots (2)</button>
+      </div>
+
+      <div class="fl-table-wrap">
+        <table class="fl-table" id="benchmarkTable">
+          <thead>
+            <tr>
+              <th>Model / Test Case</th>
+              <th>Deployment SKU &amp; Endpoint</th>
+              <th>Measured Workload</th>
+              <th>Public Retail Rate (/1M)</th>
+              <th>Measured Metric (USD)</th>
+              <th>Variance / Verdict</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr data-cat="exact">
+              <td><code>gpt-5.4</code> (Single Call)</td>
+              <td><code>GlobalStandard</code> · <code>AIServices</code></td>
+              <td>Single call: <code>940</code> in / <code>50</code> out</td>
+              <td><code>$2.50</code> in / <code>$15.00</code> out</td>
+              <td><strong><code>$0.00310000</code></strong></td>
+              <td><span class="fl-badge fl-badge-ok">0.0000% Variance</span></td>
+            </tr>
+            <tr data-cat="exact">
+              <td><code>gpt-5.4</code> (Concurrency Burst)</td>
+              <td><code>GlobalStandard</code> · Direct Metrics REST</td>
+              <td>121-call batch: <code>214,204</code> in / <code>10,314</code> out</td>
+              <td><code>$2.50</code> in / <code>$15.00</code> out</td>
+              <td><strong><code>$0.69022000</code></strong></td>
+              <td><span class="fl-badge fl-badge-ok">0.0000% Variance (Zero Drop)</span></td>
+            </tr>
+            <tr data-cat="exact">
+              <td><code>gpt-5.4-mini</code> (Dual Endpoint)</td>
+              <td><code>GlobalStandard</code> · Account &amp; Project <code>/openai/v1</code></td>
+              <td>Verified on Account &amp; Foundry Project endpoints</td>
+              <td><code>$0.75</code> in / <code>$4.50</code> out</td>
+              <td>Account: <strong><code>$0.00097575</code></strong><br>Project: <strong><code>$0.00092850</code></strong></td>
+              <td><span class="fl-badge fl-badge-ok">0.0000% Variance</span><br><small>Note: <code>ProjectId</code> emits <code>'N/A'</code></small></td>
+            </tr>
+            <tr data-cat="exact">
+              <td><code>gpt-4.1</code></td>
+              <td><code>GlobalStandard</code> · <code>AIServices</code></td>
+              <td>Single call: <code>1,087</code> in / <code>50</code> out</td>
+              <td><code>$2.00</code> in / <code>$8.00</code> out</td>
+              <td><strong><code>$0.00257400</code></strong></td>
+              <td><span class="fl-badge fl-badge-ok">0.0000% Variance</span></td>
+            </tr>
+            <tr data-cat="exact cache">
+              <td><strong><code>gpt-4.1-mini</code> (Prompt Cache)</strong></td>
+              <td><code>GlobalStandard</code> · <strong>55.1% Cache Hit</strong></td>
+              <td>5 calls: <code>6,576</code> uncached + <code>8,064</code> cached in / <code>52</code> out</td>
+              <td><code>$0.40</code> uncached / <code>$0.10</code> cached (75% off) / <code>$1.60</code> out</td>
+              <td>Metric: <strong><code>$0.00352000</code></strong><br><small>DIY KQL: <code>$0.00593920</code></small></td>
+              <td><span class="fl-badge fl-badge-ok">0.0000% Variance</span><br><span class="fl-badge fl-badge-bad">Fixes +68.73% KQL Error</span></td>
+            </tr>
+            <tr data-cat="exact">
+              <td><code>MoonshotAI/Kimi-K2.6</code></td>
+              <td><code>GlobalStandard</code> · 3P Partner Model</td>
+              <td><code>797</code> in / <code>60</code> out (incl. reasoning tokens)</td>
+              <td><code>$0.95</code> in / <code>$4.00</code> out</td>
+              <td><strong><code>$0.00099715</code></strong></td>
+              <td><span class="fl-badge fl-badge-ok">0.0000% Variance (Reasoning Incl.)</span></td>
+            </tr>
+            <tr data-cat="cache">
+              <td>SKU Uplift (Global vs DataZone)</td>
+              <td><code>GlobalStandard</code> vs <code>DataZoneStandard</code></td>
+              <td>Normalized side-by-side comparison</td>
+              <td>Published DataZone uplift <code>+10%</code></td>
+              <td>Global: <strong><code>$0.00465200</code></strong><br>DataZone: <strong><code>$0.00512160</code></strong></td>
+              <td><span class="fl-badge fl-badge-ok">Exact 1.1000x (+10%) Verified</span></td>
+            </tr>
+            <tr data-cat="blindspot">
+              <td><code>text-embedding-3-large</code></td>
+              <td>Embeddings Modality</td>
+              <td>Live embedding batch requests</td>
+              <td>Standard retail embedding rate</td>
+              <td><strong><code>$0.00000000</code></strong></td>
+              <td><span class="fl-badge fl-badge-warn">Preview Blind Spot ($0)</span></td>
+            </tr>
+            <tr data-cat="blindspot">
+              <td><code>FLUX.2-pro</code> / <code>FLUX.2-flex</code> / <code>gpt-image-*</code></td>
+              <td>Image Generation Modality</td>
+              <td>Live text-to-image generation calls</td>
+              <td>Standard retail image rate</td>
+              <td><strong><code>$0.00000000</code></strong></td>
+              <td><span class="fl-badge fl-badge-warn">Preview Blind Spot ($0)</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="fl-grid-2">
+      <div class="fl-card">
+        <h3>Key Finding A: Why Diagnostic Settings <code>AzureMetrics</code> Export Must Be Avoided</h3>
+        <p class="fl-muted">Many platform teams route <code>AllMetrics</code> via Diagnostic Settings into Log Analytics and query the <code>AzureMetrics</code> table. For <code>FoundryModelEstimatedCost</code>, live testing exposed two severe failures:</p>
+        <ul class="fl-list">
+          <li><strong>Unsupported Export Contract (<code>DS Export: No</code>):</strong> Exporting into <code>AzureMetrics</code> strips model and deployment dimensions needed for multi-tenant showback.</li>
+          <li><strong>Up to 95.1% High-Concurrency Point Loss:</strong> Under burst concurrency, <code>AzureMetrics</code> dropped up to <strong>95.1%</strong> of points, whereas direct <code>Microsoft.Insights/metrics</code> REST queries captured <strong><code>$0.69022000</code> with 0.0000% variance</strong>.</li>
+        </ul>
+      </div>
+
+      <div class="fl-card">
+        <h3>Key Finding B: Multi-Project &amp; Agent Cost Attribution Strategy</h3>
+        <p class="fl-muted">On both Account-level and Foundry Project-level <code>/openai/v1</code> inference endpoints, the <code>ProjectId</code> dimension on <code>FoundryModelEstimatedCost</code> currently emits <code>'N/A'</code>.</p>
+        <ul class="fl-list">
+          <li><strong>For direct <code>/openai/v1</code> workloads:</strong> Provision dedicated <code>ModelDeploymentName</code> per business unit or tenant during Preview for deterministic 100% attribution.</li>
+          <li><strong>For Foundry Agent Service workloads:</strong> Query the sibling metric <strong><code>AgentModelEstimatedCost</code></strong> on <code>Microsoft.CognitiveServices/accounts/projects</code>, which natively exposes <code>AgentName</code> and <code>AgentVersion</code> dimensions.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Panel 4: Playbooks, CLI Recipes & FAQ -->
+  <section class="fl-panel" id="panel-playbooks" role="tabpanel" aria-labelledby="tab-playbooks">
+    <span id="playbooks" hidden></span>
+    <div class="fl-grid-2">
+      <div class="fl-card">
+        <h3>✓ Good Fit (Recommended for Immediate Partner Rollout)</h3>
+        <ul class="fl-list">
+          <li><strong>Sub-5-Minute Runaway Agent Circuit-Breakers:</strong> Configure <code>PT5M</code> <code>Microsoft.Insights/metricAlerts</code> to catch runaway retry loops within 2 minutes instead of waiting 12–24 hours for Cost Management exports.</li>
+          <li><strong>Cache-Heavy RAG &amp; Multi-Turn Agents:</strong> Automatically incorporates 75%–90% prompt-cache discounts where naive token KQL inflates spend by 40%–70%.</li>
+          <li><strong>Unified 1P + 3P Model Showback:</strong> Covers GPT-5.4 / GPT-4.1, 3P partner models (e.g., <code>MoonshotAI/Kimi-K2.6</code>), and <code>DataZoneStandard</code> deployments via one REST contract.</li>
+        </ul>
+      </div>
+
+      <div class="fl-card">
+        <h3>✕ Not For (Do Not Position as Invoice Replacement)</h3>
+        <ul class="fl-list">
+          <li><strong>Customer Monthly Invoicing:</strong> Reflects public retail PayGo list rates only; excludes negotiated enterprise EA, MCA, and MACC discounts.</li>
+          <li><strong>Embedding-Only or Image-Generation Pipelines:</strong> Emits <code>$0</code> for <code>text-embedding-3-large</code>, <code>FLUX.2-pro</code>, <code>FLUX.2-flex</code>, and <code>gpt-image-*</code> in Preview.</li>
+          <li><strong>PTU Reservations &amp; Full-Stack RAG Spend:</strong> Excludes Provisioned Throughput hours, fine-tuning training/hosting hours, and downstream Azure AI Search / Cosmos DB bills.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="fl-card">
+      <h2>Production Recipe 1: Split REST / CLI Queries (Avoid the <code>ProjectId eq '*'</code> HTTP 400 Trap)</h2>
+      <div class="fl-callout fl-callout-bad">
+        <strong>API Batching Gotcha:</strong> Never batch <code>FoundryModelEstimatedCost,InputTokens,OutputTokens</code> in a single query when passing <code>$filter="ProjectId eq '*'"</code>! Because <code>InputTokens</code> and <code>OutputTokens</code> do not define a <code>ProjectId</code> dimension, the API fails the entire request with <strong><code>HTTP 400 BadRequest</code></strong>. Query <code>FoundryModelEstimatedCost</code> separately as shown below.
+      </div>
+      <div class="fl-code-head">
+        <strong>Sanitized Two-Call Azure CLI Telemetry Pattern</strong>
+        <button type="button" class="fl-btn" data-copy="codeCli">Copy CLI</button>
+      </div>
+      <pre class="fl-code" id="codeCli"># 1) Query FoundryModelEstimatedCost independently on the account scope
+az monitor metrics list \
+  --resource "/subscriptions/&lt;sub-id&gt;/resourceGroups/&lt;rg-name&gt;/providers/Microsoft.CognitiveServices/accounts/&lt;foundry-account&gt;" \
+  --metric "FoundryModelEstimatedCost" \
+  --interval PT5M \
+  --aggregation Total \
+  --filter "ModelDeploymentName eq '*' and ModelName eq '*'"
+
+# 2) For Foundry Agent Service workloads, query AgentModelEstimatedCost on the project sub-resource
+az monitor metrics list \
+  --resource "/subscriptions/&lt;sub-id&gt;/resourceGroups/&lt;rg-name&gt;/providers/Microsoft.CognitiveServices/accounts/&lt;foundry-account&gt;/projects/&lt;project-name&gt;" \
+  --metric "AgentModelEstimatedCost" \
+  --interval PT5M \
+  --aggregation Total \
+  --filter "AgentName eq '*' and AgentVersion eq '*'"</pre>
+    </div>
+
+    <div class="fl-card">
+      <h2>Production Recipe 2: Near-Real-Time <code>PT5M</code> Spend-Spike Alert (Bicep)</h2>
+      <div class="fl-code-head">
+        <strong>Microsoft.Insights/metricAlerts — 5-Minute USD Burst Threshold Guardrail</strong>
+        <button type="button" class="fl-btn" data-copy="codeBicep">Copy Bicep</button>
+      </div>
+      <pre class="fl-code" id="codeBicep">param foundryAccountId string
+param actionGroupId string
+param fiveMinUsdThreshold int = 25 // Trigger alert when any deployment exceeds $25 in 5 minutes
+
+resource foundrySpendBurstAlert 'Microsoft.Insights/metricAlerts@2018-03-01' = {
+  name: 'alert-foundry-estimated-cost-pt5m'
+  location: 'global'
+  properties: {
+    description: 'Near-real-time USD burst circuit-breaker for Microsoft Foundry &amp; Azure OpenAI deployments'
+    severity: 2
+    enabled: true
+    scopes: [foundryAccountId]
+    evaluationFrequency: 'PT1M'
+    windowSize: 'PT5M'
+    criteria: {
+      'odata.type': 'Microsoft.Azure.Monitor.SingleResourceMultipleMetricCriteria'
+      allOf: [
+        {
+          name: 'EstimatedUsdBurst'
+          metricNamespace: 'Microsoft.CognitiveServices/accounts'
+          metricName: 'FoundryModelEstimatedCost'
+          operator: 'GreaterThan'
+          threshold: fiveMinUsdThreshold
+          timeAggregation: 'Total'
+          dimensions: [
+            {
+              name: 'ModelDeploymentName'
+              operator: 'Include'
+              values: ['*']
+            }
+          ]
+        }
+      ]
+    }
+    actions: [
+      {
+        actionGroupId: actionGroupId
+      }
+    ]
+  }
+}</pre>
+    </div>
+
+    <div class="fl-card">
+      <h2>Partner FinOps FAQ &amp; Reference Repository</h2>
+      <details class="fl-faq-item" open>
+        <summary>Q1: Does enabling or reading FoundryModelEstimatedCost incur extra Azure Monitor charges?</summary>
+        <p>Within standard platform quotas, <strong>the metric itself is completely free ($0)</strong>. It is emitted automatically as a standard Azure Monitor platform metric on <code>Microsoft.CognitiveServices/accounts</code> with 93-day retention; standard Azure Monitor pricing applies only if you provision metric alert rules or high-frequency custom API polling beyond free tiers.</p>
+      </details>
+      <details class="fl-faq-item">
+        <summary>Q2: Does this work on existing standalone Azure OpenAI resources (kind=OpenAI), or only new Foundry (kind=AIServices) accounts?</summary>
+        <p><strong>Both work out of the box.</strong> Live verification on 2026-11-23 confirmed <code>FoundryModelEstimatedCost</code> is registered on both <code>kind: AIServices</code> (Microsoft Foundry) and standalone <code>kind: OpenAI</code> accounts without resource migration.</p>
+      </details>
+      <details class="fl-faq-item">
+        <summary>Q3: Where can partners read the full bilingual deep-dive report and methodology?</summary>
+        <p>
+          The complete sanitized empirical guide is archived in <code>turbo998/Azure-Foundry-Quick-Start</code>:<br>
+          • English Deep-Dive Guide: <a href="https://github.com/turbo998/Azure-Foundry-Quick-Start/blob/main/foundry-model-estimated-cost-guide.en.md" target="_blank" rel="noopener">foundry-model-estimated-cost-guide.en.md ↗</a><br>
+          • Chinese Deep-Dive Guide (ZH): <a href="https://github.com/turbo998/Azure-Foundry-Quick-Start/blob/main/foundry-model-estimated-cost-guide.md" target="_blank" rel="noopener">foundry-model-estimated-cost-guide.md ↗</a>
+        </p>
+      </details>
+    </div>
+  </section>
+
+  <footer class="fl-footer-note">
+    <strong>Provenance &amp; Sanitization Notice:</strong> All accuracy figures, cache-discount ratios, and blind-spot findings in this workbench come from <strong>measured live verification (2026-11-23)</strong>, strictly stripped of subscription GUIDs, tenant IDs, internal resource names, and non-public codenames. Preview scope may expand over time; always reconcile customer invoices against Azure Cost Management.
+  </footer>
+</main>
+
+<script>
+(function () {
+  var html = document.documentElement;
+  var savedTheme = null;
+  try { savedTheme = localStorage.getItem('kee-theme'); } catch (e) {}
+  if (savedTheme === 'dark' || savedTheme === 'light') {
+    html.setAttribute('data-theme', savedTheme);
+  }
+
+  var themeBtn = document.getElementById('themeToggle');
+  if (themeBtn) {
+    themeBtn.addEventListener('click', function () {
+      var next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', next);
+      try { localStorage.setItem('kee-theme', next); } catch (e) {}
+    });
+  }
+
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('.fl-tab'));
+  var panels = {
+    overview: document.getElementById('panel-overview'),
+    simulator: document.getElementById('panel-simulator'),
+    benchmarks: document.getElementById('panel-benchmarks'),
+    playbooks: document.getElementById('panel-playbooks')
+  };
+
+  function activateTab(name, updateHash) {
+    if (!panels[name]) return;
+    tabs.forEach(function (t) {
+      var active = t.getAttribute('data-tab') === name;
+      t.setAttribute('aria-selected', active ? 'true' : 'false');
+    });
+    Object.keys(panels).forEach(function (k) {
+      panels[k].classList.toggle('is-active', k === name);
+    });
+    if (updateHash) {
+      history.replaceState(null, '', '#' + name);
+    }
+  }
+
+  tabs.forEach(function (tab, idx) {
+    tab.addEventListener('click', function () {
+      activateTab(tab.getAttribute('data-tab'), true);
+    });
+    tab.addEventListener('keydown', function (ev) {
+      if (ev.key === 'ArrowRight' || ev.key === 'ArrowLeft') {
+        ev.preventDefault();
+        var nextIdx = (idx + (ev.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length;
+        tabs[nextIdx].focus();
+        activateTab(tabs[nextIdx].getAttribute('data-tab'), true);
+      }
+    });
+  });
+
+  function syncFromHash() {
+    var h = (location.hash || '').replace(/^#/, '');
+    if (panels[h]) activateTab(h, false);
+  }
+  window.addEventListener('hashchange', syncFromHash);
+  syncFromHash();
+
+  var MODELS = {
+    'gpt-4.1-mini': { name: 'gpt-4.1-mini', inRate: 0.40, cachedRate: 0.10, outRate: 1.60, cacheOff: '75%', supported: true },
+    'gpt-5.4': { name: 'gpt-5.4', inRate: 2.50, cachedRate: 0.25, outRate: 15.00, cacheOff: '90%', supported: true },
+    'gpt-5.4-mini': { name: 'gpt-5.4-mini', inRate: 0.75, cachedRate: 0.075, outRate: 4.50, cacheOff: '90%', supported: true },
+    'gpt-4.1': { name: 'gpt-4.1', inRate: 2.00, cachedRate: 0.50, outRate: 8.00, cacheOff: '75%', supported: true },
+    'kimi-k2.6': { name: 'MoonshotAI/Kimi-K2.6', inRate: 0.95, cachedRate: 0.95, outRate: 4.00, cacheOff: '0%', supported: true },
+    'embedding-blindspot': { name: 'text-embedding-3-large', inRate: 0.13, cachedRate: 0.13, outRate: 0.00, cacheOff: '0%', supported: false },
+    'image-blindspot': { name: 'FLUX.2-pro / gpt-image-*', inRate: 4.00, cachedRate: 4.00, outRate: 16.00, cacheOff: '0%', supported: false }
+  };
+
+  var PRESETS = {
+    'cache-mini': { model: 'gpt-4.1-mini', sku: 'global', totalIn: 14640, exactCachedIn: 8064, out: 52, scale: 1, discount: 0 },
+    'gpt54-burst': { model: 'gpt-5.4', sku: 'global', totalIn: 214204, exactCachedIn: 0, out: 10314, scale: 1, discount: 0 },
+    'kimi-3p': { model: 'kimi-k2.6', sku: 'global', totalIn: 797, exactCachedIn: 0, out: 60, scale: 1, discount: 0 },
+    'datazone-uplift': { model: 'gpt-4.1', sku: 'datazone', totalIn: 1087, exactCachedIn: 0, out: 50, scale: 1, discount: 0 },
+    'blindspot-embed': { model: 'embedding-blindspot', sku: 'global', totalIn: 250000, exactCachedIn: 0, out: 0, scale: 1, discount: 0 }
+  };
+
+  var exactState = { active: true, totalIn: 14640, cachedIn: 8064, out: 52 };
+  var elModel = document.getElementById('simModel');
+  var elSku = document.getElementById('simSku');
+  var elIn = document.getElementById('simInputTokens');
+  var elCache = document.getElementById('simCachePct');
+  var elOut = document.getElementById('simOutputTokens');
+  var elScale = document.getElementById('simScale');
+  var elDiscount = document.getElementById('simDiscount');
+
+  function fmtUsd(v) {
+    if (v === 0) return '$0.00000000';
+    return v >= 10 ? '$' + v.toFixed(2) : '$' + v.toFixed(8);
+  }
+  function fmtInt(n) {
+    return Math.round(n).toLocaleString('en-US');
+  }
+
+  function renderSim() {
+    var m = MODELS[elModel.value] || MODELS['gpt-4.1-mini'];
+    var sku = elSku.value;
+    var scale = Number(elScale.value) || 1;
+    var discountPct = Number(elDiscount.value) || 0;
+    var skuMul = sku === 'datazone' ? 1.1 : 1.0;
+
+    var totalIn = exactState.active ? exactState.totalIn : Number(elIn.value);
+    var cachedIn = exactState.active ? exactState.cachedIn : Math.round(totalIn * (Number(elCache.value) / 100));
+    var uncachedIn = Math.max(0, totalIn - cachedIn);
+    var outTokens = exactState.active ? exactState.out : Number(elOut.value);
+    var cacheRatioPct = totalIn > 0 ? (cachedIn / totalIn) * 100 : 0;
+
+    document.getElementById('simRateBadge').textContent = '$' + m.inRate.toFixed(2) + ' / $' + m.outRate.toFixed(2) + ' /1M';
+    var skuBadge = document.getElementById('simSkuBadge');
+    skuBadge.textContent = sku === 'datazone' ? '1.1000x (+10%)' : (sku === 'ptu' ? 'PTU Emits $0' : '1.0000x Multiplier');
+    skuBadge.className = 'fl-badge ' + (sku === 'ptu' ? 'fl-badge-warn' : 'fl-badge-ok');
+
+    document.getElementById('simInputVal').textContent = fmtInt(totalIn * scale);
+    document.getElementById('simCacheVal').textContent = cacheRatioPct.toFixed(1) + '% (' + fmtInt(cachedIn * scale) + ' cached)';
+    document.getElementById('simOutputVal').textContent = fmtInt(outTokens * scale);
+    document.getElementById('simDiscountVal').textContent = scale.toLocaleString('en-US') + 'x · -' + discountPct + '% off';
+
+    var retailTruePayGo = ((uncachedIn * m.inRate + cachedIn * m.cachedRate + outTokens * m.outRate) / 1e6) * skuMul * scale;
+    var diyKqlUsd = ((totalIn * m.inRate + outTokens * m.outRate) / 1e6) * skuMul * scale;
+    var metricUsd = (!m.supported || sku === 'ptu') ? 0 : retailTruePayGo;
+    var netInvoiceUsd = sku === 'ptu' ? 0 : retailTruePayGo * (1 - discountPct / 100);
+
+    document.getElementById('simMetricUsd').textContent = fmtUsd(metricUsd);
+    document.getElementById('simKqlUsd').textContent = fmtUsd(diyKqlUsd);
+    document.getElementById('simNetUsd').textContent = sku === 'ptu' ? 'PTU Hourly Reservation' : fmtUsd(netInvoiceUsd);
+
+    var metricBox = document.getElementById('simMetricBox');
+    var verdictBox = document.getElementById('simVerdictBox');
+
+    if (!m.supported) {
+      metricBox.className = 'fl-sim-box is-danger';
+      document.getElementById('simMetricNote').textContent = 'Preview blind spot: Embeddings and Image Gen currently emit $0!';
+      document.getElementById('simKqlNote').textContent = 'Estimated retail usage spend is ~' + fmtUsd(retailTruePayGo);
+      document.getElementById('simNetNote').textContent = 'Track non-chat modality charges via Azure Cost Management';
+      verdictBox.className = 'fl-callout fl-callout-warn';
+      verdictBox.innerHTML = '<strong>Blind Spot Alert:</strong> <code>' + m.name + '</code> emits <strong>$0.00000000</strong> during Preview even though retail usage accrues ~<strong>' + fmtUsd(netInvoiceUsd) + '</strong>. Use token/request metrics for throughput and Azure Cost Management for billing.';
+    } else if (sku === 'ptu') {
+      metricBox.className = 'fl-sim-box is-danger';
+      document.getElementById('simMetricNote').textContent = 'PTU deployments are billed by reservation hours and excluded ($0)';
+      document.getElementById('simKqlNote').textContent = 'PayGo-equivalent token value ~' + fmtUsd(diyKqlUsd) + ' (reference only)';
+      document.getElementById('simNetNote').textContent = 'Reconcile PTU hourly commitments in Azure Cost Management';
+      verdictBox.className = 'fl-callout fl-callout-warn';
+      verdictBox.innerHTML = '<strong>PTU Scope Boundary:</strong> <code>FoundryModelEstimatedCost</code> tracks Standard / DataZone PayGo inference only; monitor PTU reservation utilization separately.';
+    } else {
+      metricBox.className = 'fl-sim-box is-highlight';
+      var kqlErrPct = retailTruePayGo > 0 ? ((diyKqlUsd - retailTruePayGo) / retailTruePayGo) * 100 : 0;
+      document.getElementById('simMetricNote').textContent = 'Applies ' + m.cacheOff + ' cache discount & ' + skuMul.toFixed(4) + 'x SKU multiplier · 0.0000% variance';
+      document.getElementById('simKqlNote').textContent = kqlErrPct > 0.01
+        ? 'Error: +' + kqlErrPct.toFixed(2) + '% over-estimate (InputTokens does not split cached hits)'
+        : 'Matches at 0% cache hit, though AzureMetrics export still risks burst point loss';
+      document.getElementById('simNetNote').textContent = discountPct > 0
+        ? 'Net of -' + discountPct + '% negotiated EA/MACC discount (metric reflects retail list rate)'
+        : '100% aligned with public retail PayGo billing';
+      verdictBox.className = 'fl-callout fl-callout-ok';
+      verdictBox.innerHTML = '<strong>Architect Diagnostic Verdict:</strong> For <code>' + m.name + '</code> (' + (sku === 'datazone' ? 'DataZoneStandard 1.1000x' : 'GlobalStandard 1.0000x') + '), <code>FoundryModelEstimatedCost</code> emits <strong>' + fmtUsd(metricUsd) + '</strong>' +
+        (kqlErrPct > 0.01 ? ', eliminating a <strong>+' + kqlErrPct.toFixed(2) + '%</strong> DIY token KQL over-estimation error.' : ' with <strong>0.0000% variance</strong> against published retail rates.');
+    }
+
+    var maxVal = Math.max(metricUsd, diyKqlUsd, netInvoiceUsd, 1e-9);
+    document.getElementById('barMetricFill').style.width = Math.max(metricUsd > 0 ? 3 : 0, (metricUsd / maxVal) * 100).toFixed(1) + '%';
+    document.getElementById('barKqlFill').style.width = Math.max(diyKqlUsd > 0 ? 3 : 0, (diyKqlUsd / maxVal) * 100).toFixed(1) + '%';
+    document.getElementById('barNetFill').style.width = Math.max(netInvoiceUsd > 0 ? 3 : 0, (netInvoiceUsd / maxVal) * 100).toFixed(1) + '%';
+
+    var errTag = (m.supported && sku !== 'ptu' && retailTruePayGo > 0 && diyKqlUsd > retailTruePayGo * 1.0001)
+      ? ' (+' + (((diyKqlUsd - retailTruePayGo) / retailTruePayGo) * 100).toFixed(2) + '%)'
+      : '';
+    document.getElementById('barMetricLabel').textContent = fmtUsd(metricUsd);
+    document.getElementById('barKqlLabel').textContent = fmtUsd(diyKqlUsd) + errTag;
+    document.getElementById('barNetLabel').textContent = sku === 'ptu' ? 'PTU Hourly' : fmtUsd(netInvoiceUsd);
+  }
+
+  var presetBtns = Array.prototype.slice.call(document.querySelectorAll('[data-preset]'));
+  presetBtns.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var p = PRESETS[btn.getAttribute('data-preset')];
+      if (!p) return;
+      presetBtns.forEach(function (b) { b.classList.toggle('is-active', b === btn); });
+      elModel.value = p.model;
+      elSku.value = p.sku;
+      elIn.value = String(Math.min(500000, Math.max(500, p.totalIn)));
+      elCache.value = String(p.totalIn > 0 ? Math.round((p.exactCachedIn / p.totalIn) * 100) : 0);
+      elOut.value = String(Math.min(50000, p.out));
+      elScale.value = String(p.scale);
+      elDiscount.value = String(p.discount);
+      exactState = { active: true, totalIn: p.totalIn, cachedIn: p.exactCachedIn, out: p.out };
+      renderSim();
+    });
+  });
+
+  [elModel, elSku, elScale, elDiscount].forEach(function (el) {
+    el.addEventListener('change', function () {
+      presetBtns.forEach(function (b) { b.classList.remove('is-active'); });
+      renderSim();
+    });
+  });
+  [elIn, elCache, elOut].forEach(function (el) {
+    el.addEventListener('input', function () {
+      exactState.active = false;
+      presetBtns.forEach(function (b) { b.classList.remove('is-active'); });
+      renderSim();
+    });
+  });
+  renderSim();
+
+  var filterBtns = Array.prototype.slice.call(document.querySelectorAll('[data-filter]'));
+  var rows = Array.prototype.slice.call(document.querySelectorAll('#benchmarkTable tbody tr'));
+  filterBtns.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var f = btn.getAttribute('data-filter');
+      filterBtns.forEach(function (b) { b.classList.toggle('is-active', b === btn); });
+      rows.forEach(function (r) {
+        var cats = (r.getAttribute('data-cat') || '').split(/\s+/);
+        r.hidden = f !== 'all' && cats.indexOf(f) === -1;
+      });
+    });
+  });
+
+  Array.prototype.slice.call(document.querySelectorAll('[data-copy]')).forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var target = document.getElementById(btn.getAttribute('data-copy'));
+      if (!target || !navigator.clipboard) return;
+      var orig = btn.textContent;
+      navigator.clipboard.writeText(target.textContent).then(function () {
+        btn.textContent = 'Copied ✓';
+        setTimeout(function () { btn.textContent = orig; }, 1600);
+      });
+    });
+  });
+})();
+</script>
+</body>
+</html>

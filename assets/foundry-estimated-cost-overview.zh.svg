@@ -1,0 +1,164 @@
+<svg xmlns="http://www.w3.org/2000/svg" lang="zh-CN" viewBox="0 0 1200 630" width="1200" height="630" role="img" aria-labelledby="fec-zh-title fec-zh-desc">
+  <title id="fec-zh-title">Azure Monitor FoundryModelEstimatedCost (Preview) 实测精度与合作伙伴 FinOps 架构总览</title>
+  <desc id="fec-zh-desc">汇总 2026-11-23 实测验证：Microsoft.CognitiveServices/accounts 免费平台指标架构、主流对话与推理模型 0.0000% 零售价误差、gpt-4.1-mini 55.1% Prompt Cache 命中下消除自建 KQL +68.73% 高估误差，以及五大预览期盲区与工程护栏。</desc>
+  <defs>
+    <linearGradient id="fec-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#091220"/>
+      <stop offset="100%" stop-color="#13233b"/>
+    </linearGradient>
+    <linearGradient id="fec-acc" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#0ea5e9"/>
+      <stop offset="50%" stop-color="#10b981"/>
+      <stop offset="100%" stop-color="#8b5cf6"/>
+    </linearGradient>
+    <!-- Official Microsoft Foundry Icon Gradients -->
+    <linearGradient id="ms-fnd-1" x1="10.91" y1="13.66" x2="13.62" y2="13.66" gradientTransform="translate(0 20) scale(1 -1)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#302ec9"/><stop offset=".25" stop-color="#0a0b7e"/><stop offset=".61" stop-color="#282ac4"/><stop offset=".85" stop-color="#a7a6f7"/><stop offset="1" stop-color="#ffffff"/>
+    </linearGradient>
+    <linearGradient id="ms-fnd-2" x1="14.19" y1="8.27" x2="14.19" y2="14.47" gradientTransform="translate(0 20) scale(1 -1)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#3530c3"/><stop offset=".5" stop-color="#6d71d1"/><stop offset="1" stop-color="#e3e4ff"/>
+    </linearGradient>
+    <linearGradient id="ms-fnd-3" x1="6.51" y1="3" x2="6.51" y2="19.15" gradientTransform="translate(0 20) scale(1 -1)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#302ec9"/><stop offset=".45" stop-color="#302ec9"/><stop offset=".95" stop-color="#cacafb"/><stop offset="1" stop-color="#7f7eaf"/>
+    </linearGradient>
+    <!-- Official Azure Monitor Icon Gradients -->
+    <radialGradient id="az-mon-1" cx="5.72" cy="7.45" r="8.42" gradientTransform="matrix(1.01,0,0,1.01,3.23,1.51)" gradientUnits="userSpaceOnUse">
+      <stop offset="0.18" stop-color="#5ea0ef"/><stop offset="0.69" stop-color="#559ced"/><stop offset="0.93" stop-color="#2387de"/><stop offset="1" stop-color="#0078d4"/>
+    </radialGradient>
+    <radialGradient id="az-mon-2" cx="28.18" cy="202.29" r="2.7" gradientTransform="matrix(0.95,0,0,0.95,-17.77,-185.01)" gradientUnits="userSpaceOnUse">
+      <stop offset="0.19" stop-color="#8c8e90"/><stop offset="0.6" stop-color="#6e7071"/><stop offset="1" stop-color="#3e3f3f"/>
+    </radialGradient>
+    <!-- Official Foundry Agent Icon Gradient -->
+    <linearGradient id="ms-agt-1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#7274ff"/><stop offset="100%" stop-color="#3b2fd9"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#fec-bg)" rx="20"/>
+  <rect x="36" y="22" width="1128" height="6" fill="url(#fec-acc)" rx="3"/>
+
+  <!-- Header with Official Microsoft Foundry + Azure Monitor Icons -->
+  <g transform="translate(42, 42) scale(1.9)">
+    <path d="M11.96,11.68s.07-.1.07-.24v-3.87c0-.85.66-1.76,1.59-2.03-.06-.19-.64-2.11-.81-2.65-.17-.56-.67-1.9-1.29-1.9h-.01s-.09.05-.13.13c-.32.58-.46,3.02-.46,4.84v2.26c.27.97.91,3.22.96,3.35,0,0,.05.1.09.1Z" fill="url(#ms-fnd-1)"/>
+    <path d="M16.01,5.46h-1.81c-1.21,0-2.17,1.09-2.17,2.11v3.87c0,.14-.04.24-.07.24s-.09-.1-.09-.1c0,0,.07.21.17.21h1.98c.62,0,2.48-.61,2.48-2.52v-3.25c0-.41-.24-.55-.49-.55Z" fill="url(#ms-fnd-2)"/>
+    <path d="M2.34,17h5.38c2.35,0,3.2-2.03,3.2-3.81v-7.23c0-2.08.19-4.97.61-4.97h-3.23c-.77,0-1.43.82-2.18,2.48-.75,1.66-4.36,11.87-4.52,12.36-.26.79-.02,1.16.74,1.16Z" fill="url(#ms-fnd-3)"/>
+  </g>
+  <g transform="translate(80, 43) scale(1.85)">
+    <ellipse cx="8.5" cy="8.47" rx="8.5" ry="8.47" fill="url(#az-mon-1)"/>
+    <ellipse cx="8.5" cy="8.47" rx="7.4" ry="7.37" fill="#ffffff"/>
+    <path d="M 2.22,8.91 A 6.24,6.24 0 0 0 4.04,12.91 l 2,-2 a 3.53,3.53 0 0 1 -1,-2 z" fill="#9cebff"/>
+    <path d="m 12.63,3.74 a 6.25,6.25 0 0 0 -3.69,-1.53 v 2.79 a 3.41,3.41 0 0 1 1.71,0.7 z" fill="#32bedd"/>
+    <path d="m 4.37,3.74 2,2 a 3.41,3.41 0 0 1 1.71,-0.7 v -2.83 a 6.25,6.25 0 0 0 -3.71,1.53 z" fill="#32bedd"/>
+    <path d="m 11.28,6.32 a 3.6,3.6 0 0 1 0.71,1.71 h 2.79 a 6.16,6.16 0 0 0 -1.53,-3.67 z" fill="#32bedd"/>
+    <path d="m 5.72,6.32 -2,-2 a 6.16,6.16 0 0 0 -1.5,3.71 h 2.79 a 3.6,3.6 0 0 1 0.71,-1.71 z" fill="#50e6ff"/>
+    <path d="m 13.64,6.47 a 0.45,0.45 0 0 0 -0.57,-0.25 l -4.12,1.66 0.32,0.81 4.12,-1.63 a 0.44,0.44 0 0 0 0.25,-0.59 z" fill="#f04049"/>
+    <circle cx="8.5" cy="8.47" r="1.2" fill="url(#az-mon-2)"/>
+  </g>
+
+  <text x="122" y="64" fill="#f8fafc" font-family="Segoe UI, PingFang SC, Microsoft YaHei, sans-serif" font-size="21.5" font-weight="800">Azure Monitor FoundryModelEstimatedCost (Preview) 实测与 FinOps 指南</text>
+  <text x="122" y="90" fill="#94a3b8" font-family="Segoe UI, PingFang SC, Microsoft YaHei, sans-serif" font-size="13">2026-11-23 线上真机核验 · 免费平台指标 (&lt;2 min 延迟 / 93 天保留) · 对话/推理模型 0.0000% 零售价误差 · Prompt Cache 精准折算</text>
+
+  <!-- Panel 1: Metric Contract & Telemetry Topology -->
+  <rect x="42" y="112" width="360" height="440" rx="14" fill="#111f34" stroke="#2c4365"/>
+  <text x="58" y="141" fill="#38bdf8" font-family="Segoe UI, PingFang SC, sans-serif" font-size="15.5" font-weight="700">1. 指标契约与采集控制面拓扑</text>
+  <text x="58" y="162" fill="#fbbf24" font-family="Segoe UI, PingFang SC, sans-serif" font-size="11.3" font-weight="600">免费 Azure Monitor 标准指标 · 兼容 AIServices 与 OpenAI 账户</text>
+
+  <rect x="58" y="176" width="328" height="98" rx="9" fill="#0b1526" stroke="#254264"/>
+  <text x="70" y="197" fill="#93c5fd" font-family="Consolas, monospace" font-size="11" font-weight="700">Microsoft.CognitiveServices/accounts</text>
+  <text x="70" y="216" fill="#cbd5e1" font-family="Segoe UI, PingFang SC, sans-serif" font-size="11">• 分类 / 聚合：Models - Usage · Total (USD 美元)</text>
+  <text x="70" y="235" fill="#cbd5e1" font-family="Segoe UI, PingFang SC, sans-serif" font-size="11">• 粒度 / 留存：PT1M–P1D · 93 天保留 · &lt;2 min 入库</text>
+  <text x="70" y="254" fill="#cbd5e1" font-family="Segoe UI, PingFang SC, sans-serif" font-size="11">• 维度：ModelDeploymentName / ModelName / Version / ProjectId</text>
+
+  <!-- Recommended vs Anti-pattern paths -->
+  <rect x="58" y="286" width="328" height="78" rx="9" fill="#0c2823" stroke="#10b981" stroke-width="1.4"/>
+  <text x="70" y="307" fill="#34d399" font-family="Segoe UI, PingFang SC, sans-serif" font-size="12" font-weight="700">✓ 生产推荐：直连 Metrics REST + PT5M 预算告警</text>
+  <text x="70" y="327" fill="#d1fae5" font-family="Consolas, PingFang SC, sans-serif" font-size="10.6">Microsoft.Insights/metrics (API) + metricAlerts (PT5M)</text>
+  <text x="70" y="347" fill="#a7f3d0" font-family="Segoe UI, PingFang SC, sans-serif" font-size="10.6">完整保留全部模型/部署维度，121 并发压测零丢点 (0.0000%)</text>
+
+  <rect x="58" y="374" width="328" height="78" rx="9" fill="#2a121b" stroke="#f43f5e" stroke-width="1.3"/>
+  <text x="70" y="395" fill="#fda4af" font-family="Segoe UI, PingFang SC, sans-serif" font-size="12" font-weight="700">✕ 严禁踩坑：Diagnostic Settings 导出 AzureMetrics</text>
+  <text x="70" y="415" fill="#fecdd3" font-family="Segoe UI, PingFang SC, sans-serif" font-size="10.6">官方标记 DS Export: No · 导出至 Log Analytics 丢失维度</text>
+  <text x="70" y="435" fill="#fda4af" font-family="Segoe UI, PingFang SC, sans-serif" font-size="10.6" font-weight="600">实测高并发批次漏采高达 95.1% 数据点，切勿用于 FinOps！</text>
+
+  <!-- Sibling Agent metric -->
+  <rect x="58" y="462" width="328" height="74" rx="9" fill="#131c38" stroke="#6366f1"/>
+  <g transform="translate(68, 474) scale(1.1)">
+    <path d="M5.02,15.31l-2.82-1.63c-.66-.38-1.06-1.08-1.06-1.83v-5.69c0-.76.4-1.46,1.06-1.83l1.53-.88c.1-.06.24.01.24.14v9.91c0,.37.1.73.28,1.04.18.32.45.59.78.78Z" fill="url(#ms-agt-1)"/>
+    <path d="M16.86,9.53v3.26c0,.76-.4,1.46-1.06,1.83l-4.93,2.84c-.65.38-1.46.38-2.12,0l-1.53-.88c-.1-.06-.1-.21,0-.27l8.59-4.96c.32-.19.58-.45.76-.77.18-.32.28-.68.28-1.06Z" fill="#818cf8"/>
+    <path d="M5.94,2.16l2.82-1.63c.66-.38,1.46-.38,2.12,0l4.93,2.84c.65.38,1.06,1.08,1.06,1.83v1.76c0,.12-.13.2-.24.14L8.04,2.16c-.32-.18-.68-.28-1.05-.28-.37,0-.73.09-1.06.28Z" fill="#a5b4fc"/>
+  </g>
+  <text x="94" y="486" fill="#c7d2fe" font-family="Segoe UI, PingFang SC, sans-serif" font-size="11.8" font-weight="700">姊妹项目级指标：AgentModelEstimatedCost</text>
+  <text x="70" y="505" fill="#cbd5e1" font-family="Consolas, monospace" font-size="10.2">Microsoft.CognitiveServices/accounts/projects</text>
+  <text x="70" y="523" fill="#94a3b8" font-family="Segoe UI, PingFang SC, sans-serif" font-size="10.5">原生按 AgentName + AgentVersion 拆分 Foundry Agent 成本</text>
+
+  <!-- Panel 2: Live Accuracy & Prompt Cache Killer Advantage -->
+  <rect x="420" y="112" width="360" height="440" rx="14" fill="#111f34" stroke="#2c4365"/>
+  <text x="436" y="141" fill="#34d399" font-family="Segoe UI, PingFang SC, sans-serif" font-size="15.5" font-weight="700">2. 实测零售价精度 (0.0000% 误差) 与缓存红利</text>
+  <text x="436" y="162" fill="#93c5fd" font-family="Segoe UI, PingFang SC, sans-serif" font-size="11.3" font-weight="600">覆盖第一方 GPT-5.4 / 4.1、第三方合作模型与 DataZone 溢价</text>
+
+  <rect x="436" y="176" width="328" height="186" rx="9" fill="#0b1526" stroke="#243856"/>
+  <text x="448" y="198" fill="#34d399" font-family="Consolas, monospace" font-size="10.8" font-weight="700">• gpt-5.4 (GlobalStd, $2.50/$15.00 /1M) ── 0.0000%</text>
+  <text x="456" y="214" fill="#cbd5e1" font-family="Consolas, PingFang SC, sans-serif" font-size="10.2">单次 $0.00310000 (940/50) · 121 并发 $0.69022000</text>
+
+  <text x="448" y="236" fill="#34d399" font-family="Consolas, monospace" font-size="10.8" font-weight="700">• gpt-5.4-mini ($0.75/$4.50 /1M) ───────── 0.0000%</text>
+  <text x="456" y="252" fill="#cbd5e1" font-family="Consolas, PingFang SC, sans-serif" font-size="10.2">Account $0.00097575 · Project $0.00092850 (ProjectId='N/A')</text>
+
+  <text x="448" y="274" fill="#34d399" font-family="Consolas, monospace" font-size="10.8" font-weight="700">• gpt-4.1 (GlobalStd, $2.00/$8.00 /1M) ─── 0.0000%</text>
+  <text x="456" y="290" fill="#cbd5e1" font-family="Consolas, PingFang SC, sans-serif" font-size="10.2">单次 $0.00257400 (1,087 in / 50 out)</text>
+
+  <text x="448" y="312" fill="#38bdf8" font-family="Consolas, monospace" font-size="10.8" font-weight="700">• MoonshotAI/Kimi-K2.6 ($0.95/$4.00) ───── 0.0000%</text>
+  <text x="456" y="328" fill="#cbd5e1" font-family="Consolas, PingFang SC, sans-serif" font-size="10.2">第三方模型 $0.00099715 (797 in / 60 out 含推理 Token)</text>
+
+  <text x="448" y="350" fill="#fbbf24" font-family="Consolas, PingFang SC, sans-serif" font-size="10.7" font-weight="700">• DataZoneStandard 对比：$0.00465200 vs $0.00512160 (精准 1.1000×)</text>
+
+  <!-- Prompt Cache Comparison Box -->
+  <rect x="436" y="374" width="328" height="162" rx="9" fill="#0d1b2a" stroke="#10b981" stroke-width="1.4"/>
+  <text x="448" y="396" fill="#fde68a" font-family="Segoe UI, PingFang SC, sans-serif" font-size="12.2" font-weight="700">核心杀手锏：gpt-4.1-mini 55.1% Prompt Cache 命中实测</text>
+  <text x="448" y="414" fill="#94a3b8" font-family="Consolas, PingFang SC, sans-serif" font-size="10.1">5 次调用：6,576 未缓存 + 8,064 缓存输入 (75% 折扣) + 52 输出</text>
+
+  <text x="448" y="438" fill="#34d399" font-family="Segoe UI, PingFang SC, sans-serif" font-size="11" font-weight="700">FoundryModelEstimatedCost（自动扣减 75% 缓存折扣）</text>
+  <rect x="448" y="445" width="166" height="15" rx="4" fill="#10b981"/>
+  <text x="622" y="457" fill="#bbf7d0" font-family="Consolas, monospace" font-size="11" font-weight="700">$0.00352000 (0.00%)</text>
+
+  <text x="448" y="481" fill="#fda4af" font-family="Segoe UI, PingFang SC, sans-serif" font-size="11" font-weight="700">传统自建 Token KQL（InputTokens 未拆分缓存！）</text>
+  <rect x="448" y="488" width="280" height="15" rx="4" fill="#f43f5e"/>
+  <text x="454" y="500" fill="#ffffff" font-family="Consolas, monospace" font-size="10.5" font-weight="700">$0.00593920 (+68.73% 严重虚高！)</text>
+
+  <text x="448" y="523" fill="#cbd5e1" font-family="Segoe UI, PingFang SC, sans-serif" font-size="10.3">原因：Monitor InputTokens=14,640 混计缓存 Token，自乘单价必算错</text>
+
+  <!-- Panel 3: Preview Blind Spots & Partner FinOps Guardrails -->
+  <rect x="798" y="112" width="360" height="440" rx="14" fill="#111f34" stroke="#2c4365"/>
+  <text x="814" y="141" fill="#c084fc" font-family="Segoe UI, PingFang SC, sans-serif" font-size="15.5" font-weight="700">3. 预览期盲区与合作伙伴 FinOps 护栏</text>
+  <text x="814" y="162" fill="#cbd5e1" font-family="Segoe UI, PingFang SC, sans-serif" font-size="11.3" font-weight="600">明确「能算什么 vs 不能算什么」，构建双层对账治理架构</text>
+
+  <rect x="814" y="176" width="328" height="202" rx="9" fill="#0b1526" stroke="#e11d48"/>
+  <text x="826" y="198" fill="#fda4af" font-family="Segoe UI, PingFang SC, sans-serif" font-size="12.2" font-weight="700">五大预览期盲区与 API 陷阱（Preview Guardrails）</text>
+
+  <text x="826" y="220" fill="#fde68a" font-family="Segoe UI, PingFang SC, sans-serif" font-size="10.8" font-weight="700">1. 非对话模态记 $0（暂不支持）：</text>
+  <text x="834" y="236" fill="#cbd5e1" font-family="Consolas, PingFang SC, sans-serif" font-size="10.2">text-embedding-3-large 及 FLUX.2-pro/flex/gpt-image-* 均为 $0</text>
+
+  <text x="826" y="258" fill="#fde68a" font-family="Segoe UI, PingFang SC, sans-serif" font-size="10.8" font-weight="700">2. 非 PayGo 公开零售项不含：</text>
+  <text x="834" y="274" fill="#cbd5e1" font-family="Segoe UI, PingFang SC, sans-serif" font-size="10.2">不含 PTU 预留工时、微调训练/托管、EA/MCA/MACC 商务折扣及 Search/DB</text>
+
+  <text x="826" y="296" fill="#fca5a5" font-family="Segoe UI, PingFang SC, sans-serif" font-size="10.8" font-weight="700">3. ProjectId eq '*' 批量查询 HTTP 400 陷阱：</text>
+  <text x="834" y="312" fill="#cbd5e1" font-family="Segoe UI, PingFang SC, sans-serif" font-size="10.2">InputTokens/OutputTokens 无 ProjectId 维度，严禁同请求合并查询</text>
+
+  <text x="826" y="334" fill="#e2e8f0" font-family="Segoe UI, PingFang SC, sans-serif" font-size="10.8" font-weight="700">4. /openai/v1 数据面 ProjectId 恒为 'N/A'：</text>
+  <text x="834" y="350" fill="#94a3b8" font-family="Segoe UI, PingFang SC, sans-serif" font-size="10.2">即使走 Foundry Project 端点调用，当前仍需按 Deployment/Agent 归因</text>
+
+  <text x="826" y="369" fill="#93c5fd" font-family="Segoe UI, PingFang SC, sans-serif" font-size="10.5" font-weight="600">5. 切勿替代正式财务账单：定位为分钟级运行态异常熔断雷达</text>
+
+  <!-- Partner Dual-Loop FinOps Blueprint -->
+  <rect x="814" y="390" width="328" height="146" rx="9" fill="#0d2238" stroke="#38bdf8"/>
+  <text x="826" y="413" fill="#7dd3fc" font-family="Segoe UI, PingFang SC, sans-serif" font-size="12.2" font-weight="700">合作伙伴生产级「快慢双环」FinOps 落地范式</text>
+  <text x="826" y="436" fill="#e2e8f0" font-family="Segoe UI, PingFang SC, sans-serif" font-size="10.8">• 快环（&lt;2 min 运行态止损）：</text>
+  <text x="834" y="453" fill="#bae6fd" font-family="Consolas, PingFang SC, sans-serif" font-size="10.2">FoundryModelEstimatedCost + AgentModelEstimatedCost</text>
+  <text x="834" y="469" fill="#94a3b8" font-family="Segoe UI, PingFang SC, sans-serif" font-size="10.2">配置 PT5M metricAlerts 拦截死循环 Agent 与 Token 暴增</text>
+  <text x="826" y="492" fill="#e2e8f0" font-family="Segoe UI, PingFang SC, sans-serif" font-size="10.8">• 慢环（T+1 财务结算对账）：</text>
+  <text x="834" y="509" fill="#cbd5e1" font-family="Segoe UI, PingFang SC, sans-serif" font-size="10.2">Azure Cost Management / FOCUS 导出覆盖 EA/MACC 净折扣、</text>
+  <text x="834" y="525" fill="#cbd5e1" font-family="Segoe UI, PingFang SC, sans-serif" font-size="10.2">PTU 预留、Embedding/图像模型及 AI Search / Cosmos DB 全栈成本</text>
+
+  <!-- Bottom Conclusion Banner -->
+  <rect x="42" y="566" width="1116" height="42" rx="10" fill="#0f172a" stroke="#0ea5e9"/>
+  <text x="58" y="592" fill="#e2e8f0" font-family="Segoe UI, PingFang SC, Microsoft YaHei, sans-serif" font-size="12.6" font-weight="600">SA 结论：对话与推理 PayGo 工作负载今日即可投产用于分钟级异常告警与缓存感知分摊（0.0000% 零售价误差）；财务开票仍以 Cost Management 为准。</text>
+</svg>

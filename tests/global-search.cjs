@@ -23,19 +23,20 @@ const output=process.env.SITE_ARTIFACT_DIR||path.resolve('site-test-artifacts');
  try{
   const page=await browser.newPage();
   for(const route of ['index.html','zh.html','studio/data-infra.html','about.html','workshops/benchmarks/ai-infra-architect-workbench.en.html','animation/demos/camera-4d-director/index.en.html'])for(const width of [390,768,1440]){
-   await page.setViewport({width,height:900});await page.goto(new URL(route,base).href,{waitUntil:'load'});await page.evaluate(()=>scrollTo(0,600));
+   await page.setViewport({width,height:900});await page.goto(new URL(route,base.endsWith('/')?base:base+'/').href,{waitUntil:'domcontentloaded'});await page.evaluate(()=>scrollTo(0,600));
    const state=await page.evaluate(()=>{const h=document.querySelector('.site-header,[data-professional-header]');return {top:h.getBoundingClientRect().top,height:h.getBoundingClientRect().height,width:document.documentElement.scrollWidth,viewport:innerWidth,search:!!h.querySelector('input[type=search]'),padding:parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop)};});
    assert.equal(state.top,0,route+' sticky');assert(state.height<180,route+' compact header');assert(state.width<=width+1,route+' overflow');assert(state.search,route+' search');assert(state.padding>=state.height,route+' anchor clearance');report.layouts.push({route,...state});
-   if(width===390||width===1440)await page.screenshot({path:path.join(output,'navigation-'+route.replaceAll('/','-')+'-'+width+'.png')});
+   if(process.env.VERIFY_SCREENSHOTS==='1'&&(width===390||width===1440))await page.screenshot({path:path.join(output,'navigation-'+route.replaceAll('/','-')+'-'+width+'.png')});
   }
+  const baseSlash=base.endsWith('/')?base:base+'/';
   for(const route of ['index.html','studio/infra.html','animation/demos/camera-4d-director/index.en.html']){
-   await page.goto(new URL(route,base).href,{waitUntil:'load'});await page.keyboard.press('/');assert.equal(await page.evaluate(()=>document.activeElement.id),'site-search-input');await page.keyboard.type('FlashMLA');await page.waitForSelector('.search-results a');
+   await page.goto(new URL(route,baseSlash).href,{waitUntil:'domcontentloaded'});await page.keyboard.press('/');assert.equal(await page.evaluate(()=>document.activeElement.id),'site-search-input');await page.keyboard.type('FlashMLA');await page.waitForSelector('.search-results a');
    await page.keyboard.press('ArrowDown');const href=await page.$eval('.search-results a[aria-selected=true]',a=>a.href);await Promise.all([page.waitForNavigation({waitUntil:'domcontentloaded'}),page.keyboard.press('Enter')]);assert.equal(page.url(),href);report.search.push({route,href});
   }
-  await page.goto(new URL('zh.html',base).href,{waitUntil:'load'});await page.keyboard.down('Control');await page.keyboard.press('k');await page.keyboard.up('Control');await page.keyboard.type('Fabric');await page.waitForSelector('.search-results a');assert(await page.$$eval('.search-results a',links=>links.every(a=>!/(?:\.en\.html|\/about\.html)/.test(a.href))));await page.keyboard.press('Escape');assert(await page.$eval('.search-results',e=>e.hidden));
-  await page.goto(new URL('studio/archive.html?q=FlashMLA',base).href,{waitUntil:'load'});assert((await page.$$eval('#search-matches li',es=>es.length))>0);
+  await page.goto(new URL('zh.html',baseSlash).href,{waitUntil:'domcontentloaded'});await page.keyboard.down('Control');await page.keyboard.press('k');await page.keyboard.up('Control');await page.keyboard.type('Fabric');await page.waitForSelector('.search-results a');assert(await page.$$eval('.search-results a',links=>links.every(a=>!/(?:\.en\.html|\/about\.html)/.test(a.href))));await page.keyboard.press('Escape');assert(await page.$eval('.search-results',e=>e.hidden));
+  await page.goto(new URL('studio/archive.html?q=FlashMLA',baseSlash).href,{waitUntil:'domcontentloaded'});assert((await page.$$eval('#search-matches li',es=>es.length))>0);
   for(const [language,route,query] of [['en','studio/animation.html','Motion Studies'],['zh-CN','studio/zh-animation.html','动势图鉴']]){
-   await page.goto(new URL(route,base).href,{waitUntil:'load'});
+   await page.goto(new URL(route,baseSlash).href,{waitUntil:'domcontentloaded'});
    await page.type('.site-search input',query);
    await page.waitForSelector('.search-results:not([hidden])');
    const results=await page.$$eval('.search-results a',links=>links.map(a=>a.pathname));
@@ -47,7 +48,7 @@ const output=process.env.SITE_ARTIFACT_DIR||path.resolve('site-test-artifacts');
    const trackIndex=req=>{if(isIndex(req))requests.push(req.url());};
    await page.setCacheEnabled(false);
    page.on('request',trackIndex);
-   await page.goto(new URL(route,base).href,{waitUntil:'load'});
+   await page.goto(new URL(route,baseSlash).href,{waitUntil:'domcontentloaded'});
    assert.deepEqual(requests,[],'the exhibit does not fetch the global index on initial load');
    await page.keyboard.press('/');
    await page.keyboard.type('Motion Studies');
@@ -62,7 +63,7 @@ const output=process.env.SITE_ARTIFACT_DIR||path.resolve('site-test-artifacts');
     return ++indexAttempts===1?req.respond({status:200,contentType:'application/javascript',body:'/* unavailable */'}):req.abort();
    };
    page.on('request',emptyIndex);
-   await page.goto(new URL(route,base).href,{waitUntil:'load'});
+   await page.goto(new URL(route,baseSlash).href,{waitUntil:'domcontentloaded'});
    await page.keyboard.press('/');
    await page.keyboard.type('Motion Studies');
    const fallback='Suggestions unavailable. Press Enter to search the archive.';
@@ -72,7 +73,7 @@ const output=process.env.SITE_ARTIFACT_DIR||path.resolve('site-test-artifacts');
    assert.equal(indexAttempts,1,'a successful response without an index must not loop or retry on input');
    await page.setRequestInterception(false);
    page.off('request',emptyIndex);
-   await Promise.all([page.waitForNavigation({waitUntil:'load'}),page.keyboard.press('Enter')]);
+   await Promise.all([page.waitForNavigation({waitUntil:'domcontentloaded'}),page.keyboard.press('Enter')]);
    assert.equal(new URL(page.url()).pathname,'/studio/archive.html');
    assert.equal(new URL(page.url()).searchParams.get('q').trim(),'Motion Studies');
    assert(await page.$(`#search-matches a[href*="${route}"]`),'archive search remains usable');

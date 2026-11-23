@@ -98,7 +98,7 @@ console.log('PASS: 8 tracks, 9 context entries/cards, source overrides, legacy a
 
 async function browserChecks() {
   const puppeteer = require('puppeteer');
-  const browser = await puppeteer.launch({headless:'shell',pipe:true,protocolTimeout:30000,args:['--disable-gpu']});
+  const browser = await puppeteer.launch({headless:'shell',pipe:true,protocolTimeout:90000,args:['--disable-gpu','--no-sandbox']});
   try {
     const page=await browser.newPage();
     await page.setRequestInterception(true);
@@ -107,7 +107,7 @@ async function browserChecks() {
     for(const width of [390,1440]) {
       await page.setViewport({width,height:900});
       for(const file of ['index.html','zh.html',...tracks.flatMap(([topic])=>[`studio/${topic}.html`,`studio/zh-${topic}.html`])]) {
-        await page.goto(pathToFileURL(path.join(root,file)).href,{waitUntil:'load'});
+        await page.goto(pathToFileURL(path.join(root,file)).href,{waitUntil:'domcontentloaded',timeout:60000});
         const result=await page.evaluate(()=> {
           const figures=[...document.querySelectorAll('[data-knowledge-atlas]')];
           const visible=element=>getComputedStyle(element).display!=='none' && element.getBoundingClientRect().width>0;

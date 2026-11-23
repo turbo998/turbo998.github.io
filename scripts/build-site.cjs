@@ -202,6 +202,8 @@ const recentSupplementPages = [
   {path:'workshops/benchmarks/terminal-bench-4-1-cards.html',role:'report',title:'Terminal-Bench 4.1 Agentic CLI & Systems Engineering Benchmark (7-Card Deck)',tracks:['benchmarks'],language:{declared:'en'},supplemental:true},
   {path:'workshops/benchmarks/terminal-bench-4-1-cards.en.html',role:'report',title:'Terminal-Bench 4.1 Agentic CLI & Systems Engineering Benchmark (EN)',tracks:['benchmarks'],language:{declared:'en'},supplemental:true},
   {path:'workshops/benchmarks/terminal-bench-4-1-cards.zh-CN.html',role:'report',title:'Terminal-Bench 4.1 终端智能体系统工程基准报告与 15 模型评估 (中文)',tracks:['benchmarks'],language:{declared:'zh-CN'},supplemental:true},
+  {path:'workshops/foundry-estimated-cost/index.html',role:'demo',title:'Azure Monitor FoundryModelEstimatedCost (Preview) 实测精度与合作伙伴 FinOps 交互工作台 (中文)',tracks:['infra'],language:{declared:'zh-CN'},supplemental:true},
+  {path:'workshops/foundry-estimated-cost/index.en.html',role:'demo',title:'Azure Monitor FoundryModelEstimatedCost (Preview) Readiness, Accuracy & Partner FinOps Workbench (EN)',tracks:['infra'],language:{declared:'en'},supplemental:true},
   {path:'workshops/foundry-local/index.html',role:'demo',title:'Microsoft Foundry Local 端侧 AI 运行时架构与容量测算台 (中文)',tracks:['infra'],language:{declared:'zh-CN'},supplemental:true},
   {path:'workshops/foundry-local/index.en.html',role:'demo',title:'Microsoft Foundry Local Edge AI Runtime Architecture & Capacity Sizer (EN)',tracks:['infra'],language:{declared:'en'},supplemental:true},
   {path:'docs/h5-academy/index.html',role:'demo',title:'AI Infra 推理与智算网络 6 册交互式定容实验台 (TTFT/TPOT · GPU 三水位 · PD 分离 · 并行切分 · RDMA/IB)',tracks:['infra'],language:{declared:'zh-CN'},supplemental:true},

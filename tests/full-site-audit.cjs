@@ -26,6 +26,16 @@ const base = process.env.SITE_TEST_URL || 'http://127.0.0.1:8797';
 const output = process.env.SITE_ARTIFACT_DIR || path.join(root, 'site-test-artifacts');
 const currentHtml = execFileSync('git', ['ls-files', '--cached', '--others', '--exclude-standard', '-z', '--', '*.html'], {cwd:root,encoding:'utf8'}).split('\0').filter(f=>f&&!f.startsWith('design-preview/')&&!f.startsWith('site-test-artifacts/')&&!f.startsWith('scripts/clean-baselines/')&&!f.endsWith('-raw.html'));
 const files = [...new Set([...inventory.content.map(p => p.path).filter(p => fs.existsSync(path.join(root, p))), ...production.portalPages, ...currentHtml])];
+const auditFiles = (() => {
+  if (process.env.AUDIT_ONLY_CHANGED !== '1') return files;
+  const baseRef = process.env.AUDIT_BASE_REF || 'HEAD';
+  const diffOut = [
+    execFileSync('git', ['diff', '--name-only', baseRef, '--', '*.html'], {cwd:root,encoding:'utf8'}),
+    execFileSync('git', ['diff', '--cached', '--name-only', '--', '*.html'], {cwd:root,encoding:'utf8'})
+  ].join('\n');
+  const changed = new Set(diffOut.split(/\r?\n/).map(s => s.trim()).filter(Boolean));
+  return files.filter(f => changed.has(f));
+})();
 const report = { result: 'RUNNING', scope: 'Every baseline HTML plus all current production HTML, including new translations; static references and optional real-browser layout audit', pages: [], missingFiles: [], missingFragments: [], layouts: [], runtimeFailures: [], runtimeFragments: [], externalRedirects: [], errors: [] };
 async function main() {
   fs.mkdirSync(output, {recursive:true});
@@ -61,8 +71,9 @@ async function main() {
     await parser.close();
     if(process.env.FULL_BROWSER_AUDIT === '1') {
       const launchAuditBrowser = () => puppeteer.launch({ headless:'shell', pipe:true, protocolTimeout:120000, args:['--no-sandbox','--enable-unsafe-swiftshader'] });
-      const queue = [...files];
-      await Promise.all(Array.from({length: 4}, async () => {
+      const queue = [...auditFiles];
+      await Promise.all(Array.from({length: Math.min(4, Math.max(1, queue.length))}, async () => {
+        if (!queue.length) return;
         let workerBrowser = null;
         let workerPage = null;
         let seen = 0;
@@ -109,7 +120,8 @@ async function main() {
                 await activePage.setViewport({width,height:900});
                 try {
                   const response=await activePage.goto(`${base}/${file}`,{waitUntil:file.includes('data-lab/live-demo')?'networkidle0':'domcontentloaded',timeout:90000});
-                  await new Promise(resolve=>setTimeout(resolve,180));
+                  if(isSpecial) await new Promise(resolve=>setTimeout(resolve,180));
+                  else await activePage.evaluate(()=>new Promise(r=>{const t=setTimeout(r,40);requestAnimationFrame(()=>requestAnimationFrame(()=>{clearTimeout(t);r();}));}));
                   await activePage.evaluate(()=>scrollTo(0,600));
                   const state=await activePage.evaluate(allowed=>({
                     documentWidth:document.documentElement.scrollWidth,
@@ -143,6 +155,7 @@ async function main() {
         }
       }));
       for(const [file,aliases] of Object.entries(runtimeFragments)) {
+        if(process.env.AUDIT_ONLY_CHANGED === '1' && !auditFiles.includes(file)) continue;
         for(const [fragment,expected] of Object.entries(aliases)) {
           const page=await browser.newPage();
           await page.goto(`${base}/${file}#${fragment}`,{waitUntil:'domcontentloaded',timeout:30000});
