@@ -129,6 +129,22 @@ const INFRA_SPECS = {
       ['RoCEv2 Requires Coordinated ECN + PFC', 'RoCEv2 生产稳定依赖 ECN 先于 PFC 触发', 'Tune ECN marking below PFC pause thresholds and enable packet spraying / AR.', '必须令 ECN 降速早于 PFC 反压触发，并结合包喷洒或自适应路由化解哈希极化。'],
       ['Match Topology to Workload Traffic Matrix', '按通信矩阵特征选择网络建设规格', 'All-to-all training/MoE EP demands non-blocking rail fabrics; pure DP tolerates oversubscription.', '大规模训练与跨机 MoE 需 1:1 无收敛轨优化网络；纯独立副本推理可适度收敛。']
     ]
+  ),
+  'workshops/foundry-estimated-cost/index': entry(
+    'infra',
+    'Azure Monitor FoundryModelEstimatedCost · Telemetry Pipeline, Cache-Aware Pricing & FinOps Guardrails',
+    'Azure Monitor FoundryModelEstimatedCost · 平台遥测链路、缓存感知计价核验与 FinOps 生产护栏',
+    [
+      s('PLATFORM METRIC', '免费平台指标采集', 'Models - Usage · PT1M–P1D (<2m)', 'Models - Usage · 分钟至天粒度（<2 分钟）', 'Free Azure Monitor metric on AIServices & standalone OpenAI with 93-day retention', '覆盖 AIServices 与独立 OpenAI 账户的免费平台指标，具备 93 天原生保留期', 'prices tokens', '折算缓存与规格单价'),
+      s('CACHE & SKU ENGINE', '缓存与部署规格计价', 'Prompt-Cache Discount & 1.10× DataZone', '前缀缓存折扣与 DataZone 1.10× 溢价', 'Eliminates +68.73% naive DIY KQL over-estimation at 55.1% gpt-4.1-mini cache hit', '在 55.1% 缓存命中下消除自建 KQL +68.73% 虚高误判，精准反映 1.1000× 区域倍率', 'verifies accuracy', '对账线上实测矩阵'),
+      s('EMPIRICAL PARITY', '多模型真机对账矩阵', '0.0000% Retail Variance (1–121 Burst)', '单次至 121 并发批次 0.0000% 零售误差', 'Verified across gpt-5.4 ($0.69022), gpt-5.4-mini, gpt-4.1 & 3P Kimi-K2.6 reasoning', '跨 gpt-5.4、gpt-4.1 及第三方 Kimi-K2.6 思维链核验实现零零售价偏差', 'enforces guardrails', '落地五大工程护栏'),
+      s('FINOPS GUARDRAILS', '预览期边界与告警编排', 'REST Metrics API + PT5M metricAlerts', 'REST 指标查询 + PT5M 预算阈值告警', 'Avoids DS Export 95.1% drop, HTTP 400 ProjectId=* trap & $0 embedding/image blind spots', '规避 AzureMetrics 导出 95.1% 漏采、ProjectId=* 400 陷阱及向量/生图 $0 盲区')
+    ],
+    [
+      ['Query Metrics REST API Directly, Not AzureMetrics', '直接查询 Metrics API 而非诊断导出表', 'Diagnostic Settings export drops ~95.1% of cost records; bind dashboards and PT5M alerts to native platform metrics.', '诊断设置导出至 Log Analytics 会丢失约 95.1% 记录，生产看板与 PT5M 告警应直连平台指标。'],
+      ['Native Metric Fixes Prompt-Cache Over-Billing Math', '原生计价消除自建 Token 乘算虚高', 'Naive total-token KQL over-estimates cached workloads by +68.73% because cached input tokens bill at steep discounts.', '自建总词元 KQL 忽略缓存输入折扣会导致高达 +68.73% 的成本虚高，原生指标已精确扣减。'],
+      ['Pair With AgentModelEstimatedCost & Scope Guards', '配合项目级指标并规避通配符陷阱', 'Query per-model without ProjectId eq \'*\', supplement embeddings/images separately, and use AgentModelEstimatedCost per project.', '避免 ProjectId=* 触发 HTTP 400，单独补齐向量/生图计费，并结合项目级 AgentModelEstimatedCost 分摊。']
+    ]
   )
 };
 
