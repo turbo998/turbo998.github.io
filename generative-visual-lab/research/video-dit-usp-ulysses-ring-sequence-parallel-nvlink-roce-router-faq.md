@@ -48,10 +48,10 @@
 ```mermaid
 flowchart TD
     A[长序列视频 / 3D 世界模型分布式推理场景] --> B{集群规模与序列长度 L?}
-    B -->|单机 ≤ 8×H100 且 L ≤ 64K Tokens| C[单机纯 DeepSpeed-Ulysses U=8<br/>100% 跑在 900GB/s NVSwitch 内部]
-    B -->|多节点 16–64×H100 或 GQA KV头数 < GPU总数| D{跨节点网络拓扑策略?}
-    D -->|跨节点强跑全局 Ulysses All-to-All| E[❌ 传统基线: RoCEv2 Incast 阻塞 62.4%<br/>且 GQA KV头=8 无法无损切分]
-    D -->|USP 2D 混合网格: 机内 Ulysses × 跨机 Ring| F[✅ 推荐架构: 机内 NVLink U=8 All-to-All +<br/>跨机 RoCEv2 R=2/4 异步双缓冲 Ring-Attention]
+    B -->|"单机 ≤ 8×H100 且 L ≤ 64K Tokens"| C[单机纯 DeepSpeed-Ulysses U=8<br/>100% 跑在 900GB/s NVSwitch 内部]
+    B -->|"多节点 16–64×H100 或 GQA KV头数 < GPU总数"| D{跨节点网络拓扑策略?}
+    D -->|"跨节点强跑全局 Ulysses All-to-All"| E[❌ 传统基线: RoCEv2 Incast 阻塞 62.4%<br/>且 GQA KV头=8 无法无损切分]
+    D -->|"USP 2D 混合网格: 机内 Ulysses × 跨机 Ring"| F[✅ 推荐架构: 机内 NVLink U=8 All-to-All +<br/>跨机 RoCEv2 R=2/4 异步双缓冲 Ring-Attention]
 ```
 
 ### 3.2 `USP`（Unified Sequence Parallelism）2D 进程网格架构图

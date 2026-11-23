@@ -45,9 +45,9 @@
 ```mermaid
 flowchart TD
     A[企业建设实时对话交互数字人系统] --> B{终端形态与峰值并发路数?}
-    B -->|线下 4K 迎宾大屏 / 旗舰店导览<br/>< 500 路并发 + 追求极致真人实拍质感| C[云端 TensorRT 256px 嘴部重绘 MuseTalk/LivePortrait<br/>+ 120ms 语义垫词 + 首逗点流式 TTS + WebRTC UDP 385ms]
-    B -->|手机银行 / 电商 App / 车载助手<br/>1,000 - 50,000+ 路并发 + 弱网移动环境| D[严禁云端推视频! 服务端仅推 Opus 语音 + 24Kbps ARKit Viseme 权重<br/>+ 手机本地 Three.js 52-Blendshape / Rive 端侧 60fps 渲染]
-    B -->|医疗问诊 / 财富投顾 / 政务办理<br/>强合规披露 + 复杂表单填写| E[Azure AI Speech WebRTC Avatar 简短口播引导<br/>+ DataChannel WordBoundary 毫秒级同步弹出合规交互卡片]
+    B -->|"线下 4K 迎宾大屏 / 旗舰店导览<br/>< 500 路并发 + 追求极致真人实拍质感"| C[云端 TensorRT 256px 嘴部重绘 MuseTalk/LivePortrait<br/>+ 120ms 语义垫词 + 首逗点流式 TTS + WebRTC UDP 385ms]
+    B -->|"手机银行 / 电商 App / 车载助手<br/>1,000 - 50,000+ 路并发 + 弱网移动环境"| D[严禁云端推视频! 服务端仅推 Opus 语音 + 24Kbps ARKit Viseme 权重<br/>+ 手机本地 Three.js 52-Blendshape / Rive 端侧 60fps 渲染]
+    B -->|"医疗问诊 / 财富投顾 / 政务办理<br/>强合规披露 + 复杂表单填写"| E[Azure AI Speech WebRTC Avatar 简短口播引导<br/>+ DataChannel WordBoundary 毫秒级同步弹出合规交互卡片]
 ```
 
 ### 3.2 385ms 首逗点投机流式与 256px 局部重绘架构图
@@ -55,16 +55,16 @@ flowchart TD
 flowchart LR
     subgraph Ingest[1. 极速端点检测与垫词]
         MIC[用户语音 WebRTC 上行] --> VAD[Silero VAD 端点检测 30ms]
-        VAD -->|触发 120ms 垫词| FILL[预缓存点头/倾听过渡分片]
+        VAD -->|"触发 120ms 垫词"| FILL[预缓存点头/倾听过渡分片]
         VAD --> ASR[流式 ASR / Realtime API]
     end
     subgraph StreamLLM[2. 首逗点微句切块]
         ASR --> LLM[RAG + 流式 LLM]
-        LLM -->|前 4-6 词首逗号即发| TTS[Azure Speech WebSocket TTS:<br/>输出 PCM 音频块 + Viseme 时间戳]
+        LLM -->|"前 4-6 词首逗号即发"| TTS[Azure Speech WebSocket TTS:<br/>输出 PCM 音频块 + Viseme 时间戳]
     end
     subgraph Render[3. 双模低延迟渲染与下发]
-        TTS -->|大屏真模模式| TRT[TensorRT MuseTalk 256px 嘴部重绘<br/>贴回预缓存 1080p 呼吸母版 -> WebRTC]
-        TTS -->|手机高并发模式| EDGE[下发 24Kbps Viseme 权重<br/>手机本地 Three.js 驱动 52 Blendshapes]
+        TTS -->|"大屏真模模式"| TRT[TensorRT MuseTalk 256px 嘴部重绘<br/>贴回预缓存 1080p 呼吸母版 -> WebRTC]
+        TTS -->|"手机高并发模式"| EDGE[下发 24Kbps Viseme 权重<br/>手机本地 Three.js 驱动 52 Blendshapes]
     end
 ```
 

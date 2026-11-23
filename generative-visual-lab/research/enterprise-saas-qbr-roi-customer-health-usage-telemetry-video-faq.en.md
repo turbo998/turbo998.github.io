@@ -41,10 +41,10 @@ In **Enterprise B2B SaaS (Snowflake, Salesforce, Datadog, ServiceNow, HubSpot)**
 ```mermaid
 flowchart TD
     A[B2B SaaS Customer Video Scenario] --> B{Contains Account-Specific ARR, Seat Count, SLA, or ROI Metrics?}
-    B -->|No: Top-of-Funnel Brand Commercial| C[End-to-End Video Diffusion<br/>Sora / Veo / Runway Creative Shots]
-    B -->|Yes: Quarterly Business Review QBR / Renewal Brief / Overage Alert| D{Target Account Scale?}
-    D -->|Top 50 Strategic Accounts Only| E[Manual CSM Custom Deck + Live Briefing]
-    D -->|10k–500k SMB, Mid-Market & Enterprise Accounts| F[✅ Recommended: Snowflake/Gainsight Vector Plotter<br/>+ 93.8% AI CSM Studio Closed-GOP Stream-Copy]
+    B -->|"No: Top-of-Funnel Brand Commercial"| C[End-to-End Video Diffusion<br/>Sora / Veo / Runway Creative Shots]
+    B -->|"Yes: Quarterly Business Review QBR / Renewal Brief / Overage Alert"| D{Target Account Scale?}
+    D -->|"Top 50 Strategic Accounts Only"| E[Manual CSM Custom Deck + Live Briefing]
+    D -->|"10k–500k SMB, Mid-Market & Enterprise Accounts"| F[✅ Recommended: Snowflake/Gainsight Vector Plotter<br/>+ 93.8% AI CSM Studio Closed-GOP Stream-Copy]
 ```
 
 ### 3.2 Snowflake + Gainsight + Remotion Hybrid QBR Video Pipeline

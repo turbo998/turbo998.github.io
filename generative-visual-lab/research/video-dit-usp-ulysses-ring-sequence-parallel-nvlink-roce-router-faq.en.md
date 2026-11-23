@@ -41,10 +41,10 @@ When scaling **10s–30s 1080p/4K video Diffusion Transformers (Wan2.1-14B, Huny
 ```mermaid
 flowchart TD
     A[Long-Context Video DiT Distributed Inference] --> B{Cluster Size & Sequence Length L?}
-    B -->|Single Node ≤ 8×H100 & L ≤ 64K Tokens| C[Intra-Node Pure DeepSpeed-Ulysses U=8<br/>100% Inside 900GB/s NVSwitch Domain]
-    B -->|Multi-Node 16–64×H100 or GQA KV Heads < Total GPUs| D{Inter-Node Communication Strategy?}
-    D -->|Naive Global Cross-Node Ulysses All-to-All| E[❌ Baseline: 62.4% RoCEv2 Incast Stall<br/>& GQA KV-Head Replication Overhead]
-    D -->|USP 2D Hybrid Mesh: Intra Ulysses × Inter Ring| F[✅ Recommended: Intra-Node NVLink U=8 All-to-All<br/>+ Inter-Node RoCEv2 R=2/4 Overlapped Ring-Attention]
+    B -->|"Single Node ≤ 8×H100 & L ≤ 64K Tokens"| C[Intra-Node Pure DeepSpeed-Ulysses U=8<br/>100% Inside 900GB/s NVSwitch Domain]
+    B -->|"Multi-Node 16–64×H100 or GQA KV Heads < Total GPUs"| D{Inter-Node Communication Strategy?}
+    D -->|"Naive Global Cross-Node Ulysses All-to-All"| E[❌ Baseline: 62.4% RoCEv2 Incast Stall<br/>& GQA KV-Head Replication Overhead]
+    D -->|"USP 2D Hybrid Mesh: Intra Ulysses × Inter Ring"| F[✅ Recommended: Intra-Node NVLink U=8 All-to-All<br/>+ Inter-Node RoCEv2 R=2/4 Overlapped Ring-Attention]
 ```
 
 ### 3.2 `USP` 2D Process Mesh (`U_intra × R_inter`) Architecture

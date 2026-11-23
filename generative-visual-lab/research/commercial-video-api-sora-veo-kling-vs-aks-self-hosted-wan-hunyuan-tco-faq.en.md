@@ -49,10 +49,10 @@ Our sealed benchmark model establishes clear quantitative boundaries:
 ```mermaid
 flowchart TD
     A[Enterprise Marketing & E-Commerce Video Workload] --> B{Monthly Clip Volume & Customization Needs?}
-    B -->|< 4,200 Clips/Mo & No Custom LoRA Needed| C[Use 100% Commercial Closed-Source APIs<br/>Sora 2 / Veo 3.1 / Kling 2.1 Pay-Per-Clip]
-    B -->|≥ 4,200 Clips/Mo 15k–180k/Mo<br/>or Requires Private SKU LoRA / ControlNet / VNet Privacy| D{Shot Complexity & Queue Utilization?}
-    D -->|80%–90% Catalog I2V / Background Swap / Ad Variants| E[✅ Route to AKS Self-Hosted Open-Weight Pool<br/>Wan 2.1-14B / HunyuanVideo + TeaCache FP8 · $0.24/clip]
-    D -->|10%–20% Hero Physics / Native Audio / Peak Burst| F[✅ Route to Commercial Flagship API Pool<br/>Sora 2 / Veo 3.1 / Kling 2.1 with Token-Bucket Guard]
+    B -->|"< 4,200 Clips/Mo & No Custom LoRA Needed"| C[Use 100% Commercial Closed-Source APIs<br/>Sora 2 / Veo 3.1 / Kling 2.1 Pay-Per-Clip]
+    B -->|"≥ 4,200 Clips/Mo 15k–180k/Mo<br/>or Requires Private SKU LoRA / ControlNet / VNet Privacy"| D{Shot Complexity & Queue Utilization?}
+    D -->|"80%–90% Catalog I2V / Background Swap / Ad Variants"| E[✅ Route to AKS Self-Hosted Open-Weight Pool<br/>Wan 2.1-14B / HunyuanVideo + TeaCache FP8 · $0.24/clip]
+    D -->|"10%–20% Hero Physics / Native Audio / Peak Burst"| F[✅ Route to Commercial Flagship API Pool<br/>Sora 2 / Veo 3.1 / Kling 2.1 with Token-Bucket Guard]
 ```
 
 ### 3.2 Hybrid AKS Open-Weight GPU Fleet + Multi-Provider Commercial API Pipeline
@@ -71,8 +71,8 @@ flowchart LR
         C1["Sora 2 / Veo 3.1 / Kling 2.1 Connector<br/>+ Distributed RPM Token Bucket & Fallback"]
     end
     A1 --> A2
-    A2 -->|85% Bulk & Private SKU Jobs| B1 --> B2
-    A2 -->|15% Hero Shots & Peak Overflow| C1
+    A2 -->|"85% Bulk & Private SKU Jobs"| B1 --> B2
+    A2 -->|"15% Hero Shots & Peak Overflow"| C1
     B2 --> Out["Remotion Overlay + C2PA Signing → CDN (-76.8% TCO)"]
     C1 --> Out
 ```

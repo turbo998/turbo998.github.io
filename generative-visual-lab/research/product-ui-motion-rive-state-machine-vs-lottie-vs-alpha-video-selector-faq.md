@@ -46,12 +46,12 @@
 ```mermaid
 flowchart TD
     A[产品 UI 需要引入高品质动态视觉/AI 形象] --> B{画面属于矢量图形还是写实光追/粒子?}
-    B -->|2D 矢量 / 渐变网格 / 角色骨骼| C{是否需要多状态切换、光标跟随或实时音频驱动?}
-    C -->|是: AI Copilot 灵动球 / 交互吉祥物 / 游戏化按钮| D[选用 Rive .riv 二进制状态机 24KB<br/>WebAudio/Cursor 变量直绑 + 120fps GPU 矢量渲染]
-    C -->|否: 线性单次播放 / 简单循环引导图标| E{动效复杂度?}
-    E -->|简单位移/缩放/透明度| F[纯 CSS / Web Animations API WAAPI < 2KB]
-    E -->|AE 复杂路径动画| G[编译为压缩版 DotLottie .lottie 14KB<br/>+ Web Worker OffscreenCanvas 渲染]
-    B -->|3D 光线追踪玻璃折射 / AIGC 流体粒子爆炸| H[选用上下分屏 Stacked RGB+Alpha 标准 MP4 680KB<br/>+ 10行 WebGL Fragment Shader 实时抠像合成]
+    B -->|"2D 矢量 / 渐变网格 / 角色骨骼"| C{是否需要多状态切换、光标跟随或实时音频驱动?}
+    C -->|"是: AI Copilot 灵动球 / 交互吉祥物 / 游戏化按钮"| D[选用 Rive .riv 二进制状态机 24KB<br/>WebAudio/Cursor 变量直绑 + 120fps GPU 矢量渲染]
+    C -->|"否: 线性单次播放 / 简单循环引导图标"| E{动效复杂度?}
+    E -->|"简单位移/缩放/透明度"| F[纯 CSS / Web Animations API WAAPI < 2KB]
+    E -->|"AE 复杂路径动画"| G[编译为压缩版 DotLottie .lottie 14KB<br/>+ Web Worker OffscreenCanvas 渲染]
+    B -->|"3D 光线追踪玻璃折射 / AIGC 流体粒子爆炸"| H[选用上下分屏 Stacked RGB+Alpha 标准 MP4 680KB<br/>+ 10行 WebGL Fragment Shader 实时抠像合成]
 ```
 
 ### 3.2 三层 UI 动效工程化渲染管线架构图

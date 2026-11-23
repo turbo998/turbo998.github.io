@@ -55,10 +55,10 @@
 ```mermaid
 flowchart TD
     A[电商商品主图换景与服装虚拟试穿需求] --> B{对商品/服装细节保真度与控制力要求?}
-    B -->|创意灵感草图 / 允许商品细节微变<br/>且月出图量 < 10,000 张| C[直接调用商用图像 API<br/>GPT-Image-1 / Imagen 4 / Photoroom]
-    B -->|严禁改变商品 Logo、包装字体与服装印花版型<br/>需组合抠图 + 姿态 + VTON + 重打光多节点 DAG| D{月度生产图片规模?}
-    D -->|10,000 – 45,000 张/月 中小商家/季节波峰| E[选用 Serverless ComfyUI 托管平台<br/>Modal / Fal.ai / Replicate + GPU 内存快照]
-    D -->|≥ 45,000 张/月 5万–20万张/月主力平台| F[✅ 推荐混合架构: 80% K8s GPU 常驻温池 mmap<br/>+ 20% Serverless 弹性溢出 · $0.006–$0.009/张]
+    B -->|"创意灵感草图 / 允许商品细节微变<br/>且月出图量 < 10,000 张"| C[直接调用商用图像 API<br/>GPT-Image-1 / Imagen 4 / Photoroom]
+    B -->|"严禁改变商品 Logo、包装字体与服装印花版型<br/>需组合抠图 + 姿态 + VTON + 重打光多节点 DAG"| D{月度生产图片规模?}
+    D -->|"10,000 – 45,000 张/月 中小商家/季节波峰"| E[选用 Serverless ComfyUI 托管平台<br/>Modal / Fal.ai / Replicate + GPU 内存快照]
+    D -->|"≥ 45,000 张/月 5万–20万张/月主力平台"| F[✅ 推荐混合架构: 80% K8s GPU 常驻温池 mmap<br/>+ 20% Serverless 弹性溢出 · $0.006–$0.009/张]
 ```
 
 ### 3.2 四节点无头 ComfyUI 受控电商视觉 DAG 与混合弹性算力底座架构图

@@ -46,8 +46,8 @@
 ```mermaid
 flowchart TD
     A[企业 AIGC 图像/视频推理集群架构选型] --> B{月度累计推理规模?}
-    B -->|月推理 < 250 GPU 小时<br/>或早期 PoC / 偶发活动| C[全量选用 Serverless GPU:<br/>Modal / Fal CUDA 内存快照<br/>3.4s 启动 + 空闲 Scale-to-Zero]
-    B -->|月推理 >= 250 GPU 小时<br/>常态化企业视觉中台| D[AKS / EKS 三层混合算力池:<br/>30% 预留常驻 + 60% KEDA Spot + 10% Serverless 溢出]
+    B -->|"月推理 < 250 GPU 小时<br/>或早期 PoC / 偶发活动"| C[全量选用 Serverless GPU:<br/>Modal / Fal CUDA 内存快照<br/>3.4s 启动 + 空闲 Scale-to-Zero]
+    B -->|"月推理 >= 250 GPU 小时<br/>常态化企业视觉中台"| D[AKS / EKS 三层混合算力池:<br/>30% 预留常驻 + 60% KEDA Spot + 10% Serverless 溢出]
     D --> E[冷启动加速层:<br/>镜像权重解耦 + Dragonfly P2P + 本地 NVMe safetensors mmap 6.8s]
     D --> F[Spot 容错层:<br/>30s 驱逐预警钩子 + 每 10 步 18MB Latent 快照写入 Redis 断点续跑]
 ```
@@ -65,7 +65,7 @@ flowchart LR
     end
     subgraph SpotPool[3. Spot 步级检查点容错池]
         NVME --> WORK[Wan 2.1 / Flux.1 Worker:<br/>每 10 步异步快照 18MB Latent -> Redis]
-        WORK -->|捕获 30s Spot 驱逐信号| RESUME[新 Spot Pod 4.2s 拉取第40步 Latent<br/>无缝完成 Steps 41-50]
+        WORK -->|"捕获 30s Spot 驱逐信号"| RESUME[新 Spot Pod 4.2s 拉取第40步 Latent<br/>无缝完成 Steps 41-50]
     end
 ```
 

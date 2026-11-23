@@ -45,9 +45,9 @@
 ```mermaid
 flowchart TD
     A["Studio White-BG SKU Photo -> Lifestyle Scene Request"] --> B{"Product Material & Spatial Class?"}
-    B -->|Tabletop Appliances / Cosmetics / Bags<br/>Opaque Tabletop SKUs| C["Camera Pitch Estimator -> Synthetic 3D Table Depth Plane<br/>+ Flux.1-Fill + 0-3mm Contact AO + 3px Rim IC-Light"]
-    B -->|Sofas / Mattresses / Refrigerators<br/>Large Room Furniture| D["Ingest PIM LxWxH (cm) -> Metric3D Room Scale Box<br/>+ Coplanar Multi-Leg Floor Contact + M-LSD Straight Walls"]
-    B -->|Perfume Bottles / Wine / Eyewear<br/>Transparent Glass & Lenses| E["VitMatte Continuous Alpha + Opaque Label Split<br/>+ Cylindrical Background Refraction + Specular Add Layer"]
+    B -->|"Tabletop Appliances / Cosmetics / Bags<br/>Opaque Tabletop SKUs"| C["Camera Pitch Estimator -> Synthetic 3D Table Depth Plane<br/>+ Flux.1-Fill + 0-3mm Contact AO + 3px Rim IC-Light"]
+    B -->|"Sofas / Mattresses / Refrigerators<br/>Large Room Furniture"| D["Ingest PIM LxWxH (cm) -> Metric3D Room Scale Box<br/>+ Coplanar Multi-Leg Floor Contact + M-LSD Straight Walls"]
+    B -->|"Perfume Bottles / Wine / Eyewear<br/>Transparent Glass & Lenses"| E["VitMatte Continuous Alpha + Opaque Label Split<br/>+ Cylindrical Background Refraction + Specular Add Layer"]
 ```
 
 ### 3.2 4-Stage "Horizon Plane -> Flux.1 Fill -> Dual Shadow -> Inner-Lock Rim-Blend" Pipeline

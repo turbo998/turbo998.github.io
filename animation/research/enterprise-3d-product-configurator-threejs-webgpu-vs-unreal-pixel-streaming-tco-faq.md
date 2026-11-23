@@ -46,10 +46,10 @@
 ```mermaid
 flowchart TD
     A[企业建设 3D 产品在线选配器 / 定制台] --> B{目标受众场景与峰值并发规模?}
-    B -->|公网 C 端消费者官网 / 小程序<br/>汽车上市 / 运动鞋服 / 模块化家具 1k - 100k+ 并发| C[采用端侧 Three.js / WebGPU + Cycles 预烘焙 AO/Lightmap<br/>+ KHR_materials_clearcoat 零云端 GPU 实时交互 $0.0004/次]
+    B -->|"公网 C 端消费者官网 / 小程序<br/>汽车上市 / 运动鞋服 / 模块化家具 1k - 100k+ 并发"| C[采用端侧 Three.js / WebGPU + Cycles 预烘焙 AO/Lightmap<br/>+ KHR_materials_clearcoat 零云端 GPU 实时交互 $0.0004/次]
     C --> D[在用户点击“保存/分享我的定制海报”瞬间:<br/>按需触发 1.5s 云端无头光追或 Flux.1+IC-Light 4K 快照]
-    B -->|高奢机械腕表 / 钻石珠宝微距定制<br/>需极致文字锐度与钻石色散火彩| E[采用端侧 Three.js 原生 3x Retina DPR 渲染<br/>+ RGB 三波长色散 Shader + 各向异性金属拉丝]
-    B -->|线下旗舰店 VIP 贵宾室大屏 / 未烘焙千万面建筑光追<br/>受控内网 < 200 路并发| F[采用边缘节点 Unreal Pixel Streaming WebRTC<br/>+ 强制开启 60秒无操作静态帧冻结休眠机制]
+    B -->|"高奢机械腕表 / 钻石珠宝微距定制<br/>需极致文字锐度与钻石色散火彩"| E[采用端侧 Three.js 原生 3x Retina DPR 渲染<br/>+ RGB 三波长色散 Shader + 各向异性金属拉丝]
+    B -->|"线下旗舰店 VIP 贵宾室大屏 / 未烘焙千万面建筑光追<br/>受控内网 < 200 路并发"| F[采用边缘节点 Unreal Pixel Streaming WebRTC<br/>+ 强制开启 60秒无操作静态帧冻结休眠机制]
 ```
 
 ### 3.2 四阶段“Cycles 离线烘焙 + 端侧 WebGPU 交互 + 按需 4K 快照”管线架构图
@@ -64,7 +64,7 @@ flowchart LR
         CDN --> THREE[买家手机/PC Three.js / WebGPU:<br/>Clearcoat 闪粉车漆 + 8.2ms 丝滑旋转]
     end
     subgraph Snapshot[3. 按需 4K 社交分享大片生成]
-        THREE -->|仅 10% 用户点击分享时触发| SNAP[传入当前相机角度 + 选配 JSON<br/>1.5s 云端光追 / Flux.1+IC-Light 4K 海报]
+        THREE -->|"仅 10% 用户点击分享时触发"| SNAP[传入当前相机角度 + 选配 JSON<br/>1.5s 云端光追 / Flux.1+IC-Light 4K 海报]
     end
 ```
 

@@ -2084,7 +2084,7 @@ const RESOURCES_DATA = {
       title: "VoxCPM2 (2B) vs. Azure AI Speech 7-Card 评测与混合路由 TCO 工作台",
       desc: "11 组官方 48 kHz 样音 1024-pt Welch 频谱与量化实测、双层 CFG 源码核查、7-Card 4:5 标准视觉评测卡片及交互式企业合规路由与月度 TCO 精算台。",
       btnText: "打开交互式 TCO 工作台 ↗",
-      url: "./voxcpm2-workbench.html"
+      url: "./voxcpm2-vs-azure-speech.html"
     },
     {
       badge: "Flagship Case Study",
@@ -2135,7 +2135,7 @@ const RESOURCES_DATA = {
       title: "VoxCPM2 (2B) vs. Azure AI Speech 7-Card 評測與混合路由 TCO 工作台",
       desc: "11 組官方 48 kHz 樣音 1024-pt Welch 頻譜與量化實測、雙層 CFG 原始碼核查、7-Card 4:5 標準視覺評測卡片及互動式企業合規路由與月度 TCO 精算台。",
       btnText: "打開互動式 TCO 工作台 ↗",
-      url: "./voxcpm2-workbench.html"
+      url: "./voxcpm2-vs-azure-speech.html"
     },
     {
       badge: "Flagship Case Study",
@@ -2186,7 +2186,7 @@ const RESOURCES_DATA = {
       title: "VoxCPM2 (2B) vs. Azure AI Speech 7-Card Deck & Hybrid Router TCO Workbench",
       desc: "Empirical 1024-pt Welch PSD & quantization SDR measurements on 11 official 48 kHz WAVs, source-level dual-CFG audit, strict 7-Card 4:5 visual decks, and interactive TCO/GPU sizing.",
       btnText: "Open Interactive TCO Workbench ↗",
-      url: "./voxcpm2-workbench.html"
+      url: "./voxcpm2-vs-azure-speech.html"
     },
     {
       badge: "Flagship Case Study",

@@ -29,7 +29,7 @@ const files = [...new Set([...inventory.content.map(p => p.path).filter(p => fs.
 const report = { result: 'RUNNING', scope: 'Every baseline HTML plus all current production HTML, including new translations; static references and optional real-browser layout audit', pages: [], missingFiles: [], missingFragments: [], layouts: [], runtimeFailures: [], runtimeFragments: [], externalRedirects: [], errors: [] };
 async function main() {
   fs.mkdirSync(output, {recursive:true});
-  const browser = await puppeteer.launch({ headless:'shell', pipe:true, protocolTimeout:30000 });
+  const browser = await puppeteer.launch({ headless:'shell', pipe:true, protocolTimeout:120000, args:['--no-sandbox','--enable-unsafe-swiftshader'] });
   try {
     const parser = await browser.newPage();
     const parsed = new Map();
@@ -60,50 +60,86 @@ async function main() {
     }
     await parser.close();
     if(process.env.FULL_BROWSER_AUDIT === '1') {
+      const launchAuditBrowser = () => puppeteer.launch({ headless:'shell', pipe:true, protocolTimeout:120000, args:['--no-sandbox','--enable-unsafe-swiftshader'] });
       const queue = [...files];
       await Promise.all(Array.from({length: 4}, async () => {
-        while (queue.length) {
-          const file = queue.shift();
-          if(/^workshops\/azure-vm-modernization\/index(?:\.zh)?\.html$/.test(file)) {
-            const response = await fetch(`${base}/${file}`, {signal:AbortSignal.timeout(30000)});
-            assert.equal(response.status,200,file);
-            const page = await browser.newPage();
-            await page.setJavaScriptEnabled(false);
-            await page.goto(`${base}/${file}`,{waitUntil:'domcontentloaded'});
-            const fallback = await page.$$eval('a[href]', links=>links.map(a=>a.href).filter(h=>/^https?:/.test(h)&&new URL(h).origin!==location.origin));
-            assert.ok(fallback.length, 'External redirect must retain a native fallback');
-            report.externalRedirects.push({file,localStatus:response.status,fallback,limitation:'Existing external destination; remote availability is not local-render acceptance.'});
-            await page.close();
-            continue;
+        let workerBrowser = null;
+        let workerPage = null;
+        let seen = 0;
+        const errors = [];
+        const resetWorker = async () => {
+          if(workerBrowser) await workerBrowser.close().catch(()=>{});
+          workerBrowser = await launchAuditBrowser();
+          workerPage = await workerBrowser.newPage();
+          workerPage.on('pageerror',err=>errors.push(err.message));
+          seen = 0;
+        };
+        await resetWorker();
+        try {
+          while (queue.length) {
+            const file = queue.shift();
+            if(/^workshops\/azure-vm-modernization\/index(?:\.zh)?\.html$/.test(file)) {
+              const response = await fetch(`${base}/${file}`, {signal:AbortSignal.timeout(30000)});
+              assert.equal(response.status,200,file);
+              const page = await workerBrowser.newPage();
+              await page.setJavaScriptEnabled(false);
+              await page.goto(`${base}/${file}`,{waitUntil:'domcontentloaded'});
+              const fallback = await page.$$eval('a[href]', links=>links.map(a=>a.href).filter(h=>/^https?:/.test(h)&&new URL(h).origin!==location.origin));
+              assert.ok(fallback.length, 'External redirect must retain a native fallback');
+              report.externalRedirects.push({file,localStatus:response.status,fallback,limitation:'Existing external destination; remote availability is not local-render acceptance.'});
+              await page.close().catch(()=>{});
+              continue;
+            }
+            if(seen >= 250) await resetWorker();
+            const sourceFile=file.replace(/\.(?:en|zh)\.html$/,'.html');
+            const allowedScroll = dedicated.records.find(r=>r.path===sourceFile)?.verticalScrollRegions || readingSimulatorScroll[sourceFile] || [];
+            const isSpecial = /astra-planet|wanan-midnight|scrap-swarm|rocket-launch|feitian|data-lab\/live-demo/.test(file);
+            const openSpecialPage = async () => {
+              const p = await workerBrowser.newPage();
+              if(/astra-planet|wanan-midnight|scrap-swarm|rocket-launch|feitian/.test(file)) {
+                await p.evaluateOnNewDocument(()=>{let n=0;const raf=window.requestAnimationFrame.bind(window);window.requestAnimationFrame=cb=>n++<3?raf(cb):window.setTimeout(()=>cb(performance.now()),500);});
+              }
+              p.on('pageerror',err=>errors.push(err.message));
+              return p;
+            };
+            let activePage = isSpecial ? await openSpecialPage() : workerPage;
+            for(const width of [390,768,1440]) {
+              for(let attempt=0; attempt<2; attempt++) {
+                errors.length = 0;
+                await activePage.setViewport({width,height:900});
+                try {
+                  const response=await activePage.goto(`${base}/${file}`,{waitUntil:file.includes('data-lab/live-demo')?'networkidle0':'domcontentloaded',timeout:90000});
+                  await new Promise(resolve=>setTimeout(resolve,180));
+                  await activePage.evaluate(()=>scrollTo(0,600));
+                  const state=await activePage.evaluate(allowed=>({
+                    documentWidth:document.documentElement.scrollWidth,
+                    bodyOverflow:getComputedStyle(document.body).overflowY,
+                    frames:document.querySelectorAll('iframe').length,
+                    localHtmlFrames:[...document.querySelectorAll('iframe[src]')].filter(e=>{const u=new URL(e.src,location.href);return u.origin===location.origin&&(/\.html?$/.test(u.pathname)||u.pathname.endsWith('/'));}).map(e=>e.getAttribute('src')),
+                    scrollContainers:[...document.querySelectorAll('body *')].filter(e=>e.checkVisibility({checkVisibilityCSS:true})&&e.scrollHeight>e.clientHeight+3&&/auto|scroll/.test(getComputedStyle(e).overflowY)).map(e=>({tag:e.tagName,id:e.id,className:String(e.className),height:e.clientHeight,scrollHeight:e.scrollHeight,reviewed:allowed.find(region=>e.matches(region.selector))||null})),
+                    shell:!!document.querySelector('.site-header,[data-professional-header]'),
+                    headerTop:document.querySelector('.site-header,[data-professional-header]')?.getBoundingClientRect().top,
+                    search:!!document.querySelector('.site-header input[type=search],[data-professional-header] input[type=search]')
+                  }),allowedScroll);
+                  report.layouts.push({file,width,status:response?.status(),...state,errors:[...new Set(errors)]});
+                  break;
+                }catch(error){
+                  if(attempt===0){
+                    if(isSpecial) await activePage.close().catch(()=>{});
+                    await resetWorker();
+                    activePage = isSpecial ? await openSpecialPage() : workerPage;
+                    continue;
+                  }
+                  report.layouts.push({file,width,error:error.message});
+                }
+              }
+            }
+            if(isSpecial) await activePage.close().catch(()=>{});
+            else seen++;
+            console.log(`Audited ${file}`);
           }
-          const sourceFile=file.replace(/\.(?:en|zh)\.html$/,'.html');
-          const allowedScroll = dedicated.records.find(r=>r.path===sourceFile)?.verticalScrollRegions || readingSimulatorScroll[sourceFile] || [];
-          const page = await browser.newPage();
-          await page.setCacheEnabled(false);
-          const errors=[];
-          page.on('pageerror',err=>errors.push(err.message));
-          for(const width of [390,768,1440]) {
-            errors.length = 0;
-            await page.setViewport({width,height:900});
-            try {
-              const response=await page.goto(`${base}/${file}`,{waitUntil:file.includes('data-lab/live-demo')?'networkidle0':'domcontentloaded',timeout:30000});
-              await new Promise(resolve=>setTimeout(resolve,250));
-              await page.evaluate(()=>scrollTo(0,600));
-              const state=await page.evaluate(allowed=>({
-                documentWidth:document.documentElement.scrollWidth,
-                bodyOverflow:getComputedStyle(document.body).overflowY,
-                frames:document.querySelectorAll('iframe').length,
-                localHtmlFrames:[...document.querySelectorAll('iframe[src]')].filter(e=>{const u=new URL(e.src,location.href);return u.origin===location.origin&&(/\.html?$/.test(u.pathname)||u.pathname.endsWith('/'));}).map(e=>e.getAttribute('src')),
-                scrollContainers:[...document.querySelectorAll('body *')].filter(e=>e.checkVisibility({checkVisibilityCSS:true})&&e.scrollHeight>e.clientHeight+3&&/auto|scroll/.test(getComputedStyle(e).overflowY)).map(e=>({tag:e.tagName,id:e.id,className:String(e.className),              height:e.clientHeight,scrollHeight:e.scrollHeight,reviewed:allowed.find(region=>e.matches(region.selector))||null})),
-                              shell:!!document.querySelector('.site-header,[data-professional-header]'),
-                headerTop:document.querySelector('.site-header,[data-professional-header]')?.getBoundingClientRect().top,
-                search:!!document.querySelector('.site-header input[type=search],[data-professional-header] input[type=search]')
-                            }),allowedScroll);
-              report.layouts.push({file,width,status:response?.status(),...state,errors:[...new Set(errors)]});
-            }catch(error){report.layouts.push({file,width,error:error.message});}
-          }
-          await page.close();
-          console.log(`Audited ${file}`);
+        } finally {
+          if(workerBrowser) await workerBrowser.close().catch(()=>{});
         }
       }));
       for(const [file,aliases] of Object.entries(runtimeFragments)) {

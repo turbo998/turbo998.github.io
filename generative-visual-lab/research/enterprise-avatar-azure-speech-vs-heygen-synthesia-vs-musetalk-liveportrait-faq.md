@@ -44,10 +44,10 @@
 ```mermaid
 flowchart TD
     A[企业数字人视频播报与实时交互需求] --> B{月度生产分钟数与数据隐私红线?}
-    B -->|月均 < 500 分钟 · 市场部人工网页剪辑<br/>且无高管肖像内网不出域硬约束| C[选用 HeyGen / Synthesia SaaS 平台<br/>开箱即用模板丰富 · $1.80–$2.40/分钟]
-    B -->|政企/金融合规要求高管肖像不出 Azure 租户<br/>或需 40+ 语种神经语音批量生成课程| D{并发量级与单分钟成本敏感度?}
-    D -->|官方高管出镜 / 全球多语种标准课程底座| E[✅ 选用 Azure AI Speech Avatar<br/>Private Endpoint + Responsible AI + WebRTC]
-    D -->|5万–15万分钟/月 千人千面视频或大规模实时客服| F[✅ 推荐混合架构: Azure Neural TTS 多语种音素流<br/>+ 自建 MuseTalk/LivePortrait 256px 嘴部重绘 · $0.03–$0.09/min]
+    B -->|"月均 < 500 分钟 · 市场部人工网页剪辑<br/>且无高管肖像内网不出域硬约束"| C[选用 HeyGen / Synthesia SaaS 平台<br/>开箱即用模板丰富 · $1.80–$2.40/分钟]
+    B -->|"政企/金融合规要求高管肖像不出 Azure 租户<br/>或需 40+ 语种神经语音批量生成课程"| D{并发量级与单分钟成本敏感度?}
+    D -->|"官方高管出镜 / 全球多语种标准课程底座"| E[✅ 选用 Azure AI Speech Avatar<br/>Private Endpoint + Responsible AI + WebRTC]
+    D -->|"5万–15万分钟/月 千人千面视频或大规模实时客服"| F[✅ 推荐混合架构: Azure Neural TTS 多语种音素流<br/>+ 自建 MuseTalk/LivePortrait 256px 嘴部重绘 · $0.03–$0.09/min]
 ```
 
 ### 3.2 分轨矢量课件 + 256×256 嘴部局部重绘 + 倾听态零算力卸载混合管线架构图

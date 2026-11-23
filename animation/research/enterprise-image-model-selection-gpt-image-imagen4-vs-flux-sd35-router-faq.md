@@ -49,12 +49,12 @@
 ```mermaid
 flowchart TD
     A[企业统一图像生成 API 请求] --> B{是否属于画布实时拖拽草图预览 stage=draft?}
-    B -->|是: 要求 <500ms 极速反馈| C[✅ 路由至 Tier 4: Flux.1-schnell / SD3.5-Turbo<br/>4步蒸馏 0.35s 响应 · $0.0012/张 · Apache-2.0]
-    B -->|否: 生产级高清成片生成| D{是否携带私有 LoRA / ControlNet / VTON 掩码或内网保密标签?}
-    D -->|是: 需精准几何/身份锁死或数据不出域| E[✅ 路由至 Tier 1: AKS 自托管 Flux.1-dev FP8<br/>S-LoRA 热切 + ControlNet · $0.004/张 · 1.8s]
-    D -->|否: 纯文本/参考图创意生成| F{提示词是否含 >4主体复杂空间关系或对话修图?}
-    F -->|是: 复杂空间逻辑 / 海报内嵌英文排版| G[✅ 路由至 Tier 2: OpenAI GPT-Image-1<br/>96.4% 复杂指令遵循 · $0.04–$0.17/张]
-    F -->|否: 标准高写实商业摄影 / 自然空镜| H[✅ 路由至 Tier 3: Google Imagen 4<br/>高性价比写实摄影 + 企业版权免责 · $0.03/张]
+    B -->|"是: 要求 <500ms 极速反馈"| C[✅ 路由至 Tier 4: Flux.1-schnell / SD3.5-Turbo<br/>4步蒸馏 0.35s 响应 · $0.0012/张 · Apache-2.0]
+    B -->|"否: 生产级高清成片生成"| D{是否携带私有 LoRA / ControlNet / VTON 掩码或内网保密标签?}
+    D -->|"是: 需精准几何/身份锁死或数据不出域"| E[✅ 路由至 Tier 1: AKS 自托管 Flux.1-dev FP8<br/>S-LoRA 热切 + ControlNet · $0.004/张 · 1.8s]
+    D -->|"否: 纯文本/参考图创意生成"| F{提示词是否含 >4主体复杂空间关系或对话修图?}
+    F -->|"是: 复杂空间逻辑 / 海报内嵌英文排版"| G[✅ 路由至 Tier 2: OpenAI GPT-Image-1<br/>96.4% 复杂指令遵循 · $0.04–$0.17/张]
+    F -->|"否: 标准高写实商业摄影 / 自然空镜"| H[✅ 路由至 Tier 3: Google Imagen 4<br/>高性价比写实摄影 + 企业版权免责 · $0.03/张]
 ```
 
 ### 3.2 四模型统一路由、草图到终稿二级级联（Draft-to-Final Cascade）管线架构图

@@ -48,9 +48,9 @@
 ```mermaid
 flowchart TD
     A[企业 2D 概念图 / 商品图转 3D 资产需求] --> B{资产几何形态与业务场景?}
-    B -->|游戏角色 / 奇幻道具 / 潮玩<br/>有机曲面 + 需骨骼动画| C[Hunyuan3D-2 生成 320k 高模<br/>+ QuadriFlow 12k 流形四边面重拓扑]
-    B -->|电商家具 / 鞋服箱包 WebAR<br/>需 <3MB 极速加载| D[Microsoft Trellis 多图 SLAT 重建<br/>+ 保边 QEM 8.5k 减面]
-    B -->|3C 数码 / 工业机械硬表面<br/>需锐利倒角 + 清晰丝印| E[4图 Trellis 硬表面重建 + >35° 自动折痕保护<br/>+ 0.2mm 悬浮矢量贴花层 Decal]
+    B -->|"游戏角色 / 奇幻道具 / 潮玩<br/>有机曲面 + 需骨骼动画"| C[Hunyuan3D-2 生成 320k 高模<br/>+ QuadriFlow 12k 流形四边面重拓扑]
+    B -->|"电商家具 / 鞋服箱包 WebAR<br/>需 <3MB 极速加载"| D[Microsoft Trellis 多图 SLAT 重建<br/>+ 保边 QEM 8.5k 减面]
+    B -->|"3C 数码 / 工业机械硬表面<br/>需锐利倒角 + 清晰丝印"| E[4图 Trellis 硬表面重建 + >35° 自动折痕保护<br/>+ 0.2mm 悬浮矢量贴花层 Decal]
     C & D & E --> F[无头 Blender 高烘低切线法线/AO + Intrinsic 去阴影 PBR<br/>+ gltfpack Draco & KTX2 压缩导出 2MB GLB / USDZ]
 ```
 

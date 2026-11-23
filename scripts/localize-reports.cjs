@@ -27,7 +27,10 @@ function readSource(file) {
     const cleanFile = path.join(root, 'scripts/clean-baselines', file);
     const pinPrefix = Object.keys(nativeBilingualPins).find(prefix => file.startsWith(prefix));
     if (fs.existsSync(cleanFile)) {
-      sourceCache.set(file, cleanPerimeter(fs.readFileSync(cleanFile, 'utf8').replace(/\r\n/g, '\n')));
+      const raw = cleanPerimeter(fs.readFileSync(cleanFile, 'utf8').replace(/\r\n/g, '\n'));
+      const dedicated = require('./integrate-dedicated.cjs');
+      const route = dedicated.owned.find(entry => entry.path === file);
+      sourceCache.set(file, route ? dedicated.transform(route, raw).html : raw);
     } else if (pinPrefix) {
       const raw = execFileSync('git', ['show', `${nativeBilingualPins[pinPrefix]}:${file}`], { cwd: root, maxBuffer: 20 * 1024 * 1024 }).toString('utf8');
       const dedicated = require('./integrate-dedicated.cjs');

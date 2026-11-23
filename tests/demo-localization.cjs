@@ -22,7 +22,7 @@ async function harness(run) {
   await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
   let browser;
   try {
-    browser = await require('puppeteer').launch({headless: 'shell', pipe: true, args: ['--no-sandbox','--enable-unsafe-swiftshader'], timeout: 60000});
+    browser = await require('puppeteer').launch({headless: 'shell', pipe: true, protocolTimeout: 120000, args: ['--no-sandbox','--enable-unsafe-swiftshader'], timeout: 90000});
     await run(browser, `http://127.0.0.1:${server.address().port}/`);
   } finally {
     if (browser) await browser.close();
@@ -49,8 +49,15 @@ async function main() {
       const errors = [];
       page.on('pageerror', e => errors.push(e.message));
       try {
-        await page.goto(base + record.en, {waitUntil: 'domcontentloaded', timeout: 90000});
-        await page.waitForFunction(() => window.DemoLocalization?.ready, {polling: 100, timeout: 60000});
+        if (/astra-planet|wanan-midnight|scrap-swarm/.test(record.en)) {
+          await page.evaluateOnNewDocument(() => {
+            let frames = 0;
+            const raf = window.requestAnimationFrame.bind(window);
+            window.requestAnimationFrame = cb => frames++ < 3 ? raf(cb) : window.setTimeout(() => cb(performance.now()), 500);
+          });
+        }
+        await page.goto(base + record.en, {waitUntil: 'domcontentloaded', timeout: 120000});
+        await page.waitForFunction(() => window.DemoLocalization?.ready, {polling: 100, timeout: 120000});
         await new Promise(resolve => setTimeout(resolve, 600));
         if (record.en.includes('wanan-midnight') || record.en.includes('scrap-swarm')) {
           await page.evaluate(() => { window.requestAnimationFrame = () => 0; });

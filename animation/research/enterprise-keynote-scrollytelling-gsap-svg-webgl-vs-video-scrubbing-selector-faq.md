@@ -49,11 +49,11 @@
 ```mermaid
 flowchart TD
     A[企业产品官网 / 技术白皮书 Scrollytelling 需求] --> B{核心视觉内容形态?}
-    B -->|云与 AI 系统架构演进 / 数据故事长图| C[✅ 选用 GSAP ScrollTrigger + SVG 矢量路径<br/>+ Canvas 粒子层 · 包体 <450KB · 60fps]
-    B -->|B2B SaaS 产品界面交互导览 / 状态微动效| D[✅ 选用 Lenis 惯性滚动 + 28KB Rive 状态机<br/>+ 真实 React DOM 组件联动 · 1.25MB]
-    B -->|照片级旗舰硬件爆炸拆解 / AIGC 首尾帧光影变幻| E{如何实现正反向丝滑滚动 Scrubbing?}
-    E -->|直接绑定普通 Long-GOP MP4 video.currentTime| F[❌ 致命陷阱: 反向滚动回溯 250帧 GOP<br/>Seek 延迟 280ms · 手机端 9fps 卡死]
-    E -->|90–120帧 WebP 序列帧 Canvas 或 -g 1 All-Intra| G[✅ 推荐架构: Web Worker ImageBitmap 环形池<br/>+ Canvas 2.4ms 零延迟绘制 + 顶层 SVG 矢量引线]
+    B -->|"云与 AI 系统架构演进 / 数据故事长图"| C[✅ 选用 GSAP ScrollTrigger + SVG 矢量路径<br/>+ Canvas 粒子层 · 包体 <450KB · 60fps]
+    B -->|"B2B SaaS 产品界面交互导览 / 状态微动效"| D[✅ 选用 Lenis 惯性滚动 + 28KB Rive 状态机<br/>+ 真实 React DOM 组件联动 · 1.25MB]
+    B -->|"照片级旗舰硬件爆炸拆解 / AIGC 首尾帧光影变幻"| E{如何实现正反向丝滑滚动 Scrubbing?}
+    E -->|"直接绑定普通 Long-GOP MP4 video.currentTime"| F[❌ 致命陷阱: 反向滚动回溯 250帧 GOP<br/>Seek 延迟 280ms · 手机端 9fps 卡死]
+    E -->|"90–120帧 WebP 序列帧 Canvas 或 -g 1 All-Intra"| G[✅ 推荐架构: Web Worker ImageBitmap 环形池<br/>+ Canvas 2.4ms 零延迟绘制 + 顶层 SVG 矢量引线]
 ```
 
 ### 3.2 AIGC/3D 预渲染序列帧 + GSAP ScrollTrigger + SVG 矢量引线双层合成架构图

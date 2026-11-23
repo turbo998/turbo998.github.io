@@ -43,13 +43,13 @@
 ```mermaid
 flowchart TD
     A[Enterprise Video Requires 4K 60fps Master Deliverable] --> B{Single Raw Clip or Multi-Shot Edited Ad?}
-    B -->|Multi-Shot Edit / Has Typography| C[1. Keep Text Unbaked! Clean Plate Only<br/>2. PySceneDetect Splits Timeline into Atomic Shots]
-    B -->|Single 720p 24fps Base AI Clip| D[Enter Spatiotemporal Mastering Pipeline]
+    B -->|"Multi-Shot Edit / Has Typography"| C[1. Keep Text Unbaked! Clean Plate Only<br/>2. PySceneDetect Splits Timeline into Atomic Shots]
+    B -->|"Single 720p 24fps Base AI Clip"| D[Enter Spatiotemporal Mastering Pipeline]
     C --> D
     D --> E[Stage 2: RIFE v4.22 TensorRT Optical-Flow Interpolation<br/>24fps -> 60fps in 1.4s per Shot]
     E --> F{Contains Close-Up Hero SKU or Luxury Fabric?}
-    F -->|Yes: Couture / Jewelry / 3C| G[Stage 3A: SeedVR / VEnhancer 8-Frame Temporal VSR<br/>+ Merchant 4K Studio Photo Cross-Attention Texture Guide]
-    F -->|No: General Scene / B-Roll| H[Stage 3B: BasicVSR++ / SeedVR FP16 Cosine-Tiled 4K VSR]
+    F -->|"Yes: Couture / Jewelry / 3C"| G[Stage 3A: SeedVR / VEnhancer 8-Frame Temporal VSR<br/>+ Merchant 4K Studio Photo Cross-Attention Texture Guide]
+    F -->|"No: General Scene / B-Roll"| H[Stage 3B: BasicVSR++ / SeedVR FP16 Cosine-Tiled 4K VSR]
     G & H --> I[Stage 4: Composite Native 3840x2160 Remotion Vector Subtitles & Logo Last<br/>Export 10-bit HEVC / ProRes 422 HQ Master]
 ```
 

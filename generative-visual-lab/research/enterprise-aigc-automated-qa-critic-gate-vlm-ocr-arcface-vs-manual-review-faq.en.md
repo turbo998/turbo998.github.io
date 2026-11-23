@@ -45,11 +45,11 @@
 ```mermaid
 flowchart TD
     A[Raw AIGC Image / Video Output] --> B[Tier 1: 40ms Deterministic Specialist Probes<br/>MediaPipe Hand-21 / PP-OCR / ΔE / ArcFace / RAFT Flow]
-    B -->|Localized Defect Found<br/>6-Finger Hand / Typo / Background Logo| C[Route Directly to Tier 3 Surgical Self-Healing:<br/>Crop 256x256 BBox for 0.6s Localized Inpaint]
-    B -->|Global Collapse<br/>Missing Subject / Full-Clip Flicker| D[Trigger New-Seed Full Re-Generation]
-    B -->|Tier 1 Passed| E[Tier 2: 2x2 Contact-Sheet Qwen2.5-VL Critic<br/>+ Azure AI Content Safety Scan]
-    E -->|Localized Physics Defect| C
-    E -->|99.85% Verified Pass| F[Stamp C2PA v2.1 QA Scorecard -> Publish to CDN]
+    B -->|"Localized Defect Found<br/>6-Finger Hand / Typo / Background Logo"| C[Route Directly to Tier 3 Surgical Self-Healing:<br/>Crop 256x256 BBox for 0.6s Localized Inpaint]
+    B -->|"Global Collapse<br/>Missing Subject / Full-Clip Flicker"| D[Trigger New-Seed Full Re-Generation]
+    B -->|"Tier 1 Passed"| E[Tier 2: 2x2 Contact-Sheet Qwen2.5-VL Critic<br/>+ Azure AI Content Safety Scan]
+    E -->|"Localized Physics Defect"| C
+    E -->|"99.85% Verified Pass"| F[Stamp C2PA v2.1 QA Scorecard -> Publish to CDN]
     C --> B
 ```
 
@@ -62,13 +62,13 @@ flowchart LR
         RAW --> P3[Legal & Temporal:<br/>Top-10k Logo YOLO + Celebrity Negative ArcFace + RAFT]
     end
     subgraph Tier2[2. Contact-Sheet VLM Critic]
-        P1 & P2 & P3 -->|Pass Tier 1| GRID[2x2 Keyframe Contact-Sheet Builder]
+        P1 & P2 & P3 -->|"Pass Tier 1"| GRID[2x2 Keyframe Contact-Sheet Builder]
         GRID --> VLM[Self-Hosted Qwen2.5-VL-7B + Content Safety:<br/>Structured JSON Score & Defect BBox]
     end
     subgraph Tier3[3. 256px Surgical Self-Healing]
-        VLM -->|Localized BBox Defect| HEAL[Crop 256x256 + 5-Finger/Clean Mask<br/>Flux.1-Fill / Wan-VACE 0.6s Repair]
+        VLM -->|"Localized BBox Defect"| HEAL[Crop 256x256 + 5-Finger/Clean Mask<br/>Flux.1-Fill / Wan-VACE 0.6s Repair]
         HEAL --> RAW
-        VLM -->|PASS| C2PA[C2PA v2.1 Attestation & DAM]
+        VLM -->|"PASS"| C2PA[C2PA v2.1 Attestation & DAM]
     end
 ```
 

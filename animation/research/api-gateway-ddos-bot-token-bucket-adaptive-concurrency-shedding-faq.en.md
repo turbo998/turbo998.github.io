@@ -40,10 +40,10 @@ In **tier-1 financial payment, Black-Friday e-commerce, and enterprise SaaS API 
 ```mermaid
 flowchart TD
     A[API Gateway Traffic Control Scenario] --> B{Primary Protection Objective?}
-    B -->|Commercial SaaS Tier Quota Billing Only| C[Distributed Redis Token Bucket<br/>Static RPS/RPM per API Key]
-    B -->|Surviving Flash Sales, Slow-DB Cascades & Retry Storms| D{Feedback Signal & Priority Awareness?}
-    D -->|Static Global RPS Limit + Unprioritized HTTP 429| E[❌ Baseline: Slow DB Spikes In-Flight L=λ×W by 100x<br/>& Blind 429 Drops 68%+ Paying Checkouts]
-    D -->|Gradient2 Adaptive Concurrency + 4-Tier QoS Shedding| F[✅ Recommended: Locks Left of Queueing Knee at 14.2ms<br/>& Sheds Bots/Recs First for 99.99% Tier-0 Checkout]
+    B -->|"Commercial SaaS Tier Quota Billing Only"| C[Distributed Redis Token Bucket<br/>Static RPS/RPM per API Key]
+    B -->|"Surviving Flash Sales, Slow-DB Cascades & Retry Storms"| D{Feedback Signal & Priority Awareness?}
+    D -->|"Static Global RPS Limit + Unprioritized HTTP 429"| E[❌ Baseline: Slow DB Spikes In-Flight L=λ×W by 100x<br/>& Blind 429 Drops 68%+ Paying Checkouts]
+    D -->|"Gradient2 Adaptive Concurrency + 4-Tier QoS Shedding"| F[✅ Recommended: Locks Left of Queueing Knee at 14.2ms<br/>& Sheds Bots/Recs First for 99.99% Tier-0 Checkout]
 ```
 
 ### 3.2 Envoy Gradient2 & 4-Tier QoS Load-Shedding Architecture

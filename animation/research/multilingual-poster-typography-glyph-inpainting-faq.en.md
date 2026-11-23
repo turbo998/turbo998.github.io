@@ -47,8 +47,8 @@ flowchart TD
     A["Poster / Packaging Text Element"] --> B{"Must the text physically fuse with 3D scene materials?<br/>(e.g., Neon Tube / Liquid Gold / Water Droplets)"}
     B -->|"Yes (Diegetic 3D Hero Title, <= 8 chars)"| C["✅ Track A: Glyph-Mask Conditioned Diffusion<br/>1. FreeType renders exact binary Glyph Mask<br/>2. Feed into Glyph-ByT5 / AnyText2 / Flux ControlNet<br/>3. Verify Levenshtein Distance == 0 via OCR"]
     B -->|"No (Sub-copy, Price Badges, Multi-Language Disclaimers)"| D{"Contains CJK, Arabic RTL, Thai,<br/>or <= 16px small typography?"}
-    D -->|Yes| E["✅ Track B: HarfBuzz + SVG/Skia Vector Overlay<br/>1. Reserve negative-space zone in background<br/>2. Shape BiDi/CJK ligatures via HarfBuzz<br/>3. Composite vector layer with ambient drop-shadow"]
-    D -->|No| E
+    D -->|"Yes"| E["✅ Track B: HarfBuzz + SVG/Skia Vector Overlay<br/>1. Reserve negative-space zone in background<br/>2. Shape BiDi/CJK ligatures via HarfBuzz<br/>3. Composite vector layer with ambient drop-shadow"]
+    D -->|"No"| E
     C --> F["Final Deliverable: 0.00% CER<br/>+ Editable Multi-Layer SVG / PSD"]
     E --> F
 ```

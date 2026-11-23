@@ -83,7 +83,7 @@ function verifyPreservation() {
 }
 
 async function settle(page, name) {
-  if (name.startsWith('benchmark-cards')) await page.waitForSelector('#card-7');
+  if (name.startsWith('benchmark-cards')) await page.waitForSelector('#card-7, body > .card:nth-of-type(7)');
   else {
     await page.waitForSelector('#ui-title');
     assert.match(new URL(page.url()).pathname, new RegExp(`^/${directory}/index(?:\\.en)?\\.html$`));
@@ -177,13 +177,13 @@ async function noJavaScript(browser, name, width) {
     assert.match(await page.$eval('.professional-identity', el => el.textContent), /Qi Chen/);
     const isReport = name.startsWith('benchmark-cards');
     if (isReport) {
-      const heading = await page.$eval('#card-1 h1', el => el.textContent);
+      const heading = await page.$eval('#card-1 h1, body > .card h1', el => el.textContent);
       const targetLanguage = name.includes('.en.') ? 'zh' : 'en';
       await Promise.all([
         page.waitForNavigation({ waitUntil: 'domcontentloaded' }),
         page.click(`.professional-controls a[hreflang="${targetLanguage === 'en' ? 'en' : 'zh-CN'}"]`)
       ]);
-      assert.notEqual(await page.$eval('#card-1 h1', el => el.textContent), heading, 'NoJS report link changes real report body');
+      assert.notEqual(await page.$eval('#card-1 h1, body > .card h1', el => el.textContent), heading, 'NoJS report link changes real report body');
       assert.equal(await page.$eval('html', el => el.lang), targetLanguage === 'en' ? 'en' : 'zh-CN');
     } else {
       assert.equal(await page.$eval('html', el => el.lang), 'zh-CN');

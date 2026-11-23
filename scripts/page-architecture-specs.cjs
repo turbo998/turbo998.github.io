@@ -37,6 +37,7 @@ function canonicalKey(file) {
   p = p.replace(/\.(?:en|zh(?:-CN)?)$/i, '');
   p = p.replace(/^docs\/h5\//i, 'ai-infra-h5/');
   p = p.replace(/^docs\/h5-academy\//i, 'h5-academy/');
+  p = p.replace(/^workshops\/azure-agent-infra\/h5\//i, 'workshops/azure-agent-infra/');
   p = p.replace(/^zh-(about|career|skills|fte|diamond|benchmarks|github-radar|openrouter|opensource|projects|writing|ai-security|security-ai-landing-zone)$/i, '$1');
   p = p.replace(/^studio\/zh-([a-z0-9-]+)$/i, 'studio/$1');
   p = p.replace(/^(workshops\/azure-agent-infra\/)zh-(index|demo|selector)$/i, '$1$2');

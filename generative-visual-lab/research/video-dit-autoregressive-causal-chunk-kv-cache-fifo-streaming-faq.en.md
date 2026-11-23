@@ -43,10 +43,10 @@ Switching to **Autoregressive Causal Chunk Video DiTs** unlocks streaming genera
 ```mermaid
 flowchart TD
     A[Enterprise Video DiT Serving Scenario] --> B{Target Duration & Streaming TTFF SLA?}
-    B -->|Short Clip ≤ 5s Offline Render| C[Bidirectional Video DiT<br/>+ TeaCache + SageAttention2 + 3D STA]
-    B -->|60s–300s Continuous Take / Interactive Avatar / World Stream<br/>Requires TTFF < 2s & O 1 Constant VRAM| D{Causal KV Cache Management Strategy?}
-    D -->|Unbounded KV Accumulation or Sinkless FIFO| E[❌ Baseline: Crashes 80GB H100 at 11.2s<br/>or Suffers 61.4% Identity Meltdown]
-    D -->|Tri-Zone Causal KV + Rolling Noise Ladder| F[✅ Recommended: Pinned Sink + 2×2 Pooled Keyframes + FIFO<br/>Constant 14.2GB VRAM, 1.65s TTFF & 96.8% Identity Lock]
+    B -->|"Short Clip ≤ 5s Offline Render"| C[Bidirectional Video DiT<br/>+ TeaCache + SageAttention2 + 3D STA]
+    B -->|"60s–300s Continuous Take / Interactive Avatar / World Stream<br/>Requires TTFF < 2s & O 1 Constant VRAM"| D{Causal KV Cache Management Strategy?}
+    D -->|"Unbounded KV Accumulation or Sinkless FIFO"| E[❌ Baseline: Crashes 80GB H100 at 11.2s<br/>or Suffers 61.4% Identity Meltdown]
+    D -->|"Tri-Zone Causal KV + Rolling Noise Ladder"| F[✅ Recommended: Pinned Sink + 2×2 Pooled Keyframes + FIFO<br/>Constant 14.2GB VRAM, 1.65s TTFF & 96.8% Identity Lock]
 ```
 
 ### 3.2 Tri-Zone Causal Video KV Cache & Rolling Noise-Ladder Pipeline

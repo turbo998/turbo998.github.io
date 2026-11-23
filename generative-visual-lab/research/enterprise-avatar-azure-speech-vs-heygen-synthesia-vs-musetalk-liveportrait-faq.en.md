@@ -49,10 +49,10 @@ Our benchmark establishes clear architectural and financial selection boundaries
 ```mermaid
 flowchart TD
     A[Enterprise Digital Avatar Workload] --> B{Monthly Minute Volume & Data Residency Policy?}
-    B -->|< 500 Min/Mo · Manual Web Editor Workflow<br/>& No VNet Biometric Residency Mandate| C[Select HeyGen / Synthesia SaaS<br/>Turnkey Stock Avatars · $1.80–$2.40/min]
-    B -->|Strict Enterprise VNet Biometric Privacy<br/>or Automated 50,000–150,000+ Min/Mo Scale| D{Workload Type & Unit-Cost Target?}
-    D -->|Official Executive Comms & Regulated 40-Locale LMS| E[✅ Select Azure AI Speech Avatar<br/>Private Endpoint + Responsible AI + Native WebRTC]
-    D -->|High-Volume 100k Sales Videos or 24×7 Live Support| F[✅ Recommended Hybrid: Azure Neural TTS Viseme Stream<br/>+ Self-Hosted MuseTalk/LivePortrait 256px ROI · $0.03–$0.09/min]
+    B -->|"< 500 Min/Mo · Manual Web Editor Workflow<br/>& No VNet Biometric Residency Mandate"| C[Select HeyGen / Synthesia SaaS<br/>Turnkey Stock Avatars · $1.80–$2.40/min]
+    B -->|"Strict Enterprise VNet Biometric Privacy<br/>or Automated 50,000–150,000+ Min/Mo Scale"| D{Workload Type & Unit-Cost Target?}
+    D -->|"Official Executive Comms & Regulated 40-Locale LMS"| E[✅ Select Azure AI Speech Avatar<br/>Private Endpoint + Responsible AI + Native WebRTC]
+    D -->|"High-Volume 100k Sales Videos or 24×7 Live Support"| F[✅ Recommended Hybrid: Azure Neural TTS Viseme Stream<br/>+ Self-Hosted MuseTalk/LivePortrait 256px ROI · $0.03–$0.09/min]
 ```
 
 ### 3.2 Split-Track Slide Compositor, 256×256 Mouth ROI & Idle-Loop Offload Pipeline

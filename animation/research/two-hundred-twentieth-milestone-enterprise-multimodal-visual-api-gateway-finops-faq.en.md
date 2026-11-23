@@ -45,13 +45,13 @@
 ```mermaid
 flowchart TD
     A[Application Sends Image / Video / 3D Generation Request] --> B[Layer 1: Idempotency & Environment Gate<br/>Check Redis Idempotency-Key & Dev/Prod Tag]
-    B -->|Matches In-Flight Job| C[Attach to Existing Job ID & SSE Stream Zero Duplicate Spend]
-    B -->|Dev / CI / Staging Environment| D[Force Route to 4-Step AKS Flux.1-schnell $0.0008]
-    B -->|Production Request| E{Layer 2: Tenant Monthly FinOps Budget Usage?}
-    E -->|>= 85% Budget Used Soft-Cap Triggered| F[Auto-Downgrade Route to Internal AKS Flux.1 / Wan 2.1 Pool<br/>Zero Service Outage & Zero Overrun]
-    E -->|< 85% Budget Used| G{Layer 3: Primary Cloud RPM Token Bucket & Health?}
-    G -->|RPM Available & Latency Normal| H[Dispatch to Primary Cloud API: OpenAI / Vertex / Azure]
-    G -->|RPM < 10% or Upstream 429/503| I[50ms Pre-Emptive Failover to Backup Region or AKS Warm Pool]
+    B -->|"Matches In-Flight Job"| C[Attach to Existing Job ID & SSE Stream Zero Duplicate Spend]
+    B -->|"Dev / CI / Staging Environment"| D[Force Route to 4-Step AKS Flux.1-schnell $0.0008]
+    B -->|"Production Request"| E{Layer 2: Tenant Monthly FinOps Budget Usage?}
+    E -->|">= 85% Budget Used Soft-Cap Triggered"| F[Auto-Downgrade Route to Internal AKS Flux.1 / Wan 2.1 Pool<br/>Zero Service Outage & Zero Overrun]
+    E -->|"< 85% Budget Used"| G{Layer 3: Primary Cloud RPM Token Bucket & Health?}
+    G -->|"RPM Available & Latency Normal"| H[Dispatch to Primary Cloud API: OpenAI / Vertex / Azure]
+    G -->|"RPM < 10% or Upstream 429/503"| I[50ms Pre-Emptive Failover to Backup Region or AKS Warm Pool]
     H & I & F & D --> J[Layer 4: Mandatory Outbound Content Safety + HSM C2PA v2.1 Sign + Ledger Commit]
 ```
 
@@ -67,9 +67,9 @@ flowchart LR
         FIN --> ROUTER[3. Multi-Cloud RPM Router:<br/>Token-Bucket Pre-Check + 50ms Escape]
     end
     subgraph Backends[Hybrid Multi-Cloud & AKS Compute Fabric]
-        ROUTER -->|Tier 1 Flagship| C1[OpenAI GPT-Image-1 / Sora 2]
-        ROUTER -->|Tier 1 Flagship| C2[Google Vertex Imagen 4 / Veo 3]
-        ROUTER -->|Tier 2 Workhorse & Fallback| C3[Self-Hosted AKS Flux.1 / Wan 2.1 / ComfyUI Pool]
+        ROUTER -->|"Tier 1 Flagship"| C1[OpenAI GPT-Image-1 / Sora 2]
+        ROUTER -->|"Tier 1 Flagship"| C2[Google Vertex Imagen 4 / Veo 3]
+        ROUTER -->|"Tier 2 Workhorse & Fallback"| C3[Self-Hosted AKS Flux.1 / Wan 2.1 / ComfyUI Pool]
     end
 ```
 

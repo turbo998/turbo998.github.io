@@ -49,15 +49,15 @@
 ```mermaid
 flowchart TD
     A["Batch AIGC Asset Generated<br/>(Poster / Game Art / Video Keyframe)"] --> B["Tier 1/2 Multimodal VLM Structured Critic<br/>(5-Finger Count / OCR Levenshtein / Contact Physics)"]
-    B -->|All Rubric Checks Pass| C["✅ Sign C2PA Manifest & Publish to CDN<br/>(70%~82% First-Pass Yield)"]
-    B -->|Defect Detected: Check Area Ratio| D{"Defect Mask Area Ratio?"}
+    B -->|"All Rubric Checks Pass"| C["✅ Sign C2PA Manifest & Publish to CDN<br/>(70%~82% First-Pass Yield)"]
+    B -->|"Defect Detected: Check Area Ratio"| D{"Defect Mask Area Ratio?"}
     D -->|"< 15% Localized Defect<br/>(6th Finger / Extra Handle / Sign Typo)"| E["✅ Surgical Localized Self-Healing Loop:<br/>1. GroundingDINO + SAM-2 <6% ROI Mask<br/>2. MediaPipe Pose/Depth Crop Inpainting<br/>3. Freeze 94% Approved Pixels (SSIM = 1.0000)"]
     D -->|">= 15% Global Composition Failure"| F{"Global Reroll Count <= 1?"}
     E --> G{"VLM ROI Re-Verification Pass?<br/>(Max Hops <= 2)"}
     G -->|"Pass (>99.5%)"| C
     G -->|"Fails After 2 Hops (<0.5%)"| H["⚠️ Route to Human-in-the-Loop DLQ<br/>Hard Circuit Breaker"]
-    F -->|Yes| I["Resample Global Seed + Strengthen ControlNet"] --> B
-    F -->|No| H
+    F -->|"Yes"| I["Resample Global Seed + Strengthen ControlNet"] --> B
+    F -->|"No"| H
 ```
 
 ### 3.2 Enterprise Agentic VLM Critic & Localized Inpainting Pipeline Architecture

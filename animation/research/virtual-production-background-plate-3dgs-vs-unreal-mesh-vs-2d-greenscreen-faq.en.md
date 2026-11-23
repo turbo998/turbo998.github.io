@@ -45,10 +45,10 @@
 ```mermaid
 flowchart TD
     A[Keynote / Commercial Virtual Production / Digital Twin] --> B{Does the Location Exist in the Real World?}
-    B -->|No: Fictional Sci-Fi World / Unbuilt Blueprint| C[Unreal Engine 5 Polygon Kitbash + PCG Procedural Generation<br/>+ AI 3D Prop Pipeline]
-    B -->|Yes: Real Corporate HQ / City Street / Factory Floor| D{Does the Camera Move with 6-DoF Parallax?}
-    D -->|No: 100% Locked Tripod Shot| E[Shoot 4K 2D Video Plate + Green-Screen Matting + IC-Light Rim]
-    D -->|Yes: Crane / Dolly / Free Interactive Walkthrough| F[Deploy Hybrid 3DGS + Polygon Proxy Bridge 1.2h:<br/>1. Invisible Floor Shadow-Catcher Mesh for Foot/Tire Shadows<br/>2. 0.8ms Dynamic 3DGS-to-CubeMap Probe for Car Reflections<br/>3. 20 Hero Draco GLB Machines with Shared Z-Buffer Occlusion]
+    B -->|"No: Fictional Sci-Fi World / Unbuilt Blueprint"| C[Unreal Engine 5 Polygon Kitbash + PCG Procedural Generation<br/>+ AI 3D Prop Pipeline]
+    B -->|"Yes: Real Corporate HQ / City Street / Factory Floor"| D{Does the Camera Move with 6-DoF Parallax?}
+    D -->|"No: 100% Locked Tripod Shot"| E[Shoot 4K 2D Video Plate + Green-Screen Matting + IC-Light Rim]
+    D -->|"Yes: Crane / Dolly / Free Interactive Walkthrough"| F[Deploy Hybrid 3DGS + Polygon Proxy Bridge 1.2h:<br/>1. Invisible Floor Shadow-Catcher Mesh for Foot/Tire Shadows<br/>2. 0.8ms Dynamic 3DGS-to-CubeMap Probe for Car Reflections<br/>3. 20 Hero Draco GLB Machines with Shared Z-Buffer Occlusion]
 ```
 
 ### 3.2 4-Stage "3DGS Capture + Shadow Catcher + Dynamic CubeMap Bridge" Pipeline

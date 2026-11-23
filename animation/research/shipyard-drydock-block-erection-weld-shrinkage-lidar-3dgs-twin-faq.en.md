@@ -30,9 +30,9 @@
 ```mermaid
 flowchart TD
     A[174k m³ LNG Carrier 640t Mega-Block Erection] --> B{Accuracy Control & Cutting Pipeline?}
-    B -->|50mm Green Margin + Manual Drydock Flame-Cutting| C[38 Hours Dock Rework per Block Stalls 1,200t Goliath Crane<br/>9 Cryogenic Pipe Clashes · +4.5 Dock Days Delayed]
-    B -->|Uncompensated Drone Photogrammetry| D[Midday +24°C Sun Warps Upper Deck by +8.4mm<br/>±9.4mm Root-Gap ErrorViolates IACS No. 47]
-    B -->|Laser+3DGS + 20°C Thermo Normalization + +4.2mm Weld Neat-Cut| E[Inverts Solar Hogging & Pre-Adds +4.2mm Weld Shrinkage<br/>Shop Robotic Plasma Neat-Cut Locks Gap to 3.2±0.85mm]
+    B -->|"50mm Green Margin + Manual Drydock Flame-Cutting"| C[38 Hours Dock Rework per Block Stalls 1,200t Goliath Crane<br/>9 Cryogenic Pipe Clashes · +4.5 Dock Days Delayed]
+    B -->|"Uncompensated Drone Photogrammetry"| D[Midday +24°C Sun Warps Upper Deck by +8.4mm<br/>±9.4mm Root-Gap ErrorViolates IACS No. 47]
+    B -->|"Laser+3DGS + 20°C Thermo Normalization + +4.2mm Weld Neat-Cut"| E[Inverts Solar Hogging & Pre-Adds +4.2mm Weld Shrinkage<br/>Shop Robotic Plasma Neat-Cut Locks Gap to 3.2±0.85mm]
     E --> F[8-Lug Goliath Sag Compensation + 48 Pipe Spools Co-Aligned<br/>0.0h Dock Flame-Cutting · -14.5 Dock Days · +$3.48M/Vessel]
 ```
 

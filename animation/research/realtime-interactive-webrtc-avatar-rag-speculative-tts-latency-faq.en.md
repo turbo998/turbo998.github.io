@@ -42,9 +42,9 @@
 ```mermaid
 flowchart TD
     A[Enterprise Real-Time Conversational Avatar System] --> B{Client Surface & Peak Concurrency?}
-    B -->|4K Lobby Kiosk / Showroom Concierge<br/>< 500 Concurrent + Photoreal 2D Human| C[Server TensorRT 256px Mouth Inpaint MuseTalk/LivePortrait<br/>+ 120ms Semantic Filler + First-Clause TTS + WebRTC UDP 385ms]
-    B -->|Mobile Banking / E-Commerce App<br/>1,000 - 50,000+ Concurrent + Mobile Networks| D[Block Server Video Streaming! Send Opus Audio + 24Kbps ARKit Visemes<br/>+ Client Phone Three.js 52-Blendshape / Rive Local 60fps Render]
-    B -->|Telehealth / Wealth Advisory<br/>Regulated Disclosures & Form Co-Browsing| E[Azure AI Speech WebRTC Avatar Concise Summary<br/>+ DataChannel WordBoundary Millisecond-Synced HTML Cards]
+    B -->|"4K Lobby Kiosk / Showroom Concierge<br/>< 500 Concurrent + Photoreal 2D Human"| C[Server TensorRT 256px Mouth Inpaint MuseTalk/LivePortrait<br/>+ 120ms Semantic Filler + First-Clause TTS + WebRTC UDP 385ms]
+    B -->|"Mobile Banking / E-Commerce App<br/>1,000 - 50,000+ Concurrent + Mobile Networks"| D[Block Server Video Streaming! Send Opus Audio + 24Kbps ARKit Visemes<br/>+ Client Phone Three.js 52-Blendshape / Rive Local 60fps Render]
+    B -->|"Telehealth / Wealth Advisory<br/>Regulated Disclosures & Form Co-Browsing"| E[Azure AI Speech WebRTC Avatar Concise Summary<br/>+ DataChannel WordBoundary Millisecond-Synced HTML Cards]
 ```
 
 ### 3.2 385ms First-Clause Streaming & Dual-Render Pipeline
@@ -52,16 +52,16 @@ flowchart TD
 flowchart LR
     subgraph Ingest[1. Fast VAD & Filler Mask]
         MIC[User Audio WebRTC Up] --> VAD[Silero VAD 30ms]
-        VAD -->|120ms Trigger| FILL[Pre-Cached Nod / Filler Clip]
+        VAD -->|"120ms Trigger"| FILL[Pre-Cached Nod / Filler Clip]
         VAD --> ASR[Streaming ASR / Realtime API]
     end
     subgraph StreamLLM[2. First-Comma Micro-Clause]
         ASR --> LLM[RAG + Streaming LLM]
-        LLM -->|Flush First 4-6 Words| TTS[Azure Speech WebSocket TTS:<br/>PCM Chunks + Viseme Timestamps]
+        LLM -->|"Flush First 4-6 Words"| TTS[Azure Speech WebSocket TTS:<br/>PCM Chunks + Viseme Timestamps]
     end
     subgraph Render[3. Dual Low-Latency Delivery]
-        TTS -->|4K Kiosk Mode| TRT[TensorRT MuseTalk 256px Mouth ROI<br/>Composite into 1080p Idle Loop -> WebRTC]
-        TTS -->|Mobile 10k Mode| EDGE[Stream 24Kbps Viseme Weights<br/>Client Phone Three.js 52 Blendshapes]
+        TTS -->|"4K Kiosk Mode"| TRT[TensorRT MuseTalk 256px Mouth ROI<br/>Composite into 1080p Idle Loop -> WebRTC]
+        TTS -->|"Mobile 10k Mode"| EDGE[Stream 24Kbps Viseme Weights<br/>Client Phone Three.js 52 Blendshapes]
     end
 ```
 

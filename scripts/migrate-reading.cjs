@@ -12,7 +12,8 @@ const excluded = ['index.html', 'zh.html', 'diamond.html', 'zh-diamond.html', 'f
 const pages = inventory.content.filter(p => ['portal', 'topic', 'article'].includes(p.role) && !excluded.includes(p.path));
 const sourceOverrides = {
   'workshops/azure-agent-infra/index.html':'8c84971c7e952a5fb6f254ee8fcfef5678d9941d',
-  ...Object.fromEntries(['voice/index.html','voice/app.js','voice/03-daily-breakthrough-2026-11-01.svg','workshops/agentic-commerce/index.html'].map(p=>[p,'04ec523a4f7ba4843de2983b91052e23e7c1ffa6'])),
+  ...Object.fromEntries(['voice/index.html','voice/03-daily-breakthrough-2026-11-01.svg','workshops/agentic-commerce/index.html'].map(p=>[p,'04ec523a4f7ba4843de2983b91052e23e7c1ffa6'])),
+  'voice/app.js':'7e3f7bf7507e8bb7638d1cd3969f8e20e5264cab',
   ...Object.fromEntries(['benchmarks.html','zh-benchmarks.html','projects.html','zh-projects.html','writing.html','zh-writing.html','ai-security.html','zh-ai-security.html','workshops/ai-security/index.html','workshops/ai-security/index.en.html'].map(p=>[p,'3bdac3d4db9a0cec264ee42b59bbef8a7f87364b']))
 };
 Object.assign(sourceOverrides, Object.fromEntries(['writing.html','zh-writing.html','workshops/agentic-commerce/index.html','workshops/agentic-commerce/index.en.html'].map(p=>[p,'209aea9a1db92c816927df71a9242526b44925c1'])));
@@ -41,6 +42,9 @@ const baseline = p => {
       .replaceAll('AI Infra Phase 179 报告', 'LLM 推理 PD 7-Card 报告')
       .replaceAll(' · Phase 179', '');
     return Buffer.from(cleanStr, 'utf8');
+  }
+  if (p === 'voice/app.js') {
+    return Buffer.from(buf.toString('utf8').replaceAll('./voxcpm2-workbench.html', './voxcpm2-vs-azure-speech.html'), 'utf8');
   }
   return buf;
 };

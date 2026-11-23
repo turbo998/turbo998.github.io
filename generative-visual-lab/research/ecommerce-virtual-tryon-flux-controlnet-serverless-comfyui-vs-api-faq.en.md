@@ -55,10 +55,10 @@ Our benchmark establishes clear architectural rules:
 ```mermaid
 flowchart TD
     A[E-Commerce Product Hero & Virtual Try-On Workload] --> B{Garment / SKU Fidelity & Control Requirements?}
-    B -->|Creative Moodboard / Loose Concept Art<br/>& Volume < 10,000 Imgs/Mo| C[Use Commercial Image APIs<br/>GPT-Image-1 / Imagen 4 / Photoroom]
-    B -->|Strict 0.00px SKU Logo & Garment Weave Lock<br/>Requires Multi-Node Mask + UV + Relight DAG| D{Monthly Production Image Volume?}
-    D -->|10,000 – 45,000 Imgs/Mo Spiky Seasonal Drops| E[Select Serverless ComfyUI Platform<br/>Modal / Fal.ai / Replicate with GPU Memory Snapshots]
-    D -->|≥ 45,000 Imgs/Mo 50k–200k+ Enterprise Catalog| F[✅ Recommended Hybrid: 80% K8s GPU Warm Pool mmap<br/>+ 20% Serverless Burst · $0.006–$0.009/img & 2.4s P95]
+    B -->|"Creative Moodboard / Loose Concept Art<br/>& Volume < 10,000 Imgs/Mo"| C[Use Commercial Image APIs<br/>GPT-Image-1 / Imagen 4 / Photoroom]
+    B -->|"Strict 0.00px SKU Logo & Garment Weave Lock<br/>Requires Multi-Node Mask + UV + Relight DAG"| D{Monthly Production Image Volume?}
+    D -->|"10,000 – 45,000 Imgs/Mo Spiky Seasonal Drops"| E[Select Serverless ComfyUI Platform<br/>Modal / Fal.ai / Replicate with GPU Memory Snapshots]
+    D -->|"≥ 45,000 Imgs/Mo 50k–200k+ Enterprise Catalog"| F[✅ Recommended Hybrid: 80% K8s GPU Warm Pool mmap<br/>+ 20% Serverless Burst · $0.006–$0.009/img & 2.4s P95]
 ```
 
 ### 3.2 4-Node Headless ComfyUI DAG & Hybrid K8s + Serverless Execution Pipeline

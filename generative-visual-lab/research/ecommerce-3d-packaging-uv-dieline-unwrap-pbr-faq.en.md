@@ -46,8 +46,8 @@ flowchart TD
     B -->|"10-Minute Moodboard Ideation"| C["Standard Perspective T2I Sketch"]
     B -->|"Production Prepress + E-Commerce 3D Hero"| D["✅ 2D CAD Dieline UV-First Pipeline:<br/>1. Generate FEFCO/ECMA 2D Dieline SVG (L×W×H + 3mm Bleed)<br/>2. Synthesize 300-DPI Cross-Crease AIGC Art on Flat UV<br/>3. Layer Vector Typography, GS1 Barcode & Spot Craft Paths"]
     D --> E["🔀 Spot-to-PBR Twin Compiler"]
-    E -->|Branch 1: Offset Print Factory| F["✅ 300-DPI PDF/X-4 Master<br/>(Fogra39 CMYK + Spot_Foil + Spot_Emboss + Cut/Crease)"]
-    E -->|Branch 2: E-Commerce Storefront| G["✅ Automated 90° Hinge-Rig 3D Box Fold<br/>+ Foil Metallic / Emboss Normal 3D Turntable & GLB"]
+    E -->|"Branch 1: Offset Print Factory"| F["✅ 300-DPI PDF/X-4 Master<br/>(Fogra39 CMYK + Spot_Foil + Spot_Emboss + Cut/Crease)"]
+    E -->|"Branch 2: E-Commerce Storefront"| G["✅ Automated 90° Hinge-Rig 3D Box Fold<br/>+ Foil Metallic / Emboss Normal 3D Turntable & GLB"]
 ```
 
 ### 3.2 Enterprise 2D CAD Dieline, Spot-to-PBR & 3D Folding Architecture

@@ -48,9 +48,9 @@
 ```mermaid
 flowchart TD
     A[2D Concept Art / SKU Photos -> 3D Asset Request] --> B{Asset Geometry Class & Target Engine?}
-    B -->|Game Props / Characters / Collectibles<br/>Organic Curves + Skeletal Rigging| C[Hunyuan3D-2 320k High-Poly Sculpt<br/>+ QuadriFlow 12k Manifold Quad Retopology]
-    B -->|E-Commerce Furniture / Footwear WebAR<br/>Requires <3MB Instant Mobile Load| D[Microsoft Trellis Multi-View SLAT<br/>+ Silhouette-Locked QEM 8.5k Decimation]
-    B -->|3C Electronics / Industrial Hardware<br/>Sharp CNC Chamfers + Crisp Silkscreen| E[4-View Trellis Hard-Surface + >35° Sharp Crease<br/>+ 0.2mm Floating Vector Decal Quad]
+    B -->|"Game Props / Characters / Collectibles<br/>Organic Curves + Skeletal Rigging"| C[Hunyuan3D-2 320k High-Poly Sculpt<br/>+ QuadriFlow 12k Manifold Quad Retopology]
+    B -->|"E-Commerce Furniture / Footwear WebAR<br/>Requires <3MB Instant Mobile Load"| D[Microsoft Trellis Multi-View SLAT<br/>+ Silhouette-Locked QEM 8.5k Decimation]
+    B -->|"3C Electronics / Industrial Hardware<br/>Sharp CNC Chamfers + Crisp Silkscreen"| E[4-View Trellis Hard-Surface + >35° Sharp Crease<br/>+ 0.2mm Floating Vector Decal Quad]
     C & D & E --> F[Headless Blender High-to-Low Tangent Normal/AO Bake + Intrinsic Delighting<br/>+ gltfpack Draco & KTX2 UASTC Export 2MB GLB / USDZ]
 ```
 

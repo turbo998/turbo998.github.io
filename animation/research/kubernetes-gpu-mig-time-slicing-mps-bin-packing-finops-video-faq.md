@@ -33,9 +33,9 @@
 ```mermaid
 flowchart TD
     A[Kubernetes 集群部署中轻量 AI 推理与流水线 Pod] --> B{容器间信任关系与显存需求?}
-    B -->|整卡独占 nvidia.com/gpu: 1| C[单 Pod 仅用 8GB 却霸占 80GB H100<br/>SM 利用率仅 18.4% · 256 Pod 烧掉 256 张卡]
-    B -->|跨部门/多租户不可信负载<br/>要求零 OOM 连坐与严格 p99 SLA| D[启用 NVIDIA MIG 硬件物理切分<br/>1g.10gb / 2g.20gb / 3g.40gb 独立显存控制器]
-    B -->|同一团队可信 AIGC 串联流水线<br/>抠图 + 深度 + OCR 需零切换并发| E[在单个 MIG 硬件切片内部开启 CUDA MPS<br/>绑定 ACTIVE_THREAD_PERCENTAGE 紧凑装箱]
+    B -->|"整卡独占 nvidia.com/gpu: 1"| C[单 Pod 仅用 8GB 却霸占 80GB H100<br/>SM 利用率仅 18.4% · 256 Pod 烧掉 256 张卡]
+    B -->|"跨部门/多租户不可信负载<br/>要求零 OOM 连坐与严格 p99 SLA"| D[启用 NVIDIA MIG 硬件物理切分<br/>1g.10gb / 2g.20gb / 3g.40gb 独立显存控制器]
+    B -->|"同一团队可信 AIGC 串联流水线<br/>抠图 + 深度 + OCR 需零切换并发"| E[在单个 MIG 硬件切片内部开启 CUDA MPS<br/>绑定 ACTIVE_THREAD_PERCENTAGE 紧凑装箱]
     D & E --> F[顶层接入 K8s DRA + mig-parted 潮汐动态重分片<br/>利用率升至 79.6% · 0 连坐崩溃 · 年省 +$2.86M]
 ```
 

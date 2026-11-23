@@ -102,13 +102,14 @@ function finalizeSite() {
     'workshops/benchmarks/speculative-decoding-selection-cards.html',
     'workshops/benchmarks/long-context-attention-parallelism-selection-cards.html',
     'workshops/benchmarks/gpu-cluster-fault-recovery-selection-cards.html',
-    'workshops/benchmarks/rocev2-load-balancing-congestion-selection-cards.html'
+    'workshops/benchmarks/rocev2-load-balancing-congestion-selection-cards.html',
+    'workshops/azure-agent-infra/test-report-cards.html'
   ]);
   const docsH5Files=fs.existsSync(path.join(root,'docs/h5'))?fs.readdirSync(path.join(root,'docs/h5')).filter(f=>f.endsWith('.html')).map(f=>'docs/h5/'+f):[];
   const allTargets=[...new Set([...htmlFiles(),...docsH5Files])];
   for(const file of allTargets) {
     if(/^(?:docs\/)?h5-academy\//.test(file))continue;
-    const isAuxiliaryOnly=file.startsWith('docs/h5/')||singleEditionSealed.has(file)||(!pairs.has(file)&&/^(?:(?:animation|generative-visual-lab)\/demos\/|workshops\/diamond-demos\/contoso-fabric\/)/.test(file));
+    const isAuxiliaryOnly=file.startsWith('docs/h5/')||file.startsWith('workshops/azure-agent-infra/h5/')||singleEditionSealed.has(file)||(!pairs.has(file)&&/^(?:(?:animation|generative-visual-lab)\/demos\/|workshops\/diamond-demos\/contoso-fabric\/)/.test(file));
     const absolute=path.join(root,file);let html=fs.readFileSync(absolute,'utf8');
     const motionExhibit=Object.values(motionDemoRoutes).includes(file);
     if(file==='articles/harness-engineering.html'&&!html.includes('agent-harness-coevolution.html')) {

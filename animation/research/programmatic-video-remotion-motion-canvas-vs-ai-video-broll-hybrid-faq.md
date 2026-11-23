@@ -46,11 +46,11 @@
 ```mermaid
 flowchart TD
     A[企业视频自动化生产需求] --> B{画面内容组成与精确度要求?}
-    B -->|100% 纯写实创意空镜 / 自然氛围镜头<br/>不含任何具体文字、价格或软件 UI| C[直接调用生成式 AI 视频模型<br/>Sora 2 / Veo 3 / Kling 2.1 / Wan 2.1]
-    B -->|100% 纯数据图表年报 / 技术架构推演<br/>无需写实真人或实景镜头| D{前端团队栈与动画范式?}
-    D -->|复用 React 组件与云函数大批量并发| E[选用 Remotion<br/>React DOM + Remotion Lambda]
-    D -->|步骤式架构状态演进与协程动画| F[选用 Motion Canvas / HyperFrames<br/>TypeScript yield* 状态机]
-    B -->|既有写实人物/场景光影氛围<br/>又必须包含 100% 精准产品 UI、价格与多语种字幕| G[✅ 推荐混合架构: 底层缓存 AI 视频 B-Roll<br/>+ 顶层 Remotion / Motion Canvas 确定性合成]
+    B -->|"100% 纯写实创意空镜 / 自然氛围镜头<br/>不含任何具体文字、价格或软件 UI"| C[直接调用生成式 AI 视频模型<br/>Sora 2 / Veo 3 / Kling 2.1 / Wan 2.1]
+    B -->|"100% 纯数据图表年报 / 技术架构推演<br/>无需写实真人或实景镜头"| D{前端团队栈与动画范式?}
+    D -->|"复用 React 组件与云函数大批量并发"| E[选用 Remotion<br/>React DOM + Remotion Lambda]
+    D -->|"步骤式架构状态演进与协程动画"| F[选用 Motion Canvas / HyperFrames<br/>TypeScript yield* 状态机]
+    B -->|"既有写实人物/场景光影氛围<br/>又必须包含 100% 精准产品 UI、价格与多语种字幕"| G[✅ 推荐混合架构: 底层缓存 AI 视频 B-Roll<br/>+ 顶层 Remotion / Motion Canvas 确定性合成]
 ```
 
 ### 3.2 AIGC 写实 B-Roll + Remotion / Motion Canvas 多轨混合合成管线架构图

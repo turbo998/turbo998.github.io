@@ -4,7 +4,12 @@
 from __future__ import annotations
 
 import unittest
+import sys
 from pathlib import Path
+
+SIMULATOR_DIR = Path(__file__).resolve().parent
+if str(SIMULATOR_DIR) not in sys.path:
+    sys.path.insert(0, str(SIMULATOR_DIR))
 
 from agent_infra_sizer import (
     E2B_VM_BENCHMARKS,
@@ -522,7 +527,7 @@ class TestAgentInfraSizer(unittest.TestCase):
             for p in faq_dir.glob("*.en.md")
             if p.name != "README.en.md"
         }
-        self.assertEqual(len(zh_faqs), 84)
+        self.assertEqual(len(zh_faqs), 323)
         self.assertEqual(zh_faqs, en_faqs)
 
         link_re = re.compile(r"!?\[[^\]]*\]\(([^)]+)\)")
@@ -560,6 +565,51 @@ class TestAgentInfraSizer(unittest.TestCase):
                 continue
             json.loads(json_file.read_text(encoding="utf-8"))
 
+    def test_no_synthetic_readiness_padding_and_suffix_dedup(self) -> None:
+        from collections import Counter
+        import re
+
+        repo_root = Path(__file__).resolve().parents[3]
+        faq_dir = repo_root / "docs" / "azure-agent-infra"
+        readiness_re = re.compile(
+            r"(Readiness \d{3}:|就绪核查\d{3}|迁移观察要点\s*\d+|Migration observation\s*\d+)",
+            re.IGNORECASE,
+        )
+
+        for md_file in faq_dir.glob("*.md"):
+            if md_file.name in {"README.md", "README.en.md"}:
+                continue
+            text = md_file.read_text(encoding="utf-8")
+            self.assertIsNone(
+                readiness_re.search(text),
+                f"Synthetic readiness padding marker found in {md_file.name}",
+            )
+            per_file_suffix_counter: Counter[str] = Counter()
+            in_fence = False
+            for raw_line in text.splitlines():
+                line = raw_line.strip()
+                if not line:
+                    continue
+                if line.startswith("```"):
+                    in_fence = not in_fence
+                    continue
+                if in_fence:
+                    continue
+                if line.startswith("|") or line.startswith("#"):
+                    continue
+                norm_line = re.sub(r"\d+", "#", line)
+                if len(norm_line) < 28:
+                    continue
+                suffix = norm_line[-24:]
+                per_file_suffix_counter[suffix] += 1
+
+            per_file_max_suffix = max(per_file_suffix_counter.values(), default=0)
+            self.assertLessEqual(
+                per_file_max_suffix,
+                10,
+                f"Excessive repeated 24-char suffix in {md_file.name}: {per_file_max_suffix}",
+            )
+
     def test_repo_sa_content_hygiene(self) -> None:
         import re
 
@@ -568,7 +618,8 @@ class TestAgentInfraSizer(unittest.TestCase):
         banned_path_re = re.compile(r"(auto-cycle|guardlane|-r\d{3,4}(?:\.|$))", re.IGNORECASE)
         banned_content_re = re.compile(
             r"(auto-cycle|guardlane|Cycle\s*#\d+|\[ZHX?\d+\]|\[ENX?\d+\]|strict_suffix_gate|workbench-cycle-"
-            r"|焊机|冻干机|冷却塔|缩脉|板壳共振|轨道力学)",
+            r"|焊机|冻干机|冷却塔|缩脉|板壳共振|轨道力学|（标记\d+）|（场景洞察\d+）|（路线[A-Z]要点\d+）"
+            r"|\((?:tag|marker|item|point|note|ref)\s*#?\d{2,3}\)|第\s*\d+\s*条强调)",
             re.IGNORECASE,
         )
         for path in repo_root.rglob("*"):
