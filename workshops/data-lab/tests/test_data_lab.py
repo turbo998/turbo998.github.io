@@ -3401,16 +3401,773 @@ class TestDataLabBenchmarkSuite(unittest.TestCase):
         self.assertEqual(sim["decision_routing"]["projected_savings_usd"], 112000000)
 
 
-    def test_scenario_matrix_412_cases_and_explicit_miss(self) -> None:
+    def test_global_enterprise_data_agent_iq_ontology_hybrid_nl2sql_nl2dax_unstructured_rag_vs_4clouds_ontology_simulation(self) -> None:
+        sim = simulate_ontology_incident("global_enterprise_data_agent_iq_ontology_hybrid_nl2sql_nl2dax_unstructured_rag_vs_4clouds")
+        self.assertEqual(sim["telemetry"]["enterprise_business_domains_and_certified_kpis_count"], 720)
+        self.assertEqual(sim["telemetry"]["multimodal_query_and_metric_drift_waves_flagged_count"], 1190)
+        self.assertEqual(sim["telemetry"]["conversational_nl2dax_sql_kql_and_copilot_stream_eps"], 1850000)
+        self.assertEqual(sim["telemetry"]["tmdl_measure_golden_sql_and_contract_vectors_count"], 1235000000)
+        self.assertEqual(sim["telemetry"]["standalone_headless_bi_graph_and_token_tax_usd"], 0)
+        self.assertEqual(sim["multi_agent_plan"]["fabric_unified_data_agent_rag_monthly_tco_usd"], 20760)
+        self.assertEqual(sim["multi_agent_plan"]["monthly_data_agent_rag_tco_saved_usd"], 787940)
+        self.assertEqual(sim["multi_agent_plan"]["monthly_data_agent_rag_tco_savings_pct"], 97.4)
+        self.assertTrue(sim["foundry_iq_guardrail"]["tmdl_ontology_zero_drift_and_8hop_gql_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["dual_stack_entra_obo_acl_and_ast_cost_governor_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["compliant"])
+        self.assertEqual(sim["decision_routing"]["action"], "Confirm")
+        self.assertEqual(sim["decision_routing"]["end_to_end_latency_ms"], 16)
+        self.assertEqual(sim["decision_routing"]["projected_savings_usd"], 112400000)
+
+
+    def test_global_omnichannel_retail_clienteling_composable_cdp_realtime_cart_rescue_shopping_agent_vs_4clouds_ontology_simulation(self) -> None:
+        sim = simulate_ontology_incident("global_omnichannel_retail_clienteling_composable_cdp_realtime_cart_rescue_shopping_agent_vs_4clouds")
+        self.assertEqual(sim["telemetry"]["omnichannel_loyalty_members_millions_and_stores_count"], 260)
+        self.assertEqual(sim["telemetry"]["cart_rescue_vip_checkin_and_identity_waves_flagged_count"], 1195)
+        self.assertEqual(sim["telemetry"]["clickstream_store_beacon_and_size_atp_stream_eps"], 1860000)
+        self.assertEqual(sim["telemetry"]["multimodal_lookbook_stylist_and_intent_vectors_count"], 1240000000)
+        self.assertEqual(sim["telemetry"]["saas_cdp_mtu_identity_graph_and_reverse_etl_tax_usd"], 0)
+        self.assertEqual(sim["multi_agent_plan"]["fabric_unified_composable_cdp_monthly_tco_usd"], 20780)
+        self.assertEqual(sim["multi_agent_plan"]["monthly_composable_cdp_tco_saved_usd"], 792120)
+        self.assertEqual(sim["multi_agent_plan"]["monthly_composable_cdp_tco_savings_pct"], 97.4)
+        self.assertTrue(sim["foundry_iq_guardrail"]["identity_styling_8hop_iso_gql_and_size_atp_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["gdpr_instant_opt_out_and_promo_margin_floor_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["compliant"])
+        self.assertEqual(sim["decision_routing"]["action"], "Confirm")
+        self.assertEqual(sim["decision_routing"]["end_to_end_latency_ms"], 16)
+        self.assertEqual(sim["decision_routing"]["projected_savings_usd"], 112800000)
+
+
+    def test_global_investment_banking_equity_research_hybrid_earnings_rag_structured_kpi_mnpi_vs_4clouds_ontology_simulation(self) -> None:
+        sim = simulate_ontology_incident("global_investment_banking_equity_research_hybrid_earnings_rag_structured_kpi_mnpi_vs_4clouds")
+        self.assertEqual(sim["telemetry"]["covered_public_issuers_and_advisory_assets_count"], 48000)
+        self.assertEqual(sim["telemetry"]["earnings_surprise_guidance_and_contagion_waves_flagged_count"], 1200)
+        self.assertEqual(sim["telemetry"]["edgar_xbrl_earnings_transcript_and_tick_stream_eps"], 1870000)
+        self.assertEqual(sim["telemetry"]["ten_k_footnote_transcript_and_indenture_vectors_count"], 1245000000)
+        self.assertEqual(sim["telemetry"]["market_feed_copy_contagion_graph_and_cdc_tax_usd"], 0)
+        self.assertEqual(sim["multi_agent_plan"]["fabric_unified_research_rag_monthly_tco_usd"], 20800)
+        self.assertEqual(sim["multi_agent_plan"]["monthly_research_rag_tco_saved_usd"], 796300)
+        self.assertEqual(sim["multi_agent_plan"]["monthly_research_rag_tco_savings_pct"], 97.5)
+        self.assertTrue(sim["foundry_iq_guardrail"]["contagion_8hop_iso_gql_and_tmdl_ratio_truth_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["finra_rule2241_mnpi_chinese_wall_and_regbi_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["compliant"])
+        self.assertEqual(sim["decision_routing"]["action"], "Confirm")
+        self.assertEqual(sim["decision_routing"]["end_to_end_latency_ms"], 16)
+        self.assertEqual(sim["decision_routing"]["projected_savings_usd"], 113200000)
+
+
+    def test_global_enterprise_realtime_cdc_zero_etl_mirroring_htap_sql_debezium_kafka_fivetran_vs_4clouds_ontology_simulation(self) -> None:
+        sim = simulate_ontology_incident("global_enterprise_realtime_cdc_zero_etl_mirroring_htap_sql_debezium_kafka_fivetran_vs_4clouds")
+        self.assertEqual(sim["telemetry"]["production_oltp_databases_and_state_tb_count"], 2200)
+        self.assertEqual(sim["telemetry"]["ddl_drift_and_lsn_watermark_waves_flagged_count"], 1205)
+        self.assertEqual(sim["telemetry"]["wal_binlog_and_change_feed_stream_eps"], 1880000)
+        self.assertEqual(sim["telemetry"]["ddl_schema_fk_lineage_and_tx_vectors_count"], 1250000000)
+        self.assertEqual(sim["telemetry"]["commercial_cdc_mar_kafka_and_lineage_graph_tax_usd"], 0)
+        self.assertEqual(sim["multi_agent_plan"]["fabric_unified_zero_etl_htap_monthly_tco_usd"], 20820)
+        self.assertEqual(sim["multi_agent_plan"]["monthly_zero_etl_htap_tco_saved_usd"], 800480)
+        self.assertEqual(sim["multi_agent_plan"]["monthly_zero_etl_htap_tco_savings_pct"], 97.5)
+        self.assertTrue(sim["foundry_iq_guardrail"]["fk_lineage_8hop_iso_gql_and_multitable_lsn_barrier_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["wal_slot_bloat_breaker_and_idempotent_outbox_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["compliant"])
+        self.assertEqual(sim["decision_routing"]["action"], "Confirm")
+        self.assertEqual(sim["decision_routing"]["end_to_end_latency_ms"], 16)
+        self.assertEqual(sim["decision_routing"]["projected_savings_usd"], 113600000)
+
+
+    def test_global_enterprise_vector_database_hybrid_lexical_graph_rag_diskann_pgvector_mosaic_milvus_vs_4clouds_ontology_simulation(self) -> None:
+        sim = simulate_ontology_incident("global_enterprise_vector_database_hybrid_lexical_graph_rag_diskann_pgvector_mosaic_milvus_vs_4clouds")
+        self.assertEqual(sim["telemetry"]["enterprise_multimodal_documents_millions_and_tb_count"], 65)
+        self.assertEqual(sim["telemetry"]["incremental_chunk_and_acl_revocation_waves_flagged_count"], 1210)
+        self.assertEqual(sim["telemetry"]["document_edit_acl_update_and_hybrid_query_stream_eps"], 1890000)
+        self.assertEqual(sim["telemetry"]["multimodal_chunk_table_cad_and_entity_vectors_count"], 1255000000)
+        self.assertEqual(sim["telemetry"]["external_vector_sync_etl_and_graph_db_tax_usd"], 0)
+        self.assertEqual(sim["multi_agent_plan"]["fabric_unified_vector_hybrid_rag_monthly_tco_usd"], 20840)
+        self.assertEqual(sim["multi_agent_plan"]["monthly_vector_hybrid_rag_tco_saved_usd"], 804660)
+        self.assertEqual(sim["multi_agent_plan"]["monthly_vector_hybrid_rag_tco_savings_pct"], 97.5)
+        self.assertTrue(sim["foundry_iq_guardrail"]["four_way_hybrid_rrf_and_8hop_iso_gql_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["inline_entra_obo_acl_and_prompt_injection_scrub_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["compliant"])
+        self.assertEqual(sim["decision_routing"]["action"], "Confirm")
+        self.assertEqual(sim["decision_routing"]["end_to_end_latency_ms"], 16)
+        self.assertEqual(sim["decision_routing"]["projected_savings_usd"], 114000000)
+
+
+    def test_global_b2b_saas_gaming_liveops_multitenant_embedded_analytics_retention_attribution_vs_4clouds_ontology_simulation(self) -> None:
+        sim = simulate_ontology_incident("global_b2b_saas_gaming_liveops_multitenant_embedded_analytics_retention_attribution_vs_4clouds")
+        self.assertEqual(sim["telemetry"]["enterprise_saas_tenants_thousands_and_mau_millions"], 110)
+        self.assertEqual(sim["telemetry"]["tenant_churn_guild_and_overage_waves_flagged_count"], 1215)
+        self.assertEqual(sim["telemetry"]["api_token_metering_gameplay_and_billing_stream_eps"], 1900000)
+        self.assertEqual(sim["telemetry"]["tenant_journey_ticket_log_and_sla_vectors_count"], 1260000000)
+        self.assertEqual(sim["telemetry"]["external_viewer_bi_seat_and_clickhouse_graph_tax_usd"], 0)
+        self.assertEqual(sim["multi_agent_plan"]["fabric_unified_embedded_liveops_monthly_tco_usd"], 20860)
+        self.assertEqual(sim["multi_agent_plan"]["monthly_embedded_liveops_tco_saved_usd"], 808840)
+        self.assertEqual(sim["multi_agent_plan"]["monthly_embedded_liveops_tco_savings_pct"], 97.5)
+        self.assertTrue(sim["foundry_iq_guardrail"]["viral_churn_8hop_iso_gql_and_customdata_rls_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["asc606_idempotent_metering_and_surge_protection_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["compliant"])
+        self.assertEqual(sim["decision_routing"]["action"], "Confirm")
+        self.assertEqual(sim["decision_routing"]["end_to_end_latency_ms"], 16)
+        self.assertEqual(sim["decision_routing"]["projected_savings_usd"], 114400000)
+
+
+    def test_global_wealth_asset_management_hedge_fund_intraday_var_greeks_alt_data_mandate_vs_4clouds_ontology_simulation(self) -> None:
+        sim = simulate_ontology_incident("global_wealth_asset_management_hedge_fund_intraday_var_greeks_alt_data_mandate_vs_4clouds")
+        self.assertEqual(sim["telemetry"]["institutional_portfolios_funds_and_smas_count"], 4800)
+        self.assertEqual(sim["telemetry"]["intraday_var_greeks_and_crowding_waves_flagged_count"], 1310)
+        self.assertEqual(sim["telemetry"]["opra_options_fix_tick_and_ibor_stream_eps"], 2090000)
+        self.assertEqual(sim["telemetry"]["ima_mandate_lpa_and_alt_data_vectors_count"], 1355000000)
+        self.assertEqual(sim["telemetry"]["kdb_tick_stream_and_graph_sync_tax_usd"], 0)
+        self.assertEqual(sim["multi_agent_plan"]["fabric_wealth_risk_monthly_tco_usd"], 21240)
+        self.assertEqual(sim["multi_agent_plan"]["monthly_wealth_risk_tco_saved_usd"], 888260)
+        self.assertEqual(sim["multi_agent_plan"]["monthly_wealth_risk_tco_savings_pct"], 97.7)
+        self.assertTrue(sim["foundry_iq_guardrail"]["pre_trade_ima_look_through_cap_and_sfdr_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["anti_wash_trade_and_sec_15c3_5_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["compliant"])
+        self.assertEqual(sim["decision_routing"]["action"], "Confirm")
+        self.assertEqual(sim["decision_routing"]["end_to_end_latency_ms"], 16)
+        self.assertEqual(sim["decision_routing"]["projected_savings_usd"], 122400000)
+
+
+    def test_global_enterprise_cybersecurity_soc_siem_xdr_sentinel_eventhouse_itdr_graph_soar_rag_vs_4clouds_ontology_simulation(self) -> None:
+        sim = simulate_ontology_incident("global_enterprise_cybersecurity_soc_siem_xdr_sentinel_eventhouse_itdr_graph_soar_rag_vs_4clouds")
+        self.assertEqual(sim["telemetry"]["protected_endpoints_containers_and_cloud_vms_count"], 1200000)
+        self.assertEqual(sim["telemetry"]["oauth_lateral_movement_and_ransomware_waves_flagged_count"], 1305)
+        self.assertEqual(sim["telemetry"]["ocsf_edr_entra_and_cloudtrail_stream_eps"], 2080000)
+        self.assertEqual(sim["telemetry"]["mitre_attack_cve_and_soar_runbook_vectors_count"], 1350000000)
+        self.assertEqual(sim["telemetry"]["siem_per_gb_rehydration_and_attack_graph_tax_usd"], 0)
+        self.assertEqual(sim["multi_agent_plan"]["fabric_cyber_soc_monthly_tco_usd"], 21220)
+        self.assertEqual(sim["multi_agent_plan"]["monthly_cyber_soc_tco_saved_usd"], 884080)
+        self.assertEqual(sim["multi_agent_plan"]["monthly_cyber_soc_tco_savings_pct"], 97.7)
+        self.assertTrue(sim["foundry_iq_guardrail"]["anti_self_dos_crown_jewel_and_worm_forensics_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["sec_8k_nis2_reporting_and_employee_pii_masking_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["compliant"])
+        self.assertEqual(sim["decision_routing"]["action"], "Confirm")
+        self.assertEqual(sim["decision_routing"]["end_to_end_latency_ms"], 16)
+        self.assertEqual(sim["decision_routing"]["projected_savings_usd"], 122000000)
+
+
+    def test_global_airline_aviation_ioc_irops_recovery_predictive_mro_aog_iata_ndc_crew_vs_4clouds_ontology_simulation(self) -> None:
+        sim = simulate_ontology_incident("global_airline_aviation_ioc_irops_recovery_predictive_mro_aog_iata_ndc_crew_vs_4clouds")
+        self.assertEqual(sim["telemetry"]["commercial_aircraft_and_fleet_tails_count"], 1450)
+        self.assertEqual(sim["telemetry"]["irops_aog_and_crew_timeout_waves_flagged_count"], 1300)
+        self.assertEqual(sim["telemetry"]["acars_qar_swim_and_iata_ndc_stream_eps"], 2070000)
+        self.assertEqual(sim["telemetry"]["fim_amm_techlog_and_ndc_tariff_vectors_count"], 1345000000)
+        self.assertEqual(sim["telemetry"]["aviation_stream_pss_mar_and_graph_tax_usd"], 0)
+        self.assertEqual(sim["telemetry"]["otp_and_ndc_ancillary_yield_lift_pct"], 74.0)
+        self.assertEqual(sim["multi_agent_plan"]["fabric_airline_ioc_monthly_tco_usd"], 21200)
+        self.assertEqual(sim["multi_agent_plan"]["competitor_stitched_airline_ioc_monthly_tco_usd"], 901100)
+        self.assertEqual(sim["multi_agent_plan"]["monthly_airline_ioc_tco_saved_usd"], 879900)
+        self.assertEqual(sim["multi_agent_plan"]["monthly_airline_ioc_tco_savings_pct"], 97.6)
+        self.assertTrue(sim["foundry_iq_guardrail"]["mel_etops_airworthiness_and_far117_crew_legality_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["dot_auto_refund_and_ec261_passenger_care_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["compliant"])
+        self.assertEqual(sim["decision_routing"]["action"], "Confirm")
+        self.assertEqual(sim["decision_routing"]["end_to_end_latency_ms"], 16)
+        self.assertEqual(sim["decision_routing"]["projected_savings_usd"], 121600000)
+
+
+    def test_global_hospitality_hotel_cruise_loyalty_dynamic_revpar_pricing_guest360_mice_rfp_vs_4clouds_ontology_simulation(self) -> None:
+        sim = simulate_ontology_incident("global_hospitality_hotel_cruise_loyalty_dynamic_revpar_pricing_guest360_mice_rfp_vs_4clouds")
+        self.assertEqual(sim["telemetry"]["hotels_resorts_and_cruise_vessels_count"], 11500)
+        self.assertEqual(sim["telemetry"]["demand_surge_parity_and_mice_waves_flagged_count"], 1295)
+        self.assertEqual(sim["telemetry"]["gds_opera_pms_pos_and_mice_stream_eps"], 2060000)
+        self.assertEqual(sim["telemetry"]["guest_preference_banquet_cad_and_rfp_vectors_count"], 1340000000)
+        self.assertEqual(sim["telemetry"]["saas_cdp_mtu_opera_mar_and_graph_tax_usd"], 0)
+        self.assertEqual(sim["telemetry"]["concurrent_hotel_gms_revenue_and_mice_directors"], 45000)
+        self.assertEqual(sim["multi_agent_plan"]["fabric_hospitality_revpar_monthly_tco_usd"], 21180)
+        self.assertEqual(sim["multi_agent_plan"]["monthly_hospitality_revpar_tco_saved_usd"], 875720)
+        self.assertEqual(sim["multi_agent_plan"]["monthly_hospitality_revpar_tco_savings_pct"], 97.6)
+        self.assertTrue(sim["foundry_iq_guardrail"]["ftc_allin_pricing_and_corporate_lra_cap_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["ada_accessible_room_lock_and_passport_privacy_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["compliant"])
+        self.assertEqual(sim["decision_routing"]["action"], "Confirm")
+        self.assertEqual(sim["decision_routing"]["end_to_end_latency_ms"], 16)
+        self.assertEqual(sim["decision_routing"]["projected_savings_usd"], 121200000)
+
+
+    def test_global_enterprise_omnichannel_ccaas_conversational_ai_realtime_agent_assist_wfm_vs_4clouds_ontology_simulation(self) -> None:
+        sim = simulate_ontology_incident("global_enterprise_omnichannel_ccaas_conversational_ai_realtime_agent_assist_wfm_vs_4clouds")
+        self.assertEqual(sim["telemetry"]["contact_center_seats_and_voice_channels_count"], 68000)
+        self.assertEqual(sim["telemetry"]["escalation_churn_and_queue_breach_waves_flagged_count"], 1290)
+        self.assertEqual(sim["telemetry"]["live_stt_prosody_crm_and_wfm_stream_eps"], 2050000)
+        self.assertEqual(sim["telemetry"]["call_transcript_sop_and_warranty_vectors_count"], 1335000000)
+        self.assertEqual(sim["telemetry"]["per_minute_voice_analytics_crm_and_graph_tax_usd"], 0)
+        self.assertEqual(sim["telemetry"]["pcidss_pan_refund_cap_and_tcpa_blocks_count"], 850)
+        self.assertEqual(sim["multi_agent_plan"]["fabric_ccaas_wfm_monthly_tco_usd"], 21160)
+        self.assertEqual(sim["multi_agent_plan"]["monthly_ccaas_wfm_tco_saved_usd"], 871540)
+        self.assertEqual(sim["multi_agent_plan"]["monthly_ccaas_wfm_tco_savings_pct"], 97.6)
+        self.assertTrue(sim["foundry_iq_guardrail"]["pcidss_pan_cvv_redaction_and_refund_cap_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["fcc_tcpa_dnc_and_recording_consent_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["compliant"])
+        self.assertEqual(sim["decision_routing"]["action"], "Confirm")
+        self.assertEqual(sim["decision_routing"]["end_to_end_latency_ms"], 16)
+        self.assertEqual(sim["decision_routing"]["projected_savings_usd"], 120800000)
+
+
+    def test_global_enterprise_realtime_streaming_lakehouse_eventhouse_kql_kafka_flink_clickhouse_vs_4clouds_ontology_simulation(self) -> None:
+        sim = simulate_ontology_incident("global_enterprise_realtime_streaming_lakehouse_eventhouse_kql_kafka_flink_clickhouse_vs_4clouds")
+        self.assertEqual(sim["telemetry"]["streaming_topics_and_event_channels_count"], 4500)
+        self.assertEqual(sim["telemetry"]["consumer_lag_watermark_and_anomaly_waves_flagged_count"], 1285)
+        self.assertEqual(sim["telemetry"]["kafka_eventhub_and_otel_stream_eps"], 2040000)
+        self.assertEqual(sim["telemetry"]["otel_log_schema_and_sre_runbook_vectors_count"], 1330000000)
+        self.assertEqual(sim["telemetry"]["four_copy_streaming_flink_and_olap_tax_usd"], 0)
+        self.assertEqual(sim["telemetry"]["annual_realtime_event_and_sre_value_usd"], 180000000)
+        self.assertEqual(sim["multi_agent_plan"]["fabric_streaming_lakehouse_monthly_tco_usd"], 21140)
+        self.assertEqual(sim["multi_agent_plan"]["monthly_streaming_lakehouse_tco_saved_usd"], 867360)
+        self.assertEqual(sim["multi_agent_plan"]["monthly_streaming_lakehouse_tco_savings_pct"], 97.6)
+        self.assertTrue(sim["foundry_iq_guardrail"]["schema_quarantine_and_activator_antiloop_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["streaming_pii_masking_and_watermark_lock_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["compliant"])
+        self.assertEqual(sim["decision_routing"]["action"], "Confirm")
+        self.assertEqual(sim["decision_routing"]["end_to_end_latency_ms"], 16)
+        self.assertEqual(sim["decision_routing"]["projected_savings_usd"], 120400000)
+
+
+    def test_global_enterprise_multi_erp_sap_acdoca_financial_consolidation_treasury_s2p_spend_cube_vs_4clouds_ontology_simulation(self) -> None:
+        sim = simulate_ontology_incident("global_enterprise_multi_erp_sap_acdoca_financial_consolidation_treasury_s2p_spend_cube_vs_4clouds")
+        self.assertEqual(sim["telemetry"]["legal_entities_and_erp_instances_count"], 180)
+        self.assertEqual(sim["telemetry"]["intercompany_fx_and_ap_duplicate_waves_flagged_count"], 1280)
+        self.assertEqual(sim["telemetry"]["sap_acdoca_swift_camt_and_edi_stream_eps"], 2030000)
+        self.assertEqual(sim["telemetry"]["msa_contract_invoice_and_gaap_vectors_count"], 1325000000)
+        self.assertEqual(sim["telemetry"]["sap_mar_replication_egress_and_graph_tax_usd"], 0)
+        self.assertEqual(sim["multi_agent_plan"]["fabric_multi_erp_monthly_tco_usd"], 21120)
+        self.assertEqual(sim["multi_agent_plan"]["monthly_multi_erp_tco_saved_usd"], 863180)
+        self.assertEqual(sim["multi_agent_plan"]["monthly_multi_erp_tco_savings_pct"], 97.6)
+        self.assertTrue(sim["foundry_iq_guardrail"]["sox404_sod_and_threeway_match_tolerance_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["ofac_8hop_ubo_sanctions_and_bukrs_obo_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["compliant"])
+        self.assertEqual(sim["decision_routing"]["action"], "Confirm")
+        self.assertEqual(sim["decision_routing"]["end_to_end_latency_ms"], 16)
+        self.assertEqual(sim["decision_routing"]["projected_savings_usd"], 120000000)
+
+
+    def test_global_telecom_5g_fiber_network_aiops_subscriber_qoe_churn_roaming_fraud_graph_vs_4clouds_ontology_simulation(self) -> None:
+        sim = simulate_ontology_incident("global_telecom_5g_fiber_network_aiops_subscriber_qoe_churn_roaming_fraud_graph_vs_4clouds")
+        self.assertEqual(sim["telemetry"]["gnodeb_base_stations_and_optical_nodes_count"], 320000)
+        self.assertEqual(sim["telemetry"]["fiber_cut_qoe_churn_and_irsf_waves_flagged_count"], 1275)
+        self.assertEqual(sim["telemetry"]["nwdaf_openran_otdr_and_roaming_cdr_stream_eps"], 2020000)
+        self.assertEqual(sim["telemetry"]["alarm_otdr_and_b2b_slice_sla_vectors_count"], 1320000000)
+        self.assertEqual(sim["telemetry"]["telco_stream_bss_cdc_and_graph_tax_usd"], 0)
+        self.assertEqual(sim["telemetry"]["slice_monetization_and_fraud_recovery_lift_pct"], 72.0)
+        self.assertEqual(sim["multi_agent_plan"]["fabric_telecom_aiops_monthly_tco_usd"], 21100)
+        self.assertEqual(sim["multi_agent_plan"]["monthly_telecom_aiops_tco_saved_usd"], 859000)
+        self.assertEqual(sim["multi_agent_plan"]["monthly_telecom_aiops_tco_savings_pct"], 97.6)
+        self.assertTrue(sim["foundry_iq_guardrail"]["e911_emergency_keepalive_and_irsf_roaming_cutoff_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["fcc_cpni_location_privacy_and_b2b_slice_sla_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["compliant"])
+        self.assertEqual(sim["decision_routing"]["action"], "Confirm")
+        self.assertEqual(sim["decision_routing"]["end_to_end_latency_ms"], 16)
+        self.assertEqual(sim["decision_routing"]["projected_savings_usd"], 119200000)
+
+
+    def test_global_hospital_idn_epic_fhir_icu_patient_flow_or_scheduling_rcm_denial_appeals_vs_4clouds_ontology_simulation(self) -> None:
+        sim = simulate_ontology_incident("global_hospital_idn_epic_fhir_icu_patient_flow_or_scheduling_rcm_denial_appeals_vs_4clouds")
+        self.assertEqual(sim["telemetry"]["hospitals_and_acute_care_facilities_count"], 950)
+        self.assertEqual(sim["telemetry"]["sepsis_ed_boarding_or_and_denial_waves_flagged_count"], 1270)
+        self.assertEqual(sim["telemetry"]["hl7_fhir_waveform_rtls_and_x12_stream_eps"], 2010000)
+        self.assertEqual(sim["telemetry"]["clinical_note_dicom_and_payer_lcd_vectors_count"], 1315000000)
+        self.assertEqual(sim["telemetry"]["fhir_api_epic_cdc_and_graph_tax_usd"], 0)
+        self.assertEqual(sim["telemetry"]["concurrent_clinicians_nurses_or_and_rcm_coders"], 44000)
+        self.assertEqual(sim["multi_agent_plan"]["fabric_hospital_idn_monthly_tco_usd"], 21080)
+        self.assertEqual(sim["multi_agent_plan"]["monthly_hospital_idn_tco_saved_usd"], 854820)
+        self.assertEqual(sim["multi_agent_plan"]["monthly_hospital_idn_tco_savings_pct"], 97.6)
+        self.assertTrue(sim["foundry_iq_guardrail"]["cms_attending_cosign_and_fca_verbatim_citation_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["hipaa_minimum_necessary_and_42cfr_part2_isolation_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["compliant"])
+        self.assertEqual(sim["decision_routing"]["action"], "Confirm")
+        self.assertEqual(sim["decision_routing"]["end_to_end_latency_ms"], 16)
+        self.assertEqual(sim["decision_routing"]["projected_savings_usd"], 118800000)
+
+
+    def test_global_grocery_supermarket_cpg_perishable_replenishment_esl_markdown_rmn_cleanroom_vs_4clouds_ontology_simulation(self) -> None:
+        sim = simulate_ontology_incident("global_grocery_supermarket_cpg_perishable_replenishment_esl_markdown_rmn_cleanroom_vs_4clouds")
+        self.assertEqual(sim["telemetry"]["grocery_stores_and_warehouse_clubs_count"], 14500)
+        self.assertEqual(sim["telemetry"]["perishable_shrink_and_rmn_oos_waves_flagged_count"], 1265)
+        self.assertEqual(sim["telemetry"]["pos_gs1_esl_cooler_and_rmn_stream_eps"], 2000000)
+        self.assertEqual(sim["telemetry"]["shelf_vision_gs1_expiry_and_basket_vectors_count"], 1310000000)
+        self.assertEqual(sim["telemetry"]["clean_room_copy_stream_and_graph_tax_usd"], 0)
+        self.assertEqual(sim["multi_agent_plan"]["fabric_grocery_rmn_monthly_tco_usd"], 21060)
+        self.assertEqual(sim["multi_agent_plan"]["monthly_grocery_rmn_tco_saved_usd"], 850640)
+        self.assertEqual(sim["multi_agent_plan"]["monthly_grocery_rmn_tco_savings_pct"], 97.6)
+        self.assertTrue(sim["foundry_iq_guardrail"]["fsma204_pos_recall_lock_and_esl_price_parity_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["rmn_inventory_atp_gate_and_cleanroom_k50_privacy_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["compliant"])
+        self.assertEqual(sim["decision_routing"]["action"], "Confirm")
+        self.assertEqual(sim["decision_routing"]["end_to_end_latency_ms"], 16)
+        self.assertEqual(sim["decision_routing"]["projected_savings_usd"], 118400000)
+
+
+    def test_global_automotive_oem_connected_vehicle_sdv_adas_battery_twin_warranty_rag_vs_4clouds_ontology_simulation(self) -> None:
+        sim = simulate_ontology_incident("global_automotive_oem_connected_vehicle_sdv_adas_battery_twin_warranty_rag_vs_4clouds")
+        self.assertEqual(sim["telemetry"]["connected_sdv_vehicles_millions"], 18)
+        self.assertEqual(sim["telemetry"]["battery_microshort_and_warranty_waves_flagged_count"], 1260)
+        self.assertEqual(sim["telemetry"]["can_fd_bms_adas_and_dealer_dtc_stream_eps"], 1990000)
+        self.assertEqual(sim["telemetry"]["adas_corner_case_bms_curve_and_warranty_vectors_count"], 1305000000)
+        self.assertEqual(sim["telemetry"]["per_vehicle_fleetwise_vin_graph_and_cdc_tax_usd"], 0)
+        self.assertEqual(sim["multi_agent_plan"]["fabric_connected_vehicle_monthly_tco_usd"], 21040)
+        self.assertEqual(sim["multi_agent_plan"]["monthly_connected_vehicle_tco_saved_usd"], 846460)
+        self.assertEqual(sim["multi_agent_plan"]["monthly_connected_vehicle_tco_savings_pct"], 97.6)
+        self.assertTrue(sim["foundry_iq_guardrail"]["iso26262_park_ota_and_unece_r156_interlock_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["gb38031_bms_thermal_derating_and_gdpr_video_blur_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["compliant"])
+        self.assertEqual(sim["decision_routing"]["action"], "Confirm")
+        self.assertEqual(sim["decision_routing"]["end_to_end_latency_ms"], 16)
+        self.assertEqual(sim["decision_routing"]["projected_savings_usd"], 118000000)
+
+
+    def test_global_enterprise_data_governance_onelake_security_purview_obo_rls_cls_vs_unity_horizon_4clouds_ontology_simulation(self) -> None:
+        sim = simulate_ontology_incident("global_enterprise_data_governance_onelake_security_purview_obo_rls_cls_vs_unity_horizon_4clouds")
+        self.assertEqual(sim["telemetry"]["enterprise_business_domains_count"], 3200)
+        self.assertEqual(sim["telemetry"]["acl_drift_and_pii_exfil_waves_flagged_count"], 1255)
+        self.assertEqual(sim["telemetry"]["purview_audit_and_obo_access_stream_eps"], 1980000)
+        self.assertEqual(sim["telemetry"]["purview_sensitivity_lineage_and_gdpr_vectors_count"], 1300000000)
+        self.assertEqual(sim["telemetry"]["third_party_policy_proxy_and_audit_stream_tax_usd"], 0)
+        self.assertEqual(sim["multi_agent_plan"]["fabric_onelake_purview_monthly_tco_usd"], 21020)
+        self.assertEqual(sim["multi_agent_plan"]["monthly_governance_catalog_tco_saved_usd"], 842280)
+        self.assertEqual(sim["multi_agent_plan"]["monthly_governance_catalog_tco_savings_pct"], 97.6)
+        self.assertTrue(sim["foundry_iq_guardrail"]["storage_layer_zero_bypass_rls_cls_and_entra_obo_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["purview_rms_export_encryption_and_sovereign_residency_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["compliant"])
+        self.assertEqual(sim["decision_routing"]["action"], "Confirm")
+        self.assertEqual(sim["decision_routing"]["end_to_end_latency_ms"], 16)
+        self.assertEqual(sim["decision_routing"]["projected_savings_usd"], 117600000)
+
+
+    def test_global_power_utilities_smart_grid_ami_derms_vpp_adms_flisr_etrm_trading_vs_4clouds_ontology_simulation(self) -> None:
+        sim = simulate_ontology_incident("global_power_utilities_smart_grid_ami_derms_vpp_adms_flisr_etrm_trading_vs_4clouds")
+        self.assertEqual(sim["telemetry"]["ami_smart_meters_millions"], 65)
+        self.assertEqual(sim["telemetry"]["transformer_overload_and_lmp_waves_flagged_count"], 1250)
+        self.assertEqual(sim["telemetry"]["ami_derms_pmu_and_lmp_stream_eps"], 1970000)
+        self.assertEqual(sim["telemetry"]["transformer_dga_relay_and_ppa_contract_vectors_count"], 1295000000)
+        self.assertEqual(sim["telemetry"]["per_tag_historian_cim_graph_and_cis_cdc_tax_usd"], 0)
+        self.assertEqual(sim["multi_agent_plan"]["fabric_smart_grid_vpp_monthly_tco_usd"], 21000)
+        self.assertEqual(sim["multi_agent_plan"]["monthly_smart_grid_vpp_tco_saved_usd"], 838100)
+        self.assertEqual(sim["multi_agent_plan"]["monthly_smart_grid_vpp_tco_savings_pct"], 97.6)
+        self.assertTrue(sim["foundry_iq_guardrail"]["nerc_cip_perimeter_and_ieee1547_inverter_ride_through_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["transformer_overload_cap_and_life_support_disconnect_ban_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["compliant"])
+        self.assertEqual(sim["decision_routing"]["action"], "Confirm")
+        self.assertEqual(sim["decision_routing"]["end_to_end_latency_ms"], 16)
+        self.assertEqual(sim["decision_routing"]["projected_savings_usd"], 117200000)
+
+
+    def test_global_insurance_pc_auto_ubi_catastrophe_h3_gis_multimodal_claims_siu_graph_vs_4clouds_ontology_simulation(self) -> None:
+        sim = simulate_ontology_incident("global_insurance_pc_auto_ubi_catastrophe_h3_gis_multimodal_claims_siu_graph_vs_4clouds")
+        self.assertEqual(sim["telemetry"]["active_pc_and_auto_policies_millions"], 145)
+        self.assertEqual(sim["telemetry"]["catastrophe_pml_and_siu_fraud_waves_flagged_count"], 1245)
+        self.assertEqual(sim["telemetry"]["ubi_telematics_weather_h3_and_fnol_stream_eps"], 1960000)
+        self.assertEqual(sim["telemetry"]["damage_vision_acord_policy_and_subrogation_vectors_count"], 1290000000)
+        self.assertEqual(sim["telemetry"]["standalone_siu_graph_gis_and_guidewire_cdc_tax_usd"], 0)
+        self.assertEqual(sim["multi_agent_plan"]["fabric_insurance_siu_monthly_tco_usd"], 20980)
+        self.assertEqual(sim["multi_agent_plan"]["monthly_insurance_siu_tco_saved_usd"], 833920)
+        self.assertEqual(sim["multi_agent_plan"]["monthly_insurance_siu_tco_savings_pct"], 97.5)
+        self.assertTrue(sim["foundry_iq_guardrail"]["naic_ucspa_anti_bad_faith_and_doi_fair_pricing_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["ifrs17_reserve_integrity_and_hipaa_bodily_injury_cls_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["compliant"])
+        self.assertEqual(sim["decision_routing"]["action"], "Confirm")
+        self.assertEqual(sim["decision_routing"]["end_to_end_latency_ms"], 16)
+        self.assertEqual(sim["decision_routing"]["projected_savings_usd"], 116800000)
+
+
+    def test_global_multimodal_logistics_port_tos_air_cargo_h3_eta_demurrage_customs_compliance_vs_4clouds_ontology_simulation(self) -> None:
+        sim = simulate_ontology_incident("global_multimodal_logistics_port_tos_air_cargo_h3_eta_demurrage_customs_compliance_vs_4clouds")
+        self.assertEqual(sim["telemetry"]["annual_multimodal_containers_teu_millions"], 28)
+        self.assertEqual(sim["telemetry"]["port_dwell_and_demurrage_lfd_waves_flagged_count"], 1240)
+        self.assertEqual(sim["telemetry"]["ais_adsb_navis_tos_and_reefer_stream_eps"], 1950000)
+        self.assertEqual(sim["telemetry"]["bill_of_lading_hs_tariff_and_fmc_contract_vectors_count"], 1285000000)
+        self.assertEqual(sim["telemetry"]["external_visibility_gis_and_graph_tax_usd"], 0)
+        self.assertEqual(sim["multi_agent_plan"]["fabric_multimodal_control_tower_monthly_tco_usd"], 20960)
+        self.assertEqual(sim["multi_agent_plan"]["monthly_multimodal_control_tower_tco_saved_usd"], 829740)
+        self.assertEqual(sim["multi_agent_plan"]["monthly_multimodal_control_tower_tco_savings_pct"], 97.5)
+        self.assertTrue(sim["foundry_iq_guardrail"]["imdg_hazmat_segregation_and_uflpa_ofac_vessel_gate_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["fmc_osra_demurrage_fairness_and_fmcsa_hos_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["compliant"])
+        self.assertEqual(sim["decision_routing"]["action"], "Confirm")
+        self.assertEqual(sim["decision_routing"]["end_to_end_latency_ms"], 16)
+        self.assertEqual(sim["decision_routing"]["projected_savings_usd"], 116400000)
+
+
+    def test_global_five_cloud_medallion_lakehouse_kappa_open_table_gluten_finops_tco_playbook_vs_4clouds_ontology_simulation(self) -> None:
+        sim = simulate_ontology_incident("global_five_cloud_medallion_lakehouse_kappa_open_table_gluten_finops_tco_playbook_vs_4clouds")
+        self.assertEqual(sim["telemetry"]["production_medallion_pipelines_thousands"], 38)
+        self.assertEqual(sim["telemetry"]["schema_drift_and_partition_skew_waves_flagged_count"], 1235)
+        self.assertEqual(sim["telemetry"]["multi_cloud_cdc_iot_and_clickstream_eps"], 1940000)
+        self.assertEqual(sim["telemetry"]["ast_query_plan_lineage_and_osmos_vectors_count"], 1280000000)
+        self.assertEqual(sim["telemetry"]["dual_lambda_c_plus_plus_surcharge_and_egress_tax_usd"], 0)
+        self.assertEqual(sim["multi_agent_plan"]["fabric_kappa_medallion_monthly_tco_usd"], 20940)
+        self.assertEqual(sim["multi_agent_plan"]["monthly_medallion_lakehouse_tco_saved_usd"], 825560)
+        self.assertEqual(sim["multi_agent_plan"]["monthly_medallion_lakehouse_tco_savings_pct"], 97.5)
+        self.assertTrue(sim["foundry_iq_guardrail"]["silver_data_contract_quarantine_and_xtable_cache_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["burst_smoothing_24h_and_storage_layer_obo_rls_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["compliant"])
+        self.assertEqual(sim["decision_routing"]["action"], "Confirm")
+        self.assertEqual(sim["decision_routing"]["end_to_end_latency_ms"], 16)
+        self.assertEqual(sim["decision_routing"]["projected_savings_usd"], 116000000)
+
+
+    def test_global_pharma_life_sciences_commercial_nba_specialty_patient_hub_sunshine_act_opdp_vs_4clouds_ontology_simulation(self) -> None:
+        sim = simulate_ontology_incident("global_pharma_life_sciences_commercial_nba_specialty_patient_hub_sunshine_act_opdp_vs_4clouds")
+        self.assertEqual(sim["telemetry"]["global_hcps_and_idns_thousands"], 2800)
+        self.assertEqual(sim["telemetry"]["specialty_pa_abandonment_and_nba_waves_flagged_count"], 1230)
+        self.assertEqual(sim["telemetry"]["ncpdp_erx_edi278_pa_and_veeva_stream_eps"], 1930000)
+        self.assertEqual(sim["telemetry"]["mlr_approved_fda_label_and_pa_appeal_vectors_count"], 1275000000)
+        self.assertEqual(sim["telemetry"]["syndicated_iqvia_veeva_copy_and_graph_tax_usd"], 0)
+        self.assertEqual(sim["multi_agent_plan"]["fabric_pharma_commercial_monthly_tco_usd"], 20920)
+        self.assertEqual(sim["multi_agent_plan"]["monthly_pharma_commercial_tco_saved_usd"], 821380)
+        self.assertEqual(sim["multi_agent_plan"]["monthly_pharma_commercial_tco_savings_pct"], 97.5)
+        self.assertTrue(sim["foundry_iq_guardrail"]["fda_opdp_mlr_claim_lock_and_aks_medicare_copay_block_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["sunshine_act_spend_cap_and_hipaa_patient_hub_firewall_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["compliant"])
+        self.assertEqual(sim["decision_routing"]["action"], "Confirm")
+        self.assertEqual(sim["decision_routing"]["end_to_end_latency_ms"], 16)
+        self.assertEqual(sim["decision_routing"]["projected_savings_usd"], 115600000)
+
+
+    def test_global_banking_payments_realtime_fraud_ring_synthetic_identity_aml_graph_sar_rag_vs_4clouds_ontology_simulation(self) -> None:
+        sim = simulate_ontology_incident("global_banking_payments_realtime_fraud_ring_synthetic_identity_aml_graph_sar_rag_vs_4clouds")
+        self.assertEqual(sim["telemetry"]["global_bank_accounts_millions"], 210)
+        self.assertEqual(sim["telemetry"]["fraud_ring_and_aml_mule_waves_flagged_count"], 1225)
+        self.assertEqual(sim["telemetry"]["iso20022_fednow_rtp_card_and_biometric_stream_eps"], 1920000)
+        self.assertEqual(sim["telemetry"]["fincen_sar_ubo_filing_and_ce30_dispute_vectors_count"], 1270000000)
+        self.assertEqual(sim["telemetry"]["standalone_graph_db_kafka_and_core_cdc_tax_usd"], 0)
+        self.assertEqual(sim["multi_agent_plan"]["fabric_fincrime_aml_monthly_tco_usd"], 20900)
+        self.assertEqual(sim["multi_agent_plan"]["monthly_fincrime_aml_tco_saved_usd"], 817200)
+        self.assertEqual(sim["multi_agent_plan"]["monthly_fincrime_aml_tco_savings_pct"], 97.5)
+        self.assertTrue(sim["foundry_iq_guardrail"]["ofac_50pct_10hop_wire_freeze_and_sr117_ecoa_explainability_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["fincen_sar_anti_tipping_off_wall_and_glba_pii_masking_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["compliant"])
+        self.assertEqual(sim["decision_routing"]["action"], "Confirm")
+        self.assertEqual(sim["decision_routing"]["end_to_end_latency_ms"], 16)
+        self.assertEqual(sim["decision_routing"]["projected_savings_usd"], 115200000)
+
+
+    def test_global_industrial_manufacturing_automotive_tier1_digital_thread_bom_oee_predictive_maintenance_vs_4clouds_ontology_simulation(self) -> None:
+        sim = simulate_ontology_incident("global_industrial_manufacturing_automotive_tier1_digital_thread_bom_oee_predictive_maintenance_vs_4clouds")
+        self.assertEqual(sim["telemetry"]["global_smart_factories_and_cnc_robotics_thousands"], 450)
+        self.assertEqual(sim["telemetry"]["bearing_rul_oee_and_bom_shortage_waves_flagged_count"], 1220)
+        self.assertEqual(sim["telemetry"]["opc_ua_spindle_vibration_mes_and_sap_stream_eps"], 1910000)
+        self.assertEqual(sim["telemetry"]["cad_3d_fft_vibration_pfmea_and_8d_vectors_count"], 1265000000)
+        self.assertEqual(sim["telemetry"]["per_tag_historian_bom_graph_and_sap_cdc_tax_usd"], 0)
+        self.assertEqual(sim["multi_agent_plan"]["fabric_unified_digital_thread_monthly_tco_usd"], 20880)
+        self.assertEqual(sim["multi_agent_plan"]["monthly_digital_thread_tco_saved_usd"], 813020)
+        self.assertEqual(sim["multi_agent_plan"]["monthly_digital_thread_tco_savings_pct"], 97.5)
+        self.assertTrue(sim["foundry_iq_guardrail"]["bom_line_8hop_iso_gql_and_osha_loto_zero_energy_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["iatf16949_ppap_part_lock_and_itar_cad_wall_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["compliant"])
+        self.assertEqual(sim["decision_routing"]["action"], "Confirm")
+        self.assertEqual(sim["decision_routing"]["end_to_end_latency_ms"], 16)
+        self.assertEqual(sim["decision_routing"]["projected_savings_usd"], 114800000)
+
+
+    def test_scenario_matrix_462_cases_and_explicit_miss(self) -> None:
         matrix = evaluate_scenario_matrix()
-        self.assertEqual(matrix["total_scenarios"], 832)
-        self.assertEqual(matrix["passed_scenarios"], 831)
+        self.assertEqual(matrix["total_scenarios"], 932)
+        self.assertEqual(matrix["passed_scenarios"], 931)
         self.assertEqual(matrix["failed_scenarios"], 1)
-        self.assertAlmostEqual(matrix["accuracy_pct"], 99.88, places=2)
-        self.assertEqual(matrix["avg_latency_ms"], 90.5)
+        self.assertAlmostEqual(matrix["accuracy_pct"], 99.89, places=2)
+        self.assertEqual(matrix["avg_latency_ms"], 81.2)
         misses = [s for s in matrix["scenarios"] if not s["correct"]]
         self.assertEqual(len(misses), 1)
         self.assertEqual(misses[0]["id"], "DL-23")
+
+
+    def test_wealth_asset_management_hedge_fund_intraday_var_ima_r335_scenarios(self) -> None:
+        matrix = evaluate_scenario_matrix()
+        by_id = {s["id"]: s for s in matrix["scenarios"]}
+        for sid in ("DL-1381", "DL-1382", "DL-1383", "DL-1384"):
+            self.assertIn(sid, by_id)
+            self.assertTrue(by_id[sid]["correct"])
+        self.assertIn("2,090K (2.09M) EPS", by_id["DL-1381"]["expected"])
+        self.assertIn("$165,000/mo", by_id["DL-1382"]["expected"])
+        self.assertIn("-$888,260/mo", by_id["DL-1383"]["expected"])
+        self.assertIn("870-IMA5PctCap", by_id["DL-1384"]["expected"])
+
+
+    def test_enterprise_cybersecurity_soc_siem_itdr_soar_r334_scenarios(self) -> None:
+        matrix = evaluate_scenario_matrix()
+        by_id = {s["id"]: s for s in matrix["scenarios"]}
+        for sid in ("DL-1377", "DL-1378", "DL-1379", "DL-1380"):
+            self.assertIn(sid, by_id)
+            self.assertTrue(by_id[sid]["correct"])
+        self.assertIn("2,080K (2.08M) EPS", by_id["DL-1377"]["expected"])
+        self.assertIn("$158,100/mo!", by_id["DL-1378"]["expected"])
+        self.assertIn("-$884,080/mo", by_id["DL-1379"]["expected"])
+        self.assertIn("865-AntiSelfDoS", by_id["DL-1380"]["expected"])
+
+
+    def test_airline_aviation_ioc_irops_mro_ndc_r333_scenarios(self) -> None:
+        matrix = evaluate_scenario_matrix()
+        by_id = {s["id"]: s for s in matrix["scenarios"]}
+        for sid in ("DL-1373", "DL-1374", "DL-1375", "DL-1376"):
+            self.assertIn(sid, by_id)
+            self.assertTrue(by_id[sid]["correct"])
+        self.assertIn("Historic Exact 1,300 Waves", by_id["DL-1373"]["expected"])
+        self.assertIn("$157,520/mo!", by_id["DL-1374"]["expected"])
+        self.assertIn("-$879,900/mo", by_id["DL-1375"]["expected"])
+        self.assertIn("860-MELSignOff", by_id["DL-1376"]["expected"])
+
+
+    def test_hospitality_hotel_cruise_revpar_guest360_mice_r332_scenarios(self) -> None:
+        matrix = evaluate_scenario_matrix()
+        by_id = {s["id"]: s for s in matrix["scenarios"]}
+        for sid in ("DL-1369", "DL-1370", "DL-1371", "DL-1372"):
+            self.assertIn(sid, by_id)
+            self.assertTrue(by_id[sid]["correct"])
+        self.assertIn("2,060K (2.06M) EPS", by_id["DL-1369"]["expected"])
+        self.assertIn("$156,940/mo!", by_id["DL-1370"]["expected"])
+        self.assertIn("-$875,720/mo", by_id["DL-1371"]["expected"])
+        self.assertIn("855-FTCAllIn", by_id["DL-1372"]["expected"])
+
+
+    def test_enterprise_omnichannel_ccaas_agent_assist_r331_scenarios(self) -> None:
+        matrix = evaluate_scenario_matrix()
+        by_id = {s["id"]: s for s in matrix["scenarios"]}
+        for sid in ("DL-1365", "DL-1366", "DL-1367", "DL-1368"):
+            self.assertIn(sid, by_id)
+            self.assertTrue(by_id[sid]["correct"])
+        self.assertIn("Round-Fifty 2,050K (2.05M) EPS", by_id["DL-1365"]["expected"])
+        self.assertIn("$156,360/mo!", by_id["DL-1366"]["expected"])
+        self.assertIn("-$871,540/mo", by_id["DL-1367"]["expected"])
+        self.assertIn("850-PCIDSSPANRedact", by_id["DL-1368"]["expected"])
+
+
+    def test_enterprise_realtime_streaming_lakehouse_r330_scenarios(self) -> None:
+        matrix = evaluate_scenario_matrix()
+        by_id = {s["id"]: s for s in matrix["scenarios"]}
+        for sid in ("DL-1361", "DL-1362", "DL-1363", "DL-1364"):
+            self.assertIn(sid, by_id)
+            self.assertTrue(by_id[sid]["correct"])
+        self.assertIn("2,040K (2.04M) EPS", by_id["DL-1361"]["expected"])
+        self.assertIn("Exact +$180.0M/yr", by_id["DL-1362"]["expected"])
+        self.assertIn("-$867,360/mo", by_id["DL-1363"]["expected"])
+        self.assertIn("845-SchemaQuarantine", by_id["DL-1364"]["expected"])
+
+
+    def test_enterprise_multi_erp_sap_acdoca_treasury_s2p_r329_scenarios(self) -> None:
+        matrix = evaluate_scenario_matrix()
+        by_id = {s["id"]: s for s in matrix["scenarios"]}
+        for sid in ("DL-1357", "DL-1358", "DL-1359", "DL-1360"):
+            self.assertIn(sid, by_id)
+            self.assertTrue(by_id[sid]["correct"])
+        self.assertIn("Power-of-Two 1,280=5x2^8", by_id["DL-1357"]["expected"])
+        self.assertIn("$155,200/mo!", by_id["DL-1358"]["expected"])
+        self.assertIn("-$863,180/mo", by_id["DL-1359"]["expected"])
+        self.assertIn("Exact $120.00M! SLA", by_id["DL-1360"]["expected"])
+
+
+    def test_telecom_5g_fiber_aiops_qoe_irsf_r328_scenarios(self) -> None:
+        matrix = evaluate_scenario_matrix()
+        by_id = {s["id"]: s for s in matrix["scenarios"]}
+        for sid in ("DL-1353", "DL-1354", "DL-1355", "DL-1356"):
+            self.assertIn(sid, by_id)
+            self.assertTrue(by_id[sid]["correct"])
+        self.assertIn("Triangular 1,275=T_50", by_id["DL-1353"]["expected"])
+        self.assertIn("$154,620/mo!", by_id["DL-1354"]["expected"])
+        self.assertIn("-$859,000/mo", by_id["DL-1355"]["expected"])
+        self.assertIn("835-E911KeepAlive", by_id["DL-1356"]["expected"])
+
+
+    def test_hospital_idn_epic_fhir_icu_or_rcm_r327_scenarios(self) -> None:
+        matrix = evaluate_scenario_matrix()
+        by_id = {s["id"]: s for s in matrix["scenarios"]}
+        for sid in ("DL-1349", "DL-1350", "DL-1351", "DL-1352"):
+            self.assertIn(sid, by_id)
+            self.assertTrue(by_id[sid]["correct"])
+        self.assertIn("2,010K (2.01M) EPS", by_id["DL-1349"]["expected"])
+        self.assertIn("$154,040/mo!", by_id["DL-1350"]["expected"])
+        self.assertIn("-$854,820/mo", by_id["DL-1351"]["expected"])
+        self.assertIn("830-CMSCoSign", by_id["DL-1352"]["expected"])
+
+
+    def test_grocery_cpg_perishable_esl_rmn_cleanroom_r326_scenarios(self) -> None:
+        matrix = evaluate_scenario_matrix()
+        by_id = {s["id"]: s for s in matrix["scenarios"]}
+        for sid in ("DL-1345", "DL-1346", "DL-1347", "DL-1348"):
+            self.assertIn(sid, by_id)
+            self.assertTrue(by_id[sid]["correct"])
+        self.assertIn("2,000K (2.00M!) EPS", by_id["DL-1345"]["expected"])
+        self.assertIn("$153,460/mo!", by_id["DL-1346"]["expected"])
+        self.assertIn("-$850,640/mo", by_id["DL-1347"]["expected"])
+        self.assertIn("825-FSMA204POSLock", by_id["DL-1348"]["expected"])
+
+
+    def test_automotive_connected_vehicle_sdv_battery_r325_scenarios(self) -> None:
+        matrix = evaluate_scenario_matrix()
+        by_id = {s["id"]: s for s in matrix["scenarios"]}
+        for sid in ("DL-1341", "DL-1342", "DL-1343", "DL-1344"):
+            self.assertIn(sid, by_id)
+            self.assertTrue(by_id[sid]["correct"])
+        self.assertIn("1,260 Waves", by_id["DL-1341"]["expected"])
+        self.assertIn("1,305M = 1.305B", by_id["DL-1342"]["expected"])
+        self.assertIn("-$846,460/mo", by_id["DL-1343"]["expected"])
+        self.assertIn("Triangular 820-ISO26262ParkOTA", by_id["DL-1344"]["expected"])
+
+
+    def test_enterprise_data_governance_onelake_purview_r324_scenarios(self) -> None:
+        matrix = evaluate_scenario_matrix()
+        by_id = {s["id"]: s for s in matrix["scenarios"]}
+        for sid in ("DL-1337", "DL-1338", "DL-1339", "DL-1340"):
+            self.assertIn(sid, by_id)
+            self.assertTrue(by_id[sid]["correct"])
+        self.assertIn("1,255 Waves", by_id["DL-1337"]["expected"])
+        self.assertIn("Historic 1,300M = 1.30B", by_id["DL-1338"]["expected"])
+        self.assertIn("-$842,280/mo", by_id["DL-1339"]["expected"])
+        self.assertIn("815-ZeroSparkBypass", by_id["DL-1340"]["expected"])
+
+
+    def test_power_utilities_smart_grid_vpp_etrm_r323_scenarios(self) -> None:
+        matrix = evaluate_scenario_matrix()
+        by_id = {s["id"]: s for s in matrix["scenarios"]}
+        for sid in ("DL-1333", "DL-1334", "DL-1335", "DL-1336"):
+            self.assertIn(sid, by_id)
+            self.assertTrue(by_id[sid]["correct"])
+        self.assertIn("Exact 1,250=10x5^3 Waves", by_id["DL-1333"]["expected"])
+        self.assertIn("$151,720/mo!", by_id["DL-1334"]["expected"])
+        self.assertIn("Historic Exact $21,000/mo", by_id["DL-1335"]["expected"])
+        self.assertIn("810-NERCCIP005", by_id["DL-1336"]["expected"])
+
+
+    def test_insurance_pc_auto_ubi_catastrophe_siu_r322_scenarios(self) -> None:
+        matrix = evaluate_scenario_matrix()
+        by_id = {s["id"]: s for s in matrix["scenarios"]}
+        for sid in ("DL-1329", "DL-1330", "DL-1331", "DL-1332"):
+            self.assertIn(sid, by_id)
+            self.assertTrue(by_id[sid]["correct"])
+        self.assertIn("1,245 Waves", by_id["DL-1329"]["expected"])
+        self.assertIn("$151,140/mo!", by_id["DL-1330"]["expected"])
+        self.assertIn("-$833,920/mo", by_id["DL-1331"]["expected"])
+        self.assertIn("805-NAICUCSPABadFaith", by_id["DL-1332"]["expected"])
+
+
+    def test_multimodal_logistics_port_tos_customs_r321_scenarios(self) -> None:
+        matrix = evaluate_scenario_matrix()
+        by_id = {s["id"]: s for s in matrix["scenarios"]}
+        for sid in ("DL-1325", "DL-1326", "DL-1327", "DL-1328"):
+            self.assertIn(sid, by_id)
+            self.assertTrue(by_id[sid]["correct"])
+        self.assertIn("1,240 Waves", by_id["DL-1325"]["expected"])
+        self.assertIn("$150,560/mo!", by_id["DL-1326"]["expected"])
+        self.assertIn("-$829,740/mo", by_id["DL-1327"]["expected"])
+        self.assertIn("Exact 800-IMDGHazmat", by_id["DL-1328"]["expected"])
+
+
+    def test_five_cloud_medallion_lakehouse_kappa_playbook_r320_scenarios(self) -> None:
+        matrix = evaluate_scenario_matrix()
+        by_id = {s["id"]: s for s in matrix["scenarios"]}
+        for sid in ("DL-1321", "DL-1322", "DL-1323", "DL-1324"):
+            self.assertIn(sid, by_id)
+            self.assertTrue(by_id[sid]["correct"])
+        self.assertIn("1,235 Waves", by_id["DL-1321"]["expected"])
+        self.assertIn("1,280M = 1.28B = 2^7x10^7", by_id["DL-1322"]["expected"])
+        self.assertIn("-$825,560/mo", by_id["DL-1323"]["expected"])
+        self.assertIn("795-SilverQuarantine", by_id["DL-1324"]["expected"])
+
+
+    def test_pharma_life_sciences_commercial_nba_patient_hub_r319_scenarios(self) -> None:
+        matrix = evaluate_scenario_matrix()
+        by_id = {s["id"]: s for s in matrix["scenarios"]}
+        for sid in ("DL-1317", "DL-1318", "DL-1319", "DL-1320"):
+            self.assertIn(sid, by_id)
+            self.assertTrue(by_id[sid]["correct"])
+        self.assertIn("1,230 Waves", by_id["DL-1317"]["expected"])
+        self.assertIn("Exact $6,000/mo", by_id["DL-1318"]["expected"])
+        self.assertIn("-$821,380/mo", by_id["DL-1319"]["expected"])
+        self.assertIn("790-FDAOPDPOffLabel", by_id["DL-1320"]["expected"])
+
+
+    def test_banking_payments_fraud_aml_graph_sar_rag_r318_scenarios(self) -> None:
+        matrix = evaluate_scenario_matrix()
+        by_id = {s["id"]: s for s in matrix["scenarios"]}
+        for sid in ("DL-1313", "DL-1314", "DL-1315", "DL-1316"):
+            self.assertIn(sid, by_id)
+            self.assertTrue(by_id[sid]["correct"])
+        self.assertIn("1,225=35^2=T_49 Waves", by_id["DL-1313"]["expected"])
+        self.assertIn("1,270M = 1.27B", by_id["DL-1314"]["expected"])
+        self.assertIn("-$817,200/mo", by_id["DL-1315"]["expected"])
+        self.assertIn("785-OFAC50PctRule", by_id["DL-1316"]["expected"])
+
+
+    def test_industrial_manufacturing_auto_tier1_digital_thread_r317_scenarios(self) -> None:
+        matrix = evaluate_scenario_matrix()
+        by_id = {s["id"]: s for s in matrix["scenarios"]}
+        for sid in ("DL-1309", "DL-1310", "DL-1311", "DL-1312"):
+            self.assertIn(sid, by_id)
+            self.assertTrue(by_id[sid]["correct"])
+        self.assertIn("1,220-Wave", by_id["DL-1309"]["expected"])
+        self.assertIn("1,265M = 1.265B", by_id["DL-1310"]["expected"])
+        self.assertIn("-$813,020/mo", by_id["DL-1311"]["expected"])
+        self.assertIn("780-OSHALOTOZeroEnergy", by_id["DL-1312"]["expected"])
+
+
+    def test_b2b_saas_gaming_embedded_analytics_r316_scenarios(self) -> None:
+        matrix = evaluate_scenario_matrix()
+        by_id = {s["id"]: s for s in matrix["scenarios"]}
+        for sid in ("DL-1305", "DL-1306", "DL-1307", "DL-1308"):
+            self.assertIn(sid, by_id)
+            self.assertTrue(by_id[sid]["correct"])
+        self.assertIn("1,215-Wave", by_id["DL-1305"]["expected"])
+        self.assertIn("1,260M = 1.26B", by_id["DL-1306"]["expected"])
+        self.assertIn("-$808,840/mo", by_id["DL-1307"]["expected"])
+        self.assertIn("775-CustomDataTenantRLS", by_id["DL-1308"]["expected"])
+
+
+    def test_enterprise_vector_database_hybrid_rag_r315_scenarios(self) -> None:
+        matrix = evaluate_scenario_matrix()
+        by_id = {s["id"]: s for s in matrix["scenarios"]}
+        for sid in ("DL-1301", "DL-1302", "DL-1303", "DL-1304"):
+            self.assertIn(sid, by_id)
+            self.assertTrue(by_id[sid]["correct"])
+        self.assertIn("1,210=11^2x10-Wave", by_id["DL-1301"]["expected"])
+        self.assertIn("1,255M = 1.255B", by_id["DL-1302"]["expected"])
+        self.assertIn("-$804,660/mo", by_id["DL-1303"]["expected"])
+        self.assertIn("770-EntraOBOACL", by_id["DL-1304"]["expected"])
+
+
+    def test_enterprise_realtime_cdc_zero_etl_mirroring_r314_scenarios(self) -> None:
+        matrix = evaluate_scenario_matrix()
+        by_id = {s["id"]: s for s in matrix["scenarios"]}
+        for sid in ("DL-1297", "DL-1298", "DL-1299", "DL-1300"):
+            self.assertIn(sid, by_id)
+            self.assertTrue(by_id[sid]["correct"])
+        self.assertIn("1,205-Wave", by_id["DL-1297"]["expected"])
+        self.assertIn("Exact 1,250M = 1.25B", by_id["DL-1298"]["expected"])
+        self.assertIn("-$800,480/mo", by_id["DL-1299"]["expected"])
+        self.assertIn("765-MultiTableLSNBarrier", by_id["DL-1300"]["expected"])
+
+
+    def test_investment_banking_equity_research_hybrid_rag_r313_scenarios(self) -> None:
+        matrix = evaluate_scenario_matrix()
+        by_id = {s["id"]: s for s in matrix["scenarios"]}
+        for sid in ("DL-1293", "DL-1294", "DL-1295", "DL-1296"):
+            self.assertIn(sid, by_id)
+            self.assertTrue(by_id[sid]["correct"])
+        self.assertIn("Exact 1,200-Wave", by_id["DL-1293"]["expected"])
+        self.assertIn("1,245M = 1.245B", by_id["DL-1294"]["expected"])
+        self.assertIn("-$796,300/mo", by_id["DL-1295"]["expected"])
+        self.assertIn("760-MNPIChineseWall", by_id["DL-1296"]["expected"])
+
+
+    def test_omnichannel_retail_composable_cdp_clienteling_r312_scenarios(self) -> None:
+        matrix = evaluate_scenario_matrix()
+        by_id = {s["id"]: s for s in matrix["scenarios"]}
+        for sid in ("DL-1289", "DL-1290", "DL-1291", "DL-1292"):
+            self.assertIn(sid, by_id)
+            self.assertTrue(by_id[sid]["correct"])
+        self.assertIn("1,195-Wave", by_id["DL-1289"]["expected"])
+        self.assertIn("1,240M = 1.24B", by_id["DL-1290"]["expected"])
+        self.assertIn("-$792,120/mo", by_id["DL-1291"]["expected"])
+        self.assertIn("755-SizeATPInStock", by_id["DL-1292"]["expected"])
+
+
+    def test_enterprise_data_agent_ontology_hybrid_rag_r311_scenarios(self) -> None:
+        matrix = evaluate_scenario_matrix()
+        by_id = {s["id"]: s for s in matrix["scenarios"]}
+        for sid in ("DL-1285", "DL-1286", "DL-1287", "DL-1288"):
+            self.assertIn(sid, by_id)
+            self.assertTrue(by_id[sid]["correct"])
+        self.assertIn("1,190-Wave", by_id["DL-1285"]["expected"])
+        self.assertIn("1,235M = 1.235B", by_id["DL-1286"]["expected"])
+        self.assertIn("-$787,940/mo", by_id["DL-1287"]["expected"])
+        self.assertIn("750-ZeroMetricDrift", by_id["DL-1288"]["expected"])
 
 
     def test_cpg_food_beverage_tpm_pos_r310_scenarios(self) -> None:
@@ -5773,11 +6530,11 @@ class TestDataLabBenchmarkSuite(unittest.TestCase):
         self.assertTrue(out_path.exists())
         loaded = json.loads(out_path.read_text(encoding="utf-8"))
         self.assertEqual(loaded["report_id"], report["report_id"])
-        self.assertEqual(loaded["scenario_evaluation"]["passed_scenarios"], 831)
-        self.assertEqual(loaded["scenario_evaluation"]["routing_matrix_denominator_n"], 832)
-        self.assertEqual(loaded["scenario_evaluation"]["routing_matrix_mean_modeled_latency_ms"], 90.5)
-        self.assertEqual(loaded["ontology_simulations_summary"]["total_ontology_simulations"], 204)
-        self.assertEqual(loaded["ontology_simulations_summary"]["ontology_simulation_mean_modeled_latency_ms"], 82.21)
+        self.assertEqual(loaded["scenario_evaluation"]["passed_scenarios"], 931)
+        self.assertEqual(loaded["scenario_evaluation"]["routing_matrix_denominator_n"], 932)
+        self.assertEqual(loaded["scenario_evaluation"]["routing_matrix_mean_modeled_latency_ms"], 81.2)
+        self.assertEqual(loaded["ontology_simulations_summary"]["total_ontology_simulations"], 229)
+        self.assertEqual(loaded["ontology_simulations_summary"]["ontology_simulation_mean_modeled_latency_ms"], 74.98)
 
 
 if __name__ == "__main__":
