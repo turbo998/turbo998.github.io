@@ -9803,6 +9803,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r825File),'utf8');
       assert.ok(txt.includes('4,980.00')&&txt.includes('4,650.00')&&txt.includes('9,630.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('9,320.00')&&txt.includes('96.78%')&&txt.includes('not_measured'),r825File+': contains exact 11-24 R38 R825 hindsight+copilotkit+nanoclaw+kestra closed-form parameters');
     }
+    // 2026-11-24 Night Round 39 (R826: Tencent/WeKnora + onyx-dot-app/onyx + Canner/WrenAI + vespa-engine/vespa) verification
+    const r826PathA=4890.00+46.0*100.00;
+    assert.equal(r826PathA.toFixed(2),'9490.00','11-24 R39 R826 Path A total');
+    const r826PathC=75.00+2.4*100.00;
+    assert.equal(r826PathC.toFixed(2),'315.00','11-24 R39 R826 Path C total');
+    assert.equal((r826PathA-r826PathC).toFixed(2),'9175.00','11-24 R39 R826 savings vs Path A');
+    assert.equal(((r826PathA-r826PathC)/r826PathA*100).toFixed(2),'96.68','11-24 R39 R826 pct savings vs Path A');
+    for(const r826File of ['workshops/github-trending-radar/docs/weknora-onyx-wrenai-vespa-selection-faq.md','workshops/github-trending-radar/docs/weknora-onyx-wrenai-vespa-selection-faq.en.md','assets/github-ai-radar-2026-11-24-r39-r826-weknora-onyx-wrenai-vespa.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-24-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r826File),'utf8');
+      assert.ok(txt.includes('4,890.00')&&txt.includes('4,600.00')&&txt.includes('9,490.00')&&txt.includes('75.00')&&txt.includes('240.00')&&txt.includes('315.00')&&txt.includes('9,175.00')&&txt.includes('96.68%')&&txt.includes('not_measured'),r826File+': contains exact 11-24 R39 R826 weknora+onyx+wrenai+vespa closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
