@@ -1,6 +1,6 @@
 # Azure AI Agent Infrastructure Playbook：从四层全栈架构、六大计算运行时到 AKSClaw 与 E2B on Azure 生产实践
 
-> 🌐 **Language / 语言切换**: **中文版（当前）** | **[🇬🇧 English Edition (`README.en.md`)](README.en.md)** | **[🧭 112 篇架构选型决策 FAQ (`../../docs/azure-agent-infra/README.md`)](../../docs/azure-agent-infra/README.md)** | **[🛠️ 客户工作坊手册 (`workshop-runbook.zh-CN.md`)](workshop-runbook.zh-CN.md)** | **[📊 7-Card 评测报告 (`test-report.md`)](test-report.md)** | **[🖥️ 交互式选型台 (`selector.html`)](selector.html)**
+> 🌐 **Language / 语言切换**: **中文版（当前）** | **[🇬🇧 English Edition (`README.en.md`)](README.en.md)** | **[🧭 406 篇架构选型决策 FAQ (`../../docs/azure-agent-infra/README.md`)](../../docs/azure-agent-infra/README.md)** | **[🛠️ 客户工作坊手册 (`workshop-runbook.zh-CN.md`)](workshop-runbook.zh-CN.md)** | **[📊 7-Card 评测报告 (`test-report.md`)](test-report.md)** | **[🖥️ 交互式选型台 (`selector.html`)](selector.html)**
 
 - **更新日期**：2026-10-18
 - **定位（Solution Architect 视角）**：面向 Cloud & AI Solution Architect 的全栈方案设计、平台选型权衡、代际算力实测对比、多租户零信任治理与客户现场落地手册（28 章全栈手册 + 23 套生产级 IaC 蓝图 + 确定性容量测算器）
