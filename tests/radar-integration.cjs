@@ -9451,6 +9451,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r793File),'utf8');
       assert.ok(txt.includes('4,610.00')&&txt.includes('4,500.00')&&txt.includes('9,110.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('8,805.00')&&txt.includes('96.65%')&&txt.includes('not_measured'),r793File+': contains exact 11-24 R6 R793 agentmemory+orgwiki+waflare+pocketdesign closed-form parameters');
     }
+    // 2026-11-24 Night Round 7 (R794: AverageArc/assembly-guide + OrrrGE/autoRecording + aiwithremy/podcast-clipping + chipfighter/lodestar) verification
+    const r794PathA=4660.00+45.5*100.00;
+    assert.equal(r794PathA.toFixed(2),'9210.00','11-24 R7 R794 Path A total');
+    const r794PathC=65.00+2.4*100.00;
+    assert.equal(r794PathC.toFixed(2),'305.00','11-24 R7 R794 Path C total');
+    assert.equal((r794PathA-r794PathC).toFixed(2),'8905.00','11-24 R7 R794 savings vs Path A');
+    assert.equal(((r794PathA-r794PathC)/r794PathA*100).toFixed(2),'96.69','11-24 R7 R794 pct savings vs Path A');
+    for(const r794File of ['workshops/github-trending-radar/docs/assembly-guide-autorecording-podcast-clipping-lodestar-selection-faq.md','workshops/github-trending-radar/docs/assembly-guide-autorecording-podcast-clipping-lodestar-selection-faq.en.md','assets/github-ai-radar-2026-11-24-r7-r794-assemblyguide-autorecording-podcastclipping-lodestar.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-24-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r794File),'utf8');
+      assert.ok(txt.includes('4,660.00')&&txt.includes('4,550.00')&&txt.includes('9,210.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('8,905.00')&&txt.includes('96.69%')&&txt.includes('not_measured'),r794File+': contains exact 11-24 R7 R794 assemblyguide+autorecording+podcastclipping+lodestar closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
