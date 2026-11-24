@@ -9638,6 +9638,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r810File),'utf8');
       assert.ok(txt.includes('4,890.00')&&txt.includes('4,600.00')&&txt.includes('9,490.00')&&txt.includes('60.00')&&txt.includes('240.00')&&txt.includes('300.00')&&txt.includes('9,190.00')&&txt.includes('96.84%')&&txt.includes('not_measured'),r810File+': contains exact 11-24 R23 R810 munder-difflin+clawx+backlog+oma closed-form parameters');
     }
+    // 2026-11-24 Night Round 24 (R811: corsairdev/corsair + iflytek/astron-agent + truefoundry/trueforge + ModelEngine-Group/nexent) verification
+    const r811PathA=4850.00+45.5*100.00;
+    assert.equal(r811PathA.toFixed(2),'9400.00','11-24 R24 R811 Path A total');
+    const r811PathC=70.00+2.4*100.00;
+    assert.equal(r811PathC.toFixed(2),'310.00','11-24 R24 R811 Path C total');
+    assert.equal((r811PathA-r811PathC).toFixed(2),'9090.00','11-24 R24 R811 savings vs Path A');
+    assert.equal(((r811PathA-r811PathC)/r811PathA*100).toFixed(2),'96.70','11-24 R24 R811 pct savings vs Path A');
+    for(const r811File of ['workshops/github-trending-radar/docs/corsair-astron-trueforge-nexent-selection-faq.md','workshops/github-trending-radar/docs/corsair-astron-trueforge-nexent-selection-faq.en.md','assets/github-ai-radar-2026-11-24-r24-r811-corsair-astron-trueforge-nexent.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-24-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r811File),'utf8');
+      assert.ok(txt.includes('4,850.00')&&txt.includes('4,550.00')&&txt.includes('9,400.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('9,090.00')&&txt.includes('96.70%')&&txt.includes('not_measured'),r811File+': contains exact 11-24 R24 R811 corsair+astron+trueforge+nexent closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
