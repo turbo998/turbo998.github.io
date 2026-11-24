@@ -9726,6 +9726,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r818File),'utf8');
       assert.ok(txt.includes('4,770.00')&&txt.includes('4,550.00')&&txt.includes('9,320.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('9,015.00')&&txt.includes('96.73%')&&txt.includes('not_measured'),r818File+': contains exact 11-24 R31 R818 claude-hud+beads+pwf+claude-context closed-form parameters');
     }
+    // 2026-11-24 Night Round 32 (R819: Egonex-AI/Understand-Anything + router-for-me/CLIProxyAPI + Wei-Shaw/sub2api + walkinglabs/learn-harness-engineering) verification
+    const r819PathA=4860.00+46.0*100.00;
+    assert.equal(r819PathA.toFixed(2),'9460.00','11-24 R32 R819 Path A total');
+    const r819PathC=65.00+2.4*100.00;
+    assert.equal(r819PathC.toFixed(2),'305.00','11-24 R32 R819 Path C total');
+    assert.equal((r819PathA-r819PathC).toFixed(2),'9155.00','11-24 R32 R819 savings vs Path A');
+    assert.equal(((r819PathA-r819PathC)/r819PathA*100).toFixed(2),'96.78','11-24 R32 R819 pct savings vs Path A');
+    for(const r819File of ['workshops/github-trending-radar/docs/understand-cliproxy-sub2api-learnharness-selection-faq.md','workshops/github-trending-radar/docs/understand-cliproxy-sub2api-learnharness-selection-faq.en.md','assets/github-ai-radar-2026-11-24-r32-r819-understand-cliproxy-sub2api-learnharness.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-24-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r819File),'utf8');
+      assert.ok(txt.includes('4,860.00')&&txt.includes('4,600.00')&&txt.includes('9,460.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('9,155.00')&&txt.includes('96.78%')&&txt.includes('not_measured'),r819File+': contains exact 11-24 R32 R819 understand+cliproxy+sub2api+learnharness closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
