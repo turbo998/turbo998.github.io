@@ -9561,6 +9561,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r803File),'utf8');
       assert.ok(txt.includes('4,820.00')&&txt.includes('4,600.00')&&txt.includes('9,420.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('9,115.00')&&txt.includes('96.76%')&&txt.includes('not_measured'),r803File+': contains exact 11-24 R16 R803 taste-skill+hyperframes+marketingskills+jantt closed-form parameters');
     }
+    // 2026-11-24 Night Round 17 (R804: budtmo/docker-android + tonhowtf/omniget + mobile-next/mobile-mcp + firerpa/lamda) verification
+    const r804PathA=4870.00+46.0*100.00;
+    assert.equal(r804PathA.toFixed(2),'9470.00','11-24 R17 R804 Path A total');
+    const r804PathC=75.00+2.4*100.00;
+    assert.equal(r804PathC.toFixed(2),'315.00','11-24 R17 R804 Path C total');
+    assert.equal((r804PathA-r804PathC).toFixed(2),'9155.00','11-24 R17 R804 savings vs Path A');
+    assert.equal(((r804PathA-r804PathC)/r804PathA*100).toFixed(2),'96.67','11-24 R17 R804 pct savings vs Path A');
+    for(const r804File of ['workshops/github-trending-radar/docs/docker-android-omniget-mobile-mcp-lamda-selection-faq.md','workshops/github-trending-radar/docs/docker-android-omniget-mobile-mcp-lamda-selection-faq.en.md','assets/github-ai-radar-2026-11-24-r17-r804-docker-android-omniget-mobile-mcp-lamda.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-24-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r804File),'utf8');
+      assert.ok(txt.includes('4,870.00')&&txt.includes('4,600.00')&&txt.includes('9,470.00')&&txt.includes('75.00')&&txt.includes('240.00')&&txt.includes('315.00')&&txt.includes('9,155.00')&&txt.includes('96.67%')&&txt.includes('not_measured'),r804File+': contains exact 11-24 R17 R804 docker-android+omniget+mobile-mcp+lamda closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
