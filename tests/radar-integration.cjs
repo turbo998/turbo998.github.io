@@ -9572,6 +9572,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r804File),'utf8');
       assert.ok(txt.includes('4,870.00')&&txt.includes('4,600.00')&&txt.includes('9,470.00')&&txt.includes('75.00')&&txt.includes('240.00')&&txt.includes('315.00')&&txt.includes('9,155.00')&&txt.includes('96.67%')&&txt.includes('not_measured'),r804File+': contains exact 11-24 R17 R804 docker-android+omniget+mobile-mcp+lamda closed-form parameters');
     }
+    // 2026-11-24 Night Round 18 (R805 Milestone: apify/apify-mcp-server + triggerdotdev/trigger.dev + mcp-use/mcp-use + awslabs/mcp) verification
+    const r805PathA=4920.00+46.5*100.00;
+    assert.equal(r805PathA.toFixed(2),'9570.00','11-24 R18 R805 Path A total');
+    const r805PathC=75.00+2.4*100.00;
+    assert.equal(r805PathC.toFixed(2),'315.00','11-24 R18 R805 Path C total');
+    assert.equal((r805PathA-r805PathC).toFixed(2),'9255.00','11-24 R18 R805 savings vs Path A');
+    assert.equal(((r805PathA-r805PathC)/r805PathA*100).toFixed(2),'96.71','11-24 R18 R805 pct savings vs Path A');
+    for(const r805File of ['workshops/github-trending-radar/docs/apify-trigger-mcp-use-awslabs-selection-faq.md','workshops/github-trending-radar/docs/apify-trigger-mcp-use-awslabs-selection-faq.en.md','assets/github-ai-radar-2026-11-24-r18-r805-apify-trigger-mcp-use-awslabs.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-24-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r805File),'utf8');
+      assert.ok(txt.includes('4,920.00')&&txt.includes('4,650.00')&&txt.includes('9,570.00')&&txt.includes('75.00')&&txt.includes('240.00')&&txt.includes('315.00')&&txt.includes('9,255.00')&&txt.includes('96.71%')&&txt.includes('not_measured'),r805File+': contains exact 11-24 R18 R805 apify+trigger+mcp-use+awslabs closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
