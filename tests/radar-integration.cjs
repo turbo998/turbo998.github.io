@@ -9770,6 +9770,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r822File),'utf8');
       assert.ok(txt.includes('4,830.00')&&txt.includes('4,550.00')&&txt.includes('9,380.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('9,075.00')&&txt.includes('96.75%')&&txt.includes('not_measured'),r822File+': contains exact 11-24 R35 R822 quivr+dbgpt+docsgpt+leann closed-form parameters');
     }
+    // 2026-11-24 Night Round 36 (R823: onlook-dev/onlook + langbot-app/LangBot + alibaba/zvec + neuml/txtai) verification
+    const r823PathA=4780.00+45.5*100.00;
+    assert.equal(r823PathA.toFixed(2),'9330.00','11-24 R36 R823 Path A total');
+    const r823PathC=65.00+2.4*100.00;
+    assert.equal(r823PathC.toFixed(2),'305.00','11-24 R36 R823 Path C total');
+    assert.equal((r823PathA-r823PathC).toFixed(2),'9025.00','11-24 R36 R823 savings vs Path A');
+    assert.equal(((r823PathA-r823PathC)/r823PathA*100).toFixed(2),'96.73','11-24 R36 R823 pct savings vs Path A');
+    for(const r823File of ['workshops/github-trending-radar/docs/onlook-langbot-zvec-txtai-selection-faq.md','workshops/github-trending-radar/docs/onlook-langbot-zvec-txtai-selection-faq.en.md','assets/github-ai-radar-2026-11-24-r36-r823-onlook-langbot-zvec-txtai.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-24-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r823File),'utf8');
+      assert.ok(txt.includes('4,780.00')&&txt.includes('4,550.00')&&txt.includes('9,330.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('9,025.00')&&txt.includes('96.73%')&&txt.includes('not_measured'),r823File+': contains exact 11-24 R36 R823 onlook+langbot+zvec+txtai closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
