@@ -9583,6 +9583,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r805File),'utf8');
       assert.ok(txt.includes('4,920.00')&&txt.includes('4,650.00')&&txt.includes('9,570.00')&&txt.includes('75.00')&&txt.includes('240.00')&&txt.includes('315.00')&&txt.includes('9,255.00')&&txt.includes('96.71%')&&txt.includes('not_measured'),r805File+': contains exact 11-24 R18 R805 apify+trigger+mcp-use+awslabs closed-form parameters');
     }
+    // 2026-11-24 Night Round 19 (R806: sickn33/agentic-awesome-skills + tinyhumansai/openhuman + codewhale-hq/Codewhale + rocketride-org/rocketride-server) verification
+    const r806PathA=4790.00+45.5*100.00;
+    assert.equal(r806PathA.toFixed(2),'9340.00','11-24 R19 R806 Path A total');
+    const r806PathC=60.00+2.4*100.00;
+    assert.equal(r806PathC.toFixed(2),'300.00','11-24 R19 R806 Path C total');
+    assert.equal((r806PathA-r806PathC).toFixed(2),'9040.00','11-24 R19 R806 savings vs Path A');
+    assert.equal(((r806PathA-r806PathC)/r806PathA*100).toFixed(2),'96.79','11-24 R19 R806 pct savings vs Path A');
+    for(const r806File of ['workshops/github-trending-radar/docs/aas-codewhale-openhuman-rocketride-selection-faq.md','workshops/github-trending-radar/docs/aas-codewhale-openhuman-rocketride-selection-faq.en.md','assets/github-ai-radar-2026-11-24-r19-r806-aas-codewhale-openhuman-rocketride.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-24-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r806File),'utf8');
+      assert.ok(txt.includes('4,790.00')&&txt.includes('4,550.00')&&txt.includes('9,340.00')&&txt.includes('60.00')&&txt.includes('240.00')&&txt.includes('300.00')&&txt.includes('9,040.00')&&txt.includes('96.79%')&&txt.includes('not_measured'),r806File+': contains exact 11-24 R19 R806 aas+codewhale+openhuman+rocketride closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
