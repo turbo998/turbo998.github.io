@@ -9660,6 +9660,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r812File),'utf8');
       assert.ok(txt.includes('4,910.00')&&txt.includes('4,600.00')&&txt.includes('9,510.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('9,200.00')&&txt.includes('96.74%')&&txt.includes('not_measured'),r812File+': contains exact 11-24 R25 R812 xberg+yuxi+sqlbot+helixdb closed-form parameters');
     }
+    // 2026-11-24 Night Round 26 (R813: deeplethe/utopia + osaurus-ai/osaurus + lemonade-sdk/lemonade + XinaTian/MROffice) verification
+    const r813PathA=4740.00+45.0*100.00;
+    assert.equal(r813PathA.toFixed(2),'9240.00','11-24 R26 R813 Path A total');
+    const r813PathC=65.00+2.4*100.00;
+    assert.equal(r813PathC.toFixed(2),'305.00','11-24 R26 R813 Path C total');
+    assert.equal((r813PathA-r813PathC).toFixed(2),'8935.00','11-24 R26 R813 savings vs Path A');
+    assert.equal(((r813PathA-r813PathC)/r813PathA*100).toFixed(2),'96.70','11-24 R26 R813 pct savings vs Path A');
+    for(const r813File of ['workshops/github-trending-radar/docs/utopia-osaurus-lemonade-mroffice-selection-faq.md','workshops/github-trending-radar/docs/utopia-osaurus-lemonade-mroffice-selection-faq.en.md','assets/github-ai-radar-2026-11-24-r26-r813-utopia-osaurus-lemonade-mroffice.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-24-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r813File),'utf8');
+      assert.ok(txt.includes('4,740.00')&&txt.includes('4,500.00')&&txt.includes('9,240.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('8,935.00')&&txt.includes('96.70%')&&txt.includes('not_measured'),r813File+': contains exact 11-24 R26 R813 utopia+osaurus+lemonade+mroffice closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
