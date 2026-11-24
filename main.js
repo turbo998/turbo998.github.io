@@ -99,7 +99,7 @@
 
   const ZH_DESC = {
     "Azure-Infra-Lab": "Azure 基础设施工程化与 AI Agent Infra 实战实验室：收录《AKSClaw × E2B 10万沙箱 H5 仿真套件》《Azure VM 现代化与 FinOps 伙伴工作坊》及 41 套 Bicep/K8s 蓝图。",
-    "ai-infra-research": "AI 算力基础设施架构师选型 FAQ 指南库（中英双语 · 3,814 源 · 866 条实证 · 565 题）：涵盖 LLM 推理引擎（vLLM vs SGLang vs TRT-LLM）与 PD 分离（Dynamo + Mooncake）、IB vs RoCEv2 + UEC 网络选型与 Roofline/TCO 定容计算器。",
+    "ai-infra-research": "云与 AI 基础设施解决方案架构师（SA）双语选型与定容知识库（624 篇双语指南 #001–#622 · 235 套交互式 H5 沙盘 · 1,237 套 Sizer/7-Card · 630 套 Python 模型）：涵盖 PD 分离（Dynamo + Mooncake）、TP/PP/DP/EP 并行、IB vs RoCEv2 网络、GPU 三水位与 TPM/TPS/PTU 定容及二十大垂直行业神经符号架构。",
     "ai-infra-lab": "AI 基础设施架构、六大运行时光谱评测、E2B Firecracker / AKSClaw Kata 密度模型与跨区域 3.67s 热备容灾蓝图库。",
     "azure-usage-realtime-analytics": "Azure 实时用量分析与 FinOps 账单对账架构：结合流式事件处理、成本分摊归因与异常消费实时熔断告警。",
     "benchmark-harness-engineering": "7-Card 4:5 模型评测报告标准与可复现评测引擎：内置 HTML/SVG 卡片生成器、选项翻转鲁棒性检验与 Decision-1 路由基准。",
@@ -116,7 +116,7 @@
     "gpt-live-1-demo": "Azure OpenAI gpt-live-1 与 gpt-4.1-mini 实时语音演示工作台、4-Tab 培训门户、6分钟售前演示手册与 4分20秒高清实录视频。",
     "contact-center-on-gpt-realtime": "全球多语言智能呼叫中心参考设计，串联三个 Microsoft Foundry 实时模型，实现 24×7 接待与实时坐席辅助。",
     "gpt-realtime-2-vision-companion": "面向视障与工业巡检场景的实时语音 + 视觉 AI 伴侣，基于 Azure OpenAI 实时视频帧理解。",
-    "agentic-commerce-lab": "企业级智能体商业（Agentic Commerce）架构与选型决策库：390 篇中英双语 SA 选型 FAQ、164 个交互式策略沙盒、五大支付协议与 ERP/OTA/跨境受托控制面（1,268 项单测）。",
+    "agentic-commerce-lab": "企业级智能体商业（Agentic Commerce）架构与选型决策库：497 篇中英双语 SA 选型 FAQ、271 个交互式策略沙盒、五大支付协议与 ERP/OTA/跨境受托控制面（1,375 项单测）。",
     "Agentic-Commerce-on-Azure": "基于 Azure 的企业级零售与跨境电商智能体全栈架构：多模态目录理解、RFQ 询报价审批与全球售后客服。",
     "ai-gaming-lab": "AI 游戏与程序化骨骼动画实验室：实时 3D/2D 逆运动学关节拆解舞台及《湾岸 Midnight》《Scrap Swarm》双可玩游戏。",
     "scrap-swarm": "《废土斗机祭 · Scrap Swarm》：纯 Canvas 2D 多关节机甲动作生存游戏，含番剧切入演出、黑白冲击帧与自动 Bot 验证。",
@@ -157,7 +157,7 @@
     { name: "gpt-live-1-demo", description: "Azure OpenAI gpt-live-1 & gpt-4.1-mini interactive voice demo, 4-tab training portal, 6-min partner presales handbook & 4m20s HD recording.", language: "JavaScript", stargazers_count: 1, html_url: "https://github.com/turbo998/gpt-live-1-demo", homepage: "https://gpt-live-demo-0922-qc.azurewebsites.net/", updated_at: "2026-11-01" },
     { name: "contact-center-on-gpt-realtime", description: "Global multilingual contact center reference design connecting three Microsoft Foundry realtime models.", language: "Python", stargazers_count: 0, html_url: "https://github.com/turbo998/contact-center-on-gpt-realtime", updated_at: "2026-08-26" },
     { name: "gpt-realtime-2-vision-companion", description: "Real-time voice + vision AI companion for blind & low-vision users, powered by Azure OpenAI.", language: "Python", stargazers_count: 0, html_url: "https://github.com/turbo998/gpt-realtime-2-vision-companion", updated_at: "2026-08-25" },
-    { name: "agentic-commerce-lab", description: "Enterprise Agentic Commerce Architecture & SA Decision Guide Library: 390 bilingual Selection FAQs, 164 interactive policy sandboxes, 5 payment rails (Stripe SPT / Visa VIC / Mastercard / Pay-by-Bank / B2B VCN), Web IQ grounding, B2B ERP/CLM & OTA/Cross-Border escrow (1,268 unit tests).", language: "Python", stargazers_count: 1, html_url: "https://github.com/turbo998/agentic-commerce-lab", homepage: "https://turbo998.github.io/workshops/agentic-commerce/live-demo.html", updated_at: "2026-11-23" },
+    { name: "agentic-commerce-lab", description: "Enterprise Agentic Commerce Architecture & SA Decision Guide Library: 497 bilingual Selection FAQs, 271 interactive policy sandboxes, 5 payment rails (Stripe SPT / Visa VIC / Mastercard / Pay-by-Bank / B2B VCN), Web IQ grounding, B2B ERP/CLM & OTA/Cross-Border escrow (1,375 unit tests).", language: "Python", stargazers_count: 1, html_url: "https://github.com/turbo998/agentic-commerce-lab", homepage: "https://turbo998.github.io/workshops/agentic-commerce/live-demo.html", updated_at: "2026-11-25" },
     { name: "Agentic-Commerce-on-Azure", description: "Enterprise retail & cross-border commerce agent blueprint on Azure with Web IQ grounding, payment rail selection guards, and AP2 circuit breakers.", language: "Python", stargazers_count: 1, html_url: "https://turbo998.github.io/workshops/agentic-commerce/benchmark-cards.html", updated_at: "2026-11-08" },
     { name: "azure-sa-skills", description: "Azure Solution Architect daily engineering skill library for GitHub Copilot CLI and Hermes Agent.", language: "Python", stargazers_count: 1, html_url: "https://github.com/turbo998/azure-sa-skills", updated_at: "2026-10-02" },
     { name: "hermes-on-azure", description: "Hermes Agent enterprise deployment workshop on Azure with GitHub Copilot provider.", language: "Bicep", stargazers_count: 0, html_url: "https://github.com/turbo998/hermes-on-azure", updated_at: "2026-08-15" },
