@@ -9473,6 +9473,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r795File),'utf8');
       assert.ok(txt.includes('4,710.00')&&txt.includes('4,550.00')&&txt.includes('9,260.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,950.00')&&txt.includes('96.65%')&&txt.includes('not_measured'),r795File+': contains exact 11-24 R8 R795 filament+hexagon+ragtune+dshworkflowcanvas closed-form parameters');
     }
+    // 2026-11-24 Night Round 9 (R796: Graphify-Labs/graphify + headroomlabs-ai/headroom + mksglu/context-mode + trailhq/Trail-Code) verification
+    const r796PathA=4890.00+46.0*100.00;
+    assert.equal(r796PathA.toFixed(2),'9490.00','11-24 R9 R796 Path A total');
+    const r796PathC=70.00+2.4*100.00;
+    assert.equal(r796PathC.toFixed(2),'310.00','11-24 R9 R796 Path C total');
+    assert.equal((r796PathA-r796PathC).toFixed(2),'9180.00','11-24 R9 R796 savings vs Path A');
+    assert.equal(((r796PathA-r796PathC)/r796PathA*100).toFixed(2),'96.73','11-24 R9 R796 pct savings vs Path A');
+    for(const r796File of ['workshops/github-trending-radar/docs/graphify-headroom-context-mode-trail-code-selection-faq.md','workshops/github-trending-radar/docs/graphify-headroom-context-mode-trail-code-selection-faq.en.md','assets/github-ai-radar-2026-11-24-r9-r796-graphify-headroom-contextmode-trailcode.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-24-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r796File),'utf8');
+      assert.ok(txt.includes('4,890.00')&&txt.includes('4,600.00')&&txt.includes('9,490.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('9,180.00')&&txt.includes('96.73%')&&txt.includes('not_measured'),r796File+': contains exact 11-24 R9 R796 graphify+headroom+contextmode+trailcode closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
