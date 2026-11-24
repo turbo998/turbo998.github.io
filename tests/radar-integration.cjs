@@ -9957,6 +9957,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r839File),'utf8');
       assert.ok(txt.includes('4,620.00')&&txt.includes('4,500.00')&&txt.includes('9,120.00')&&txt.includes('60.00')&&txt.includes('240.00')&&txt.includes('300.00')&&txt.includes('8,820.00')&&txt.includes('96.71%')&&txt.includes('not_measured'),r839File+': contains exact 11-24 R52 R839 hacking+antigravity+kalem+paperskills closed-form parameters');
     }
+    // 2026-11-24 Night Round 53 (R840 Milestone: liujh0729-jpg/AI-enterprise-OEM + Mira-AI-Tools/mira-skill + luispablovillasenor-afk/shorts-animados-claude + GuBarone/ats-resume-ai-skill) verification
+    const r840PathA=4840.00+45.5*100.00;
+    assert.equal(r840PathA.toFixed(2),'9390.00','11-24 R53 R840 Path A total');
+    const r840PathC=65.00+2.4*100.00;
+    assert.equal(r840PathC.toFixed(2),'305.00','11-24 R53 R840 Path C total');
+    assert.equal((r840PathA-r840PathC).toFixed(2),'9085.00','11-24 R53 R840 savings vs Path A');
+    assert.equal(((r840PathA-r840PathC)/r840PathA*100).toFixed(2),'96.75','11-24 R53 R840 pct savings vs Path A');
+    for(const r840File of ['workshops/github-trending-radar/docs/oem-mira-shorts-ats-selection-faq.md','workshops/github-trending-radar/docs/oem-mira-shorts-ats-selection-faq.en.md','assets/github-ai-radar-2026-11-24-r53-r840-oem-mira-shorts-ats.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-24-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r840File),'utf8');
+      assert.ok(txt.includes('4,840.00')&&txt.includes('4,550.00')&&txt.includes('9,390.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('9,085.00')&&txt.includes('96.75%')&&txt.includes('not_measured'),r840File+': contains exact 11-24 R53 R840 oem+mira+shorts+ats closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
