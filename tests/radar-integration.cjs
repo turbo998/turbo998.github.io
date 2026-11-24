@@ -9381,7 +9381,453 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r787File),'utf8');
       assert.ok(txt.includes('4,540.00')&&txt.includes('4,500.00')&&txt.includes('9,040.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('8,735.00')&&txt.includes('96.63%')&&txt.includes('not_measured'),r787File+': contains exact 11-22 R51 R787 moodlemcp+rumarketplace+otodock+remindai closed-form parameters');
     }
-    // 2026-11-24 Sweep & Night Round 1 (R788: erkamyaman/safe-anything + deterministic-machines/deslop-please + Developing-Gamer/agent-sim + lukendeasy/open-diagram) verification
+    
+    {
+// 2026-11-23 Raw Evidence & Night Round 1 (R788: erkamyaman/safe-anything + lukendeasy/open-diagram + heep-ai/restaurant-ai-skills + tarqmamdouh/agent-theater) verification
+    const rawHtml1123=fs.readFileSync(path.join(__dirname,'..','workshops','github-trending-radar','evidence','trending-daily-2026-11-23-raw.html'),'utf8').replace(/\r\n/g,'\n');
+    assert.equal(hash(rawHtml1123),'0c622d274f1f2f17f88a3bff72f619988551ff3b1a604d4c317492ab073571d5','2026-11-23 raw HTML LF sha256');
+    const rawSearch1123=fs.readFileSync(path.join(__dirname,'..','workshops','github-trending-radar','evidence','search-new-repos-2026-11-23-raw.json'),'utf8').replace(/\r\n/g,'\n');
+    assert.equal(hash(rawSearch1123),'6b41965c8c7c7c8cdb028a105fb9770eccf283dff4b5214b8434a405eef4c2ad','2026-11-23 raw Search API JSON LF sha256');
+    const r788PathA=4350.00+45.0*100.00;
+    assert.equal(r788PathA.toFixed(2),'8850.00','11-23 R1 R788 Path A total');
+    const r788PathC=65.00+2.4*100.00;
+    assert.equal(r788PathC.toFixed(2),'305.00','11-23 R1 R788 Path C total');
+    assert.equal((r788PathA-r788PathC).toFixed(2),'8545.00','11-23 R1 R788 savings vs Path A');
+    assert.equal(((r788PathA-r788PathC)/r788PathA*100).toFixed(2),'96.55','11-23 R1 R788 pct savings vs Path A');
+    for(const r788File of ['workshops/github-trending-radar/docs/safe-anything-open-diagram-restaurant-ai-skills-agent-theater-selection-faq.md','workshops/github-trending-radar/docs/safe-anything-open-diagram-restaurant-ai-skills-agent-theater-selection-faq.en.md','assets/github-ai-radar-2026-11-23-r1-r788-safeanything-opendiagram-restaurantskills-agenttheater.svg','assets/github-ai-radar-2026-11-23.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-23-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r788File),'utf8');
+      assert.ok(txt.includes('4,350.00')&&txt.includes('4,500.00')&&txt.includes('8,850.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('8,545.00')&&txt.includes('96.55%')&&txt.includes('not_measured'),r788File+': contains exact 11-23 R1 R788 safeanything+opendiagram+restaurantskills+agenttheater closed-form parameters');
+    }
+    // 2026-11-23 Night Round 2 (R789: perplexityai/SPACE + openai/mcp-extensions + anthropics/single-agent-loop-kit + awslabs/ai-eval-studio) verification
+    const r789PathA=4720.00+46.0*100.00;
+    assert.equal(r789PathA.toFixed(2),'9320.00','11-23 R2 R789 Path A total');
+    const r789PathC=75.00+2.4*100.00;
+    assert.equal(r789PathC.toFixed(2),'315.00','11-23 R2 R789 Path C total');
+    assert.equal((r789PathA-r789PathC).toFixed(2),'9005.00','11-23 R2 R789 savings vs Path A');
+    assert.equal(((r789PathA-r789PathC)/r789PathA*100).toFixed(2),'96.62','11-23 R2 R789 pct savings vs Path A');
+    for(const r789File of ['workshops/github-trending-radar/docs/space-mcp-extensions-single-agent-loop-ai-eval-studio-selection-faq.md','workshops/github-trending-radar/docs/space-mcp-extensions-single-agent-loop-ai-eval-studio-selection-faq.en.md','assets/github-ai-radar-2026-11-23-r2-r789-space-mcpextensions-singleagentloop-aievalstudio.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-23-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r789File),'utf8');
+      assert.ok(txt.includes('4,720.00')&&txt.includes('4,600.00')&&txt.includes('9,320.00')&&txt.includes('75.00')&&txt.includes('240.00')&&txt.includes('315.00')&&txt.includes('9,005.00')&&txt.includes('96.62%')&&txt.includes('not_measured'),r789File+': contains exact 11-23 R2 R789 space+mcpextensions+singleagentloop+aievalstudio closed-form parameters');
+    }
+    // 2026-11-23 Night Round 3 (R790 Milestone: Cygnux-Labs/Tracekit + solongate/agent-security + jmanico/grim-prompter + kingdee/lingee-bench) verification
+    const r790PathA=4850.00+46.5*100.00;
+    assert.equal(r790PathA.toFixed(2),'9500.00','11-23 R3 R790 Path A total');
+    const r790PathC=70.00+2.4*100.00;
+    assert.equal(r790PathC.toFixed(2),'310.00','11-23 R3 R790 Path C total');
+    assert.equal((r790PathA-r790PathC).toFixed(2),'9190.00','11-23 R3 R790 savings vs Path A');
+    assert.equal(((r790PathA-r790PathC)/r790PathA*100).toFixed(2),'96.74','11-23 R3 R790 pct savings vs Path A');
+    for(const r790File of ['workshops/github-trending-radar/docs/tracekit-solongate-grim-prompter-lingee-bench-selection-faq.md','workshops/github-trending-radar/docs/tracekit-solongate-grim-prompter-lingee-bench-selection-faq.en.md','assets/github-ai-radar-2026-11-23-r3-r790-tracekit-solongate-grimprompter-lingeebench.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-23-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r790File),'utf8');
+      assert.ok(txt.includes('4,850.00')&&txt.includes('4,650.00')&&txt.includes('9,500.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('9,190.00')&&txt.includes('96.74%')&&txt.includes('not_measured'),r790File+': contains exact 11-23 R3 R790 tracekit+solongate+grimprompter+lingeebench closed-form parameters');
+    }
+    // 2026-11-23 Night Round 4 (R791: XinaTian/MROffice + IPedrax/BIMCraft + UCS-Care-Group/mailcraft + context-dot-dev/enrichable) verification
+    const r791PathA=4950.00+47.0*100.00;
+    assert.equal(r791PathA.toFixed(2),'9650.00','11-23 R4 R791 Path A total');
+    const r791PathC=75.00+2.4*100.00;
+    assert.equal(r791PathC.toFixed(2),'315.00','11-23 R4 R791 Path C total');
+    assert.equal((r791PathA-r791PathC).toFixed(2),'9335.00','11-23 R4 R791 savings vs Path A');
+    assert.equal(((r791PathA-r791PathC)/r791PathA*100).toFixed(2),'96.74','11-23 R4 R791 pct savings vs Path A');
+    for(const r791File of ['workshops/github-trending-radar/docs/mroffice-bimcraft-mailcraft-enrichable-selection-faq.md','workshops/github-trending-radar/docs/mroffice-bimcraft-mailcraft-enrichable-selection-faq.en.md','assets/github-ai-radar-2026-11-23-r4-r791-mroffice-bimcraft-mailcraft-enrichable.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-23-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r791File),'utf8');
+      assert.ok(txt.includes('4,950.00')&&txt.includes('4,700.00')&&txt.includes('9,650.00')&&txt.includes('75.00')&&txt.includes('240.00')&&txt.includes('315.00')&&txt.includes('9,335.00')&&txt.includes('96.74%')&&txt.includes('not_measured'),r791File+': contains exact 11-23 R4 R791 mroffice+bimcraft+mailcraft+enrichable closed-form parameters');
+    }
+    // 2026-11-23 Night Round 5 (R792: NousResearch/hermes-official-plugins + SakanaAI/AI-Scientist-v3 + Tongyi-MAI/OpenGCUA + awslabs/uaef) verification
+    const r792PathA=4880.00+46.5*100.00;
+    assert.equal(r792PathA.toFixed(2),'9530.00','11-23 R5 R792 Path A total');
+    const r792PathC=75.00+2.4*100.00;
+    assert.equal(r792PathC.toFixed(2),'315.00','11-23 R5 R792 Path C total');
+    assert.equal((r792PathA-r792PathC).toFixed(2),'9215.00','11-23 R5 R792 savings vs Path A');
+    assert.equal(((r792PathA-r792PathC)/r792PathA*100).toFixed(2),'96.69','11-23 R5 R792 pct savings vs Path A');
+    for(const r792File of ['workshops/github-trending-radar/docs/hermes-plugins-ai-scientist-v3-opengcua-aws-uaef-selection-faq.md','workshops/github-trending-radar/docs/hermes-plugins-ai-scientist-v3-opengcua-aws-uaef-selection-faq.en.md','assets/github-ai-radar-2026-11-23-r5-r792-hermesplugins-aiscientistv3-opengcua-awsuaef.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-23-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r792File),'utf8');
+      assert.ok(txt.includes('4,880.00')&&txt.includes('4,650.00')&&txt.includes('9,530.00')&&txt.includes('75.00')&&txt.includes('240.00')&&txt.includes('315.00')&&txt.includes('9,215.00')&&txt.includes('96.69%')&&txt.includes('not_measured'),r792File+': contains exact 11-23 R5 R792 hermesplugins+aiscientistv3+opengcua+awsuaef closed-form parameters');
+    }
+    // 2026-11-23 Night Round 6 (R793: elstongun/leviathan + pgrundev/pgboxdb + hydra-db/selfgraph + bgts-ai-org/bgts-context-engine) verification
+    const r793PathA=4780.00+46.0*100.00;
+    assert.equal(r793PathA.toFixed(2),'9380.00','11-23 R6 R793 Path A total');
+    const r793PathC=70.00+2.4*100.00;
+    assert.equal(r793PathC.toFixed(2),'310.00','11-23 R6 R793 Path C total');
+    assert.equal((r793PathA-r793PathC).toFixed(2),'9070.00','11-23 R6 R793 savings vs Path A');
+    assert.equal(((r793PathA-r793PathC)/r793PathA*100).toFixed(2),'96.70','11-23 R6 R793 pct savings vs Path A');
+    for(const r793File of ['workshops/github-trending-radar/docs/leviathan-pgboxdb-selfgraph-bgts-context-engine-selection-faq.md','workshops/github-trending-radar/docs/leviathan-pgboxdb-selfgraph-bgts-context-engine-selection-faq.en.md','assets/github-ai-radar-2026-11-23-r6-r793-leviathan-pgboxdb-selfgraph-bgtscontext.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-23-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r793File),'utf8');
+      assert.ok(txt.includes('4,780.00')&&txt.includes('4,600.00')&&txt.includes('9,380.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('9,070.00')&&txt.includes('96.70%')&&txt.includes('not_measured'),r793File+': contains exact 11-23 R6 R793 leviathan+pgboxdb+selfgraph+bgtscontext closed-form parameters');
+    }
+    // 2026-11-23 Night Round 7 (R794: Innei/ryugi + felipebasurto/unslop-ui + ngocanhnckh/renderlint + ShuaiMXu/happyhands) verification
+    const r794PathA=4520.00+45.0*100.00;
+    assert.equal(r794PathA.toFixed(2),'9020.00','11-23 R7 R794 Path A total');
+    const r794PathC=65.00+2.4*100.00;
+    assert.equal(r794PathC.toFixed(2),'305.00','11-23 R7 R794 Path C total');
+    assert.equal((r794PathA-r794PathC).toFixed(2),'8715.00','11-23 R7 R794 savings vs Path A');
+    assert.equal(((r794PathA-r794PathC)/r794PathA*100).toFixed(2),'96.62','11-23 R7 R794 pct savings vs Path A');
+    for(const r794File of ['workshops/github-trending-radar/docs/ryugi-unslop-ui-renderlint-happyhands-selection-faq.md','workshops/github-trending-radar/docs/ryugi-unslop-ui-renderlint-happyhands-selection-faq.en.md','assets/github-ai-radar-2026-11-23-r7-r794-ryugi-unslopui-renderlint-happyhands.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-23-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r794File),'utf8');
+      assert.ok(txt.includes('4,520.00')&&txt.includes('4,500.00')&&txt.includes('9,020.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('8,715.00')&&txt.includes('96.62%')&&txt.includes('not_measured'),r794File+': contains exact 11-23 R7 R794 ryugi+unslopui+renderlint+happyhands closed-form parameters');
+    }
+    // 2026-11-23 Night Round 8 (R795 Milestone: chipfighter/context-attachment-manager + erensrtky/cogit + kyy-logs/code-review-gate-skill + gauge-sh/gauge-cli) verification
+    const r795PathA=4680.00+45.5*100.00;
+    assert.equal(r795PathA.toFixed(2),'9230.00','11-23 R8 R795 Path A total');
+    const r795PathC=65.00+2.4*100.00;
+    assert.equal(r795PathC.toFixed(2),'305.00','11-23 R8 R795 Path C total');
+    assert.equal((r795PathA-r795PathC).toFixed(2),'8925.00','11-23 R8 R795 savings vs Path A');
+    assert.equal(((r795PathA-r795PathC)/r795PathA*100).toFixed(2),'96.70','11-23 R8 R795 pct savings vs Path A');
+    for(const r795File of ['workshops/github-trending-radar/docs/context-attachment-manager-cogit-code-review-gate-gauge-cli-selection-faq.md','workshops/github-trending-radar/docs/context-attachment-manager-cogit-code-review-gate-gauge-cli-selection-faq.en.md','assets/github-ai-radar-2026-11-23-r8-r795-contextattachment-cogit-codereviewgate-gaugecli.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-23-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r795File),'utf8');
+      assert.ok(txt.includes('4,680.00')&&txt.includes('4,550.00')&&txt.includes('9,230.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('8,925.00')&&txt.includes('96.70%')&&txt.includes('not_measured'),r795File+': contains exact 11-23 R8 R795 contextattachment+cogit+codereviewgate+gaugecli closed-form parameters');
+    }
+    // 2026-11-23 Night Round 9 (R796: ai-timon/timon + y5ez3g/facadecode + ck-ys/SmartDock + emma-sue/AegisOps) verification
+    const r796PathA=4920.00+46.5*100.00;
+    assert.equal(r796PathA.toFixed(2),'9570.00','11-23 R9 R796 Path A total');
+    const r796PathC=75.00+2.4*100.00;
+    assert.equal(r796PathC.toFixed(2),'315.00','11-23 R9 R796 Path C total');
+    assert.equal((r796PathA-r796PathC).toFixed(2),'9255.00','11-23 R9 R796 savings vs Path A');
+    assert.equal(((r796PathA-r796PathC)/r796PathA*100).toFixed(2),'96.71','11-23 R9 R796 pct savings vs Path A');
+    for(const r796File of ['workshops/github-trending-radar/docs/timon-facadecode-smartdock-aegisops-selection-faq.md','workshops/github-trending-radar/docs/timon-facadecode-smartdock-aegisops-selection-faq.en.md','assets/github-ai-radar-2026-11-23-r9-r796-timon-facadecode-smartdock-aegisops.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-23-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r796File),'utf8');
+      assert.ok(txt.includes('4,920.00')&&txt.includes('4,650.00')&&txt.includes('9,570.00')&&txt.includes('75.00')&&txt.includes('240.00')&&txt.includes('315.00')&&txt.includes('9,255.00')&&txt.includes('96.71%')&&txt.includes('not_measured'),r796File+': contains exact 11-23 R9 R796 timon+facadecode+smartdock+aegisops closed-form parameters');
+    }
+    // 2026-11-23 Night Round 10 (R797: ThinkWatchProject/ThinkWatch-Lite + Calcium-Ion/AstrLink + CassiopeiaCode/CosyRedactGateway + Tuskira/ai-agent-gateway) verification
+    const r797PathA=4820.00+46.0*100.00;
+    assert.equal(r797PathA.toFixed(2),'9420.00','11-23 R10 R797 Path A total');
+    const r797PathC=70.00+2.4*100.00;
+    assert.equal(r797PathC.toFixed(2),'310.00','11-23 R10 R797 Path C total');
+    assert.equal((r797PathA-r797PathC).toFixed(2),'9110.00','11-23 R10 R797 savings vs Path A');
+    assert.equal(((r797PathA-r797PathC)/r797PathA*100).toFixed(2),'96.71','11-23 R10 R797 pct savings vs Path A');
+    for(const r797File of ['workshops/github-trending-radar/docs/thinkwatch-lite-astrlink-cosy-redact-tuskira-gateway-selection-faq.md','workshops/github-trending-radar/docs/thinkwatch-lite-astrlink-cosy-redact-tuskira-gateway-selection-faq.en.md','assets/github-ai-radar-2026-11-23-r10-r797-thinkwatchlite-astrlink-cosyredact-tuskiragateway.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-23-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r797File),'utf8');
+      assert.ok(txt.includes('4,820.00')&&txt.includes('4,600.00')&&txt.includes('9,420.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('9,110.00')&&txt.includes('96.71%')&&txt.includes('not_measured'),r797File+': contains exact 11-23 R10 R797 thinkwatchlite+astrlink+cosyredact+tuskiragateway closed-form parameters');
+    }
+    // 2026-11-23 Night Round 11 (R798: jkudish/jev-mcp + openlayer-ai/jevals + VectifyAI/jev-doc-search + hotchpotch/jev-reranker) verification
+    const r798PathA=4750.00+45.5*100.00;
+    assert.equal(r798PathA.toFixed(2),'9300.00','11-23 R11 R798 Path A total');
+    const r798PathC=65.00+2.4*100.00;
+    assert.equal(r798PathC.toFixed(2),'305.00','11-23 R11 R798 Path C total');
+    assert.equal((r798PathA-r798PathC).toFixed(2),'8995.00','11-23 R11 R798 savings vs Path A');
+    assert.equal(((r798PathA-r798PathC)/r798PathA*100).toFixed(2),'96.72','11-23 R11 R798 pct savings vs Path A');
+    for(const r798File of ['workshops/github-trending-radar/docs/jev-mcp-jevals-jev-doc-search-jev-reranker-selection-faq.md','workshops/github-trending-radar/docs/jev-mcp-jevals-jev-doc-search-jev-reranker-selection-faq.en.md','assets/github-ai-radar-2026-11-23-r11-r798-jevmcp-jevals-jevdocsearch-jevreranker.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-23-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r798File),'utf8');
+      assert.ok(txt.includes('4,750.00')&&txt.includes('4,550.00')&&txt.includes('9,300.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('8,995.00')&&txt.includes('96.72%')&&txt.includes('not_measured'),r798File+': contains exact 11-23 R11 R798 jevmcp+jevals+jevdocsearch+jevreranker closed-form parameters');
+    }
+    // 2026-11-23 Night Round 12 (R799: rociiu/talorys + TannerMidd/pi-pocket + Pranjal2041/swarmchat + kaelorlabs/smitline) verification
+    const r799PathA=4640.00+45.0*100.00;
+    assert.equal(r799PathA.toFixed(2),'9140.00','11-23 R12 R799 Path A total');
+    const r799PathC=65.00+2.4*100.00;
+    assert.equal(r799PathC.toFixed(2),'305.00','11-23 R12 R799 Path C total');
+    assert.equal((r799PathA-r799PathC).toFixed(2),'8835.00','11-23 R12 R799 savings vs Path A');
+    assert.equal(((r799PathA-r799PathC)/r799PathA*100).toFixed(2),'96.66','11-23 R12 R799 pct savings vs Path A');
+    for(const r799File of ['workshops/github-trending-radar/docs/talorys-pi-pocket-swarmchat-smitline-selection-faq.md','workshops/github-trending-radar/docs/talorys-pi-pocket-swarmchat-smitline-selection-faq.en.md','assets/github-ai-radar-2026-11-23-r12-r799-talorys-pipocket-swarmchat-smitline.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-23-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r799File),'utf8');
+      assert.ok(txt.includes('4,640.00')&&txt.includes('4,500.00')&&txt.includes('9,140.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('8,835.00')&&txt.includes('96.66%')&&txt.includes('not_measured'),r799File+': contains exact 11-23 R12 R799 talorys+pipocket+swarmchat+smitline closed-form parameters');
+    }
+    // 2026-11-23 Night Round 13 (R800 Historic Milestone: ashishsinha1602/schemagate + TencentCloud/octop-gateway + langchain-ai/paid-media-agent + Router0824/OpsPilot-AI) verification
+    const r800PathA=4980.00+47.0*100.00;
+    assert.equal(r800PathA.toFixed(2),'9680.00','11-23 R13 R800 Path A total');
+    const r800PathC=70.00+2.4*100.00;
+    assert.equal(r800PathC.toFixed(2),'310.00','11-23 R13 R800 Path C total');
+    assert.equal((r800PathA-r800PathC).toFixed(2),'9370.00','11-23 R13 R800 savings vs Path A');
+    assert.equal(((r800PathA-r800PathC)/r800PathA*100).toFixed(2),'96.80','11-23 R13 R800 pct savings vs Path A');
+    for(const r800File of ['workshops/github-trending-radar/docs/schemagate-octop-gateway-paid-media-agent-opspilot-ai-selection-faq.md','workshops/github-trending-radar/docs/schemagate-octop-gateway-paid-media-agent-opspilot-ai-selection-faq.en.md','assets/github-ai-radar-2026-11-23-r13-r800-schemagate-octopgateway-paidmediaagent-opspilotai.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-23-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r800File),'utf8');
+      assert.ok(txt.includes('4,980.00')&&txt.includes('4,700.00')&&txt.includes('9,680.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('9,370.00')&&txt.includes('96.80%')&&txt.includes('not_measured'),r800File+': contains exact 11-23 R13 R800 schemagate+octopgateway+paidmediaagent+opspilotai closed-form parameters');
+    }
+    // 2026-11-23 Night Round 14 (R801: Nimbleway/webrouter + opensec-git/Pi-Bolt + C4rohan/Lampline + Hybirdss/Hycli) verification
+    const r801PathA=4850.00+46.0*100.00;
+    assert.equal(r801PathA.toFixed(2),'9450.00','11-23 R14 R801 Path A total');
+    const r801PathC=65.00+2.4*100.00;
+    assert.equal(r801PathC.toFixed(2),'305.00','11-23 R14 R801 Path C total');
+    assert.equal((r801PathA-r801PathC).toFixed(2),'9145.00','11-23 R14 R801 savings vs Path A');
+    assert.equal(((r801PathA-r801PathC)/r801PathA*100).toFixed(2),'96.77','11-23 R14 R801 pct savings vs Path A');
+    for(const r801File of ['workshops/github-trending-radar/docs/webrouter-pi-bolt-lampline-hycli-selection-faq.md','workshops/github-trending-radar/docs/webrouter-pi-bolt-lampline-hycli-selection-faq.en.md','assets/github-ai-radar-2026-11-23-r14-r801-webrouter-pibolt-lampline-hycli.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-23-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r801File),'utf8');
+      assert.ok(txt.includes('4,850.00')&&txt.includes('4,600.00')&&txt.includes('9,450.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('9,145.00')&&txt.includes('96.77%')&&txt.includes('not_measured'),r801File+': contains exact 11-23 R14 R801 webrouter+pibolt+lampline+hycli closed-form parameters');
+    }
+    // 2026-11-23 Night Round 15 (R802: browser-use/browser-use-pi + parthh01/sphinx + chekusu/yobiru + starlinghq/starling) verification
+    const r802PathA=4720.00+45.0*100.00;
+    assert.equal(r802PathA.toFixed(2),'9220.00','11-23 R15 R802 Path A total');
+    const r802PathC=65.00+2.4*100.00;
+    assert.equal(r802PathC.toFixed(2),'305.00','11-23 R15 R802 Path C total');
+    assert.equal((r802PathA-r802PathC).toFixed(2),'8915.00','11-23 R15 R802 savings vs Path A');
+    assert.equal(((r802PathA-r802PathC)/r802PathA*100).toFixed(2),'96.69','11-23 R15 R802 pct savings vs Path A');
+    for(const r802File of ['workshops/github-trending-radar/docs/browser-use-pi-sphinx-yobiru-starling-selection-faq.md','workshops/github-trending-radar/docs/browser-use-pi-sphinx-yobiru-starling-selection-faq.en.md','assets/github-ai-radar-2026-11-23-r15-r802-browserusepi-sphinx-yobiru-starling.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-23-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r802File),'utf8');
+      assert.ok(txt.includes('4,720.00')&&txt.includes('4,500.00')&&txt.includes('9,220.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('8,915.00')&&txt.includes('96.69%')&&txt.includes('not_measured'),r802File+': contains exact 11-23 R15 R802 browserusepi+sphinx+yobiru+starling closed-form parameters');
+    }
+    // 2026-11-23 Night Round 16 (R803: weike-zhang/architecture-canvas + guruvaidev/avaloka + Xuanwo/agenvo + SupportPages-io/wtfm) verification
+    const r803PathA=4810.00+46.0*100.00;
+    assert.equal(r803PathA.toFixed(2),'9410.00','11-23 R16 R803 Path A total');
+    const r803PathC=65.00+2.4*100.00;
+    assert.equal(r803PathC.toFixed(2),'305.00','11-23 R16 R803 Path C total');
+    assert.equal((r803PathA-r803PathC).toFixed(2),'9105.00','11-23 R16 R803 savings vs Path A');
+    assert.equal(((r803PathA-r803PathC)/r803PathA*100).toFixed(2),'96.76','11-23 R16 R803 pct savings vs Path A');
+    for(const r803File of ['workshops/github-trending-radar/docs/architecture-canvas-avaloka-agenvo-wtfm-selection-faq.md','workshops/github-trending-radar/docs/architecture-canvas-avaloka-agenvo-wtfm-selection-faq.en.md','assets/github-ai-radar-2026-11-23-r16-r803-archcanvas-avaloka-agenvo-wtfm.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-23-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r803File),'utf8');
+      assert.ok(txt.includes('4,810.00')&&txt.includes('4,600.00')&&txt.includes('9,410.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('9,105.00')&&txt.includes('96.76%')&&txt.includes('not_measured'),r803File+': contains exact 11-23 R16 R803 archcanvas+avaloka+agenvo+wtfm closed-form parameters');
+    }
+    // 2026-11-23 Night Round 17 (R804: unitedrhino/docling + zeronezer/bidcraft + rasonyang/cascade-realtime-gateway + xtong629/trellis-agent) verification
+    const r804PathA=4910.00+46.0*100.00;
+    assert.equal(r804PathA.toFixed(2),'9510.00','11-23 R17 R804 Path A total');
+    const r804PathC=65.00+2.4*100.00;
+    assert.equal(r804PathC.toFixed(2),'305.00','11-23 R17 R804 Path C total');
+    assert.equal((r804PathA-r804PathC).toFixed(2),'9205.00','11-23 R17 R804 savings vs Path A');
+    assert.equal(((r804PathA-r804PathC)/r804PathA*100).toFixed(2),'96.79','11-23 R17 R804 pct savings vs Path A');
+    for(const r804File of ['workshops/github-trending-radar/docs/go-docling-bidcraft-cascade-realtime-trellis-agent-selection-faq.md','workshops/github-trending-radar/docs/go-docling-bidcraft-cascade-realtime-trellis-agent-selection-faq.en.md','assets/github-ai-radar-2026-11-23-r17-r804-godocling-bidcraft-cascaderealtime-trellisagent.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-23-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r804File),'utf8');
+      assert.ok(txt.includes('4,910.00')&&txt.includes('4,600.00')&&txt.includes('9,510.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('9,205.00')&&txt.includes('96.79%')&&txt.includes('not_measured'),r804File+': contains exact 11-23 R17 R804 godocling+bidcraft+cascaderealtime+trellisagent closed-form parameters');
+    }
+    // 2026-11-23 Night Round 18 (R805 Milestone: DorianChn/shanchuanzhi-agent-canary + vitosans/rail + dreamers-laboratory/ai-evaluation-framework + donvito/local-evals) verification
+    const r805PathA=4760.00+45.0*100.00;
+    assert.equal(r805PathA.toFixed(2),'9260.00','11-23 R18 R805 Path A total');
+    const r805PathC=65.00+2.4*100.00;
+    assert.equal(r805PathC.toFixed(2),'305.00','11-23 R18 R805 Path C total');
+    assert.equal((r805PathA-r805PathC).toFixed(2),'8955.00','11-23 R18 R805 savings vs Path A');
+    assert.equal(((r805PathA-r805PathC)/r805PathA*100).toFixed(2),'96.71','11-23 R18 R805 pct savings vs Path A');
+    for(const r805File of ['workshops/github-trending-radar/docs/agent-canary-rail-ai-eval-framework-local-evals-selection-faq.md','workshops/github-trending-radar/docs/agent-canary-rail-ai-eval-framework-local-evals-selection-faq.en.md','assets/github-ai-radar-2026-11-23-r18-r805-agentcanary-rail-aievalframework-localevals.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-23-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r805File),'utf8');
+      assert.ok(txt.includes('4,760.00')&&txt.includes('4,500.00')&&txt.includes('9,260.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('8,955.00')&&txt.includes('96.71%')&&txt.includes('not_measured'),r805File+': contains exact 11-23 R18 R805 agentcanary+rail+aievalframework+localevals closed-form parameters');
+    }
+    // 2026-11-23 Night Round 19 (R806: nuglifeleoji/Sentry + herdrdev/herdr-core + MiniMax-AI/mcode-stack + ythx-101/live-panel-skill) verification
+    const r806PathA=4890.00+46.0*100.00;
+    assert.equal(r806PathA.toFixed(2),'9490.00','11-23 R19 R806 Path A total');
+    const r806PathC=65.00+2.4*100.00;
+    assert.equal(r806PathC.toFixed(2),'305.00','11-23 R19 R806 Path C total');
+    assert.equal((r806PathA-r806PathC).toFixed(2),'9185.00','11-23 R19 R806 savings vs Path A');
+    assert.equal(((r806PathA-r806PathC)/r806PathA*100).toFixed(2),'96.79','11-23 R19 R806 pct savings vs Path A');
+    for(const r806File of ['workshops/github-trending-radar/docs/sentry-herdr-core-mcode-stack-live-panel-selection-faq.md','workshops/github-trending-radar/docs/sentry-herdr-core-mcode-stack-live-panel-selection-faq.en.md','assets/github-ai-radar-2026-11-23-r19-r806-sentry-herdrcore-livepanel-mcodestack.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-23-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r806File),'utf8');
+      assert.ok(txt.includes('4,890.00')&&txt.includes('4,600.00')&&txt.includes('9,490.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('9,185.00')&&txt.includes('96.79%')&&txt.includes('not_measured'),r806File+': contains exact 11-23 R19 R806 sentry+herdrcore+mcodestack+livepanel closed-form parameters');
+    }
+    // 2026-11-23 Night Round 20 (R807: jddevtime/open-lakehouse-compute-fabric + Zaneris/passenger + uclanlp/OpenVLHarness + Danielxu0208/rsi_eval) verification
+    const r807PathA=4960.00+47.0*100.00;
+    assert.equal(r807PathA.toFixed(2),'9660.00','11-23 R20 R807 Path A total');
+    const r807PathC=70.00+2.4*100.00;
+    assert.equal(r807PathC.toFixed(2),'310.00','11-23 R20 R807 Path C total');
+    assert.equal((r807PathA-r807PathC).toFixed(2),'9350.00','11-23 R20 R807 savings vs Path A');
+    assert.equal(((r807PathA-r807PathC)/r807PathA*100).toFixed(2),'96.79','11-23 R20 R807 pct savings vs Path A');
+    for(const r807File of ['workshops/github-trending-radar/docs/olcf-passenger-openvlharness-rsi-eval-selection-faq.md','workshops/github-trending-radar/docs/olcf-passenger-openvlharness-rsi-eval-selection-faq.en.md','assets/github-ai-radar-2026-11-23-r20-r807-olcf-passenger-openvlharness-rsieval.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-23-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r807File),'utf8');
+      assert.ok(txt.includes('4,960.00')&&txt.includes('4,700.00')&&txt.includes('9,660.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('9,350.00')&&txt.includes('96.79%')&&txt.includes('not_measured'),r807File+': contains exact 11-23 R20 R807 olcf+passenger+openvlharness+rsieval closed-form parameters');
+    }
+    // 2026-11-23 Night Round 21 (R808: jackwener/BrowserMCP + RayenMlayeh/jevcrawl + aru-labs/lossless-memory + Avinash-jetwani/jevmem) verification
+    const r808PathA=4830.00+45.0*100.00;
+    assert.equal(r808PathA.toFixed(2),'9330.00','11-23 R21 R808 Path A total');
+    const r808PathC=65.00+2.4*100.00;
+    assert.equal(r808PathC.toFixed(2),'305.00','11-23 R21 R808 Path C total');
+    assert.equal((r808PathA-r808PathC).toFixed(2),'9025.00','11-23 R21 R808 savings vs Path A');
+    assert.equal(((r808PathA-r808PathC)/r808PathA*100).toFixed(2),'96.73','11-23 R21 R808 pct savings vs Path A');
+    for(const r808File of ['workshops/github-trending-radar/docs/browsermcp-jevcrawl-lossless-memory-jevmem-selection-faq.md','workshops/github-trending-radar/docs/browsermcp-jevcrawl-lossless-memory-jevmem-selection-faq.en.md','assets/github-ai-radar-2026-11-23-r21-r808-browsermcp-jevcrawl-losslessmemory-jevmem.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-23-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r808File),'utf8');
+      assert.ok(txt.includes('4,830.00')&&txt.includes('4,500.00')&&txt.includes('9,330.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('9,025.00')&&txt.includes('96.73%')&&txt.includes('not_measured'),r808File+': contains exact 11-23 R21 R808 browsermcp+jevcrawl+losslessmemory+jevmem closed-form parameters');
+    }
+    // 2026-11-23 Night Round 22 (R809: EeroEternal/xlb + aws/aws-emulator-evaluation-suite + Zihao-Wu06/distillops + kenz1117/dsh-engram) verification
+    const r809PathA=4940.00+46.0*100.00;
+    assert.equal(r809PathA.toFixed(2),'9540.00','11-23 R22 R809 Path A total');
+    const r809PathC=65.00+2.4*100.00;
+    assert.equal(r809PathC.toFixed(2),'305.00','11-23 R22 R809 Path C total');
+    assert.equal((r809PathA-r809PathC).toFixed(2),'9235.00','11-23 R22 R809 savings vs Path A');
+    assert.equal(((r809PathA-r809PathC)/r809PathA*100).toFixed(2),'96.80','11-23 R22 R809 pct savings vs Path A');
+    for(const r809File of ['workshops/github-trending-radar/docs/xlb-aws-emulator-eval-distillops-dsh-engram-selection-faq.md','workshops/github-trending-radar/docs/xlb-aws-emulator-eval-distillops-dsh-engram-selection-faq.en.md','assets/github-ai-radar-2026-11-23-r22-r809-xlb-awsemulatoreval-distillops-dshengram.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-23-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r809File),'utf8');
+      assert.ok(txt.includes('4,940.00')&&txt.includes('4,600.00')&&txt.includes('9,540.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('9,235.00')&&txt.includes('96.80%')&&txt.includes('not_measured'),r809File+': contains exact 11-23 R22 R809 xlb+awsemulatoreval+distillops+dshengram closed-form parameters');
+    }
+    // 2026-11-23 Night Round 23 (R810 Milestone: songjianyang/xss-audit + ryuxdsgn/design-intelligence + AbdoslamB/InkDoc + davidalmeida90/glassbench) verification
+    const r810PathA=4870.00+46.0*100.00;
+    assert.equal(r810PathA.toFixed(2),'9470.00','11-23 R23 R810 Path A total');
+    const r810PathC=65.00+2.4*100.00;
+    assert.equal(r810PathC.toFixed(2),'305.00','11-23 R23 R810 Path C total');
+    assert.equal((r810PathA-r810PathC).toFixed(2),'9165.00','11-23 R23 R810 savings vs Path A');
+    assert.equal(((r810PathA-r810PathC)/r810PathA*100).toFixed(2),'96.78','11-23 R23 R810 pct savings vs Path A');
+    for(const r810File of ['workshops/github-trending-radar/docs/xss-audit-design-intelligence-inkdoc-glassbench-selection-faq.md','workshops/github-trending-radar/docs/xss-audit-design-intelligence-inkdoc-glassbench-selection-faq.en.md','assets/github-ai-radar-2026-11-23-r23-r810-xssaudit-designintelligence-inkdoc-glassbench.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-23-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r810File),'utf8');
+      assert.ok(txt.includes('4,870.00')&&txt.includes('4,600.00')&&txt.includes('9,470.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('9,165.00')&&txt.includes('96.78%')&&txt.includes('not_measured'),r810File+': contains exact 11-23 R23 R810 xssaudit+designintelligence+inkdoc+glassbench closed-form parameters');
+    }
+    // 2026-11-23 Night Round 24 (R811: Continuum-AI-Corp/Orca-AI-Incident-Archive + 398894496-arch/TDHarness + p10node/docflare-ai + Renaissance-Mind/ShowAI) verification
+    const r811PathA=4790.00+45.0*100.00;
+    assert.equal(r811PathA.toFixed(2),'9290.00','11-23 R24 R811 Path A total');
+    const r811PathC=60.00+2.4*100.00;
+    assert.equal(r811PathC.toFixed(2),'300.00','11-23 R24 R811 Path C total');
+    assert.equal((r811PathA-r811PathC).toFixed(2),'8990.00','11-23 R24 R811 savings vs Path A');
+    assert.equal(((r811PathA-r811PathC)/r811PathA*100).toFixed(2),'96.77','11-23 R24 R811 pct savings vs Path A');
+    for(const r811File of ['workshops/github-trending-radar/docs/orca-archive-tdharness-docflare-ai-showai-selection-faq.md','workshops/github-trending-radar/docs/orca-archive-tdharness-docflare-ai-showai-selection-faq.en.md','assets/github-ai-radar-2026-11-23-r24-r811-orcaarchive-tdharness-docflareai-showai.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-23-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r811File),'utf8');
+      assert.ok(txt.includes('4,790.00')&&txt.includes('4,500.00')&&txt.includes('9,290.00')&&txt.includes('60.00')&&txt.includes('240.00')&&txt.includes('300.00')&&txt.includes('8,990.00')&&txt.includes('96.77%')&&txt.includes('not_measured'),r811File+': contains exact 11-23 R24 R811 orcaarchive+tdharness+docflareai+showai closed-form parameters');
+    }
+    // 2026-11-23 Night Round 25 (R812: lawrence3699/jev-style + Ying-Kai-Liao/jev-browser + StarTrail-org/DRPixel + rtmandreyev/construct) verification
+    const r812PathA=4920.00+46.0*100.00;
+    assert.equal(r812PathA.toFixed(2),'9520.00','11-23 R25 R812 Path A total');
+    const r812PathC=65.00+2.4*100.00;
+    assert.equal(r812PathC.toFixed(2),'305.00','11-23 R25 R812 Path C total');
+    assert.equal((r812PathA-r812PathC).toFixed(2),'9215.00','11-23 R25 R812 savings vs Path A');
+    assert.equal(((r812PathA-r812PathC)/r812PathA*100).toFixed(2),'96.80','11-23 R25 R812 pct savings vs Path A');
+    for(const r812File of ['workshops/github-trending-radar/docs/jev-style-jev-browser-drpixel-construct-selection-faq.md','workshops/github-trending-radar/docs/jev-style-jev-browser-drpixel-construct-selection-faq.en.md','assets/github-ai-radar-2026-11-23-r25-r812-jevstyle-jevbrowser-drpixel-construct.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-23-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r812File),'utf8');
+      assert.ok(txt.includes('4,920.00')&&txt.includes('4,600.00')&&txt.includes('9,520.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('9,215.00')&&txt.includes('96.80%')&&txt.includes('not_measured'),r812File+': contains exact 11-23 R25 R812 jevstyle+jevbrowser+drpixel+construct closed-form parameters');
+    }
+    // 2026-11-23 Night Round 26 (R813: dualface/ste-zh + AgentMemoryRepo/agentmemoryrepo + Generated-Computers/Locals + HazAT/ultimate) verification
+    const r813PathA=4880.00+46.0*100.00;
+    assert.equal(r813PathA.toFixed(2),'9480.00','11-23 R26 R813 Path A total');
+    const r813PathC=65.00+2.4*100.00;
+    assert.equal(r813PathC.toFixed(2),'305.00','11-23 R26 R813 Path C total');
+    assert.equal((r813PathA-r813PathC).toFixed(2),'9175.00','11-23 R26 R813 savings vs Path A');
+    assert.equal(((r813PathA-r813PathC)/r813PathA*100).toFixed(2),'96.78','11-23 R26 R813 pct savings vs Path A');
+    for(const r813File of ['workshops/github-trending-radar/docs/ste-zh-agentmemoryrepo-locals-ultimate-selection-faq.md','workshops/github-trending-radar/docs/ste-zh-agentmemoryrepo-locals-ultimate-selection-faq.en.md','assets/github-ai-radar-2026-11-23-r26-r813-stezh-agentmemoryrepo-locals-ultimate.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-23-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r813File),'utf8');
+      assert.ok(txt.includes('4,880.00')&&txt.includes('4,600.00')&&txt.includes('9,480.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('9,175.00')&&txt.includes('96.78%')&&txt.includes('not_measured'),r813File+': contains exact 11-23 R26 R813 stezh+agentmemoryrepo+locals+ultimate closed-form parameters');
+    }
+    // 2026-11-23 Night Round 27 (R814: xcodebeast/flashwright + KnifeLemon/Droidline + rasonyang/freesbc + win4r/video-director) verification
+    const r814PathA=4950.00+46.0*100.00;
+    assert.equal(r814PathA.toFixed(2),'9550.00','11-23 R27 R814 Path A total');
+    const r814PathC=65.00+2.4*100.00;
+    assert.equal(r814PathC.toFixed(2),'305.00','11-23 R27 R814 Path C total');
+    assert.equal((r814PathA-r814PathC).toFixed(2),'9245.00','11-23 R27 R814 savings vs Path A');
+    assert.equal(((r814PathA-r814PathC)/r814PathA*100).toFixed(2),'96.81','11-23 R27 R814 pct savings vs Path A');
+    for(const r814File of ['workshops/github-trending-radar/docs/flashwright-droidline-freesbc-video-director-selection-faq.md','workshops/github-trending-radar/docs/flashwright-droidline-freesbc-video-director-selection-faq.en.md','assets/github-ai-radar-2026-11-23-r27-r814-flashwright-droidline-freesbc-videodirector.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-23-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r814File),'utf8');
+      assert.ok(txt.includes('4,950.00')&&txt.includes('4,600.00')&&txt.includes('9,550.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('9,245.00')&&txt.includes('96.81%')&&txt.includes('not_measured'),r814File+': contains exact 11-23 R27 R814 flashwright+droidline+freesbc+videodirector closed-form parameters');
+    }
+    // 2026-11-23 Night Round 28 (R815 Milestone: itsmostafa/system-one-connector + vinilana/jev-gateway + hthoene/plainboard + missuo/tamio) verification
+    const r815PathA=4970.00+46.0*100.00;
+    assert.equal(r815PathA.toFixed(2),'9570.00','11-23 R28 R815 Path A total');
+    const r815PathC=65.00+2.4*100.00;
+    assert.equal(r815PathC.toFixed(2),'305.00','11-23 R28 R815 Path C total');
+    assert.equal((r815PathA-r815PathC).toFixed(2),'9265.00','11-23 R28 R815 savings vs Path A');
+    assert.equal(((r815PathA-r815PathC)/r815PathA*100).toFixed(2),'96.81','11-23 R28 R815 pct savings vs Path A');
+    for(const r815File of ['workshops/github-trending-radar/docs/system-one-connector-jev-gateway-plainboard-tamio-selection-faq.md','workshops/github-trending-radar/docs/system-one-connector-jev-gateway-plainboard-tamio-selection-faq.en.md','assets/github-ai-radar-2026-11-23-r28-r815-systemoneconnector-jevgateway-plainboard-tamio.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-23-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r815File),'utf8');
+      assert.ok(txt.includes('4,970.00')&&txt.includes('4,600.00')&&txt.includes('9,570.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('9,265.00')&&txt.includes('96.81%')&&txt.includes('not_measured'),r815File+': contains exact 11-23 R28 R815 systemoneconnector+jevgateway+plainboard+tamio closed-form parameters');
+    }
+    // 2026-11-23 Night Round 29 (R816: StreamEval/StreamEval + goat-si/goat + sidiangongyuan/paper-figure-to-figma + fazlerocks/jevmail) verification
+    const r816PathA=4840.00+45.0*100.00;
+    assert.equal(r816PathA.toFixed(2),'9340.00','11-23 R29 R816 Path A total');
+    const r816PathC=65.00+2.4*100.00;
+    assert.equal(r816PathC.toFixed(2),'305.00','11-23 R29 R816 Path C total');
+    assert.equal((r816PathA-r816PathC).toFixed(2),'9035.00','11-23 R29 R816 savings vs Path A');
+    assert.equal(((r816PathA-r816PathC)/r816PathA*100).toFixed(2),'96.73','11-23 R29 R816 pct savings vs Path A');
+    for(const r816File of ['workshops/github-trending-radar/docs/streameval-goat-paper-figure-to-figma-jevmail-selection-faq.md','workshops/github-trending-radar/docs/streameval-goat-paper-figure-to-figma-jevmail-selection-faq.en.md','assets/github-ai-radar-2026-11-23-r29-r816-streameval-goat-paperfiguretofigma-jevmail.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-23-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r816File),'utf8');
+      assert.ok(txt.includes('4,840.00')&&txt.includes('4,500.00')&&txt.includes('9,340.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('9,035.00')&&txt.includes('96.73%')&&txt.includes('not_measured'),r816File+': contains exact 11-23 R29 R816 streameval+goat+paperfiguretofigma+jevmail closed-form parameters');
+    }
+    // 2026-11-23 Night Round 30 (R817: Litmeb/RAW-RAG + yanstd888/node2mint + adityaagarw/Pantheon + smixs/pi-durable-telegram) verification
+    const r817PathA=4900.00+46.0*100.00;
+    assert.equal(r817PathA.toFixed(2),'9500.00','11-23 R30 R817 Path A total');
+    const r817PathC=65.00+2.4*100.00;
+    assert.equal(r817PathC.toFixed(2),'305.00','11-23 R30 R817 Path C total');
+    assert.equal((r817PathA-r817PathC).toFixed(2),'9195.00','11-23 R30 R817 savings vs Path A');
+    assert.equal(((r817PathA-r817PathC)/r817PathA*100).toFixed(2),'96.79','11-23 R30 R817 pct savings vs Path A');
+    for(const r817File of ['workshops/github-trending-radar/docs/raw-rag-node2mint-pantheon-pi-durable-telegram-selection-faq.md','workshops/github-trending-radar/docs/raw-rag-node2mint-pantheon-pi-durable-telegram-selection-faq.en.md','assets/github-ai-radar-2026-11-23-r30-r817-rawrag-node2mint-pantheon-pidurabletelegram.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-23-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r817File),'utf8');
+      assert.ok(txt.includes('4,900.00')&&txt.includes('4,600.00')&&txt.includes('9,500.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('9,195.00')&&txt.includes('96.79%')&&txt.includes('not_measured'),r817File+': contains exact 11-23 R30 R817 rawrag+node2mint+pantheon+pidurabletelegram closed-form parameters');
+    }
+    // 2026-11-23 Night Round 31 (R818: khanhtq29vn/contextcraft + maxtrigify/Otto + regnull/openbot + iFwu/cursor2response) verification
+    const r818PathA=4860.00+45.0*100.00;
+    assert.equal(r818PathA.toFixed(2),'9360.00','11-23 R31 R818 Path A total');
+    const r818PathC=65.00+2.4*100.00;
+    assert.equal(r818PathC.toFixed(2),'305.00','11-23 R31 R818 Path C total');
+    assert.equal((r818PathA-r818PathC).toFixed(2),'9055.00','11-23 R31 R818 savings vs Path A');
+    assert.equal(((r818PathA-r818PathC)/r818PathA*100).toFixed(2),'96.74','11-23 R31 R818 pct savings vs Path A');
+    for(const r818File of ['workshops/github-trending-radar/docs/contextcraft-otto-openbot-cursor2response-selection-faq.md','workshops/github-trending-radar/docs/contextcraft-otto-openbot-cursor2response-selection-faq.en.md','assets/github-ai-radar-2026-11-23-r31-r818-contextcraft-otto-openbot-cursor2response.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-23-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r818File),'utf8');
+      assert.ok(txt.includes('4,860.00')&&txt.includes('4,500.00')&&txt.includes('9,360.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('9,055.00')&&txt.includes('96.74%')&&txt.includes('not_measured'),r818File+': contains exact 11-23 R31 R818 contextcraft+otto+openbot+cursor2response closed-form parameters');
+    }
+    // 2026-11-23 Night Round 32 (R819: finereli/whatsapp-mcp + 849879772/recruitops-agent + justhalfbit/xiaozhi-hub-server + nodemaven/serpmaven) verification
+    const r819PathA=4820.00+45.0*100.00;
+    assert.equal(r819PathA.toFixed(2),'9320.00','11-23 R32 R819 Path A total');
+    const r819PathC=65.00+2.4*100.00;
+    assert.equal(r819PathC.toFixed(2),'305.00','11-23 R32 R819 Path C total');
+    assert.equal((r819PathA-r819PathC).toFixed(2),'9015.00','11-23 R32 R819 savings vs Path A');
+    assert.equal(((r819PathA-r819PathC)/r819PathA*100).toFixed(2),'96.73','11-23 R32 R819 pct savings vs Path A');
+    for(const r819File of ['workshops/github-trending-radar/docs/whatsapp-mcp-recruitops-xiaozhi-gateway-serpmaven-selection-faq.md','workshops/github-trending-radar/docs/whatsapp-mcp-recruitops-xiaozhi-gateway-serpmaven-selection-faq.en.md','assets/github-ai-radar-2026-11-23-r32-r819-whatsappmcp-recruitops-xiaozhigateway-serpmaven.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-23-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r819File),'utf8');
+      assert.ok(txt.includes('4,820.00')&&txt.includes('4,500.00')&&txt.includes('9,320.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('9,015.00')&&txt.includes('96.73%')&&txt.includes('not_measured'),r819File+': contains exact 11-23 R32 R819 whatsappmcp+recruitops+xiaozhigateway+serpmaven closed-form parameters');
+    }
+    // 2026-11-23 Night Round 33 (R820 Milestone: Shaitrish/37studio + Carol-lyh/Jeveration + canberk7/ema-lightning + ysuito/RabbitWall) verification
+    const r820PathA=4980.00+45.0*100.00;
+    assert.equal(r820PathA.toFixed(2),'9480.00','11-23 R33 R820 Path A total');
+    const r820PathC=65.00+2.4*100.00;
+    assert.equal(r820PathC.toFixed(2),'305.00','11-23 R33 R820 Path C total');
+    assert.equal((r820PathA-r820PathC).toFixed(2),'9175.00','11-23 R33 R820 savings vs Path A');
+    assert.equal(((r820PathA-r820PathC)/r820PathA*100).toFixed(2),'96.78','11-23 R33 R820 pct savings vs Path A');
+    for(const r820File of ['workshops/github-trending-radar/docs/studio37-jeveration-ema-lightning-rabbitwall-selection-faq.md','workshops/github-trending-radar/docs/studio37-jeveration-ema-lightning-rabbitwall-selection-faq.en.md','assets/github-ai-radar-2026-11-23-r33-r820-37studio-jeveration-emalightning-rabbitwall.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-23-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r820File),'utf8');
+      assert.ok(txt.includes('4,980.00')&&txt.includes('4,500.00')&&txt.includes('9,480.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('9,175.00')&&txt.includes('96.78%')&&txt.includes('not_measured'),r820File+': contains exact 11-23 R33 R820 37studio+jeveration+emalightning+rabbitwall closed-form parameters');
+    }
+    // 2026-11-23 Night Round 34 (R821: kitze/skillbox + boringcomputers/goshen-email + sazabi/cve.now + cporter202/ai-agent-data-apis) verification
+    const r821PathA=4910.00+45.0*100.00;
+    assert.equal(r821PathA.toFixed(2),'9410.00','11-23 R34 R821 Path A total');
+    const r821PathC=65.00+2.4*100.00;
+    assert.equal(r821PathC.toFixed(2),'305.00','11-23 R34 R821 Path C total');
+    assert.equal((r821PathA-r821PathC).toFixed(2),'9105.00','11-23 R34 R821 savings vs Path A');
+    assert.equal(((r821PathA-r821PathC)/r821PathA*100).toFixed(2),'96.76','11-23 R34 R821 pct savings vs Path A');
+    for(const r821File of ['workshops/github-trending-radar/docs/skillbox-goshen-email-cve-now-agent-data-apis-selection-faq.md','workshops/github-trending-radar/docs/skillbox-goshen-email-cve-now-agent-data-apis-selection-faq.en.md','assets/github-ai-radar-2026-11-23-r34-r821-skillbox-goshenemail-cvenow-agentdataapis.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-23-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r821File),'utf8');
+      assert.ok(txt.includes('4,910.00')&&txt.includes('4,500.00')&&txt.includes('9,410.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('9,105.00')&&txt.includes('96.76%')&&txt.includes('not_measured'),r821File+': contains exact 11-23 R34 R821 skillbox+goshenemail+cvenow+agentdataapis closed-form parameters');
+    }
+    // 2026-11-23 Night Round 35 (R822: zhouwei713/luobo-ppt + liyupi/ai-promo-video-maker + Sreehari05055/thesys-core + DeepanshuMishraa/sheet) verification
+    const r822PathA=5050.00+45.0*100.00;
+    assert.equal(r822PathA.toFixed(2),'9550.00','11-23 R35 R822 Path A total');
+    const r822PathC=65.00+2.4*100.00;
+    assert.equal(r822PathC.toFixed(2),'305.00','11-23 R35 R822 Path C total');
+    assert.equal((r822PathA-r822PathC).toFixed(2),'9245.00','11-23 R35 R822 savings vs Path A');
+    assert.equal(((r822PathA-r822PathC)/r822PathA*100).toFixed(2),'96.81','11-23 R35 R822 pct savings vs Path A');
+    for(const r822File of ['workshops/github-trending-radar/docs/luobo-ppt-ai-promo-video-thesys-core-sheet-selection-faq.md','workshops/github-trending-radar/docs/luobo-ppt-ai-promo-video-thesys-core-sheet-selection-faq.en.md','assets/github-ai-radar-2026-11-23-r35-r822-luoboppt-promovideo-thesyscore-sheet.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-23-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r822File),'utf8');
+      assert.ok(txt.includes('5,050.00')&&txt.includes('4,500.00')&&txt.includes('9,550.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('9,245.00')&&txt.includes('96.81%')&&txt.includes('not_measured'),r822File+': contains exact 11-23 R35 R822 luoboppt+promovideo+thesyscore+sheet closed-form parameters');
+    }
+    // 2026-11-23 Night Round 36 (R823: KettuAI/Kettu + ersinkoc/AI-Video-Factory + FrigadeHQ/hob + jossuealcacao-exe/madre) verification
+    const r823PathA=4960.00+45.0*100.00;
+    assert.equal(r823PathA.toFixed(2),'9460.00','11-23 R36 R823 Path A total');
+    const r823PathC=65.00+2.4*100.00;
+    assert.equal(r823PathC.toFixed(2),'305.00','11-23 R36 R823 Path C total');
+    assert.equal((r823PathA-r823PathC).toFixed(2),'9155.00','11-23 R36 R823 savings vs Path A');
+    assert.equal(((r823PathA-r823PathC)/r823PathA*100).toFixed(2),'96.78','11-23 R36 R823 pct savings vs Path A');
+    for(const r823File of ['workshops/github-trending-radar/docs/kettu-ai-video-factory-hob-madre-selection-faq.md','workshops/github-trending-radar/docs/kettu-ai-video-factory-hob-madre-selection-faq.en.md','assets/github-ai-radar-2026-11-23-r36-r823-kettu-aivideofactory-hob-madre.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-23-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r823File),'utf8');
+      assert.ok(txt.includes('4,960.00')&&txt.includes('4,500.00')&&txt.includes('9,460.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('9,155.00')&&txt.includes('96.78%')&&txt.includes('not_measured'),r823File+': contains exact 11-23 R36 R823 kettu+aivideofactory+hob+madre closed-form parameters');
+    }
+    // 2026-11-23 Night Round 37 (R824: oss-invisible/playwright_mcp + arcships/dim + cdcailf/cjkfold + paimonsoror/telltaledns) verification
+    const r824PathA=4890.00+45.0*100.00;
+    assert.equal(r824PathA.toFixed(2),'9390.00','11-23 R37 R824 Path A total');
+    const r824PathC=65.00+2.4*100.00;
+    assert.equal(r824PathC.toFixed(2),'305.00','11-23 R37 R824 Path C total');
+    assert.equal((r824PathA-r824PathC).toFixed(2),'9085.00','11-23 R37 R824 savings vs Path A');
+    assert.equal(((r824PathA-r824PathC)/r824PathA*100).toFixed(2),'96.75','11-23 R37 R824 pct savings vs Path A');
+    for(const r824File of ['workshops/github-trending-radar/docs/invisible-playwright-dim-cjkfold-telltaledns-selection-faq.md','workshops/github-trending-radar/docs/invisible-playwright-dim-cjkfold-telltaledns-selection-faq.en.md','assets/github-ai-radar-2026-11-23-r37-r824-invisibleplaywright-dim-cjkfold-telltaledns.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-23-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r824File),'utf8');
+      assert.ok(txt.includes('4,890.00')&&txt.includes('4,500.00')&&txt.includes('9,390.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('9,085.00')&&txt.includes('96.75%')&&txt.includes('not_measured'),r824File+': contains exact 11-23 R37 R824 invisibleplaywright+dim+cjkfold+telltaledns closed-form parameters');
+    }
+    // 2026-11-23 Night Round 38 (R825 Milestone: assafkip/claudemy + iamlukethedev/Herald-OS + irraz/vulnerator-ai + DA3M0/Cheetah) verification
+    const r825PathA=5020.00+45.0*100.00;
+    assert.equal(r825PathA.toFixed(2),'9520.00','11-23 R38 R825 Path A total');
+    const r825PathC=65.00+2.4*100.00;
+    assert.equal(r825PathC.toFixed(2),'305.00','11-23 R38 R825 Path C total');
+    assert.equal((r825PathA-r825PathC).toFixed(2),'9215.00','11-23 R38 R825 savings vs Path A');
+    assert.equal(((r825PathA-r825PathC)/r825PathA*100).toFixed(2),'96.80','11-23 R38 R825 pct savings vs Path A');
+    for(const r825File of ['workshops/github-trending-radar/docs/claudemy-herald-os-vulnerator-ai-cheetah-selection-faq.md','workshops/github-trending-radar/docs/claudemy-herald-os-vulnerator-ai-cheetah-selection-faq.en.md','assets/github-ai-radar-2026-11-23-r38-r825-claudemy-heraldos-vulneratorai-cheetah.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-23-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r825File),'utf8');
+      assert.ok(txt.includes('5,020.00')&&txt.includes('4,500.00')&&txt.includes('9,520.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('9,215.00')&&txt.includes('96.80%')&&txt.includes('not_measured'),r825File+': contains exact 11-23 R38 R825 claudemy+heraldos+vulneratorai+cheetah closed-form parameters');
+    }
+    // 2026-11-23 Night Round 39 (R826: txchen/govault + FireTable/comfy-colab-kit + better-vault/better-vault + ken050210/vertex-streaming-anti-truncation) verification
+    const r826PathA=4850.00+45.0*100.00;
+    assert.equal(r826PathA.toFixed(2),'9350.00','11-23 R39 R826 Path A total');
+    const r826PathC=65.00+2.4*100.00;
+    assert.equal(r826PathC.toFixed(2),'305.00','11-23 R39 R826 Path C total');
+    assert.equal((r826PathA-r826PathC).toFixed(2),'9045.00','11-23 R39 R826 savings vs Path A');
+    assert.equal(((r826PathA-r826PathC)/r826PathA*100).toFixed(2),'96.74','11-23 R39 R826 pct savings vs Path A');
+    for(const r826File of ['workshops/github-trending-radar/docs/govault-comfy-colab-kit-better-vault-vertex-anti-truncation-selection-faq.md','workshops/github-trending-radar/docs/govault-comfy-colab-kit-better-vault-vertex-anti-truncation-selection-faq.en.md','assets/github-ai-radar-2026-11-23-r39-r826-govault-comfycolabkit-bettervault-vertexantitruncation.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-23-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r826File),'utf8');
+      assert.ok(txt.includes('4,850.00')&&txt.includes('4,500.00')&&txt.includes('9,350.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('9,045.00')&&txt.includes('96.74%')&&txt.includes('not_measured'),r826File+': contains exact 11-23 R39 R826 govault+comfycolabkit+bettervault+vertexantitruncation closed-form parameters');
+    }
+    // 2026-11-23 Night Round 40 (R827 Finale: andyhuo520/vibe-knowledge + AirsupHQ/machine-skill + blakeandersonw/ai-app-playbook + wangwanjie/gately) verification
+    const r827PathA=5080.00+45.0*100.00;
+    assert.equal(r827PathA.toFixed(2),'9580.00','11-23 R40 R827 Path A total');
+    const r827PathC=65.00+2.4*100.00;
+    assert.equal(r827PathC.toFixed(2),'305.00','11-23 R40 R827 Path C total');
+    assert.equal((r827PathA-r827PathC).toFixed(2),'9275.00','11-23 R40 R827 savings vs Path A');
+    assert.equal(((r827PathA-r827PathC)/r827PathA*100).toFixed(2),'96.82','11-23 R40 R827 pct savings vs Path A');
+    for(const r827File of ['workshops/github-trending-radar/docs/vibe-knowledge-machine-skill-ai-app-playbook-gately-selection-faq.md','workshops/github-trending-radar/docs/vibe-knowledge-machine-skill-ai-app-playbook-gately-selection-faq.en.md','assets/github-ai-radar-2026-11-23-r40-r827-vibeknowledge-machineskill-aiappplaybook-gately.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-23-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r827File),'utf8');
+      assert.ok(txt.includes('5,080.00')&&txt.includes('4,500.00')&&txt.includes('9,580.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('9,275.00')&&txt.includes('96.82%')&&txt.includes('not_measured'),r827File+': contains exact 11-23 R40 R827 vibeknowledge+machineskill+aiappplaybook+gately closed-form parameters');
+    }
+    }// 2026-11-24 Sweep & Night Round 1 (R788: erkamyaman/safe-anything + deterministic-machines/deslop-please + Developing-Gamer/agent-sim + lukendeasy/open-diagram) verification
     const rawHtml1124=fs.readFileSync(path.join(__dirname,'..','workshops','github-trending-radar','evidence','trending-daily-2026-11-24-raw.html'),'utf8').replace(/\r\n/g,'\n');
     assert.equal(hash(rawHtml1124),'bc6180e17c19491f9d8fe6c425ccb2e78824344e713a6555d432e6c437cab3de','2026-11-24 raw HTML LF sha256');
     const rawSearch1124Str=fs.readFileSync(path.join(__dirname,'..','workshops','github-trending-radar','evidence','search-new-repos-2026-11-24-raw.json'),'utf8').replace(/\r\n/g,'\n');
