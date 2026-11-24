@@ -9902,6 +9902,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r834File),'utf8');
       assert.ok(txt.includes('4,910.00')&&txt.includes('4,600.00')&&txt.includes('9,510.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('9,200.00')&&txt.includes('96.74%')&&txt.includes('not_measured'),r834File+': contains exact 11-24 R47 R834 quantdinger+kedro+pyod+financetoolkit closed-form parameters');
     }
+    // 2026-11-24 Night Round 48 (R835 Milestone: koala73/worldmonitor + netdata/netdata + sansan0/TrendRadar + Evil0ctal/Douyin_TikTok_Download_API) verification
+    const r835PathA=4990.00+46.5*100.00;
+    assert.equal(r835PathA.toFixed(2),'9640.00','11-24 R48 R835 Path A total');
+    const r835PathC=70.00+2.4*100.00;
+    assert.equal(r835PathC.toFixed(2),'310.00','11-24 R48 R835 Path C total');
+    assert.equal((r835PathA-r835PathC).toFixed(2),'9330.00','11-24 R48 R835 savings vs Path A');
+    assert.equal(((r835PathA-r835PathC)/r835PathA*100).toFixed(2),'96.78','11-24 R48 R835 pct savings vs Path A');
+    for(const r835File of ['workshops/github-trending-radar/docs/worldmonitor-netdata-trendradar-tiktokmcp-selection-faq.md','workshops/github-trending-radar/docs/worldmonitor-netdata-trendradar-tiktokmcp-selection-faq.en.md','assets/github-ai-radar-2026-11-24-r48-r835-worldmonitor-netdata-trendradar-tiktokmcp.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-24-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r835File),'utf8');
+      assert.ok(txt.includes('4,990.00')&&txt.includes('4,650.00')&&txt.includes('9,640.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('9,330.00')&&txt.includes('96.78%')&&txt.includes('not_measured'),r835File+': contains exact 11-24 R48 R835 worldmonitor+netdata+trendradar+tiktokmcp closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
