@@ -9407,6 +9407,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r789File),'utf8');
       assert.ok(txt.includes('4,740.00')&&txt.includes('4,600.00')&&txt.includes('9,340.00')&&txt.includes('75.00')&&txt.includes('240.00')&&txt.includes('315.00')&&txt.includes('9,025.00')&&txt.includes('96.63%')&&txt.includes('not_measured'),r789File+': contains exact 11-24 R2 R789 sapdatamcp+shrinkanything+cybedefend+skillaudit closed-form parameters');
     }
+    // 2026-11-24 Night Round 3 (R790 Milestone: bl8ds/AgentDesk-Private-Deployable-Knowledge-Base-Agent-Platform + machinepulse-ai/karpo-browser + BoneD-Q/contextbridge + daoif/tokless) verification
+    const r790PathA=4680.00+45.0*100.00;
+    assert.equal(r790PathA.toFixed(2),'9180.00','11-24 R3 R790 Path A total');
+    const r790PathC=70.00+2.4*100.00;
+    assert.equal(r790PathC.toFixed(2),'310.00','11-24 R3 R790 Path C total');
+    assert.equal((r790PathA-r790PathC).toFixed(2),'8870.00','11-24 R3 R790 savings vs Path A');
+    assert.equal(((r790PathA-r790PathC)/r790PathA*100).toFixed(2),'96.62','11-24 R3 R790 pct savings vs Path A');
+    for(const r790File of ['workshops/github-trending-radar/docs/agentdesk-karpo-browser-contextbridge-tokless-selection-faq.md','workshops/github-trending-radar/docs/agentdesk-karpo-browser-contextbridge-tokless-selection-faq.en.md','assets/github-ai-radar-2026-11-24-r3-r790-agentdesk-karpobrowser-contextbridge-tokless.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-24-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r790File),'utf8');
+      assert.ok(txt.includes('4,680.00')&&txt.includes('4,500.00')&&txt.includes('9,180.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,870.00')&&txt.includes('96.62%')&&txt.includes('not_measured'),r790File+': contains exact 11-24 R3 R790 agentdesk+karpobrowser+contextbridge+tokless closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
