@@ -9891,6 +9891,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r833File),'utf8');
       assert.ok(txt.includes('4,710.00')&&txt.includes('4,500.00')&&txt.includes('9,210.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('8,905.00')&&txt.includes('96.69%')&&txt.includes('not_measured'),r833File+': contains exact 11-24 R46 R833 siyuan+maxkb+theia+tuff closed-form parameters');
     }
+    // 2026-11-24 Night Round 47 (R834: OpenByteInc/QuantDinger + kedro-org/kedro + yzhao062/pyod + JerBouma/FinanceToolkit) verification
+    const r834PathA=4910.00+46.0*100.00;
+    assert.equal(r834PathA.toFixed(2),'9510.00','11-24 R47 R834 Path A total');
+    const r834PathC=70.00+2.4*100.00;
+    assert.equal(r834PathC.toFixed(2),'310.00','11-24 R47 R834 Path C total');
+    assert.equal((r834PathA-r834PathC).toFixed(2),'9200.00','11-24 R47 R834 savings vs Path A');
+    assert.equal(((r834PathA-r834PathC)/r834PathA*100).toFixed(2),'96.74','11-24 R47 R834 pct savings vs Path A');
+    for(const r834File of ['workshops/github-trending-radar/docs/quantdinger-kedro-pyod-financetoolkit-selection-faq.md','workshops/github-trending-radar/docs/quantdinger-kedro-pyod-financetoolkit-selection-faq.en.md','assets/github-ai-radar-2026-11-24-r47-r834-quantdinger-kedro-pyod-financetoolkit.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-24-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r834File),'utf8');
+      assert.ok(txt.includes('4,910.00')&&txt.includes('4,600.00')&&txt.includes('9,510.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('9,200.00')&&txt.includes('96.74%')&&txt.includes('not_measured'),r834File+': contains exact 11-24 R47 R834 quantdinger+kedro+pyod+financetoolkit closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
