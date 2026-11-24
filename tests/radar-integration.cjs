@@ -9704,6 +9704,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r816File),'utf8');
       assert.ok(txt.includes('4,720.00')&&txt.includes('4,500.00')&&txt.includes('9,220.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('8,915.00')&&txt.includes('96.69%')&&txt.includes('not_measured'),r816File+': contains exact 11-24 R29 R816 animation-styles+seedance+pixelfx+sketch3d closed-form parameters');
     }
+    // 2026-11-24 Night Round 30 (R817: iOfficeAI/OfficeCLI + opendataloader-project/opendataloader-pdf + dataelement/bisheng + cocoindex-io/cocoindex) verification
+    const r817PathA=4940.00+46.5*100.00;
+    assert.equal(r817PathA.toFixed(2),'9590.00','11-24 R30 R817 Path A total');
+    const r817PathC=70.00+2.4*100.00;
+    assert.equal(r817PathC.toFixed(2),'310.00','11-24 R30 R817 Path C total');
+    assert.equal((r817PathA-r817PathC).toFixed(2),'9280.00','11-24 R30 R817 savings vs Path A');
+    assert.equal(((r817PathA-r817PathC)/r817PathA*100).toFixed(2),'96.77','11-24 R30 R817 pct savings vs Path A');
+    for(const r817File of ['workshops/github-trending-radar/docs/officecli-opendataloader-bisheng-cocoindex-selection-faq.md','workshops/github-trending-radar/docs/officecli-opendataloader-bisheng-cocoindex-selection-faq.en.md','assets/github-ai-radar-2026-11-24-r30-r817-officecli-opendataloader-bisheng-cocoindex.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-24-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r817File),'utf8');
+      assert.ok(txt.includes('4,940.00')&&txt.includes('4,650.00')&&txt.includes('9,590.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('9,280.00')&&txt.includes('96.77%')&&txt.includes('not_measured'),r817File+': contains exact 11-24 R30 R817 officecli+opendataloader+bisheng+cocoindex closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
