@@ -9737,6 +9737,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r819File),'utf8');
       assert.ok(txt.includes('4,860.00')&&txt.includes('4,600.00')&&txt.includes('9,460.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('9,155.00')&&txt.includes('96.78%')&&txt.includes('not_measured'),r819File+': contains exact 11-24 R32 R819 understand+cliproxy+sub2api+learnharness closed-form parameters');
     }
+    // 2026-11-24 Night Round 33 (R820 Milestone: obsidianmd/obsidian-skills + microsoft/agent-lightning + eigent-ai/eigent + cobusgreyling/loop-engineering) verification
+    const r820PathA=4880.00+46.0*100.00;
+    assert.equal(r820PathA.toFixed(2),'9480.00','11-24 R33 R820 Path A total');
+    const r820PathC=65.00+2.4*100.00;
+    assert.equal(r820PathC.toFixed(2),'305.00','11-24 R33 R820 Path C total');
+    assert.equal((r820PathA-r820PathC).toFixed(2),'9175.00','11-24 R33 R820 savings vs Path A');
+    assert.equal(((r820PathA-r820PathC)/r820PathA*100).toFixed(2),'96.78','11-24 R33 R820 pct savings vs Path A');
+    for(const r820File of ['workshops/github-trending-radar/docs/obsidian-agentlightning-eigent-loopeng-selection-faq.md','workshops/github-trending-radar/docs/obsidian-agentlightning-eigent-loopeng-selection-faq.en.md','assets/github-ai-radar-2026-11-24-r33-r820-obsidian-agentlightning-eigent-loopeng.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-24-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r820File),'utf8');
+      assert.ok(txt.includes('4,880.00')&&txt.includes('4,600.00')&&txt.includes('9,480.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('9,175.00')&&txt.includes('96.78%')&&txt.includes('not_measured'),r820File+': contains exact 11-24 R33 R820 obsidian+agentlightning+eigent+loopeng closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
