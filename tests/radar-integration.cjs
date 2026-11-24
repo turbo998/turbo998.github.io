@@ -9462,6 +9462,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r794File),'utf8');
       assert.ok(txt.includes('4,660.00')&&txt.includes('4,550.00')&&txt.includes('9,210.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('8,905.00')&&txt.includes('96.69%')&&txt.includes('not_measured'),r794File+': contains exact 11-24 R7 R794 assemblyguide+autorecording+podcastclipping+lodestar closed-form parameters');
     }
+    // 2026-11-24 Night Round 8 (R795 Milestone: invertibleMatrix/filament + NexusFox88/Hexagon + nicolac93/ragtune + Wasabi2575/dsh-workflow-canvas) verification
+    const r795PathA=4710.00+45.5*100.00;
+    assert.equal(r795PathA.toFixed(2),'9260.00','11-24 R8 R795 Path A total');
+    const r795PathC=70.00+2.4*100.00;
+    assert.equal(r795PathC.toFixed(2),'310.00','11-24 R8 R795 Path C total');
+    assert.equal((r795PathA-r795PathC).toFixed(2),'8950.00','11-24 R8 R795 savings vs Path A');
+    assert.equal(((r795PathA-r795PathC)/r795PathA*100).toFixed(2),'96.65','11-24 R8 R795 pct savings vs Path A');
+    for(const r795File of ['workshops/github-trending-radar/docs/filament-hexagon-ragtune-dsh-workflow-canvas-selection-faq.md','workshops/github-trending-radar/docs/filament-hexagon-ragtune-dsh-workflow-canvas-selection-faq.en.md','assets/github-ai-radar-2026-11-24-r8-r795-filament-hexagon-ragtune-dshworkflowcanvas.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-24-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r795File),'utf8');
+      assert.ok(txt.includes('4,710.00')&&txt.includes('4,550.00')&&txt.includes('9,260.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,950.00')&&txt.includes('96.65%')&&txt.includes('not_measured'),r795File+': contains exact 11-24 R8 R795 filament+hexagon+ragtune+dshworkflowcanvas closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
