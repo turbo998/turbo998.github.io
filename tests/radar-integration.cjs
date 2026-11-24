@@ -9880,6 +9880,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r832File),'utf8');
       assert.ok(txt.includes('4,760.00')&&txt.includes('4,550.00')&&txt.includes('9,310.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('9,005.00')&&txt.includes('96.72%')&&txt.includes('not_measured'),r832File+': contains exact 11-24 R45 R832 cowagent+astrbot+qwenpaw+funasr closed-form parameters');
     }
+    // 2026-11-24 Night Round 46 (R833: siyuan-note/siyuan + 1Panel-dev/MaxKB + eclipse-theia/theia + usetuff/tuff) verification
+    const r833PathA=4710.00+45.0*100.00;
+    assert.equal(r833PathA.toFixed(2),'9210.00','11-24 R46 R833 Path A total');
+    const r833PathC=65.00+2.4*100.00;
+    assert.equal(r833PathC.toFixed(2),'305.00','11-24 R46 R833 Path C total');
+    assert.equal((r833PathA-r833PathC).toFixed(2),'8905.00','11-24 R46 R833 savings vs Path A');
+    assert.equal(((r833PathA-r833PathC)/r833PathA*100).toFixed(2),'96.69','11-24 R46 R833 pct savings vs Path A');
+    for(const r833File of ['workshops/github-trending-radar/docs/siyuan-maxkb-theia-tuff-selection-faq.md','workshops/github-trending-radar/docs/siyuan-maxkb-theia-tuff-selection-faq.en.md','assets/github-ai-radar-2026-11-24-r46-r833-siyuan-maxkb-theia-tuff.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-24-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r833File),'utf8');
+      assert.ok(txt.includes('4,710.00')&&txt.includes('4,500.00')&&txt.includes('9,210.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('8,905.00')&&txt.includes('96.69%')&&txt.includes('not_measured'),r833File+': contains exact 11-24 R46 R833 siyuan+maxkb+theia+tuff closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
