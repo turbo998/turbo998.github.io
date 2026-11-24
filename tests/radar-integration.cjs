@@ -9506,6 +9506,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r798File),'utf8');
       assert.ok(txt.includes('4,850.00')&&txt.includes('4,650.00')&&txt.includes('9,500.00')&&txt.includes('75.00')&&txt.includes('240.00')&&txt.includes('315.00')&&txt.includes('9,185.00')&&txt.includes('96.68%')&&txt.includes('not_measured'),r798File+': contains exact 11-24 R11 R798 nightingale+openstatus+openmetadata+tabularis closed-form parameters');
     }
+    // 2026-11-24 Night Round 12 (R799: VectifyAI/PageIndex + MODSetter/SurfSense + Zipstack/unstract + Marker-Inc-Korea/AutoRAG) verification
+    const r799PathA=4780.00+46.0*100.00;
+    assert.equal(r799PathA.toFixed(2),'9380.00','11-24 R12 R799 Path A total');
+    const r799PathC=70.00+2.4*100.00;
+    assert.equal(r799PathC.toFixed(2),'310.00','11-24 R12 R799 Path C total');
+    assert.equal((r799PathA-r799PathC).toFixed(2),'9070.00','11-24 R12 R799 savings vs Path A');
+    assert.equal(((r799PathA-r799PathC)/r799PathA*100).toFixed(2),'96.70','11-24 R12 R799 pct savings vs Path A');
+    for(const r799File of ['workshops/github-trending-radar/docs/pageindex-surfsense-unstract-autorag-selection-faq.md','workshops/github-trending-radar/docs/pageindex-surfsense-unstract-autorag-selection-faq.en.md','assets/github-ai-radar-2026-11-24-r12-r799-pageindex-surfsense-unstract-autorag.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-24-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r799File),'utf8');
+      assert.ok(txt.includes('4,780.00')&&txt.includes('4,600.00')&&txt.includes('9,380.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('9,070.00')&&txt.includes('96.70%')&&txt.includes('not_measured'),r799File+': contains exact 11-24 R12 R799 pageindex+surfsense+unstract+autorag closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
