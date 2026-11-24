@@ -9913,6 +9913,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r835File),'utf8');
       assert.ok(txt.includes('4,990.00')&&txt.includes('4,650.00')&&txt.includes('9,640.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('9,330.00')&&txt.includes('96.78%')&&txt.includes('not_measured'),r835File+': contains exact 11-24 R48 R835 worldmonitor+netdata+trendradar+tiktokmcp closed-form parameters');
     }
+    // 2026-11-24 Night Round 49 (R836: credoksopho1984/blender-ai-copilot-studio + tiobeharxi1987/blender-ai-copilot-flow + zovulrira1974/blender-ai-copilot-assets + benzgasfuncring197110/blender-ai-copilot-bridge) verification
+    const r836PathA=4650.00+45.0*100.00;
+    assert.equal(r836PathA.toFixed(2),'9150.00','11-24 R49 R836 Path A total');
+    const r836PathC=60.00+2.4*100.00;
+    assert.equal(r836PathC.toFixed(2),'300.00','11-24 R49 R836 Path C total');
+    assert.equal((r836PathA-r836PathC).toFixed(2),'8850.00','11-24 R49 R836 savings vs Path A');
+    assert.equal(((r836PathA-r836PathC)/r836PathA*100).toFixed(2),'96.72','11-24 R49 R836 pct savings vs Path A');
+    for(const r836File of ['workshops/github-trending-radar/docs/blender-studio-flow-assets-bridge-selection-faq.md','workshops/github-trending-radar/docs/blender-studio-flow-assets-bridge-selection-faq.en.md','assets/github-ai-radar-2026-11-24-r49-r836-blender-studio-flow-assets-bridge.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-24-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r836File),'utf8');
+      assert.ok(txt.includes('4,650.00')&&txt.includes('4,500.00')&&txt.includes('9,150.00')&&txt.includes('60.00')&&txt.includes('240.00')&&txt.includes('300.00')&&txt.includes('8,850.00')&&txt.includes('96.72%')&&txt.includes('not_measured'),r836File+': contains exact 11-24 R49 R836 blender-studio+flow+assets+bridge closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
