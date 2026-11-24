@@ -9946,6 +9946,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r838File),'utf8');
       assert.ok(txt.includes('4,680.00')&&txt.includes('4,500.00')&&txt.includes('9,180.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('8,875.00')&&txt.includes('96.68%')&&txt.includes('not_measured'),r838File+': contains exact 11-24 R51 R838 xiaozhi+server+bowel+kurocat closed-form parameters');
     }
+    // 2026-11-24 Night Round 52 (R839: mrhlaingbwardev/agentic-hacking-skills + buiquangvu235/antigravity-skills-engine + leodavincs/kalem + mkaremm80/My-Skills-on-Claude) verification
+    const r839PathA=4620.00+45.0*100.00;
+    assert.equal(r839PathA.toFixed(2),'9120.00','11-24 R52 R839 Path A total');
+    const r839PathC=60.00+2.4*100.00;
+    assert.equal(r839PathC.toFixed(2),'300.00','11-24 R52 R839 Path C total');
+    assert.equal((r839PathA-r839PathC).toFixed(2),'8820.00','11-24 R52 R839 savings vs Path A');
+    assert.equal(((r839PathA-r839PathC)/r839PathA*100).toFixed(2),'96.71','11-24 R52 R839 pct savings vs Path A');
+    for(const r839File of ['workshops/github-trending-radar/docs/hacking-antigravity-kalem-paperskills-selection-faq.md','workshops/github-trending-radar/docs/hacking-antigravity-kalem-paperskills-selection-faq.en.md','assets/github-ai-radar-2026-11-24-r52-r839-hacking-antigravity-kalem-paperskills.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-24-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r839File),'utf8');
+      assert.ok(txt.includes('4,620.00')&&txt.includes('4,500.00')&&txt.includes('9,120.00')&&txt.includes('60.00')&&txt.includes('240.00')&&txt.includes('300.00')&&txt.includes('8,820.00')&&txt.includes('96.71%')&&txt.includes('not_measured'),r839File+': contains exact 11-24 R52 R839 hacking+antigravity+kalem+paperskills closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
