@@ -9429,6 +9429,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r791File),'utf8');
       assert.ok(txt.includes('4,560.00')&&txt.includes('4,450.00')&&txt.includes('9,010.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('8,705.00')&&txt.includes('96.61%')&&txt.includes('not_measured'),r791File+': contains exact 11-24 R4 R791 restaurantskills+userinterview+joggernaut+vibebreakpoint closed-form parameters');
     }
+    // 2026-11-24 Night Round 5 (R792: anandapurva55/multi-cloud-mcp-server + datadrivenconstruction/OpenConstructionDesign + seira-bot/seira + yapengl490-cmd/order-policy-assistant) verification
+    const r792PathA=4820.00+46.5*100.00;
+    assert.equal(r792PathA.toFixed(2),'9470.00','11-24 R5 R792 Path A total');
+    const r792PathC=75.00+2.4*100.00;
+    assert.equal(r792PathC.toFixed(2),'315.00','11-24 R5 R792 Path C total');
+    assert.equal((r792PathA-r792PathC).toFixed(2),'9155.00','11-24 R5 R792 savings vs Path A');
+    assert.equal(((r792PathA-r792PathC)/r792PathA*100).toFixed(2),'96.67','11-24 R5 R792 pct savings vs Path A');
+    for(const r792File of ['workshops/github-trending-radar/docs/multi-cloud-mcp-open-construction-design-seira-order-policy-selection-faq.md','workshops/github-trending-radar/docs/multi-cloud-mcp-open-construction-design-seira-order-policy-selection-faq.en.md','assets/github-ai-radar-2026-11-24-r5-r792-multicloudmcp-openconstruction-seira-orderpolicy.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-24-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r792File),'utf8');
+      assert.ok(txt.includes('4,820.00')&&txt.includes('4,650.00')&&txt.includes('9,470.00')&&txt.includes('75.00')&&txt.includes('240.00')&&txt.includes('315.00')&&txt.includes('9,155.00')&&txt.includes('96.67%')&&txt.includes('not_measured'),r792File+': contains exact 11-24 R5 R792 multicloudmcp+openconstruction+seira+orderpolicy closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
