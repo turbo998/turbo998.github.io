@@ -9616,6 +9616,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r808File),'utf8');
       assert.ok(txt.includes('4,840.00')&&txt.includes('4,550.00')&&txt.includes('9,390.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('9,085.00')&&txt.includes('96.75%')&&txt.includes('not_measured'),r808File+': contains exact 11-24 R21 R808 everos+strands+thinkrail+suparagent closed-form parameters');
     }
+    // 2026-11-24 Night Round 22 (R809: CloakHQ/CloakBrowser + alibaba/page-agent + xpzouying/xiaohongshu-mcp + firecrawl/firecrawl-mcp-server) verification
+    const r809PathA=4760.00+45.0*100.00;
+    assert.equal(r809PathA.toFixed(2),'9260.00','11-24 R22 R809 Path A total');
+    const r809PathC=65.00+2.4*100.00;
+    assert.equal(r809PathC.toFixed(2),'305.00','11-24 R22 R809 Path C total');
+    assert.equal((r809PathA-r809PathC).toFixed(2),'8955.00','11-24 R22 R809 savings vs Path A');
+    assert.equal(((r809PathA-r809PathC)/r809PathA*100).toFixed(2),'96.71','11-24 R22 R809 pct savings vs Path A');
+    for(const r809File of ['workshops/github-trending-radar/docs/cloakbrowser-page-agent-xhs-firecrawl-selection-faq.md','workshops/github-trending-radar/docs/cloakbrowser-page-agent-xhs-firecrawl-selection-faq.en.md','assets/github-ai-radar-2026-11-24-r22-r809-cloakbrowser-page-agent-xhs-firecrawl.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-24-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r809File),'utf8');
+      assert.ok(txt.includes('4,760.00')&&txt.includes('4,500.00')&&txt.includes('9,260.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('8,955.00')&&txt.includes('96.71%')&&txt.includes('not_measured'),r809File+': contains exact 11-24 R22 R809 cloakbrowser+page-agent+xhs+firecrawl closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
