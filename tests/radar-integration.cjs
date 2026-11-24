@@ -9649,6 +9649,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r811File),'utf8');
       assert.ok(txt.includes('4,850.00')&&txt.includes('4,550.00')&&txt.includes('9,400.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('9,090.00')&&txt.includes('96.70%')&&txt.includes('not_measured'),r811File+': contains exact 11-24 R24 R811 corsair+astron+trueforge+nexent closed-form parameters');
     }
+    // 2026-11-24 Night Round 25 (R812: xberg-io/xberg + xerrors/Yuxi + dataease/SQLBot + HelixDB/helix-db) verification
+    const r812PathA=4910.00+46.0*100.00;
+    assert.equal(r812PathA.toFixed(2),'9510.00','11-24 R25 R812 Path A total');
+    const r812PathC=70.00+2.4*100.00;
+    assert.equal(r812PathC.toFixed(2),'310.00','11-24 R25 R812 Path C total');
+    assert.equal((r812PathA-r812PathC).toFixed(2),'9200.00','11-24 R25 R812 savings vs Path A');
+    assert.equal(((r812PathA-r812PathC)/r812PathA*100).toFixed(2),'96.74','11-24 R25 R812 pct savings vs Path A');
+    for(const r812File of ['workshops/github-trending-radar/docs/xberg-yuxi-sqlbot-helixdb-selection-faq.md','workshops/github-trending-radar/docs/xberg-yuxi-sqlbot-helixdb-selection-faq.en.md','assets/github-ai-radar-2026-11-24-r25-r812-xberg-yuxi-sqlbot-helixdb.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-24-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r812File),'utf8');
+      assert.ok(txt.includes('4,910.00')&&txt.includes('4,600.00')&&txt.includes('9,510.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('9,200.00')&&txt.includes('96.74%')&&txt.includes('not_measured'),r812File+': contains exact 11-24 R25 R812 xberg+yuxi+sqlbot+helixdb closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
