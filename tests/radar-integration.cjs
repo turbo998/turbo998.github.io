@@ -9715,6 +9715,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r817File),'utf8');
       assert.ok(txt.includes('4,940.00')&&txt.includes('4,650.00')&&txt.includes('9,590.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('9,280.00')&&txt.includes('96.77%')&&txt.includes('not_measured'),r817File+': contains exact 11-24 R30 R817 officecli+opendataloader+bisheng+cocoindex closed-form parameters');
     }
+    // 2026-11-24 Night Round 31 (R818: jarrodwatts/claude-hud + gastownhall/beads + OthmanAdi/planning-with-files + zilliztech/claude-context) verification
+    const r818PathA=4770.00+45.5*100.00;
+    assert.equal(r818PathA.toFixed(2),'9320.00','11-24 R31 R818 Path A total');
+    const r818PathC=65.00+2.4*100.00;
+    assert.equal(r818PathC.toFixed(2),'305.00','11-24 R31 R818 Path C total');
+    assert.equal((r818PathA-r818PathC).toFixed(2),'9015.00','11-24 R31 R818 savings vs Path A');
+    assert.equal(((r818PathA-r818PathC)/r818PathA*100).toFixed(2),'96.73','11-24 R31 R818 pct savings vs Path A');
+    for(const r818File of ['workshops/github-trending-radar/docs/claude-hud-beads-pwf-claude-context-selection-faq.md','workshops/github-trending-radar/docs/claude-hud-beads-pwf-claude-context-selection-faq.en.md','assets/github-ai-radar-2026-11-24-r31-r818-claude-hud-beads-pwf-claude-context.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-24-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r818File),'utf8');
+      assert.ok(txt.includes('4,770.00')&&txt.includes('4,550.00')&&txt.includes('9,320.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('9,015.00')&&txt.includes('96.73%')&&txt.includes('not_measured'),r818File+': contains exact 11-24 R31 R818 claude-hud+beads+pwf+claude-context closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
