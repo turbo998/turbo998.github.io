@@ -9748,6 +9748,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r820File),'utf8');
       assert.ok(txt.includes('4,880.00')&&txt.includes('4,600.00')&&txt.includes('9,480.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('9,175.00')&&txt.includes('96.78%')&&txt.includes('not_measured'),r820File+': contains exact 11-24 R33 R820 obsidian+agentlightning+eigent+loopeng closed-form parameters');
     }
+    // 2026-11-24 Night Round 34 (R821: keploy/keploy + SWE-agent/mini-swe-agent + oumi-ai/oumi + genkit-ai/genkit) verification
+    const r821PathA=4750.00+45.0*100.00;
+    assert.equal(r821PathA.toFixed(2),'9250.00','11-24 R34 R821 Path A total');
+    const r821PathC=65.00+2.4*100.00;
+    assert.equal(r821PathC.toFixed(2),'305.00','11-24 R34 R821 Path C total');
+    assert.equal((r821PathA-r821PathC).toFixed(2),'8945.00','11-24 R34 R821 savings vs Path A');
+    assert.equal(((r821PathA-r821PathC)/r821PathA*100).toFixed(2),'96.70','11-24 R34 R821 pct savings vs Path A');
+    for(const r821File of ['workshops/github-trending-radar/docs/keploy-miniswe-oumi-genkit-selection-faq.md','workshops/github-trending-radar/docs/keploy-miniswe-oumi-genkit-selection-faq.en.md','assets/github-ai-radar-2026-11-24-r34-r821-keploy-miniswe-oumi-genkit.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-24-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r821File),'utf8');
+      assert.ok(txt.includes('4,750.00')&&txt.includes('4,500.00')&&txt.includes('9,250.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('8,945.00')&&txt.includes('96.70%')&&txt.includes('not_measured'),r821File+': contains exact 11-24 R34 R821 keploy+miniswe+oumi+genkit closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
