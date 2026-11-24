@@ -9528,6 +9528,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r800File),'utf8');
       assert.ok(txt.includes('4,950.00')&&txt.includes('4,650.00')&&txt.includes('9,600.00')&&txt.includes('75.00')&&txt.includes('240.00')&&txt.includes('315.00')&&txt.includes('9,285.00')&&txt.includes('96.72%')&&txt.includes('not_measured'),r800File+': contains exact 11-24 R13 R800 paperclip+orca+omniroute+composio closed-form parameters');
     }
+    // 2026-11-24 Night Round 14 (R801: farion1231/cc-switch + DeusData/codebase-memory-mcp + oraios/serena + czlonkowski/n8n-mcp) verification
+    const r801PathA=4690.00+44.5*100.00;
+    assert.equal(r801PathA.toFixed(2),'9140.00','11-24 R14 R801 Path A total');
+    const r801PathC=65.00+2.4*100.00;
+    assert.equal(r801PathC.toFixed(2),'305.00','11-24 R14 R801 Path C total');
+    assert.equal((r801PathA-r801PathC).toFixed(2),'8835.00','11-24 R14 R801 savings vs Path A');
+    assert.equal(((r801PathA-r801PathC)/r801PathA*100).toFixed(2),'96.66','11-24 R14 R801 pct savings vs Path A');
+    for(const r801File of ['workshops/github-trending-radar/docs/cc-switch-codebase-memory-serena-n8n-mcp-selection-faq.md','workshops/github-trending-radar/docs/cc-switch-codebase-memory-serena-n8n-mcp-selection-faq.en.md','assets/github-ai-radar-2026-11-24-r14-r801-cc-switch-codebase-memory-serena-n8n-mcp.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-24-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r801File),'utf8');
+      assert.ok(txt.includes('4,690.00')&&txt.includes('4,450.00')&&txt.includes('9,140.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('8,835.00')&&txt.includes('96.66%')&&txt.includes('not_measured'),r801File+': contains exact 11-24 R14 R801 cc-switch+codebase-memory+serena+n8n-mcp closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
