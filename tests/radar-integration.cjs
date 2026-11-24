@@ -9792,6 +9792,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r824File),'utf8');
       assert.ok(txt.includes('4,930.00')&&txt.includes('4,650.00')&&txt.includes('9,580.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('9,270.00')&&txt.includes('96.76%')&&txt.includes('not_measured'),r824File+': contains exact 11-24 R37 R824 graphiti+promptfoo+adk+casdoor closed-form parameters');
     }
+    // 2026-11-24 Night Round 38 (R825 Milestone: vectorize-io/hindsight + CopilotKit/CopilotKit + nanocoai/nanoclaw + kestra-io/kestra) verification
+    const r825PathA=4980.00+46.5*100.00;
+    assert.equal(r825PathA.toFixed(2),'9630.00','11-24 R38 R825 Path A total');
+    const r825PathC=70.00+2.4*100.00;
+    assert.equal(r825PathC.toFixed(2),'310.00','11-24 R38 R825 Path C total');
+    assert.equal((r825PathA-r825PathC).toFixed(2),'9320.00','11-24 R38 R825 savings vs Path A');
+    assert.equal(((r825PathA-r825PathC)/r825PathA*100).toFixed(2),'96.78','11-24 R38 R825 pct savings vs Path A');
+    for(const r825File of ['workshops/github-trending-radar/docs/hindsight-copilotkit-nanoclaw-kestra-selection-faq.md','workshops/github-trending-radar/docs/hindsight-copilotkit-nanoclaw-kestra-selection-faq.en.md','assets/github-ai-radar-2026-11-24-r38-r825-hindsight-copilotkit-nanoclaw-kestra.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-24-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r825File),'utf8');
+      assert.ok(txt.includes('4,980.00')&&txt.includes('4,650.00')&&txt.includes('9,630.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('9,320.00')&&txt.includes('96.78%')&&txt.includes('not_measured'),r825File+': contains exact 11-24 R38 R825 hindsight+copilotkit+nanoclaw+kestra closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
