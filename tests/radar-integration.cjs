@@ -9682,6 +9682,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r814File),'utf8');
       assert.ok(txt.includes('4,680.00')&&txt.includes('4,450.00')&&txt.includes('9,130.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('8,825.00')&&txt.includes('96.66%')&&txt.includes('not_measured'),r814File+': contains exact 11-24 R27 R814 timon+papercraft+unslop+kubeatlas closed-form parameters');
     }
+    // 2026-11-24 Night Round 28 (R815 Milestone: Jakeschincariol/seed-skill + XY-code1/Nexora + ABLingss/awesome-agent-loops + Jakeschincariol/closer-skill) verification
+    const r815PathA=4810.00+45.5*100.00;
+    assert.equal(r815PathA.toFixed(2),'9360.00','11-24 R28 R815 Path A total');
+    const r815PathC=60.00+2.4*100.00;
+    assert.equal(r815PathC.toFixed(2),'300.00','11-24 R28 R815 Path C total');
+    assert.equal((r815PathA-r815PathC).toFixed(2),'9060.00','11-24 R28 R815 savings vs Path A');
+    assert.equal(((r815PathA-r815PathC)/r815PathA*100).toFixed(2),'96.79','11-24 R28 R815 pct savings vs Path A');
+    for(const r815File of ['workshops/github-trending-radar/docs/seed-closer-nexora-agent-loops-selection-faq.md','workshops/github-trending-radar/docs/seed-closer-nexora-agent-loops-selection-faq.en.md','assets/github-ai-radar-2026-11-24-r28-r815-seed-closer-nexora-agent-loops.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-24-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r815File),'utf8');
+      assert.ok(txt.includes('4,810.00')&&txt.includes('4,550.00')&&txt.includes('9,360.00')&&txt.includes('60.00')&&txt.includes('240.00')&&txt.includes('300.00')&&txt.includes('9,060.00')&&txt.includes('96.79%')&&txt.includes('not_measured'),r815File+': contains exact 11-24 R28 R815 seed+closer+nexora+agent-loops closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
