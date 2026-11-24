@@ -9759,6 +9759,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r821File),'utf8');
       assert.ok(txt.includes('4,750.00')&&txt.includes('4,500.00')&&txt.includes('9,250.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('8,945.00')&&txt.includes('96.70%')&&txt.includes('not_measured'),r821File+': contains exact 11-24 R34 R821 keploy+miniswe+oumi+genkit closed-form parameters');
     }
+    // 2026-11-24 Night Round 35 (R822: The-Vibe-Company/quivr + eosphoros-ai/DB-GPT + arc53/DocsGPT + StarTrail-org/LEANN) verification
+    const r822PathA=4830.00+45.5*100.00;
+    assert.equal(r822PathA.toFixed(2),'9380.00','11-24 R35 R822 Path A total');
+    const r822PathC=65.00+2.4*100.00;
+    assert.equal(r822PathC.toFixed(2),'305.00','11-24 R35 R822 Path C total');
+    assert.equal((r822PathA-r822PathC).toFixed(2),'9075.00','11-24 R35 R822 savings vs Path A');
+    assert.equal(((r822PathA-r822PathC)/r822PathA*100).toFixed(2),'96.75','11-24 R35 R822 pct savings vs Path A');
+    for(const r822File of ['workshops/github-trending-radar/docs/quivr-dbgpt-docsgpt-leann-selection-faq.md','workshops/github-trending-radar/docs/quivr-dbgpt-docsgpt-leann-selection-faq.en.md','assets/github-ai-radar-2026-11-24-r35-r822-quivr-dbgpt-docsgpt-leann.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-24-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r822File),'utf8');
+      assert.ok(txt.includes('4,830.00')&&txt.includes('4,550.00')&&txt.includes('9,380.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('9,075.00')&&txt.includes('96.75%')&&txt.includes('not_measured'),r822File+': contains exact 11-24 R35 R822 quivr+dbgpt+docsgpt+leann closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
