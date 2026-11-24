@@ -41,7 +41,7 @@
 
   const CATEGORY_MAP = {
     "Azure-Infra-Lab": "infra",
-    "ai-infra-research": "infra",
+    "ai-infra-research": "云与 AI 基础设施解决方案架构师（SA）双语选型与定容知识库（624 篇双语指南 #001–#622 · 235 套交互式 H5 沙盘 · 1,237 套 Sizer/7-Card · 630 套 Python 模型）：涵盖 PD 分离（Dynamo + Mooncake）、TP/PP/DP/EP 并行、IB vs RoCEv2 网络、GPU 三水位与 TPM/TPS/PTU 定容及二十大垂直行业神经符号架构。",
     "ai-infra-lab": "infra",
     "azure-usage-realtime-analytics": "infra",
     "azure-openai-faq": "infra",
