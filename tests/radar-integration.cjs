@@ -9858,6 +9858,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r830File),'utf8');
       assert.ok(txt.includes('4,870.00')&&txt.includes('4,600.00')&&txt.includes('9,470.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('9,160.00')&&txt.includes('96.73%')&&txt.includes('not_measured'),r830File+': contains exact 11-24 R43 R830 kong+nacos+infisical+yearning closed-form parameters');
     }
+    // 2026-11-24 Night Round 44 (R831: agentscope-ai/agentscope + labring/FastGPT + mastra-ai/mastra + activepieces/activepieces) verification
+    const r831PathA=4820.00+45.5*100.00;
+    assert.equal(r831PathA.toFixed(2),'9370.00','11-24 R44 R831 Path A total');
+    const r831PathC=65.00+2.4*100.00;
+    assert.equal(r831PathC.toFixed(2),'305.00','11-24 R44 R831 Path C total');
+    assert.equal((r831PathA-r831PathC).toFixed(2),'9065.00','11-24 R44 R831 savings vs Path A');
+    assert.equal(((r831PathA-r831PathC)/r831PathA*100).toFixed(2),'96.74','11-24 R44 R831 pct savings vs Path A');
+    for(const r831File of ['workshops/github-trending-radar/docs/agentscope-fastgpt-mastra-activepieces-selection-faq.md','workshops/github-trending-radar/docs/agentscope-fastgpt-mastra-activepieces-selection-faq.en.md','assets/github-ai-radar-2026-11-24-r44-r831-agentscope-fastgpt-mastra-activepieces.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-24-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r831File),'utf8');
+      assert.ok(txt.includes('4,820.00')&&txt.includes('4,550.00')&&txt.includes('9,370.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('9,065.00')&&txt.includes('96.74%')&&txt.includes('not_measured'),r831File+': contains exact 11-24 R44 R831 agentscope+fastgpt+mastra+activepieces closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
