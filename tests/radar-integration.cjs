@@ -9495,6 +9495,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r797File),'utf8');
       assert.ok(txt.includes('4,520.00')&&txt.includes('4,450.00')&&txt.includes('8,970.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('8,665.00')&&txt.includes('96.60%')&&txt.includes('not_measured'),r797File+': contains exact 11-24 R10 R797 drawioskill+dashboardicons+nextaidrawio+drawdb closed-form parameters');
     }
+    // 2026-11-24 Night Round 11 (R798: ccfos/nightingale + openstatusHQ/openstatus + open-metadata/OpenMetadata + TabularisDB/tabularis) verification
+    const r798PathA=4850.00+46.5*100.00;
+    assert.equal(r798PathA.toFixed(2),'9500.00','11-24 R11 R798 Path A total');
+    const r798PathC=75.00+2.4*100.00;
+    assert.equal(r798PathC.toFixed(2),'315.00','11-24 R11 R798 Path C total');
+    assert.equal((r798PathA-r798PathC).toFixed(2),'9185.00','11-24 R11 R798 savings vs Path A');
+    assert.equal(((r798PathA-r798PathC)/r798PathA*100).toFixed(2),'96.68','11-24 R11 R798 pct savings vs Path A');
+    for(const r798File of ['workshops/github-trending-radar/docs/nightingale-openstatus-openmetadata-tabularis-selection-faq.md','workshops/github-trending-radar/docs/nightingale-openstatus-openmetadata-tabularis-selection-faq.en.md','assets/github-ai-radar-2026-11-24-r11-r798-nightingale-openstatus-openmetadata-tabularis.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-24-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r798File),'utf8');
+      assert.ok(txt.includes('4,850.00')&&txt.includes('4,650.00')&&txt.includes('9,500.00')&&txt.includes('75.00')&&txt.includes('240.00')&&txt.includes('315.00')&&txt.includes('9,185.00')&&txt.includes('96.68%')&&txt.includes('not_measured'),r798File+': contains exact 11-24 R11 R798 nightingale+openstatus+openmetadata+tabularis closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
