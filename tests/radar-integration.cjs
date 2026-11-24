@@ -9847,6 +9847,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r829File),'utf8');
       assert.ok(txt.includes('5,120.00')&&txt.includes('4,650.00')&&txt.includes('9,770.00')&&txt.includes('60.00')&&txt.includes('240.00')&&txt.includes('300.00')&&txt.includes('9,470.00')&&txt.includes('96.93%')&&txt.includes('not_measured'),r829File+': contains exact 11-24 R42 R829 caveman+rtk+ohmypi+aris closed-form parameters');
     }
+    // 2026-11-24 Night Round 43 (R830 Milestone: Kong/kong + alibaba/nacos + Infisical/infisical + cookieY/Yearning) verification
+    const r830PathA=4870.00+46.0*100.00;
+    assert.equal(r830PathA.toFixed(2),'9470.00','11-24 R43 R830 Path A total');
+    const r830PathC=70.00+2.4*100.00;
+    assert.equal(r830PathC.toFixed(2),'310.00','11-24 R43 R830 Path C total');
+    assert.equal((r830PathA-r830PathC).toFixed(2),'9160.00','11-24 R43 R830 savings vs Path A');
+    assert.equal(((r830PathA-r830PathC)/r830PathA*100).toFixed(2),'96.73','11-24 R43 R830 pct savings vs Path A');
+    for(const r830File of ['workshops/github-trending-radar/docs/kong-nacos-infisical-yearning-selection-faq.md','workshops/github-trending-radar/docs/kong-nacos-infisical-yearning-selection-faq.en.md','assets/github-ai-radar-2026-11-24-r43-r830-kong-nacos-infisical-yearning.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-24-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r830File),'utf8');
+      assert.ok(txt.includes('4,870.00')&&txt.includes('4,600.00')&&txt.includes('9,470.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('9,160.00')&&txt.includes('96.73%')&&txt.includes('not_measured'),r830File+': contains exact 11-24 R43 R830 kong+nacos+infisical+yearning closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
