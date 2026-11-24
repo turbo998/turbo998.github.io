@@ -9381,6 +9381,21 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r787File),'utf8');
       assert.ok(txt.includes('4,540.00')&&txt.includes('4,500.00')&&txt.includes('9,040.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('8,735.00')&&txt.includes('96.63%')&&txt.includes('not_measured'),r787File+': contains exact 11-22 R51 R787 moodlemcp+rumarketplace+otodock+remindai closed-form parameters');
     }
+    // 2026-11-24 Sweep & Night Round 1 (R788: erkamyaman/safe-anything + deterministic-machines/deslop-please + Developing-Gamer/agent-sim + lukendeasy/open-diagram) verification
+    const rawHtml1124=fs.readFileSync(path.join(__dirname,'..','workshops','github-trending-radar','evidence','trending-daily-2026-11-24-raw.html'),'utf8').replace(/\r\n/g,'\n');
+    assert.equal(hash(rawHtml1124),'bc6180e17c19491f9d8fe6c425ccb2e78824344e713a6555d432e6c437cab3de','2026-11-24 raw HTML LF sha256');
+    const rawSearch1124Str=fs.readFileSync(path.join(__dirname,'..','workshops','github-trending-radar','evidence','search-new-repos-2026-11-24-raw.json'),'utf8').replace(/\r\n/g,'\n');
+    assert.equal(hash(rawSearch1124Str),'9318369c192895c954be17517f99c8d9e27d68d47736f8000908607314306454','2026-11-24 raw Search API JSON LF sha256');
+    const r788PathA=4620.00+45.5*100.00;
+    assert.equal(r788PathA.toFixed(2),'9170.00','11-24 R1 R788 Path A total');
+    const r788PathC=70.00+2.4*100.00;
+    assert.equal(r788PathC.toFixed(2),'310.00','11-24 R1 R788 Path C total');
+    assert.equal((r788PathA-r788PathC).toFixed(2),'8860.00','11-24 R1 R788 savings vs Path A');
+    assert.equal(((r788PathA-r788PathC)/r788PathA*100).toFixed(2),'96.62','11-24 R1 R788 pct savings vs Path A');
+    for(const r788File of ['workshops/github-trending-radar/docs/safe-anything-deslop-please-agent-sim-open-diagram-selection-faq.md','workshops/github-trending-radar/docs/safe-anything-deslop-please-agent-sim-open-diagram-selection-faq.en.md','assets/github-ai-radar-2026-11-24-r1-r788-safeanything-deslopplease-agentsim-opendiagram.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-24-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r788File),'utf8');
+      assert.ok(txt.includes('4,620.00')&&txt.includes('4,550.00')&&txt.includes('9,170.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,860.00')&&txt.includes('96.62%')&&txt.includes('not_measured'),r788File+': contains exact 11-24 R1 R788 safeanything+deslopplease+agentsim+opendiagram closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
