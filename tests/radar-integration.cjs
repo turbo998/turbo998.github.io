@@ -9517,6 +9517,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r799File),'utf8');
       assert.ok(txt.includes('4,780.00')&&txt.includes('4,600.00')&&txt.includes('9,380.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('9,070.00')&&txt.includes('96.70%')&&txt.includes('not_measured'),r799File+': contains exact 11-24 R12 R799 pageindex+surfsense+unstract+autorag closed-form parameters');
     }
+    // 2026-11-24 Night Round 13 (R800 Historic Milestone: paperclipai/paperclip + stablyai/orca + cheaper-inference/OmniRoute + ComposioHQ/composio) verification
+    const r800PathA=4950.00+46.5*100.00;
+    assert.equal(r800PathA.toFixed(2),'9600.00','11-24 R13 R800 Path A total');
+    const r800PathC=75.00+2.4*100.00;
+    assert.equal(r800PathC.toFixed(2),'315.00','11-24 R13 R800 Path C total');
+    assert.equal((r800PathA-r800PathC).toFixed(2),'9285.00','11-24 R13 R800 savings vs Path A');
+    assert.equal(((r800PathA-r800PathC)/r800PathA*100).toFixed(2),'96.72','11-24 R13 R800 pct savings vs Path A');
+    for(const r800File of ['workshops/github-trending-radar/docs/paperclip-orca-omniroute-composio-selection-faq.md','workshops/github-trending-radar/docs/paperclip-orca-omniroute-composio-selection-faq.en.md','assets/github-ai-radar-2026-11-24-r13-r800-paperclip-orca-omniroute-composio.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-24-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r800File),'utf8');
+      assert.ok(txt.includes('4,950.00')&&txt.includes('4,650.00')&&txt.includes('9,600.00')&&txt.includes('75.00')&&txt.includes('240.00')&&txt.includes('315.00')&&txt.includes('9,285.00')&&txt.includes('96.72%')&&txt.includes('not_measured'),r800File+': contains exact 11-24 R13 R800 paperclip+orca+omniroute+composio closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
