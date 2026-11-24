@@ -9440,6 +9440,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r792File),'utf8');
       assert.ok(txt.includes('4,820.00')&&txt.includes('4,650.00')&&txt.includes('9,470.00')&&txt.includes('75.00')&&txt.includes('240.00')&&txt.includes('315.00')&&txt.includes('9,155.00')&&txt.includes('96.67%')&&txt.includes('not_measured'),r792File+': contains exact 11-24 R5 R792 multicloudmcp+openconstruction+seira+orderpolicy closed-form parameters');
     }
+    // 2026-11-24 Night Round 6 (R793: yb-zhai/agent-memory + sharifli4/org-wiki + ridloabelian/waflare + jasonmello/pocket-design-mcp) verification
+    const r793PathA=4610.00+45.0*100.00;
+    assert.equal(r793PathA.toFixed(2),'9110.00','11-24 R6 R793 Path A total');
+    const r793PathC=65.00+2.4*100.00;
+    assert.equal(r793PathC.toFixed(2),'305.00','11-24 R6 R793 Path C total');
+    assert.equal((r793PathA-r793PathC).toFixed(2),'8805.00','11-24 R6 R793 savings vs Path A');
+    assert.equal(((r793PathA-r793PathC)/r793PathA*100).toFixed(2),'96.65','11-24 R6 R793 pct savings vs Path A');
+    for(const r793File of ['workshops/github-trending-radar/docs/agent-memory-org-wiki-waflare-pocket-design-mcp-selection-faq.md','workshops/github-trending-radar/docs/agent-memory-org-wiki-waflare-pocket-design-mcp-selection-faq.en.md','assets/github-ai-radar-2026-11-24-r6-r793-agentmemory-orgwiki-waflare-pocketdesign.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-24-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r793File),'utf8');
+      assert.ok(txt.includes('4,610.00')&&txt.includes('4,500.00')&&txt.includes('9,110.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('8,805.00')&&txt.includes('96.65%')&&txt.includes('not_measured'),r793File+': contains exact 11-24 R6 R793 agentmemory+orgwiki+waflare+pocketdesign closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
