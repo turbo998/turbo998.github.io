@@ -9605,6 +9605,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r807File),'utf8');
       assert.ok(txt.includes('4,980.00')&&txt.includes('4,650.00')&&txt.includes('9,630.00')&&txt.includes('75.00')&&txt.includes('240.00')&&txt.includes('315.00')&&txt.includes('9,315.00')&&txt.includes('96.73%')&&txt.includes('not_measured'),r807File+': contains exact 11-24 R20 R807 skillspector+ai-infra-guard+aisoc+ghidra-mcp closed-form parameters');
     }
+    // 2026-11-24 Night Round 21 (R808: EverMind-AI/EverOS + strands-agents/harness-sdk + JetBrains/thinkrail + Anil-matcha/suparagent) verification
+    const r808PathA=4840.00+45.5*100.00;
+    assert.equal(r808PathA.toFixed(2),'9390.00','11-24 R21 R808 Path A total');
+    const r808PathC=65.00+2.4*100.00;
+    assert.equal(r808PathC.toFixed(2),'305.00','11-24 R21 R808 Path C total');
+    assert.equal((r808PathA-r808PathC).toFixed(2),'9085.00','11-24 R21 R808 savings vs Path A');
+    assert.equal(((r808PathA-r808PathC)/r808PathA*100).toFixed(2),'96.75','11-24 R21 R808 pct savings vs Path A');
+    for(const r808File of ['workshops/github-trending-radar/docs/everos-strands-thinkrail-suparagent-selection-faq.md','workshops/github-trending-radar/docs/everos-strands-thinkrail-suparagent-selection-faq.en.md','assets/github-ai-radar-2026-11-24-r21-r808-everos-strands-thinkrail-suparagent.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-24-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r808File),'utf8');
+      assert.ok(txt.includes('4,840.00')&&txt.includes('4,550.00')&&txt.includes('9,390.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('9,085.00')&&txt.includes('96.75%')&&txt.includes('not_measured'),r808File+': contains exact 11-24 R21 R808 everos+strands+thinkrail+suparagent closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
