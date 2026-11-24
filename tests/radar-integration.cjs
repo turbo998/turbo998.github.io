@@ -9825,6 +9825,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r827File),'utf8');
       assert.ok(txt.includes('4,750.00')&&txt.includes('4,550.00')&&txt.includes('9,300.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('8,995.00')&&txt.includes('96.72%')&&txt.includes('not_measured'),r827File+': contains exact 11-24 R40 R827 careerops+claudehowto+nuwa+crush closed-form parameters');
     }
+    // 2026-11-24 Night Round 41 (R828: manaflow-ai/cmux + earthtojake/text-to-cad + codexu/note-gen + adbar/trafilatura) verification
+    const r828PathA=4690.00+45.0*100.00;
+    assert.equal(r828PathA.toFixed(2),'9190.00','11-24 R41 R828 Path A total');
+    const r828PathC=65.00+2.4*100.00;
+    assert.equal(r828PathC.toFixed(2),'305.00','11-24 R41 R828 Path C total');
+    assert.equal((r828PathA-r828PathC).toFixed(2),'8885.00','11-24 R41 R828 savings vs Path A');
+    assert.equal(((r828PathA-r828PathC)/r828PathA*100).toFixed(2),'96.68','11-24 R41 R828 pct savings vs Path A');
+    for(const r828File of ['workshops/github-trending-radar/docs/cmux-texttocad-notegen-trafilatura-selection-faq.md','workshops/github-trending-radar/docs/cmux-texttocad-notegen-trafilatura-selection-faq.en.md','assets/github-ai-radar-2026-11-24-r41-r828-cmux-texttocad-notegen-trafilatura.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-24-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r828File),'utf8');
+      assert.ok(txt.includes('4,690.00')&&txt.includes('4,500.00')&&txt.includes('9,190.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('8,885.00')&&txt.includes('96.68%')&&txt.includes('not_measured'),r828File+': contains exact 11-24 R41 R828 cmux+texttocad+notegen+trafilatura closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
