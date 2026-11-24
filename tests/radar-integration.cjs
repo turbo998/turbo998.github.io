@@ -9968,6 +9968,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r840File),'utf8');
       assert.ok(txt.includes('4,840.00')&&txt.includes('4,550.00')&&txt.includes('9,390.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('9,085.00')&&txt.includes('96.75%')&&txt.includes('not_measured'),r840File+': contains exact 11-24 R53 R840 oem+mira+shorts+ats closed-form parameters');
     }
+    // 2026-11-24 Night Round 54 (R841: fumbdendade19718/blender-ai-copilot-desk + baiblinocun1986/blender-ai-copilot-hub + shnfatih-hash/devlet-arsivleri-soykutugu + byttrade/bytx-skills) verification
+    const r841PathA=4660.00+45.0*100.00;
+    assert.equal(r841PathA.toFixed(2),'9160.00','11-24 R54 R841 Path A total');
+    const r841PathC=60.00+2.4*100.00;
+    assert.equal(r841PathC.toFixed(2),'300.00','11-24 R54 R841 Path C total');
+    assert.equal((r841PathA-r841PathC).toFixed(2),'8860.00','11-24 R54 R841 savings vs Path A');
+    assert.equal(((r841PathA-r841PathC)/r841PathA*100).toFixed(2),'96.72','11-24 R54 R841 pct savings vs Path A');
+    for(const r841File of ['workshops/github-trending-radar/docs/desk-hub-archival-bytx-selection-faq.md','workshops/github-trending-radar/docs/desk-hub-archival-bytx-selection-faq.en.md','assets/github-ai-radar-2026-11-24-r54-r841-desk-hub-archival-bytx.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-24-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r841File),'utf8');
+      assert.ok(txt.includes('4,660.00')&&txt.includes('4,500.00')&&txt.includes('9,160.00')&&txt.includes('60.00')&&txt.includes('240.00')&&txt.includes('300.00')&&txt.includes('8,860.00')&&txt.includes('96.72%')&&txt.includes('not_measured'),r841File+': contains exact 11-24 R54 R841 desk+hub+archival+bytx closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
