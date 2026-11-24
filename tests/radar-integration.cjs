@@ -9869,6 +9869,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r831File),'utf8');
       assert.ok(txt.includes('4,820.00')&&txt.includes('4,550.00')&&txt.includes('9,370.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('9,065.00')&&txt.includes('96.74%')&&txt.includes('not_measured'),r831File+': contains exact 11-24 R44 R831 agentscope+fastgpt+mastra+activepieces closed-form parameters');
     }
+    // 2026-11-24 Night Round 45 (R832: zhayujie/CowAgent + AstrBotDevs/AstrBot + agentscope-ai/QwenPaw + modelscope/FunASR) verification
+    const r832PathA=4760.00+45.5*100.00;
+    assert.equal(r832PathA.toFixed(2),'9310.00','11-24 R45 R832 Path A total');
+    const r832PathC=65.00+2.4*100.00;
+    assert.equal(r832PathC.toFixed(2),'305.00','11-24 R45 R832 Path C total');
+    assert.equal((r832PathA-r832PathC).toFixed(2),'9005.00','11-24 R45 R832 savings vs Path A');
+    assert.equal(((r832PathA-r832PathC)/r832PathA*100).toFixed(2),'96.72','11-24 R45 R832 pct savings vs Path A');
+    for(const r832File of ['workshops/github-trending-radar/docs/cowagent-astrbot-qwenpaw-funasr-selection-faq.md','workshops/github-trending-radar/docs/cowagent-astrbot-qwenpaw-funasr-selection-faq.en.md','assets/github-ai-radar-2026-11-24-r45-r832-cowagent-astrbot-qwenpaw-funasr.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-24-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r832File),'utf8');
+      assert.ok(txt.includes('4,760.00')&&txt.includes('4,550.00')&&txt.includes('9,310.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('9,005.00')&&txt.includes('96.72%')&&txt.includes('not_measured'),r832File+': contains exact 11-24 R45 R832 cowagent+astrbot+qwenpaw+funasr closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
