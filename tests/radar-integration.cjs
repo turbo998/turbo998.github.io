@@ -9539,6 +9539,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r801File),'utf8');
       assert.ok(txt.includes('4,690.00')&&txt.includes('4,450.00')&&txt.includes('9,140.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('8,835.00')&&txt.includes('96.66%')&&txt.includes('not_measured'),r801File+': contains exact 11-24 R14 R801 cc-switch+codebase-memory+serena+n8n-mcp closed-form parameters');
     }
+    // 2026-11-24 Night Round 15 (R802: MemPalace/mempalace + topoteretes/cognee + upstash/context7 + KnockOutEZ/wigolo) verification
+    const r802PathA=4730.00+45.5*100.00;
+    assert.equal(r802PathA.toFixed(2),'9280.00','11-24 R15 R802 Path A total');
+    const r802PathC=70.00+2.4*100.00;
+    assert.equal(r802PathC.toFixed(2),'310.00','11-24 R15 R802 Path C total');
+    assert.equal((r802PathA-r802PathC).toFixed(2),'8970.00','11-24 R15 R802 savings vs Path A');
+    assert.equal(((r802PathA-r802PathC)/r802PathA*100).toFixed(2),'96.66','11-24 R15 R802 pct savings vs Path A');
+    for(const r802File of ['workshops/github-trending-radar/docs/mempalace-cognee-context7-wigolo-selection-faq.md','workshops/github-trending-radar/docs/mempalace-cognee-context7-wigolo-selection-faq.en.md','assets/github-ai-radar-2026-11-24-r15-r802-mempalace-cognee-context7-wigolo.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-24-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r802File),'utf8');
+      assert.ok(txt.includes('4,730.00')&&txt.includes('4,550.00')&&txt.includes('9,280.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,970.00')&&txt.includes('96.66%')&&txt.includes('not_measured'),r802File+': contains exact 11-24 R15 R802 mempalace+cognee+context7+wigolo closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
