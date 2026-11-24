@@ -9396,6 +9396,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r788File),'utf8');
       assert.ok(txt.includes('4,620.00')&&txt.includes('4,550.00')&&txt.includes('9,170.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,860.00')&&txt.includes('96.62%')&&txt.includes('not_measured'),r788File+': contains exact 11-24 R1 R788 safeanything+deslopplease+agentsim+opendiagram closed-form parameters');
     }
+    // 2026-11-24 Night Round 2 (R789: w1ccc/sap-data-mcp + EL4CTEO/shrink-anything + CybeDefend/cybedefend + DebugDyanmo/skillaudit) verification
+    const r789PathA=4740.00+46.0*100.00;
+    assert.equal(r789PathA.toFixed(2),'9340.00','11-24 R2 R789 Path A total');
+    const r789PathC=75.00+2.4*100.00;
+    assert.equal(r789PathC.toFixed(2),'315.00','11-24 R2 R789 Path C total');
+    assert.equal((r789PathA-r789PathC).toFixed(2),'9025.00','11-24 R2 R789 savings vs Path A');
+    assert.equal(((r789PathA-r789PathC)/r789PathA*100).toFixed(2),'96.63','11-24 R2 R789 pct savings vs Path A');
+    for(const r789File of ['workshops/github-trending-radar/docs/sap-data-mcp-shrink-anything-cybedefend-skillaudit-selection-faq.md','workshops/github-trending-radar/docs/sap-data-mcp-shrink-anything-cybedefend-skillaudit-selection-faq.en.md','assets/github-ai-radar-2026-11-24-r2-r789-sapdatamcp-shrinkanything-cybedefend-skillaudit.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-24-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r789File),'utf8');
+      assert.ok(txt.includes('4,740.00')&&txt.includes('4,600.00')&&txt.includes('9,340.00')&&txt.includes('75.00')&&txt.includes('240.00')&&txt.includes('315.00')&&txt.includes('9,025.00')&&txt.includes('96.63%')&&txt.includes('not_measured'),r789File+': contains exact 11-24 R2 R789 sapdatamcp+shrinkanything+cybedefend+skillaudit closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
