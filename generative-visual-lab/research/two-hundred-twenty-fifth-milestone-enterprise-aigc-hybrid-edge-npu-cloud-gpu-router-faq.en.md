@@ -49,9 +49,9 @@
 flowchart TD
     A["Creator Triggers Visual Operation in Enterprise Studio"] --> B["Client Hardware Probe: Check WebGPU / WebNN NPU TOPS"]
     B --> C{"Operation Type & Data Classification?"}
-    C -->|"Interactive Loop: SAM-2 Click / Normal Relight / 512px 4-Step Draft"| D["L1 Local Edge Execution (WebNN NPU / WebGPU)<br/>38ms Real-Time Response · $0.00 Cloud Cost (82.4% Offload)"]
-    C -->|"Confidential Unannounced Prototype / Raw Street PII"| E["L2 Zero-Egress Edge Isolation: Keep SKU RGB in Local RAM<br/>Upload Only 14KB Anonymized Binary Silhouette to Cloud"]
-    C -->|"Final Approval: Promote Draft #7 to 4K Brand Master"| F["L3 Structural Latent Handoff: Upload 18KB Low-Pass Latent + Depth<br/>Cloud AKS Flux.1-dev Resumes at Step 10 + HSM C2PA Sign"]
+    C -->|Interactive Loop: SAM-2 Click / Normal Relight / 512px 4-Step Draft| D["L1 Local Edge Execution (WebNN NPU / WebGPU)<br/>38ms Real-Time Response · $0.00 Cloud Cost (82.4% Offload)"]
+    C -->|Confidential Unannounced Prototype / Raw Street PII| E["L2 Zero-Egress Edge Isolation: Keep SKU RGB in Local RAM<br/>Upload Only 14KB Anonymized Binary Silhouette to Cloud"]
+    C -->|Final Approval: Promote Draft #7 to 4K Brand Master| F["L3 Structural Latent Handoff: Upload 18KB Low-Pass Latent + Depth<br/>Cloud AKS Flux.1-dev Resumes at Step 10 + HSM C2PA Sign"]
     D & E & F --> G["Final WebGPU Canvas Composite (-78.7% Blended Cloud Spend, +$2.96M/Yr Saved)"]
 ```
 
@@ -63,7 +63,7 @@ flowchart LR
         ONNX --> RAM["Confidential SKU RGB Locked in Local RAM"]
     end
     subgraph Bridge["2. 18KB Latent & Silhouette Bridge"]
-        ONNX -->|"Approved Draft #7 Only"| PKT["18KB Packet:<br/>Low-Pass Latent + Anonymized Depth/Mask"]
+        ONNX -->|Approved Draft #7 Only| PKT["18KB Packet:<br/>Low-Pass Latent + Anonymized Depth/Mask"]
     end
     subgraph Cloud["3. Cloud AKS H100 4K Master Tier (17.6% Traffic)"]
         PKT --> FLUX["AKS Flux.1-dev + Brand LoRA:<br/>Resume at Step 10/28 for 4K PBR Detail"]

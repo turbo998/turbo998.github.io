@@ -48,8 +48,8 @@ flowchart TD
     A["输入高管访谈 A-Roll 原片 + 品牌 BGM 音乐"] --> B["第1步: WhisperX 音素级对齐<br/>自动剔除 um/uh 水词与 >450ms 死静音并标记跳切点"]
     B --> C["第2步: LLM 提取每段发言的视觉语义实体与动作槽位"]
     C --> D{"在 SigLIP-2 企业 DAM 实拍分镜库中最高相似度 >= 0.78?"}
-    D -->|"命中真实库存 88.5% 槽位"| E["调取 Top-3 企业真实工厂/产品实拍分镜 ($0.0002)<br/>V2 放首选镜头，V3/V4 放静音备选镜头"]
-    D -->|"未命中: 属于抽象比喻概念 11.5% 槽位"| F["路由至 AKS Wan 2.1 生成 5s 科技概念空镜补缺"]
+    D -->|命中真实库存 88.5% 槽位| E["调取 Top-3 企业真实工厂/产品实拍分镜 ($0.0002)<br/>V2 放首选镜头，V3/V4 放静音备选镜头"]
+    D -->|未命中: 属于抽象比喻概念 11.5% 槽位| F["路由至 AKS Wan 2.1 生成 5s 科技概念空镜补缺"]
     E & F --> G["第3步: Librosa BGM 鼓点磁吸 (±12ms) + -180ms J-Cut / +220ms L-Cut"]
     G --> H["第4步: 导出 6轨 OpenTimelineIO (.otio) / FCPXML 原生工程直通 Premiere/DaVinci"]
 ```
@@ -61,8 +61,8 @@ flowchart LR
         AROLL["访谈 A-Roll"] --> WX["WhisperX 去水词/静音<br/>+ 跳切点语义槽位提取"]
     end
     subgraph Broll["2. 先搜后生混合 B-Roll 引擎"]
-        WX -->|"88.5% 命中"| DAM["SigLIP-2 企业 DAM 实拍库:<br/>返回 Top-3 真实分镜"]
-        WX -->|"11.5% 补缺"| WAN["AKS Wan 2.1:<br/>生成抽象概念空镜"]
+        WX -->|88.5% 命中| DAM["SigLIP-2 企业 DAM 实拍库:<br/>返回 Top-3 真实分镜"]
+        WX -->|11.5% 补缺| WAN["AKS Wan 2.1:<br/>生成抽象概念空镜"]
     end
     subgraph NLE["3. 鼓点磁吸与 6轨工程编译器"]
         DAM & WAN --> BEAT["Librosa ±12ms 鼓点磁吸<br/>+ J-Cut/L-Cut + 侧链关键帧"]

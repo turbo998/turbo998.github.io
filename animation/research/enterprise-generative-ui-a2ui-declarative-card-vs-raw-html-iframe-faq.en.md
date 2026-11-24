@@ -48,9 +48,9 @@
 ```mermaid
 flowchart TD
     A["User Sends Query or Action Request to Enterprise Agent"] --> B{"Required Visual Interaction Modality?"}
-    B -->|"Dashboards / Approval Cards / KPI Forms 88% Traffic"| C["Tier 1: Streaming A2UI / AG-UI Declarative JSON Registry<br/>180-Token Typed Props -> Pre-Compiled Host React/D3/Rive (165ms)"]
-    B -->|"Ad-Hoc BI Charts / Cloud & Lineage Topologies 10% Traffic"| D["Tier 2: Declarative Visualization Grammar DSL<br/>Vega-Lite / ELK.js JSON AST -> Client SVG/Canvas Engine (210ms)"]
-    B -->|"Bespoke Interactive Simulators / Custom Calculators 2% Traffic"| E["Tier 3: Pre-Warmed Null-Origin Dual-Iframe MCP App Sandbox<br/>Enforce CSP default-src 'none' + JSON-RPC 2.0 Bridge (320ms)"]
+    B -->|Dashboards / Approval Cards / KPI Forms 88% Traffic| C["Tier 1: Streaming A2UI / AG-UI Declarative JSON Registry<br/>180-Token Typed Props -> Pre-Compiled Host React/D3/Rive (165ms)"]
+    B -->|Ad-Hoc BI Charts / Cloud & Lineage Topologies 10% Traffic| D["Tier 2: Declarative Visualization Grammar DSL<br/>Vega-Lite / ELK.js JSON AST -> Client SVG/Canvas Engine (210ms)"]
+    B -->|Bespoke Interactive Simulators / Custom Calculators 2% Traffic| E["Tier 3: Pre-Warmed Null-Origin Dual-Iframe MCP App Sandbox<br/>Enforce CSP default-src 'none' + JSON-RPC 2.0 Bridge (320ms)"]
     C & D & E --> F["User Interacts with Widget -> Emits Typed Action Event to Agent (0ms Local Update)"]
 ```
 
@@ -61,11 +61,11 @@ flowchart LR
         LLM["Enterprise Agent"] --> SCH["Typed Tool / JSON Schema Stream"]
     end
     subgraph HostUI["2. Native & Declarative DSL Layer (98%)"]
-        SCH -->|"Tier 1: 88%"| A2UI["A2UI Host Widget Registry:<br/>KPI / Form / Rive State Machine (165ms)"]
-        SCH -->|"Tier 2: 10%"| DSL["Vega-Lite & ELK.js Engine:<br/>60fps Vector Charts & Topologies (210ms)"]
+        SCH -->|Tier 1: 88%| A2UI["A2UI Host Widget Registry:<br/>KPI / Form / Rive State Machine (165ms)"]
+        SCH -->|Tier 2: 10%| DSL["Vega-Lite & ELK.js Engine:<br/>60fps Vector Charts & Topologies (210ms)"]
     end
     subgraph Sandbox["3. Zero-Trust MCP App Sandbox (2%)"]
-        SCH -->|"Tier 3: 2%"| CSP["Null-Origin Dual Iframe:<br/>CSP default-src 'none' (320ms)"]
+        SCH -->|Tier 3: 2%| CSP["Null-Origin Dual Iframe:<br/>CSP default-src 'none' (320ms)"]
     end
 ```
 

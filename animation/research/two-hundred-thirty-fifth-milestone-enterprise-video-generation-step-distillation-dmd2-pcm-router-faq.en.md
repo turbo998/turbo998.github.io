@@ -50,9 +50,9 @@
 flowchart TD
     A["Ingest Video/Image Generation Request (Prompt + ControlNet + Tenant Brand LoRA)"] --> B["Step 1: 2ms Prompt Motion-Entropy & Kinematic Complexity Probe<br/>Score Subject Count, Camera Pan Velocity & Hand/Fluid Complexity E_motion"]
     B --> C{"Motion Complexity Score E_motion?"}
-    C -->|"E_motion < 0.45 68% of Traffic<br/>B-Roll / Product Turntables / Drafts"| D["Tier 1: Activate 4-Step DMD2 / CausVid Adapter (CFG=1.0)<br/>4 NFE Total (5.2s Latency, $0.015/clip)"]
-    C -->|"0.45 <= E_motion <= 0.75 22% of Traffic<br/>Articulated Walk / Dance / Medium Pan"| E["Tier 2: Activate 8-Step Phased Consistency Adapter (PCM-LoRA)<br/>4-Sub-Phase Trajectory Lock (8.4s Latency, $0.032/clip)"]
-    C -->|"E_motion > 0.75 10% of Traffic<br/>Multi-Hand Close-Up / Combat / Fluid Splash"| F["Tier 3: Bypass Distill Adapter -> Run 28-Step Teacher + TeaCache<br/>Maximum Kinematic Precision ($0.11/clip)"]
+    C -->|E_motion < 0.45 68% of Traffic<br/>B-Roll / Product Turntables / Drafts| D["Tier 1: Activate 4-Step DMD2 / CausVid Adapter (CFG=1.0)<br/>4 NFE Total (5.2s Latency, $0.015/clip)"]
+    C -->|0.45 <= E_motion <= 0.75 22% of Traffic<br/>Articulated Walk / Dance / Medium Pan| E["Tier 2: Activate 8-Step Phased Consistency Adapter (PCM-LoRA)<br/>4-Sub-Phase Trajectory Lock (8.4s Latency, $0.032/clip)"]
+    C -->|E_motion > 0.75 10% of Traffic<br/>Multi-Hand Close-Up / Combat / Fluid Splash| F["Tier 3: Bypass Distill Adapter -> Run 28-Step Teacher + TeaCache<br/>Maximum Kinematic Precision ($0.11/clip)"]
     D & E & F --> G["Single 28GB Frozen Base in H100 VRAM + Orthogonal Brand-LoRA Merge (14.2x-18.5x Speedup)"]
 ```
 
@@ -64,9 +64,9 @@ flowchart LR
     end
     subgraph SharedVRAM["2. Single-Base H100 VRAM Pool (28.2GB)"]
         BASE["Single Frozen 28GB Base DiT<br/>(Wan 2.1 14B / Flux.1-dev)"]
-        CLS -->|"Tier 1: 68%"| L4["0ms Hot-Mount 180MB 4-Step DMD2-LoRA"]
-        CLS -->|"Tier 2: 22%"| L8["0ms Hot-Mount 180MB 8-Step PCM-LoRA"]
-        CLS -->|"Tier 3: 10%"| L28["Native 28-Step + TeaCache"]
+        CLS -->|Tier 1: 68%| L4["0ms Hot-Mount 180MB 4-Step DMD2-LoRA"]
+        CLS -->|Tier 2: 22%| L8["0ms Hot-Mount 180MB 8-Step PCM-LoRA"]
+        CLS -->|Tier 3: 10%| L28["Native 28-Step + TeaCache"]
     end
     subgraph Ortho["3. Orthogonal Subspace Merger"]
         BASE & L4 & L8 & L28 --> MERGE["Orthogonal Projection with Tenant Brand-LoRA<br/>(Zero Over-Burn · 5.2s · +$3.28M/Yr)"]

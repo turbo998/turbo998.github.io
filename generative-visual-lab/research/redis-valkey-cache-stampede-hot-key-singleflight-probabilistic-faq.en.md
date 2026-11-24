@@ -38,9 +38,9 @@ In **million-QPS distributed caching tiers (Redis Cluster, Valkey, Dragonfly)** 
 ```mermaid
 flowchart TD
     A[Distributed Cache High-Concurrency Scenario] --> B{Primary Failure Vector?}
-    B -->|"500k Pre-Warmed Keys Expiring at the Same Second"| C[Enforce Jittered TTL × U 0.85,1.15<br/>+ Soft-TTL Stale-While-Revalidate]
-    B -->|"Expensive DB Query Δ>50ms Hit by 85k QPS on Expiry"| D[✅ Enable XFetch Probabilistic Early Refresh +<br/>In-Process Singleflight + Cross-Pod Redis Lease]
-    B -->|"Single Viral Key >100k QPS Saturating One Redis Shard"| E[✅ Enable HeavyKeeper 10ms Hot-Key Sketch +<br/>RESP3 CLIENT TRACKING In-Process L1 Near-Cache]
+    B -->|500k Pre-Warmed Keys Expiring at the Same Second| C[Enforce Jittered TTL × U 0.85,1.15<br/>+ Soft-TTL Stale-While-Revalidate]
+    B -->|Expensive DB Query Δ>50ms Hit by 85k QPS on Expiry| D[✅ Enable XFetch Probabilistic Early Refresh +<br/>In-Process Singleflight + Cross-Pod Redis Lease]
+    B -->|Single Viral Key >100k QPS Saturating One Redis Shard| E[✅ Enable HeavyKeeper 10ms Hot-Key Sketch +<br/>RESP3 CLIENT TRACKING In-Process L1 Near-Cache]
 ```
 
 ### 3.2 `XFetch` + `Singleflight` + `RESP3` L1 Near-Cache Pipeline

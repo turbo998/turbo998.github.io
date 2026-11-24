@@ -50,9 +50,9 @@
 flowchart TD
     A["接收图像/视频生成请求 (Prompt + ControlNet / 参考图)"] --> B["第1步: 2ms 提示词运动熵与几何复杂度探针<br/>评估主体数量、相机角速度、手部/流体精细度评分 E_motion"]
     B --> C{"运动复杂度评分 E_motion 与业务场景?"}
-    C -->|"E_motion < 0.45 占 68% 流量<br/>B-Roll 空镜 / 商品缓转 / 分镜草稿"| D["Tier 1: 激活 4-Step DMD2 / CausVid 适配器 (CFG=1.0)<br/>仅需 4 NFE (5.2s 极速出片, $0.015/条)"]
-    C -->|"0.45 <= E_motion <= 0.75 占 22% 流量<br/>单人走秀 / 舞蹈 / 中速运镜"| E["Tier 2: 激活 8-Step Phased Consistency (PCM-LoRA)<br/>4 段子轨迹约束 (8.4s 出片, $0.032/条)"]
-    C -->|"E_motion > 0.75 占 10% 流量<br/>双人武打 / 十指特写 / 高速流体飞溅"| F["Tier 3: 卸载蒸馏适配器，回退 28-Step 原生底座 + TeaCache<br/>保障极限运动零崩坏 ($0.11/条)"]
+    C -->|E_motion < 0.45 占 68% 流量<br/>B-Roll 空镜 / 商品缓转 / 分镜草稿| D["Tier 1: 激活 4-Step DMD2 / CausVid 适配器 (CFG=1.0)<br/>仅需 4 NFE (5.2s 极速出片, $0.015/条)"]
+    C -->|0.45 <= E_motion <= 0.75 占 22% 流量<br/>单人走秀 / 舞蹈 / 中速运镜| E["Tier 2: 激活 8-Step Phased Consistency (PCM-LoRA)<br/>4 段子轨迹约束 (8.4s 出片, $0.032/条)"]
+    C -->|E_motion > 0.75 占 10% 流量<br/>双人武打 / 十指特写 / 高速流体飞溅| F["Tier 3: 卸载蒸馏适配器，回退 28-Step 原生底座 + TeaCache<br/>保障极限运动零崩坏 ($0.11/条)"]
     D & E & F --> G["单张 H100 共享唯一 28GB 底座 + 正交挂载业务品牌 LoRA (综合提速 14.2x-18.5x)"]
 ```
 
@@ -64,9 +64,9 @@ flowchart LR
     end
     subgraph SharedVRAM["2. H100 单底座零 OOM 显存池 (28.2GB)"]
         BASE["唯一常驻 28GB 冻结基础底座<br/>(Wan 2.1 14B / Flux.1-dev)"]
-        CLS -->|"Tier 1: 68%"| L4["热挂载 180MB 4步 DMD2-LoRA (4 NFE)"]
-        CLS -->|"Tier 2: 22%"| L8["热挂载 180MB 8步 PCM-LoRA (8 NFE)"]
-        CLS -->|"Tier 3: 10%"| L28["原生 28步 + TeaCache"]
+        CLS -->|Tier 1: 68%| L4["热挂载 180MB 4步 DMD2-LoRA (4 NFE)"]
+        CLS -->|Tier 2: 22%| L8["热挂载 180MB 8步 PCM-LoRA (8 NFE)"]
+        CLS -->|Tier 3: 10%| L28["原生 28步 + TeaCache"]
     end
     subgraph Ortho["3. 正交子空间融合输出"]
         BASE & L4 & L8 & L28 --> MERGE["正交投影合入企业商品 Brand-LoRA<br/>(0 过曝 · 5.2s 交付 · 年省 +$3.28M)"]

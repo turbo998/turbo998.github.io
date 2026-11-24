@@ -40,10 +40,10 @@ According to IATA, global airport aprons suffer over **27,000 ground-damage inci
 ```mermaid
 flowchart TD
     A[Airport Apron Turnaround & Aerobridge Scenario] --> B{Stand Category & Weather SLA?}
-    B -->|"Regional Daytime Remote Stand"| C[Manual Marshaller + Mobile Stairs]
-    B -->|"International Hub Code E/F Widebody & MARS Stand<br/>24/7 Night-Rain 45-Min Turnaround SLA"| D{Spatial Sensing & Control Stack?}
-    D -->|"2D Apron CCTV + Manual Joystick Aerobridge"| E[❌ Baseline: ±1.45m Wet-Apron Glare Drift<br/>185s Manual Docking & $1.2M CFRP Door/Nacelle Strikes]
-    D -->|"Tri-LiDAR + De-Glared 3DGS + 6DoF Door CAD ICP"| F[✅ Recommended: ±3.5mm 48s Dual Auto-Dock +<br/>ICAO 7.5m Wingtip BVH + 300mm GSE Hydraulic Interlock]
+    B -->|Regional Daytime Remote Stand| C[Manual Marshaller + Mobile Stairs]
+    B -->|International Hub Code E/F Widebody & MARS Stand<br/>24/7 Night-Rain 45-Min Turnaround SLA| D{Spatial Sensing & Control Stack?}
+    D -->|2D Apron CCTV + Manual Joystick Aerobridge| E[❌ Baseline: ±1.45m Wet-Apron Glare Drift<br/>185s Manual Docking & $1.2M CFRP Door/Nacelle Strikes]
+    D -->|Tri-LiDAR + De-Glared 3DGS + 6DoF Door CAD ICP| F[✅ Recommended: ±3.5mm 48s Dual Auto-Dock +<br/>ICAO 7.5m Wingtip BVH + 300mm GSE Hydraulic Interlock]
 ```
 
 ### 3.2 All-Weather LiDAR + 3DGS Gate Twin & GSE Shield Architecture

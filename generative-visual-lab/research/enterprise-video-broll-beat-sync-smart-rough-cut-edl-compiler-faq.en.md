@@ -48,8 +48,8 @@ flowchart TD
     A["Ingest 10-Min Executive Talking-Head A-Roll + Licensed Brand BGM"] --> B["Step 1: WhisperX Phoneme Alignment<br/>Strip um/uh Fillers & >450ms Dead Air + Flag Jump-Cut Concealment Slots"]
     B --> C["Step 2: LLM Extracts Visual Entity & Action Query per Utterance Slot"]
     C --> D{"Top Cosine Similarity in SigLIP-2 Enterprise DAM Index >= 0.78?"}
-    D -->|"Hit Real Archive Footage 88.5% of Slots"| E["Retrieve Top-3 Real Company/Product Shots ($0.0002)<br/>Place Rank #1 on Track V2 & Muted Rank #2/#3 on Tracks V3/V4"]
-    D -->|"Miss: Abstract Conceptual Metaphor 11.5% of Slots"| F["Dispatch Async 5s Conceptual B-Roll Job to AKS Wan 2.1 Pool"]
+    D -->|Hit Real Archive Footage 88.5% of Slots| E["Retrieve Top-3 Real Company/Product Shots ($0.0002)<br/>Place Rank #1 on Track V2 & Muted Rank #2/#3 on Tracks V3/V4"]
+    D -->|Miss: Abstract Conceptual Metaphor 11.5% of Slots| F["Dispatch Async 5s Conceptual B-Roll Job to AKS Wan 2.1 Pool"]
     E & F --> G["Step 3: Librosa Downbeat Snap (+/-12ms) + -180ms J-Cut / +220ms L-Cut"]
     G --> H["Step 4: Compile 6-Track OpenTimelineIO (.otio) & FCPXML 1.11 for Premiere/DaVinci"]
 ```
@@ -61,8 +61,8 @@ flowchart LR
         AROLL["Talking-Head A-Roll"] --> WX["WhisperX Filler Removal<br/>+ Semantic Slot Extraction"]
     end
     subgraph Broll["2. Hybrid Search-First B-Roll"]
-        WX -->|"88.5% Hit"| DAM["SigLIP-2 Enterprise DAM:<br/>Top-3 Real Shot Candidates"]
-        WX -->|"11.5% Fill"| WAN["AKS Wan 2.1 Pool:<br/>Abstract Metaphor B-Roll"]
+        WX -->|88.5% Hit| DAM["SigLIP-2 Enterprise DAM:<br/>Top-3 Real Shot Candidates"]
+        WX -->|11.5% Fill| WAN["AKS Wan 2.1 Pool:<br/>Abstract Metaphor B-Roll"]
     end
     subgraph NLE["3. Beat-Snap & 6-Track NLE Compiler"]
         DAM & WAN --> BEAT["Librosa ±12ms Beat-Snap<br/>+ J-Cut/L-Cut + Ducking Keyframes"]

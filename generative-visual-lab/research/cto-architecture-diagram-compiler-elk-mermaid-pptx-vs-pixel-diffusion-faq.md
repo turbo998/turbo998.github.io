@@ -44,9 +44,9 @@
 ```mermaid
 flowchart TD
     A[架构师需要生成云架构图 / CTO 汇报材料] --> B{交付物核心诉求?}
-    B -->|"标书与架构评审文档<br/>需 Draw.io / SVG 矢量可编辑"| C[IaC 代码或需求 -> LLM 拓扑 JSON AST<br/>+ ELK.js 正交布线 + 官方 Azure/AWS SVG 图标库]
-    B -->|"高管董事会 .pptx 幻灯片<br/>需原生文本框可随时改字"| D[JSON Slide Spec + ELK 网格坐标<br/>+ PptxGenJS 原生 Shape/Table + 局部无字 AI 配图槽]
-    B -->|"客户现场技术沙盘演示<br/>需交互演练流量路由与容灾"| E[同源 JSON AST -> React Flow / SVG 动态画布<br/>+ 60fps 请求粒子流动画 + 点击故障注入开关]
+    B -->|标书与架构评审文档<br/>需 Draw.io / SVG 矢量可编辑| C[IaC 代码或需求 -> LLM 拓扑 JSON AST<br/>+ ELK.js 正交布线 + 官方 Azure/AWS SVG 图标库]
+    B -->|高管董事会 .pptx 幻灯片<br/>需原生文本框可随时改字| D[JSON Slide Spec + ELK 网格坐标<br/>+ PptxGenJS 原生 Shape/Table + 局部无字 AI 配图槽]
+    B -->|客户现场技术沙盘演示<br/>需交互演练流量路由与容灾| E[同源 JSON AST -> React Flow / SVG 动态画布<br/>+ 60fps 请求粒子流动画 + 点击故障注入开关]
 ```
 
 ### 3.2 四阶段“AST → ELK.js → 官方图标 → 多端可编辑导出”编译器架构图

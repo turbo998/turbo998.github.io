@@ -43,9 +43,9 @@
 ```mermaid
 flowchart TD
     A[Studio Needs 3D Skeletal Animation .fbx / .vrm] --> B{Actor Count & Occlusion Complexity?}
-    B -->|"Solo Actor: NPC Locomotion / Dance / VTuber / Emotes<br/>85% of Studio Volume"| C[Monocular Pipeline: DPVO + GVHMR Gravity-World SMPL-X<br/>+ HaMeR 256px 3D Hands + Two-Bone Foot IK Lock $0.015/clip]
-    B -->|"2+ Actors Grappling: Martial Arts / Sports / Hugs<br/>12% of Studio Volume"| D[Low-Cost Multi-View: 4 Audio-Synced iPhones<br/>+ 4-View RANSAC Triangulation + Capsule Anti-Penetration Solver $0.085/clip]
-    B -->|"Extreme High-G Stunts: 240fps Triple Backflips / Wirework<br/>3% of Studio Volume"| E[Hardware Mocap Stage: 240Hz Vicon Optical Stage<br/>or Xsens Inertial Suit]
+    B -->|Solo Actor: NPC Locomotion / Dance / VTuber / Emotes<br/>85% of Studio Volume| C[Monocular Pipeline: DPVO + GVHMR Gravity-World SMPL-X<br/>+ HaMeR 256px 3D Hands + Two-Bone Foot IK Lock $0.015/clip]
+    B -->|2+ Actors Grappling: Martial Arts / Sports / Hugs<br/>12% of Studio Volume| D[Low-Cost Multi-View: 4 Audio-Synced iPhones<br/>+ 4-View RANSAC Triangulation + Capsule Anti-Penetration Solver $0.085/clip]
+    B -->|Extreme High-G Stunts: 240fps Triple Backflips / Wirework<br/>3% of Studio Volume| E[Hardware Mocap Stage: 240Hz Vicon Optical Stage<br/>or Xsens Inertial Suit]
 ```
 
 ### 3.2 4-Stage "GVHMR World + HaMeR Hands + Foot IK + UE5 Retarget" Pipeline

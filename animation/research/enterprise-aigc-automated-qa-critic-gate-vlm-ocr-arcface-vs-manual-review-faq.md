@@ -46,11 +46,11 @@
 ```mermaid
 flowchart TD
     A[AIGC 渲染产出原始图像 / 视频] --> B[Tier 1: 40ms 确定性专用探针阵列<br/>MediaPipe 手部 / PP-OCR / ΔE / ArcFace / RAFT 光流]
-    B -->|"检出局部明确缺陷<br/>六指 / 局部错字 / 背景竞品路牌"| C[直接进入 Tier 3 局部靶向自愈:<br/>裁剪 256x256 BBox 执行 0.6s 局部 Inpaint 修复]
-    B -->|"检出全局崩坏<br/>主体丢失 / 全片频闪"| D[触发换 Seed 全局重跑]
-    B -->|"Tier 1 全绿通过"| E[Tier 2: 2x2 宫格图 Qwen2.5-VL 语义复核<br/>+ Azure AI Content Safety 合规扫描]
-    E -->|"发现局部物理穿模"| C
-    E -->|"全部通过 99.85%"| F[写入 C2PA v2.1 质检评分签名 -> 推送 CDN]
+    B -->|检出局部明确缺陷<br/>六指 / 局部错字 / 背景竞品路牌| C[直接进入 Tier 3 局部靶向自愈:<br/>裁剪 256x256 BBox 执行 0.6s 局部 Inpaint 修复]
+    B -->|检出全局崩坏<br/>主体丢失 / 全片频闪| D[触发换 Seed 全局重跑]
+    B -->|Tier 1 全绿通过| E[Tier 2: 2x2 宫格图 Qwen2.5-VL 语义复核<br/>+ Azure AI Content Safety 合规扫描]
+    E -->|发现局部物理穿模| C
+    E -->|全部通过 99.85%| F[写入 C2PA v2.1 质检评分签名 -> 推送 CDN]
     C --> B
 ```
 
@@ -63,13 +63,13 @@ flowchart LR
         RAW --> P3[法务与时序探针:<br/>Top-10k 商标 YOLO + 名人负向 ArcFace + RAFT]
     end
     subgraph Tier2[2. 宫格 VLM 语义评审层]
-        P1 & P2 & P3 -->|"初筛通过"| GRID[2x2 关键帧宫格拼图器]
+        P1 & P2 & P3 -->|初筛通过| GRID[2x2 关键帧宫格拼图器]
         GRID --> VLM[自托管 Qwen2.5-VL-7B + Content Safety:<br/>输出结构化 JSON 评分与缺陷 BBox]
     end
     subgraph Tier3[3. 256px 靶向手术自愈层]
-        VLM -->|"存在局部 BBox 缺陷"| HEAL[局部裁剪 256x256 + 5指/无字掩码<br/>Flux.1-Fill / Wan-VACE 0.6s 修复]
+        VLM -->|存在局部 BBox 缺陷| HEAL[局部裁剪 256x256 + 5指/无字掩码<br/>Flux.1-Fill / Wan-VACE 0.6s 修复]
         HEAL --> RAW
-        VLM -->|"PASS"| C2PA[C2PA v2.1 质检签名入库]
+        VLM -->|PASS| C2PA[C2PA v2.1 质检签名入库]
     end
 ```
 

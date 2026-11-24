@@ -43,10 +43,10 @@ In **24/7 Autonomous Haulage System (AHS) operations across tier-1 open-pit iron
 ```mermaid
 flowchart TD
     A[Open-Pit Mine 3D Spatial Twin Scenario] --> B{Operational Objective?}
-    B -->|"Monthly End-of-Period Ore Stockpile Volume Audit"| C[Standard Weekly/Monthly Drone Photogrammetry]
-    B -->|"24/7 Autonomous Haulage System AHS Safety & Dispatch"| D{Dust Penetration & Geotechnical Precision?}
-    D -->|"Daily Drone Camera-Only 3DGS"| E[❌ Baseline: 24h Blind Window on Berm Washouts<br/>& 28 False AEB Stops/Day from Dust Floaters]
-    D -->|"Crowdsourced AHS LiDAR/77GHz + GB-InSAR + 3DGS"| F[✅ Recommended: ±0.2mm/h Slope Creep Fusion +<br/>MSHA ≥2.01m Berm Auto-Grading + >1200mm Boulder Gate]
+    B -->|Monthly End-of-Period Ore Stockpile Volume Audit| C[Standard Weekly/Monthly Drone Photogrammetry]
+    B -->|24/7 Autonomous Haulage System AHS Safety & Dispatch| D{Dust Penetration & Geotechnical Precision?}
+    D -->|Daily Drone Camera-Only 3DGS| E[❌ Baseline: 24h Blind Window on Berm Washouts<br/>& 28 False AEB Stops/Day from Dust Floaters]
+    D -->|Crowdsourced AHS LiDAR/77GHz + GB-InSAR + 3DGS| F[✅ Recommended: ±0.2mm/h Slope Creep Fusion +<br/>MSHA ≥2.01m Berm Auto-Grading + >1200mm Boulder Gate]
 ```
 
 ### 3.2 Crowdsourced AHS LiDAR/Radar + GB-InSAR + 3DGS Pipeline

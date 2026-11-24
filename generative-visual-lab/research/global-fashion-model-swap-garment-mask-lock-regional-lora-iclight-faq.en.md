@@ -43,8 +43,8 @@
 ```mermaid
 flowchart TD
     A[Single Studio Model Photo -> 8-Region Global Localization] --> B{Does Garment Contain Sheer Chiffon or Lace Cutouts?}
-    B -->|"No: Opaque Cotton / Denim / Suiting / Knitwear"| C[SegFormer 18-Class Parse: 100% Hard-Lock Garment Pixels<br/>Union Face + Neck + Arms + Hands + Legs into Shared Skin Mask]
-    B -->|"Yes: Sheer Chiffon Sleeves / Lace Cutouts / Mesh"| D[Intrinsic Yarn-Skin Unmixing: Extract Yarn Opacity α_yarn<br/>Include Sheer Zone in Underlying Skin Mask + Re-Composite 4K Yarn]
+    B -->|No: Opaque Cotton / Denim / Suiting / Knitwear| C[SegFormer 18-Class Parse: 100% Hard-Lock Garment Pixels<br/>Union Face + Neck + Arms + Hands + Legs into Shared Skin Mask]
+    B -->|Yes: Sheer Chiffon Sleeves / Lace Cutouts / Mesh| D[Intrinsic Yarn-Skin Unmixing: Extract Yarn Opacity α_yarn<br/>Include Sheer Zone in Underlying Skin Mask + Re-Composite 4K Yarn]
     C & D --> E[Condition on DWPose Hand Skeleton + Monk Skin Tone MST 1-10 Palette<br/>+ Indemnified Regional Model LoRA + L1 Regional Street Plate]
     E --> F[2px Collar/Cuff Subsurface Color-Bounce & Micro-AO Blend -> Emit 8-Market Set]
 ```

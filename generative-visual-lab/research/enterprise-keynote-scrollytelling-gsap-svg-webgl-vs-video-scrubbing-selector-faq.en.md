@@ -48,11 +48,11 @@ That naive implementation fails catastrophically in production:
 ```mermaid
 flowchart TD
     A[Enterprise Scrollytelling Landing Page / Whitepaper] --> B{Visual Content Archetype?}
-    B -->|"Cloud/AI Architecture Evolution & Data Whitepaper"| C[✅ Select GSAP ScrollTrigger + SVG Path AST<br/>+ Canvas Particles · 420KB · 60fps]
-    B -->|"B2B SaaS Interactive UI Tour & State Transitions"| D[✅ Select Lenis Smooth Scroll + 28KB Rive State Machine<br/>+ Live React DOM Components · 1.25MB]
-    B -->|"Photoreal 3D Hardware Exploded View / AIGC Morph"| E{How to Scrub Frames Bidirectionally?}
-    E -->|"Bind Scroll to Standard Long-GOP MP4 currentTime"| F[❌ Anti-Pattern: 280ms GOP Backtracking Lag<br/>9fps Mobile Freeze & Autoplay Blackouts]
-    E -->|"120-Frame WebP Ring Buffer or -g 1 All-Intra"| G[✅ Recommended: Web Worker ImageBitmap Canvas Scrub 2.4ms<br/>+ Synchronized Top SVG Vector Callout HUD]
+    B -->|Cloud/AI Architecture Evolution & Data Whitepaper| C[✅ Select GSAP ScrollTrigger + SVG Path AST<br/>+ Canvas Particles · 420KB · 60fps]
+    B -->|B2B SaaS Interactive UI Tour & State Transitions| D[✅ Select Lenis Smooth Scroll + 28KB Rive State Machine<br/>+ Live React DOM Components · 1.25MB]
+    B -->|Photoreal 3D Hardware Exploded View / AIGC Morph| E{How to Scrub Frames Bidirectionally?}
+    E -->|Bind Scroll to Standard Long-GOP MP4 currentTime| F[❌ Anti-Pattern: 280ms GOP Backtracking Lag<br/>9fps Mobile Freeze & Autoplay Blackouts]
+    E -->|120-Frame WebP Ring Buffer or -g 1 All-Intra| G[✅ Recommended: Web Worker ImageBitmap Canvas Scrub 2.4ms<br/>+ Synchronized Top SVG Vector Callout HUD]
 ```
 
 ### 3.2 Hybrid WebP/All-Intra Canvas Scrubbing + GSAP SVG Callout Pipeline

@@ -44,11 +44,11 @@
 ```mermaid
 flowchart TD
     A[16:9 Horizontal Long-Form Segment Enters 9:16 Reframer] --> B{Visual Scene Layout Classification?}
-    B -->|"Single-Speaker Stage Keynote"| C[Mode A: Full-Height 9:16 Single Crop<br/>±8% Dead-Zone Kalman Virtual Gimbal 0.0px Jitter]
-    B -->|"2-Person Fireside Chat / Panel"| D{TalkNet-ASD Active Speaker State?}
-    D -->|"Single Speaker Sustained > 600ms"| C
-    D -->|"Rapid Crosstalk / Dual Reaction"| E[Mode B: Top/Bottom 50/50 Split-Screen<br/>Zero Jarring Back-and-Forth Cuts]
-    B -->|"Technical Webinar Slide/IDE + Corner Webcam"| F[Mode C: Top 70% Slide ROI + Bottom 30% Speaker PIP<br/>Top 70%: Transcript-OCR & Cursor Guided 2.2x Smooth Zoom<br/>Bottom 30%: 2x Temporal VSR Speaker Webcam]
+    B -->|Single-Speaker Stage Keynote| C[Mode A: Full-Height 9:16 Single Crop<br/>±8% Dead-Zone Kalman Virtual Gimbal 0.0px Jitter]
+    B -->|2-Person Fireside Chat / Panel| D{TalkNet-ASD Active Speaker State?}
+    D -->|Single Speaker Sustained > 600ms| C
+    D -->|Rapid Crosstalk / Dual Reaction| E[Mode B: Top/Bottom 50/50 Split-Screen<br/>Zero Jarring Back-and-Forth Cuts]
+    B -->|Technical Webinar Slide/IDE + Corner Webcam| F[Mode C: Top 70% Slide ROI + Bottom 30% Speaker PIP<br/>Top 70%: Transcript-OCR & Cursor Guided 2.2x Smooth Zoom<br/>Bottom 30%: 2x Temporal VSR Speaker Webcam]
 ```
 
 ### 3.2 5-Stage Private VNet Repurposing & Kinetic Packaging Pipeline

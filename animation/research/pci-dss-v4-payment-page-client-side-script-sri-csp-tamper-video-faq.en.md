@@ -32,9 +32,9 @@
 ```mermaid
 flowchart TD
     A[Enterprise Checkout Page with 24–44 3P Scripts<br/>PCI-DSS v4.0.1 Req 6.4.3 & 11.6.1 Audit] --> B{Client-Side Defense Architecture?}
-    B -->|"Unmonitored GTM Tag Cascade"| C[7 Fourth-Party Magecart Skimmer Paths<br/>4.2-Day Detection Lag · $18.4M Breach Liability]
-    B -->|"Static Hardcoded HTML SRI Hashes Only"| D[38.6% Broken Checkout Scripts on Vendor Hotfixes<br/>Misses Dynamic import Skimmers]
-    B -->|"Cross-Origin Iframe + Edge AST SRI + 18ms Behavioral Proxy"| E[Edge Proxy Verifies AST Diff & Auto-Pins SRI = 0.0% Breakage<br/>18ms Runtime Blocker Stops Rogue DOM Reads & sendBeacon]
+    B -->|Unmonitored GTM Tag Cascade| C[7 Fourth-Party Magecart Skimmer Paths<br/>4.2-Day Detection Lag · $18.4M Breach Liability]
+    B -->|Static Hardcoded HTML SRI Hashes Only| D[38.6% Broken Checkout Scripts on Vendor Hotfixes<br/>Misses Dynamic import Skimmers]
+    B -->|Cross-Origin Iframe + Edge AST SRI + 18ms Behavioral Proxy| E[Edge Proxy Verifies AST Diff & Auto-Pins SRI = 0.0% Breakage<br/>18ms Runtime Blocker Stops Rogue DOM Reads & sendBeacon]
     E --> F[Compile 12s Remotion QSA Audit Evidence Video<br/>100% PCI v4.0.1 Pass · +$18.4M Breach Risk Avoided]
 ```
 

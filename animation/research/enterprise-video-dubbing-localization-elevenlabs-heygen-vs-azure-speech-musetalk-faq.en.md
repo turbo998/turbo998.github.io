@@ -48,10 +48,10 @@ Our benchmark defines the exact architectural and financial boundaries:
 ```mermaid
 flowchart TD
     A[Enterprise Video Localization & Dubbing Workload] --> B{Monthly Dubbed Minutes & Audio Complexity?}
-    B -->|"< 300 Min/Mo · Single Speaker Dry Audio<br/>No Complex BGM/Foley or Strict Glossary"| C[Use HeyGen / ElevenLabs Dubbing SaaS<br/>Turnkey API · $2.80–$3.50/min]
-    B -->|"≥ 1,000 Min/Mo 25k–80k+ Min/Mo<br/>or Requires BGM/Foley Preservation & Glossary Lock"| D{Visual Frame Composition?}
-    D -->|"Keynotes & LMS Courses with 60%+ Slide/UI Screens"| E[✅ Enable TalkNet Active-Speaker Filter<br/>Skip Non-Face Frames + Selective MuseTalk · $0.08/min]
-    D -->|"Short Dramas & Commercials with Rich Music/Foley"| F[✅ Enable UVR5 Stem Separation 41.2dB<br/>+ Isochronous LLM ±2.4% + Azure/CosyVoice + MuseTalk · $0.11/min]
+    B -->|< 300 Min/Mo · Single Speaker Dry Audio<br/>No Complex BGM/Foley or Strict Glossary| C[Use HeyGen / ElevenLabs Dubbing SaaS<br/>Turnkey API · $2.80–$3.50/min]
+    B -->|≥ 1,000 Min/Mo 25k–80k+ Min/Mo<br/>or Requires BGM/Foley Preservation & Glossary Lock| D{Visual Frame Composition?}
+    D -->|Keynotes & LMS Courses with 60%+ Slide/UI Screens| E[✅ Enable TalkNet Active-Speaker Filter<br/>Skip Non-Face Frames + Selective MuseTalk · $0.08/min]
+    D -->|Short Dramas & Commercials with Rich Music/Foley| F[✅ Enable UVR5 Stem Separation 41.2dB<br/>+ Isochronous LLM ±2.4% + Azure/CosyVoice + MuseTalk · $0.11/min]
 ```
 
 ### 3.2 4-Stage Modular Broadcast Video Dubbing & Lip-Sync Pipeline

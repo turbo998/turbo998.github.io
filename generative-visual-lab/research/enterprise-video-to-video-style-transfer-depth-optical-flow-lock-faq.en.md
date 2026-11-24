@@ -45,11 +45,11 @@
 ```mermaid
 flowchart TD
     A["Ingest Source Video (Smartphone Live-Action Shoot or 3D Engine Clay Blockout)"] --> B{"Source Footage Modality?"}
-    B -->|"3D Engine Gray-Clay Animation (Blender EEVEE / UE5)"| C["Export Native 32-Bit EXR Depth + World Normal + Cryptomatte IDs<br/>Bypass Monocular Estimation for 99.6% Hard-Surface Lock"]
-    B -->|"Live-Action Camera Footage"| D["Run 16-Bit DepthAnythingV2 + AnyLine Soft Contour<br/>+ Compute RAFT Bidirectional Optical Flow"]
+    B -->|3D Engine Gray-Clay Animation (Blender EEVEE / UE5)| C["Export Native 32-Bit EXR Depth + World Normal + Cryptomatte IDs<br/>Bypass Monocular Estimation for 99.6% Hard-Surface Lock"]
+    B -->|Live-Action Camera Footage| D["Run 16-Bit DepthAnythingV2 + AnyLine Soft Contour<br/>+ Compute RAFT Bidirectional Optical Flow"]
     C & D --> E{"Does Shot Contain a Branded Commercial Product / SKU?"}
-    E -->|"Yes: Held Beverage / Cosmetics / Phone"| F["Track SKU Mask M_SKU(t) via SAM-2 (Bypass Diffusion Resampling)<br/>Apply Deterministic 1D Toon LUT + Sobel Ink Outline (0% Logo Mutation)"]
-    E -->|"No: Pure Character & Environment Shot"| G["Run Full-Frame 81-Frame Wan-VACE 3D DiT + Flow Texture Advection"]
+    E -->|Yes: Held Beverage / Cosmetics / Phone| F["Track SKU Mask M_SKU(t) via SAM-2 (Bypass Diffusion Resampling)<br/>Apply Deterministic 1D Toon LUT + Sobel Ink Outline (0% Logo Mutation)"]
+    E -->|No: Pure Character & Environment Shot| G["Run Full-Frame 81-Frame Wan-VACE 3D DiT + Flow Texture Advection"]
     F & G --> H["Emit 99.3%-Coherent, 100% Logo-Compliant Stylized Master ($0.054/clip)"]
 ```
 

@@ -45,8 +45,8 @@ flowchart TD
     A["Ingest 3D Showroom / Automotive Configurator / ICVFX Lighting Request"] --> B["Step 1: Enable Horizontal Circular Conv2D + Alternating W/2 Latent Roll<br/>Synthesize 100% Seam-Free 2:1 Equirectangular Equatorial Panorama"]
     B --> C["Step 2: Reproject +/-60-to-90-Deg Polar Caps into Rectilinear CubeMap (+Y / -Y) Faces<br/>Run Flux.1-Fill to Synthesize Flat Ground Plate & Zenith Sky (0% Whirlpool Vortex)"]
     C --> D{"Target 3D Engine Workload?"}
-    D -->|"Visual Background Skybox Only"| E["8K Circular-Tiled Upscale -> Export Lightweight WebP / AVIF"]
-    D -->|"Physically Based Image-Based Lighting (IBL) & Ray-Traced Reflections"| F["Step 3: Multi-Bracket Exposure Diffusion (EV 0 / -3 / -6 / -9)<br/>Debevec Radiance Merge into 16.4-Stop EV (28,000-nit) 32-Bit Float .exr"]
+    D -->|Visual Background Skybox Only| E["8K Circular-Tiled Upscale -> Export Lightweight WebP / AVIF"]
+    D -->|Physically Based Image-Based Lighting (IBL) & Ray-Traced Reflections| F["Step 3: Multi-Bracket Exposure Diffusion (EV 0 / -3 / -6 / -9)<br/>Debevec Radiance Merge into 16.4-Stop EV (28,000-nit) 32-Bit Float .exr"]
     F --> G["Pre-Convolve GGX Roughness Mipmaps into KTX2 CubeMap for Three.js / UE5 ($0.045/set)"]
 ```
 

@@ -42,12 +42,12 @@
 ```mermaid
 flowchart TD
     A[Incoming Image / Video Generation Request] --> B{Is This an Iterative Edit in an Active Session?}
-    B -->|"Yes: Material / Color / Lighting Adjective Tweak"| C[L2 Step-10 Latent Prefix Cache Hit!<br/>Load 12MB Step-10 Latent & Run Only Steps 11-28 in 4.8s]
-    B -->|"No: New Independent Request"| D{Is This a Product Background Placement Job?}
-    D -->|"Yes: Extract Clean-Plate Prompt + Camera Pitch θ"| E{Qdrant SigLIP Cosine > 0.94 & Δθ <= 2°?}
-    E -->|"L1 Clean-Plate Hit 38.4%"| F[Fetch 5K Clean Plate + Pre-Baked Depth + Random Viewport Jitter<br/>Composite SKU Contact Shadow & IC-Light in 0.45s]
-    E -->|"L1 Cache Miss"| G[Execute L3 TeaCache + SageAttention2 Accelerated DiT<br/>Skip 48% Redundant Mid-Steps & Populate L1/L2 Caches]
-    D -->|"No: Bespoke Creative Video / Scene"| G
+    B -->|Yes: Material / Color / Lighting Adjective Tweak| C[L2 Step-10 Latent Prefix Cache Hit!<br/>Load 12MB Step-10 Latent & Run Only Steps 11-28 in 4.8s]
+    B -->|No: New Independent Request| D{Is This a Product Background Placement Job?}
+    D -->|Yes: Extract Clean-Plate Prompt + Camera Pitch θ| E{Qdrant SigLIP Cosine > 0.94 & Δθ <= 2°?}
+    E -->|L1 Clean-Plate Hit 38.4%| F[Fetch 5K Clean Plate + Pre-Baked Depth + Random Viewport Jitter<br/>Composite SKU Contact Shadow & IC-Light in 0.45s]
+    E -->|L1 Cache Miss| G[Execute L3 TeaCache + SageAttention2 Accelerated DiT<br/>Skip 48% Redundant Mid-Steps & Populate L1/L2 Caches]
+    D -->|No: Bespoke Creative Video / Scene| G
 ```
 
 ### 3.2 L1 Clean-Plate + L2 Step-10 Prefix + L3 TeaCache Pipeline
@@ -58,10 +58,10 @@ flowchart LR
         SPLIT --> SIG[SigLIP-SO400M + Pitch Filter:<br/>Return 5K Clean Plate + Depth + HDRI]
     end
     subgraph L2[L2: Session Step-10 Prefix Pool Redis]
-        SPLIT -->|"Adjective Tweak"| STEP10[Fetch 12MB Step-10 Coarse Latent<br/>Skip Steps 1-10 -> Run Steps 11-28]
+        SPLIT -->|Adjective Tweak| STEP10[Fetch 12MB Step-10 Coarse Latent<br/>Skip Steps 1-10 -> Run Steps 11-28]
     end
     subgraph L3[L3: Intra-Run Residual Reuse GPU]
-        SIG & STEP10 -->|"Cache Miss / Tail Steps"| TEA[TeaCache Block-1 Probe:<br/>Skip Blocks 2-40 When Δt < 0.12]
+        SIG & STEP10 -->|Cache Miss / Tail Steps| TEA[TeaCache Block-1 Probe:<br/>Skip Blocks 2-40 When Δt < 0.12]
         TEA --> OUT[Emit Asset & Async Populate L1/L2]
     end
 ```

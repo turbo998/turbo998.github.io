@@ -47,8 +47,8 @@
 ```mermaid
 flowchart TD
     A["Enterprise Web / App Motion Requirement"] --> B{"Is the visual style<br/>2D/2.5D Vector or Photorealistic 3D/Live-Action?"}
-    B -->|"2D / 2.5D Vector & Character Art"| C{"Requires interruptible state transitions,<br/>2D pointer gaze, or live data binding?"}
-    B -->|"Photorealistic FX / Human Avatar / 3D Space"| D{"Requires 360° camera orbit<br/>or real-time relighting?"}
+    B -->|2D / 2.5D Vector & Character Art| C{"Requires interruptible state transitions,<br/>2D pointer gaze, or live data binding?"}
+    B -->|Photorealistic FX / Human Avatar / 3D Space| D{"Requires 360° camera orbit<br/>or real-time relighting?"}
     C -->|"Yes (AI Copilot / Gamified UI / HMI Gauge)"| E["✅ Choose Rive (.riv < 50KB)<br/>2D Skeletal Mesh + State Machine + Blend Tree<br/>0ms Interruption Cross-Fade"]
     C -->|"No (Linear Icon / Checkmark / Spinner)"| F["✅ Choose Lottie (.lottie < 100KB)<br/>or Native SVG / CSS Keyframes"]
     D -->|"Yes (3D Product Configurator / Sandbox)"| G["✅ Choose Three.js / R3F + Draco PBR / 3DGS"]

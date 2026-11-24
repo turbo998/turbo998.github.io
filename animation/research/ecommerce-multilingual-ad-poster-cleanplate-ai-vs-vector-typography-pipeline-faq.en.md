@@ -45,10 +45,10 @@ A common architectural mistake is asking pixel diffusion models (`Flux.1`, `GPT-
 ```mermaid
 flowchart TD
     A[Enterprise Ad Poster & Global Banner Workload] --> B{Typography Scope & Localization Requirements?}
-    B -->|"Single 1-Word 3D Diegetic English Title e.g. Neon SALE<br/>No Multi-Locale or Exact Price Requirements"| C[Optional: Use GPT-Image-1 / Flux.1<br/>for 3D Diegetic English Lettering]
-    B -->|"Multilingual CJK / Arabic / EU Promotional Copy,<br/>Exact Prices, Licensed Brand Fonts, or Editable Layers"| D{Poster Production Architecture?}
-    D -->|"Bake Multilingual Copy Inside Pixel Diffusion Prompt"| E[❌ Anti-Pattern: 65.5% CJK/Arabic Typos + Flat Uneditable Raster<br/>16× Redundant GPU Runs Costing $1.28/Set]
-    D -->|"1× Clean-Plate AI + Saliency Safe-Zone + Vector Layer"| F[✅ Recommended: 1 Clean Plate × 16 Vector Overlays = $0.008/Set<br/>100% Zero-Typo Accuracy + 0.12s Edits + Layered SVG/PSD]
+    B -->|Single 1-Word 3D Diegetic English Title e.g. Neon SALE<br/>No Multi-Locale or Exact Price Requirements| C[Optional: Use GPT-Image-1 / Flux.1<br/>for 3D Diegetic English Lettering]
+    B -->|Multilingual CJK / Arabic / EU Promotional Copy,<br/>Exact Prices, Licensed Brand Fonts, or Editable Layers| D{Poster Production Architecture?}
+    D -->|Bake Multilingual Copy Inside Pixel Diffusion Prompt| E[❌ Anti-Pattern: 65.5% CJK/Arabic Typos + Flat Uneditable Raster<br/>16× Redundant GPU Runs Costing $1.28/Set]
+    D -->|1× Clean-Plate AI + Saliency Safe-Zone + Vector Layer| F[✅ Recommended: 1 Clean Plate × 16 Vector Overlays = $0.008/Set<br/>100% Zero-Typo Accuracy + 0.12s Edits + Layered SVG/PSD]
 ```
 
 ### 3.2 Decoupled Clean-Plate AI + Saliency Safe-Zone + Vector Typography Pipeline

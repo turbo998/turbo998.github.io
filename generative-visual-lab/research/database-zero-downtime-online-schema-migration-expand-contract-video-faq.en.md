@@ -43,11 +43,11 @@ In **high-throughput financial payment, e-commerce checkout, and core SaaS datab
 ```mermaid
 flowchart TD
     A[Production Database Schema DDL Change] --> B{DDL Operation Category?}
-    B -->|"Create or Drop Index"| C[Enforce CREATE/DROP INDEX CONCURRENTLY<br/>+ Pre-Evict >2s Idle-in-Transaction Blockers]
-    B -->|"Add NOT NULL or Foreign Key Constraint"| D[Two-Step Pattern: 1. ADD CONSTRAINT ... NOT VALID<br/>2. VALIDATE CONSTRAINT Under Non-Blocking Lock]
-    B -->|"Alter Column Type / Split / Rename Column"| E{Execution Strategy on >50M-Row Table?}
-    E -->|"Raw Blocking ALTER TABLE"| F[❌ Baseline: Full Table Rewrite + MDL Lock Dam<br/>192,000 Blocked Queries & 24m Sev-1 Outage]
-    E -->|"Expand-Backfill-Contract + Versioned Views"| G[✅ Recommended: lock_timeout=150ms + Dual-Write Trigger<br/>+ 2,000-Row Throttled Backfill + v1/v2 Views]
+    B -->|Create or Drop Index| C[Enforce CREATE/DROP INDEX CONCURRENTLY<br/>+ Pre-Evict >2s Idle-in-Transaction Blockers]
+    B -->|Add NOT NULL or Foreign Key Constraint| D[Two-Step Pattern: 1. ADD CONSTRAINT ... NOT VALID<br/>2. VALIDATE CONSTRAINT Under Non-Blocking Lock]
+    B -->|Alter Column Type / Split / Rename Column| E{Execution Strategy on >50M-Row Table?}
+    E -->|Raw Blocking ALTER TABLE| F[❌ Baseline: Full Table Rewrite + MDL Lock Dam<br/>192,000 Blocked Queries & 24m Sev-1 Outage]
+    E -->|Expand-Backfill-Contract + Versioned Views| G[✅ Recommended: lock_timeout=150ms + Dual-Write Trigger<br/>+ 2,000-Row Throttled Backfill + v1/v2 Views]
 ```
 
 ### 3.2 `Expand-Backfill-Contract` & Dual-View Routing Architecture

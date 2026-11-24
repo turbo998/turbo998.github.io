@@ -46,11 +46,11 @@ The architectural verdict is clear: **Never use pure pixel video diffusion model
 ```mermaid
 flowchart TD
     A[Enterprise Automated Video Production Workload] --> B{Visual Composition & Precision Requirements?}
-    B -->|"100% Cinematic Lifestyle / Atmospheric B-Roll<br/>Zero Specific Text, Prices, or Software UI"| C[Use Generative AI Video Directly<br/>Sora 2 / Veo 3 / Kling 2.1 / Wan 2.1]
-    B -->|"100% Data Charts / Architecture Diagrams<br/>No Live-Action Human or Photoreal Scene Needed"| D{Frontend Stack & Animation Paradigm?}
-    D -->|"React Component Reuse & Serverless Batch Fan-Out"| E[Select Remotion<br/>React DOM + Remotion Lambda]
-    D -->|"Step-by-Step Procedural Diagrams & Coroutines"| F[Select Motion Canvas / HyperFrames<br/>TypeScript yield* State Machine]
-    B -->|"Requires Both Photorealistic Cinematic Plates<br/>AND 100% Exact SaaS UI, Pricing & Multilingual Copy"| G[✅ Recommended Hybrid Pipeline: Cached AI Video B-Roll<br/>+ Remotion / Motion Canvas Deterministic Compositor]
+    B -->|100% Cinematic Lifestyle / Atmospheric B-Roll<br/>Zero Specific Text, Prices, or Software UI| C[Use Generative AI Video Directly<br/>Sora 2 / Veo 3 / Kling 2.1 / Wan 2.1]
+    B -->|100% Data Charts / Architecture Diagrams<br/>No Live-Action Human or Photoreal Scene Needed| D{Frontend Stack & Animation Paradigm?}
+    D -->|React Component Reuse & Serverless Batch Fan-Out| E[Select Remotion<br/>React DOM + Remotion Lambda]
+    D -->|Step-by-Step Procedural Diagrams & Coroutines| F[Select Motion Canvas / HyperFrames<br/>TypeScript yield* State Machine]
+    B -->|Requires Both Photorealistic Cinematic Plates<br/>AND 100% Exact SaaS UI, Pricing & Multilingual Copy| G[✅ Recommended Hybrid Pipeline: Cached AI Video B-Roll<br/>+ Remotion / Motion Canvas Deterministic Compositor]
 ```
 
 ### 3.2 Hybrid Multi-Track Video Compositor Pipeline (AIGC B-Roll + Remotion / Motion Canvas)

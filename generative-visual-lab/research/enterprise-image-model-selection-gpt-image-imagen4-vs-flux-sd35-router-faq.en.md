@@ -48,12 +48,12 @@ Our benchmark proves that **no single model dominates all four enterprise requir
 ```mermaid
 flowchart TD
     A[Incoming Enterprise Image Generation Request] --> B{Interactive Canvas Draft Exploration stage=draft?}
-    B -->|"Yes: Sub-500ms Real-Time Feedback Required"| C[✅ Route to Tier 4: Flux.1-schnell / SD3.5-Turbo<br/>4-Step Distilled · 0.35s Latency · $0.0012/img]
-    B -->|"No: Production Master Render"| D{Includes Private LoRA / ControlNet / VTON Mask or VNet Privacy Flag?}
-    D -->|"Yes: Requires Pixel Geometry/Identity Lock"| E[✅ Route to Tier 1: AKS Self-Hosted Flux.1-dev FP8<br/>S-LoRA Paging + ControlNet · $0.004/img · 1.8s]
-    D -->|"No: Pure Text / Reference Creative Prompt"| F{Contains >4 Distinct Entities, Relational Logic, or Conversational Edit?}
-    F -->|"Yes: Complex Spatial Prompt or Embedded English Text"| G[✅ Route to Tier 2: OpenAI GPT-Image-1<br/>96.4% Instruction Adherence · $0.04–$0.17/img]
-    F -->|"No: Photorealistic Commercial Stock / Lifestyle Scene"| H[✅ Route to Tier 3: Google Imagen 4<br/>Fast Photorealism + Cloud IP Indemnity · $0.03/img]
+    B -->|Yes: Sub-500ms Real-Time Feedback Required| C[✅ Route to Tier 4: Flux.1-schnell / SD3.5-Turbo<br/>4-Step Distilled · 0.35s Latency · $0.0012/img]
+    B -->|No: Production Master Render| D{Includes Private LoRA / ControlNet / VTON Mask or VNet Privacy Flag?}
+    D -->|Yes: Requires Pixel Geometry/Identity Lock| E[✅ Route to Tier 1: AKS Self-Hosted Flux.1-dev FP8<br/>S-LoRA Paging + ControlNet · $0.004/img · 1.8s]
+    D -->|No: Pure Text / Reference Creative Prompt| F{Contains >4 Distinct Entities, Relational Logic, or Conversational Edit?}
+    F -->|Yes: Complex Spatial Prompt or Embedded English Text| G[✅ Route to Tier 2: OpenAI GPT-Image-1<br/>96.4% Instruction Adherence · $0.04–$0.17/img]
+    F -->|No: Photorealistic Commercial Stock / Lifestyle Scene| H[✅ Route to Tier 3: Google Imagen 4<br/>Fast Photorealism + Cloud IP Indemnity · $0.03/img]
 ```
 
 ### 3.2 4-Model Unified AI Gateway & Draft-to-Final Cascade Pipeline

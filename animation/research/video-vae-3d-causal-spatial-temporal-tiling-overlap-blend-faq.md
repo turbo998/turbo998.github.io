@@ -34,9 +34,9 @@
 ```mermaid
 flowchart TD
     A[视频 DiT 完成 50步去噪输出潜变量 Z_0<br/>进入 3D Causal VAE 4×8×8 上采样解码] --> B{选择 VAE 解码内存架构?}
-    B -->|"全张量一次性解码 Untiled Full Tensor"| C[1080p×81帧激活张量飙升至 94.6 GB<br/>4K×129帧飙升至 284 GB · 80GB H100 直接 OOM 崩溃!]
-    B -->|"无重叠硬切分块 Disjoint Hard Tiling"| D[局部 GroupNorm 均值漂移产生十字网格拼缝 24.8dB<br/>时序块首帧填零引发每 16 帧周期性爆闪]
-    B -->|"2帧因果 FIFO 环存 + 64px Hann 交叠 + 全局 GN"| E[时序流式 4帧微批 + 复用前2帧卷积态 = 0.00 闪烁<br/>空间 64px 升余弦单位分解羽化 = 44.6dB 无痕]
+    B -->|全张量一次性解码 Untiled Full Tensor| C[1080p×81帧激活张量飙升至 94.6 GB<br/>4K×129帧飙升至 284 GB · 80GB H100 直接 OOM 崩溃!]
+    B -->|无重叠硬切分块 Disjoint Hard Tiling| D[局部 GroupNorm 均值漂移产生十字网格拼缝 24.8dB<br/>时序块首帧填零引发每 16 帧周期性爆闪]
+    B -->|2帧因果 FIFO 环存 + 64px Hann 交叠 + 全局 GN| E[时序流式 4帧微批 + 复用前2帧卷积态 = 0.00 闪烁<br/>空间 64px 升余弦单位分解羽化 = 44.6dB 无痕]
     E --> F[峰值显存压降至 11.8 GB 削减 -87.5%<br/>可卸载至 24GB L4/A10G 卡 · 年省 +$1.78M]
 ```
 

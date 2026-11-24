@@ -52,8 +52,8 @@ flowchart TD
     B -->|"仅早期 10 分钟情绪板脑暴"| C["普通文生图 (Flux / Midjourney) 透视概念参考"]
     B -->|"需要打样下厂印刷 + 电商 3D 主图"| D["✅ 启动 2D CAD 刀版 UV-First 同源双生管线:<br/>1. 输入 L×W×H 生成 FEFCO/ECMA 2D 刀版 SVG (含 3mm 出血)<br/>2. 在平面 UV 岛上生成 300-DPI 跨折痕连续 AIGC 底图<br/>3. 叠加矢量文字、GS1 条形码与烫金/击凸专色路径"]
     D --> E["🔀 一图双译编译器 (Spot-to-PBR Twin Compiler)"]
-    E -->|"分支 1: 交付印刷厂"| F["✅ 导出 300-DPI PDF/X-4 印前母版<br/>(Fogra39 CMYK + Spot_Foil + Spot_Emboss + 刀线层)"]
-    E -->|"分支 2: 交付电商团队"| G["✅ 自动沿折痕线 90° 骨骼折盒<br/>+ 烫金 Metallic/击凸 Normal 3D PBR 旋转主图 & GLB"]
+    E -->|分支 1: 交付印刷厂| F["✅ 导出 300-DPI PDF/X-4 印前母版<br/>(Fogra39 CMYK + Spot_Foil + Spot_Emboss + 刀线层)"]
+    E -->|分支 2: 交付电商团队| G["✅ 自动沿折痕线 90° 骨骼折盒<br/>+ 烫金 Metallic/击凸 Normal 3D PBR 旋转主图 & GLB"]
 ```
 
 ### 3.2 企业级 2D CAD 刀版展开、专色 PBR 编译与 3D 自动折盒管线架构图

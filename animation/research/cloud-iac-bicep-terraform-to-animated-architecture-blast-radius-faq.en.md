@@ -51,8 +51,8 @@
 flowchart TD
     A["Ingest Cloud Infrastructure Source (main.bicep / *.tf / terraform plan JSON)"] --> B["Step 1: Deterministic AST & State Graph Extraction<br/>100% Capture of Subscription -> VNet -> Subnet -> Resources & Edges"]
     B --> C{"Workflow Trigger Context?"}
-    C -->|"Architecture Documentation & CTO Briefing"| D["ELK.js INCLUDE_CHILDREN Compound Orthogonal Layout (0 Crossings)<br/>+ Bind Official Azure / AWS / CNCF Vector SVG Icons"]
-    C -->|"GitHub PR Infrastructure Review (terraform plan / what-if)"| E["Badge +Create / ~Update / -/+ Replace Nodes<br/>+ Propagate Reverse-DAG Red Blast-Radius Outage Warnings"]
+    C -->|Architecture Documentation & CTO Briefing| D["ELK.js INCLUDE_CHILDREN Compound Orthogonal Layout (0 Crossings)<br/>+ Bind Official Azure / AWS / CNCF Vector SVG Icons"]
+    C -->|GitHub PR Infrastructure Review (terraform plan / what-if)| E["Badge +Create / ~Update / -/+ Replace Nodes<br/>+ Propagate Reverse-DAG Red Blast-Radius Outage Warnings"]
     D & E --> F["Step 2: Unified Geometric Coordinate Intermediate Representation (IR)"]
     F --> G["Simultaneous Tri-Target Export (2.1s):<br/>1. 60fps Web Flow Sandbox | 2. Editable .drawio XML | 3. Native .pptx Slides"]
 ```

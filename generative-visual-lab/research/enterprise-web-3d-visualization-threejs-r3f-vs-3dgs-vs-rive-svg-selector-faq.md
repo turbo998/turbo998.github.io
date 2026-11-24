@@ -42,11 +42,11 @@
 ```mermaid
 flowchart TD
     A[企业 Web 交互式视觉展示需求] --> B{核心视觉对象与交互方式?}
-    B -->|"系统架构拓扑图 / 数据流向沙盘 / BI 大屏"| C[✅ 顶层 SVG 矢量节点/文字<br/>+ 底层 Canvas 2D 万级粒子流 · <200KB 60fps]
-    B -->|"AI Copilot 状态反馈 / 图标微动效"| D[✅ 选用 Rive / Lottie 矢量骨骼状态机<br/>15–40KB 布尔/数值状态驱动 · 替代透明 MP4]
-    B -->|"三维空间或三维商品展示"| E{是否需要零件拆解/开门/换材质交互?}
-    E -->|"需要零件级运动、换色与精确 CAD 尺寸"| F[✅ 选用 Three.js / React Three Fiber<br/>Draco 网格 + KTX2 BasisU PBR GLB · 3.2MB]
-    E -->|"线下实景展厅 / 文旅场馆 6DoF 照片级漫游"| G[✅ 选用 WebGPU 3DGS + SOGS 压缩<br/>240MB PLY 压至 11.4MB + Three.js 碰撞代理]
+    B -->|系统架构拓扑图 / 数据流向沙盘 / BI 大屏| C[✅ 顶层 SVG 矢量节点/文字<br/>+ 底层 Canvas 2D 万级粒子流 · <200KB 60fps]
+    B -->|AI Copilot 状态反馈 / 图标微动效| D[✅ 选用 Rive / Lottie 矢量骨骼状态机<br/>15–40KB 布尔/数值状态驱动 · 替代透明 MP4]
+    B -->|三维空间或三维商品展示| E{是否需要零件拆解/开门/换材质交互?}
+    E -->|需要零件级运动、换色与精确 CAD 尺寸| F[✅ 选用 Three.js / React Three Fiber<br/>Draco 网格 + KTX2 BasisU PBR GLB · 3.2MB]
+    E -->|线下实景展厅 / 文旅场馆 6DoF 照片级漫游| G[✅ 选用 WebGPU 3DGS + SOGS 压缩<br/>240MB PLY 压至 11.4MB + Three.js 碰撞代理]
 ```
 
 ### 3.2 3DGS + Three.js 深度缓冲融合与 SVG + Canvas 双层渲染管线架构图

@@ -40,9 +40,9 @@
 ```mermaid
 flowchart TD
     A["Merchant Uploads Product Photo(s) for Turntable Video"] --> B{"Number of Real Views N?"}
-    B -->|"Only 1 Front Photo N=1"| C["Block >±45° Spin! Safe-Arc Route:<br/>2.5D Depth ±35° Parallax + Label Alpha Lock + IC-Light"]
-    B -->|"2 Photos Front+Back N=2<br/>Sneakers / Bags / Apparel"| D["Hunyuan3D-2 Coarse Proxy Mesh<br/>+ 4K Front/Back Photo UV Projection + Three.js 360°"]
-    B -->|"4 Orthographic Photos or CAD N>=4<br/>3C Laptops / Cameras"| E["Trellis Hard-Surface GLB + Native Screen Video Quad<br/>+ Three.js Bone-Tracked Remotion Spec Callouts"]
+    B -->|Only 1 Front Photo N=1| C["Block >±45° Spin! Safe-Arc Route:<br/>2.5D Depth ±35° Parallax + Label Alpha Lock + IC-Light"]
+    B -->|2 Photos Front+Back N=2<br/>Sneakers / Bags / Apparel| D["Hunyuan3D-2 Coarse Proxy Mesh<br/>+ 4K Front/Back Photo UV Projection + Three.js 360°"]
+    B -->|4 Orthographic Photos or CAD N>=4<br/>3C Laptops / Cameras| E["Trellis Hard-Surface GLB + Native Screen Video Quad<br/>+ Three.js Bone-Tracked Remotion Spec Callouts"]
 ```
 
 ### 3.2 4-Stage 3D Proxy UV + Three.js + IC-Light Production Pipeline

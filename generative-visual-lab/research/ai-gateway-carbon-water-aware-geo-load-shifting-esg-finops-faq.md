@@ -35,11 +35,11 @@
 ```mermaid
 flowchart TD
     A[AI 网关收到推理 / 视频生成请求] --> B{请求延迟 SLA 等级?}
-    B -->|"实时交互 SLA < 200ms<br/>在线对话 / 实时补全"| C[锁定用户就近边缘可用区<br/>p99 TTFT = 138ms · 零跨洋 RTT]
-    B -->|"异步批处理 SLA >= 4h<br/>短视频批量成片 / 视觉 RAG 嵌入 / LoRA"| D[查询 WattTime 5min MOER + 机房实时 WUE + Spot 报价]
+    B -->|实时交互 SLA < 200ms<br/>在线对话 / 实时补全| C[锁定用户就近边缘可用区<br/>p99 TTFT = 138ms · 零跨洋 RTT]
+    B -->|异步批处理 SLA >= 4h<br/>短视频批量成片 / 视觉 RAG 嵌入 / LoRA| D[查询 WattTime 5min MOER + 机房实时 WUE + Spot 报价]
     D --> E{候选区域边际碳强与水耗评估}
-    E -->|"火电调峰区 MOER > 350 gCO2<br/>或干旱高蒸发区 WUE > 1.5 L/kWh"| F[触发熔断限流 / 挂起等待弃光谷电窗口]
-    E -->|"高纬水电 + 自然风冷区<br/>eu-north-1 18g / ca-central-1 24g"| G[下发 18KB JSON 场景清单至目标区预热池<br/>成片直推 CDN · 碳排 -71.8% · 水耗 -78.4%]
+    E -->|火电调峰区 MOER > 350 gCO2<br/>或干旱高蒸发区 WUE > 1.5 L/kWh| F[触发熔断限流 / 挂起等待弃光谷电窗口]
+    E -->|高纬水电 + 自然风冷区<br/>eu-north-1 18g / ca-central-1 24g| G[下发 18KB JSON 场景清单至目标区预热池<br/>成片直推 CDN · 碳排 -71.8% · 水耗 -78.4%]
 ```
 
 ### 3.2 企业级碳水感知与零 Egress 多区域 AI 网关生产架构图

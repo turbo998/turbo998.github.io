@@ -48,8 +48,8 @@ flowchart TD
     A["Ingest Architecture Source (.mmd Mermaid / .drawio XML / JSON AST) + Narration Script"] --> B["Step 1: Parse Graph AST & Run Kahn Topological In-Degree Sort<br/>Partition 40 Nodes Into 6 Progressive Narrative Acts"]
     B --> C["Step 2: Solve Global Final ELK.js Coordinates (x, y, w, h) Once<br/>Guarantees Zero Node Jumping During Progressive Reveal!"]
     C --> D{"Target Narrative Behavior for Current Act?"}
-    D -->|"Standard Data/Control-Plane Walkthrough"| E["Illuminate Active Subgraph (100% Opacity) + Dim Context to 25%<br/>+ Animate SVG stroke-dashoffset Blue Packet Pulses"]
-    D -->|"High-Availability Failover / Rate-Limit Drill"| F["Trigger 3-Phase State Machine: Steady Blue -> Red HTTP 429 Fault -> 50ms Green Escape"]
+    D -->|Standard Data/Control-Plane Walkthrough| E["Illuminate Active Subgraph (100% Opacity) + Dim Context to 25%<br/>+ Animate SVG stroke-dashoffset Blue Packet Pulses"]
+    D -->|High-Availability Failover / Rate-Limit Drill| F["Trigger 3-Phase State Machine: Steady Blue -> Red HTTP 429 Fault -> 50ms Green Escape"]
     E & F --> G["Step 3: Bind Azure TTS WordBoundary Millisecond Timestamps<br/>Drive SVG viewBox 2.8x Spring Camera Pan/Zoom (4.2s Compile)"]
 ```
 

@@ -44,8 +44,8 @@
 ```mermaid
 flowchart TD
     A[企业 AI 视频需要配音/拟音/背景音乐] --> B{音效触发源是视频画面还是 UI 代码?}
-    B -->|"软件演示 / 培训教程<br/>DOM / Remotion 驱动"| C[直接读取 DOM 点击/转场精确帧时间戳<br/>挂载无损 UI 音效库 12.0ms 零误差]
-    B -->|"实拍或 AI 生成画面<br/>物理碰撞/脚步/倒水"| D[光流瞬态检测 + MMAudio / HunyuanVideo-Foley<br/>生成独立 48kHz Foley SFX 音轨 18.5ms]
+    B -->|软件演示 / 培训教程<br/>DOM / Remotion 驱动| C[直接读取 DOM 点击/转场精确帧时间戳<br/>挂载无损 UI 音效库 12.0ms 零误差]
+    B -->|实拍或 AI 生成画面<br/>物理碰撞/脚步/倒水| D[光流瞬态检测 + MMAudio / HunyuanVideo-Foley<br/>生成独立 48kHz Foley SFX 音轨 18.5ms]
     C --> E[BGM 选型: 严禁未授权公网生曲!<br/>CLAP 向量检索企业正版买断分轨曲库]
     D --> E
     E --> F[FFmpeg 母带总线: Azure Speech 口播轨触发 -12dB 侧链闪避<br/>+ 300Hz-3.4kHz 动态陷波 + EBU R128 -14 LUFS 标准化]

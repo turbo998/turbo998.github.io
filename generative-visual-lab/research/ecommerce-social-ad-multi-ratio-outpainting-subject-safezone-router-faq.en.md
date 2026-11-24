@@ -49,9 +49,9 @@
 flowchart TD
     A["Ingest 1:1 (1024x1024) Studio SKU Hero Image"] --> B["Step 1: Single-Pass BiRefNet Alpha Matting + Hough Tabletop Horizon Fit"]
     B --> C{"Target Ad Placement & Aspect Ratio?"}
-    C -->|"9:16 TikTok / Reels / Shorts Vertical"| D["Apply Short-Video UI Red-Zone Mask (Bottom 280px & Right 110px)<br/>Shift SKU Anchor to (cx=0.44, cy=0.52)"]
-    C -->|"16:9 / 3:1 Marketplace Hero Banner"| E["Extrapolate 3D Hough Tabletop Plane Across 3:1 Width<br/>Anchor SKU Left (cx=0.28) + Reserve Right 45% Bokeh Copy Zone"]
-    C -->|"4:5 Instagram / Xiaohongshu Feed"| F["Extend Vertical Canvas +25% with Balanced Top/Bottom Safe Margin"]
+    C -->|9:16 TikTok / Reels / Shorts Vertical| D["Apply Short-Video UI Red-Zone Mask (Bottom 280px & Right 110px)<br/>Shift SKU Anchor to (cx=0.44, cy=0.52)"]
+    C -->|16:9 / 3:1 Marketplace Hero Banner| E["Extrapolate 3D Hough Tabletop Plane Across 3:1 Width<br/>Anchor SKU Left (cx=0.28) + Reserve Right 45% Bokeh Copy Zone"]
+    C -->|4:5 Instagram / Xiaohongshu Feed| F["Extend Vertical Canvas +25% with Balanced Top/Bottom Safe Margin"]
     D & E & F --> G["Step 2: Zero Out Product Tokens in Outpaint Region (Anti-Clone / Anti-Stretch)<br/>Parallel 6-Ratio Micro-Batch on AKS Flux.1-Fill-dev FP8 (3.2s)"]
     G --> H["Step 3: 100% Bit-Exact SKU Pixel Paste-Back + Satori Vector Copy in Safe Zone"]
 ```

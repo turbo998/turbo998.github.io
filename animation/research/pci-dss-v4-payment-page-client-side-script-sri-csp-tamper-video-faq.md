@@ -32,9 +32,9 @@
 ```mermaid
 flowchart TD
     A[企业收银台挂载 24–44 个第三方脚本<br/>迎检 PCI-DSS v4.0.1 Req 6.4.3 & 11.6.1] --> B{客户端脚本治理方案?}
-    B -->|"GTM 裸奔加载 + 无运行时监控"| C[第四方级联注入 7 条 Magecart 侧录链<br/>4.2天检测盲区 · 42万张卡泄露罚金 $18.4M]
-    B -->|"仅在 HTML 硬编码静态 SRI sha384 哈希"| D[第三方供应商日常热更新导致 38.6% 脚本报错<br/>且无法拦截动态 import 四方脚本]
-    B -->|"跨源 Iframe + 边缘 AST 动态 SRI + 18ms 行为防火墙"| E[边缘网关 AST 扫描后自动更新 SRI 签名 0.0% 故障<br/>18ms 实时阻断非法 DOM 读取与陌生 ASN sendBeacon]
+    B -->|GTM 裸奔加载 + 无运行时监控| C[第四方级联注入 7 条 Magecart 侧录链<br/>4.2天检测盲区 · 42万张卡泄露罚金 $18.4M]
+    B -->|仅在 HTML 硬编码静态 SRI sha384 哈希| D[第三方供应商日常热更新导致 38.6% 脚本报错<br/>且无法拦截动态 import 四方脚本]
+    B -->|跨源 Iframe + 边缘 AST 动态 SRI + 18ms 行为防火墙| E[边缘网关 AST 扫描后自动更新 SRI 签名 0.0% 故障<br/>18ms 实时阻断非法 DOM 读取与陌生 ASN sendBeacon]
     E --> F[自动编译 Remotion 12s QSA 审计证据视频<br/>100% 通过 PCI v4.0.1 强审 · 年避险 +$18.4M]
 ```
 

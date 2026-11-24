@@ -47,9 +47,9 @@
 ```mermaid
 flowchart TD
     A["Ingest Studio SKU Photo + PIM Physical Dimensions (Diameter D x Height H)"] --> B{"Target Social UGC Format?"}
-    B -->|"POV Single-Hand Grip Photo (Xiaohongshu / IG)"| C["Fit 3D MANO Hand Skeleton Around Cylinder of Diameter D<br/>Split Z-Buffer into [Back Palm M_back / 100% SKU Mid / Front Fingers M_front]"]
-    B -->|"Two-Hand Cosmetics Close-Up (Hold Bottle + Pinch Dropper)"| D["Load Dual MANO_Left & MANO_Right Instance IDs & Normals (0 Finger Merge)<br/>+ Composite Refractive Serum Droplet at Pipette Tip"]
-    B -->|"5-Second POV Hand-Turn Video Hook (TikTok / Reels)"| E["Parent Rigid 3D SKU to Animated MANO Wrist Bone (+/-25-Deg Tilt)<br/>+ Drive Wan 2.1-VACE for Articulated Skin & Sunlight Glint"]
+    B -->|POV Single-Hand Grip Photo (Xiaohongshu / IG)| C["Fit 3D MANO Hand Skeleton Around Cylinder of Diameter D<br/>Split Z-Buffer into [Back Palm M_back / 100% SKU Mid / Front Fingers M_front]"]
+    B -->|Two-Hand Cosmetics Close-Up (Hold Bottle + Pinch Dropper)| D["Load Dual MANO_Left & MANO_Right Instance IDs & Normals (0 Finger Merge)<br/>+ Composite Refractive Serum Droplet at Pipette Tip"]
+    B -->|5-Second POV Hand-Turn Video Hook (TikTok / Reels)| E["Parent Rigid 3D SKU to Animated MANO Wrist Bone (+/-25-Deg Tilt)<br/>+ Drive Wan 2.1-VACE for Articulated Skin & Sunlight Glint"]
     C & D & E --> F["Project 2.5mm IC-Light Sub-Finger Contact AO & Skin Bounce onto SKU ($0.0085/img · $0.045/clip)"]
 ```
 

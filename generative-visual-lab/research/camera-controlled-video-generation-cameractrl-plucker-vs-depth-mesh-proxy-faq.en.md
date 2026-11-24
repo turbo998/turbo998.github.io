@@ -43,9 +43,9 @@
 ```mermaid
 flowchart TD
     A[Commercial Video Requires Exact 6-DoF Camera Control] --> B{Shot Dynamics & Spatial Requirement?}
-    B -->|"Real-Estate Tour / Showroom Flythrough<br/>Static Scene + Pan-and-Return Loop Closure"| C[DepthPro / DUSt3R 3D Depth-Mesh Cache<br/>+ Three.js 6-DoF Re-Projection + Wan-VACE Disocclusion Fill]
-    B -->|"Hitchcock Dolly-Zoom / Rack Focus<br/>Coupled Focal Length f_t + Camera Retreat Z_t"| D[Solve Constant-Subject-Height K_t + R_t<br/>Encode Pixel-Wise 6-Channel Plücker Ray Field]
-    B -->|"Automotive TVC / Action Sports Chase Cam<br/>High-Speed Moving Subject + Low Orbit Cam"| E[Static-Dynamic Split: Static Road via 3D Mesh Proxy<br/>+ Moving Vehicle via 3D OBB Track + CameraCtrl]
+    B -->|Real-Estate Tour / Showroom Flythrough<br/>Static Scene + Pan-and-Return Loop Closure| C[DepthPro / DUSt3R 3D Depth-Mesh Cache<br/>+ Three.js 6-DoF Re-Projection + Wan-VACE Disocclusion Fill]
+    B -->|Hitchcock Dolly-Zoom / Rack Focus<br/>Coupled Focal Length f_t + Camera Retreat Z_t| D[Solve Constant-Subject-Height K_t + R_t<br/>Encode Pixel-Wise 6-Channel Plücker Ray Field]
+    B -->|Automotive TVC / Action Sports Chase Cam<br/>High-Speed Moving Subject + Low Orbit Cam| E[Static-Dynamic Split: Static Road via 3D Mesh Proxy<br/>+ Moving Vehicle via 3D OBB Track + CameraCtrl]
 ```
 
 ### 3.2 4-Stage "3D Scene Cache + Coupled Plücker Rays + Wan-VACE Disocclusion" Pipeline

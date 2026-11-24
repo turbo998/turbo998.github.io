@@ -32,11 +32,11 @@
 ```mermaid
 flowchart TD
     A[Incoming AI Inference / Video Batch Request] --> B{Latency SLA Tier?}
-    B -->|"Interactive SLA < 200ms<br/>Live Chat / Copilot Completion"| C[Pin to Nearest Local Edge Region<br/>p99 TTFT = 138ms · Zero Cross-Ocean RTT]
-    B -->|"Deferrable Batch SLA >= 4h<br/>Bulk Video Render / Visual RAG / LoRA"| D[Query 5-Min WattTime MOER + Datacenter WUE + Spot Price]
+    B -->|Interactive SLA < 200ms<br/>Live Chat / Copilot Completion| C[Pin to Nearest Local Edge Region<br/>p99 TTFT = 138ms · Zero Cross-Ocean RTT]
+    B -->|Deferrable Batch SLA >= 4h<br/>Bulk Video Render / Visual RAG / LoRA| D[Query 5-Min WattTime MOER + Datacenter WUE + Spot Price]
     D --> E{Regional Carbon & Water Gate}
-    E -->|"Fossil Peaker MOER > 350 gCO2<br/>or Drought High-WUE > 1.5 L/kWh"| F[Throttle / Queue for Curtailed Hydro-Solar Window]
-    E -->|"Free-Air Cooled Hydro Region<br/>eu-north-1 18g / ca-central-1 24g"| G[Dispatch 18KB JSON Scene Manifest to Pre-Staged Pool<br/>Stream Output to CDN · -71.8% CO2 · -78.4% Water]
+    E -->|Fossil Peaker MOER > 350 gCO2<br/>or Drought High-WUE > 1.5 L/kWh| F[Throttle / Queue for Curtailed Hydro-Solar Window]
+    E -->|Free-Air Cooled Hydro Region<br/>eu-north-1 18g / ca-central-1 24g| G[Dispatch 18KB JSON Scene Manifest to Pre-Staged Pool<br/>Stream Output to CDN · -71.8% CO2 · -78.4% Water]
 ```
 
 ### 3.2 Enterprise Carbon- & Water-Aware Multi-Region AI Gateway Architecture

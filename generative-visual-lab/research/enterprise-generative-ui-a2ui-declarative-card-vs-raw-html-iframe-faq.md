@@ -48,9 +48,9 @@
 ```mermaid
 flowchart TD
     A["用户向企业 Agent 发起业务查询或操作请求"] --> B{"Agent 响应所需的视觉交互形态?"}
-    B -->|"常规业务看板 / 审批单 / 状态卡片 88% 流量"| C["Tier 1: A2UI / AG-UI 声明式 JSON 组件流<br/>流式输出 180-Token Props 映射宿主 React/D3/Rive 组件 (165ms)"]
-    B -->|"多维数据探索 / 云架构与血缘拓扑 10% 流量"| D["Tier 2: 声明式可视化语法 DSL<br/>输出 Vega-Lite / ELK.js AST 由端侧 SVG/Canvas 渲染 (210ms)"]
-    B -->|"长尾定制交互计算器 / 专属沙盘 2% 流量"| E["Tier 3: 预热双层 Null-Origin CSP 安全沙箱<br/>强制 default-src 'none' 零外联 + JSON-RPC 2.0 桥接 (320ms)"]
+    B -->|常规业务看板 / 审批单 / 状态卡片 88% 流量| C["Tier 1: A2UI / AG-UI 声明式 JSON 组件流<br/>流式输出 180-Token Props 映射宿主 React/D3/Rive 组件 (165ms)"]
+    B -->|多维数据探索 / 云架构与血缘拓扑 10% 流量| D["Tier 2: 声明式可视化语法 DSL<br/>输出 Vega-Lite / ELK.js AST 由端侧 SVG/Canvas 渲染 (210ms)"]
+    B -->|长尾定制交互计算器 / 专属沙盘 2% 流量| E["Tier 3: 预热双层 Null-Origin CSP 安全沙箱<br/>强制 default-src 'none' 零外联 + JSON-RPC 2.0 桥接 (320ms)"]
     C & D & E --> F["用户在 UI 上点击筛选/审批 -> 触发强类型 Action 事件秒级回传 Agent"]
 ```
 
@@ -61,11 +61,11 @@ flowchart LR
         LLM["Enterprise Agent"] --> SCH["JSON Schema / Tool Call 约束输出"]
     end
     subgraph HostUI["2. 宿主原生与 DSL 渲染层 (98% 流量)"]
-        SCH -->|"Tier 1: 88%"| A2UI["A2UI 组件注册表:<br/>KPI / 表单 / Rive 状态机 (165ms)"]
-        SCH -->|"Tier 2: 10%"| DSL["Vega-Lite & ELK.js 引擎:<br/>60fps 矢量图表与正交拓扑 (210ms)"]
+        SCH -->|Tier 1: 88%| A2UI["A2UI 组件注册表:<br/>KPI / 表单 / Rive 状态机 (165ms)"]
+        SCH -->|Tier 2: 10%| DSL["Vega-Lite & ELK.js 引擎:<br/>60fps 矢量图表与正交拓扑 (210ms)"]
     end
     subgraph Sandbox["3. 零信任 MCP App 沙箱 (2% 流量)"]
-        SCH -->|"Tier 3: 2%"| CSP["Null-Origin 双层 Iframe:<br/>CSP default-src 'none' (320ms)"]
+        SCH -->|Tier 3: 2%| CSP["Null-Origin 双层 Iframe:<br/>CSP default-src 'none' (320ms)"]
     end
 ```
 

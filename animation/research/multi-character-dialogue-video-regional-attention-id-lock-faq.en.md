@@ -47,11 +47,11 @@
 ```mermaid
 flowchart TD
     A["Ingest Multi-Character Dialogue Script + Separated Audio Stems"] --> B{"Shot Framing & Camera Setup?"}
-    B -->|"Two-Shot Medium/Wide Frame"| C["3D Pose Blockout Emits Instance Masks M_A(t), M_B(t)<br/>+ Regional Cross-Attention Isolates LoRA_A & LoRA_B (99.2% Purity)"]
-    B -->|"Over-the-Shoulder Shot-Reverse-Shot (OTS)"| D["Load Shared 3D Room Proxy + 180-Degree Same-Side Camera Pair<br/>Render Paired Depth Maps & Defocused Foreground Shoulder Masks"]
+    B -->|Two-Shot Medium/Wide Frame| C["3D Pose Blockout Emits Instance Masks M_A(t), M_B(t)<br/>+ Regional Cross-Attention Isolates LoRA_A & LoRA_B (99.2% Purity)"]
+    B -->|Over-the-Shoulder Shot-Reverse-Shot (OTS)| D["Load Shared 3D Room Proxy + 180-Degree Same-Side Camera Pair<br/>Render Paired Depth Maps & Defocused Foreground Shoulder Masks"]
     C & D --> E["Diarized Dual-Stem Audio-to-ROI Lip-Sync Router"]
-    E -->|"Actor A Speaking Window"| F["Stem_A Drives Actor A Mouth ROI + Actor B Runs Closed-Lip Nod Listener FSM"]
-    E -->|"Actor B Speaking Window"| G["Stem_B Drives Actor B Mouth ROI + Actor A Runs Closed-Lip Nod Listener FSM"]
+    E -->|Actor A Speaking Window| F["Stem_A Drives Actor A Mouth ROI + Actor B Runs Closed-Lip Nod Listener FSM"]
+    E -->|Actor B Speaking Window| G["Stem_B Drives Actor B Mouth ROI + Actor A Runs Closed-Lip Nod Listener FSM"]
     F & G --> H["Emit Zero-Bleed, Zero-Crosstalk, 180-Degree Compliant Master Shot ($0.068/shot)"]
 ```
 

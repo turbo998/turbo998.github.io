@@ -42,10 +42,10 @@ Cold-chain engineering teams face three severe operational hazards:
 ```mermaid
 flowchart TD
     A[-28°C to -40°C High-Bay Automated Cold Storage AS/RS] --> B{Inspection Carrier & Thaw Downtime Tolerance?}
-    B -->|"14-Day Chamber Warm-Up + Manual Rope Survey"| C[❌ Baseline A: $680k Inventory Relocation & Energy Loss<br/>Samples <2% of 65,000 Pallet Bays]
-    B -->|"Zero-Downtime Live Sub-Zero Digital Twin"| D{Ice-Fog Penetration & Structural Solver Stack?}
-    D -->|"Indoor Drone or Unconstrained RGB Camera 3DGS"| E[❌ Baseline B: Evaporator Blast Fans Crash Drones<br/>Ice Fog Induces ±92.4mm RGB 3DGS Depth Drift]
-    D -->|"Crane Heated LiDAR + LWIR + EN 15620 1D Spline 3DGS"| F[✅ Recommended: ±0.80mm Plumb Lock & 0 Thaw Days<br/>Auto-Compensates -21.4mm Shrinkage & Flags 0.3mm Rail Ice]
+    B -->|14-Day Chamber Warm-Up + Manual Rope Survey| C[❌ Baseline A: $680k Inventory Relocation & Energy Loss<br/>Samples <2% of 65,000 Pallet Bays]
+    B -->|Zero-Downtime Live Sub-Zero Digital Twin| D{Ice-Fog Penetration & Structural Solver Stack?}
+    D -->|Indoor Drone or Unconstrained RGB Camera 3DGS| E[❌ Baseline B: Evaporator Blast Fans Crash Drones<br/>Ice Fog Induces ±92.4mm RGB 3DGS Depth Drift]
+    D -->|Crane Heated LiDAR + LWIR + EN 15620 1D Spline 3DGS| F[✅ Recommended: ±0.80mm Plumb Lock & 0 Thaw Days<br/>Auto-Compensates -21.4mm Shrinkage & Flags 0.3mm Rail Ice]
 ```
 
 ### 3.2 Opportunistic Crane LiDAR + LWIR + EN 15620 Spline 3DGS Pipeline

@@ -42,11 +42,11 @@ When **Cloud & AI Solution Architects** and frontend engineering leads build **i
 ```mermaid
 flowchart TD
     A[Enterprise Interactive Web Visual Requirement] --> B{Visual Content Type & User Interaction?}
-    B -->|"Cloud/AI Architecture Topology / Live Data Flow"| C[✅ Top SVG Vector Nodes/Labels<br/>+ Bottom Canvas 2D Particle Stream · <200KB 60fps]
-    B -->|"AI Copilot State Icon / Interactive UI Micro-Motion"| D[✅ Select Rive / Lottie State Machine<br/>15–40KB Event-Driven Vector Bones]
-    B -->|"3D Product or 3D Spatial Environment"| E{Requires Part Articulation or Material Swapping?}
-    E -->|"Yes: Open Doors, Explode Parts, Swap PBR Finishes"| F[✅ Select Three.js / React Three Fiber<br/>Draco Mesh + KTX2 BasisU PBR GLB · 3.2MB]
-    E -->|"No: Photoreal Walkthrough of Captured Real Space"| G[✅ Select WebGPU 3DGS + SOGS Compression<br/>240MB PLY → 11.4MB + Three.js NavMesh Proxy]
+    B -->|Cloud/AI Architecture Topology / Live Data Flow| C[✅ Top SVG Vector Nodes/Labels<br/>+ Bottom Canvas 2D Particle Stream · <200KB 60fps]
+    B -->|AI Copilot State Icon / Interactive UI Micro-Motion| D[✅ Select Rive / Lottie State Machine<br/>15–40KB Event-Driven Vector Bones]
+    B -->|3D Product or 3D Spatial Environment| E{Requires Part Articulation or Material Swapping?}
+    E -->|Yes: Open Doors, Explode Parts, Swap PBR Finishes| F[✅ Select Three.js / React Three Fiber<br/>Draco Mesh + KTX2 BasisU PBR GLB · 3.2MB]
+    E -->|No: Photoreal Walkthrough of Captured Real Space| G[✅ Select WebGPU 3DGS + SOGS Compression<br/>240MB PLY → 11.4MB + Three.js NavMesh Proxy]
 ```
 
 ### 3.2 Hybrid 3DGS + Three.js Depth Compositor & SVG + Canvas Sandwich Pipeline

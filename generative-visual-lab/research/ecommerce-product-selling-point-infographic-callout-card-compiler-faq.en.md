@@ -47,9 +47,9 @@
 ```mermaid
 flowchart TD
     A["Ingest 4K Studio SKU Master + PIM Structured Spec/Dimension JSON"] --> B{"Target PDP Infographic Card Type (Cards #2–#6)?"}
-    B -->|"Cards #2/#3: Feature Callout & Part Breakdown"| C["Qwen2.5-VL + Grounded-SAM-2 Pin Exact Part Centroids (px, py)<br/>+ 45/90-Deg Zero-Crossing SVG Leader Lines + Satori Badges"]
-    B -->|"Card #4: 4x Macro Loupe Material Detail"| D["Lossless 400x400 ROI Crop from 4K/8K RAW Master at Part Pin<br/>+ SVG Geometric Tangent Cone + Metallic Loupe Ring"]
-    B -->|"Cards #5/#6: 3D Dimension Ruler & Spec Matrix"| E["Project 3D Oriented Bounding Box (OBB) Extremum Tangents<br/>+ Bind PIM Dual-Unit (mm / inch) Rulers & Comparison Table"]
+    B -->|Cards #2/#3: Feature Callout & Part Breakdown| C["Qwen2.5-VL + Grounded-SAM-2 Pin Exact Part Centroids (px, py)<br/>+ 45/90-Deg Zero-Crossing SVG Leader Lines + Satori Badges"]
+    B -->|Card #4: 4x Macro Loupe Material Detail| D["Lossless 400x400 ROI Crop from 4K/8K RAW Master at Part Pin<br/>+ SVG Geometric Tangent Cone + Metallic Loupe Ring"]
+    B -->|Cards #5/#6: 3D Dimension Ruler & Spec Matrix| E["Project 3D Oriented Bounding Box (OBB) Extremum Tangents<br/>+ Bind PIM Dual-Unit (mm / inch) Rulers & Comparison Table"]
     C & D & E --> F["Composite Over Flux.1-Fill Margin-Safe Backdrop + 180ms 16-Locale Export ($0.016/set)"]
 ```
 

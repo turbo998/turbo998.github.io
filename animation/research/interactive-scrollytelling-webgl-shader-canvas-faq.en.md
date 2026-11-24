@@ -44,8 +44,8 @@ flowchart TD
     A["Product Launch Scrollytelling Chapter<br/>(10~25 Visual Sections on One Page)"] --> B{"Requires real-time 3D orbit,<br/>live SKU color swap, or interactive shaders?"}
     B -->|"Yes (Interactive 3D / Custom Shader)"| C["✅ Single Shared WebGL2 Scissor Canvas:<br/>1. 1 Fixed Full-Viewport WebGLRenderer<br/>2. Lightweight <div class='view-slot'> in DOM<br/>3. gl.scissor() + gl.viewport() per Visible Slot"]
     B -->|"No (1D Scroll Scrubbing Only)"| D{"Requires offline ray-traced fluids<br/>or 100M-poly CAD assembly?"}
-    D -->|"Yes"| E["✅ Worker-Decoded AVIF/KTX2 Frame Sequence<br/>Streamed into Shared Canvas"]
-    D -->|"No"| F["✅ CSS Scroll-Driven Animations / Rive / SVG"]
+    D -->|Yes| E["✅ Worker-Decoded AVIF/KTX2 Frame Sequence<br/>Streamed into Shared Canvas"]
+    D -->|No| F["✅ CSS Scroll-Driven Animations / Rive / SVG"]
     C --> G["IntersectionObserver Sleep Gate<br/>+ ±2-Screen LRU Texture Disposal"]
     E --> G
 ```

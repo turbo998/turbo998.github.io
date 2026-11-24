@@ -42,10 +42,10 @@ In luxury fragrance and prestige beauty e-commerce (**Chanel N°5, Guerlain Flac
 ```mermaid
 flowchart TD
     A[Luxury Fragrance & Prestige Beauty Visual Pipeline] --> B{Container Optical Material & Personalization?}
-    B -->|"Opaque Ceramic / Matte Jar Background Swap"| C[BiRefNet Eroded Alpha Lock + IC-Light PBR Relighting]
-    B -->|"Transparent Heavy-Base Crystal Flacon n=1.54 + Liquid n=1.363<br/>+ Bespoke 24K Gold / Frosted Laser Engraving"| D{Rendering & Compositing Architecture?}
-    D -->|"Unmasked 2D Diffusion or Flat 2D Text Sticker"| E[❌ Baseline: 14.8mm Broken Dip-Tube Refraction<br/>46.8% Engraving Typos & Missing Base Caustics]
-    D -->|"CAD Dual-IOR + HarfBuzz Laser SDF Normal + Photon Caustics"| F[✅ Recommended: ±0.08mm Snell Refraction + 22.5° Meniscus<br/>+ 100% Zero-Typo 0.18mm Engraving & 99.4% Caustics]
+    B -->|Opaque Ceramic / Matte Jar Background Swap| C[BiRefNet Eroded Alpha Lock + IC-Light PBR Relighting]
+    B -->|Transparent Heavy-Base Crystal Flacon n=1.54 + Liquid n=1.363<br/>+ Bespoke 24K Gold / Frosted Laser Engraving| D{Rendering & Compositing Architecture?}
+    D -->|Unmasked 2D Diffusion or Flat 2D Text Sticker| E[❌ Baseline: 14.8mm Broken Dip-Tube Refraction<br/>46.8% Engraving Typos & Missing Base Caustics]
+    D -->|CAD Dual-IOR + HarfBuzz Laser SDF Normal + Photon Caustics| F[✅ Recommended: ±0.08mm Snell Refraction + 22.5° Meniscus<br/>+ 100% Zero-Typo 0.18mm Engraving & 99.4% Caustics]
 ```
 
 ### 3.2 Dual-IOR Crystal Refraction, HarfBuzz Engraving Normal & AIGC Backdrop Pipeline

@@ -40,9 +40,9 @@
 ```mermaid
 flowchart TD
     A[商家上传商品白底图生成展示短视频] --> B{可用实拍视角数量 N?}
-    B -->|"仅 1 张正面主图 N=1"| C[严禁 >±45° 旋转! 触发安全弧路由:<br/>2.5D 深度视差 ±35° 推拉 + 瓶标 Alpha 锁定 + IC-Light]
-    B -->|"正反 2 张主图 N=2<br/>鞋履/箱包/服饰"| D[Hunyuan3D-2 生成 3D 代理网格<br/>+ 正反 4K 实拍图相机 UV 投射 + Three.js 360°]
-    B -->|"前后左右 4 张图或 CAD N>=4<br/>3C 数码/精密家电"| E[Trellis 硬表面重建 + 屏幕原生 SVG/MP4 贴图<br/>+ Three.js 锚点驱动 Remotion 参数引出线]
+    B -->|仅 1 张正面主图 N=1| C[严禁 >±45° 旋转! 触发安全弧路由:<br/>2.5D 深度视差 ±35° 推拉 + 瓶标 Alpha 锁定 + IC-Light]
+    B -->|正反 2 张主图 N=2<br/>鞋履/箱包/服饰| D[Hunyuan3D-2 生成 3D 代理网格<br/>+ 正反 4K 实拍图相机 UV 投射 + Three.js 360°]
+    B -->|前后左右 4 张图或 CAD N>=4<br/>3C 数码/精密家电| E[Trellis 硬表面重建 + 屏幕原生 SVG/MP4 贴图<br/>+ Three.js 锚点驱动 Remotion 参数引出线]
 ```
 
 ### 3.2 四阶段“3D 代理 UV + Three.js + IC-Light”混合生产管线架构图

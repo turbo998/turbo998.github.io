@@ -57,7 +57,7 @@ flowchart TD
     B --> C{"目标底模温池 (Warm Pool)<br/>是否有空闲或低队列 Worker?"}
     C -->|"是 (命中已常驻 24GB 底模节点)"| D{"是否携带租户专属 LoRA<br/>或 ControlNet?"}
     D -->|"是 (150MB 轻量适配器)"| E["✅ 双缓冲 CUDA Stream 异步 DMA 预取<br/><180ms 指针级热插拔 LoRA (0 底模重载)"]
-    D -->|"否"| F["✅ 0ms 模型加载！直接复用 DAG 前缀缓存推理"]
+    D -->|否| F["✅ 0ms 模型加载！直接复用 DAG 前缀缓存推理"]
     C -->|"否 (突发流量峰值触发扩容)"| G["✅ 唤醒 CRIU/CUDA 容器快照 +<br/>本地 NVMe /dev/shm 零拷贝 mmap 挂载 (<1.8s)"]
     E --> H["T5 共享编码池 + DiT 推理 + 分块 VAE 解码"]
     F --> H

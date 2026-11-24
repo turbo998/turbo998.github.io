@@ -46,8 +46,8 @@ flowchart TD
     A["输入 3D 展厅/汽车渲染/虚拟制片环境光需求"] --> B["第1步: 启用水平 Circular Conv2D + 偶步 W/2 循环平移<br/>生成经度 ±180° 100% 无缝闭合的 2:1 全景主带"]
     B --> C["第2步: 将 ±60°~90° 天顶与天底重投影为 CubeMap (+Y / -Y) 正交正方形<br/>调用 Flux.1-Fill 修补平整车底地面与天顶云层 (0% 极点漩涡)"]
     C --> D{"目标 3D 引擎用途?"}
-    D -->|"仅作背景天空球显示 (Background Skybox)"| E["8K 水平环形分块超分 -> 导出轻量 WebP / AVIF"]
-    D -->|"用于 3D 汽车/腕表/角色 PBR 物理照明与反射 (IBL)"| F["第3步: 多曝光包围预测 (EV 0 / -3 / -6 / -9)<br/>Debevec 辐射度合成 16.4档 EV (28,000 nits) 32-bit Float .exr"]
+    D -->|仅作背景天空球显示 (Background Skybox)| E["8K 水平环形分块超分 -> 导出轻量 WebP / AVIF"]
+    D -->|用于 3D 汽车/腕表/角色 PBR 物理照明与反射 (IBL)| F["第3步: 多曝光包围预测 (EV 0 / -3 / -6 / -9)<br/>Debevec 辐射度合成 16.4档 EV (28,000 nits) 32-bit Float .exr"]
     F --> G["预卷积生成 Three.js / UE5 实时 GGX Roughness KTX2 CubeMap ($0.045/套)"]
 ```
 

@@ -44,11 +44,11 @@
 ```mermaid
 flowchart TD
     A[生产数据库 DDL Schema 变更请求] --> B{变更操作类型?}
-    B -->|"新建或删除索引"| C[强制使用 CREATE/DROP INDEX CONCURRENTLY<br/>+ 预先驱逐 >2s Idle-in-Transaction 阻塞会话]
-    B -->|"新增非空/外键约束"| D[拆分为两步: 1. ADD CONSTRAINT ... NOT VALID<br/>2. VALIDATE CONSTRAINT 弱锁后台校验]
-    B -->|"修改列类型 / 拆分列 / 重命名列"| E{表规模与 SLA 要求?}
-    E -->|"直接跑裸 ALTER TABLE COLUMN TYPE"| F[❌ 传统基线: 全表重写 + ACCESS EXCLUSIVE 锁队列大坝<br/>打爆连接池引发 24分钟 Sev-1 停机]
-    E -->|"Expand-Backfill-Contract + 双版本视图"| G[✅ 推荐架构: lock_timeout=150ms + 影子列双写触发器<br/>+ 2,000行/批限流回填 + v1/v2 视图零停机切换]
+    B -->|新建或删除索引| C[强制使用 CREATE/DROP INDEX CONCURRENTLY<br/>+ 预先驱逐 >2s Idle-in-Transaction 阻塞会话]
+    B -->|新增非空/外键约束| D[拆分为两步: 1. ADD CONSTRAINT ... NOT VALID<br/>2. VALIDATE CONSTRAINT 弱锁后台校验]
+    B -->|修改列类型 / 拆分列 / 重命名列| E{表规模与 SLA 要求?}
+    E -->|直接跑裸 ALTER TABLE COLUMN TYPE| F[❌ 传统基线: 全表重写 + ACCESS EXCLUSIVE 锁队列大坝<br/>打爆连接池引发 24分钟 Sev-1 停机]
+    E -->|Expand-Backfill-Contract + 双版本视图| G[✅ 推荐架构: lock_timeout=150ms + 影子列双写触发器<br/>+ 2,000行/批限流回填 + v1/v2 视图零停机切换]
 ```
 
 ### 3.2 `Expand-Backfill-Contract` 零停机演进与双视图路由架构图

@@ -46,11 +46,11 @@
 ```mermaid
 flowchart TD
     A["输入源视频素材 (手机真人实拍 / Blender 3D 白模动画)"] --> B{"源素材类型与是否包含商业持握真品?"}
-    B -->|"3D 软件白模动画 (Blender / UE5 Gray-Clay)"| C["直接从 3D 引擎导出原生 32-bit Depth + World Normal + Cryptomatte ID<br/>跳过单目深度估计，100% 锁死硬表面棱角"]
-    B -->|"手机/摄影机真人实拍视频"| D["运行 DepthAnythingV2 (16-bit) + AnyLine 柔性轮廓提取<br/>+ RAFT 双向光流场解算"]
+    B -->|3D 软件白模动画 (Blender / UE5 Gray-Clay)| C["直接从 3D 引擎导出原生 32-bit Depth + World Normal + Cryptomatte ID<br/>跳过单目深度估计，100% 锁死硬表面棱角"]
+    B -->|手机/摄影机真人实拍视频| D["运行 DepthAnythingV2 (16-bit) + AnyLine 柔性轮廓提取<br/>+ RAFT 双向光流场解算"]
     C & D --> E{"画面中是否包含需法务过审的真实商品/Logo?"}
-    E -->|"包含手持饮料/美妆/手机 SKU"| F["SAM-2 追踪商品掩码 M_SKU(t) 绕过扩散去噪<br/>对真品单独施加 1D 赛璐璐色阶 LUT + 边缘描边 (0% 商标损毁)"]
-    E -->|"纯角色与场景镜头"| G["全画面进入 81帧 Wan-VACE 3D 联合去噪 + 光流笔触平流"]
+    E -->|包含手持饮料/美妆/手机 SKU| F["SAM-2 追踪商品掩码 M_SKU(t) 绕过扩散去噪<br/>对真品单独施加 1D 赛璐璐色阶 LUT + 边缘描边 (0% 商标损毁)"]
+    E -->|纯角色与场景镜头| G["全画面进入 81帧 Wan-VACE 3D 联合去噪 + 光流笔触平流"]
     F & G --> H["输出 99.3% 零闪烁、100% 商标合规的风格化大片 ($0.054/条)"]
 ```
 

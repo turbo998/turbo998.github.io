@@ -49,9 +49,9 @@
 flowchart TD
     A["Ingest Flattened Source Video MP4 with Burned-In On-Screen Text (OST)"] --> B["PaddleOCR-v4 Full-Video Scan + Spatiotemporal Track Clustering"]
     B --> C{"What Spatial Class Is the On-Screen Text?"}
-    C -->|"SaaS UI Screen Recording / Flat Slides"| D["Extract Top Mouse Cursor Layer + 2ms Border-Color UI Fill<br/>+ Auto-Shrink German/Russian Button Font + Re-Overlay Cursor"]
-    C -->|"2D Floating Motion Callouts / Lower Thirds"| E["SAM-2 Tight 3px Character-Stroke Mask<br/>+ ProPainter +/-15 Frame Optical-Flow Clean-Plate + Remotion Vector"]
-    C -->|"3D Angled Whiteboard / Store Signage / Packaging"| F["CoTracker3 4-Point Planar Homography Matrix H_t<br/>+ Ortho Clean-Plate + H_t Perspective Warp + Surface Lighting Multiply"]
+    C -->|SaaS UI Screen Recording / Flat Slides| D["Extract Top Mouse Cursor Layer + 2ms Border-Color UI Fill<br/>+ Auto-Shrink German/Russian Button Font + Re-Overlay Cursor"]
+    C -->|2D Floating Motion Callouts / Lower Thirds| E["SAM-2 Tight 3px Character-Stroke Mask<br/>+ ProPainter +/-15 Frame Optical-Flow Clean-Plate + Remotion Vector"]
+    C -->|3D Angled Whiteboard / Store Signage / Packaging| F["CoTracker3 4-Point Planar Homography Matrix H_t<br/>+ Ortho Clean-Plate + H_t Perspective Warp + Surface Lighting Multiply"]
     D & E & F --> G["Encode Only 8% Modified ROI Tiles + NVENC Master Output ($0.028-$0.062/min)"]
 ```
 

@@ -51,8 +51,8 @@
 flowchart TD
     A["输入云基础设施源码或状态 (main.bicep / *.tf / terraform plan JSON)"] --> B["第1步: 确定性 AST 与状态图解析<br/>100% 提取 Subscription -> VNet -> Subnet -> 资源节点与依赖边"]
     B --> C{"当前执行场景?"}
-    C -->|"日常架构文档与 CTO 方案汇报"| D["ELK.js INCLUDE_CHILDREN 复合容器正交布局 (0 交叉线)<br/>+ 映射官方 Azure / AWS / CNCF 矢量图标库"]
-    C -->|"GitHub PR 基础设施变更审查 (terraform plan / what-if)"| E["标记 +Create / ~Update / -/+ Replace 节点<br/>+ 沿反向依赖 DAG 扩散红色爆炸半径 (Blast Radius) 断流预警"]
+    C -->|日常架构文档与 CTO 方案汇报| D["ELK.js INCLUDE_CHILDREN 复合容器正交布局 (0 交叉线)<br/>+ 映射官方 Azure / AWS / CNCF 矢量图标库"]
+    C -->|GitHub PR 基础设施变更审查 (terraform plan / what-if)| E["标记 +Create / ~Update / -/+ Replace 节点<br/>+ 沿反向依赖 DAG 扩散红色爆炸半径 (Blast Radius) 断流预警"]
     D & E --> F["第2步: 统一几何坐标中间表示层 (Unified Layout Coordinate IR)"]
     F --> G["同源三端一键导出 (2.1s):<br/>1. 60fps Web 动态流量沙盘 | 2. 可编辑 .drawio | 3. 原生 .pptx 汇报胶片"]
 ```

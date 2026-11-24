@@ -46,8 +46,8 @@
 flowchart TD
     A["Ingest Versioned Playwright Walkthrough Spec (Steps + Multilingual Script Anchors)"] --> B["Headless Chromium Loads ?locale=Target_Lang at 4K 60fps<br/>Records Lossless Video + Per-Frame DOM BoundingBox(t) JSON"]
     B --> C{"Does Cursor or Target DOM at t+400ms Collide with Avatar Quadrant?"}
-    C -->|"Collision Detected in Bottom-Right (e.g. [Save / Deploy] Button)"| D["Trigger Predictive 400ms Bezier Eviction:<br/>Glide Avatar PiP to Opposite Safe Corner or 82/18 Side Rail (100% Unoccluded)"]
-    C -->|"No Collision"| E["Maintain Current Safe Corner Placement"]
+    C -->|Collision Detected in Bottom-Right (e.g. [Save / Deploy] Button)| D["Trigger Predictive 400ms Bezier Eviction:<br/>Glide Avatar PiP to Opposite Safe Corner or 82/18 Side Rail (100% Unoccluded)"]
+    C -->|No Collision| E["Maintain Current Safe Corner Placement"]
     D & E --> F["Ingest Azure TTS WordBoundary Millisecond Timestamps"]
     F --> G["Remotion Executes 2.4x Critically Damped Spring Zoom + 45% Backdrop Dim<br/>+ Triggers Avatar 15-Deg Inward Gaze & Hand Gesture ($0.14/min)"]
 ```

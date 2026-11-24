@@ -45,13 +45,13 @@
 ```mermaid
 flowchart TD
     A[企业视频需要交付 4K 60fps 高清成片] --> B{待处理视频是单镜头原片还是多镜头带字成片?}
-    B -->|"多镜头混剪 / 已构思字幕排版"| C[1. 严禁先压字幕! 保持无字 Clean Plate<br/>2. PySceneDetect 按镜头切点拆分为独立单镜 Shot]
-    B -->|"AI 生成的 720p 24fps 单镜头底片"| D[进入单镜头时空增强流水线]
+    B -->|多镜头混剪 / 已构思字幕排版| C[1. 严禁先压字幕! 保持无字 Clean Plate<br/>2. PySceneDetect 按镜头切点拆分为独立单镜 Shot]
+    B -->|AI 生成的 720p 24fps 单镜头底片| D[进入单镜头时空增强流水线]
     C --> D
     D --> E[Stage 2: RIFE v4.22 TensorRT 双向光流插帧<br/>24fps -> 60fps 耗时 1.4s]
     E --> F{画面主体是否包含高精商品/高定面料?}
-    F -->|"是: 时尚服饰 / 珠宝 / 3C"| G[Stage 3A: SeedVR / VEnhancer 8帧时序超分<br/>+ 商家 4K 实拍白底图 Cross-Attention 纹理注入]
-    F -->|"否: 通用场景 / 概念背景"| H[Stage 3B: BasicVSR++ / SeedVR FP16 分块无逢拼接超分]
+    F -->|是: 时尚服饰 / 珠宝 / 3C| G[Stage 3A: SeedVR / VEnhancer 8帧时序超分<br/>+ 商家 4K 实拍白底图 Cross-Attention 纹理注入]
+    F -->|否: 通用场景 / 概念背景| H[Stage 3B: BasicVSR++ / SeedVR FP16 分块无逢拼接超分]
     G & H --> I[Stage 4: 顶层叠加原生 3840x2160 Remotion 矢量字幕与品牌 Logo<br/>导出 10-bit HEVC / ProRes 422 母带]
 ```
 

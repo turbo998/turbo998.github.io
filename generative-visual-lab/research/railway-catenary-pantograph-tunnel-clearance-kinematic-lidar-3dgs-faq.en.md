@@ -40,10 +40,10 @@ In **350 km/h high-speed rail (HSR) infrastructure maintenance (CRRC / China Rai
 ```mermaid
 flowchart TD
     A[Electrified Railway / Tunnel Digital Twin Scenario] --> B{Primary Engineering Verification Goal?}
-    B -->|"Macro Station Exterior & Passenger Flow Visualization"| C[Standard Drone Photogrammetry + Vanilla 3DGS]
-    B -->|"Pantograph-Catenary Stagger + EN 15273 Tunnel Clearance"| D{Wire Fidelity & Vehicle Kinematics?}
-    D -->|"Voxelized 3DGS + Upright Static Train AABB"| E[❌ Baseline: 12mm Wire Drops Out ±84mm<br/>Misses +268mm Cant & Suspension Roll]
-    D -->|"2MHz Profile LiDAR + 1D Catenary Spline + EN 15273 BVH"| F[✅ Recommended: ±1.5mm Wire Spline + Cant/Sway<br/>Swept Envelope + 270mm 25kV Insulation Sphere]
+    B -->|Macro Station Exterior & Passenger Flow Visualization| C[Standard Drone Photogrammetry + Vanilla 3DGS]
+    B -->|Pantograph-Catenary Stagger + EN 15273 Tunnel Clearance| D{Wire Fidelity & Vehicle Kinematics?}
+    D -->|Voxelized 3DGS + Upright Static Train AABB| E[❌ Baseline: 12mm Wire Drops Out ±84mm<br/>Misses +268mm Cant & Suspension Roll]
+    D -->|2MHz Profile LiDAR + 1D Catenary Spline + EN 15273 BVH| F[✅ Recommended: ±1.5mm Wire Spline + Cant/Sway<br/>Swept Envelope + 270mm 25kV Insulation Sphere]
 ```
 
 ### 3.2 Mobile Inspection Car LiDAR + 1D Catenary Spline + 3DGS Pipeline

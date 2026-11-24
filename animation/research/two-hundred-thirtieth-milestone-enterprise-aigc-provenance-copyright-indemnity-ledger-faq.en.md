@@ -48,10 +48,10 @@
 ```mermaid
 flowchart TD
     A["Application Submits Visual/Video Generation Request with Target Channel Tag"] --> B{"Target Publishing Surface & Legal Tier?"}
-    B -->|"Internal Moodboard / Concept Previs Only"| C["Allow Internal Experimental Weights + Stamp Confidential Watermark"]
-    B -->|"Public Social Media / E-Commerce PDP / Paid Broadcast TVC"| D["Enforce Copyright Indemnity Gate:<br/>Verify Reference Image DAM License & LoRA SHA-256 Allowlist"]
-    D -->|"Unlicensed Input Image or Community LoRA Detected"| E["Hard Block Request! Prompt User to Select Certified First-Party LoRA"]
-    D -->|"100% License & Guardrail Verified"| F["Route to Indemnified Cloud API (Azure OpenAI / Vertex / Firefly)<br/>or Apache-2.0 Base + Certified First-Party LoRA"]
+    B -->|Internal Moodboard / Concept Previs Only| C["Allow Internal Experimental Weights + Stamp Confidential Watermark"]
+    B -->|Public Social Media / E-Commerce PDP / Paid Broadcast TVC| D["Enforce Copyright Indemnity Gate:<br/>Verify Reference Image DAM License & LoRA SHA-256 Allowlist"]
+    D -->|Unlicensed Input Image or Community LoRA Detected| E["Hard Block Request! Prompt User to Select Certified First-Party LoRA"]
+    D -->|100% License & Guardrail Verified| F["Route to Indemnified Cloud API (Azure OpenAI / Vertex / Firefly)<br/>or Apache-2.0 Base + Certified First-Party LoRA"]
     F --> G["Apply Triple-Bound Provenance:<br/>1. HSM C2PA v2.1 Header | 2. >44dB Frequency Watermark | 3. WORM Lineage Ledger"]
 ```
 

@@ -45,12 +45,12 @@
 ```mermaid
 flowchart TD
     A[Product UI Requires High-Craft Motion or AI Avatar] --> B{2D Vector/Mesh or Photorealistic 3D/Particles?}
-    B -->|"2D Vector / Gradient Mesh / Character Rig"| C{Requires Multi-State Blending, Cursor Tracking or Live Audio RMS?}
-    C -->|"Yes: AI Copilot Voice Orb / Interactive Mascot"| D[Select Rive .riv Binary State Machine 24KB<br/>Live WebAudio/Cursor Input Binding + 120fps GPU Vector]
-    C -->|"No: Linear One-Shot or Simple Loop Icon"| E{Animation Complexity?}
-    E -->|"Simple Transform / Opacity"| F[Pure CSS / Web Animations API WAAPI < 2KB]
-    E -->|"Complex After Effects Path Animation"| G[Compile to Compressed DotLottie .lottie 14KB<br/>+ Web Worker OffscreenCanvas Renderer]
-    B -->|"Photoreal 3D Ray-Traced Glass / AIGC Fluid Particles"| H[Select Top-Bottom Stacked RGB+Alpha MP4 680KB<br/>+ 10-Line WebGL Fragment Shader Composite]
+    B -->|2D Vector / Gradient Mesh / Character Rig| C{Requires Multi-State Blending, Cursor Tracking or Live Audio RMS?}
+    C -->|Yes: AI Copilot Voice Orb / Interactive Mascot| D[Select Rive .riv Binary State Machine 24KB<br/>Live WebAudio/Cursor Input Binding + 120fps GPU Vector]
+    C -->|No: Linear One-Shot or Simple Loop Icon| E{Animation Complexity?}
+    E -->|Simple Transform / Opacity| F[Pure CSS / Web Animations API WAAPI < 2KB]
+    E -->|Complex After Effects Path Animation| G[Compile to Compressed DotLottie .lottie 14KB<br/>+ Web Worker OffscreenCanvas Renderer]
+    B -->|Photoreal 3D Ray-Traced Glass / AIGC Fluid Particles| H[Select Top-Bottom Stacked RGB+Alpha MP4 680KB<br/>+ 10-Line WebGL Fragment Shader Composite]
 ```
 
 ### 3.2 3-Tier UI Motion Rendering Architecture

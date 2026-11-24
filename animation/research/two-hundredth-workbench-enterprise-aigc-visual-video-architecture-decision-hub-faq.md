@@ -45,17 +45,17 @@
 ```mermaid
 flowchart TD
     A[企业级 AIGC 视觉与视频业务需求] --> B{目标交付物媒介形态?}
-    B -->|"静态商业图像 / 商品主图 / 多语种海报"| C{是否需严格锁定商品几何或排印多语种文案?}
-    C -->|"需锁商品与服装版型"| C1[✅ 无头 ComfyUI DAG: BiRefNet + CatVTON + Flux ControlNet + IC-Light]
-    C -->|"需排印 16国促销文案"| C2[✅ 1次 Clean-Plate AI 无字底图 + Satori/HarfBuzz 矢量层]
-    C -->|"复杂多主体创意或实时草图"| C3[✅ 四模型路由: GPT-Image-1 / Imagen 4 / Flux-schnell 0.35s]
-    B -->|"动态营销视频 / 产品演示 / 分镜预演"| D{画面以写实空镜为主还是含精确 UI/图表/价格?}
-    D -->|"含 SaaS UI / 财务图表 / 动态价格"| D1[✅ 混合管线: 缓存 AI 视频 B-Roll + Remotion / Motion Canvas 顶层合成]
-    D -->|"纯写实营销短视频批量生产"| D2{月产量是否 ≥ 4,200 条?}
-    D2 -->|"≥ 4,200 条/月"| D3[✅ 85% AKS 自建 Wan 2.1 / Hunyuan $0.24 + 15% Sora 2 / Veo 3 API]
-    D2 -->|"< 4,200 条/月"| D4[✅ 100% 商用 API: Sora 2 / Veo 3 / Kling 2.1]
-    B -->|"数字人播报 / 实时客服 / 跨语种视频译制"| E[✅ Azure AI Speech Avatar 合规底座 + 自建 MuseTalk 256px ROI<br/>+ UVR5 分轨 + 等时翻译 ±2.4%]
-    B -->|"Web 交互 3D / 展厅漫游 / 发布会滚动长图"| F[✅ 零件拆解选 Three.js Draco/KTX2 · 实景选 SOGS 3DGS<br/>滚动长图选 WebP Canvas 2.4ms + GSAP SVG]
+    B -->|静态商业图像 / 商品主图 / 多语种海报| C{是否需严格锁定商品几何或排印多语种文案?}
+    C -->|需锁商品与服装版型| C1[✅ 无头 ComfyUI DAG: BiRefNet + CatVTON + Flux ControlNet + IC-Light]
+    C -->|需排印 16国促销文案| C2[✅ 1次 Clean-Plate AI 无字底图 + Satori/HarfBuzz 矢量层]
+    C -->|复杂多主体创意或实时草图| C3[✅ 四模型路由: GPT-Image-1 / Imagen 4 / Flux-schnell 0.35s]
+    B -->|动态营销视频 / 产品演示 / 分镜预演| D{画面以写实空镜为主还是含精确 UI/图表/价格?}
+    D -->|含 SaaS UI / 财务图表 / 动态价格| D1[✅ 混合管线: 缓存 AI 视频 B-Roll + Remotion / Motion Canvas 顶层合成]
+    D -->|纯写实营销短视频批量生产| D2{月产量是否 ≥ 4,200 条?}
+    D2 -->|≥ 4,200 条/月| D3[✅ 85% AKS 自建 Wan 2.1 / Hunyuan $0.24 + 15% Sora 2 / Veo 3 API]
+    D2 -->|< 4,200 条/月| D4[✅ 100% 商用 API: Sora 2 / Veo 3 / Kling 2.1]
+    B -->|数字人播报 / 实时客服 / 跨语种视频译制| E[✅ Azure AI Speech Avatar 合规底座 + 自建 MuseTalk 256px ROI<br/>+ UVR5 分轨 + 等时翻译 ±2.4%]
+    B -->|Web 交互 3D / 展厅漫游 / 发布会滚动长图| F[✅ 零件拆解选 Three.js Draco/KTX2 · 实景选 SOGS 3DGS<br/>滚动长图选 WebP Canvas 2.4ms + GSAP SVG]
 ```
 
 ### 3.2 第 200 项里程碑：企业级 AIGC 视觉中台四层五域参考架构图

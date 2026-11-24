@@ -48,8 +48,8 @@
 ```mermaid
 flowchart TD
     A[企业需要将财报 / BI 报表 / ESG 数据转化为动态视频] --> B{画面元素的性质?}
-    B -->|"柱状图 / 折线图 / 桑基图 / 财务数字 / 地图边界"| C[严禁使用像素生图/生视频大模型!<br/>100% 走 SQL JSON -> D3.js 数学比例尺 + GeoJSON -> Remotion 矢量渲染]
-    B -->|"行业实景过场镜头<br/>风电场 / 港口 / 门店空镜"| D[使用 Wan 2.1 / Veo 3 生成 3s 无字写实 B-Roll 底板]
+    B -->|柱状图 / 折线图 / 桑基图 / 财务数字 / 地图边界| C[严禁使用像素生图/生视频大模型!<br/>100% 走 SQL JSON -> D3.js 数学比例尺 + GeoJSON -> Remotion 矢量渲染]
+    B -->|行业实景过场镜头<br/>风电场 / 港口 / 门店空镜| D[使用 Wan 2.1 / Veo 3 生成 3s 无字写实 B-Roll 底板]
     C & D --> E[合成层: B-Roll 背景压暗 + 16px 毛玻璃模糊<br/>+ Azure Speech WordBoundary 毫秒级驱动 D3 图表高亮动画]
 ```
 

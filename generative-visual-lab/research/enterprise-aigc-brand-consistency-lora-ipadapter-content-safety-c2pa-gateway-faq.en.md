@@ -51,10 +51,10 @@ Our reference architecture establishes three golden rules:
 ```mermaid
 flowchart TD
     A[Enterprise AIGC Brand Consistency Requirement] --> B{Target Visual Attribute to Lock?}
-    B -->|"Spatial Layout / Human Pose / Packaging Dieline Edges"| C[✅ Select ControlNet<br/>OpenPose / Depth / Canny Edge Lock]
-    B -->|"Subject Identity or Campaign Artistic Style"| D{Permanent Core IP or Agile Campaign Style?}
-    D -->|"Permanent Brand Mascot / Spokesperson / Hero SKU<br/>25–50 Curated Images & High Reuse Volume"| E[✅ Train Dedicated Rank-32 LoRA<br/>Hot-Swapped via S-LoRA Paging · 98.8% Identity Lock]
-    D -->|"Seasonal Moodboard / Lighting / Palette Reference<br/>1–3 Reference Images & Zero Training Lead Time"| F[✅ Select Zero-Shot IP-Adapter / PulID<br/>Style-Block Injection + CIE Lab Palette LUT · 97.6%]
+    B -->|Spatial Layout / Human Pose / Packaging Dieline Edges| C[✅ Select ControlNet<br/>OpenPose / Depth / Canny Edge Lock]
+    B -->|Subject Identity or Campaign Artistic Style| D{Permanent Core IP or Agile Campaign Style?}
+    D -->|Permanent Brand Mascot / Spokesperson / Hero SKU<br/>25–50 Curated Images & High Reuse Volume| E[✅ Train Dedicated Rank-32 LoRA<br/>Hot-Swapped via S-LoRA Paging · 98.8% Identity Lock]
+    D -->|Seasonal Moodboard / Lighting / Palette Reference<br/>1–3 Reference Images & Zero Training Lead Time| F[✅ Select Zero-Shot IP-Adapter / PulID<br/>Style-Block Injection + CIE Lab Palette LUT · 97.6%]
 ```
 
 ### 3.2 End-to-End Enterprise AIGC Safety, Brand Guardrail & C2PA v2.1 Gateway Pipeline

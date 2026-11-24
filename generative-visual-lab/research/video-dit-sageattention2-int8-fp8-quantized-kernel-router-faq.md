@@ -34,9 +34,9 @@
 ```mermaid
 flowchart TD
     A[视频 DiT 118,800 Token 三维注意力加速<br/>占整网 76.4% FLOPs] --> B{选择 Attention 算子精度方案?}
-    B -->|"标准 BF16 FlashAttention-2"| C[仅跑出 412 TFLOPS · 闲置芯片低比特算力<br/>单支视频仍需 148 秒]
-    B -->|"朴素 INT8 / FP8 直接量化 Naive PTQ"| D[RoPE 通道 12× 离群值截断 + FP22 累加溢出<br/>余弦相似度跌至 78.2% · 画面严重偏色 PSNR 19.4dB]
-    B -->|"SageAttention2: K均值消峰 + INT8 QK^T + 双级FP8 PV"| E[利用 Softmax 平移不变性令 K'=K-μ_K 消除 94.8% 离群值<br/>每 128 Token 将 FP22 提升至 FP32 累加器]
+    B -->|标准 BF16 FlashAttention-2| C[仅跑出 412 TFLOPS · 闲置芯片低比特算力<br/>单支视频仍需 148 秒]
+    B -->|朴素 INT8 / FP8 直接量化 Naive PTQ| D[RoPE 通道 12× 离群值截断 + FP22 累加溢出<br/>余弦相似度跌至 78.2% · 画面严重偏色 PSNR 19.4dB]
+    B -->|SageAttention2: K均值消峰 + INT8 QK^T + 双级FP8 PV| E[利用 Softmax 平移不变性令 K'=K-μ_K 消除 94.8% 离群值<br/>每 128 Token 将 FP22 提升至 FP32 累加器]
     E --> F[算子吞吐飙升至 1,178 TFLOPS 2.86× 提速 · 余弦保真 99.74%<br/>正交叠加 TeaCache 达 6.42× 总提速 · 年省 +$2.64M]
 ```
 

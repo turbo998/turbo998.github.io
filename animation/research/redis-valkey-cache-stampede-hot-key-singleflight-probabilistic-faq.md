@@ -43,9 +43,9 @@
 ```mermaid
 flowchart TD
     A[分布式缓存 Redis/Valkey 高可用防护场景] --> B{核心流量风险形态?}
-    B -->|"大促预热 50万 Key 在同一整点集中过期"| C[强制注入随机 TTL 抖动 TTL × U 0.85,1.15<br/>+ 软过期 Stale-While-Revalidate]
-    B -->|"单 Key 聚合 SQL 耗时高 Δ>50ms, 过期瞬间万级并发击穿"| D[✅ 启用 XFetch 概率早期异步重算 +<br/>进程内 Singleflight + 跨实例 Lease Token]
-    B -->|"突发事件单 Key 流量 >100k QPS 打满单分片 CPU"| E[✅ 启用 HeavyKeeper 10ms 热点探测 +<br/>RESP3 CLIENT TRACKING 本地 L1 Near-Cache]
+    B -->|大促预热 50万 Key 在同一整点集中过期| C[强制注入随机 TTL 抖动 TTL × U 0.85,1.15<br/>+ 软过期 Stale-While-Revalidate]
+    B -->|单 Key 聚合 SQL 耗时高 Δ>50ms, 过期瞬间万级并发击穿| D[✅ 启用 XFetch 概率早期异步重算 +<br/>进程内 Singleflight + 跨实例 Lease Token]
+    B -->|突发事件单 Key 流量 >100k QPS 打满单分片 CPU| E[✅ 启用 HeavyKeeper 10ms 热点探测 +<br/>RESP3 CLIENT TRACKING 本地 L1 Near-Cache]
 ```
 
 ### 3.2 `XFetch` + `Singleflight` + `RESP3` 本地 L1 三级防护管线架构图

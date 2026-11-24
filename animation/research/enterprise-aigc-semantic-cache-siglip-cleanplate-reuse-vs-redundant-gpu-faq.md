@@ -45,12 +45,12 @@
 ```mermaid
 flowchart TD
     A[视觉中台收到图像/视频生成请求] --> B{是否为同一会话内的微调编辑?}
-    B -->|"是: 仅修改材质/色彩/光影形容词"| C[命中 L2 Step-10 潜空间前缀缓存!<br/>加载 12MB 第10步 Latent 直接跑 Steps 11-28 4.8s]
-    B -->|"否: 全新独立生成请求"| D{是否为商品换背景/展台场景?}
-    D -->|"是: 拆分出空镜背景描述 + 相机俯仰角"| E{Qdrant SigLIP 检索余弦 > 0.94?}
-    E -->|"命中 L1 空镜池 38.4%"| F[拉取 4K 空镜 + 预置深度图 + 随机视口抖动<br/>0.45s 直接合成商品接触阴影与 IC-Light]
-    E -->|"未命中 L1"| G[进入 L3 TeaCache + SageAttention2 加速扩散引擎<br/>跳过 48% 冗余中间步并回填 L1/L2 缓存池]
-    D -->|"否: 全新创意视频/自由画面"| G
+    B -->|是: 仅修改材质/色彩/光影形容词| C[命中 L2 Step-10 潜空间前缀缓存!<br/>加载 12MB 第10步 Latent 直接跑 Steps 11-28 4.8s]
+    B -->|否: 全新独立生成请求| D{是否为商品换背景/展台场景?}
+    D -->|是: 拆分出空镜背景描述 + 相机俯仰角| E{Qdrant SigLIP 检索余弦 > 0.94?}
+    E -->|命中 L1 空镜池 38.4%| F[拉取 4K 空镜 + 预置深度图 + 随机视口抖动<br/>0.45s 直接合成商品接触阴影与 IC-Light]
+    E -->|未命中 L1| G[进入 L3 TeaCache + SageAttention2 加速扩散引擎<br/>跳过 48% 冗余中间步并回填 L1/L2 缓存池]
+    D -->|否: 全新创意视频/自由画面| G
 ```
 
 ### 3.2 L1 空镜池 + L2 步级快照 + L3 TeaCache 协同架构图
@@ -61,10 +61,10 @@ flowchart LR
         SPLIT --> SIG[SigLIP-SO400M + 俯仰角匹配:<br/>命中则返回 4K 空镜 + Depth + HDRI]
     end
     subgraph L2[L2: 会话级 Step-10 前缀池 Redis]
-        SPLIT -->|"交互改词"| STEP10[拉取 12MB Step-10 低频构图 Latent<br/>跳过 Steps 1-10 直接跑 Steps 11-28]
+        SPLIT -->|交互改词| STEP10[拉取 12MB Step-10 低频构图 Latent<br/>跳过 Steps 1-10 直接跑 Steps 11-28]
     end
     subgraph L3[L3: 步内残差复用引擎 GPU]
-        SIG & STEP10 -->|"需执行去噪"| TEA[TeaCache 首块残差探针:<br/>Δt < 0.12 时跳过第 2-40 层 3D Attention]
+        SIG & STEP10 -->|需执行去噪| TEA[TeaCache 首块残差探针:<br/>Δt < 0.12 时跳过第 2-40 层 3D Attention]
         TEA --> OUT[极速输出成片并异步更新 L1/L2 缓存]
     end
 ```

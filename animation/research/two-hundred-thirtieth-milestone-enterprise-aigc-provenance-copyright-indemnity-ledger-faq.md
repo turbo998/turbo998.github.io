@@ -48,10 +48,10 @@
 ```mermaid
 flowchart TD
     A["业务系统发起视觉/视频生成请求 (附带目标发布渠道标签)"] --> B{"目标发布渠道与商业风险等级?"}
-    B -->|"内部概念草稿 / 脑暴分镜 (Internal Only)"| C["允许路由至内部开源实验池 + 打内部机密水印"]
-    B -->|"公网社交媒体 / 官网 / 电商详情页 / 付费广告"| D["触发商业版权赔偿门禁 (Copyright Indemnity Gate):<br/>校验参考图 DAM 许可证 & 校验 LoRA SHA-256 白名单"]
-    D -->|"含未授权网图或社区野生 LoRA"| E["网关立即拦截阻断! 提示切换为企业自有签名 LoRA"]
-    D -->|"100% 合规通过"| F["路由至具备赔偿承诺 API (Azure OpenAI / Vertex / Firefly)<br/>或 Apache-2.0 底座 + 企业自有版权 LoRA"]
+    B -->|内部概念草稿 / 脑暴分镜 (Internal Only)| C["允许路由至内部开源实验池 + 打内部机密水印"]
+    B -->|公网社交媒体 / 官网 / 电商详情页 / 付费广告| D["触发商业版权赔偿门禁 (Copyright Indemnity Gate):<br/>校验参考图 DAM 许可证 & 校验 LoRA SHA-256 白名单"]
+    D -->|含未授权网图或社区野生 LoRA| E["网关立即拦截阻断! 提示切换为企业自有签名 LoRA"]
+    D -->|100% 合规通过| F["路由至具备赔偿承诺 API (Azure OpenAI / Vertex / Firefly)<br/>或 Apache-2.0 底座 + 企业自有版权 LoRA"]
     F --> G["出口强制执行三保险溯源:<br/>1. HSM C2PA v2.1 文件头 | 2. >44dB 频域隐形水印 | 3. WORM 血缘账本落盘"]
 ```
 
