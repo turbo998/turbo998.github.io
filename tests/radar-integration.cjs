@@ -9594,6 +9594,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r806File),'utf8');
       assert.ok(txt.includes('4,790.00')&&txt.includes('4,550.00')&&txt.includes('9,340.00')&&txt.includes('60.00')&&txt.includes('240.00')&&txt.includes('300.00')&&txt.includes('9,040.00')&&txt.includes('96.79%')&&txt.includes('not_measured'),r806File+': contains exact 11-24 R19 R806 aas+codewhale+openhuman+rocketride closed-form parameters');
     }
+    // 2026-11-24 Night Round 20 (R807: NVIDIA/SkillSpector + Tencent/AI-Infra-Guard + beenuar/AiSOC + bethington/ghidra-mcp) verification
+    const r807PathA=4980.00+46.5*100.00;
+    assert.equal(r807PathA.toFixed(2),'9630.00','11-24 R20 R807 Path A total');
+    const r807PathC=75.00+2.4*100.00;
+    assert.equal(r807PathC.toFixed(2),'315.00','11-24 R20 R807 Path C total');
+    assert.equal((r807PathA-r807PathC).toFixed(2),'9315.00','11-24 R20 R807 savings vs Path A');
+    assert.equal(((r807PathA-r807PathC)/r807PathA*100).toFixed(2),'96.73','11-24 R20 R807 pct savings vs Path A');
+    for(const r807File of ['workshops/github-trending-radar/docs/skillspector-ai-infra-guard-aisoc-ghidra-mcp-selection-faq.md','workshops/github-trending-radar/docs/skillspector-ai-infra-guard-aisoc-ghidra-mcp-selection-faq.en.md','assets/github-ai-radar-2026-11-24-r20-r807-skillspector-ai-infra-guard-aisoc-ghidra-mcp.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-24-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r807File),'utf8');
+      assert.ok(txt.includes('4,980.00')&&txt.includes('4,650.00')&&txt.includes('9,630.00')&&txt.includes('75.00')&&txt.includes('240.00')&&txt.includes('315.00')&&txt.includes('9,315.00')&&txt.includes('96.73%')&&txt.includes('not_measured'),r807File+': contains exact 11-24 R20 R807 skillspector+ai-infra-guard+aisoc+ghidra-mcp closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
