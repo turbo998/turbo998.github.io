@@ -9550,6 +9550,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r802File),'utf8');
       assert.ok(txt.includes('4,730.00')&&txt.includes('4,550.00')&&txt.includes('9,280.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,970.00')&&txt.includes('96.66%')&&txt.includes('not_measured'),r802File+': contains exact 11-24 R15 R802 mempalace+cognee+context7+wigolo closed-form parameters');
     }
+    // 2026-11-24 Night Round 16 (R803: Leonxlnx/taste-skill + heygen-com/hyperframes + coreyhaines31/marketingskills + AhmadHassan-BTed/Jantt) verification
+    const r803PathA=4820.00+46.0*100.00;
+    assert.equal(r803PathA.toFixed(2),'9420.00','11-24 R16 R803 Path A total');
+    const r803PathC=65.00+2.4*100.00;
+    assert.equal(r803PathC.toFixed(2),'305.00','11-24 R16 R803 Path C total');
+    assert.equal((r803PathA-r803PathC).toFixed(2),'9115.00','11-24 R16 R803 savings vs Path A');
+    assert.equal(((r803PathA-r803PathC)/r803PathA*100).toFixed(2),'96.76','11-24 R16 R803 pct savings vs Path A');
+    for(const r803File of ['workshops/github-trending-radar/docs/taste-skill-hyperframes-marketingskills-jantt-selection-faq.md','workshops/github-trending-radar/docs/taste-skill-hyperframes-marketingskills-jantt-selection-faq.en.md','assets/github-ai-radar-2026-11-24-r16-r803-taste-skill-hyperframes-marketingskills-jantt.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-24-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r803File),'utf8');
+      assert.ok(txt.includes('4,820.00')&&txt.includes('4,600.00')&&txt.includes('9,420.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('9,115.00')&&txt.includes('96.76%')&&txt.includes('not_measured'),r803File+': contains exact 11-24 R16 R803 taste-skill+hyperframes+marketingskills+jantt closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
