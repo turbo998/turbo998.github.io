@@ -9418,6 +9418,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r790File),'utf8');
       assert.ok(txt.includes('4,680.00')&&txt.includes('4,500.00')&&txt.includes('9,180.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('8,870.00')&&txt.includes('96.62%')&&txt.includes('not_measured'),r790File+': contains exact 11-24 R3 R790 agentdesk+karpobrowser+contextbridge+tokless closed-form parameters');
     }
+    // 2026-11-24 Night Round 4 (R791: heep-ai/restaurant-ai-skills + uxpilot-ai/user-interview-skill + usejog/joggernaut + globalmpc/vibe-breakpoint) verification
+    const r791PathA=4560.00+44.5*100.00;
+    assert.equal(r791PathA.toFixed(2),'9010.00','11-24 R4 R791 Path A total');
+    const r791PathC=65.00+2.4*100.00;
+    assert.equal(r791PathC.toFixed(2),'305.00','11-24 R4 R791 Path C total');
+    assert.equal((r791PathA-r791PathC).toFixed(2),'8705.00','11-24 R4 R791 savings vs Path A');
+    assert.equal(((r791PathA-r791PathC)/r791PathA*100).toFixed(2),'96.61','11-24 R4 R791 pct savings vs Path A');
+    for(const r791File of ['workshops/github-trending-radar/docs/restaurant-ai-skills-user-interview-joggernaut-vibe-breakpoint-selection-faq.md','workshops/github-trending-radar/docs/restaurant-ai-skills-user-interview-joggernaut-vibe-breakpoint-selection-faq.en.md','assets/github-ai-radar-2026-11-24-r4-r791-restaurantskills-userinterview-joggernaut-vibebreakpoint.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-24-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r791File),'utf8');
+      assert.ok(txt.includes('4,560.00')&&txt.includes('4,450.00')&&txt.includes('9,010.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('8,705.00')&&txt.includes('96.61%')&&txt.includes('not_measured'),r791File+': contains exact 11-24 R4 R791 restaurantskills+userinterview+joggernaut+vibebreakpoint closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
