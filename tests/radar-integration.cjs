@@ -9627,6 +9627,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r809File),'utf8');
       assert.ok(txt.includes('4,760.00')&&txt.includes('4,500.00')&&txt.includes('9,260.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('8,955.00')&&txt.includes('96.71%')&&txt.includes('not_measured'),r809File+': contains exact 11-24 R22 R809 cloakbrowser+page-agent+xhs+firecrawl closed-form parameters');
     }
+    // 2026-11-24 Night Round 23 (R810 Milestone: HarnessMD/munder-difflin + ValueCell-ai/ClawX + MrLesk/Backlog.md + open-multi-agent/open-multi-agent) verification
+    const r810PathA=4890.00+46.0*100.00;
+    assert.equal(r810PathA.toFixed(2),'9490.00','11-24 R23 R810 Path A total');
+    const r810PathC=60.00+2.4*100.00;
+    assert.equal(r810PathC.toFixed(2),'300.00','11-24 R23 R810 Path C total');
+    assert.equal((r810PathA-r810PathC).toFixed(2),'9190.00','11-24 R23 R810 savings vs Path A');
+    assert.equal(((r810PathA-r810PathC)/r810PathA*100).toFixed(2),'96.84','11-24 R23 R810 pct savings vs Path A');
+    for(const r810File of ['workshops/github-trending-radar/docs/munder-difflin-clawx-backlog-oma-selection-faq.md','workshops/github-trending-radar/docs/munder-difflin-clawx-backlog-oma-selection-faq.en.md','assets/github-ai-radar-2026-11-24-r23-r810-munder-difflin-clawx-backlog-oma.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-24-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r810File),'utf8');
+      assert.ok(txt.includes('4,890.00')&&txt.includes('4,600.00')&&txt.includes('9,490.00')&&txt.includes('60.00')&&txt.includes('240.00')&&txt.includes('300.00')&&txt.includes('9,190.00')&&txt.includes('96.84%')&&txt.includes('not_measured'),r810File+': contains exact 11-24 R23 R810 munder-difflin+clawx+backlog+oma closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
