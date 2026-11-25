@@ -10464,6 +10464,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r883File),'utf8');
       assert.ok(txt.includes('4,950.00')&&txt.includes('4,600.00')&&txt.includes('9,550.00')&&txt.includes('75.00')&&txt.includes('240.00')&&txt.includes('315.00')&&txt.includes('9,235.00')&&txt.includes('96.70%')&&txt.includes('not_measured'),r883File+': contains exact 11-25 R1 R883 bifrost+open-connector+context-forge+toolhive closed-form parameters');
     }
+    // 2026-11-25 Night Round 2 (R884: AyushRajSinghParihar/weaponized-curiosity + zou172866/Antigravity-agy-dart + aishadiaodeqishui/agy-monitor + lbc9168/antigravity-codex-worker) verification
+    const r884PathA=4590.00+45.5*100.00;
+    assert.equal(r884PathA.toFixed(2),'9140.00','11-25 R2 R884 Path A total');
+    const r884PathC=60.00+2.4*100.00;
+    assert.equal(r884PathC.toFixed(2),'300.00','11-25 R2 R884 Path C total');
+    assert.equal((r884PathA-r884PathC).toFixed(2),'8840.00','11-25 R2 R884 savings vs Path A');
+    assert.equal(((r884PathA-r884PathC)/r884PathA*100).toFixed(2),'96.72','11-25 R2 R884 pct savings vs Path A');
+    for(const r884File of ['workshops/github-trending-radar/docs/weaponized-curiosity-agy-dart-agy-monitor-codex-worker-selection-faq.md','workshops/github-trending-radar/docs/weaponized-curiosity-agy-dart-agy-monitor-codex-worker-selection-faq.en.md','assets/github-ai-radar-2026-11-25-r2-r884-curiosity-agydart-agymonitor-codexworker.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-25-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r884File),'utf8');
+      assert.ok(txt.includes('4,590.00')&&txt.includes('4,550.00')&&txt.includes('9,140.00')&&txt.includes('60.00')&&txt.includes('240.00')&&txt.includes('300.00')&&txt.includes('8,840.00')&&txt.includes('96.72%')&&txt.includes('not_measured'),r884File+': contains exact 11-25 R2 R884 curiosity+agydart+agymonitor+codexworker closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
