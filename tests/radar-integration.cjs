@@ -10717,6 +10717,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r906File),'utf8');
       assert.ok(txt.includes('4,590.00')&&txt.includes('4,500.00')&&txt.includes('9,090.00')&&txt.includes('55.00')&&txt.includes('240.00')&&txt.includes('295.00')&&txt.includes('8,795.00')&&txt.includes('96.75%')&&txt.includes('not_measured'),r906File+': contains exact 11-25 R24 R906 paradev+cchaha+claudecodeui+codeburn closed-form parameters');
     }
+    // 2026-11-25 Night Round 25 (R907: langchain4j/langchain4j + FalkorDB/FalkorDB + potpie-ai/potpie + vitali87/code-graph-rag) verification
+    const r907PathA=5050.00+48.0*100.00;
+    assert.equal(r907PathA.toFixed(2),'9850.00','11-25 R25 R907 Path A total');
+    const r907PathC=80.00+2.4*100.00;
+    assert.equal(r907PathC.toFixed(2),'320.00','11-25 R25 R907 Path C total');
+    assert.equal((r907PathA-r907PathC).toFixed(2),'9530.00','11-25 R25 R907 savings vs Path A');
+    assert.equal(((r907PathA-r907PathC)/r907PathA*100).toFixed(2),'96.75','11-25 R25 R907 pct savings vs Path A');
+    for(const r907File of ['workshops/github-trending-radar/docs/langchain4j-falkordb-potpie-code-graph-rag-selection-faq.md','workshops/github-trending-radar/docs/langchain4j-falkordb-potpie-code-graph-rag-selection-faq.en.md','assets/github-ai-radar-2026-11-25-r25-r907-langchain4j-falkordb-potpie-codegraphrag.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-25-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r907File),'utf8');
+      assert.ok(txt.includes('5,050.00')&&txt.includes('4,800.00')&&txt.includes('9,850.00')&&txt.includes('80.00')&&txt.includes('240.00')&&txt.includes('320.00')&&txt.includes('9,530.00')&&txt.includes('96.75%')&&txt.includes('not_measured'),r907File+': contains exact 11-25 R25 R907 langchain4j+falkordb+potpie+codegraphrag closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
