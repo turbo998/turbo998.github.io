@@ -10552,6 +10552,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r891File),'utf8');
       assert.ok(txt.includes('4,860.00')&&txt.includes('4,600.00')&&txt.includes('9,460.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('9,150.00')&&txt.includes('96.72%')&&txt.includes('not_measured'),r891File+': contains exact 11-25 R9 R891 crewai+agno+haystack+memos closed-form parameters');
     }
+    // 2026-11-25 Night Round 10 (R892: langgenius/dify + open-webui/open-webui + LibreChat-AI/LibreChat + TykTechnologies/tyk) verification
+    const r892PathA=4980.00+46.0*100.00;
+    assert.equal(r892PathA.toFixed(2),'9580.00','11-25 R10 R892 Path A total');
+    const r892PathC=75.00+2.4*100.00;
+    assert.equal(r892PathC.toFixed(2),'315.00','11-25 R10 R892 Path C total');
+    assert.equal((r892PathA-r892PathC).toFixed(2),'9265.00','11-25 R10 R892 savings vs Path A');
+    assert.equal(((r892PathA-r892PathC)/r892PathA*100).toFixed(2),'96.71','11-25 R10 R892 pct savings vs Path A');
+    for(const r892File of ['workshops/github-trending-radar/docs/dify-open-webui-librechat-tyk-selection-faq.md','workshops/github-trending-radar/docs/dify-open-webui-librechat-tyk-selection-faq.en.md','assets/github-ai-radar-2026-11-25-r10-r892-dify-openwebui-librechat-tyk.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-25-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r892File),'utf8');
+      assert.ok(txt.includes('4,980.00')&&txt.includes('4,600.00')&&txt.includes('9,580.00')&&txt.includes('75.00')&&txt.includes('240.00')&&txt.includes('315.00')&&txt.includes('9,265.00')&&txt.includes('96.71%')&&txt.includes('not_measured'),r892File+': contains exact 11-25 R10 R892 dify+openwebui+librechat+tyk closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
