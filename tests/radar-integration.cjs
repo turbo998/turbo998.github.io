@@ -10893,6 +10893,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r922File),'utf8');
       assert.ok(txt.includes('5,680.00')&&txt.includes('4,800.00')&&txt.includes('10,480.00')&&txt.includes('90.00')&&txt.includes('240.00')&&txt.includes('330.00')&&txt.includes('10,150.00')&&txt.includes('96.85%')&&txt.includes('not_measured'),r922File+': contains exact 11-25 R40 R922 milvus+xstate+mlflow+vector closed-form parameters');
     }
+    // 2026-11-25 Night Round 41 (R923: 1jehuang/jcode + dataelement/dsh-desktop + BlockRunAI/ClawRouter + GD4AI/obsidian-llm-wiki) verification
+    const r923PathA=4820.00+45.0*100.00;
+    assert.equal(r923PathA.toFixed(2),'9320.00','11-25 R41 R923 Path A total');
+    const r923PathC=50.00+2.4*100.00;
+    assert.equal(r923PathC.toFixed(2),'290.00','11-25 R41 R923 Path C total');
+    assert.equal((r923PathA-r923PathC).toFixed(2),'9030.00','11-25 R41 R923 savings vs Path A');
+    assert.equal(((r923PathA-r923PathC)/r923PathA*100).toFixed(2),'96.89','11-25 R41 R923 pct savings vs Path A');
+    for(const r923File of ['workshops/github-trending-radar/docs/jcode-dsh-desktop-clawrouter-obsidian-llm-wiki-selection-faq.md','workshops/github-trending-radar/docs/jcode-dsh-desktop-clawrouter-obsidian-llm-wiki-selection-faq.en.md','assets/github-ai-radar-2026-11-25-r41-r923-jcode-dshdesktop-clawrouter-obsidianllmwiki.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-25-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r923File),'utf8');
+      assert.ok(txt.includes('4,820.00')&&txt.includes('4,500.00')&&txt.includes('9,320.00')&&txt.includes('50.00')&&txt.includes('240.00')&&txt.includes('290.00')&&txt.includes('9,030.00')&&txt.includes('96.89%')&&txt.includes('not_measured'),r923File+': contains exact 11-25 R41 R923 jcode+dshdesktop+clawrouter+obsidianllmwiki closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
