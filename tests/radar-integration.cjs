@@ -10596,6 +10596,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r895File),'utf8');
       assert.ok(txt.includes('5,080.00')&&txt.includes('4,600.00')&&txt.includes('9,680.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('9,370.00')&&txt.includes('96.80%')&&txt.includes('not_measured'),r895File+': contains exact 11-25 R13 R895 hermes+browseruse+agentreach+deerflow closed-form parameters');
     }
+    // 2026-11-25 Night Round 14 (R896: OpenHands/OpenHands + unclecode/crawl4ai + lobehub/lobehub + ruvnet/ruflo) verification
+    const r896PathA=5060.00+46.0*100.00;
+    assert.equal(r896PathA.toFixed(2),'9660.00','11-25 R14 R896 Path A total');
+    const r896PathC=75.00+2.4*100.00;
+    assert.equal(r896PathC.toFixed(2),'315.00','11-25 R14 R896 Path C total');
+    assert.equal((r896PathA-r896PathC).toFixed(2),'9345.00','11-25 R14 R896 savings vs Path A');
+    assert.equal(((r896PathA-r896PathC)/r896PathA*100).toFixed(2),'96.74','11-25 R14 R896 pct savings vs Path A');
+    for(const r896File of ['workshops/github-trending-radar/docs/openhands-crawl4ai-lobehub-ruflo-selection-faq.md','workshops/github-trending-radar/docs/openhands-crawl4ai-lobehub-ruflo-selection-faq.en.md','assets/github-ai-radar-2026-11-25-r14-r896-openhands-crawl4ai-lobehub-ruflo.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-25-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r896File),'utf8');
+      assert.ok(txt.includes('5,060.00')&&txt.includes('4,600.00')&&txt.includes('9,660.00')&&txt.includes('75.00')&&txt.includes('240.00')&&txt.includes('315.00')&&txt.includes('9,345.00')&&txt.includes('96.74%')&&txt.includes('not_measured'),r896File+': contains exact 11-25 R14 R896 openhands+crawl4ai+lobehub+ruflo closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
