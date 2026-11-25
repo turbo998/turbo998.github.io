@@ -10585,6 +10585,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r894File),'utf8');
       assert.ok(txt.includes('4,770.00')&&txt.includes('4,550.00')&&txt.includes('9,320.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('9,015.00')&&txt.includes('96.73%')&&txt.includes('not_measured'),r894File+': contains exact 11-25 R12 R894 mcpmemory+concordmcp+gomodel+otari closed-form parameters');
     }
+    // 2026-11-25 Night Round 13 Milestone (R895: NousResearch/hermes-agent + browser-use/browser-use + Panniantong/Agent-Reach + bytedance/deer-flow) verification
+    const r895PathA=5080.00+46.0*100.00;
+    assert.equal(r895PathA.toFixed(2),'9680.00','11-25 R13 R895 Path A total');
+    const r895PathC=70.00+2.4*100.00;
+    assert.equal(r895PathC.toFixed(2),'310.00','11-25 R13 R895 Path C total');
+    assert.equal((r895PathA-r895PathC).toFixed(2),'9370.00','11-25 R13 R895 savings vs Path A');
+    assert.equal(((r895PathA-r895PathC)/r895PathA*100).toFixed(2),'96.80','11-25 R13 R895 pct savings vs Path A');
+    for(const r895File of ['workshops/github-trending-radar/docs/hermes-agent-browser-use-agent-reach-deer-flow-selection-faq.md','workshops/github-trending-radar/docs/hermes-agent-browser-use-agent-reach-deer-flow-selection-faq.en.md','assets/github-ai-radar-2026-11-25-r13-r895-hermes-browseruse-agentreach-deerflow.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-25-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r895File),'utf8');
+      assert.ok(txt.includes('5,080.00')&&txt.includes('4,600.00')&&txt.includes('9,680.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('9,370.00')&&txt.includes('96.80%')&&txt.includes('not_measured'),r895File+': contains exact 11-25 R13 R895 hermes+browseruse+agentreach+deerflow closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
