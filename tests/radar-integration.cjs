@@ -10475,6 +10475,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r884File),'utf8');
       assert.ok(txt.includes('4,590.00')&&txt.includes('4,550.00')&&txt.includes('9,140.00')&&txt.includes('60.00')&&txt.includes('240.00')&&txt.includes('300.00')&&txt.includes('8,840.00')&&txt.includes('96.72%')&&txt.includes('not_measured'),r884File+': contains exact 11-25 R2 R884 curiosity+agydart+agymonitor+codexworker closed-form parameters');
     }
+    // 2026-11-25 Night Round 3 Milestone (R885: langfuse/langfuse + simstudioai/sim + PrefectHQ/fastmcp + trpc-group/trpc-agent-go) verification
+    const r885PathA=5020.00+46.0*100.00;
+    assert.equal(r885PathA.toFixed(2),'9620.00','11-25 R3 R885 Path A total');
+    const r885PathC=75.00+2.4*100.00;
+    assert.equal(r885PathC.toFixed(2),'315.00','11-25 R3 R885 Path C total');
+    assert.equal((r885PathA-r885PathC).toFixed(2),'9305.00','11-25 R3 R885 savings vs Path A');
+    assert.equal(((r885PathA-r885PathC)/r885PathA*100).toFixed(2),'96.73','11-25 R3 R885 pct savings vs Path A');
+    for(const r885File of ['workshops/github-trending-radar/docs/langfuse-sim-fastmcp-trpc-agent-go-selection-faq.md','workshops/github-trending-radar/docs/langfuse-sim-fastmcp-trpc-agent-go-selection-faq.en.md','assets/github-ai-radar-2026-11-25-r3-r885-langfuse-sim-fastmcp-trpcagentgo.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-25-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r885File),'utf8');
+      assert.ok(txt.includes('5,020.00')&&txt.includes('4,600.00')&&txt.includes('9,620.00')&&txt.includes('75.00')&&txt.includes('240.00')&&txt.includes('315.00')&&txt.includes('9,305.00')&&txt.includes('96.73%')&&txt.includes('not_measured'),r885File+': contains exact 11-25 R3 R885 langfuse+sim+fastmcp+trpcagentgo closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
