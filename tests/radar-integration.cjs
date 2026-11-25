@@ -10607,6 +10607,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r896File),'utf8');
       assert.ok(txt.includes('5,060.00')&&txt.includes('4,600.00')&&txt.includes('9,660.00')&&txt.includes('75.00')&&txt.includes('240.00')&&txt.includes('315.00')&&txt.includes('9,345.00')&&txt.includes('96.74%')&&txt.includes('not_measured'),r896File+': contains exact 11-25 R14 R896 openhands+crawl4ai+lobehub+ruflo closed-form parameters');
     }
+    // 2026-11-25 Night Round 15 (R897: aaif-goose/goose + wshobson/agents + Yeachan-Heo/oh-my-claudecode + davila7/claude-code-templates) verification
+    const r897PathA=4810.00+45.5*100.00;
+    assert.equal(r897PathA.toFixed(2),'9360.00','11-25 R15 R897 Path A total');
+    const r897PathC=65.00+2.4*100.00;
+    assert.equal(r897PathC.toFixed(2),'305.00','11-25 R15 R897 Path C total');
+    assert.equal((r897PathA-r897PathC).toFixed(2),'9055.00','11-25 R15 R897 savings vs Path A');
+    assert.equal(((r897PathA-r897PathC)/r897PathA*100).toFixed(2),'96.74','11-25 R15 R897 pct savings vs Path A');
+    for(const r897File of ['workshops/github-trending-radar/docs/goose-wshobson-agents-ohmyclaudecode-templates-selection-faq.md','workshops/github-trending-radar/docs/goose-wshobson-agents-ohmyclaudecode-templates-selection-faq.en.md','assets/github-ai-radar-2026-11-25-r15-r897-goose-wshobson-ohmyclaude-templates.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-25-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r897File),'utf8');
+      assert.ok(txt.includes('4,810.00')&&txt.includes('4,550.00')&&txt.includes('9,360.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('9,055.00')&&txt.includes('96.74%')&&txt.includes('not_measured'),r897File+': contains exact 11-25 R15 R897 goose+wshobson+ohmyclaudecode+templates closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
