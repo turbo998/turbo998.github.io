@@ -10541,6 +10541,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r890File),'utf8');
       assert.ok(txt.includes('4,920.00')&&txt.includes('4,600.00')&&txt.includes('9,520.00')&&txt.includes('75.00')&&txt.includes('240.00')&&txt.includes('315.00')&&txt.includes('9,205.00')&&txt.includes('96.69%')&&txt.includes('not_measured'),r890File+': contains exact 11-25 R8 R890 litellm+newapi+gptload+cao closed-form parameters');
     }
+    // 2026-11-25 Night Round 9 (R891: crewAIInc/crewAI + agno-agi/agno + deepset-ai/haystack + MemTensor/MemOS) verification
+    const r891PathA=4860.00+46.0*100.00;
+    assert.equal(r891PathA.toFixed(2),'9460.00','11-25 R9 R891 Path A total');
+    const r891PathC=70.00+2.4*100.00;
+    assert.equal(r891PathC.toFixed(2),'310.00','11-25 R9 R891 Path C total');
+    assert.equal((r891PathA-r891PathC).toFixed(2),'9150.00','11-25 R9 R891 savings vs Path A');
+    assert.equal(((r891PathA-r891PathC)/r891PathA*100).toFixed(2),'96.72','11-25 R9 R891 pct savings vs Path A');
+    for(const r891File of ['workshops/github-trending-radar/docs/crewai-agno-haystack-memos-selection-faq.md','workshops/github-trending-radar/docs/crewai-agno-haystack-memos-selection-faq.en.md','assets/github-ai-radar-2026-11-25-r9-r891-crewai-agno-haystack-memos.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-25-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r891File),'utf8');
+      assert.ok(txt.includes('4,860.00')&&txt.includes('4,600.00')&&txt.includes('9,460.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('9,150.00')&&txt.includes('96.72%')&&txt.includes('not_measured'),r891File+': contains exact 11-25 R9 R891 crewai+agno+haystack+memos closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
