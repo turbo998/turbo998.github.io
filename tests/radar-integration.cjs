@@ -10860,6 +10860,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r919File),'utf8');
       assert.ok(txt.includes('4,640.00')&&txt.includes('4,500.00')&&txt.includes('9,140.00')&&txt.includes('45.00')&&txt.includes('240.00')&&txt.includes('285.00')&&txt.includes('8,855.00')&&txt.includes('96.88%')&&txt.includes('not_measured'),r919File+': contains exact 11-25 R37 R919 ladybugdb+mimik+zoterobutler+kiwifs closed-form parameters');
     }
+    // 2026-11-25 Night Round 38 (R920 Milestone: zhnt/loushang + ZHangZHengEric/Sage + FalkorDB/GraphRAG-SDK + mnemon-dev/mnemon) verification
+    const r920PathA=4880.00+45.0*100.00;
+    assert.equal(r920PathA.toFixed(2),'9380.00','11-25 R38 R920 Path A total');
+    const r920PathC=55.00+2.4*100.00;
+    assert.equal(r920PathC.toFixed(2),'295.00','11-25 R38 R920 Path C total');
+    assert.equal((r920PathA-r920PathC).toFixed(2),'9085.00','11-25 R38 R920 savings vs Path A');
+    assert.equal(((r920PathA-r920PathC)/r920PathA*100).toFixed(2),'96.86','11-25 R38 R920 pct savings vs Path A');
+    for(const r920File of ['workshops/github-trending-radar/docs/loushang-sage-rsi-falkordb-graphrag-sdk-mnemon-selection-faq.md','workshops/github-trending-radar/docs/loushang-sage-rsi-falkordb-graphrag-sdk-mnemon-selection-faq.en.md','assets/github-ai-radar-2026-11-25-r38-r920-loushang-sage-graphragsdk-mnemon.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-25-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r920File),'utf8');
+      assert.ok(txt.includes('4,880.00')&&txt.includes('4,500.00')&&txt.includes('9,380.00')&&txt.includes('55.00')&&txt.includes('240.00')&&txt.includes('295.00')&&txt.includes('9,085.00')&&txt.includes('96.86%')&&txt.includes('not_measured'),r920File+': contains exact 11-25 R38 R920 loushang+sage+graphragsdk+mnemon closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
