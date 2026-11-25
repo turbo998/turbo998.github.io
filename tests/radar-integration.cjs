@@ -10640,6 +10640,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r899File),'utf8');
       assert.ok(txt.includes('5,120.00')&&txt.includes('4,700.00')&&txt.includes('9,820.00')&&txt.includes('80.00')&&txt.includes('240.00')&&txt.includes('320.00')&&txt.includes('9,500.00')&&txt.includes('96.74%')&&txt.includes('not_measured'),r899File+': contains exact 11-25 R17 R899 n8n+langgraph+xyflow+openaiagents closed-form parameters');
     }
+    // 2026-11-25 Night Round 18 (R900 Milestone: TencentCloud/TencentDB-Agent-Memory + comet-ml/opik + dyad-sh/dyad + a2ui-project/a2ui) verification
+    const r900PathA=5150.00+48.0*100.00;
+    assert.equal(r900PathA.toFixed(2),'9950.00','11-25 R18 R900 Path A total');
+    const r900PathC=85.00+2.4*100.00;
+    assert.equal(r900PathC.toFixed(2),'325.00','11-25 R18 R900 Path C total');
+    assert.equal((r900PathA-r900PathC).toFixed(2),'9625.00','11-25 R18 R900 savings vs Path A');
+    assert.equal(((r900PathA-r900PathC)/r900PathA*100).toFixed(2),'96.73','11-25 R18 R900 pct savings vs Path A');
+    for(const r900File of ['workshops/github-trending-radar/docs/tencentdb-memory-opik-dyad-a2ui-selection-faq.md','workshops/github-trending-radar/docs/tencentdb-memory-opik-dyad-a2ui-selection-faq.en.md','assets/github-ai-radar-2026-11-25-r18-r900-tencentmemory-opik-dyad-a2ui.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-25-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r900File),'utf8');
+      assert.ok(txt.includes('5,150.00')&&txt.includes('4,800.00')&&txt.includes('9,950.00')&&txt.includes('85.00')&&txt.includes('240.00')&&txt.includes('325.00')&&txt.includes('9,625.00')&&txt.includes('96.73%')&&txt.includes('not_measured'),r900File+': contains exact 11-25 R18 R900 tencentmemory+opik+dyad+a2ui closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
