@@ -10684,6 +10684,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r903File),'utf8');
       assert.ok(txt.includes('5,450.00')&&txt.includes('4,800.00')&&txt.includes('10,250.00')&&txt.includes('85.00')&&txt.includes('240.00')&&txt.includes('325.00')&&txt.includes('9,925.00')&&txt.includes('96.83%')&&txt.includes('not_measured'),r903File+': contains exact 11-25 R21 R903 continue+sweagent+owl+agentzero closed-form parameters');
     }
+    // 2026-11-25 Night Round 22 (R904: logseq/logseq + PDFMathTranslate/PDFMathTranslate + qax-os/excelize + nesquena/hermes-webui) verification
+    const r904PathA=4680.00+45.0*100.00;
+    assert.equal(r904PathA.toFixed(2),'9180.00','11-25 R22 R904 Path A total');
+    const r904PathC=60.00+2.4*100.00;
+    assert.equal(r904PathC.toFixed(2),'300.00','11-25 R22 R904 Path C total');
+    assert.equal((r904PathA-r904PathC).toFixed(2),'8880.00','11-25 R22 R904 savings vs Path A');
+    assert.equal(((r904PathA-r904PathC)/r904PathA*100).toFixed(2),'96.73','11-25 R22 R904 pct savings vs Path A');
+    for(const r904File of ['workshops/github-trending-radar/docs/logseq-pdfmathtranslate-excelize-hermes-webui-selection-faq.md','workshops/github-trending-radar/docs/logseq-pdfmathtranslate-excelize-hermes-webui-selection-faq.en.md','assets/github-ai-radar-2026-11-25-r22-r904-logseq-pdfmathtranslate-excelize-hermeswebui.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-25-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r904File),'utf8');
+      assert.ok(txt.includes('4,680.00')&&txt.includes('4,500.00')&&txt.includes('9,180.00')&&txt.includes('60.00')&&txt.includes('240.00')&&txt.includes('300.00')&&txt.includes('8,880.00')&&txt.includes('96.73%')&&txt.includes('not_measured'),r904File+': contains exact 11-25 R22 R904 logseq+pdfmathtranslate+excelize+hermeswebui closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
