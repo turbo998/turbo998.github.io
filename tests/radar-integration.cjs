@@ -10838,6 +10838,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r917File),'utf8');
       assert.ok(txt.includes('5,560.00')&&txt.includes('4,800.00')&&txt.includes('10,360.00')&&txt.includes('90.00')&&txt.includes('240.00')&&txt.includes('330.00')&&txt.includes('10,030.00')&&txt.includes('96.81%')&&txt.includes('not_measured'),r917File+': contains exact 11-25 R35 R917 doris+oneuptime+hertzbeat+greptimedb closed-form parameters');
     }
+    // 2026-11-25 Night Round 36 (R918: PrefectHQ/prefect + dagster-io/dagster + apache/dolphinscheduler + flyteorg/flyte) verification
+    const r918PathA=5180.00+48.0*100.00;
+    assert.equal(r918PathA.toFixed(2),'9980.00','11-25 R36 R918 Path A total');
+    const r918PathC=80.00+2.4*100.00;
+    assert.equal(r918PathC.toFixed(2),'320.00','11-25 R36 R918 Path C total');
+    assert.equal((r918PathA-r918PathC).toFixed(2),'9660.00','11-25 R36 R918 savings vs Path A');
+    assert.equal(((r918PathA-r918PathC)/r918PathA*100).toFixed(2),'96.79','11-25 R36 R918 pct savings vs Path A');
+    for(const r918File of ['workshops/github-trending-radar/docs/prefect-dagster-dolphinscheduler-flyte-orchestration-selection-faq.md','workshops/github-trending-radar/docs/prefect-dagster-dolphinscheduler-flyte-orchestration-selection-faq.en.md','assets/github-ai-radar-2026-11-25-r36-r918-prefect-dagster-dolphinscheduler-flyte.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-25-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r918File),'utf8');
+      assert.ok(txt.includes('5,180.00')&&txt.includes('4,800.00')&&txt.includes('9,980.00')&&txt.includes('80.00')&&txt.includes('240.00')&&txt.includes('320.00')&&txt.includes('9,660.00')&&txt.includes('96.79%')&&txt.includes('not_measured'),r918File+': contains exact 11-25 R36 R918 prefect+dagster+dolphinscheduler+flyte closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
