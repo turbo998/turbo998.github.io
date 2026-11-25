@@ -10436,6 +10436,34 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r842File),'utf8');
       assert.ok(txt.includes('4,630.00')&&txt.includes('4,500.00')&&txt.includes('9,130.00')&&txt.includes('60.00')&&txt.includes('240.00')&&txt.includes('300.00')&&txt.includes('8,830.00')&&txt.includes('96.71%')&&txt.includes('not_measured'),r842File+': contains exact 11-24 R55 R842 mcpstudio+forge+suite+fluxo closed-form parameters');
     }
+    // 2026-11-25 Track A/B Raw Evidence & Night Round 1 (R883: maximhq/bifrost + oomol-lab/open-connector + IBM/mcp-context-forge + stacklok/toolhive) verification
+    const rawHtml1125=fs.readFileSync(path.join(__dirname,'..','workshops','github-trending-radar','evidence','trending-daily-2026-11-25-raw.html'),'utf8').replace(/\r\n/g,'\n');
+    assert.equal(hash(rawHtml1125),'89424293b7ad53ddd99d1a6d8fc3de2e2bda66fb407660643b12d9634b20fbf2','2026-11-25 raw HTML LF sha256');
+    const rawSearch1125Str=fs.readFileSync(path.join(__dirname,'..','workshops','github-trending-radar','evidence','search-new-repos-2026-11-25-raw.json'),'utf8').replace(/\r\n/g,'\n');
+    assert.equal(hash(rawSearch1125Str),'99f34cb9553d1785cc7888049b94b7c17a1277c71a754c63969c7ef8b376e297','2026-11-25 raw Search API JSON LF sha256');
+    const rawSearch1125=JSON.parse(rawSearch1125Str);
+    const rawSearch1125Map=new Map(rawSearch1125.items.map(it=>[it.full_name,it]));
+    for(const item of reportJson.fastest_rising_leaderboard_2026_11_25.track_a_24h_star_surge){
+      assert.equal(item.provenance,'measured',item.full_name+': 11-25 Track A provenance');
+      assert.ok(rawHtml1125.includes(`href="/${item.full_name}"`),item.full_name+': present in 11-25 raw HTML');
+      assert.ok(rawHtml1125.includes(`${item.stars_today.toLocaleString('en-US')} stars today`),item.full_name+': exact stars_today in 11-25 raw HTML');
+    }
+    for(const item of reportJson.fastest_rising_leaderboard_2026_11_25.track_b_new_repo_breakout_slope){
+      assert.equal(item.stars_today,'not_measured',item.full_name+': 11-25 Track B stars_today must be not_measured');
+      assert.ok(rawSearch1125Map.has(item.full_name),item.full_name+': present in 11-25 Search API JSON');
+      assert.equal(item.stars_total_search_api,rawSearch1125Map.get(item.full_name).stargazers_count,item.full_name+': matches 11-25 Search API stargazers_count');
+      assert.equal(item.stars_per_day,Math.round(item.stars_total/item.age_days),item.full_name+': 11-25 stars_per_day closed-form');
+    }
+    const r883PathA=4950.00+46.0*100.00;
+    assert.equal(r883PathA.toFixed(2),'9550.00','11-25 R1 R883 Path A total');
+    const r883PathC=75.00+2.4*100.00;
+    assert.equal(r883PathC.toFixed(2),'315.00','11-25 R1 R883 Path C total');
+    assert.equal((r883PathA-r883PathC).toFixed(2),'9235.00','11-25 R1 R883 savings vs Path A');
+    assert.equal(((r883PathA-r883PathC)/r883PathA*100).toFixed(2),'96.70','11-25 R1 R883 pct savings vs Path A');
+    for(const r883File of ['workshops/github-trending-radar/docs/bifrost-open-connector-context-forge-toolhive-selection-faq.md','workshops/github-trending-radar/docs/bifrost-open-connector-context-forge-toolhive-selection-faq.en.md','assets/github-ai-radar-2026-11-25-r1-r883-bifrost-openconnector-contextforge-toolhive.svg','assets/github-ai-radar-2026-11-25.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-25-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r883File),'utf8');
+      assert.ok(txt.includes('4,950.00')&&txt.includes('4,600.00')&&txt.includes('9,550.00')&&txt.includes('75.00')&&txt.includes('240.00')&&txt.includes('315.00')&&txt.includes('9,235.00')&&txt.includes('96.70%')&&txt.includes('not_measured'),r883File+': contains exact 11-25 R1 R883 bifrost+open-connector+context-forge+toolhive closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
