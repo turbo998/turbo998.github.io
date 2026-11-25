@@ -10783,6 +10783,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r912File),'utf8');
       assert.ok(txt.includes('5,280.00')&&txt.includes('4,800.00')&&txt.includes('10,080.00')&&txt.includes('75.00')&&txt.includes('240.00')&&txt.includes('315.00')&&txt.includes('9,765.00')&&txt.includes('96.88%')&&txt.includes('not_measured'),r912File+': contains exact 11-25 R30 R912 trustgraph+openontologies+wanwu+edgequake closed-form parameters');
     }
+    // 2026-11-25 Night Round 31 (R913: OpenWhispr/openwhispr + kubeshark/kubeshark + pydantic/logfire + seakee/CPA-Manager-Plus) verification
+    const r913PathA=4840.00+45.0*100.00;
+    assert.equal(r913PathA.toFixed(2),'9340.00','11-25 R31 R913 Path A total');
+    const r913PathC=65.00+2.4*100.00;
+    assert.equal(r913PathC.toFixed(2),'305.00','11-25 R31 R913 Path C total');
+    assert.equal((r913PathA-r913PathC).toFixed(2),'9035.00','11-25 R31 R913 savings vs Path A');
+    assert.equal(((r913PathA-r913PathC)/r913PathA*100).toFixed(2),'96.73','11-25 R31 R913 pct savings vs Path A');
+    for(const r913File of ['workshops/github-trending-radar/docs/openwhispr-kubeshark-pydantic-logfire-cpa-manager-selection-faq.md','workshops/github-trending-radar/docs/openwhispr-kubeshark-pydantic-logfire-cpa-manager-selection-faq.en.md','assets/github-ai-radar-2026-11-25-r31-r913-openwhispr-kubeshark-logfire-cpamanager.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-25-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r913File),'utf8');
+      assert.ok(txt.includes('4,840.00')&&txt.includes('4,500.00')&&txt.includes('9,340.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('9,035.00')&&txt.includes('96.73%')&&txt.includes('not_measured'),r913File+': contains exact 11-25 R31 R913 openwhispr+kubeshark+logfire+cpamanager closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
