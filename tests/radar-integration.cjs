@@ -10563,6 +10563,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r892File),'utf8');
       assert.ok(txt.includes('4,980.00')&&txt.includes('4,600.00')&&txt.includes('9,580.00')&&txt.includes('75.00')&&txt.includes('240.00')&&txt.includes('315.00')&&txt.includes('9,265.00')&&txt.includes('96.71%')&&txt.includes('not_measured'),r892File+': contains exact 11-25 R10 R892 dify+openwebui+librechat+tyk closed-form parameters');
     }
+    // 2026-11-25 Night Round 11 (R893: OpenPipe/ART + GetStream/Agents + scenario-labs/skills + NVIDIA-AI-Blueprints/video-search-and-summarization) verification
+    const r893PathA=5040.00+46.0*100.00;
+    assert.equal(r893PathA.toFixed(2),'9640.00','11-25 R11 R893 Path A total');
+    const r893PathC=75.00+2.4*100.00;
+    assert.equal(r893PathC.toFixed(2),'315.00','11-25 R11 R893 Path C total');
+    assert.equal((r893PathA-r893PathC).toFixed(2),'9325.00','11-25 R11 R893 savings vs Path A');
+    assert.equal(((r893PathA-r893PathC)/r893PathA*100).toFixed(2),'96.73','11-25 R11 R893 pct savings vs Path A');
+    for(const r893File of ['workshops/github-trending-radar/docs/openpipe-art-stream-agents-scenario-skills-nvidia-vss-selection-faq.md','workshops/github-trending-radar/docs/openpipe-art-stream-agents-scenario-skills-nvidia-vss-selection-faq.en.md','assets/github-ai-radar-2026-11-25-r11-r893-openpipeart-streamagents-scenarioskills-nvidiavss.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-25-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r893File),'utf8');
+      assert.ok(txt.includes('5,040.00')&&txt.includes('4,600.00')&&txt.includes('9,640.00')&&txt.includes('75.00')&&txt.includes('240.00')&&txt.includes('315.00')&&txt.includes('9,325.00')&&txt.includes('96.73%')&&txt.includes('not_measured'),r893File+': contains exact 11-25 R11 R893 openpipeart+streamagents+scenarioskills+nvidiavss closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
