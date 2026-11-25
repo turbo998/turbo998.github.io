@@ -10706,6 +10706,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r905File),'utf8');
       assert.ok(txt.includes('5,080.00')&&txt.includes('4,800.00')&&txt.includes('9,880.00')&&txt.includes('80.00')&&txt.includes('240.00')&&txt.includes('320.00')&&txt.includes('9,560.00')&&txt.includes('96.76%')&&txt.includes('not_measured'),r905File+': contains exact 11-25 R23 R905 mcptoolbox+openui+e2b+semantica closed-form parameters');
     }
+    // 2026-11-25 Night Round 24 (R906: ParadevAI/Paradev + NanmiCoder/cc-haha + siteboon/claudecodeui + getagentseal/codeburn) verification
+    const r906PathA=4590.00+45.0*100.00;
+    assert.equal(r906PathA.toFixed(2),'9090.00','11-25 R24 R906 Path A total');
+    const r906PathC=55.00+2.4*100.00;
+    assert.equal(r906PathC.toFixed(2),'295.00','11-25 R24 R906 Path C total');
+    assert.equal((r906PathA-r906PathC).toFixed(2),'8795.00','11-25 R24 R906 savings vs Path A');
+    assert.equal(((r906PathA-r906PathC)/r906PathA*100).toFixed(2),'96.75','11-25 R24 R906 pct savings vs Path A');
+    for(const r906File of ['workshops/github-trending-radar/docs/paradev-cc-haha-claudecodeui-codeburn-selection-faq.md','workshops/github-trending-radar/docs/paradev-cc-haha-claudecodeui-codeburn-selection-faq.en.md','assets/github-ai-radar-2026-11-25-r24-r906-paradev-cchaha-claudecodeui-codeburn.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-25-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r906File),'utf8');
+      assert.ok(txt.includes('4,590.00')&&txt.includes('4,500.00')&&txt.includes('9,090.00')&&txt.includes('55.00')&&txt.includes('240.00')&&txt.includes('295.00')&&txt.includes('8,795.00')&&txt.includes('96.75%')&&txt.includes('not_measured'),r906File+': contains exact 11-25 R24 R906 paradev+cchaha+claudecodeui+codeburn closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
