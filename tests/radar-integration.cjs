@@ -10882,6 +10882,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r921File),'utf8');
       assert.ok(txt.includes('5,050.00')&&txt.includes('4,700.00')&&txt.includes('9,750.00')&&txt.includes('75.00')&&txt.includes('240.00')&&txt.includes('315.00')&&txt.includes('9,435.00')&&txt.includes('96.77%')&&txt.includes('not_measured'),r921File+': contains exact 11-25 R39 R921 tradingagents+vibetrading+camel+aiberkshire closed-form parameters');
     }
+    // 2026-11-25 Night Round 40 (R922: milvus-io/milvus + statelyai/xstate + mlflow/mlflow + vectordotdev/vector) verification
+    const r922PathA=5680.00+48.0*100.00;
+    assert.equal(r922PathA.toFixed(2),'10480.00','11-25 R40 R922 Path A total');
+    const r922PathC=90.00+2.4*100.00;
+    assert.equal(r922PathC.toFixed(2),'330.00','11-25 R40 R922 Path C total');
+    assert.equal((r922PathA-r922PathC).toFixed(2),'10150.00','11-25 R40 R922 savings vs Path A');
+    assert.equal(((r922PathA-r922PathC)/r922PathA*100).toFixed(2),'96.85','11-25 R40 R922 pct savings vs Path A');
+    for(const r922File of ['workshops/github-trending-radar/docs/milvus-xstate-mlflow-vector-pipeline-selection-faq.md','workshops/github-trending-radar/docs/milvus-xstate-mlflow-vector-pipeline-selection-faq.en.md','assets/github-ai-radar-2026-11-25-r40-r922-milvus-xstate-mlflow-vector.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-25-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r922File),'utf8');
+      assert.ok(txt.includes('5,680.00')&&txt.includes('4,800.00')&&txt.includes('10,480.00')&&txt.includes('90.00')&&txt.includes('240.00')&&txt.includes('330.00')&&txt.includes('10,150.00')&&txt.includes('96.85%')&&txt.includes('not_measured'),r922File+': contains exact 11-25 R40 R922 milvus+xstate+mlflow+vector closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
