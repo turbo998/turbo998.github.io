@@ -10849,6 +10849,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r918File),'utf8');
       assert.ok(txt.includes('5,180.00')&&txt.includes('4,800.00')&&txt.includes('9,980.00')&&txt.includes('80.00')&&txt.includes('240.00')&&txt.includes('320.00')&&txt.includes('9,660.00')&&txt.includes('96.79%')&&txt.includes('not_measured'),r918File+': contains exact 11-25 R36 R918 prefect+dagster+dolphinscheduler+flyte closed-form parameters');
     }
+    // 2026-11-25 Night Round 37 (R919: LadybugDB/ladybug + westpoint-io/mimik + steven-jianhao-li/zotero-AI-Butler + kiwifs/kiwifs) verification
+    const r919PathA=4640.00+45.0*100.00;
+    assert.equal(r919PathA.toFixed(2),'9140.00','11-25 R37 R919 Path A total');
+    const r919PathC=45.00+2.4*100.00;
+    assert.equal(r919PathC.toFixed(2),'285.00','11-25 R37 R919 Path C total');
+    assert.equal((r919PathA-r919PathC).toFixed(2),'8855.00','11-25 R37 R919 savings vs Path A');
+    assert.equal(((r919PathA-r919PathC)/r919PathA*100).toFixed(2),'96.88','11-25 R37 R919 pct savings vs Path A');
+    for(const r919File of ['workshops/github-trending-radar/docs/ladybugdb-mimik-zotero-butler-kiwifs-selection-faq.md','workshops/github-trending-radar/docs/ladybugdb-mimik-zotero-butler-kiwifs-selection-faq.en.md','assets/github-ai-radar-2026-11-25-r37-r919-ladybugdb-mimik-zoterobutler-kiwifs.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-25-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r919File),'utf8');
+      assert.ok(txt.includes('4,640.00')&&txt.includes('4,500.00')&&txt.includes('9,140.00')&&txt.includes('45.00')&&txt.includes('240.00')&&txt.includes('285.00')&&txt.includes('8,855.00')&&txt.includes('96.88%')&&txt.includes('not_measured'),r919File+': contains exact 11-25 R37 R919 ladybugdb+mimik+zoterobutler+kiwifs closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
