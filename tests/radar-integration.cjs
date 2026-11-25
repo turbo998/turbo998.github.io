@@ -10871,6 +10871,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r920File),'utf8');
       assert.ok(txt.includes('4,880.00')&&txt.includes('4,500.00')&&txt.includes('9,380.00')&&txt.includes('55.00')&&txt.includes('240.00')&&txt.includes('295.00')&&txt.includes('9,085.00')&&txt.includes('96.86%')&&txt.includes('not_measured'),r920File+': contains exact 11-25 R38 R920 loushang+sage+graphragsdk+mnemon closed-form parameters');
     }
+    // 2026-11-25 Night Round 39 (R921: TauricResearch/TradingAgents + HKUDS/Vibe-Trading + camel-ai/camel + xbtlin/ai-berkshire) verification
+    const r921PathA=5050.00+47.0*100.00;
+    assert.equal(r921PathA.toFixed(2),'9750.00','11-25 R39 R921 Path A total');
+    const r921PathC=75.00+2.4*100.00;
+    assert.equal(r921PathC.toFixed(2),'315.00','11-25 R39 R921 Path C total');
+    assert.equal((r921PathA-r921PathC).toFixed(2),'9435.00','11-25 R39 R921 savings vs Path A');
+    assert.equal(((r921PathA-r921PathC)/r921PathA*100).toFixed(2),'96.77','11-25 R39 R921 pct savings vs Path A');
+    for(const r921File of ['workshops/github-trending-radar/docs/tradingagents-vibe-trading-camel-ai-berkshire-selection-faq.md','workshops/github-trending-radar/docs/tradingagents-vibe-trading-camel-ai-berkshire-selection-faq.en.md','assets/github-ai-radar-2026-11-25-r39-r921-tradingagents-vibetrading-camel-aiberkshire.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-25-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r921File),'utf8');
+      assert.ok(txt.includes('5,050.00')&&txt.includes('4,700.00')&&txt.includes('9,750.00')&&txt.includes('75.00')&&txt.includes('240.00')&&txt.includes('315.00')&&txt.includes('9,435.00')&&txt.includes('96.77%')&&txt.includes('not_measured'),r921File+': contains exact 11-25 R39 R921 tradingagents+vibetrading+camel+aiberkshire closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
