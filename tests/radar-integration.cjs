@@ -10651,6 +10651,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r900File),'utf8');
       assert.ok(txt.includes('5,150.00')&&txt.includes('4,800.00')&&txt.includes('9,950.00')&&txt.includes('85.00')&&txt.includes('240.00')&&txt.includes('325.00')&&txt.includes('9,625.00')&&txt.includes('96.73%')&&txt.includes('not_measured'),r900File+': contains exact 11-25 R18 R900 tencentmemory+opik+dyad+a2ui closed-form parameters');
     }
+    // 2026-11-25 Night Round 19 (R901: trycua/cua + assafelovic/gpt-researcher + yamadashy/repomix + Skyvern-AI/skyvern) verification
+    const r901PathA=4920.00+47.0*100.00;
+    assert.equal(r901PathA.toFixed(2),'9620.00','11-25 R19 R901 Path A total');
+    const r901PathC=75.00+2.4*100.00;
+    assert.equal(r901PathC.toFixed(2),'315.00','11-25 R19 R901 Path C total');
+    assert.equal((r901PathA-r901PathC).toFixed(2),'9305.00','11-25 R19 R901 savings vs Path A');
+    assert.equal(((r901PathA-r901PathC)/r901PathA*100).toFixed(2),'96.73','11-25 R19 R901 pct savings vs Path A');
+    for(const r901File of ['workshops/github-trending-radar/docs/cua-gpt-researcher-repomix-skyvern-selection-faq.md','workshops/github-trending-radar/docs/cua-gpt-researcher-repomix-skyvern-selection-faq.en.md','assets/github-ai-radar-2026-11-25-r19-r901-cua-gptresearcher-repomix-skyvern.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-25-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r901File),'utf8');
+      assert.ok(txt.includes('4,920.00')&&txt.includes('4,700.00')&&txt.includes('9,620.00')&&txt.includes('75.00')&&txt.includes('240.00')&&txt.includes('315.00')&&txt.includes('9,305.00')&&txt.includes('96.73%')&&txt.includes('not_measured'),r901File+': contains exact 11-25 R19 R901 cua+gptresearcher+repomix+skyvern closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
