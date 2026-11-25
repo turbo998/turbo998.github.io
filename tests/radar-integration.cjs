@@ -10673,6 +10673,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r902File),'utf8');
       assert.ok(txt.includes('5,320.00')&&txt.includes('4,800.00')&&txt.includes('10,120.00')&&txt.includes('90.00')&&txt.includes('240.00')&&txt.includes('330.00')&&txt.includes('9,790.00')&&txt.includes('96.74%')&&txt.includes('not_measured'),r902File+': contains exact 11-25 R20 R902 tidb+signoz+semantickernel+vercelai closed-form parameters');
     }
+    // 2026-11-25 Night Round 21 (R903: continuedev/continue + SWE-agent/SWE-agent + camel-ai/owl + agent0ai/agent-zero) verification
+    const r903PathA=5450.00+48.0*100.00;
+    assert.equal(r903PathA.toFixed(2),'10250.00','11-25 R21 R903 Path A total');
+    const r903PathC=85.00+2.4*100.00;
+    assert.equal(r903PathC.toFixed(2),'325.00','11-25 R21 R903 Path C total');
+    assert.equal((r903PathA-r903PathC).toFixed(2),'9925.00','11-25 R21 R903 savings vs Path A');
+    assert.equal(((r903PathA-r903PathC)/r903PathA*100).toFixed(2),'96.83','11-25 R21 R903 pct savings vs Path A');
+    for(const r903File of ['workshops/github-trending-radar/docs/continue-swe-agent-camel-owl-agent-zero-selection-faq.md','workshops/github-trending-radar/docs/continue-swe-agent-camel-owl-agent-zero-selection-faq.en.md','assets/github-ai-radar-2026-11-25-r21-r903-continue-sweagent-owl-agentzero.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-25-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r903File),'utf8');
+      assert.ok(txt.includes('5,450.00')&&txt.includes('4,800.00')&&txt.includes('10,250.00')&&txt.includes('85.00')&&txt.includes('240.00')&&txt.includes('325.00')&&txt.includes('9,925.00')&&txt.includes('96.83%')&&txt.includes('not_measured'),r903File+': contains exact 11-25 R21 R903 continue+sweagent+owl+agentzero closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
