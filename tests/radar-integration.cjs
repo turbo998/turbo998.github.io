@@ -10761,6 +10761,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r910File),'utf8');
       assert.ok(txt.includes('5,380.00')&&txt.includes('4,800.00')&&txt.includes('10,180.00')&&txt.includes('85.00')&&txt.includes('240.00')&&txt.includes('325.00')&&txt.includes('9,855.00')&&txt.includes('96.81%')&&txt.includes('not_measured'),r910File+': contains exact 11-25 R28 R910 clickstack+camunda+holmesgpt+obsidianwiki closed-form parameters');
     }
+    // 2026-11-25 Night Round 29 (R911: langchain-ai/open-swe + Asymptote-Labs/agent-beacon + lmnr-ai/lmnr + MemMachine/MemMachine) verification
+    const r911PathA=4940.00+46.0*100.00;
+    assert.equal(r911PathA.toFixed(2),'9540.00','11-25 R29 R911 Path A total');
+    const r911PathC=70.00+2.4*100.00;
+    assert.equal(r911PathC.toFixed(2),'310.00','11-25 R29 R911 Path C total');
+    assert.equal((r911PathA-r911PathC).toFixed(2),'9230.00','11-25 R29 R911 savings vs Path A');
+    assert.equal(((r911PathA-r911PathC)/r911PathA*100).toFixed(2),'96.75','11-25 R29 R911 pct savings vs Path A');
+    for(const r911File of ['workshops/github-trending-radar/docs/open-swe-agent-beacon-laminar-memmachine-selection-faq.md','workshops/github-trending-radar/docs/open-swe-agent-beacon-laminar-memmachine-selection-faq.en.md','assets/github-ai-radar-2026-11-25-r29-r911-openswe-beacon-lmnr-memmachine.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-25-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r911File),'utf8');
+      assert.ok(txt.includes('4,940.00')&&txt.includes('4,600.00')&&txt.includes('9,540.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('9,230.00')&&txt.includes('96.75%')&&txt.includes('not_measured'),r911File+': contains exact 11-25 R29 R911 openswe+beacon+lmnr+memmachine closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
