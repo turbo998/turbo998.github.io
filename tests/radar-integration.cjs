@@ -10794,6 +10794,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r913File),'utf8');
       assert.ok(txt.includes('4,840.00')&&txt.includes('4,500.00')&&txt.includes('9,340.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('9,035.00')&&txt.includes('96.73%')&&txt.includes('not_measured'),r913File+': contains exact 11-25 R31 R913 openwhispr+kubeshark+logfire+cpamanager closed-form parameters');
     }
+    // 2026-11-25 Night Round 32 (R914: jnMetaCode/agency-orchestrator + langgraph4j/langgraph4j + zzet/gortex + mex-memory/mex) verification
+    const r914PathA=4790.00+45.0*100.00;
+    assert.equal(r914PathA.toFixed(2),'9290.00','11-25 R32 R914 Path A total');
+    const r914PathC=55.00+2.4*100.00;
+    assert.equal(r914PathC.toFixed(2),'295.00','11-25 R32 R914 Path C total');
+    assert.equal((r914PathA-r914PathC).toFixed(2),'8995.00','11-25 R32 R914 savings vs Path A');
+    assert.equal(((r914PathA-r914PathC)/r914PathA*100).toFixed(2),'96.82','11-25 R32 R914 pct savings vs Path A');
+    for(const r914File of ['workshops/github-trending-radar/docs/agency-orchestrator-langgraph4j-gortex-mex-memory-selection-faq.md','workshops/github-trending-radar/docs/agency-orchestrator-langgraph4j-gortex-mex-memory-selection-faq.en.md','assets/github-ai-radar-2026-11-25-r32-r914-agencyorchestrator-langgraph4j-gortex-mex.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-25-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r914File),'utf8');
+      assert.ok(txt.includes('4,790.00')&&txt.includes('4,500.00')&&txt.includes('9,290.00')&&txt.includes('55.00')&&txt.includes('240.00')&&txt.includes('295.00')&&txt.includes('8,995.00')&&txt.includes('96.82%')&&txt.includes('not_measured'),r914File+': contains exact 11-25 R32 R914 agencyorchestrator+langgraph4j+gortex+mex closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
