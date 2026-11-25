@@ -10904,6 +10904,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r923File),'utf8');
       assert.ok(txt.includes('4,820.00')&&txt.includes('4,500.00')&&txt.includes('9,320.00')&&txt.includes('50.00')&&txt.includes('240.00')&&txt.includes('290.00')&&txt.includes('9,030.00')&&txt.includes('96.89%')&&txt.includes('not_measured'),r923File+': contains exact 11-25 R41 R923 jcode+dshdesktop+clawrouter+obsidianllmwiki closed-form parameters');
     }
+    // 2026-11-25 Night Round 42 (R924: TriliumNext/Trilium + pranshuparmar/witr + openobserve/openobserve + chenxiachan/thoughtdag) verification
+    const r924PathA=5420.00+48.0*100.00;
+    assert.equal(r924PathA.toFixed(2),'10220.00','11-25 R42 R924 Path A total');
+    const r924PathC=70.00+2.4*100.00;
+    assert.equal(r924PathC.toFixed(2),'310.00','11-25 R42 R924 Path C total');
+    assert.equal((r924PathA-r924PathC).toFixed(2),'9910.00','11-25 R42 R924 savings vs Path A');
+    assert.equal(((r924PathA-r924PathC)/r924PathA*100).toFixed(2),'96.97','11-25 R42 R924 pct savings vs Path A');
+    for(const r924File of ['workshops/github-trending-radar/docs/trilium-witr-openobserve-thoughtdag-selection-faq.md','workshops/github-trending-radar/docs/trilium-witr-openobserve-thoughtdag-selection-faq.en.md','assets/github-ai-radar-2026-11-25-r42-r924-trilium-witr-openobserve-thoughtdag.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-25-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r924File),'utf8');
+      assert.ok(txt.includes('5,420.00')&&txt.includes('4,800.00')&&txt.includes('10,220.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('9,910.00')&&txt.includes('96.97%')&&txt.includes('not_measured'),r924File+': contains exact 11-25 R42 R924 trilium+witr+openobserve+thoughtdag closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
