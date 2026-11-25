@@ -10519,6 +10519,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r888File),'utf8');
       assert.ok(txt.includes('4,820.00')&&txt.includes('4,600.00')&&txt.includes('9,420.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('9,115.00')&&txt.includes('96.76%')&&txt.includes('not_measured'),r888File+': contains exact 11-25 R6 R888 ecc+jcodemunch+assetopsbench+gonavi closed-form parameters');
     }
+    // 2026-11-25 Night Round 7 (R889: pascalorg/editor + zereight/gitlab-mcp + awdr74100/figwright + koorchik/swarmy) verification
+    const r889PathA=4800.00+45.5*100.00;
+    assert.equal(r889PathA.toFixed(2),'9350.00','11-25 R7 R889 Path A total');
+    const r889PathC=65.00+2.4*100.00;
+    assert.equal(r889PathC.toFixed(2),'305.00','11-25 R7 R889 Path C total');
+    assert.equal((r889PathA-r889PathC).toFixed(2),'9045.00','11-25 R7 R889 savings vs Path A');
+    assert.equal(((r889PathA-r889PathC)/r889PathA*100).toFixed(2),'96.74','11-25 R7 R889 pct savings vs Path A');
+    for(const r889File of ['workshops/github-trending-radar/docs/pascal-editor-gitlab-mcp-figwright-swarmy-selection-faq.md','workshops/github-trending-radar/docs/pascal-editor-gitlab-mcp-figwright-swarmy-selection-faq.en.md','assets/github-ai-radar-2026-11-25-r7-r889-pascaleditor-gitlabmcp-figwright-swarmy.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-25-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r889File),'utf8');
+      assert.ok(txt.includes('4,800.00')&&txt.includes('4,550.00')&&txt.includes('9,350.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('9,045.00')&&txt.includes('96.74%')&&txt.includes('not_measured'),r889File+': contains exact 11-25 R7 R889 pascaleditor+gitlabmcp+figwright+swarmy closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
