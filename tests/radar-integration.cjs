@@ -10695,6 +10695,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r904File),'utf8');
       assert.ok(txt.includes('4,680.00')&&txt.includes('4,500.00')&&txt.includes('9,180.00')&&txt.includes('60.00')&&txt.includes('240.00')&&txt.includes('300.00')&&txt.includes('8,880.00')&&txt.includes('96.73%')&&txt.includes('not_measured'),r904File+': contains exact 11-25 R22 R904 logseq+pdfmathtranslate+excelize+hermeswebui closed-form parameters');
     }
+    // 2026-11-25 Night Round 23 (R905 Milestone: googleapis/mcp-toolbox + thesysdev/openui + e2b-dev/E2B + semantica-agi/semantica) verification
+    const r905PathA=5080.00+48.0*100.00;
+    assert.equal(r905PathA.toFixed(2),'9880.00','11-25 R23 R905 Path A total');
+    const r905PathC=80.00+2.4*100.00;
+    assert.equal(r905PathC.toFixed(2),'320.00','11-25 R23 R905 Path C total');
+    assert.equal((r905PathA-r905PathC).toFixed(2),'9560.00','11-25 R23 R905 savings vs Path A');
+    assert.equal(((r905PathA-r905PathC)/r905PathA*100).toFixed(2),'96.76','11-25 R23 R905 pct savings vs Path A');
+    for(const r905File of ['workshops/github-trending-radar/docs/googleapis-mcp-toolbox-openui-e2b-semantica-selection-faq.md','workshops/github-trending-radar/docs/googleapis-mcp-toolbox-openui-e2b-semantica-selection-faq.en.md','assets/github-ai-radar-2026-11-25-r23-r905-mcptoolbox-openui-e2b-semantica.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-25-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r905File),'utf8');
+      assert.ok(txt.includes('5,080.00')&&txt.includes('4,800.00')&&txt.includes('9,880.00')&&txt.includes('80.00')&&txt.includes('240.00')&&txt.includes('320.00')&&txt.includes('9,560.00')&&txt.includes('96.76%')&&txt.includes('not_measured'),r905File+': contains exact 11-25 R23 R905 mcptoolbox+openui+e2b+semantica closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
