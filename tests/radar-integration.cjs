@@ -10750,6 +10750,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r909File),'utf8');
       assert.ok(txt.includes('4,860.00')&&txt.includes('4,500.00')&&txt.includes('9,360.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('9,055.00')&&txt.includes('96.74%')&&txt.includes('not_measured'),r909File+': contains exact 11-25 R27 R909 localdeepresearch+mnfst+openllmetry+langwatch closed-form parameters');
     }
+    // 2026-11-25 Night Round 28 (R910 Milestone: ClickHouse/ClickStack + camunda/camunda + HolmesGPT/holmesgpt + Ar9av/obsidian-wiki) verification
+    const r910PathA=5380.00+48.0*100.00;
+    assert.equal(r910PathA.toFixed(2),'10180.00','11-25 R28 R910 Path A total');
+    const r910PathC=85.00+2.4*100.00;
+    assert.equal(r910PathC.toFixed(2),'325.00','11-25 R28 R910 Path C total');
+    assert.equal((r910PathA-r910PathC).toFixed(2),'9855.00','11-25 R28 R910 savings vs Path A');
+    assert.equal(((r910PathA-r910PathC)/r910PathA*100).toFixed(2),'96.81','11-25 R28 R910 pct savings vs Path A');
+    for(const r910File of ['workshops/github-trending-radar/docs/clickstack-camunda-holmesgpt-obsidian-wiki-selection-faq.md','workshops/github-trending-radar/docs/clickstack-camunda-holmesgpt-obsidian-wiki-selection-faq.en.md','assets/github-ai-radar-2026-11-25-r28-r910-clickstack-camunda-holmesgpt-obsidianwiki.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-25-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r910File),'utf8');
+      assert.ok(txt.includes('5,380.00')&&txt.includes('4,800.00')&&txt.includes('10,180.00')&&txt.includes('85.00')&&txt.includes('240.00')&&txt.includes('325.00')&&txt.includes('9,855.00')&&txt.includes('96.81%')&&txt.includes('not_measured'),r910File+': contains exact 11-25 R28 R910 clickstack+camunda+holmesgpt+obsidianwiki closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
