@@ -10915,6 +10915,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r924File),'utf8');
       assert.ok(txt.includes('5,420.00')&&txt.includes('4,800.00')&&txt.includes('10,220.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('9,910.00')&&txt.includes('96.97%')&&txt.includes('not_measured'),r924File+': contains exact 11-25 R42 R924 trilium+witr+openobserve+thoughtdag closed-form parameters');
     }
+    // 2026-11-25 Night Round 43 (R925: HKUDS/nanobot + zeroclaw-labs/zeroclaw + decolua/9router + elizaOS/eliza) verification
+    const r925PathA=5180.00+46.0*100.00;
+    assert.equal(r925PathA.toFixed(2),'9780.00','11-25 R43 R925 Path A total');
+    const r925PathC=60.00+2.4*100.00;
+    assert.equal(r925PathC.toFixed(2),'300.00','11-25 R43 R925 Path C total');
+    assert.equal((r925PathA-r925PathC).toFixed(2),'9480.00','11-25 R43 R925 savings vs Path A');
+    assert.equal(((r925PathA-r925PathC)/r925PathA*100).toFixed(2),'96.93','11-25 R43 R925 pct savings vs Path A');
+    for(const r925File of ['workshops/github-trending-radar/docs/nanobot-zeroclaw-9router-eliza-selection-faq.md','workshops/github-trending-radar/docs/nanobot-zeroclaw-9router-eliza-selection-faq.en.md','assets/github-ai-radar-2026-11-25-r43-r925-nanobot-zeroclaw-9router-eliza.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-25-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r925File),'utf8');
+      assert.ok(txt.includes('5,180.00')&&txt.includes('4,600.00')&&txt.includes('9,780.00')&&txt.includes('60.00')&&txt.includes('240.00')&&txt.includes('300.00')&&txt.includes('9,480.00')&&txt.includes('96.93%')&&txt.includes('not_measured'),r925File+': contains exact 11-25 R43 R925 nanobot+zeroclaw+9router+eliza closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
