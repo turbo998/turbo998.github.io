@@ -10530,6 +10530,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r889File),'utf8');
       assert.ok(txt.includes('4,800.00')&&txt.includes('4,550.00')&&txt.includes('9,350.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('9,045.00')&&txt.includes('96.74%')&&txt.includes('not_measured'),r889File+': contains exact 11-25 R7 R889 pascaleditor+gitlabmcp+figwright+swarmy closed-form parameters');
     }
+    // 2026-11-25 Night Round 8 Milestone (R890: BerriAI/litellm + QuantumNous/new-api + tbphp/gpt-load + awslabs/cli-agent-orchestrator) verification
+    const r890PathA=4920.00+46.0*100.00;
+    assert.equal(r890PathA.toFixed(2),'9520.00','11-25 R8 R890 Path A total');
+    const r890PathC=75.00+2.4*100.00;
+    assert.equal(r890PathC.toFixed(2),'315.00','11-25 R8 R890 Path C total');
+    assert.equal((r890PathA-r890PathC).toFixed(2),'9205.00','11-25 R8 R890 savings vs Path A');
+    assert.equal(((r890PathA-r890PathC)/r890PathA*100).toFixed(2),'96.69','11-25 R8 R890 pct savings vs Path A');
+    for(const r890File of ['workshops/github-trending-radar/docs/litellm-new-api-gpt-load-cli-agent-orchestrator-selection-faq.md','workshops/github-trending-radar/docs/litellm-new-api-gpt-load-cli-agent-orchestrator-selection-faq.en.md','assets/github-ai-radar-2026-11-25-r8-r890-litellm-newapi-gptload-cao.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-25-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r890File),'utf8');
+      assert.ok(txt.includes('4,920.00')&&txt.includes('4,600.00')&&txt.includes('9,520.00')&&txt.includes('75.00')&&txt.includes('240.00')&&txt.includes('315.00')&&txt.includes('9,205.00')&&txt.includes('96.69%')&&txt.includes('not_measured'),r890File+': contains exact 11-25 R8 R890 litellm+newapi+gptload+cao closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
