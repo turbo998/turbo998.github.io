@@ -10497,6 +10497,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r886File),'utf8');
       assert.ok(txt.includes('4,880.00')&&txt.includes('4,600.00')&&txt.includes('9,480.00')&&txt.includes('75.00')&&txt.includes('240.00')&&txt.includes('315.00')&&txt.includes('9,165.00')&&txt.includes('96.68%')&&txt.includes('not_measured'),r886File+': contains exact 11-25 R4 R886 ragflow+mem0+lightrag+pixelrag closed-form parameters');
     }
+    // 2026-11-25 Night Round 5 (R887: github/github-mcp-server + skyhook-io/radar + haris-musa/excel-mcp-server + Vexa-ai/vexa) verification
+    const r887PathA=4780.00+46.0*100.00;
+    assert.equal(r887PathA.toFixed(2),'9380.00','11-25 R5 R887 Path A total');
+    const r887PathC=70.00+2.4*100.00;
+    assert.equal(r887PathC.toFixed(2),'310.00','11-25 R5 R887 Path C total');
+    assert.equal((r887PathA-r887PathC).toFixed(2),'9070.00','11-25 R5 R887 savings vs Path A');
+    assert.equal(((r887PathA-r887PathC)/r887PathA*100).toFixed(2),'96.70','11-25 R5 R887 pct savings vs Path A');
+    for(const r887File of ['workshops/github-trending-radar/docs/github-mcp-skyhook-radar-excel-mcp-vexa-selection-faq.md','workshops/github-trending-radar/docs/github-mcp-skyhook-radar-excel-mcp-vexa-selection-faq.en.md','assets/github-ai-radar-2026-11-25-r5-r887-githubmcp-skyhookradar-excelmcp-vexa.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-25-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r887File),'utf8');
+      assert.ok(txt.includes('4,780.00')&&txt.includes('4,600.00')&&txt.includes('9,380.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('9,070.00')&&txt.includes('96.70%')&&txt.includes('not_measured'),r887File+': contains exact 11-25 R5 R887 githubmcp+skyhookradar+excelmcp+vexa closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
