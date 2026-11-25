@@ -10486,6 +10486,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r885File),'utf8');
       assert.ok(txt.includes('5,020.00')&&txt.includes('4,600.00')&&txt.includes('9,620.00')&&txt.includes('75.00')&&txt.includes('240.00')&&txt.includes('315.00')&&txt.includes('9,305.00')&&txt.includes('96.73%')&&txt.includes('not_measured'),r885File+': contains exact 11-25 R3 R885 langfuse+sim+fastmcp+trpcagentgo closed-form parameters');
     }
+    // 2026-11-25 Night Round 4 (R886: infiniflow/ragflow + mem0ai/mem0 + HKUDS/LightRAG + StarTrail-org/PixelRAG) verification
+    const r886PathA=4880.00+46.0*100.00;
+    assert.equal(r886PathA.toFixed(2),'9480.00','11-25 R4 R886 Path A total');
+    const r886PathC=75.00+2.4*100.00;
+    assert.equal(r886PathC.toFixed(2),'315.00','11-25 R4 R886 Path C total');
+    assert.equal((r886PathA-r886PathC).toFixed(2),'9165.00','11-25 R4 R886 savings vs Path A');
+    assert.equal(((r886PathA-r886PathC)/r886PathA*100).toFixed(2),'96.68','11-25 R4 R886 pct savings vs Path A');
+    for(const r886File of ['workshops/github-trending-radar/docs/ragflow-mem0-lightrag-pixelrag-selection-faq.md','workshops/github-trending-radar/docs/ragflow-mem0-lightrag-pixelrag-selection-faq.en.md','assets/github-ai-radar-2026-11-25-r4-r886-ragflow-mem0-lightrag-pixelrag.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-25-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r886File),'utf8');
+      assert.ok(txt.includes('4,880.00')&&txt.includes('4,600.00')&&txt.includes('9,480.00')&&txt.includes('75.00')&&txt.includes('240.00')&&txt.includes('315.00')&&txt.includes('9,165.00')&&txt.includes('96.68%')&&txt.includes('not_measured'),r886File+': contains exact 11-25 R4 R886 ragflow+mem0+lightrag+pixelrag closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
