@@ -10816,6 +10816,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r915File),'utf8');
       assert.ok(txt.includes('4,740.00')&&txt.includes('4,500.00')&&txt.includes('9,240.00')&&txt.includes('50.00')&&txt.includes('240.00')&&txt.includes('290.00')&&txt.includes('8,950.00')&&txt.includes('96.86%')&&txt.includes('not_measured'),r915File+': contains exact 11-25 R33 R915 llmwikiagent+omnigraph+synthadoc+iwe closed-form parameters');
     }
+    // 2026-11-25 Night Round 34 (R916: openworkflowdev/openworkflow + getrebuild/rebuild + bytechefhq/bytechef + w8123/EnterpriseAgentFramework) verification
+    const r916PathA=4920.00+45.0*100.00;
+    assert.equal(r916PathA.toFixed(2),'9420.00','11-25 R34 R916 Path A total');
+    const r916PathC=60.00+2.4*100.00;
+    assert.equal(r916PathC.toFixed(2),'300.00','11-25 R34 R916 Path C total');
+    assert.equal((r916PathA-r916PathC).toFixed(2),'9120.00','11-25 R34 R916 savings vs Path A');
+    assert.equal(((r916PathA-r916PathC)/r916PathA*100).toFixed(2),'96.82','11-25 R34 R916 pct savings vs Path A');
+    for(const r916File of ['workshops/github-trending-radar/docs/openworkflow-rebuild-bytechef-reachai-enterprise-agent-selection-faq.md','workshops/github-trending-radar/docs/openworkflow-rebuild-bytechef-reachai-enterprise-agent-selection-faq.en.md','assets/github-ai-radar-2026-11-25-r34-r916-openworkflow-rebuild-bytechef-reachai.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-25-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r916File),'utf8');
+      assert.ok(txt.includes('4,920.00')&&txt.includes('4,500.00')&&txt.includes('9,420.00')&&txt.includes('60.00')&&txt.includes('240.00')&&txt.includes('300.00')&&txt.includes('9,120.00')&&txt.includes('96.82%')&&txt.includes('not_measured'),r916File+': contains exact 11-25 R34 R916 openworkflow+rebuild+bytechef+reachai closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
