@@ -10508,6 +10508,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r887File),'utf8');
       assert.ok(txt.includes('4,780.00')&&txt.includes('4,600.00')&&txt.includes('9,380.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('9,070.00')&&txt.includes('96.70%')&&txt.includes('not_measured'),r887File+': contains exact 11-25 R5 R887 githubmcp+skyhookradar+excelmcp+vexa closed-form parameters');
     }
+    // 2026-11-25 Night Round 6 (R888: affaan-m/ECC + jgravelle/jcodemunch-mcp + IBM/AssetOpsBench + Syngnat/GoNavi) verification
+    const r888PathA=4820.00+46.0*100.00;
+    assert.equal(r888PathA.toFixed(2),'9420.00','11-25 R6 R888 Path A total');
+    const r888PathC=65.00+2.4*100.00;
+    assert.equal(r888PathC.toFixed(2),'305.00','11-25 R6 R888 Path C total');
+    assert.equal((r888PathA-r888PathC).toFixed(2),'9115.00','11-25 R6 R888 savings vs Path A');
+    assert.equal(((r888PathA-r888PathC)/r888PathA*100).toFixed(2),'96.76','11-25 R6 R888 pct savings vs Path A');
+    for(const r888File of ['workshops/github-trending-radar/docs/ecc-jcodemunch-assetopsbench-gonavi-selection-faq.md','workshops/github-trending-radar/docs/ecc-jcodemunch-assetopsbench-gonavi-selection-faq.en.md','assets/github-ai-radar-2026-11-25-r6-r888-ecc-jcodemunch-assetopsbench-gonavi.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-25-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r888File),'utf8');
+      assert.ok(txt.includes('4,820.00')&&txt.includes('4,600.00')&&txt.includes('9,420.00')&&txt.includes('65.00')&&txt.includes('240.00')&&txt.includes('305.00')&&txt.includes('9,115.00')&&txt.includes('96.76%')&&txt.includes('not_measured'),r888File+': contains exact 11-25 R6 R888 ecc+jcodemunch+assetopsbench+gonavi closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
