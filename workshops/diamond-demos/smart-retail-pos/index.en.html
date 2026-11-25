@@ -1,0 +1,1711 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; img-src 'self' data:; media-src 'self' blob: data:; connect-src 'self'; font-src 'self' data:; object-src 'none'; base-uri 'self';" />
+  <title>OmniPOS Global Smart Retail AI Architecture Portal · US & EU Azure Speech + 10m STS + Multi-Tier FinOps + Web IQ</title>
+  <meta name="description" content="Enterprise AI Reference Architecture Portal for US & EU Global Smart Retail Terminals (OmniPOS): Multi-accent noise-resilient ASR (1.7%-2.0% clean WER), 10-min Regional STS Direct WebSocket (590ms to 285ms, -51.7%), GDPR/BIPA zero audio retention, Luna/Terra/Sol FinOps + 99.8% Prompt Cache (-63.2% to -65.8% cost), and Web IQ Scopes grounding." />
+  <style>
+    :root {
+      --bg-page: #f5f7fb;
+      --bg-surface: #ffffff;
+      --bg-subtle: #eef3fb;
+      --bg-elevated: #f8fafd;
+      --text-primary: #0f172a;
+      --text-secondary: #334155;
+      --text-muted: #64748b;
+      --border-light: #dbe4f0;
+      --border-strong: #bdd0ea;
+      --ms-blue: #0078d4;
+      --ms-blue-dark: #005a9e;
+      --ms-blue-soft: rgba(0, 120, 212, 0.1);
+      --omnipos-orange: #ea580c;
+      --omnipos-soft: rgba(234, 88, 12, 0.11);
+      --indigo: #4f46e5;
+      --indigo-soft: rgba(79, 70, 229, 0.1);
+      --emerald: #059669;
+      --emerald-soft: rgba(5, 150, 105, 0.11);
+      --amber: #d97706;
+      --amber-soft: rgba(217, 119, 6, 0.12);
+      --rose: #dc2626;
+      --rose-soft: rgba(220, 38, 38, 0.1);
+      --shadow-sm: 0 2px 10px rgba(15, 23, 42, 0.05);
+      --shadow-md: 0 10px 28px rgba(15, 23, 42, 0.08);
+      --radius-lg: 18px;
+      --radius-md: 12px;
+      --radius-sm: 8px;
+    }
+    html[data-theme="dark"] {
+      --bg-page: #0b1120;
+      --bg-surface: #111827;
+      --bg-subtle: #1e293b;
+      --bg-elevated: #162033;
+      --text-primary: #f8fafc;
+      --text-secondary: #cbd5e1;
+      --text-muted: #94a3b8;
+      --border-light: #26354d;
+      --border-strong: #3b5275;
+      --ms-blue: #38bdf8;
+      --ms-blue-dark: #0284c7;
+      --ms-blue-soft: rgba(56, 189, 248, 0.14);
+      --omnipos-orange: #fb923c;
+      --omnipos-soft: rgba(251, 146, 60, 0.15);
+      --indigo: #818cf8;
+      --indigo-soft: rgba(129, 140, 248, 0.15);
+      --emerald: #34d399;
+      --emerald-soft: rgba(52, 211, 153, 0.14);
+      --amber: #fbbf24;
+      --amber-soft: rgba(251, 191, 36, 0.15);
+      --rose: #f87171;
+      --rose-soft: rgba(248, 113, 113, 0.15);
+      --shadow-sm: 0 4px 14px rgba(0, 0, 0, 0.35);
+      --shadow-md: 0 14px 36px rgba(0, 0, 0, 0.45);
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      max-width: 100%;
+      overflow-x: hidden;
+      background: var(--bg-page);
+      color: var(--text-primary);
+      font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+      line-height: 1.58;
+    }
+    a { color: var(--ms-blue); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .ms-svg-icon {
+      width: 1.15em;
+      height: 1.15em;
+      vertical-align: -0.18em;
+      flex-shrink: 0;
+      display: inline-block;
+    }
+    .ms-svg-icon.icon-lg { width: 1.4em; height: 1.4em; vertical-align: -0.24em; }
+
+    .portal-wrap {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 1.25rem 1.25rem 3.5rem;
+    }
+    .hero-shell {
+      background: linear-gradient(135deg, var(--bg-surface) 0%, var(--bg-subtle) 100%);
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-lg);
+      padding: 1.45rem 1.5rem 1.25rem;
+      box-shadow: var(--shadow-md);
+      position: relative;
+      z-index: 10;
+    }
+    .hero-topbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.85rem;
+      margin-bottom: 1rem;
+    }
+    .brand-cluster {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.55rem;
+      min-width: 0;
+    }
+    .omnipos-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.3rem 0.72rem;
+      border-radius: 999px;
+      font-size: 0.76rem;
+      font-weight: 700;
+      background: var(--omnipos-soft);
+      color: var(--omnipos-orange);
+      border: 1px solid rgba(234, 88, 12, 0.28);
+    }
+    .ms-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.3rem 0.72rem;
+      border-radius: 999px;
+      font-size: 0.76rem;
+      font-weight: 700;
+      background: var(--ms-blue-soft);
+      color: var(--ms-blue);
+      border: 1px solid rgba(0, 120, 212, 0.25);
+    }
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .cta-workbench-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.56rem 1.05rem;
+      border-radius: 999px;
+      font-size: 0.84rem;
+      font-weight: 700;
+      color: #ffffff !important;
+      background: linear-gradient(135deg, #0078d4 0%, #4f46e5 55%, #ea580c 100%);
+      box-shadow: 0 6px 18px rgba(0, 120, 212, 0.28);
+      text-decoration: none !important;
+      transition: transform 0.16s ease, box-shadow 0.16s ease;
+    }
+    .cta-workbench-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 24px rgba(79, 70, 229, 0.36);
+    }
+    .theme-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.5rem 0.85rem;
+      border-radius: 999px;
+      border: 1px solid var(--border-strong);
+      background: var(--bg-surface);
+      color: var(--text-primary);
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .hero-title {
+      margin: 0 0 0.55rem;
+      font-size: clamp(1.38rem, 2.5vw, 2.05rem);
+      line-height: 1.25;
+      letter-spacing: -0.015em;
+    }
+    .hero-subtitle {
+      margin: 0 0 1.1rem;
+      color: var(--text-secondary);
+      font-size: 0.94rem;
+      max-width: 1050px;
+    }
+    .kpi-ribbon {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 0.65rem;
+      margin-bottom: 1.15rem;
+    }
+    .kpi-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-md);
+      padding: 0.72rem 0.8rem;
+      min-width: 0;
+      box-shadow: var(--shadow-sm);
+    }
+    .kpi-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--text-muted);
+      margin-bottom: 0.2rem;
+    }
+    .kpi-val {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--text-primary);
+      line-height: 1.2;
+      word-break: break-word;
+    }
+    .kpi-sub {
+      font-size: 0.72rem;
+      color: var(--emerald);
+      font-weight: 600;
+      margin-top: 0.2rem;
+    }
+
+    .arch-atlas-card {
+      margin: 0 0 1.1rem;
+      background: #0f172a;
+      border: 1px solid #26354d;
+      border-radius: var(--radius-md);
+      padding: 0.75rem;
+      overflow: hidden;
+    }
+    .arch-atlas-caption {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      padding: 0.45rem 0.35rem 0.1rem;
+      font-size: 0.76rem;
+      color: #cbd5e1;
+    }
+
+    .tab-bar {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0.55rem;
+      margin-top: 0.4rem;
+    }
+    .tab-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.45rem;
+      padding: 0.72rem 0.75rem;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-strong);
+      background: var(--bg-surface);
+      color: var(--text-secondary);
+      font-size: 0.84rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.15s ease;
+      min-width: 0;
+    }
+    .tab-btn:hover { border-color: var(--ms-blue); color: var(--text-primary); }
+    .tab-btn.active {
+      background: linear-gradient(135deg, var(--ms-blue) 0%, var(--indigo) 100%);
+      color: #ffffff;
+      border-color: transparent;
+      box-shadow: 0 6px 16px rgba(0, 120, 212, 0.25);
+    }
+
+    .tab-panel { display: none; margin-top: 1.35rem; }
+    .tab-panel.active { display: block; }
+
+    .section-block {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      padding: 1.35rem 1.4rem;
+      margin-bottom: 1.25rem;
+      box-shadow: var(--shadow-sm);
+    }
+    .section-head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 0.75rem;
+      margin-bottom: 1.05rem;
+    }
+    .section-kicker {
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--ms-blue);
+      margin-bottom: 0.22rem;
+    }
+    .section-title {
+      margin: 0;
+      font-size: 1.18rem;
+      line-height: 1.32;
+    }
+    .section-desc {
+      margin: 0.35rem 0 0;
+      font-size: 0.87rem;
+      color: var(--text-secondary);
+      max-width: 920px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.22rem 0.6rem;
+      border-radius: 999px;
+      font-size: 0.73rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .badge-blue { background: var(--ms-blue-soft); color: var(--ms-blue); }
+    .badge-indigo { background: var(--indigo-soft); color: var(--indigo); }
+    .badge-emerald { background: var(--emerald-soft); color: var(--emerald); }
+    .badge-amber { background: var(--amber-soft); color: var(--amber); }
+    .badge-rose { background: var(--rose-soft); color: var(--rose); }
+    .badge-omnipos { background: var(--omnipos-soft); color: var(--omnipos-orange); }
+
+    .pill-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.48rem;
+      margin-bottom: 0.9rem;
+    }
+    .choice-pill {
+      padding: 0.46rem 0.82rem;
+      border-radius: 999px;
+      border: 1px solid var(--border-strong);
+      background: var(--bg-elevated);
+      color: var(--text-secondary);
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.14s ease;
+      max-width: 100%;
+    }
+    .choice-pill:hover { border-color: var(--ms-blue); color: var(--text-primary); }
+    .choice-pill.active {
+      background: var(--ms-blue);
+      color: #ffffff;
+      border-color: var(--ms-blue);
+    }
+    .choice-pill.omnipos-active {
+      background: var(--omnipos-orange);
+      color: #ffffff;
+      border-color: var(--omnipos-orange);
+    }
+
+    .grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.9rem; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.8rem; }
+
+    .sub-card {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-md);
+      padding: 1rem;
+      min-width: 0;
+    }
+    .wer-row {
+      display: grid;
+      grid-template-columns: 230px minmax(0, 1fr) 92px;
+      align-items: center;
+      gap: 0.65rem;
+      padding: 0.48rem 0;
+      border-bottom: 1px dashed var(--border-light);
+    }
+    .wer-row:last-child { border-bottom: none; }
+    .bar-track {
+      height: 12px;
+      background: var(--bg-subtle);
+      border-radius: 999px;
+      overflow: hidden;
+      border: 1px solid var(--border-light);
+    }
+    .bar-fill {
+      height: 100%;
+      border-radius: 999px;
+      transition: width 0.28s ease;
+    }
+
+    .sts-compare-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 1rem;
+      align-items: stretch;
+    }
+    .code-box {
+      background: #0f172a;
+      color: #e2e8f0;
+      border-radius: var(--radius-md);
+      padding: 0.85rem 0.95rem;
+      font-family: Consolas, "SFMono-Regular", Menlo, monospace;
+      font-size: 0.77rem;
+      overflow-x: auto;
+      max-width: 100%;
+      line-height: 1.5;
+      border: 1px solid #26354d;
+    }
+    .ram-steps {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0.65rem;
+      margin: 0.85rem 0;
+    }
+    .ram-step {
+      padding: 0.8rem;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-strong);
+      background: var(--bg-elevated);
+      cursor: pointer;
+      min-width: 0;
+    }
+    .ram-step.active {
+      border-color: var(--emerald);
+      background: var(--emerald-soft);
+    }
+    .doc-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0.75rem;
+    }
+    .doc-card {
+      display: flex;
+      flex-direction: column;
+      gap: 0.42rem;
+      padding: 0.85rem;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-light);
+      background: var(--bg-elevated);
+      color: var(--text-primary);
+      text-decoration: none !important;
+      transition: border-color 0.15s ease, transform 0.15s ease;
+      min-width: 0;
+    }
+    .doc-card:hover {
+      border-color: var(--ms-blue);
+      transform: translateY(-1px);
+    }
+
+    .finops-layout {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 1.1rem;
+    }
+    .slider-row { margin-bottom: 0.85rem; }
+    .slider-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.82rem;
+      font-weight: 700;
+      margin-bottom: 0.28rem;
+      gap: 0.5rem;
+    }
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--ms-blue);
+      cursor: pointer;
+    }
+    .finops-kpi-pair {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.65rem;
+      margin-bottom: 0.9rem;
+    }
+    .finops-wf-row {
+      display: grid;
+      grid-template-columns: 195px minmax(0, 1fr) 110px;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.42rem 0;
+      font-size: 0.8rem;
+      border-bottom: 1px dashed var(--border-light);
+    }
+    .data-table-wrap {
+      width: 100%;
+      max-width: 100%;
+      overflow-x: auto;
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-md);
+    }
+    table.arch-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.81rem;
+      min-width: 560px;
+    }
+    table.arch-table th, table.arch-table td {
+      padding: 0.65rem 0.75rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border-light);
+    }
+    table.arch-table th {
+      background: var(--bg-subtle);
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .module-cards-8 {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0.7rem;
+      margin-bottom: 0.9rem;
+    }
+    .mod8-card {
+      padding: 0.8rem;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-light);
+      background: var(--bg-elevated);
+      cursor: pointer;
+      text-align: left;
+      min-width: 0;
+    }
+    .mod8-card.active {
+      border-color: var(--ms-blue);
+      background: var(--ms-blue-soft);
+    }
+
+    .pilot-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+    .pilot-card {
+      padding: 0.9rem;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-strong);
+      background: var(--bg-elevated);
+      cursor: pointer;
+      min-width: 0;
+    }
+    .pilot-card.active {
+      border-color: var(--omnipos-orange);
+      background: var(--omnipos-soft);
+    }
+    .faq-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.65rem;
+      margin-bottom: 0.9rem;
+    }
+    .search-input {
+      flex: 1 1 240px;
+      min-width: 0;
+      padding: 0.56rem 0.85rem;
+      border-radius: 999px;
+      border: 1px solid var(--border-strong);
+      background: var(--bg-elevated);
+      color: var(--text-primary);
+      font-size: 0.84rem;
+    }
+    .faq-item {
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-md);
+      background: var(--bg-elevated);
+      margin-bottom: 0.58rem;
+      overflow: hidden;
+    }
+    .faq-q {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.65rem;
+      padding: 0.8rem 0.95rem;
+      background: transparent;
+      border: none;
+      color: var(--text-primary);
+      font-size: 0.87rem;
+      font-weight: 700;
+      text-align: left;
+      cursor: pointer;
+    }
+    .faq-a {
+      display: none;
+      padding: 0 0.95rem 0.9rem;
+      font-size: 0.84rem;
+      color: var(--text-secondary);
+      border-top: 1px dashed var(--border-light);
+    }
+    .faq-item.open .faq-a { display: block; padding-top: 0.72rem; }
+    .copy-mini-btn {
+      margin-top: 0.55rem;
+      padding: 0.28rem 0.68rem;
+      border-radius: 999px;
+      border: 1px solid var(--border-strong);
+      background: var(--bg-surface);
+      color: var(--text-secondary);
+      font-size: 0.74rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .footer-note {
+      margin-top: 1.5rem;
+      padding: 1rem 1.2rem;
+      border-radius: var(--radius-md);
+      background: var(--bg-surface);
+      border: 1px solid var(--border-light);
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.65rem;
+    }
+
+    @media (max-width: 1080px) {
+      .kpi-ribbon { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .doc-grid, .module-cards-8, .pilot-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .sts-compare-grid, .finops-layout { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 760px) {
+      .portal-wrap { padding: 0.75rem 0.75rem 2.5rem; }
+      .hero-shell, .section-block { padding: 1rem 0.95rem; }
+      .kpi-ribbon { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .tab-bar { grid-template-columns: 1fr 1fr; }
+      .grid-2, .grid-3, .grid-4, .doc-grid, .module-cards-8, .pilot-grid, .ram-steps, .finops-kpi-pair {
+        grid-template-columns: 1fr;
+      }
+      .wer-row, .finops-wf-row {
+        grid-template-columns: 1fr;
+        gap: 0.3rem;
+      }
+      .cta-workbench-btn { width: 100%; justify-content: center; text-align: center; }
+    }
+  </style>
+<style id="site-remediation-style">/* Embedded by integrate-dedicated.cjs so sealed report CSP remains unchanged. */
+.kee-dedicated-nav {
+  all: initial; box-sizing: border-box; position: relative; display: flex;
+  flex-wrap: wrap; align-items: center; gap: 6px 14px; width: 100%;
+  padding: 12px 18px; margin: 0 0 16px; border: 1px solid #314361;
+  background: #101A30; color: #EEF3FF; font: 13px/1.5 system-ui, sans-serif;
+  text-align: left; isolation: isolate; color-scheme: dark;
+}
+.kee-dedicated-nav a {
+  all: revert; box-sizing: border-box; display: inline-block; padding: 4px 0;
+  color: #9AABFF; background: transparent; font: inherit; text-decoration: underline;
+  text-underline-offset: 3px; border: 0; border-radius: 0; box-shadow: none;
+}
+.kee-dedicated-nav a:focus-visible { outline: 3px solid #56DDCD; outline-offset: 3px; }
+.kee-dedicated-nav .kee-dedicated-identity { font-weight: 700; color: #EEF3FF; }
+.kee-dedicated-nav .kee-dedicated-language {
+  all: revert; display: block; flex-basis: 100%; color: #ADBBD1; font: 12px/1.5 system-ui, sans-serif;
+}
+.kee-dedicated-native-link { display: block; padding: 22px; color: #1858a8; background: #f8fafc; font: 15px/1.6 system-ui, sans-serif; }
+.kee-dedicated-native-link a { color: #1858a8; text-decoration: underline; }
+@media print { .kee-dedicated-nav { display: none; } }
+
+/* Professional primary navigation: long section names reflow, never scroll inside the header. */
+[data-professional-header]{box-sizing:border-box;display:grid!important;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:18px!important;width:100%;max-width:none;height:auto!important;min-height:0!important;padding:18px 24px!important;margin:0 0 16px;position:relative;overflow:visible!important;background:#101A30;color:#EEF3FF;border:1px solid #314361;font:13px/1.5 system-ui,sans-serif;isolation:isolate;color-scheme:dark}
+[data-professional-header] *{box-sizing:border-box;min-width:0;max-height:none}
+[data-professional-header] a{font:inherit;text-decoration:none;color:#9AABFF;overflow-wrap:anywhere;white-space:normal}
+[data-professional-header] .professional-identity{font-weight:750;color:#EEF3FF;white-space:nowrap;font-size:14px;margin:0}
+[data-professional-header] .professional-primary{display:grid;grid-template-columns:1.45fr repeat(5,minmax(0,1fr));gap:6px;align-items:stretch;min-width:0}
+@media(max-width:960px) and (min-width:601px){[data-professional-header] .professional-primary{gap:5px}[data-professional-header] .professional-primary a{padding:8px 6px;font-size:11.5px}}
+[data-professional-header] .professional-primary a{display:flex;align-items:center;justify-content:center;padding:10px 9px;border:1px solid #314361;border-radius:12px;background:#172440;text-align:center;line-height:1.4;min-height:44px}
+[data-professional-header] .professional-primary a[aria-current=page]{background:#23375a;border-color:#56DDCD;color:#56DDCD}
+[data-professional-header] .professional-controls{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:4px;font-size:12px;margin:0;position:static}
+[data-professional-header] .professional-controls>a{display:flex;align-items:center;justify-content:center;padding:8px;min-height:40px;min-width:32px;border-radius:10px}
+[data-professional-header] .professional-context{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px 18px;padding-top:12px;border-top:1px solid #314361;font-size:12px;color:#ADBBD1;min-width:0;line-height:1.6}
+[data-professional-header] .professional-context>*{min-width:0;overflow-wrap:anywhere}
+[data-professional-header] .professional-context .kee-dedicated-language{flex-basis:100%;color:#ADBBD1}
+[data-professional-header] a:focus-visible{outline:3px solid #56DDCD;outline-offset:3px}
+[data-professional-header] a:hover{text-decoration:underline}
+[data-professional-header][data-perimeter-theme=light],:root[data-theme=light] .reading-header[data-professional-header]{background:#fff;color:#172440;border-color:#d4deee;color-scheme:light}
+[data-professional-header][data-perimeter-theme=light] a,:root[data-theme=light] .reading-header[data-professional-header] a{color:#3752a0}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a,:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a{background:#edf2ff;border-color:#d4deee}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a[aria-current],:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a[aria-current]{background:#dff6f0;color:#127b72;border-color:#127b72}
+@media(max-width:1150px){[data-professional-header]{grid-template-columns:minmax(0,1fr) auto;gap:12px!important}[data-professional-header] .professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header] .professional-controls{grid-column:2;grid-row:1}}
+@media(max-width:600px){[data-professional-header]{padding:14px 16px!important;gap:12px!important}[data-professional-header] .professional-primary{grid-template-columns:repeat(2,minmax(0,1fr))}[data-professional-header] .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:13px}[data-professional-header] .professional-controls{gap:0}[data-professional-header] .professional-controls>a{padding:6px;min-width:28px}}
+@media print{[data-professional-header]{display:none!important}}
+
+html{scroll-padding-top:164px}@media(max-width:600px){html{scroll-padding-top:260px}}.reading-header,.kee-dedicated-nav,[data-professional-header]{position:sticky;top:0;z-index:1000;-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
+
+:root{--search-bg:#101a30;--search-soft:#172440;--search-ink:#eef3ff;--search-muted:#adbbd1;--search-line:#293956;--search-accent:#9aabff;--header-offset:144px}
+:root[data-reading-shell][data-theme=light],[data-perimeter-theme=light]{--search-bg:#fff;--search-soft:#e8eefb;--search-ink:#17233e;--search-muted:#4c5e7c;--search-line:#d5ddec;--search-accent:#354ec8}
+html{scroll-padding-top:var(--header-offset,108px)!important}
+.site-search,.site-search *{box-sizing:border-box!important;font-family:"Segoe UI",sans-serif;letter-spacing:normal;text-transform:none}
+.site-search{position:relative;display:flex;align-items:center;gap:5px;min-width:0;width:230px;max-width:100%;margin:0!important;padding:0!important;line-height:1.4;border:1px solid var(--search-line);border-radius:9px;background:var(--search-soft);color:var(--search-ink);isolation:isolate}
+.site-search input[type=search]{display:block;flex:1;min-width:0;width:100%;height:42px;margin:0;padding:9px 8px!important;font-size:12px!important;line-height:1.5;border:0!important;border-radius:9px;background:transparent!important;color:var(--search-ink)!important;box-shadow:none!important;appearance:none}
+.site-search input::placeholder{color:var(--search-muted);opacity:1}.site-search input:focus-visible{outline:2px solid var(--search-accent);outline-offset:2px}
+.site-search kbd{font:11px Consolas,monospace;color:var(--search-muted);padding:1px 5px;border:1px solid var(--search-line);border-radius:4px}
+.site-search button[type=submit]{flex:none;width:38px;min-width:38px;height:42px;min-height:42px;padding:0;margin:0;border:0;border-radius:8px;background:transparent;color:var(--search-accent);font-size:24px;cursor:pointer;box-shadow:none}
+.search-label,.search-status{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.site-search .search-results{position:absolute;top:calc(100% + 10px);right:0;z-index:1100;width:min(480px,calc(100vw - 32px));max-height:min(560px,65vh);overflow-y:auto;border:1px solid var(--search-line);border-radius:12px;background:var(--search-bg);color:var(--search-ink);padding:10px;box-shadow:0 12px 32px #0005;text-align:left}
+.site-search .search-results[hidden]{display:none!important}.search-results .search-group{margin:8px 6px 4px;font:11px/1.5 Consolas,monospace;color:var(--search-muted)}
+.site-search .search-results a{display:block!important;padding:10px!important;margin:3px 0!important;border:1px solid transparent!important;border-radius:7px;background:transparent;color:var(--search-ink)!important;font-size:13px!important;text-decoration:none!important;white-space:normal;overflow-wrap:anywhere;text-align:left!important;line-height:1.5!important}
+.site-search .search-results a[aria-selected=true],.site-search .search-results a:hover{border-color:var(--search-accent)!important;background:var(--search-soft)}
+.search-results a small{display:block;font-size:10px;color:var(--search-muted);margin-top:4px}.search-results p{margin:10px;font-size:13px;color:var(--search-muted)}
+.search-archive-summary{padding:20px;border:1px solid var(--search-line);border-radius:10px;background:var(--search-bg);color:var(--search-ink);margin:24px 0}.search-archive-summary h2{font-size:24px;margin:0 0 12px}.search-archive-summary li{margin:12px 0}.search-archive-summary a{color:var(--search-accent)}
+[data-professional-header]{position:sticky!important;top:0!important;z-index:1000!important;background:var(--search-bg)!important;--header-glass:rgba(16,26,48,.9);grid-template-columns:auto minmax(0,1fr) 230px auto!important}
+[data-professional-header][data-perimeter-theme=light],:root[data-reading-shell][data-theme=light] [data-professional-header]{--header-glass:rgba(255,255,255,.94)}
+[data-professional-header] .professional-mobile{display:none}.professional-mobile summary{min-width:38px;min-height:42px;display:grid;place-items:center;cursor:pointer;list-style:none}.professional-mobile summary::-webkit-details-marker{display:none}
+[data-professional-header] .professional-context{display:none}
+.professional-context-bar{padding:12px 24px;border-bottom:1px solid var(--search-line);background:var(--search-bg);color:var(--search-muted);font:12px/1.6 "Segoe UI",sans-serif;display:flex;flex-wrap:wrap;gap:8px 18px;overflow-wrap:anywhere}.professional-context-bar a{color:var(--search-accent)}
+@supports((backdrop-filter:blur(16px)) or (-webkit-backdrop-filter:blur(16px))){.site-header,[data-professional-header]{background:var(--header-glass)!important;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}}
+@media(max-width:1250px) and (min-width:701px){.header-inner{grid-template-columns:minmax(0,1fr) 230px auto!important;padding:12px 0;gap:12px!important}.desktop-nav{grid-row:2;grid-column:1/-1}.header-inner>.site-search{grid-column:2;grid-row:1}.header-inner>.controls{grid-column:3;grid-row:1}[data-professional-header]{grid-template-columns:minmax(0,1fr) 230px auto!important;gap:12px!important}[data-professional-header]>.professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header]>.site-search{grid-column:2;grid-row:1}[data-professional-header]>.professional-controls{grid-column:3;grid-row:1}:root{--header-offset:184px}}
+@media(max-width:700px){.header-inner{grid-template-columns:minmax(0,1fr) auto!important;padding:10px 0;gap:8px!important}.header-inner>.site-search{grid-row:2;grid-column:1/-1;width:100%}.header-inner>.controls{grid-column:2;grid-row:1}.site-search .search-results{width:100%;right:0}[data-professional-header]{grid-template-columns:minmax(0,1fr) auto!important;padding:10px 16px!important;gap:8px!important}[data-professional-header]>.professional-primary{display:none!important}[data-professional-header]>.site-search{grid-column:1/-1;grid-row:2;width:100%}[data-professional-header]>.professional-controls{grid-column:2;grid-row:1}[data-professional-header] .professional-mobile{display:block}[data-professional-header] .professional-mobile[open]>.professional-primary{position:absolute;top:100%;left:0;right:0;padding:16px;background:var(--search-bg);border-bottom:1px solid var(--search-line);display:grid;grid-template-columns:1fr 1fr;gap:8px}[data-professional-header] .professional-mobile .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:12px!important}:root{--header-offset:136px}}
+@media(prefers-reduced-transparency:reduce){.site-header,[data-professional-header]{background:var(--search-bg)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}}
+@media print{.site-search,.professional-context-bar{display:none!important}}
+
+@media(min-width:1251px){.header-inner{display:grid!important;grid-template-columns:auto minmax(0,1fr) 230px auto!important;gap:18px!important}.header-inner .desktop-nav{min-width:0}}
+
+html:has(.kee-dedicated-app-root){height:auto!important;overflow-x:hidden!important;overflow-y:auto!important}
+html:has([data-professional-header]),html:has(.site-header){max-width:100%!important;overflow-x:clip!important;overflow-y:visible!important}
+body:has([data-professional-header]),body:has(.site-header){height:auto!important;max-width:100%!important;overflow-x:clip!important;overflow-y:visible!important;padding-top:0!important}
+.table-scroll{overflow-y:visible!important;max-height:none!important}
+@media screen and (max-width:932px){body:has(>[data-professional-header])>.card,body:has(>[data-professional-header])>.deck-header{max-width:calc(100vw - 24px)!important;box-sizing:border-box!important}body:has(>[data-professional-header])>.card{zoom:min(1,calc((100vw - 24px)/900))}}
+.demo-language-navigation{display:none!important}
+.stage-column,.telemetry-panel,.scene-pill,#timeline-slider{min-width:0}
+@media(max-width:1180px){.workspace,.template-tabs{grid-template-columns:minmax(0,1fr)!important}}
+
+.in-arena-frame .professional-context-bar,.in-arena-frame [data-knowledge-atlas]{display:none!important}
+.knowledge-graph-wide{display:block}.knowledge-graph-compact{display:none}@media(max-width:600px){.knowledge-graph-wide{display:none}.knowledge-graph-compact{display:block}}
+</style><script src="../../../assets/editorial/search-index.js" defer></script><script src="../../../assets/editorial/search.js" defer></script></head>
+<body><nav class="kee-dedicated-nav" data-professional-header><a class="professional-identity reading-brand kee-dedicated-identity identity" href="../../../index.html">Qi Chen · @turbo998</a><div class="professional-primary" role="navigation" aria-label="Primary sections"><a href="../../../studio/index.html" data-section="hub" data-nav-en-href="../../../studio/index.html" data-nav-zh-href="../../../studio/zh-index.html" data-nav-en-label="Frontier Transformation Engineering Hub" data-nav-zh-label="Frontier Transformation Engineering Hub">Frontier Transformation Engineering Hub</a><a href="../../../diamond.html" data-section="diamond" data-nav-en-href="../../../diamond.html" data-nav-zh-href="../../../zh-diamond.html" data-nav-en-label="Diamond Live Demos" data-nav-zh-label="Diamond 架构演示" aria-current="page">Diamond Live Demos</a><a href="../../../benchmarks.html" data-section="benchmarks" data-nav-en-href="../../../benchmarks.html" data-nav-zh-href="../../../zh-benchmarks.html" data-nav-en-label="Benchmarks &amp; Evaluation" data-nav-zh-label="基准评测中心">Benchmarks &amp; Evaluation</a><a href="../../../github-radar.html" data-section="radar" data-nav-en-href="../../../github-radar.html" data-nav-zh-href="../../../zh-github-radar.html" data-nav-en-label="GitHub AI Radar" data-nav-zh-label="GitHub AI 开源评估">GitHub AI Radar</a><a href="../../../openrouter.html" data-section="routing" data-nav-en-href="../../../openrouter.html" data-nav-zh-href="../../../zh-openrouter.html" data-nav-en-label="Model Routing &amp; Telemetry" data-nav-zh-label="OpenRouter 模型遥测">Model Routing &amp; Telemetry</a><a href="../../../about.html" data-section="profile" data-nav-en-href="../../../about.html" data-nav-zh-href="../../../zh-about.html" data-nav-en-label="Frontier Transformation Engineer" data-nav-zh-label="Frontier Transformation Engineer">Frontier Transformation Engineer</a></div><form class="site-search" role="search" action="../../../studio/archive.html" method="get" data-search-root="../../../index.html" data-search-language="en"><label class="search-label" for="site-search-input">Search architecture, benchmarks, demos...</label><input id="site-search-input" name="q" type="search" placeholder="Search architecture, benchmarks, demos..." autocomplete="off" spellcheck="false" aria-keyshortcuts="/ Control+k Meta+k"><kbd aria-hidden="true">/</kbd><button type="submit" aria-label="Search all content">⌕</button><div class="search-results" id="site-search-results" hidden></div><span class="search-status" role="status" aria-live="polite"></span></form><div class="reading-controls professional-controls" aria-label="Site language and appearance"><a href="index.en.html" hreflang="en" lang="en" aria-current="page">EN</a><a href="index.html" data-reading-language hreflang="zh-CN" lang="zh-CN">中文</a><details class="professional-mobile"><summary aria-label="Open navigation">☰</summary><div class="professional-primary" role="navigation" aria-label="Mobile navigation"><a href="../../../studio/index.html" data-section="hub" data-nav-en-href="../../../studio/index.html" data-nav-zh-href="../../../studio/zh-index.html" data-nav-en-label="Frontier Transformation Engineering Hub" data-nav-zh-label="Frontier Transformation Engineering Hub">Frontier Transformation Engineering Hub</a><a href="../../../diamond.html" data-section="diamond" data-nav-en-href="../../../diamond.html" data-nav-zh-href="../../../zh-diamond.html" data-nav-en-label="Diamond Live Demos" data-nav-zh-label="Diamond 架构演示" aria-current="page">Diamond Live Demos</a><a href="../../../benchmarks.html" data-section="benchmarks" data-nav-en-href="../../../benchmarks.html" data-nav-zh-href="../../../zh-benchmarks.html" data-nav-en-label="Benchmarks &amp; Evaluation" data-nav-zh-label="基准评测中心">Benchmarks &amp; Evaluation</a><a href="../../../github-radar.html" data-section="radar" data-nav-en-href="../../../github-radar.html" data-nav-zh-href="../../../zh-github-radar.html" data-nav-en-label="GitHub AI Radar" data-nav-zh-label="GitHub AI 开源评估">GitHub AI Radar</a><a href="../../../openrouter.html" data-section="routing" data-nav-en-href="../../../openrouter.html" data-nav-zh-href="../../../zh-openrouter.html" data-nav-en-label="Model Routing &amp; Telemetry" data-nav-zh-label="OpenRouter 模型遥测">Model Routing &amp; Telemetry</a><a href="../../../about.html" data-section="profile" data-nav-en-href="../../../about.html" data-nav-zh-href="../../../zh-about.html" data-nav-en-label="Frontier Transformation Engineer" data-nav-zh-label="Frontier Transformation Engineer">Frontier Transformation Engineer</a></div></details><a data-reading-theme="light" href="index.en.html?theme=light" aria-label="Light theme">☀</a><a data-reading-theme="dark" href="index.en.html?theme=dark" aria-label="Dark theme">◐</a></div><div class="professional-context" aria-label="Back to context"><a href="../../../studio/index.html">← Engineering Hub</a> · <a href="../../../studio/data-infra.html">Parent topic</a></div></nav><div class="professional-context-bar"><a href="../../../studio/index.html">← Engineering Hub</a> · <a class="reading-context" href="../../../studio/data-infra.html">Parent topic</a></div>
+  <main class="portal-wrap">
+    <!-- HERO & TOP SHELL -->
+    <header class="hero-shell">
+      <div class="hero-topbar">
+        <div class="brand-cluster">
+          <span class="omnipos-pill"><svg class="ms-svg-icon" viewBox="0 0 17.358 16.364" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><path d="M5.014.557A.82.82 0 0 1 5.789 0h5.14L5.594 15.807a.82.82 0 0 1-.775.557h-4a.82.82 0 0 1-.775-1.08z" fill="url(#op_ic1_s2_azure_A)"/> <path d="M13.231 10.636h-8.1c-.34 0-.505.417-.256.649l5.205 4.858a.82.82 0 0 0 .558.22h4.587z" fill="#0078d4"/> <path d="M5.789 0a.82.82 0 0 0-.775.557L.044 15.284a.82.82 0 0 0 .775 1.08h4a.82.82 0 0 0 .775-.556l.988-2.928 3.497 3.264a.82.82 0 0 0 .558.22h4.587l-1.994-5.727H7.339L10.929 0z" fill="url(#op_ic1_s2_azure_B)"/> <path d="M12.344.557A.82.82 0 0 0 11.569 0H5.815h.026a.82.82 0 0 1 .775.557l4.97 14.727a.82.82 0 0 1-.775 1.08h-.088 5.815a.82.82 0 0 0 .775-1.08z" fill="url(#op_ic1_s2_azure_C)"/> <defs> <linearGradient id="op_ic1_s2_azure_A" x1="5.754" y1=".567" x2=".417" y2="16.333" gradientUnits="userSpaceOnUse"> <stop stop-color="#114a8b"/> <stop offset="1" stop-color="#0669bc"/> </linearGradient> <linearGradient id="op_ic1_s2_azure_B" x1="10.019" y1="10.638" x2="8.786" y2="11.055" gradientUnits="userSpaceOnUse"> <stop stop-opacity=".3"/> <stop offset=".071" stop-opacity=".2"/> <stop offset=".321" stop-opacity=".1"/> <stop offset=".623" stop-opacity=".05"/> <stop offset="1" stop-opacity="0"/> </linearGradient> <linearGradient id="op_ic1_s2_azure_C" x1="9.138" y1=".566" x2="14.996" y2="16.174" gradientUnits="userSpaceOnUse"> <stop stop-color="#3ccbf4"/> <stop offset="1" stop-color="#2892df"/> </linearGradient> </defs></svg> OmniPOS Global Smart Retail · Reference Architecture</span>
+          <span class="ms-pill"><svg class="ms-svg-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><path d="M11.49 2H2v9.492h9.492V2h-.002z" fill="#F25022"></path><path d="M22 2h-9.492v9.492H22V2z" fill="#7FBA00"></path><path d="M11.49 12.508H2V22h9.492v-9.492h-.002z" fill="#00A4EF"></path><path d="M22 12.508h-9.492V22H22v-9.492z" fill="#FFB900"></path></svg> Microsoft Azure AI Speech · Foundry · Web IQ</span>
+          <span class="badge badge-emerald">Sanitized US & EU Diamond Benchmark</span>
+        </div>
+        <div class="hero-actions">
+          <a class="cta-workbench-btn" href="live-demo.en.html"><svg class="ms-svg-icon" viewBox="1.49 0.99 15.01 16.01" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><defs><linearGradient id="op_ic3_s3_foundry_uuid-5a7bd7fa-6937-44bd-a5ba-e23eddbb6d35" x1="10.91" y1="13.66" x2="13.62" y2="13.66" gradientTransform="translate(0 20) scale(1 -1)" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#302ec9" /><stop offset=".12" stop-color="#151698" /><stop offset=".25" stop-color="#0a0b7e" /><stop offset=".43" stop-color="#090c7f" /><stop offset=".51" stop-color="#141698" /><stop offset=".61" stop-color="#282ac4" /><stop offset=".77" stop-color="#8e8ff4" /><stop offset=".85" stop-color="#a7a6f7" /><stop offset=".91" stop-color="#cacafb" /><stop offset="1" stop-color="#fff" /></linearGradient><linearGradient id="op_ic3_s3_foundry_uuid-a9b2ac78-bff0-475d-89df-2c97f2122f93" x1="12.26" y1="8.32" x2="12.26" y2="18.23" gradientTransform="translate(0 20) scale(1 -1)" gradientUnits="userSpaceOnUse"><stop offset=".02" stop-color="#201ba6" /><stop offset=".64" stop-color="#2d29c7" /><stop offset="1" stop-color="#201ba6" /></linearGradient><linearGradient id="op_ic3_s3_foundry_uuid-03b3b70c-1c8d-4b3f-9935-d9da2b20de2f" x1="14.19" y1="8.27" x2="14.19" y2="14.47" gradientTransform="translate(0 20) scale(1 -1)" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#3530c3" /><stop offset=".5" stop-color="#6d71d1" /><stop offset=".97" stop-color="#c0bff5" /><stop offset="1" stop-color="#e3e4ff" /></linearGradient><linearGradient id="op_ic3_s3_foundry_uuid-cabc8ec9-3293-44b8-a33b-70823f583b30" x1="6.51" y1="3" x2="6.51" y2="19.15" gradientTransform="translate(0 20) scale(1 -1)" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#302ec9" /><stop offset=".45" stop-color="#302ec9" /><stop offset=".95" stop-color="#cacafb" /><stop offset="1" stop-color="#7f7eaf" /></linearGradient></defs><path d="M11.96,11.68s.07-.1.07-.24v-3.87c0-.85.66-1.76,1.59-2.03-.06-.19-.64-2.11-.81-2.65-.17-.56-.67-1.9-1.29-1.9,0,0,0,0-.01,0h0s-.09.05-.13.13c-.32.58-.46,3.02-.46,4.84v2.26c.27.97.91,3.22.96,3.35,0,0,.05.1.09.1h0Z" fill="url(#op_ic3_s3_foundry_uuid-5a7bd7fa-6937-44bd-a5ba-e23eddbb6d35)" /><path d="M11.96,11.68s.07-.1.07-.24v-3.87c0-.85.66-1.76,1.59-2.03-.06-.19-.64-2.11-.81-2.65-.17-.56-.67-1.9-1.29-1.9,0,0,0,0-.01,0h0s-.09.05-.13.13c-.32.58-.46,3.02-.46,4.84v2.26c.27.97.91,3.22.96,3.35,0,0,.05.1.09.1h0Z" fill="url(#op_ic3_s3_foundry_uuid-a9b2ac78-bff0-475d-89df-2c97f2122f93)" /><path d="M16.01,5.46h-1.81c-1.21,0-2.17,1.09-2.17,2.11v3.87c0,.14-.04.24-.07.24s-.09-.1-.09-.1c0,0,.07.21.17.21h1.98c.62,0,2.48-.61,2.48-2.52v-3.25c0-.41-.24-.55-.49-.55Z" fill="url(#op_ic3_s3_foundry_uuid-03b3b70c-1c8d-4b3f-9935-d9da2b20de2f)" /><path d="M2.34,17h5.38c2.35,0,3.2-2.03,3.2-3.81v-7.23c0-2.08.19-4.97.61-4.97h-3.23c-.77,0-1.43.82-2.18,2.48-.75,1.66-4.36,11.87-4.52,12.36-.26.79-.02,1.16.74,1.16Z" fill="url(#op_ic3_s3_foundry_uuid-cabc8ec9-3293-44b8-a33b-70823f583b30)" /></svg> Open 3-Act Interactive Demo Workbench ↗</a>
+          <button type="button" class="theme-btn" id="themeToggleBtn">Toggle Theme</button>
+        </div>
+      </div>
+
+      <h1 class="hero-title">US & EU Smart Retail Terminal (OmniPOS) Cloud-Edge AI Landing Zone Portal</h1>
+      <p class="hero-subtitle">Production reference architecture addressing the three core engineering pillars of global smart POS and store concierge fleets: multi-accent noise-resilient ASR with 10-minute Regional STS Direct WebSocket & GDPR/BIPA zero retention, Store POS Multi-Tier FinOps (Luna / Terra / Sol + 99.8% Prompt Caching), and Microsoft Foundry Web IQ domain-pinned grounding.</p>
+
+      <div class="kpi-ribbon">
+        <div class="kpi-card">
+          <div class="kpi-label">MULTI-ACCENT WER</div>
+          <div class="kpi-val">1.7%–2.0%</div>
+          <div class="kpi-sub">5.1% in 70dB Noisy Store</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">10M REGIONAL STS</div>
+          <div class="kpi-val">590ms → 285ms</div>
+          <div class="kpi-sub">-51.7% First-Packet Latency</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">GDPR & US BIPA</div>
+          <div class="kpi-val">0-Byte Disk Log</div>
+          <div class="kpi-sub">EUDB 9 Regions + BIPA Exempt</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">3-CUP STORE FINOPS</div>
+          <div class="kpi-val">-63.2% ~ -65.8%</div>
+          <div class="kpi-sub">$10k -> $3,420/mo + 99.8% Cache</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">WEB IQ GROUNDING</div>
+          <div class="kpi-val">GDSAT 79.05</div>
+          <div class="kpi-sub">P95 164ms · $7/1K · Scopes Shield</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">DUAL-REGION VERIFIED</div>
+          <div class="kpi-val">42 Snapshots</div>
+          <div class="kpi-sub">omnipos-ai-us-east2 &amp; eu-sweden</div>
+        </div>
+      </div>
+
+      <!-- Inline Knowledge Atlas SVG -->
+      <figure class="arch-atlas-card">
+        <svg data-knowledge-atlas="data-infra" viewBox="0 0 1160 330" role="img" aria-label="US and EU Global Smart Retail Terminal AI Landing Zone Topology" style="width:100%;height:auto;display:block;">
+    <defs>
+      <linearGradient id="atlasBg" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="#0f172a"/>
+        <stop offset="55%" stop-color="#111c38"/>
+        <stop offset="100%" stop-color="#0b2942"/>
+      </linearGradient>
+      <linearGradient id="laneBlue" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stop-color="#0078d4" stop-opacity="0.28"/>
+        <stop offset="100%" stop-color="#38bdf8" stop-opacity="0.12"/>
+      </linearGradient>
+      <linearGradient id="laneIndigo" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stop-color="#4f46e5" stop-opacity="0.28"/>
+        <stop offset="100%" stop-color="#818cf8" stop-opacity="0.12"/>
+      </linearGradient>
+      <linearGradient id="laneTeal" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stop-color="#0d9488" stop-opacity="0.28"/>
+        <stop offset="100%" stop-color="#34d399" stop-opacity="0.12"/>
+      </linearGradient>
+      <marker id="arrCyan" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M 0 1 L 10 5 L 0 9 z" fill="#38bdf8"/>
+      </marker>
+      <marker id="arrEmerald" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M 0 1 L 10 5 L 0 9 z" fill="#34d399"/>
+      </marker>
+    </defs>
+    <rect x="0" y="0" width="1160" height="330" rx="16" fill="url(#atlasBg)"/>
+    <rect x="18" y="18" width="232" height="294" rx="12" fill="#1e293b" stroke="#fb923c" stroke-opacity="0.55" stroke-width="1.4"/>
+    <text x="34" y="44" fill="#fdba74" font-size="11.5" font-weight="700" font-family="Segoe UI, system-ui, sans-serif">STORE EDGE PLANE · OMNIPOS FLEET</text>
+    <rect x="32" y="58" width="204" height="48" rx="8" fill="#0f172a" stroke="#334155"/>
+    <text x="44" y="78" fill="#f8fafc" font-size="12" font-weight="700" font-family="Segoe UI, system-ui, sans-serif">Dual-Screen Flagship POS & SmartAssist</text>
+    <text x="44" y="96" fill="#94a3b8" font-size="10.5" font-family="Segoe UI, system-ui, sans-serif">Multi-Mic Array · 70dB Noise · Zero Local Keys</text>
+    <rect x="32" y="116" width="204" height="48" rx="8" fill="#0f172a" stroke="#334155"/>
+    <text x="44" y="136" fill="#f8fafc" font-size="12" font-weight="700" font-family="Segoe UI, system-ui, sans-serif">Mobile Store Tablet & Countertop POS</text>
+    <text x="44" y="154" fill="#94a3b8" font-size="10.5" font-family="Segoe UI, system-ui, sans-serif">Voice Inventory · ESL Sync · 6-Accent ASR</text>
+    <rect x="32" y="174" width="204" height="48" rx="8" fill="#0f172a" stroke="#334155"/>
+    <text x="44" y="194" fill="#f8fafc" font-size="12" font-weight="700" font-family="Segoe UI, system-ui, sans-serif">Self-Checkout & Weighing Kiosk</text>
+    <text x="44" y="212" fill="#94a3b8" font-size="10.5" font-family="Segoe UI, system-ui, sans-serif">Illinois BIPA Exempt · PCI-DSS v4.0.1 L1</text>
+    <rect x="32" y="234" width="204" height="62" rx="8" fill="#172554" stroke="#3b82f6" stroke-opacity="0.55"/>
+    <text x="44" y="254" fill="#93c5fd" font-size="11" font-weight="700" font-family="Segoe UI, system-ui, sans-serif">DMP Control Plane & Geo-Routing</text>
+    <text x="44" y="271" fill="#e2e8f0" font-size="10.5" font-family="Segoe UI, system-ui, sans-serif">mTLS X-OmniPOS-DeviceId + Entra MI</text>
+    <text x="44" y="287" fill="#34d399" font-size="10.5" font-weight="700" font-family="Consolas, monospace">10-min Regional STS JWT (TTL=600s)</text>
+
+    <!-- Control & Data Plane Arrows -->
+    <line x1="250" y1="84" x2="314" y2="66" stroke="#34d399" stroke-width="2" marker-end="url(#arrEmerald)"/>
+    <line x1="250" y1="164" x2="314" y2="164" stroke="#38bdf8" stroke-width="2" marker-end="url(#arrCyan)"/>
+    <line x1="250" y1="254" x2="314" y2="262" stroke="#38bdf8" stroke-width="2" marker-end="url(#arrCyan)"/>
+
+    <!-- Track 1: Speech + 10m STS Direct -->
+    <rect x="320" y="18" width="528" height="92" rx="12" fill="url(#laneBlue)" stroke="#38bdf8" stroke-opacity="0.5"/>
+    <text x="338" y="40" fill="#7dd3fc" font-size="11.5" font-weight="700" font-family="Segoe UI, system-ui, sans-serif">DATA PLANE 1 · AZURE AI SPEECH + 10-MIN REGIONAL STS DIRECT WSS</text>
+    <text x="338" y="61" fill="#f8fafc" font-size="12.5" font-weight="700" font-family="Segoe UI, system-ui, sans-serif">590ms Proxy Hop -> 285ms US East 2 / 312ms EU Sweden Direct (-51.7% Latency)</text>
+    <text x="338" y="81" fill="#cbd5e1" font-size="11" font-family="Segoe UI, system-ui, sans-serif">Clean WER 1.7%-2.0% · 70dB Noisy Store + Phrase List 2.0 + Custom Speech -> 5.1% WER</text>
+    <text x="338" y="99" fill="#6ee7b7" font-size="10.5" font-family="Consolas, monospace">RAM-Only Zero Audio Persistence · EUDB 9 Regions · US BIPA Non-Biometric</text>
+
+    <!-- Track 2: Multi-Tier Store FinOps -->
+    <rect x="320" y="120" width="528" height="92" rx="12" fill="url(#laneIndigo)" stroke="#818cf8" stroke-opacity="0.5"/>
+    <text x="338" y="142" fill="#c7d2fe" font-size="11.5" font-weight="700" font-family="Segoe UI, system-ui, sans-serif">DATA PLANE 2 · APIM AI GATEWAY + LUNA / TERRA / SOL ROUTER + 99.8% PROMPT CACHE</text>
+    <text x="338" y="163" fill="#f8fafc" font-size="12.5" font-weight="700" font-family="Segoe UI, system-ui, sans-serif">$10,000/mo -> $3,420/mo (-65.8% Monthly TCO) · Diamond Verified -63.2% Unit Cost</text>
+    <text x="338" y="183" fill="#cbd5e1" font-size="11" font-family="Segoe UI, system-ui, sans-serif">L1 gpt-5.6-luna (65% Triage) · L2 gpt-6.1-terra (25% Store Ops) · L3 gpt-6.2-sol (10% Root-Cause)</text>
+    <text x="338" y="201" fill="#fde68a" font-size="10.5" font-family="Consolas, monospace">cached_tokens: 2,249 / 2,252 (99.8% Prefix Hit) · Structured JSON + Overnight Batch -50%</text>
+
+    <!-- Track 3: Web IQ Grounding -->
+    <rect x="320" y="222" width="528" height="90" rx="12" fill="url(#laneTeal)" stroke="#34d399" stroke-opacity="0.5"/>
+    <text x="338" y="244" fill="#99f6e4" font-size="11.5" font-weight="700" font-family="Segoe UI, system-ui, sans-serif">DATA PLANE 3 · MICROSOFT FOUNDRY WEB IQ AGENTIC GROUNDING (REPLACES BING API)</text>
+    <text x="338" y="265" fill="#f8fafc" font-size="12.5" font-weight="700" font-family="Segoe UI, system-ui, sans-serif">GDSAT 79.05 Benchmark Lead · P95 164ms Latency · $7 / 1,000 Grounded Transactions</text>
+    <text x="338" y="285" fill="#cbd5e1" font-size="11" font-family="Segoe UI, system-ui, sans-serif">Scopes Allowlist locks fda.gov / efsa.europa.eu / rapex.ec.europa.eu, blocking poisoned SEO traps</text>
+    <text x="338" y="302" fill="#6ee7b7" font-size="10.5" font-family="Consolas, monospace">Prompt Shields Indirect-Injection Guard · Zero Query Training · Inline Verifiable Citations</text>
+
+    <!-- Right Sovereign Landing Zones -->
+    <line x1="848" y1="64" x2="884" y2="86" stroke="#38bdf8" stroke-width="1.8" marker-end="url(#arrCyan)"/>
+    <line x1="848" y1="166" x2="884" y2="166" stroke="#38bdf8" stroke-width="1.8" marker-end="url(#arrCyan)"/>
+    <line x1="848" y1="266" x2="884" y2="244" stroke="#34d399" stroke-width="1.8" marker-end="url(#arrEmerald)"/>
+
+    <rect x="890" y="18" width="252" height="140" rx="12" fill="#0f172a" stroke="#38bdf8" stroke-opacity="0.6"/>
+    <text x="906" y="42" fill="#7dd3fc" font-size="11.5" font-weight="700" font-family="Segoe UI, system-ui, sans-serif">US RETAIL LANDING ZONE</text>
+    <text x="906" y="64" fill="#f8fafc" font-size="12" font-weight="700" font-family="Consolas, monospace">omnipos-ai-us-east2</text>
+    <text x="906" y="84" fill="#cbd5e1" font-size="10.8" font-family="Segoe UI, system-ui, sans-serif">Regions: East US 2 / West US 2</text>
+    <text x="906" y="103" fill="#cbd5e1" font-size="10.8" font-family="Segoe UI, system-ui, sans-serif">Compliance: BIPA Exempt · CCPA · PCI L1</text>
+    <text x="906" y="122" fill="#34d399" font-size="10.5" font-weight="700" font-family="Consolas, monospace">STS: 285ms | Cache: 99.8% Hit</text>
+    <text x="906" y="142" fill="#94a3b8" font-size="10" font-family="Consolas, monospace">RG: rg-omnipos-retail-ai</text>
+
+    <rect x="890" y="172" width="252" height="140" rx="12" fill="#0f172a" stroke="#818cf8" stroke-opacity="0.6"/>
+    <text x="906" y="196" fill="#c7d2fe" font-size="11.5" font-weight="700" font-family="Segoe UI, system-ui, sans-serif">EU SOVEREIGN LANDING ZONE (EUDB)</text>
+    <text x="906" y="218" fill="#f8fafc" font-size="12" font-weight="700" font-family="Consolas, monospace">omnipos-ai-eu-sweden</text>
+    <text x="906" y="238" fill="#cbd5e1" font-size="10.8" font-family="Segoe UI, system-ui, sans-serif">Regions: Sweden Central / Frankfurt</text>
+    <text x="906" y="257" fill="#cbd5e1" font-size="10.8" font-family="Segoe UI, system-ui, sans-serif">Compliance: GDPR Zero-Retain · EUDB</text>
+    <text x="906" y="276" fill="#34d399" font-size="10.5" font-weight="700" font-family="Consolas, monospace">STS: 312ms | 42 Verified Runs</text>
+    <text x="906" y="296" fill="#94a3b8" font-size="10" font-family="Consolas, monospace">Fabric OneLake Shortcut Analytics</text>
+  </svg>
+        <figcaption class="arch-atlas-caption">
+          <span>Topology: OmniPOS Store Fleet -> DMP 10-min Regional STS Direct WSS & APIM AI Gateway -> US East 2 (omnipos-ai-us-east2) & EU Sweden Central (omnipos-ai-eu-sweden)</span>
+          <a href="live-demo.en.html" style="color:#7dd3fc;font-weight:700;">Replay 42 Verified Snapshots in Live Workbench ↗</a>
+        </figcaption>
+      </figure>
+
+      <!-- 4-Tab Navigation -->
+      <nav class="tab-bar" role="tablist" aria-label="Architecture Modules">
+        <button type="button" class="tab-btn active" role="tab" aria-selected="true" data-tab="tab1"><svg class="ms-svg-icon" viewBox="0 0 17.358 16.364" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><path d="M5.014.557A.82.82 0 0 1 5.789 0h5.14L5.594 15.807a.82.82 0 0 1-.775.557h-4a.82.82 0 0 1-.775-1.08z" fill="url(#op_ic4_s2_azure_A)"/> <path d="M13.231 10.636h-8.1c-.34 0-.505.417-.256.649l5.205 4.858a.82.82 0 0 0 .558.22h4.587z" fill="#0078d4"/> <path d="M5.789 0a.82.82 0 0 0-.775.557L.044 15.284a.82.82 0 0 0 .775 1.08h4a.82.82 0 0 0 .775-.556l.988-2.928 3.497 3.264a.82.82 0 0 0 .558.22h4.587l-1.994-5.727H7.339L10.929 0z" fill="url(#op_ic4_s2_azure_B)"/> <path d="M12.344.557A.82.82 0 0 0 11.569 0H5.815h.026a.82.82 0 0 1 .775.557l4.97 14.727a.82.82 0 0 1-.775 1.08h-.088 5.815a.82.82 0 0 0 .775-1.08z" fill="url(#op_ic4_s2_azure_C)"/> <defs> <linearGradient id="op_ic4_s2_azure_A" x1="5.754" y1=".567" x2=".417" y2="16.333" gradientUnits="userSpaceOnUse"> <stop stop-color="#114a8b"/> <stop offset="1" stop-color="#0669bc"/> </linearGradient> <linearGradient id="op_ic4_s2_azure_B" x1="10.019" y1="10.638" x2="8.786" y2="11.055" gradientUnits="userSpaceOnUse"> <stop stop-opacity=".3"/> <stop offset=".071" stop-opacity=".2"/> <stop offset=".321" stop-opacity=".1"/> <stop offset=".623" stop-opacity=".05"/> <stop offset="1" stop-opacity="0"/> </linearGradient> <linearGradient id="op_ic4_s2_azure_C" x1="9.138" y1=".566" x2="14.996" y2="16.174" gradientUnits="userSpaceOnUse"> <stop stop-color="#3ccbf4"/> <stop offset="1" stop-color="#2892df"/> </linearGradient> </defs></svg> 1. AI Audio · WER & 10m STS Direct</button>
+        <button type="button" class="tab-btn" role="tab" aria-selected="false" data-tab="tab2"><svg class="ms-svg-icon" viewBox="0.26 0.25 17.47 17.51" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><defs><linearGradient id="op_ic5_s15_foundry_models_uuid-eb2ac053-82fc-4742-ad37-91d1189337fa" x1="6.94" y1="242.38" x2=".48" y2="242.38" gradientTransform="translate(0 258) scale(1 -1)" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#4f42fd" /><stop offset=".5" stop-color="#7274ff" /></linearGradient><linearGradient id="op_ic5_s15_foundry_models_uuid-a366be6e-1577-45e5-a437-4c4014534894" x1="7.97" y1="252.24" x2="-.33" y2="245.1" gradientTransform="translate(0 258) scale(1 -1)" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#4f42fd" /><stop offset="1" stop-color="#2c08ac" /></linearGradient><linearGradient id="op_ic5_s15_foundry_models_uuid-7c513e23-ba04-4162-9ebc-b50a56a73c35" x1="6.82" y1="253.69" x2="1.2" y2="243.75" gradientTransform="translate(0 258) scale(1 -1)" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#7274ff" /><stop offset="1" stop-color="#2c08ac" stop-opacity="0" /></linearGradient><linearGradient id="op_ic5_s15_foundry_models_uuid-4b94926e-5de0-4aef-aa26-8b28ce1d7aee" x1="7.78" y1="255.54" x2="1.85" y2="255.14" gradientTransform="translate(0 258) scale(1 -1)" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#9189f7" /><stop offset="1" stop-color="#4135e9" /></linearGradient><linearGradient id="op_ic5_s15_foundry_models_uuid-95f5126b-358c-4f27-8a6f-685c6729e8a4" x1="5.3" y1="257.98" x2="2.48" y2="252.99" gradientTransform="translate(0 258) scale(1 -1)" gradientUnits="userSpaceOnUse"><stop offset=".5" stop-color="#7274ff" /><stop offset="1" stop-color="#4f42fd" /></linearGradient><linearGradient id="op_ic5_s15_foundry_models_uuid-28b70d5b-a9de-432e-b761-203a2c8a2c49" x1="9.25" y1="257.93" x2="10.02" y2="247.65" gradientTransform="translate(0 258) scale(1 -1)" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2c08ac" /><stop offset="1" stop-color="#4f42fd" /></linearGradient><linearGradient id="op_ic5_s15_foundry_models_uuid-b3f148bf-47e0-4f8a-aa2b-54fa7840ec1d" x1="12.41" y1="247.68" x2="6.58" y2="257.57" gradientTransform="translate(0 258) scale(1 -1)" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#7274ff" /><stop offset="1" stop-color="#2c08ac" stop-opacity="0" /></linearGradient><linearGradient id="op_ic5_s15_foundry_models_uuid-b2763f72-b6f7-4927-abd7-a860b729e6ab" x1="17.21" y1="246.54" x2="13.83" y2="251.14" gradientTransform="translate(0 258) scale(1 -1)" gradientUnits="userSpaceOnUse"><stop offset=".5" stop-color="#7274ff" /><stop offset="1" stop-color="#4f42fd" /></linearGradient><linearGradient id="op_ic5_s15_foundry_models_uuid-39ba0a1d-a39a-4d13-9a5c-aecf29eb6368" x1="8.59" y1="248.04" x2="10.92" y2="243.62" gradientTransform="translate(0 258) scale(1 -1)" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#4f42fd" /><stop offset="1" stop-color="#2c08ac" /></linearGradient><linearGradient id="op_ic5_s15_foundry_models_uuid-929ac68e-87fb-4c6f-bf9b-49b25460e2cf" x1="5.77" y1="248.12" x2="14.27" y2="243.39" gradientTransform="translate(0 258) scale(1 -1)" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#7274ff" /><stop offset="1" stop-color="#2c08ac" stop-opacity="0" /></linearGradient></defs><path d="M6.77,14.58c.1,0,.18.09.18.19-.09,1.78-1.51,2.99-3.09,2.99-.28,0-.56-.08-.79-.21-.24-.14-.44-.34-.58-.58l-1.37-2.38-.63-1.08c.39.67,1.1,1.08,1.88,1.08h4.42Z" fill="url(#op_ic5_s15_foundry_models_uuid-eb2ac053-82fc-4742-ad37-91d1189337fa)" /><path d="M2.83,14.18c-.1.18.03.4.23.4h-.71c-.77,0-1.49-.41-1.88-1.08-.28-.49-.28-1.1,0-1.59L5.39,3.39c.05-.09.17-.11.25-.06.92.6,1.43,1.61,1.43,2.65,0,.54-.14,1.08-.43,1.58l-3.82,6.61h0Z" fill="url(#op_ic5_s15_foundry_models_uuid-a366be6e-1577-45e5-a437-4c4014534894)" /><path d="M2.83,14.18c-.1.18.03.4.23.4h-.71c-.77,0-1.49-.41-1.88-1.08-.28-.49-.28-1.1,0-1.59L5.39,3.39c.05-.09.17-.11.25-.06.92.6,1.43,1.61,1.43,2.65,0,.54-.14,1.08-.43,1.58l-3.82,6.61h0Z" fill="url(#op_ic5_s15_foundry_models_uuid-7c513e23-ba04-4162-9ebc-b50a56a73c35)" /><path d="M3.55,5.16c-.05.09-.16.11-.25.06-1.49-.97-1.83-2.8-1.04-4.17.14-.25.34-.44.58-.58.24-.14.51-.21.79-.21h4c-.77,0-1.49.41-1.88,1.08l-2.21,3.82Z" fill="url(#op_ic5_s15_foundry_models_uuid-4b94926e-5de0-4aef-aa26-8b28ce1d7aee)" /><path d="M3.55,5.16c-.05.09-.16.11-.25.06-1.49-.97-1.83-2.8-1.04-4.17.14-.25.34-.44.58-.58.24-.14.51-.21.79-.21h4c-.77,0-1.49.41-1.88,1.08l-2.21,3.82Z" fill="url(#op_ic5_s15_foundry_models_uuid-95f5126b-358c-4f27-8a6f-685c6729e8a4)" /><path d="M5.86,1.94c-.1-.18-.36-.18-.46,0l.35-.61c.39-.67,1.1-1.08,1.88-1.08.57,0,1.09.3,1.37.79l4.92,8.51c.05.09.02.2-.07.25-.98.49-2.11.43-3.01-.09-.47-.27-.87-.66-1.16-1.16L5.86,1.94h0Z" fill="url(#op_ic5_s15_foundry_models_uuid-28b70d5b-a9de-432e-b761-203a2c8a2c49)" /><path d="M5.86,1.94c-.1-.18-.36-.18-.46,0l.35-.61c.39-.67,1.1-1.08,1.88-1.08.57,0,1.09.3,1.37.79l4.92,8.51c.05.09.02.2-.07.25-.98.49-2.11.43-3.01-.09-.47-.27-.87-.66-1.16-1.16L5.86,1.94h0Z" fill="url(#op_ic5_s15_foundry_models_uuid-b3f148bf-47e0-4f8a-aa2b-54fa7840ec1d)" /><path d="M13.32,7.08c-.05-.09-.02-.2.07-.25,1.59-.81,3.34-.19,4.13,1.19.14.25.21.52.21.79s-.07.55-.21.79l-1.37,2.38-.63,1.08c.39-.67.39-1.5,0-2.17l-2.21-3.82h0Z" fill="url(#op_ic5_s15_foundry_models_uuid-b2763f72-b6f7-4927-abd7-a860b729e6ab)" /><path d="M14.94,10.69c.2,0,.33-.22.23-.4l.35.61c.39.67.39,1.5,0,2.17-.28.49-.81.79-1.37.79H4.32c-.1,0-.18-.09-.18-.19.06-1.1.68-2.04,1.58-2.56.47-.27,1.01-.42,1.59-.42h7.63,0Z" fill="url(#op_ic5_s15_foundry_models_uuid-39ba0a1d-a39a-4d13-9a5c-aecf29eb6368)" /><path d="M14.94,10.69c.2,0,.33-.22.23-.4l.35.61c.39.67.39,1.5,0,2.17-.28.49-.81.79-1.37.79H4.32c-.1,0-.18-.09-.18-.19.06-1.1.68-2.04,1.58-2.56.47-.27,1.01-.42,1.59-.42h7.63,0Z" fill="url(#op_ic5_s15_foundry_models_uuid-929ac68e-87fb-4c6f-bf9b-49b25460e2cf)" /></svg> 2. Store FinOps · 3-Cup & 99.8% Cache</button>
+        <button type="button" class="tab-btn" role="tab" aria-selected="false" data-tab="tab3"><svg class="ms-svg-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><path d="M11.97 7.569a.92.92 0 00-.805.863c-.013.195-.01.209.43 1.347 1 2.59 1.242 3.214 1.283 3.302.099.213.237.413.41.592.134.138.222.212.37.311.26.176.39.224 1.405.527.989.295 1.529.49 1.994.723.603.302 1.024.644 1.29 1.051.191.292.36.815.434 1.342.029.206.029.661 0 .847a2.491 2.491 0 01-.376 1.026c-.1.151-.065.126.081-.058.415-.52.838-1.408 1.054-2.213a6.728 6.728 0 00.102-3.012 6.626 6.626 0 00-3.291-4.53 104.157 104.157 0 00-1.322-.698l-.254-.133a737.941 737.941 0 01-1.575-.827c-.548-.29-.78-.406-.846-.426a1.376 1.376 0 00-.29-.045l-.093.01z" fill="url(#op_ic6_s16_webiq_lobe-icons-bing-0-_R_0_)"></path><path d="M13.164 17.24a4.385 4.385 0 00-.202.125 511.45 511.45 0 00-1.795 1.115 163.087 163.087 0 01-.989.614l-.463.288a99.198 99.198 0 01-1.502.941c-.326.2-.704.334-1.09.387-.18.024-.52.024-.7 0a2.807 2.807 0 01-1.318-.538 3.665 3.665 0 01-.543-.545 2.837 2.837 0 01-.506-1.141 2.161 2.161 0 00-.041-.182c-.008-.008.006.138.032.33.027.199.085.487.147.733.482 1.907 1.85 3.457 3.705 4.195a6.31 6.31 0 001.658.412c.22.025.844.035 1.074.017 1.054-.08 1.972-.393 2.913-.992a325.28 325.28 0 01.937-.596l.384-.244.684-.435.234-.149.009-.005.025-.017.013-.007.172-.11.597-.38c.76-.481.987-.65 1.34-.998.148-.146.37-.394.381-.425.002-.007.042-.068.088-.136a2.49 2.49 0 00.373-1.023 4.181 4.181 0 000-.847 4.336 4.336 0 00-.318-1.137c-.224-.472-.7-.9-1.383-1.245a2.972 2.972 0 00-.406-.181c-.01 0-.646.392-1.413.87a7089.171 7089.171 0 00-1.658 1.031l-.439.274z" fill="url(#op_ic6_s16_webiq_lobe-icons-bing-1-_R_0_)" fill-rule="nonzero"></path><path d="M4.003 14.946l.004 3.33.042.193c.134.604.366 1.04.77 1.445a2.701 2.701 0 001.955.814c.536 0 1-.135 1.479-.43l.703-.435.556-.346V8.003c0-2.306-.004-3.675-.012-3.782a2.734 2.734 0 00-.797-1.765c-.145-.144-.268-.24-.637-.496A1780.102 1780.102 0 015.762.362C5.406.115 5.38.098 5.271.059a.943.943 0 00-1.254.696C4.003.818 4 1.659 4 6.223v5.394H4l.003 3.329z" fill="url(#op_ic6_s16_webiq_lobe-icons-bing-2-_R_0_)" fill-rule="nonzero"></path><defs><radialGradient cx="93.717%" cy="77.818%" fx="93.717%" fy="77.818%" gradientTransform="scale(-1 -.7146) rotate(49.288 2.035 -2.198)" id="op_ic6_s16_webiq_lobe-icons-bing-0-_R_0_" r="143.691%"><stop offset="0%" stop-color="#00CACC"></stop><stop offset="100%" stop-color="#048FCE"></stop></radialGradient><radialGradient cx="13.893%" cy="71.448%" fx="13.893%" fy="71.448%" gradientTransform="scale(.6042 1) rotate(-23.34 .184 .494)" id="op_ic6_s16_webiq_lobe-icons-bing-1-_R_0_" r="149.21%"><stop offset="0%" stop-color="#00BBEC"></stop><stop offset="100%" stop-color="#2756A9"></stop></radialGradient><linearGradient id="op_ic6_s16_webiq_lobe-icons-bing-2-_R_0_" x1="50%" x2="50%" y1="0%" y2="100%"><stop offset="0%" stop-color="#00BBEC"></stop><stop offset="100%" stop-color="#2756A9"></stop></linearGradient></defs></svg> 3. Web IQ · Grounding & Scopes</button>
+        <button type="button" class="tab-btn" role="tab" aria-selected="false" data-tab="tab4"><svg class="ms-svg-icon" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><defs> <linearGradient id="op_ic7_s24_guardrails_uuid-80fd62f5-d182-4403-8456-6923e7e033bb" x1="7.997" y1="14.863" x2="7.997" y2="2.057" gradientUnits="userSpaceOnUse"> <stop offset="0" stop-color="#0078d4" /> <stop offset=".82" stop-color="#5ea0ef" /> </linearGradient> <linearGradient id="op_ic7_s24_guardrails_uuid-f6289940-e1be-4e56-904f-ba5a1586dc17" x1="-558.124" y1="1021.188" x2="-558.124" y2="1019.083" gradientTransform="translate(564 1025.516) scale(1 -1)" gradientUnits="userSpaceOnUse"> <stop offset="0" stop-color="#fff" stop-opacity=".7" /> <stop offset="1" stop-color="#fff" stop-opacity=".6" /> </linearGradient> </defs> <path d="m.362,3.138C.162,3.138,0,2.976,0,2.777h0V.361C0,.162.162,0,.362,0h2.266c.2,0,.362.162.362.361,0,.199-.162.361-.362.361H.724v2.053c0,.199-.161.362-.361.362,0,0,0,0-.001,0Zm17.638-.361V.361C18,.162,17.838,0,17.638,0h-2.266c-.2,0-.362.162-.362.361s.162.361.362.361h1.904v2.053c0,.199.162.361.362.361.2,0,.361-.162.362-.361h0ZM2.99,17.639c0-.199-.162-.361-.362-.361H.724v-2.053c0-.199-.162-.361-.362-.361-.2,0-.362.162-.362.361v2.415c0,.199.163.36.362.36h2.266c.2,0,.362-.162.362-.361Zm15.01.001v-2.415c0-.199-.162-.361-.362-.361-.2,0-.361.162-.362.361v2.053h-1.904c-.2,0-.362.162-.362.362,0,.199.162.361.362.361h2.266c.199,0,.361-.161.362-.36Z" fill="#76bc2d" /> <g> <path d="m13.864,8.047c0,3.822-4.627,6.907-5.632,7.544-.12.066-.265.066-.386,0-1.073-.687-5.716-3.772-5.716-7.544V3.386c0-.197.155-.36.352-.369,3.604-.101,2.783-1.676,5.482-1.676s1.861,1.576,5.465,1.676c.197.009.352.171.352.369l.084,4.66Z" fill="#0078d4" /> <path d="m8.04,14.863c-4.683-3.064-5.194-5.781-5.194-6.816V3.719c1.873-.106,2.625-.637,3.236-1.068.489-.345.843-.594,1.881-.594s1.387.249,1.872.593c.607.431,1.355.962,3.235,1.069l.078,4.34c0,.817-.372,3.733-5.109,6.804Z" fill="url(#op_ic7_s24_guardrails_uuid-80fd62f5-d182-4403-8456-6923e7e033bb)" /> </g> <g> <rect x="8.155" y="4.328" width="3.721" height=".691" rx=".141" ry=".141" fill="#fff" opacity=".7" /> <rect x="8.155" y="5.742" width="3.721" height=".691" rx=".141" ry=".141" fill="#fff" opacity=".6" /> <rect x="4.117" y="9.983" width="4.472" height=".691" rx=".141" ry=".141" fill="#fff" opacity=".3" /> <rect x="4.117" y="8.57" width="7.76" height=".691" rx=".141" ry=".141" fill="#fff" opacity=".4" /> <rect x="4.117" y="7.156" width="7.076" height=".691" rx=".14" ry=".14" fill="#fff" opacity=".5" /> <g id="op_ic7_s24_guardrails_uuid-69ff294d-4d54-4881-9832-ea140e19e0d2"> <path d="m4.235,4.328h3.282c.065,0,.118.046.118.102v1.901c0,.057-.053.102-.118.102h-3.282c-.065,0-.118-.046-.118-.102v-1.901c0-.057.053-.102.118-.102Z" fill="url(#op_ic7_s24_guardrails_uuid-f6289940-e1be-4e56-904f-ba5a1586dc17)" /> </g> </g> <g> <circle cx="12.449" cy="13.203" r="3.442" fill="#76bc2d" /> <g> <path d="m12.096,14.356l-.316.316c-.054.054-.141.054-.195,0h0l-1.256-1.256c-.054-.054-.054-.141,0-.195h0l.219-.219c.054-.054.141-.054.195,0h0l1.353,1.353h0Z" fill="#fff" /> <path d="m11.591,14.676l-.316-.316h0l2.888-2.888c.054-.054.141-.054.195,0h0l.219.219c.054.054.054.141,0,.195h0l-2.791,2.791c-.054.054-.141.054-.195,0h0Z" fill="#f0f0f0" /> </g> </g></svg> 4. 14-Day Pilot & 22 Architect FAQs</button>
+      </nav>
+    </header>
+
+    <!-- =====================================================================
+         TAB 1: AI AUDIO, 10-MIN REGIONAL STS DIRECT & GDPR/BIPA ZERO-RETENTION
+         ===================================================================== -->
+    <section id="tab1" class="tab-panel active" role="tabpanel">
+      <div class="section-block">
+        <div class="section-head">
+          <div>
+            <div class="section-kicker">MODULE 1A · MULTI-ACCENT STORE ACOUSTIC &amp; WER BENCHMARK</div>
+            <h2 class="section-title"><svg class="ms-svg-icon icon-lg" viewBox="0 0 17.358 16.364" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><path d="M5.014.557A.82.82 0 0 1 5.789 0h5.14L5.594 15.807a.82.82 0 0 1-.775.557h-4a.82.82 0 0 1-.775-1.08z" fill="url(#op_ic8_s2_azure_A)"/> <path d="M13.231 10.636h-8.1c-.34 0-.505.417-.256.649l5.205 4.858a.82.82 0 0 0 .558.22h4.587z" fill="#0078d4"/> <path d="M5.789 0a.82.82 0 0 0-.775.557L.044 15.284a.82.82 0 0 0 .775 1.08h4a.82.82 0 0 0 .775-.556l.988-2.928 3.497 3.264a.82.82 0 0 0 .558.22h4.587l-1.994-5.727H7.339L10.929 0z" fill="url(#op_ic8_s2_azure_B)"/> <path d="M12.344.557A.82.82 0 0 0 11.569 0H5.815h.026a.82.82 0 0 1 .775.557l4.97 14.727a.82.82 0 0 1-.775 1.08h-.088 5.815a.82.82 0 0 0 .775-1.08z" fill="url(#op_ic8_s2_azure_C)"/> <defs> <linearGradient id="op_ic8_s2_azure_A" x1="5.754" y1=".567" x2=".417" y2="16.333" gradientUnits="userSpaceOnUse"> <stop stop-color="#114a8b"/> <stop offset="1" stop-color="#0669bc"/> </linearGradient> <linearGradient id="op_ic8_s2_azure_B" x1="10.019" y1="10.638" x2="8.786" y2="11.055" gradientUnits="userSpaceOnUse"> <stop stop-opacity=".3"/> <stop offset=".071" stop-opacity=".2"/> <stop offset=".321" stop-opacity=".1"/> <stop offset=".623" stop-opacity=".05"/> <stop offset="1" stop-opacity="0"/> </linearGradient> <linearGradient id="op_ic8_s2_azure_C" x1="9.138" y1=".566" x2="14.996" y2="16.174" gradientUnits="userSpaceOnUse"> <stop stop-color="#3ccbf4"/> <stop offset="1" stop-color="#2892df"/> </linearGradient> </defs></svg> Five Smart Store Terminal Form Factors x Store Acoustic WER Matrix</h2>
+            <p class="section-desc">Select a store terminal form factor and acoustic noise profile to compare Word Error Rate (WER, lower is better) across generic cloud ASR, Whisper Large-v3 (prone to silence/noise hallucinations), and Azure AI Speech with Dynamic Phrase List 2.0 + Custom Speech.</p>
+          </div>
+          <span class="badge badge-emerald">Lower WER = Better · 6 Accents</span>
+        </div>
+
+        <div class="pill-group" id="devicePills">
+          <button type="button" class="choice-pill omnipos-active" data-device="flagship">Dual-Screen Flagship POS</button>
+          <button type="button" class="choice-pill" data-device="smartassist">SmartAssist Screen</button>
+          <button type="button" class="choice-pill" data-device="tablet">Mobile Store Tablet POS</button>
+          <button type="button" class="choice-pill" data-device="countertop">Countertop All-in-One POS</button>
+          <button type="button" class="choice-pill" data-device="kiosk">Self-Checkout Kiosk</button>
+        </div>
+
+        <div class="pill-group" id="snrPills">
+          <button type="button" class="choice-pill active" data-snr="clean">Clean Boutique Store (>25dB SNR)</button>
+          <button type="button" class="choice-pill" data-snr="noisy">70dB Supermarket & Espresso Noise</button>
+          <button type="button" class="choice-pill" data-snr="accent">Heavy Accent + Seasonal SKU Jargon</button>
+        </div>
+
+        <div class="grid-2">
+          <div class="sub-card" id="werBarsContainer"></div>
+          <div class="sub-card">
+            <div style="font-size:0.76rem;font-weight:700;color:var(--omnipos-orange);margin-bottom:0.35rem;" id="devMetaMic"></div>
+            <h3 style="margin:0 0 0.5rem;font-size:1.02rem;" id="devMetaTitle"></h3>
+            <p style="margin:0 0 0.75rem;font-size:0.85rem;color:var(--text-secondary);" id="devMetaRec"></p>
+            <div class="code-box">// Dynamic Phrase List 2.0 (0-Training Instant SKU Boost)
+const phraseList = SpeechSDK.PhraseListGrammar.fromRecognizer(recognizer);
+phraseList.addPhrase("OmniPOS");
+phraseList.addPhrase("OP-POS-OAT500");
+phraseList.addPhrase("SmartAssist");
+phraseList.setWeight(2.0); // Immediate lexical boost on WSS handshake</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 1B: 10-Min Regional STS Direct Topology -->
+      <div class="section-block">
+        <div class="section-head">
+          <div>
+            <div class="section-kicker">MODULE 1B · 10-MINUTE REGIONAL STS DIRECT WEBSOCKET TOPOLOGY</div>
+            <h2 class="section-title"><svg class="ms-svg-icon icon-lg" viewBox="0 0 18 15.862288" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><defs id="op_ic9_s21_frontdoor_defs64525"> <linearGradient id="op_ic9_s21_frontdoor_aa2ee697-e8d1-4da1-a8c5-64c8ebbb74cf" x1="9" y1="13.83" x2="9" y2="1.0700001" gradientUnits="userSpaceOnUse"> <stop offset="0" stop-color="#0078d4" id="op_ic9_s21_frontdoor_stop64520" /> <stop offset="0.82" stop-color="#5ea0ef" id="op_ic9_s21_frontdoor_stop64522" /> </linearGradient> </defs> <path d="m 18,8.7622883 a 4,4 0 0 0 -3.51,-3.83 5.1,5.1 0 0 0 -5.25,-4.93000003 5.23,5.23 0 0 0 -5,3.41000003 4.83,4.83 0 0 0 -4.24,4.64 4.9,4.9 0 0 0 5.07,4.7099997 h 0.44 8.21 a 0.78,0.78 0 0 0 0.22,0 A 4.09,4.09 0 0 0 18,8.7622883 Z" id="op_ic9_s21_frontdoor_path64529" style="fill:url(#op_ic9_s21_frontdoor_aa2ee697-e8d1-4da1-a8c5-64c8ebbb74cf)" /> <path id="op_ic9_s21_frontdoor_f0276135-0079-4897-a518-21eb63472c16" d="m 6.63,5.7522883 h 5.06 V 12.752288 H 6.63 Z" style="fill:#f2f2f2" /> <path id="op_ic9_s21_frontdoor_e528878d-2ed7-4392-94e6-99c6fc971bcb" d="m 12.61,5.3022883 -3.49,-2 a 0.25,0.25 0 0 0 -0.31,0.15 c 0,0 0,0.06 0,0.08 V 15.612288 a 0.25,0.25 0 0 0 0.24,0.25 h 0.08 l 3.49,-2.06 a 0.25,0.25 0 0 0 0.17,-0.23 V 5.5722883 a 0.26,0.26 0 0 0 -0.18,-0.27 z" style="fill:#50e6ff" /></svg> 7 US & EU Retail Cities · 10-Min Regional STS Direct WSS vs. Backend Proxy Simulator</h2>
+            <p class="section-desc">Eliminate backend audio proxy bottlenecks: OmniPOS DMP authenticates device mTLS and mints a 10-minute regional STS JWT via Entra Managed Identity so the POS terminal opens a direct TLS 1.3 WebSocket to the nearest Azure Speech region (590ms -> 285ms, -51.7% latency) with zero permanent keys on device.</p>
+          </div>
+          <span class="badge badge-blue">TTL = 600s · Zero Local Secret</span>
+        </div>
+
+        <div class="pill-group" id="cityPills"></div>
+
+        <div class="sts-compare-grid">
+          <div class="sub-card">
+            <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:0.5rem;margin-bottom:0.65rem;">
+              <strong id="stsCityName" style="font-size:1rem;"></strong>
+              <span class="badge badge-indigo" id="stsRegionBadge"></span>
+            </div>
+            <div style="margin-bottom:0.75rem;">
+              <div style="display:flex;justify-content:space-between;font-size:0.8rem;font-weight:700;margin-bottom:0.25rem;">
+                <span>✅ 10m Regional STS Direct WSS</span>
+                <span style="color:var(--emerald);" id="stsDirectLabel"></span>
+              </div>
+              <div class="bar-track"><div class="bar-fill" id="stsDirectBar" style="background:var(--emerald);width:35%;"></div></div>
+            </div>
+            <div style="margin-bottom:0.85rem;">
+              <div style="display:flex;justify-content:space-between;font-size:0.8rem;font-weight:700;margin-bottom:0.25rem;">
+                <span>⚠️ Legacy Backend Audio Proxy</span>
+                <span style="color:var(--rose);" id="stsProxyLabel"></span>
+              </div>
+              <div class="bar-track"><div class="bar-fill" id="stsProxyBar" style="background:var(--rose);width:78%;"></div></div>
+            </div>
+            <p style="margin:0 0 0.65rem;font-size:0.84rem;color:var(--text-secondary);" id="stsCityNote"></p>
+            <div style="font-size:0.78rem;font-weight:700;color:var(--ms-blue);" id="stsJurisdiction"></div>
+          </div>
+
+          <div class="code-box" id="stsHandshakeCode"></div>
+        </div>
+      </div>
+
+      <!-- 1C & 1D: GDPR / EUDB / BIPA Zero-Retention & Official Docs -->
+      <div class="section-block">
+        <div class="section-head">
+          <div>
+            <div class="section-kicker">MODULE 1C · GDPR EUDB &amp; US BIPA ZERO-AUDIO-RETENTION PIPELINE</div>
+            <h2 class="section-title"><svg class="ms-svg-icon icon-lg" viewBox="0 0 17.999109 11.241819" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><defs id="op_ic10_s23_purview_defs12976"> <linearGradient id="op_ic10_s23_purview_f3e51089-e6ab-4767-aaa8-7b98d9690f7d" x1="8.9770002" y1="11.134" x2="8.9770002" y2="7.178" gradientUnits="userSpaceOnUse" gradientTransform="translate(-0.00148763,-3.3782956)"> <stop offset="0" stop-color="#29bade" id="op_ic10_s23_purview_stop12950" /> <stop offset="1" stop-color="#50e6ff" id="op_ic10_s23_purview_stop12952" /> </linearGradient> <linearGradient id="op_ic10_s23_purview_b564252b-053a-4298-95b3-addd653a1762" x1="6.4460001" y1="14.626" x2="6.4460001" y2="3.3740001" gradientUnits="userSpaceOnUse" gradientTransform="translate(-0.00148763,-3.3782956)"> <stop offset="0.041" stop-color="#32bedd" id="op_ic10_s23_purview_stop12955" /> <stop offset="0.495" stop-color="#50e6ff" id="op_ic10_s23_purview_stop12957" /> <stop offset="0.92" stop-color="#c3f1ff" id="op_ic10_s23_purview_stop12959" /> </linearGradient> <linearGradient id="op_ic10_s23_purview_e5c2fc95-d3af-494c-b7d9-44da7b7b559c" x1="7.4640002" y1="10.047" x2="7.4640002" y2="0.25400001" gradientUnits="userSpaceOnUse" gradientTransform="translate(-0.00148763,-3.3782956)"> <stop offset="0.244" stop-color="#0078d4" id="op_ic10_s23_purview_stop12962" /> <stop offset="0.6" stop-color="#2e8ce1" id="op_ic10_s23_purview_stop12964" /> <stop offset="0.933" stop-color="#589eed" id="op_ic10_s23_purview_stop12966" /> </linearGradient> <linearGradient id="op_ic10_s23_purview_a1fcec9e-0cb0-44b8-9140-f5c49e8e3df4" x1="13.628" y1="14.626" x2="13.628" y2="4.1929998" gradientUnits="userSpaceOnUse" gradientTransform="translate(-0.00148763,-3.3782956)"> <stop offset="0" stop-color="#005ba1" id="op_ic10_s23_purview_stop12969" /> <stop offset="0.399" stop-color="#0078d4" id="op_ic10_s23_purview_stop12971" /> <stop offset="0.857" stop-color="#5ea0ef" id="op_ic10_s23_purview_stop12973" /> </linearGradient> </defs> <path d="m 10.575512,5.4217044 a 1.622,1.622 0 0 1 -1.6219996,-1.62 1.979,1.979 0 1 0 1.9609996,1.583 1.638,1.638 0 0 1 -0.339,0.037 z" fill="url(#op_ic10_s23_purview_f3e51089-e6ab-4767-aaa8-7b98d9690f7d)" id="op_ic10_s23_purview_path12978" style="fill:url(#op_ic10_s23_purview_f3e51089-e6ab-4767-aaa8-7b98d9690f7d)" /> <path d="m 12.860512,7.8527044 a 5.051,5.051 0 0 0 -0.656,-2.024 3.218,3.218 0 0 1 -3.2059996,3.02 c -0.077,0 -0.149,-0.017 -0.224,-0.023 a 6.735,6.735 0 0 1 -4.559,-1.86 8.724,8.724 0 0 1 -2.281,-3.683 20.447,20.447 0 0 0 -1.64200003,1.674 0.909,0.909 0 0 0 0,1.336 16.887,16.887 0 0 0 3.86600003,3.408 8.8,8.8 0 0 0 4.971,1.5409996 7.2,7.2 0 0 0 3.3179996,-0.789 c 0.065,-0.03 0.121,-0.07 0.185,-0.1 a 6.926,6.926 0 0 0 0.228,-2.4999996 z" fill="url(#op_ic10_s23_purview_b564252b-053a-4298-95b3-addd653a1762)" id="op_ic10_s23_purview_path12980" style="fill:url(#op_ic10_s23_purview_b564252b-053a-4298-95b3-addd653a1762)" /> <path d="m 6.1565124,7.1217044 a 3.177,3.177 0 0 1 0.591,-3.807 6.414,6.414 0 0 1 3.245,-2.3 7.915,7.915 0 0 1 2.1819996,-0.34400005 8.377,8.377 0 0 0 -1.857,-0.56 7.978,7.978 0 0 0 -5.1069996,0.843 14.276,14.276 0 0 0 -2.46,1.61800005 7.836,7.836 0 0 0 2.1,3.615 5.977,5.977 0 0 0 1.306,0.935 z" fill="url(#op_ic10_s23_purview_e5c2fc95-d3af-494c-b7d9-44da7b7b559c)" id="op_ic10_s23_purview_path12982" style="fill:url(#op_ic10_s23_purview_e5c2fc95-d3af-494c-b7d9-44da7b7b559c)" /> <path d="m 17.728512,5.0007044 a 17.2,17.2 0 0 0 -3.356,-3.079 7.439,7.439 0 0 0 -3.991,0.02 5.724,5.724 0 0 0 -1.1269996,0.48 3.209,3.209 0 0 1 1.5619996,0.536 0.453,0.453 0 0 1 0.118,0.053 6.712,6.712 0 0 1 2.891,4.544 7.629,7.629 0 0 1 -0.033,2.161 16.951,16.951 0 0 0 3.932,-3.457 0.862,0.862 0 0 0 0.004,-1.258 z" fill="url(#op_ic10_s23_purview_a1fcec9e-0cb0-44b8-9140-f5c49e8e3df4)" id="op_ic10_s23_purview_path12984" style="fill:url(#op_ic10_s23_purview_a1fcec9e-0cb0-44b8-9140-f5c49e8e3df4)" /></svg> Volatile-RAM Zero-Retention Pipeline & 8 Official Microsoft Compliance Attestations</h2>
+            <p class="section-desc">Inspect each stage of the 4-step volatile-RAM lifecycle verifying zero disk writes from POS microphone capture to immediate frame garbage collection.</p>
+          </div>
+          <span class="badge badge-emerald">EU Cloud CoC: 2021LVL02SCOPE116</span>
+        </div>
+
+        <div class="ram-steps" id="ramSteps">
+          <div class="ram-step active" data-step="0">
+            <div style="font-size:0.72rem;font-weight:800;color:var(--ms-blue);">STEP 01 · TLS 1.3 WSS</div>
+            <div style="font-weight:700;margin:0.2rem 0;">In-Boundary TLS 1.3 Ingress</div>
+            <div style="font-size:0.77rem;color:var(--text-muted);">EU audio stays inside EUDB; US stays in-country</div>
+          </div>
+          <div class="ram-step" data-step="1">
+            <div style="font-size:0.72rem;font-weight:800;color:var(--ms-blue);">STEP 02 · VOLATILE RAM</div>
+            <div style="font-weight:700;margin:0.2rem 0;">Volatile-RAM Phoneme Decode</div>
+            <div style="font-size:0.77rem;color:var(--text-muted);">Phoneme-to-text only; zero BIPA voiceprint vectors</div>
+          </div>
+          <div class="ram-step" data-step="2">
+            <div style="font-size:0.72rem;font-weight:800;color:var(--ms-blue);">STEP 03 · JSON STREAM</div>
+            <div style="font-weight:700;margin:0.2rem 0;">Streaming JSON Transcript</div>
+            <div style="font-size:0.77rem;color:var(--text-muted);">285-312ms partial text; No-Audio-Log enforced</div>
+          </div>
+          <div class="ram-step" data-step="3">
+            <div style="font-size:0.72rem;font-weight:800;color:var(--ms-blue);">STEP 04 · BUFFER WIPE</div>
+            <div style="font-weight:700;margin:0.2rem 0;">Immediate RAM Frame Wipe</div>
+            <div style="font-size:0.77rem;color:var(--text-muted);">0 disk bytes, 0 human review, 0 model training</div>
+          </div>
+        </div>
+        <div class="sub-card" id="ramStepDetail" style="margin-bottom:1rem;font-size:0.85rem;"></div>
+
+        <div class="doc-grid">
+          <a class="doc-card" href="https://learn.microsoft.com/en-us/azure/ai-services/speech-service/data-privacy-security" target="_blank" rel="noopener noreferrer">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:0.4rem;">
+              <span style="font-weight:700;font-size:0.83rem;"><svg class="ms-svg-icon" viewBox="0 0 17.358 16.364" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><path d="M5.014.557A.82.82 0 0 1 5.789 0h5.14L5.594 15.807a.82.82 0 0 1-.775.557h-4a.82.82 0 0 1-.775-1.08z" fill="url(#op_ic11_s2_azure_A)"/> <path d="M13.231 10.636h-8.1c-.34 0-.505.417-.256.649l5.205 4.858a.82.82 0 0 0 .558.22h4.587z" fill="#0078d4"/> <path d="M5.789 0a.82.82 0 0 0-.775.557L.044 15.284a.82.82 0 0 0 .775 1.08h4a.82.82 0 0 0 .775-.556l.988-2.928 3.497 3.264a.82.82 0 0 0 .558.22h4.587l-1.994-5.727H7.339L10.929 0z" fill="url(#op_ic11_s2_azure_B)"/> <path d="M12.344.557A.82.82 0 0 0 11.569 0H5.815h.026a.82.82 0 0 1 .775.557l4.97 14.727a.82.82 0 0 1-.775 1.08h-.088 5.815a.82.82 0 0 0 .775-1.08z" fill="url(#op_ic11_s2_azure_C)"/> <defs> <linearGradient id="op_ic11_s2_azure_A" x1="5.754" y1=".567" x2=".417" y2="16.333" gradientUnits="userSpaceOnUse"> <stop stop-color="#114a8b"/> <stop offset="1" stop-color="#0669bc"/> </linearGradient> <linearGradient id="op_ic11_s2_azure_B" x1="10.019" y1="10.638" x2="8.786" y2="11.055" gradientUnits="userSpaceOnUse"> <stop stop-opacity=".3"/> <stop offset=".071" stop-opacity=".2"/> <stop offset=".321" stop-opacity=".1"/> <stop offset=".623" stop-opacity=".05"/> <stop offset="1" stop-opacity="0"/> </linearGradient> <linearGradient id="op_ic11_s2_azure_C" x1="9.138" y1=".566" x2="14.996" y2="16.174" gradientUnits="userSpaceOnUse"> <stop stop-color="#3ccbf4"/> <stop offset="1" stop-color="#2892df"/> </linearGradient> </defs></svg> Azure AI Speech Data & Privacy</span>
+              <span class="badge badge-emerald">Zero-Retain STT ↗</span>
+            </div>
+            <span style="font-size:0.75rem;color:var(--text-muted);">Official commitment: real-time STT logs zero audio bytes to disk, decodes in volatile RAM, and never trains foundation models</span>
+          </a>
+<a class="doc-card" href="https://learn.microsoft.com/en-us/azure/ai-services/authentication" target="_blank" rel="noopener noreferrer">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:0.4rem;">
+              <span style="font-weight:700;font-size:0.83rem;"><svg class="ms-svg-icon" viewBox="0 0 49 48" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><defs><linearGradient x1="42.5154" y1="13.0779" x2="43.3641" y2="38.4031" gradientUnits="userSpaceOnUse" id="op_ic12_s20_entra_paint0_linear_3994_9302"><stop offset="0" stop-color="#033E9A"/><stop offset="1" stop-color="#0055C6"/></linearGradient><radialGradient cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" id="op_ic12_s20_entra_paint1_radial_3994_9302" gradientTransform="matrix(0.426492 9.59609 -8.85116 0.393384 37.3975 22.2475)"><stop offset="0" stop-color="#041642"/><stop offset="1" stop-color="#041642" stop-opacity="0"/></radialGradient><radialGradient cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" id="op_ic12_s20_entra_paint2_radial_3994_9302" gradientTransform="matrix(16.8408 -7.38054 8.39749 19.1613 25.9994 42.4212)"><stop offset="0"/><stop offset="1" stop-opacity="0"/></radialGradient><radialGradient cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" id="op_ic12_s20_entra_paint3_radial_3994_9302" gradientTransform="matrix(-9.20112 16.0498 -26.3711 -15.1182 27.3006 2.70668)"><stop offset="0" stop-color="#51DEFF"/><stop offset="0.348958" stop-color="#1ABAFD"/><stop offset="1" stop-color="#247FE0"/></radialGradient><radialGradient cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" id="op_ic12_s20_entra_paint4_radial_3994_9302" gradientTransform="matrix(22.2892 -18.2103 11.9174 14.5867 -2.4013 34.0127)"><stop offset="0.47515"/><stop offset="1" stop-opacity="0"/></radialGradient><linearGradient x1="12.3608" y1="15.8325" x2="23.7893" y2="46.0362" gradientUnits="userSpaceOnUse" id="op_ic12_s20_entra_paint5_linear_3994_9302"><stop offset="0" stop-color="#59E7FD"/><stop offset="0.58722" stop-color="#23D4F9"/><stop offset="1" stop-color="#32BBF2"/></linearGradient><radialGradient cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" id="op_ic12_s20_entra_paint6_radial_3994_9302" gradientTransform="matrix(-1.19692 7.77722 -11.405 -1.75524 14.3842 20.9095)"><stop offset="0.177241" stop-color="#CCF9FF"/><stop offset="1" stop-color="#4FE3FF" stop-opacity="0.12"/></radialGradient><linearGradient x1="20.4871" y1="43.0093" x2="15.3965" y2="30.9088" gradientUnits="userSpaceOnUse" id="op_ic12_s20_entra_paint7_linear_3994_9302"><stop offset="0" stop-color="#08B0F8"/><stop offset="1" stop-color="#52E5FF" stop-opacity="0"/></linearGradient></defs><path d="M46.1417 33.1132 33.2406 10.7629C34.7452 14.2364 35.3787 17.9483 35.1888 21.6006L32.9576 21.4346C32.9576 21.4346 34.4351 21.8941 34.7615 22.5994 35.7783 24.7578 32.4093 31.871 31.2452 33.617 29.3567 36.4494 25.7006 40.1 24.7461 40.1 24.4481 40.1 24.3205 39.9956 24.3205 39.9956 20.8525 42.1413 16.757 44.241 12.5486 44.5001L39.5689 44.5001C45.4114 44.5001 49.0629 38.1741 46.1417 33.1132Z" fill="url(#op_ic12_s20_entra_paint0_linear_3994_9302)"/><path d="M46.1417 33.1132 33.2406 10.7629C34.7452 14.2364 35.3787 17.9483 35.1888 21.6006L32.9576 21.4346C32.9576 21.4346 34.4351 21.8941 34.7615 22.5994 35.7783 24.7578 32.4093 31.871 31.2452 33.617 29.3567 36.4494 25.7006 40.1 24.7461 40.1 24.4481 40.1 24.3205 39.9956 24.3205 39.9956 20.8525 42.1413 16.757 44.241 12.5486 44.5001L39.5689 44.5001C45.4114 44.5001 49.0629 38.1741 46.1417 33.1132Z" fill="url(#op_ic12_s20_entra_paint1_radial_3994_9302)" fill-opacity="0.5"/><path d="M46.1417 33.1132 33.2406 10.7629C34.7452 14.2364 35.3787 17.9483 35.1888 21.6006L32.9576 21.4346C32.9576 21.4346 34.4351 21.8941 34.7615 22.5994 35.7783 24.7578 32.4093 31.871 31.2452 33.617 29.3567 36.4494 25.7006 40.1 24.7461 40.1 24.4481 40.1 24.3205 39.9956 24.3205 39.9956 20.8525 42.1413 16.757 44.241 12.5486 44.5001L39.5689 44.5001C45.4114 44.5001 49.0629 38.1741 46.1417 33.1132Z" fill="url(#op_ic12_s20_entra_paint2_radial_3994_9302)" fill-opacity="0.2"/><path d="M44.2491 30.0304C44.5134 30.3958 44.766 30.7661 45.0069 31.1408L31.2429 7.29563C28.3217 2.23478 21.0186 2.23479 18.0974 7.29564L4.56708 30.7361C6.64392 27.6361 11.1935 25.3025 14.487 23.6796 14.487 23.6796 14.3729 22.9888 14.6424 22.5116 14.9119 22.0344 15.282 21.9032 15.6376 21.7599 25.7019 17.7045 37.6033 20.8409 44.2491 30.0304Z" fill="url(#op_ic12_s20_entra_paint3_radial_3994_9302)"/><path d="M44.2491 30.0304C44.5134 30.3958 44.766 30.7661 45.0069 31.1408L31.2429 7.29563C28.3217 2.23478 21.0186 2.23479 18.0974 7.29564L4.56708 30.7361C6.64392 27.6361 11.1935 25.3025 14.487 23.6796 14.487 23.6796 14.3729 22.9888 14.6424 22.5116 14.9119 22.0344 15.282 21.9032 15.6376 21.7599 25.7019 17.7045 37.6033 20.8409 44.2491 30.0304Z" fill="url(#op_ic12_s20_entra_paint4_radial_3994_9302)" fill-opacity="0.36"/><path d="M36.9138 44.4954 9.7707 44.4954C3.92825 44.4954 0.276704 38.1694 3.19793 33.1085L16.9513 9.28174C12.92 17.1252 13.3387 26.8987 18.8602 34.5335 23.2604 40.6178 29.9645 44.0486 36.9138 44.4954Z" fill="url(#op_ic12_s20_entra_paint5_linear_3994_9302)"/><path d="M36.9138 44.4954 9.7707 44.4954C3.92825 44.4954 0.276704 38.1694 3.19793 33.1085L16.9513 9.28174C12.92 17.1252 13.3387 26.8987 18.8602 34.5335 23.2604 40.6178 29.9645 44.0486 36.9138 44.4954Z" fill="url(#op_ic12_s20_entra_paint6_radial_3994_9302)" fill-opacity="0.25"/><path d="M36.9138 44.4954 9.7707 44.4954C3.92825 44.4954 0.276704 38.1694 3.19793 33.1085L16.9513 9.28174C12.92 17.1252 13.3387 26.8987 18.8602 34.5335 23.2604 40.6178 29.9645 44.0486 36.9138 44.4954Z" fill="url(#op_ic12_s20_entra_paint7_linear_3994_9302)"/></svg> Speech 10-Min STS Token Auth</span>
+              <span class="badge badge-blue">10m STS Auth ↗</span>
+            </div>
+            <span style="font-size:0.75rem;color:var(--text-muted);">10-minute regional STS JWT issuance via issueToken + Microsoft Entra Managed Identity zero-secret flow</span>
+          </a>
+<a class="doc-card" href="https://learn.microsoft.com/en-us/legal/cognitive-services/openai/data-privacy" target="_blank" rel="noopener noreferrer">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:0.4rem;">
+              <span style="font-weight:700;font-size:0.83rem;"><svg class="ms-svg-icon" viewBox="0.26 0.25 17.47 17.51" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><defs><linearGradient id="op_ic13_s15_foundry_models_uuid-eb2ac053-82fc-4742-ad37-91d1189337fa" x1="6.94" y1="242.38" x2=".48" y2="242.38" gradientTransform="translate(0 258) scale(1 -1)" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#4f42fd" /><stop offset=".5" stop-color="#7274ff" /></linearGradient><linearGradient id="op_ic13_s15_foundry_models_uuid-a366be6e-1577-45e5-a437-4c4014534894" x1="7.97" y1="252.24" x2="-.33" y2="245.1" gradientTransform="translate(0 258) scale(1 -1)" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#4f42fd" /><stop offset="1" stop-color="#2c08ac" /></linearGradient><linearGradient id="op_ic13_s15_foundry_models_uuid-7c513e23-ba04-4162-9ebc-b50a56a73c35" x1="6.82" y1="253.69" x2="1.2" y2="243.75" gradientTransform="translate(0 258) scale(1 -1)" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#7274ff" /><stop offset="1" stop-color="#2c08ac" stop-opacity="0" /></linearGradient><linearGradient id="op_ic13_s15_foundry_models_uuid-4b94926e-5de0-4aef-aa26-8b28ce1d7aee" x1="7.78" y1="255.54" x2="1.85" y2="255.14" gradientTransform="translate(0 258) scale(1 -1)" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#9189f7" /><stop offset="1" stop-color="#4135e9" /></linearGradient><linearGradient id="op_ic13_s15_foundry_models_uuid-95f5126b-358c-4f27-8a6f-685c6729e8a4" x1="5.3" y1="257.98" x2="2.48" y2="252.99" gradientTransform="translate(0 258) scale(1 -1)" gradientUnits="userSpaceOnUse"><stop offset=".5" stop-color="#7274ff" /><stop offset="1" stop-color="#4f42fd" /></linearGradient><linearGradient id="op_ic13_s15_foundry_models_uuid-28b70d5b-a9de-432e-b761-203a2c8a2c49" x1="9.25" y1="257.93" x2="10.02" y2="247.65" gradientTransform="translate(0 258) scale(1 -1)" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2c08ac" /><stop offset="1" stop-color="#4f42fd" /></linearGradient><linearGradient id="op_ic13_s15_foundry_models_uuid-b3f148bf-47e0-4f8a-aa2b-54fa7840ec1d" x1="12.41" y1="247.68" x2="6.58" y2="257.57" gradientTransform="translate(0 258) scale(1 -1)" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#7274ff" /><stop offset="1" stop-color="#2c08ac" stop-opacity="0" /></linearGradient><linearGradient id="op_ic13_s15_foundry_models_uuid-b2763f72-b6f7-4927-abd7-a860b729e6ab" x1="17.21" y1="246.54" x2="13.83" y2="251.14" gradientTransform="translate(0 258) scale(1 -1)" gradientUnits="userSpaceOnUse"><stop offset=".5" stop-color="#7274ff" /><stop offset="1" stop-color="#4f42fd" /></linearGradient><linearGradient id="op_ic13_s15_foundry_models_uuid-39ba0a1d-a39a-4d13-9a5c-aecf29eb6368" x1="8.59" y1="248.04" x2="10.92" y2="243.62" gradientTransform="translate(0 258) scale(1 -1)" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#4f42fd" /><stop offset="1" stop-color="#2c08ac" /></linearGradient><linearGradient id="op_ic13_s15_foundry_models_uuid-929ac68e-87fb-4c6f-bf9b-49b25460e2cf" x1="5.77" y1="248.12" x2="14.27" y2="243.39" gradientTransform="translate(0 258) scale(1 -1)" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#7274ff" /><stop offset="1" stop-color="#2c08ac" stop-opacity="0" /></linearGradient></defs><path d="M6.77,14.58c.1,0,.18.09.18.19-.09,1.78-1.51,2.99-3.09,2.99-.28,0-.56-.08-.79-.21-.24-.14-.44-.34-.58-.58l-1.37-2.38-.63-1.08c.39.67,1.1,1.08,1.88,1.08h4.42Z" fill="url(#op_ic13_s15_foundry_models_uuid-eb2ac053-82fc-4742-ad37-91d1189337fa)" /><path d="M2.83,14.18c-.1.18.03.4.23.4h-.71c-.77,0-1.49-.41-1.88-1.08-.28-.49-.28-1.1,0-1.59L5.39,3.39c.05-.09.17-.11.25-.06.92.6,1.43,1.61,1.43,2.65,0,.54-.14,1.08-.43,1.58l-3.82,6.61h0Z" fill="url(#op_ic13_s15_foundry_models_uuid-a366be6e-1577-45e5-a437-4c4014534894)" /><path d="M2.83,14.18c-.1.18.03.4.23.4h-.71c-.77,0-1.49-.41-1.88-1.08-.28-.49-.28-1.1,0-1.59L5.39,3.39c.05-.09.17-.11.25-.06.92.6,1.43,1.61,1.43,2.65,0,.54-.14,1.08-.43,1.58l-3.82,6.61h0Z" fill="url(#op_ic13_s15_foundry_models_uuid-7c513e23-ba04-4162-9ebc-b50a56a73c35)" /><path d="M3.55,5.16c-.05.09-.16.11-.25.06-1.49-.97-1.83-2.8-1.04-4.17.14-.25.34-.44.58-.58.24-.14.51-.21.79-.21h4c-.77,0-1.49.41-1.88,1.08l-2.21,3.82Z" fill="url(#op_ic13_s15_foundry_models_uuid-4b94926e-5de0-4aef-aa26-8b28ce1d7aee)" /><path d="M3.55,5.16c-.05.09-.16.11-.25.06-1.49-.97-1.83-2.8-1.04-4.17.14-.25.34-.44.58-.58.24-.14.51-.21.79-.21h4c-.77,0-1.49.41-1.88,1.08l-2.21,3.82Z" fill="url(#op_ic13_s15_foundry_models_uuid-95f5126b-358c-4f27-8a6f-685c6729e8a4)" /><path d="M5.86,1.94c-.1-.18-.36-.18-.46,0l.35-.61c.39-.67,1.1-1.08,1.88-1.08.57,0,1.09.3,1.37.79l4.92,8.51c.05.09.02.2-.07.25-.98.49-2.11.43-3.01-.09-.47-.27-.87-.66-1.16-1.16L5.86,1.94h0Z" fill="url(#op_ic13_s15_foundry_models_uuid-28b70d5b-a9de-432e-b761-203a2c8a2c49)" /><path d="M5.86,1.94c-.1-.18-.36-.18-.46,0l.35-.61c.39-.67,1.1-1.08,1.88-1.08.57,0,1.09.3,1.37.79l4.92,8.51c.05.09.02.2-.07.25-.98.49-2.11.43-3.01-.09-.47-.27-.87-.66-1.16-1.16L5.86,1.94h0Z" fill="url(#op_ic13_s15_foundry_models_uuid-b3f148bf-47e0-4f8a-aa2b-54fa7840ec1d)" /><path d="M13.32,7.08c-.05-.09-.02-.2.07-.25,1.59-.81,3.34-.19,4.13,1.19.14.25.21.52.21.79s-.07.55-.21.79l-1.37,2.38-.63,1.08c.39-.67.39-1.5,0-2.17l-2.21-3.82h0Z" fill="url(#op_ic13_s15_foundry_models_uuid-b2763f72-b6f7-4927-abd7-a860b729e6ab)" /><path d="M14.94,10.69c.2,0,.33-.22.23-.4l.35.61c.39.67.39,1.5,0,2.17-.28.49-.81.79-1.37.79H4.32c-.1,0-.18-.09-.18-.19.06-1.1.68-2.04,1.58-2.56.47-.27,1.01-.42,1.59-.42h7.63,0Z" fill="url(#op_ic13_s15_foundry_models_uuid-39ba0a1d-a39a-4d13-9a5c-aecf29eb6368)" /><path d="M14.94,10.69c.2,0,.33-.22.23-.4l.35.61c.39.67.39,1.5,0,2.17-.28.49-.81.79-1.37.79H4.32c-.1,0-.18-.09-.18-.19.06-1.1.68-2.04,1.58-2.56.47-.27,1.01-.42,1.59-.42h7.63,0Z" fill="url(#op_ic13_s15_foundry_models_uuid-929ac68e-87fb-4c6f-bf9b-49b25460e2cf)" /></svg> Foundry OpenAI Data Privacy</span>
+              <span class="badge badge-indigo">LLM Privacy ↗</span>
+            </div>
+            <span style="font-size:0.75rem;color:var(--text-muted);">Tenant-isolated prompts & completions, Customer-Managed Keys (CMK), and contractual zero-training guarantees</span>
+          </a>
+<a class="doc-card" href="https://learn.microsoft.com/en-us/privacy/eudb/eu-data-boundary-learn" target="_blank" rel="noopener noreferrer">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:0.4rem;">
+              <span style="font-weight:700;font-size:0.83rem;"><svg class="ms-svg-icon" viewBox="0 0 17.999109 11.241819" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><defs id="op_ic14_s23_purview_defs12976"> <linearGradient id="op_ic14_s23_purview_f3e51089-e6ab-4767-aaa8-7b98d9690f7d" x1="8.9770002" y1="11.134" x2="8.9770002" y2="7.178" gradientUnits="userSpaceOnUse" gradientTransform="translate(-0.00148763,-3.3782956)"> <stop offset="0" stop-color="#29bade" id="op_ic14_s23_purview_stop12950" /> <stop offset="1" stop-color="#50e6ff" id="op_ic14_s23_purview_stop12952" /> </linearGradient> <linearGradient id="op_ic14_s23_purview_b564252b-053a-4298-95b3-addd653a1762" x1="6.4460001" y1="14.626" x2="6.4460001" y2="3.3740001" gradientUnits="userSpaceOnUse" gradientTransform="translate(-0.00148763,-3.3782956)"> <stop offset="0.041" stop-color="#32bedd" id="op_ic14_s23_purview_stop12955" /> <stop offset="0.495" stop-color="#50e6ff" id="op_ic14_s23_purview_stop12957" /> <stop offset="0.92" stop-color="#c3f1ff" id="op_ic14_s23_purview_stop12959" /> </linearGradient> <linearGradient id="op_ic14_s23_purview_e5c2fc95-d3af-494c-b7d9-44da7b7b559c" x1="7.4640002" y1="10.047" x2="7.4640002" y2="0.25400001" gradientUnits="userSpaceOnUse" gradientTransform="translate(-0.00148763,-3.3782956)"> <stop offset="0.244" stop-color="#0078d4" id="op_ic14_s23_purview_stop12962" /> <stop offset="0.6" stop-color="#2e8ce1" id="op_ic14_s23_purview_stop12964" /> <stop offset="0.933" stop-color="#589eed" id="op_ic14_s23_purview_stop12966" /> </linearGradient> <linearGradient id="op_ic14_s23_purview_a1fcec9e-0cb0-44b8-9140-f5c49e8e3df4" x1="13.628" y1="14.626" x2="13.628" y2="4.1929998" gradientUnits="userSpaceOnUse" gradientTransform="translate(-0.00148763,-3.3782956)"> <stop offset="0" stop-color="#005ba1" id="op_ic14_s23_purview_stop12969" /> <stop offset="0.399" stop-color="#0078d4" id="op_ic14_s23_purview_stop12971" /> <stop offset="0.857" stop-color="#5ea0ef" id="op_ic14_s23_purview_stop12973" /> </linearGradient> </defs> <path d="m 10.575512,5.4217044 a 1.622,1.622 0 0 1 -1.6219996,-1.62 1.979,1.979 0 1 0 1.9609996,1.583 1.638,1.638 0 0 1 -0.339,0.037 z" fill="url(#op_ic14_s23_purview_f3e51089-e6ab-4767-aaa8-7b98d9690f7d)" id="op_ic14_s23_purview_path12978" style="fill:url(#op_ic14_s23_purview_f3e51089-e6ab-4767-aaa8-7b98d9690f7d)" /> <path d="m 12.860512,7.8527044 a 5.051,5.051 0 0 0 -0.656,-2.024 3.218,3.218 0 0 1 -3.2059996,3.02 c -0.077,0 -0.149,-0.017 -0.224,-0.023 a 6.735,6.735 0 0 1 -4.559,-1.86 8.724,8.724 0 0 1 -2.281,-3.683 20.447,20.447 0 0 0 -1.64200003,1.674 0.909,0.909 0 0 0 0,1.336 16.887,16.887 0 0 0 3.86600003,3.408 8.8,8.8 0 0 0 4.971,1.5409996 7.2,7.2 0 0 0 3.3179996,-0.789 c 0.065,-0.03 0.121,-0.07 0.185,-0.1 a 6.926,6.926 0 0 0 0.228,-2.4999996 z" fill="url(#op_ic14_s23_purview_b564252b-053a-4298-95b3-addd653a1762)" id="op_ic14_s23_purview_path12980" style="fill:url(#op_ic14_s23_purview_b564252b-053a-4298-95b3-addd653a1762)" /> <path d="m 6.1565124,7.1217044 a 3.177,3.177 0 0 1 0.591,-3.807 6.414,6.414 0 0 1 3.245,-2.3 7.915,7.915 0 0 1 2.1819996,-0.34400005 8.377,8.377 0 0 0 -1.857,-0.56 7.978,7.978 0 0 0 -5.1069996,0.843 14.276,14.276 0 0 0 -2.46,1.61800005 7.836,7.836 0 0 0 2.1,3.615 5.977,5.977 0 0 0 1.306,0.935 z" fill="url(#op_ic14_s23_purview_e5c2fc95-d3af-494c-b7d9-44da7b7b559c)" id="op_ic14_s23_purview_path12982" style="fill:url(#op_ic14_s23_purview_e5c2fc95-d3af-494c-b7d9-44da7b7b559c)" /> <path d="m 17.728512,5.0007044 a 17.2,17.2 0 0 0 -3.356,-3.079 7.439,7.439 0 0 0 -3.991,0.02 5.724,5.724 0 0 0 -1.1269996,0.48 3.209,3.209 0 0 1 1.5619996,0.536 0.453,0.453 0 0 1 0.118,0.053 6.712,6.712 0 0 1 2.891,4.544 7.629,7.629 0 0 1 -0.033,2.161 16.951,16.951 0 0 0 3.932,-3.457 0.862,0.862 0 0 0 0.004,-1.258 z" fill="url(#op_ic14_s23_purview_a1fcec9e-0cb0-44b8-9140-f5c49e8e3df4)" id="op_ic14_s23_purview_path12984" style="fill:url(#op_ic14_s23_purview_a1fcec9e-0cb0-44b8-9140-f5c49e8e3df4)" /></svg> EU Data Boundary (EUDB)</span>
+              <span class="badge badge-indigo">EU Sovereign ↗</span>
+            </div>
+            <span style="font-size:0.75rem;color:var(--text-muted);">100% in-boundary compute, transient caching, and operational logs across 9 EU/EFTA Azure regions</span>
+          </a>
+<a class="doc-card" href="https://learn.microsoft.com/en-us/azure/compliance/offerings/offering-eu-cloud-coc" target="_blank" rel="noopener noreferrer">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:0.4rem;">
+              <span style="font-weight:700;font-size:0.83rem;"><svg class="ms-svg-icon" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><defs> <linearGradient id="op_ic15_s24_guardrails_uuid-80fd62f5-d182-4403-8456-6923e7e033bb" x1="7.997" y1="14.863" x2="7.997" y2="2.057" gradientUnits="userSpaceOnUse"> <stop offset="0" stop-color="#0078d4" /> <stop offset=".82" stop-color="#5ea0ef" /> </linearGradient> <linearGradient id="op_ic15_s24_guardrails_uuid-f6289940-e1be-4e56-904f-ba5a1586dc17" x1="-558.124" y1="1021.188" x2="-558.124" y2="1019.083" gradientTransform="translate(564 1025.516) scale(1 -1)" gradientUnits="userSpaceOnUse"> <stop offset="0" stop-color="#fff" stop-opacity=".7" /> <stop offset="1" stop-color="#fff" stop-opacity=".6" /> </linearGradient> </defs> <path d="m.362,3.138C.162,3.138,0,2.976,0,2.777h0V.361C0,.162.162,0,.362,0h2.266c.2,0,.362.162.362.361,0,.199-.162.361-.362.361H.724v2.053c0,.199-.161.362-.361.362,0,0,0,0-.001,0Zm17.638-.361V.361C18,.162,17.838,0,17.638,0h-2.266c-.2,0-.362.162-.362.361s.162.361.362.361h1.904v2.053c0,.199.162.361.362.361.2,0,.361-.162.362-.361h0ZM2.99,17.639c0-.199-.162-.361-.362-.361H.724v-2.053c0-.199-.162-.361-.362-.361-.2,0-.362.162-.362.361v2.415c0,.199.163.36.362.36h2.266c.2,0,.362-.162.362-.361Zm15.01.001v-2.415c0-.199-.162-.361-.362-.361-.2,0-.361.162-.362.361v2.053h-1.904c-.2,0-.362.162-.362.362,0,.199.162.361.362.361h2.266c.199,0,.361-.161.362-.36Z" fill="#76bc2d" /> <g> <path d="m13.864,8.047c0,3.822-4.627,6.907-5.632,7.544-.12.066-.265.066-.386,0-1.073-.687-5.716-3.772-5.716-7.544V3.386c0-.197.155-.36.352-.369,3.604-.101,2.783-1.676,5.482-1.676s1.861,1.576,5.465,1.676c.197.009.352.171.352.369l.084,4.66Z" fill="#0078d4" /> <path d="m8.04,14.863c-4.683-3.064-5.194-5.781-5.194-6.816V3.719c1.873-.106,2.625-.637,3.236-1.068.489-.345.843-.594,1.881-.594s1.387.249,1.872.593c.607.431,1.355.962,3.235,1.069l.078,4.34c0,.817-.372,3.733-5.109,6.804Z" fill="url(#op_ic15_s24_guardrails_uuid-80fd62f5-d182-4403-8456-6923e7e033bb)" /> </g> <g> <rect x="8.155" y="4.328" width="3.721" height=".691" rx=".141" ry=".141" fill="#fff" opacity=".7" /> <rect x="8.155" y="5.742" width="3.721" height=".691" rx=".141" ry=".141" fill="#fff" opacity=".6" /> <rect x="4.117" y="9.983" width="4.472" height=".691" rx=".141" ry=".141" fill="#fff" opacity=".3" /> <rect x="4.117" y="8.57" width="7.76" height=".691" rx=".141" ry=".141" fill="#fff" opacity=".4" /> <rect x="4.117" y="7.156" width="7.076" height=".691" rx=".14" ry=".14" fill="#fff" opacity=".5" /> <g id="op_ic15_s24_guardrails_uuid-69ff294d-4d54-4881-9832-ea140e19e0d2"> <path d="m4.235,4.328h3.282c.065,0,.118.046.118.102v1.901c0,.057-.053.102-.118.102h-3.282c-.065,0-.118-.046-.118-.102v-1.901c0-.057.053-.102.118-.102Z" fill="url(#op_ic15_s24_guardrails_uuid-f6289940-e1be-4e56-904f-ba5a1586dc17)" /> </g> </g> <g> <circle cx="12.449" cy="13.203" r="3.442" fill="#76bc2d" /> <g> <path d="m12.096,14.356l-.316.316c-.054.054-.141.054-.195,0h0l-1.256-1.256c-.054-.054-.054-.141,0-.195h0l.219-.219c.054-.054.141-.054.195,0h0l1.353,1.353h0Z" fill="#fff" /> <path d="m11.591,14.676l-.316-.316h0l2.888-2.888c.054-.054.141-.054.195,0h0l.219.219c.054.054.054.141,0,.195h0l-2.791,2.791c-.054.054-.141.054-.195,0h0Z" fill="#f0f0f0" /> </g> </g></svg> EU Cloud CoC Verification</span>
+              <span class="badge badge-emerald">ID: 2021LVL02SCOPE116 ↗</span>
+            </div>
+            <span style="font-size:0.75rem;color:var(--text-muted);">Independent Level 2 EU Cloud Code of Conduct compliance attestation (Verification ID: 2021LVL02SCOPE116)</span>
+          </a>
+<a class="doc-card" href="https://learn.microsoft.com/en-us/azure/compliance/offerings/offering-pci-dss" target="_blank" rel="noopener noreferrer">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:0.4rem;">
+              <span style="font-weight:700;font-size:0.83rem;"><svg class="ms-svg-icon" viewBox="0 0 14.728 17.994978" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><defs id="op_ic16_s38_defender_defs4621"> <linearGradient x1="9" y1="17.253" x2="9" gradientUnits="userSpaceOnUse" y2="0.74699998" id="op_ic16_s38_defender_a5d53553-f668-4fa0-ac9f-76a8e299111d"> <stop offset="0" stop-color="#50e6ff" id="op_ic16_s38_defender_stop4616"/> <stop offset="1" stop-color="#9cebff" id="op_ic16_s38_defender_stop4618"/> </linearGradient> </defs> <path style="fill:#50e6ff" d="m 14.728,8.4 c 0,4.84 -5.849,8.736 -7.122,9.526 a 0.459,0.459 0 0 1 -0.484,0 C 5.849,17.136 0,13.24 0,8.4 V 2.582 A 0.463,0.463 0 0 1 0.452,2.12 C 5.002,2 3.954,0 7.364,0 c 3.41,0 2.362,2 6.912,2.12 a 0.463,0.463 0 0 1 0.452,0.462 z"/> <path style="fill:url(#op_ic16_s38_defender_a5d53553-f668-4fa0-ac9f-76a8e299111d)" d="m 14.118,8.454 c 0,4.438 -5.365,8.011 -6.532,8.736 a 0.418,0.418 0 0 1 -0.444,0 C 5.975,16.465 0.61,12.89 0.61,8.454 V 3.114 A 0.425,0.425 0 0 1 1.025,2.691 C 5.198,2.578 4.237,0.747 7.364,0.747 c 3.127,0 2.166,1.831 6.339,1.944 a 0.425,0.425 0 0 1 0.415,0.423 z"/> <circle r="1.281" style="fill:#ffffff" cx="8.2180004" cy="8.0369997"/> <circle r="0.86500001" style="fill:#ffffff" cx="6.3779998" cy="11.159"/> <circle r="1.073" style="fill:#ffffff" cx="5.7539997" cy="4.5710001"/> <polygon id="op_ic16_s38_defender_polygon4630" style="fill:#e6e6e6" points="9.302,7.777 4.489,8.174 4.535,8.733 9.302,8.337 7.721,10.964 8.196,11.25 9.822,8.545 11.753,11.92 12.234,11.646 10.069,7.855 9.854,7.979 10.03,7.849 7.578,4.363 7.13,4.689" transform="translate(-1.636)"/> <path style="fill:#ffffff" d="m 8.218,6.769 a 1.3,1.3 0 1 1 -1.3,1.3 V 8.037 a 1.3,1.3 0 0 1 1.3,-1.268 z M 4.707,4.569 A 1.08,1.08 0 1 0 5.792,3.5 H 5.764 A 1.071,1.071 0 0 0 4.707,4.571 Z M 2.015,8.519 A 0.865,0.865 0 1 0 2.879,7.654 0.865,0.865 0 0 0 2.015,8.519 Z m 3.5,2.633 A 0.872,0.872 0 1 0 6.393,10.287 H 6.384 a 0.866,0.866 0 0 0 -0.871,0.859 z m 3.85,0.7 a 1.008,1.008 0 1 0 1.014,-1 h -0.006 a 0.994,0.994 0 0 0 -1.009,0.976 z"/></svg> US BIPA Exempt & PCI-DSS v4.0.1</span>
+              <span class="badge badge-amber">US Retail POS ↗</span>
+            </div>
+            <span style="font-size:0.75rem;color:var(--text-muted);">Standard ASR extracts zero biometric voiceprints (immune to Illinois BIPA claims) + PCI-DSS v4.0.1 Level 1</span>
+          </a>
+<a class="doc-card" href="https://learn.microsoft.com/en-us/azure/ai-services/speech-service/speech-container-howto" target="_blank" rel="noopener noreferrer">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:0.4rem;">
+              <span style="font-weight:700;font-size:0.83rem;"><svg class="ms-svg-icon" viewBox="0 0 17 15.656073" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><defs id="op_ic17_s39_apim_defs54023"> <linearGradient id="op_ic17_s39_apim_bf8a9583-aae9-48ff-87d8-fb8f44e7d6bd" x1="9" y1="16.82" x2="9" y2="1.1799999" gradientUnits="userSpaceOnUse"> <stop offset="0" stop-color="#198ab3" id="op_ic17_s39_apim_stop54005" /> <stop offset="0.09" stop-color="#1f9dc4" id="op_ic17_s39_apim_stop54007" /> <stop offset="0.24" stop-color="#28b5d9" id="op_ic17_s39_apim_stop54009" /> <stop offset="0.4" stop-color="#2dc6e9" id="op_ic17_s39_apim_stop54011" /> <stop offset="0.57" stop-color="#31d1f2" id="op_ic17_s39_apim_stop54013" /> <stop offset="0.78" stop-color="#32d4f5" id="op_ic17_s39_apim_stop54015" /> </linearGradient> <linearGradient id="op_ic17_s39_apim_f9b1bb8c-728e-4abf-bce5-6c11ac170c5b" x1="8.3599997" y1="11.35" x2="8.3599997" y2="14.46" gradientUnits="userSpaceOnUse"> <stop offset="0" stop-color="#c69aeb" id="op_ic17_s39_apim_stop54018" /> <stop offset="1" stop-color="#6f4bb2" id="op_ic17_s39_apim_stop54020" /> </linearGradient> </defs> <path d="M 13.68,4.7110725 A 4.85,4.85 0 0 0 8.73,0.00107249 5,5 0 0 0 3.98,3.2910725 a 4.61,4.61 0 0 0 -3.98,4.53 4.67,4.67 0 0 0 4.79,4.4999995 3,3 0 0 0 0.42,0 h 1.2 a 1.47,1.47 0 0 1 -0.11,-0.56 v 0 a 1.51,1.51 0 0 1 0.2,-0.73 H 5.1 4.79 a 3.41,3.41 0 0 1 -3.52,-3.2099995 3.33,3.33 0 0 1 2.91,-3.27 l 0.76,-0.12 0.25,-0.73 a 3.73,3.73 0 0 1 3.54,-2.43 3.6,3.6 0 0 1 3.68,3.45 v 1.1 l 1.09,0.15 a 2.59,2.59 0 0 1 2.26,2.49 2.63,2.63 0 0 1 -2.62,2.5399995 h -0.15 -0.08 -1 a 3.92,3.92 0 0 0 -3.87,-3.1799995 0.64,0.64 0 1 0 0,1.27 2.65,2.65 0 0 1 0,5.2899995 0.64,0.64 0 1 0 0,1.27 3.92,3.92 0 0 0 3.87,-3.34 h 1.05 a 0.64,0.64 0 0 0 0.2,0 3.91,3.91 0 0 0 3.84,-3.8499995 3.86,3.86 0 0 0 -3.32,-3.75 z" id="op_ic17_s39_apim_path54027" style="fill:url(#op_ic17_s39_apim_bf8a9583-aae9-48ff-87d8-fb8f44e7d6bd)" /> <rect x="6.3000002" y="10.171073" width="3.1199999" height="3.1199999" rx="1.54" id="op_ic17_s39_apim_rect54029" style="fill:url(#op_ic17_s39_apim_f9b1bb8c-728e-4abf-bce5-6c11ac170c5b)" /></svg> Speech Docker Edge Container</span>
+              <span class="badge badge-omnipos">Edge Container ↗</span>
+            </div>
+            <span style="font-size:0.75rem;color:var(--text-muted);">Run identical Speech-to-Text engines inside local store Docker containers for LAN-only audio sovereignty</span>
+          </a>
+<a class="doc-card" href="https://learn.microsoft.com/en-us/azure/ai-foundry/agents/how-to/tools/bing-grounding" target="_blank" rel="noopener noreferrer">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:0.4rem;">
+              <span style="font-weight:700;font-size:0.83rem;"><svg class="ms-svg-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><path d="M11.97 7.569a.92.92 0 00-.805.863c-.013.195-.01.209.43 1.347 1 2.59 1.242 3.214 1.283 3.302.099.213.237.413.41.592.134.138.222.212.37.311.26.176.39.224 1.405.527.989.295 1.529.49 1.994.723.603.302 1.024.644 1.29 1.051.191.292.36.815.434 1.342.029.206.029.661 0 .847a2.491 2.491 0 01-.376 1.026c-.1.151-.065.126.081-.058.415-.52.838-1.408 1.054-2.213a6.728 6.728 0 00.102-3.012 6.626 6.626 0 00-3.291-4.53 104.157 104.157 0 00-1.322-.698l-.254-.133a737.941 737.941 0 01-1.575-.827c-.548-.29-.78-.406-.846-.426a1.376 1.376 0 00-.29-.045l-.093.01z" fill="url(#op_ic18_s16_webiq_lobe-icons-bing-0-_R_0_)"></path><path d="M13.164 17.24a4.385 4.385 0 00-.202.125 511.45 511.45 0 00-1.795 1.115 163.087 163.087 0 01-.989.614l-.463.288a99.198 99.198 0 01-1.502.941c-.326.2-.704.334-1.09.387-.18.024-.52.024-.7 0a2.807 2.807 0 01-1.318-.538 3.665 3.665 0 01-.543-.545 2.837 2.837 0 01-.506-1.141 2.161 2.161 0 00-.041-.182c-.008-.008.006.138.032.33.027.199.085.487.147.733.482 1.907 1.85 3.457 3.705 4.195a6.31 6.31 0 001.658.412c.22.025.844.035 1.074.017 1.054-.08 1.972-.393 2.913-.992a325.28 325.28 0 01.937-.596l.384-.244.684-.435.234-.149.009-.005.025-.017.013-.007.172-.11.597-.38c.76-.481.987-.65 1.34-.998.148-.146.37-.394.381-.425.002-.007.042-.068.088-.136a2.49 2.49 0 00.373-1.023 4.181 4.181 0 000-.847 4.336 4.336 0 00-.318-1.137c-.224-.472-.7-.9-1.383-1.245a2.972 2.972 0 00-.406-.181c-.01 0-.646.392-1.413.87a7089.171 7089.171 0 00-1.658 1.031l-.439.274z" fill="url(#op_ic18_s16_webiq_lobe-icons-bing-1-_R_0_)" fill-rule="nonzero"></path><path d="M4.003 14.946l.004 3.33.042.193c.134.604.366 1.04.77 1.445a2.701 2.701 0 001.955.814c.536 0 1-.135 1.479-.43l.703-.435.556-.346V8.003c0-2.306-.004-3.675-.012-3.782a2.734 2.734 0 00-.797-1.765c-.145-.144-.268-.24-.637-.496A1780.102 1780.102 0 015.762.362C5.406.115 5.38.098 5.271.059a.943.943 0 00-1.254.696C4.003.818 4 1.659 4 6.223v5.394H4l.003 3.329z" fill="url(#op_ic18_s16_webiq_lobe-icons-bing-2-_R_0_)" fill-rule="nonzero"></path><defs><radialGradient cx="93.717%" cy="77.818%" fx="93.717%" fy="77.818%" gradientTransform="scale(-1 -.7146) rotate(49.288 2.035 -2.198)" id="op_ic18_s16_webiq_lobe-icons-bing-0-_R_0_" r="143.691%"><stop offset="0%" stop-color="#00CACC"></stop><stop offset="100%" stop-color="#048FCE"></stop></radialGradient><radialGradient cx="13.893%" cy="71.448%" fx="13.893%" fy="71.448%" gradientTransform="scale(.6042 1) rotate(-23.34 .184 .494)" id="op_ic18_s16_webiq_lobe-icons-bing-1-_R_0_" r="149.21%"><stop offset="0%" stop-color="#00BBEC"></stop><stop offset="100%" stop-color="#2756A9"></stop></radialGradient><linearGradient id="op_ic18_s16_webiq_lobe-icons-bing-2-_R_0_" x1="50%" x2="50%" y1="0%" y2="100%"><stop offset="0%" stop-color="#00BBEC"></stop><stop offset="100%" stop-color="#2756A9"></stop></linearGradient></defs></svg> Foundry Grounding & Prompt Shields</span>
+              <span class="badge badge-blue">Web Grounding ↗</span>
+            </div>
+            <span style="font-size:0.75rem;color:var(--text-muted);">Enterprise agentic web grounding with Scopes domain allowlists and Prompt Shields indirect-injection defense</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         TAB 2: STORE POS MULTI-TIER LLM FINOPS & 99.8% PROMPT CACHE
+         ===================================================================== -->
+    <section id="tab2" class="tab-panel" role="tabpanel">
+      <div class="section-block">
+        <div class="section-head">
+          <div>
+            <div class="section-kicker">MODULE 2A · LIVE $10,000/MO 3-CUP FINOPS &amp; 99.8% PROMPT CACHE SIMULATOR</div>
+            <h2 class="section-title"><svg class="ms-svg-icon icon-lg" viewBox="0.26 0.25 17.47 17.51" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><defs><linearGradient id="op_ic19_s15_foundry_models_uuid-eb2ac053-82fc-4742-ad37-91d1189337fa" x1="6.94" y1="242.38" x2=".48" y2="242.38" gradientTransform="translate(0 258) scale(1 -1)" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#4f42fd" /><stop offset=".5" stop-color="#7274ff" /></linearGradient><linearGradient id="op_ic19_s15_foundry_models_uuid-a366be6e-1577-45e5-a437-4c4014534894" x1="7.97" y1="252.24" x2="-.33" y2="245.1" gradientTransform="translate(0 258) scale(1 -1)" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#4f42fd" /><stop offset="1" stop-color="#2c08ac" /></linearGradient><linearGradient id="op_ic19_s15_foundry_models_uuid-7c513e23-ba04-4162-9ebc-b50a56a73c35" x1="6.82" y1="253.69" x2="1.2" y2="243.75" gradientTransform="translate(0 258) scale(1 -1)" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#7274ff" /><stop offset="1" stop-color="#2c08ac" stop-opacity="0" /></linearGradient><linearGradient id="op_ic19_s15_foundry_models_uuid-4b94926e-5de0-4aef-aa26-8b28ce1d7aee" x1="7.78" y1="255.54" x2="1.85" y2="255.14" gradientTransform="translate(0 258) scale(1 -1)" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#9189f7" /><stop offset="1" stop-color="#4135e9" /></linearGradient><linearGradient id="op_ic19_s15_foundry_models_uuid-95f5126b-358c-4f27-8a6f-685c6729e8a4" x1="5.3" y1="257.98" x2="2.48" y2="252.99" gradientTransform="translate(0 258) scale(1 -1)" gradientUnits="userSpaceOnUse"><stop offset=".5" stop-color="#7274ff" /><stop offset="1" stop-color="#4f42fd" /></linearGradient><linearGradient id="op_ic19_s15_foundry_models_uuid-28b70d5b-a9de-432e-b761-203a2c8a2c49" x1="9.25" y1="257.93" x2="10.02" y2="247.65" gradientTransform="translate(0 258) scale(1 -1)" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2c08ac" /><stop offset="1" stop-color="#4f42fd" /></linearGradient><linearGradient id="op_ic19_s15_foundry_models_uuid-b3f148bf-47e0-4f8a-aa2b-54fa7840ec1d" x1="12.41" y1="247.68" x2="6.58" y2="257.57" gradientTransform="translate(0 258) scale(1 -1)" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#7274ff" /><stop offset="1" stop-color="#2c08ac" stop-opacity="0" /></linearGradient><linearGradient id="op_ic19_s15_foundry_models_uuid-b2763f72-b6f7-4927-abd7-a860b729e6ab" x1="17.21" y1="246.54" x2="13.83" y2="251.14" gradientTransform="translate(0 258) scale(1 -1)" gradientUnits="userSpaceOnUse"><stop offset=".5" stop-color="#7274ff" /><stop offset="1" stop-color="#4f42fd" /></linearGradient><linearGradient id="op_ic19_s15_foundry_models_uuid-39ba0a1d-a39a-4d13-9a5c-aecf29eb6368" x1="8.59" y1="248.04" x2="10.92" y2="243.62" gradientTransform="translate(0 258) scale(1 -1)" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#4f42fd" /><stop offset="1" stop-color="#2c08ac" /></linearGradient><linearGradient id="op_ic19_s15_foundry_models_uuid-929ac68e-87fb-4c6f-bf9b-49b25460e2cf" x1="5.77" y1="248.12" x2="14.27" y2="243.39" gradientTransform="translate(0 258) scale(1 -1)" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#7274ff" /><stop offset="1" stop-color="#2c08ac" stop-opacity="0" /></linearGradient></defs><path d="M6.77,14.58c.1,0,.18.09.18.19-.09,1.78-1.51,2.99-3.09,2.99-.28,0-.56-.08-.79-.21-.24-.14-.44-.34-.58-.58l-1.37-2.38-.63-1.08c.39.67,1.1,1.08,1.88,1.08h4.42Z" fill="url(#op_ic19_s15_foundry_models_uuid-eb2ac053-82fc-4742-ad37-91d1189337fa)" /><path d="M2.83,14.18c-.1.18.03.4.23.4h-.71c-.77,0-1.49-.41-1.88-1.08-.28-.49-.28-1.1,0-1.59L5.39,3.39c.05-.09.17-.11.25-.06.92.6,1.43,1.61,1.43,2.65,0,.54-.14,1.08-.43,1.58l-3.82,6.61h0Z" fill="url(#op_ic19_s15_foundry_models_uuid-a366be6e-1577-45e5-a437-4c4014534894)" /><path d="M2.83,14.18c-.1.18.03.4.23.4h-.71c-.77,0-1.49-.41-1.88-1.08-.28-.49-.28-1.1,0-1.59L5.39,3.39c.05-.09.17-.11.25-.06.92.6,1.43,1.61,1.43,2.65,0,.54-.14,1.08-.43,1.58l-3.82,6.61h0Z" fill="url(#op_ic19_s15_foundry_models_uuid-7c513e23-ba04-4162-9ebc-b50a56a73c35)" /><path d="M3.55,5.16c-.05.09-.16.11-.25.06-1.49-.97-1.83-2.8-1.04-4.17.14-.25.34-.44.58-.58.24-.14.51-.21.79-.21h4c-.77,0-1.49.41-1.88,1.08l-2.21,3.82Z" fill="url(#op_ic19_s15_foundry_models_uuid-4b94926e-5de0-4aef-aa26-8b28ce1d7aee)" /><path d="M3.55,5.16c-.05.09-.16.11-.25.06-1.49-.97-1.83-2.8-1.04-4.17.14-.25.34-.44.58-.58.24-.14.51-.21.79-.21h4c-.77,0-1.49.41-1.88,1.08l-2.21,3.82Z" fill="url(#op_ic19_s15_foundry_models_uuid-95f5126b-358c-4f27-8a6f-685c6729e8a4)" /><path d="M5.86,1.94c-.1-.18-.36-.18-.46,0l.35-.61c.39-.67,1.1-1.08,1.88-1.08.57,0,1.09.3,1.37.79l4.92,8.51c.05.09.02.2-.07.25-.98.49-2.11.43-3.01-.09-.47-.27-.87-.66-1.16-1.16L5.86,1.94h0Z" fill="url(#op_ic19_s15_foundry_models_uuid-28b70d5b-a9de-432e-b761-203a2c8a2c49)" /><path d="M5.86,1.94c-.1-.18-.36-.18-.46,0l.35-.61c.39-.67,1.1-1.08,1.88-1.08.57,0,1.09.3,1.37.79l4.92,8.51c.05.09.02.2-.07.25-.98.49-2.11.43-3.01-.09-.47-.27-.87-.66-1.16-1.16L5.86,1.94h0Z" fill="url(#op_ic19_s15_foundry_models_uuid-b3f148bf-47e0-4f8a-aa2b-54fa7840ec1d)" /><path d="M13.32,7.08c-.05-.09-.02-.2.07-.25,1.59-.81,3.34-.19,4.13,1.19.14.25.21.52.21.79s-.07.55-.21.79l-1.37,2.38-.63,1.08c.39-.67.39-1.5,0-2.17l-2.21-3.82h0Z" fill="url(#op_ic19_s15_foundry_models_uuid-b2763f72-b6f7-4927-abd7-a860b729e6ab)" /><path d="M14.94,10.69c.2,0,.33-.22.23-.4l.35.61c.39.67.39,1.5,0,2.17-.28.49-.81.79-1.37.79H4.32c-.1,0-.18-.09-.18-.19.06-1.1.68-2.04,1.58-2.56.47-.27,1.01-.42,1.59-.42h7.63,0Z" fill="url(#op_ic19_s15_foundry_models_uuid-39ba0a1d-a39a-4d13-9a5c-aecf29eb6368)" /><path d="M14.94,10.69c.2,0,.33-.22.23-.4l.35.61c.39.67.39,1.5,0,2.17-.28.49-.81.79-1.37.79H4.32c-.1,0-.18-.09-.18-.19.06-1.1.68-2.04,1.58-2.56.47-.27,1.01-.42,1.59-.42h7.63,0Z" fill="url(#op_ic19_s15_foundry_models_uuid-929ac68e-87fb-4c6f-bf9b-49b25460e2cf)" /></svg> GPT-5.6 & GPT-6.1 3-Cup (Luna / Terra / Sol) Live FinOps & Capacity Simulator</h2>
+            <p class="section-desc">Backed by official per-1M token list pricing and verified Diamond POS telemetry (2,249 / 2,252 cached_tokens = 99.8% hit), simulate monthly TCO savings and capacity expansion when migrating from a single flagship model to L1 Luna + L2 Terra + L3 Sol.</p>
+          </div>
+          <span class="badge badge-emerald">Verified 99.8% Cache Hit</span>
+        </div>
+
+        <div class="pill-group" id="finopsPresets">
+          <button type="button" class="choice-pill active" data-preset="std">Standard $10k/mo Optimization (65/25/10 -> $3,420/mo, -65.8%)</button>
+          <button type="button" class="choice-pill" data-preset="diamond">Diamond Verified Snapshot (99.8% Cache Hit, -63.2% Unit Cost)</button>
+          <button type="button" class="choice-pill" data-preset="scale">10,000-Store Global Scale ($50,000/mo Baseline)</button>
+          <button type="button" class="choice-pill" data-preset="cons">Conservative Split (50% Luna / 35% Terra / 15% Sol)</button>
+        </div>
+
+        <div class="finops-layout">
+          <div class="sub-card">
+            <div class="slider-row">
+              <div class="slider-head"><span>Current Single-Flagship Monthly Spend</span><span id="valSpend">$10,000</span></div>
+              <input type="range" id="rngSpend" min="2000" max="100000" step="1000" value="10000" />
+            </div>
+            <div class="slider-row">
+              <div class="slider-head"><span>L1 Lightweight gpt-5.6-luna Share (Fast POS Triage)</span><span id="valLuna">65%</span></div>
+              <input type="range" id="rngLuna" min="20" max="85" step="5" value="65" />
+            </div>
+            <div class="slider-row">
+              <div class="slider-head"><span>L2 Balanced gpt-6.1-terra Share (Store Ops & Stock)</span><span id="valTerra">25%</span></div>
+              <input type="range" id="rngTerra" min="5" max="60" step="5" value="25" />
+            </div>
+            <div class="slider-row">
+              <div class="slider-head"><span>Prompt Caching Prefix Hit Rate (Diamond Verified 99.8%)</span><span id="valCache">72%</span></div>
+              <input type="range" id="rngCache" min="0" max="99" step="1" value="72" />
+            </div>
+            <div class="slider-row" style="margin-bottom:0;">
+              <div class="slider-head"><span>Overnight Async Batch API Ratio (50% Off List Price)</span><span id="valBatch">30%</span></div>
+              <input type="range" id="rngBatch" min="0" max="60" step="5" value="30" />
+            </div>
+          </div>
+
+          <div class="sub-card">
+            <div class="finops-kpi-pair">
+              <div class="kpi-card">
+                <div class="kpi-label">OPTIMIZED / MO</div>
+                <div class="kpi-val" id="outOptSpend" style="color:var(--emerald);">$3,420</div>
+                <div class="kpi-sub" id="outSolShare">L3 Sol: 10%</div>
+              </div>
+              <div class="kpi-card">
+                <div class="kpi-label">NET SAVINGS</div>
+                <div class="kpi-val" id="outSavePct">-65.8%</div>
+                <div class="kpi-sub" id="outAnnualSave">Saves $78,960/yr</div>
+              </div>
+              <div class="kpi-card">
+                <div class="kpi-label">CAPACITY MULTIPLIER</div>
+                <div class="kpi-val" id="outMultiplier">2.92x</div>
+                <div class="kpi-sub">More store turns/dollar</div>
+              </div>
+            </div>
+            <div id="finopsWaterfall"></div>
+          </div>
+        </div>
+
+        <div class="data-table-wrap" style="margin-top:1rem;">
+          <table class="arch-table">
+            <thead>
+              <tr>
+                <th>Model Tier & Generation Role</th>
+                <th>Input ($ / 1M)</th>
+                <th>Cached Input ($ / 1M)</th>
+                <th>Output ($ / 1M)</th>
+                <th>Primary Smart Store Workload</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Legacy Single-Flagship (gpt-4o / monolithic)</strong></td>
+                <td>$2.50</td>
+                <td>$1.25 (-50%)</td>
+                <td>$10.00</td>
+                <td>Legacy unrouted baseline ($10,000/mo reference)</td>
+              </tr>
+              <tr>
+                <td><span class="badge badge-emerald">L1</span> <strong>gpt-5.6-luna / gpt-5.4-nano</strong></td>
+                <td>$0.20</td>
+                <td><strong>$0.02 (-90%)</strong></td>
+                <td>$1.25</td>
+                <td>65% Traffic: POS order modifiers, intent routing (<200ms)</td>
+              </tr>
+              <tr>
+                <td><span class="badge badge-blue">L2</span> <strong>gpt-6.1-terra / gpt-5.4-mini</strong></td>
+                <td>$0.75</td>
+                <td><strong>$0.075 (-90%)</strong></td>
+                <td>$4.50</td>
+                <td>25% Traffic: Perishable markdowns, shift & stock diagnosis</td>
+              </tr>
+              <tr>
+                <td><span class="badge badge-indigo">L3</span> <strong>gpt-6.2-sol / grok-4.7</strong></td>
+                <td>$2.50</td>
+                <td><strong>$0.125 (-95%)</strong></td>
+                <td>$12.00</td>
+                <td>10% Traffic: Cross-region root-cause & supply-chain planning</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 2B: Store-to-Warehouse 4-Stage Pipeline -->
+      <div class="section-block">
+        <div class="section-head">
+          <div>
+            <div class="section-kicker">MODULE 2B · END-TO-END STORE-TO-WAREHOUSE STRUCTURED PIPELINE</div>
+            <h2 class="section-title"><svg class="ms-svg-icon icon-lg" viewBox="0.38 0.38 17.25 17.23" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><defs><clipPath id="op_ic20_s22_ai_gateway_uuid-562db301-56bd-45b0-915c-82a4f2277e80"><rect x=".38" y=".38" width="17.25" height="17.25" fill="none" /></clipPath><linearGradient id="op_ic20_s22_ai_gateway_uuid-2859d71d-31ae-4abe-9fcc-0bafc567faf0" x1="-611.4" y1="-205.23" x2="-611.4" y2="-224.06" gradientTransform="translate(617.13 -205.76) scale(1 -1)" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#3bd5ff" /><stop offset=".37" stop-color="#0fafff" /><stop offset=".71" stop-color="#9c6cfe" /><stop offset="1" stop-color="#bb45ea" /></linearGradient><linearGradient id="op_ic20_s22_ai_gateway_uuid-6097306d-a96e-4b55-af58-8c93ec52e898" x1="-604.85" y1="-207.94" x2="-604.85" y2="-224.5" gradientTransform="translate(617.13 -205.76) scale(1 -1)" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#0078d4" /><stop offset=".32" stop-color="#0094f0" /><stop offset=".65" stop-color="#6864f6" /><stop offset="1" stop-color="#a931d8" /></linearGradient><radialGradient id="op_ic20_s22_ai_gateway_uuid-a5b5da7b-9645-4aae-aa96-a7cb16b4141c" cx="114.65" cy="-115.18" fx="114.65" fy="-115.18" r=".96" gradientTransform="translate(9.87 -881.72) rotate(45) scale(5.47 -5.47)" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#29c3ff" /><stop offset=".23" stop-color="#4894fe" /><stop offset=".5" stop-color="#6864f6" /><stop offset=".89" stop-color="#a931d8" /></radialGradient></defs><g clip-path="url(#op_ic20_s22_ai_gateway_uuid-562db301-56bd-45b0-915c-82a4f2277e80)"><g><path d="M11.02,1.15c-.55-.5-1.26-.78-2.02-.78-.81,0-1.56.31-2.13.88L1.26,6.87c-.57.57-.88,1.32-.88,2.13s.31,1.56.88,2.13l2.77,2.77,1.2,1.2c.83.83,2.12.94,3.07.33.05-.03.08-.08.08-.13,0-.05-.01-.11-.05-.15l-5.55-5.55c-.16-.16-.25-.38-.25-.6s.09-.44.25-.6l3.8-3.8,1.82-1.82.39-.38c.59-.59,1.35-.9,2.12-.93.08,0,.14-.05.17-.12.02-.07,0-.15-.05-.19Z" fill="url(#op_ic20_s22_ai_gateway_uuid-2859d71d-31ae-4abe-9fcc-0bafc567faf0)" /><path d="M16.74,6.87l-3.97-3.97c-.83-.83-2.12-.94-3.07-.33-.05.03-.08.08-.08.13,0,.05.01.11.05.15l5.55,5.55c.16.16.25.38.25.6s-.09.44-.25.6l-3.8,3.79-1.82,1.82-.39.38c-.59.59-1.34.89-2.11.93h-.01c-.07,0-.14.05-.16.12-.03.07,0,.15.05.19.55.5,1.27.78,2.02.78.8,0,1.56-.31,2.13-.88l5.62-5.62c.57-.57.88-1.32.88-2.13s-.31-1.56-.88-2.13Z" fill="url(#op_ic20_s22_ai_gateway_uuid-6097306d-a96e-4b55-af58-8c93ec52e898)" /><path d="M9,11.59c1.43,0,2.59-1.16,2.59-2.59s-1.16-2.59-2.59-2.59-2.59,1.16-2.59,2.59,1.16,2.59,2.59,2.59Z" fill="url(#op_ic20_s22_ai_gateway_uuid-a5b5da7b-9645-4aae-aa96-a7cb16b4141c)" /></g></g><rect width="18" height="18" fill="none" /></svg> From Store APIM Gateway to Automated ESL Action: 4-Stage Pipeline</h2>
+          </div>
+          <span class="badge badge-omnipos">100% Strict JSON Schema</span>
+        </div>
+
+        <div class="grid-2">
+          <div class="sub-card">
+            <ul style="margin:0;padding-left:1.15rem;font-size:0.85rem;color:var(--text-secondary);display:grid;gap:0.55rem;">
+              <li><strong>1. Edge Ingestion & APIM Token Guard:</strong> Per-StoreId TPM quota enforcement with 2,252-token static prefix achieving 99.8% prompt cache hits.</li>
+              <li><strong>2. L1 Luna Sub-200ms Triage (65%):</strong> Closes routine aisle stock checks, receipt reprints, and loyalty lookups under $0.0002/turn.</li>
+              <li><strong>3. L2 Terra Store Operations (25%):</strong> Detects evening perishable overstock and emits strict JSON tool calls to store Electronic Shelf Labels.</li>
+              <li><strong>4. L3 Sol Regional Root-Cause (10%):</strong> Correlates OneLake POS history and cold-chain telemetry overnight at 50% Batch discount.</li>
+            </ul>
+          </div>
+          <div class="code-box">{
+  "store_id": "EU-BER-07",
+  "routed_tier": "L2_gpt-6.1-terra",
+  "prompt_usage": { "prompt_tokens": 2252, "cached_tokens": 2249, "cache_hit_pct": 99.8 },
+  "recommended_action": "Apply_25Pct_Evening_Fresh_Discount_on_OmniPOS_ESL",
+  "target_skus": ["OP-POS-OAT500", "OP-POS-WRAP09"],
+  "human_approval_required": true,
+  "projected_waste_reduction_eur": 148.50
+}</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         TAB 3: MICROSOFT FOUNDRY WEB IQ AGENTIC GROUNDING
+         ===================================================================== -->
+    <section id="tab3" class="tab-panel" role="tabpanel">
+      <div class="section-block">
+        <div class="section-head">
+          <div>
+            <div class="section-kicker">MODULE 3A · WEB IQ VS LEGACY BING SEARCH BENCHMARK MATRIX</div>
+            <h2 class="section-title"><svg class="ms-svg-icon icon-lg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><path d="M11.97 7.569a.92.92 0 00-.805.863c-.013.195-.01.209.43 1.347 1 2.59 1.242 3.214 1.283 3.302.099.213.237.413.41.592.134.138.222.212.37.311.26.176.39.224 1.405.527.989.295 1.529.49 1.994.723.603.302 1.024.644 1.29 1.051.191.292.36.815.434 1.342.029.206.029.661 0 .847a2.491 2.491 0 01-.376 1.026c-.1.151-.065.126.081-.058.415-.52.838-1.408 1.054-2.213a6.728 6.728 0 00.102-3.012 6.626 6.626 0 00-3.291-4.53 104.157 104.157 0 00-1.322-.698l-.254-.133a737.941 737.941 0 01-1.575-.827c-.548-.29-.78-.406-.846-.426a1.376 1.376 0 00-.29-.045l-.093.01z" fill="url(#op_ic21_s16_webiq_lobe-icons-bing-0-_R_0_)"></path><path d="M13.164 17.24a4.385 4.385 0 00-.202.125 511.45 511.45 0 00-1.795 1.115 163.087 163.087 0 01-.989.614l-.463.288a99.198 99.198 0 01-1.502.941c-.326.2-.704.334-1.09.387-.18.024-.52.024-.7 0a2.807 2.807 0 01-1.318-.538 3.665 3.665 0 01-.543-.545 2.837 2.837 0 01-.506-1.141 2.161 2.161 0 00-.041-.182c-.008-.008.006.138.032.33.027.199.085.487.147.733.482 1.907 1.85 3.457 3.705 4.195a6.31 6.31 0 001.658.412c.22.025.844.035 1.074.017 1.054-.08 1.972-.393 2.913-.992a325.28 325.28 0 01.937-.596l.384-.244.684-.435.234-.149.009-.005.025-.017.013-.007.172-.11.597-.38c.76-.481.987-.65 1.34-.998.148-.146.37-.394.381-.425.002-.007.042-.068.088-.136a2.49 2.49 0 00.373-1.023 4.181 4.181 0 000-.847 4.336 4.336 0 00-.318-1.137c-.224-.472-.7-.9-1.383-1.245a2.972 2.972 0 00-.406-.181c-.01 0-.646.392-1.413.87a7089.171 7089.171 0 00-1.658 1.031l-.439.274z" fill="url(#op_ic21_s16_webiq_lobe-icons-bing-1-_R_0_)" fill-rule="nonzero"></path><path d="M4.003 14.946l.004 3.33.042.193c.134.604.366 1.04.77 1.445a2.701 2.701 0 001.955.814c.536 0 1-.135 1.479-.43l.703-.435.556-.346V8.003c0-2.306-.004-3.675-.012-3.782a2.734 2.734 0 00-.797-1.765c-.145-.144-.268-.24-.637-.496A1780.102 1780.102 0 015.762.362C5.406.115 5.38.098 5.271.059a.943.943 0 00-1.254.696C4.003.818 4 1.659 4 6.223v5.394H4l.003 3.329z" fill="url(#op_ic21_s16_webiq_lobe-icons-bing-2-_R_0_)" fill-rule="nonzero"></path><defs><radialGradient cx="93.717%" cy="77.818%" fx="93.717%" fy="77.818%" gradientTransform="scale(-1 -.7146) rotate(49.288 2.035 -2.198)" id="op_ic21_s16_webiq_lobe-icons-bing-0-_R_0_" r="143.691%"><stop offset="0%" stop-color="#00CACC"></stop><stop offset="100%" stop-color="#048FCE"></stop></radialGradient><radialGradient cx="13.893%" cy="71.448%" fx="13.893%" fy="71.448%" gradientTransform="scale(.6042 1) rotate(-23.34 .184 .494)" id="op_ic21_s16_webiq_lobe-icons-bing-1-_R_0_" r="149.21%"><stop offset="0%" stop-color="#00BBEC"></stop><stop offset="100%" stop-color="#2756A9"></stop></radialGradient><linearGradient id="op_ic21_s16_webiq_lobe-icons-bing-2-_R_0_" x1="50%" x2="50%" y1="0%" y2="100%"><stop offset="0%" stop-color="#00BBEC"></stop><stop offset="100%" stop-color="#2756A9"></stop></linearGradient></defs></svg> Microsoft Foundry Web IQ vs. Retired Bing Search API vs. Third-Party Wrappers</h2>
+            <p class="section-desc">Legacy Bing Web Search API retired on August 11, 2025. Web IQ is purpose-built for enterprise agents with native Scopes domain allowlists and Prompt Shields defense.</p>
+          </div>
+          <span class="badge badge-blue">GDSAT 79.05 · P95 164ms</span>
+        </div>
+
+        <div class="data-table-wrap">
+          <table class="arch-table">
+            <thead>
+              <tr>
+                <th>Architectural Dimension</th>
+                <th>Microsoft Foundry Web IQ (Recommended)</th>
+                <th>Legacy Bing Search API (Retired 2025-08-11)</th>
+                <th>Third-Party Search Wrapper / DIY Scraper</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Grounded Accuracy (GDSAT)</strong></td>
+                <td><strong style="color:var(--emerald);">79.05 (Multi-query decomposition + semantic reranking)</strong></td>
+                <td>66.20 (Legacy keyword snippet summary)</td>
+                <td>Unstable (polluted by SEO ads & CAPTCHA blocks)</td>
+              </tr>
+              <tr>
+                <td><strong>Retrieval Latency (P95)</strong></td>
+                <td><strong style="color:var(--emerald);">164 ms (Azure backbone direct)</strong></td>
+                <td>~420 ms</td>
+                <td>680 ms – 1,850 ms+</td>
+              </tr>
+              <tr>
+                <td><strong>Domain Allowlist (Scopes)</strong></td>
+                <td><strong style="color:var(--emerald);">Native domain pinning (fda.gov / efsa.europa.eu)</strong></td>
+                <td>Fragile query-string site: operators</td>
+                <td>Post-hoc filtering after paying for junk hits</td>
+              </tr>
+              <tr>
+                <td><strong>Indirect Injection Defense</strong></td>
+                <td><strong style="color:var(--emerald);">Native Prompt Shields real-time sanitization</strong></td>
+                <td>None</td>
+                <td>High risk of adversarial POS manipulation</td>
+              </tr>
+              <tr>
+                <td><strong>Enterprise TCO & Legal</strong></td>
+                <td><strong>$7 / 1,000 calls · Zero query training · First-party SLA</strong></td>
+                <td>End-of-life / Decommissioned</td>
+                <td>$15 – $35 / 1,000 calls + cross-border compliance exposure</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 3B: 8 Capabilities + Scopes Retail Simulator -->
+      <div class="section-block">
+        <div class="section-head">
+          <div>
+            <div class="section-kicker">MODULE 3B · 8 WEB IQ CAPABILITIES &amp; SCOPES POISONED-SEO INTERCEPTOR</div>
+            <h2 class="section-title"><svg class="ms-svg-icon icon-lg" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><defs> <linearGradient id="op_ic22_s24_guardrails_uuid-80fd62f5-d182-4403-8456-6923e7e033bb" x1="7.997" y1="14.863" x2="7.997" y2="2.057" gradientUnits="userSpaceOnUse"> <stop offset="0" stop-color="#0078d4" /> <stop offset=".82" stop-color="#5ea0ef" /> </linearGradient> <linearGradient id="op_ic22_s24_guardrails_uuid-f6289940-e1be-4e56-904f-ba5a1586dc17" x1="-558.124" y1="1021.188" x2="-558.124" y2="1019.083" gradientTransform="translate(564 1025.516) scale(1 -1)" gradientUnits="userSpaceOnUse"> <stop offset="0" stop-color="#fff" stop-opacity=".7" /> <stop offset="1" stop-color="#fff" stop-opacity=".6" /> </linearGradient> </defs> <path d="m.362,3.138C.162,3.138,0,2.976,0,2.777h0V.361C0,.162.162,0,.362,0h2.266c.2,0,.362.162.362.361,0,.199-.162.361-.362.361H.724v2.053c0,.199-.161.362-.361.362,0,0,0,0-.001,0Zm17.638-.361V.361C18,.162,17.838,0,17.638,0h-2.266c-.2,0-.362.162-.362.361s.162.361.362.361h1.904v2.053c0,.199.162.361.362.361.2,0,.361-.162.362-.361h0ZM2.99,17.639c0-.199-.162-.361-.362-.361H.724v-2.053c0-.199-.162-.361-.362-.361-.2,0-.362.162-.362.361v2.415c0,.199.163.36.362.36h2.266c.2,0,.362-.162.362-.361Zm15.01.001v-2.415c0-.199-.162-.361-.362-.361-.2,0-.361.162-.362.361v2.053h-1.904c-.2,0-.362.162-.362.362,0,.199.162.361.362.361h2.266c.199,0,.361-.161.362-.36Z" fill="#76bc2d" /> <g> <path d="m13.864,8.047c0,3.822-4.627,6.907-5.632,7.544-.12.066-.265.066-.386,0-1.073-.687-5.716-3.772-5.716-7.544V3.386c0-.197.155-.36.352-.369,3.604-.101,2.783-1.676,5.482-1.676s1.861,1.576,5.465,1.676c.197.009.352.171.352.369l.084,4.66Z" fill="#0078d4" /> <path d="m8.04,14.863c-4.683-3.064-5.194-5.781-5.194-6.816V3.719c1.873-.106,2.625-.637,3.236-1.068.489-.345.843-.594,1.881-.594s1.387.249,1.872.593c.607.431,1.355.962,3.235,1.069l.078,4.34c0,.817-.372,3.733-5.109,6.804Z" fill="url(#op_ic22_s24_guardrails_uuid-80fd62f5-d182-4403-8456-6923e7e033bb)" /> </g> <g> <rect x="8.155" y="4.328" width="3.721" height=".691" rx=".141" ry=".141" fill="#fff" opacity=".7" /> <rect x="8.155" y="5.742" width="3.721" height=".691" rx=".141" ry=".141" fill="#fff" opacity=".6" /> <rect x="4.117" y="9.983" width="4.472" height=".691" rx=".141" ry=".141" fill="#fff" opacity=".3" /> <rect x="4.117" y="8.57" width="7.76" height=".691" rx=".141" ry=".141" fill="#fff" opacity=".4" /> <rect x="4.117" y="7.156" width="7.076" height=".691" rx=".14" ry=".14" fill="#fff" opacity=".5" /> <g id="op_ic22_s24_guardrails_uuid-69ff294d-4d54-4881-9832-ea140e19e0d2"> <path d="m4.235,4.328h3.282c.065,0,.118.046.118.102v1.901c0,.057-.053.102-.118.102h-3.282c-.065,0-.118-.046-.118-.102v-1.901c0-.057.053-.102.118-.102Z" fill="url(#op_ic22_s24_guardrails_uuid-f6289940-e1be-4e56-904f-ba5a1586dc17)" /> </g> </g> <g> <circle cx="12.449" cy="13.203" r="3.442" fill="#76bc2d" /> <g> <path d="m12.096,14.356l-.316.316c-.054.054-.141.054-.195,0h0l-1.256-1.256c-.054-.054-.054-.141,0-.195h0l.219-.219c.054-.054.141-.054.195,0h0l1.353,1.353h0Z" fill="#fff" /> <path d="m11.591,14.676l-.316-.316h0l2.888-2.888c.054-.054.141-.054.195,0h0l.219.219c.054.054.054.141,0,.195h0l-2.791,2.791c-.054.054-.141.054-.195,0h0Z" fill="#f0f0f0" /> </g> </g></svg> 8 Web IQ Engineering Capabilities & US/EU Scopes Trap Interceptor</h2>
+          </div>
+          <a class="badge badge-omnipos" href="live-demo.en.html#panel-act3">Test Live in Workbench Act 3 ↗</a>
+        </div>
+
+        <div class="module-cards-8" id="mod8Grid"></div>
+        <div class="sub-card" id="mod8Detail" style="margin-bottom:1.1rem;"></div>
+
+        <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:0.65rem;margin-bottom:0.75rem;">
+          <div class="pill-group" id="retailScenPills" style="margin-bottom:0;">
+            <button type="button" class="choice-pill omnipos-active" data-scen="smartassist">Scenario A: Paris SmartAssist EU Allergen</button>
+            <button type="button" class="choice-pill" data-scen="flagship">Scenario B: NYC POS Fake Coupon & Recall</button>
+            <button type="button" class="choice-pill" data-scen="ops">Scenario C: Berlin Weather & Perishable Ops</button>
+          </div>
+          <button type="button" class="choice-pill active" id="scopesToggleBtn">🛡️ Scopes Allowlist Guard: ON</button>
+        </div>
+
+        <div class="sub-card" id="retailScenOutput"></div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         TAB 4: 14-DAY PILOT BLUEPRINT & 22 ARCHITECT FAQS
+         ===================================================================== -->
+    <section id="tab4" class="tab-panel" role="tabpanel">
+      <div class="section-block">
+        <div class="section-head">
+          <div>
+            <div class="section-kicker">MODULE 4A · 14-DAY US &amp; EU DUAL-REGION PRODUCTION PILOT BLUEPRINT</div>
+            <h2 class="section-title"><svg class="ms-svg-icon icon-lg" viewBox="1.49 0.99 15.01 16.01" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><defs><linearGradient id="op_ic23_s3_foundry_uuid-5a7bd7fa-6937-44bd-a5ba-e23eddbb6d35" x1="10.91" y1="13.66" x2="13.62" y2="13.66" gradientTransform="translate(0 20) scale(1 -1)" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#302ec9" /><stop offset=".12" stop-color="#151698" /><stop offset=".25" stop-color="#0a0b7e" /><stop offset=".43" stop-color="#090c7f" /><stop offset=".51" stop-color="#141698" /><stop offset=".61" stop-color="#282ac4" /><stop offset=".77" stop-color="#8e8ff4" /><stop offset=".85" stop-color="#a7a6f7" /><stop offset=".91" stop-color="#cacafb" /><stop offset="1" stop-color="#fff" /></linearGradient><linearGradient id="op_ic23_s3_foundry_uuid-a9b2ac78-bff0-475d-89df-2c97f2122f93" x1="12.26" y1="8.32" x2="12.26" y2="18.23" gradientTransform="translate(0 20) scale(1 -1)" gradientUnits="userSpaceOnUse"><stop offset=".02" stop-color="#201ba6" /><stop offset=".64" stop-color="#2d29c7" /><stop offset="1" stop-color="#201ba6" /></linearGradient><linearGradient id="op_ic23_s3_foundry_uuid-03b3b70c-1c8d-4b3f-9935-d9da2b20de2f" x1="14.19" y1="8.27" x2="14.19" y2="14.47" gradientTransform="translate(0 20) scale(1 -1)" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#3530c3" /><stop offset=".5" stop-color="#6d71d1" /><stop offset=".97" stop-color="#c0bff5" /><stop offset="1" stop-color="#e3e4ff" /></linearGradient><linearGradient id="op_ic23_s3_foundry_uuid-cabc8ec9-3293-44b8-a33b-70823f583b30" x1="6.51" y1="3" x2="6.51" y2="19.15" gradientTransform="translate(0 20) scale(1 -1)" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#302ec9" /><stop offset=".45" stop-color="#302ec9" /><stop offset=".95" stop-color="#cacafb" /><stop offset="1" stop-color="#7f7eaf" /></linearGradient></defs><path d="M11.96,11.68s.07-.1.07-.24v-3.87c0-.85.66-1.76,1.59-2.03-.06-.19-.64-2.11-.81-2.65-.17-.56-.67-1.9-1.29-1.9,0,0,0,0-.01,0h0s-.09.05-.13.13c-.32.58-.46,3.02-.46,4.84v2.26c.27.97.91,3.22.96,3.35,0,0,.05.1.09.1h0Z" fill="url(#op_ic23_s3_foundry_uuid-5a7bd7fa-6937-44bd-a5ba-e23eddbb6d35)" /><path d="M11.96,11.68s.07-.1.07-.24v-3.87c0-.85.66-1.76,1.59-2.03-.06-.19-.64-2.11-.81-2.65-.17-.56-.67-1.9-1.29-1.9,0,0,0,0-.01,0h0s-.09.05-.13.13c-.32.58-.46,3.02-.46,4.84v2.26c.27.97.91,3.22.96,3.35,0,0,.05.1.09.1h0Z" fill="url(#op_ic23_s3_foundry_uuid-a9b2ac78-bff0-475d-89df-2c97f2122f93)" /><path d="M16.01,5.46h-1.81c-1.21,0-2.17,1.09-2.17,2.11v3.87c0,.14-.04.24-.07.24s-.09-.1-.09-.1c0,0,.07.21.17.21h1.98c.62,0,2.48-.61,2.48-2.52v-3.25c0-.41-.24-.55-.49-.55Z" fill="url(#op_ic23_s3_foundry_uuid-03b3b70c-1c8d-4b3f-9935-d9da2b20de2f)" /><path d="M2.34,17h5.38c2.35,0,3.2-2.03,3.2-3.81v-7.23c0-2.08.19-4.97.61-4.97h-3.23c-.77,0-1.43.82-2.18,2.48-.75,1.66-4.36,11.87-4.52,12.36-.26.79-.02,1.16.74,1.16Z" fill="url(#op_ic23_s3_foundry_uuid-cabc8ec9-3293-44b8-a33b-70823f583b30)" /></svg> 14-Day US & EU Production Pilot Blueprint & Live Workbench Launchpad</h2>
+            <p class="section-desc">Structured into 4 measurable engineering milestones enabling non-disruptive pilot validation alongside existing POS payment lanes.</p>
+          </div>
+          <a class="cta-workbench-btn" href="live-demo.en.html">Launch 3-Act Live Demo Workbench ↗</a>
+        </div>
+
+        <div class="pilot-grid" id="pilotGrid"></div>
+        <div class="sub-card" id="pilotDetail"></div>
+      </div>
+
+      <!-- 4B: 22 Chief Architect Deep-Dive FAQs -->
+      <div class="section-block">
+        <div class="section-head">
+          <div>
+            <div class="section-kicker">MODULE 4B · 22 CHIEF SOLUTION ARCHITECT DEEP-DIVE FAQS</div>
+            <h2 class="section-title"><svg class="ms-svg-icon icon-lg" viewBox="0 0 17 16.940001" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><defs id="op_ic24_s17_monitor_defs60970"> <radialGradient id="op_ic24_s17_monitor_ac8b32da-30ca-4b92-8d0f-8d2d5ef278a0" cx="5.7199998" cy="7.4499998" r="8.4200001" gradientTransform="matrix(1.01,0,0,1.01,3.23,1.51)" gradientUnits="userSpaceOnUse"> <stop offset="0.18" stop-color="#5ea0ef" id="op_ic24_s17_monitor_stop60942" /> <stop offset="0.56" stop-color="#5c9fee" id="op_ic24_s17_monitor_stop60944" /> <stop offset="0.69" stop-color="#559ced" id="op_ic24_s17_monitor_stop60946" /> <stop offset="0.78" stop-color="#4a97e9" id="op_ic24_s17_monitor_stop60948" /> <stop offset="0.86" stop-color="#3990e4" id="op_ic24_s17_monitor_stop60950" /> <stop offset="0.93" stop-color="#2387de" id="op_ic24_s17_monitor_stop60952" /> <stop offset="0.99" stop-color="#087bd6" id="op_ic24_s17_monitor_stop60954" /> <stop offset="1" stop-color="#0078d4" id="op_ic24_s17_monitor_stop60956" /> </radialGradient> <radialGradient id="op_ic24_s17_monitor_a9954820-cb38-4943-9842-f0a568d2b015" cx="28.18" cy="202.28999" r="2.7" gradientTransform="matrix(0.95,0,0,0.95,-17.77,-185.01)" gradientUnits="userSpaceOnUse"> <stop offset="0.19" stop-color="#8c8e90" id="op_ic24_s17_monitor_stop60959" /> <stop offset="0.35" stop-color="#848688" id="op_ic24_s17_monitor_stop60961" /> <stop offset="0.6" stop-color="#6e7071" id="op_ic24_s17_monitor_stop60963" /> <stop offset="0.91" stop-color="#4a4b4c" id="op_ic24_s17_monitor_stop60965" /> <stop offset="1" stop-color="#3e3f3f" id="op_ic24_s17_monitor_stop60967" /> </radialGradient> </defs> <ellipse cx="8.5" cy="8.4700003" rx="8.5" ry="8.4700003" id="op_ic24_s17_monitor_ellipse60974" style="fill:url(#op_ic24_s17_monitor_ac8b32da-30ca-4b92-8d0f-8d2d5ef278a0)" /> <ellipse cx="8.5" cy="8.4700003" rx="7.4000001" ry="7.3699999" id="op_ic24_s17_monitor_ellipse60976" style="fill:#ffffff" /> <path d="M 2.22,8.9100003 A 6.24,6.24 0 0 0 4.04,12.91 l 2,-2 a 3.53,3.53 0 0 1 -1,-1.9999997 z" id="op_ic24_s17_monitor_path60978" style="fill:#9cebff" /> <path d="m 12.63,3.7400003 a 6.25,6.25 0 0 0 -3.69,-1.53 v 2.79 a 3.41,3.41 0 0 1 1.71,0.7 z" id="op_ic24_s17_monitor_path60980" style="fill:#32bedd" /> <path d="m 4.37,3.7400003 2,2 a 3.41,3.41 0 0 1 1.71,-0.7 v -2.83 a 6.25,6.25 0 0 0 -3.71,1.53 z" id="op_ic24_s17_monitor_path60982" style="fill:#32bedd" /> <path d="m 11.28,6.3200003 a 3.6,3.6 0 0 1 0.71,1.71 h 2.79 a 6.16,6.16 0 0 0 -1.53,-3.67 z" id="op_ic24_s17_monitor_path60984" style="fill:#32bedd" /> <path d="m 5.72,6.3200003 -2,-2 a 6.16,6.16 0 0 0 -1.5,3.71 h 2.79 a 3.6,3.6 0 0 1 0.71,-1.71 z" id="op_ic24_s17_monitor_path60986" style="fill:#50e6ff" /> <path d="m 13.64,6.4700003 a 0.45,0.45 0 0 0 -0.57,-0.25 l -4.12,1.66 0.32,0.81 4.12,-1.63 a 0.44,0.44 0 0 0 0.25,-0.59 z" id="op_ic24_s17_monitor_path60988" style="fill:#f04049" /> <circle cx="8.5" cy="8.4700003" id="op_ic24_s17_monitor_ellipse60990" r="1.2" style="fill:url(#op_ic24_s17_monitor_a9954820-cb38-4943-9842-f0a568d2b015)" /></svg> 22 Chief Architect Deep-Dive FAQs (Searchable & One-Click Copy)</h2>
+          </div>
+          <span class="badge badge-indigo" id="faqCountBadge">22 / 22</span>
+        </div>
+
+        <div class="faq-toolbar">
+          <input type="search" class="search-input" id="faqSearch" placeholder="Search keywords: BIPA, STS, 99.8%, Scopes, Docker, WER, PCI..." aria-label="Search FAQs" />
+          <div class="pill-group" id="faqCatPills" style="margin-bottom:0;">
+            <button type="button" class="choice-pill active" data-cat="all">All (22)</button>
+            <button type="button" class="choice-pill" data-cat="audio">Audio & STS</button>
+            <button type="button" class="choice-pill" data-cat="finops">3-Cup FinOps</button>
+            <button type="button" class="choice-pill" data-cat="webiq">Web IQ</button>
+            <button type="button" class="choice-pill" data-cat="compliance">Compliance & Edge</button>
+          </div>
+          <button type="button" class="choice-pill" id="faqExpandAllBtn">Expand All</button>
+        </div>
+
+        <div id="faqList"></div>
+      </div>
+    </section>
+
+    <footer class="footer-note">
+      <span>Provenance Note: All benchmarks reflect sanitized execution snapshots captured on live US East 2 (omnipos-ai-us-east2) and EU Sweden Central (omnipos-ai-eu-sweden) Azure deployments; OmniPOS is an anonymized reference enterprise.</span>
+      <a href="live-demo.en.html" style="font-weight:700;">Go to Serverless 3-Act Live Demo Workbench -></a>
+    </footer>
+  </main>
+
+  <script>
+    (function () {
+      const IS_EN = true;
+      const DEVICE_DATA = {"flagship":{"name":"Dual-Screen Flagship POS","mic":"Directional Dual-Mic Beamforming · Main Checkout","rec":"Recommended: Azure Speech Streaming + Dynamic Phrase List 2.0 (instant active SKU hotword boost, zero training cost)","wer":{"clean":[1.7,1.9,2.3,3.1,4.4],"noisy":[5.1,6.2,8.9,13.8,17.6],"accent":[4.8,5.9,9.6,15.2,19.4]}},"smartassist":{"name":"SmartAssist Interactive Screen","mic":"Far-Field 4-Mic Array · Open Aisle Concierge","rec":"Recommended: Azure Speech + Custom Speech Acoustic Fine-Tuning + Continuous LID + Web IQ Grounded Lookup","wer":{"clean":[1.8,2,2.5,3.4,4.9],"noisy":[5.4,6.8,9.7,15.1,19.2],"accent":[5,6.3,10.2,16.4,20.8]}},"tablet":{"name":"Mobile Store Tablet POS","mic":"Close-Talk Noise-Canceling Mic · Aisle & Stockroom","rec":"Recommended: 10-min Regional STS Direct WSS + SKU/Bin Alphanumeric Phrase List Boost (Weight=2.0)","wer":{"clean":[1.7,1.8,2.2,3,4.2],"noisy":[4.9,5.8,8.4,13.2,16.9],"accent":[4.6,5.5,9.1,14.7,18.5]}},"countertop":{"name":"Countertop All-in-One POS","mic":"Compact Counter Mic · QSR, Cafe & Convenience","rec":"Recommended: Custom Speech Steam/Blender Noise Adaptation + L1 Luna 180ms Order-Modifier Extraction","wer":{"clean":[1.9,2.1,2.6,3.5,4.8],"noisy":[5.6,6.9,9.8,15.6,19.8],"accent":[5.2,6.4,10.4,16.8,21.1]}},"kiosk":{"name":"Self-Checkout & Weighing Kiosk","mic":"Privacy-Focused Near-Field Mic · Produce & Accessibility","rec":"Recommended: Push-to-Talk Streaming STT (zero always-on listening, eliminating BIPA & privacy friction) + Produce PLU Phrase List","wer":{"clean":[1.8,2,2.4,3.3,4.6],"noisy":[5.3,6.5,9.3,14.5,18.4],"accent":[4.9,6.1,9.8,15.9,19.9]}}};
+      const CITIES_DATA = [{"id":"nyc","city":"New York Flagship Store (US-NYC-01)","region":"eastus2 (Virginia)","resource":"omnipos-ai-us-east2","directMs":285,"proxyMs":590,"jurisdiction":"US CCPA + Illinois BIPA Non-Biometric Exemption + PCI-DSS v4.0.1","wss":"wss://eastus2.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1","note":"Diamond benchmark primary node: DMP mints a 10-minute East US 2 STS JWT, enabling the POS terminal to stream audio directly over TLS 1.3 WebSocket to Virginia, cutting first-packet latency from 590ms to 285ms (-51.7%)."},{"id":"chi","city":"Chicago Michigan Ave Store (Strict BIPA Jurisdiction)","region":"northcentralus (Illinois)","resource":"omnipos-ai-us-central","directMs":278,"proxyMs":575,"jurisdiction":"Illinois BIPA (740 ILCS 14) Zero Voiceprint ExtractionVerified","wss":"wss://northcentralus.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1","note":"Engineered for strict Illinois BIPA compliance: standard real-time STT decodes acoustic frames into text purely in volatile RAM without extracting or storing persistent biometric voiceprints."},{"id":"lax","city":"Los Angeles Beverly Store (US-LAX-04)","region":"westus2 (Washington)","resource":"omnipos-ai-us-west2","directMs":292,"proxyMs":615,"jurisdiction":"California CPRA / CCPA Zero Consumer Profiling","wss":"wss://westus2.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1","note":"US West Coast bilingual English/Spanish checkout lanes stream directly to West US 2 with Continuous LID auto-detection and PhraseList SKU boosting."},{"id":"ber","city":"Berlin Alexanderplatz Store (EU-BER-07)","region":"swedencentral / germanywestcentral","resource":"omnipos-ai-eu-sweden","directMs":312,"proxyMs":645,"jurisdiction":"EU GDPR + EU Data Boundary (EUDB) + German BDSG","wss":"wss://swedencentral.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1","note":"Diamond EU verified node: STS token minting, volatile frame decoding, and operational telemetry remain 100% inside the EU Data Boundary (EUDB) with zero transatlantic hops."},{"id":"par","city":"Paris Haussmann Flagship (EU-PAR-03)","region":"francecentral (Paris)","resource":"omnipos-ai-eu-france","directMs":296,"proxyMs":660,"jurisdiction":"French CNIL Audio Guidance + EU Cloud CoC (2021LVL02SCOPE116)","wss":"wss://francecentral.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1","note":"SmartAssist interactive screens connect directly to France Central using explicit Push-to-Talk activation and No-Audio-Log RAM-only processing aligned with CNIL retail rules."},{"id":"lon","city":"London Oxford Street Store (EU-LON-02)","region":"uksouth (London)","resource":"omnipos-ai-uk-south","directMs":289,"proxyMs":630,"jurisdiction":"UK GDPR & UK Data Protection Act Residency","wss":"wss://uksouth.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1","note":"Dual-optimized for British (en-GB) and South Asian accented English (en-IN) store staff, streaming partial transcripts in 289ms without proxy bottlenecks."},{"id":"mad","city":"Madrid Gran Via Store (EU-MAD-05)","region":"spaincentral (Madrid)","resource":"omnipos-ai-eu-spain","directMs":304,"proxyMs":670,"jurisdiction":"Spain AEPD Privacy Rules + EUDB 9-Region HA Failover","wss":"wss://spaincentral.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1","note":"Rapid Spanish POS voice ordering terminates locally in Spain Central with automated intra-EUDB failover to Frankfurt or Sweden Central at 99.95% SLA."}];
+      const WEBIQ_MODULES = [{"id":"m1","code":"01 · QUERY FAN-OUT","title":"Agentic Multi-Query Fan-Out","summary":"Decomposes complex shopper questions into parallel sub-queries (regulatory allergen specs, recall notices, competitor SKUs) in a single low-latency round-trip.","metric":"+41% Recall Coverage · Single-Turn Agentic Closure"},{"id":"m2","code":"02 · SEMANTIC RERANKER","title":"High-SNR Semantic Snippet Reranking","summary":"Extracts high-density grounded evidence chunks rather than raw ad-heavy HTML, cutting downstream LLM prompt token consumption by over 60%.","metric":"GDSAT Score 79.05 (vs. 66.20 Legacy Web Search)"},{"id":"m3","code":"03 · SCOPES ALLOWLIST","title":"Scopes Authoritative Domain Pinning","summary":"Enforces hard allowlists across official regulatory and brand domains (fda.gov, efsa.europa.eu, rapex.ec.europa.eu), blocking unverified coupon farms at the retrieval layer.","metric":"Diamond Verified: 100% Block Rate on Poisoned SEO Traps"},{"id":"m4","code":"04 · FRESHNESS GUARDRAIL","title":"Temporal Freshness & Recall Pinning","summary":"Filters web evidence by 24h / 7d / 30d freshness windows so food safety alerts, EU RAPEX product recalls, and seasonal pricing reflect current notices.","metric":"P95 Retrieval Latency 164ms · Zero Stale Policy Hits"},{"id":"m5","code":"05 · CROSS-MARKET LOCALE","title":"US & EU Geo-Market Locale Alignment","summary":"Binds market & jurisdiction parameters per store (en-US, de-DE, fr-FR, es-ES), preventing US regulatory answers from leaking into EU store consultations.","metric":"20+ US & EU Sovereign Market Configurations"},{"id":"m6","code":"06 · VERIFIABLE CITATIONS","title":"Verifiable Inline Citations & QR Proof","summary":"Every answer emits structured source URLs, publication timestamps, and snippet offsets so SmartAssist screens can render scannable regulatory proof QRs.","metric":"100% Click-Verifiable Regulatory Provenance"},{"id":"m7","code":"07 · PROMPT SHIELDS","title":"Prompt Shields Indirect-Injection Defense","summary":"Neutralizes hidden adversarial instructions embedded in external web pages (e.g., hidden text attempting unauthorized POS discounts) via Azure Prompt Shields.","metric":"Zero Unauthorized POS Override · Read/Write Isolation"},{"id":"m8","code":"08 · PREDICTABLE FINOPS","title":"Seamless Legacy Bing Migration & $7/1K TCO","summary":"Provides a first-party Microsoft Foundry replacement for the retired Bing Search API (retired Aug 11, 2025) at a flat $7 per 1,000 grounded calls.","metric":"55%-80% Lower Cost vs. Third-Party Search Wrappers"}];
+      const RETAIL_SCENARIOS = {"smartassist":{"title":"Paris Haussmann Dermocosmetics · SmartAssist EU Allergen & Regulation Check","query":"\"Does this oat barista blend and soothing serum comply with the latest EU allergen & gluten-free labeling rules?\"","scopesDomain":"efsa.europa.eu, ec.europa.eu, omnipos-brand-specs.eu","unfilteredRisk":"⚠️ Scopes OFF: Top organic hits surface affiliate blogs and outdated 2021 ingredient posts, missing mandatory Regulation (EU) No 1169/2011 oat cross-contamination disclosures.","scopedSafe":"✅ Scopes ON (158ms): Grounds strictly on efsa.europa.eu and official EU notices, confirming <20 ppm gluten threshold while displaying mandatory oat-protein disclosure + scannable citation."},"flagship":{"title":"New York 5th Ave Flagship · Dual-Screen POS Recall & Fake Coupon Interception","query":"\"Shopper shows a web page claiming an 80% OFF stackable recall compensation promo on smart accessories today—verify authenticity.\"","scopesDomain":"fda.gov, cpsc.gov, official-promos.omnipos-retail.example","unfilteredRisk":"⚠️ Scopes OFF: Unfiltered search ingests a poisoned SEO coupon-farm page containing adversarial text crafted to trick store associates into granting unauthorized manual markdowns.","scopedSafe":"✅ Scopes ON (149ms): Queries only cpsc.gov, fda.gov, and verified brand promo feeds—confirming zero active recalls and flagging the 80% code as fraudulent while suggesting valid loyalty offers."},"ops":{"title":"Berlin & Chicago Morning Store Ops · Weather, Stadium Events & Perishable Prep","query":"\"Factor in this weekend's Berlin Marathon road closures and cold-front advisory to adjust hot beverage milk and grab-and-go prep.\"","scopesDomain":"dwd.de, berlin.de, rapex.ec.europa.eu","unfilteredRisk":"⚠️ Scopes OFF: Mixes prior-year marathon articles with unverified social media crowd rumors, causing over-ordering and evening perishable waste.","scopedSafe":"✅ Scopes ON + 24h Freshness (164ms): Pulls official DWD weather and municipal closure windows (07:30-14:00), feeding L2 Terra to generate hourly prep targets and 19:30 ESL clearance triggers."}};
+      const PILOT_PHASES = [{"id":"p1","days":"Phase 1 · Days 1–3","title":"Store Acoustic SNR Baseline & 6-Accent WER Benchmark","owner":"Terminal Audio Eng + Cloud AI Architect","deliverables":"Benchmark 6 store accents (en-US, en-GB, en-IN, de-DE, es-ES, fr-FR) against 70dB store noise; inject active SKU catalogs via Phrase List 2.0 to lock clean WER <= 2.0% and noisy WER <= 5.5%.","kpi":"Clean WER 1.7%-2.0% | Noisy WER 5.1%"},{"id":"p2","days":"Phase 2 · Days 4–7","title":"DMP 10-Min Regional STS Token & Direct WSS Cutover","owner":"DMP Platform Team + Security & Privacy","deliverables":"Wire Entra Managed Identity into DMP to mint 10-minute regional STS tokens for omnipos-ai-us-east2 and omnipos-ai-eu-sweden; verify zero local key persistence, 590ms -> 285ms latency drop, and GDPR/BIPA sign-off.","kpi":"590ms -> 285ms (-51.7%) | 0-Byte Disk Audio"},{"id":"p3","days":"Phase 3 · Days 8–11","title":"APIM 3-Cup (Luna / Terra / Sol) Router & 99.8% Prompt Cache","owner":"Store SaaS Backend + FinOps Governance","deliverables":"Enforce per-store token quotas in APIM, pin static POS system prompts + JSON schemas (2,249 / 2,252 cached_tokens = 99.8%), route 65% Luna / 25% Terra / 10% Sol + overnight 50%-off Batch for -63.2% to -65.8% cost savings.","kpi":"99.8% Cache Hit | -63.2% to -65.8% Cost"},{"id":"p4","days":"Phase 4 · Days 12–14","title":"Web IQ Scopes Allowlist & Dual-Region Production Gate","owner":"SmartAssist App Team + Retail SRE","deliverables":"Cut over to Foundry Web IQ with Scopes locked to fda.gov, efsa.europa.eu, and rapex.ec.europa.eu plus Prompt Shields indirect-injection defense; pass red-team poisoned-coupon tests and launch pilot stores.","kpi":"GDSAT 79.05 | P95 164ms | 100% Trap Block"}];
+      const FAQS = [{"id":"Q01","cat":"audio","q":"How does Azure AI Speech keep WER around 5%-6% in 70dB+ noisy checkout and cafe environments?","a":"Three-layer acoustic & lexical hardening: (1) terminal directional beamforming isolates the cashier/shopper cone; (2) zero-training Phrase List Grammar 2.0 dynamically boosts active store SKUs and brand tokens (e.g., OmniPOS) per session; (3) Custom Speech acoustic adaptation trained on 5-10 hours of real store ambient noise cuts noisy-environment relative WER by 25%-35%."},{"id":"Q02","cat":"audio","q":"Store associates have diverse accents (Indian English, Hispanic English, regional UK/EU)—is manual switching needed?","a":"No manual toggle required. Unified multilingual foundation models handle intra-language accents (en-US, en-GB, en-IN) natively, while border or tourist flagship stores enable Continuous Language Identification (LID) on the WebSocket stream to switch languages mid-conversation within milliseconds."},{"id":"Q03","cat":"audio","q":"When hundreds of seasonal SKUs launch weekly, do we have to retrain Custom Speech every week?","a":"Zero weekly retraining. Daily or weekly seasonal SKUs are injected at connection time via PhraseListGrammar JSON arrays—taking effect immediately in milliseconds at zero surcharge—while base Custom Speech models only need quarterly or semi-annual refreshes."},{"id":"Q04","cat":"audio","q":"Why use DMP-minted 10-minute regional STS tokens + Direct WSS instead of embedding Azure keys on POS devices?","a":"Physical retail terminals operate in semi-public spaces—embedding static subscription keys risks firmware extraction and quota abuse. Minting 10-minute regional STS JWTs via DMP mTLS + Entra Managed Identity guarantees zero persistent secrets on disk while letting audio stream directly from POS to regional Azure Speech (590ms -> 285ms, -51.7% latency)."},{"id":"Q05","cat":"audio","q":"If a 10-minute STS token expires mid-shift or during a long inventory session, does active WebSocket audio drop?","a":"Never. Azure Speech validates the STS JWT during WebSocket handshake/reconnection; established TLS 1.3 streams continue uninterrupted, while a background daemon silently pre-fetches the next token at minute 8 (80% TTL) in RAM."},{"id":"Q06","cat":"compliance","q":"EU privacy teams and works councils enforce strict GDPR: is store audio ever written to disk or used for training?","a":"100% zero disk persistence, zero retention, and zero model training. Real-time STT disables audio logging by default—acoustic frames decode strictly inside EU Data Boundary (EUDB) volatile RAM and are immediately garbage-collected, backed by Microsoft DPA commitments and EU Cloud CoC verification (ID: 2021LVL02SCOPE116)."},{"id":"Q07","cat":"compliance","q":"Illinois BIPA biometric class-action lawsuits are severe in US retail—does store voice AI trigger BIPA?","a":"Exempt by design. Illinois BIPA regulates biometric \"voiceprints\" used to identify individuals. This architecture strictly uses standard Speech-to-Text (STT) with zero Speaker Verification/Identification APIs—never extracting biometric voiceprint vectors."},{"id":"Q08","cat":"compliance","q":"What if an ultra-strict European hypermarket requires offline resilience during WAN outages or air-gapped audio?","a":"Deploy the official Azure AI Speech-to-Text Docker container on the store edge server! Audio stays 100% on the local store LAN with identical SDK contracts, asynchronously syncing only lightweight billing meter telemetry when WAN connectivity resumes."},{"id":"Q09","cat":"finops","q":"How does moving from a $10,000/mo single-flagship setup to 3-Cup (Luna / Terra / Sol) save 63%-66% without quality loss?","a":"Store AI traffic follows a steep pyramid: 65% is high-frequency intent routing and order slot extraction handled at sub-200ms by lightweight gpt-5.6-luna ($0.20/1M input); 25% store scheduling & inventory ops run on balanced gpt-6.1-terra; only 10% multi-store supply-chain root-cause escalates to flagship gpt-6.2-sol—compounded with 99.8% Prompt Caching and 50%-off overnight Batch."},{"id":"Q10","cat":"finops","q":"How did the Diamond benchmark achieve 2,249 / 2,252 cached_tokens (99.8% Prompt Cache hit rate) in production?","a":"Strict \"static-prefix-first, dynamic-turn-last\" prompt engineering: pin >1,024 tokens of static POS SOPs, JSON tool schemas, and few-shot exemplars byte-identically at the top of the System Message, placing live receipt/inventory payloads at the very end so Azure automatically serves 99.8% of input tokens from KV Cache at 90%-95% discount."},{"id":"Q11","cat":"finops","q":"How does Azure API Management (APIM) stop one runaway store loop from exhausting global model TPM quotas?","a":"APIM enforces native azure-openai-token-limit policies keyed by StoreId/DeviceId to cap per-store TPM bursts, paired with multi-region backend pools (e.g., East US 2 primary + North Central US overflow) that fail over seamlessly on HTTP 429."},{"id":"Q12","cat":"finops","q":"POS and Electronic Shelf Label (ESL) integrations require strict JSON—will lightweight Luna/Terra models break schema?","a":"Enable Structured Outputs (response_format: json_schema, strict: true). Constrained decoding masks out any token violating your JSON schema or enum constraints at sampling time, delivering 100.0% valid JSON across Luna, Terra, and Sol."},{"id":"Q13","cat":"finops","q":"Which retail workloads belong on the overnight Batch API (50% off standard token pricing)?","a":"All non-interactive T+1 workloads: post-close POS shrinkage reconciliation, store feedback clustering, weekly omnichannel sentiment digests, next-day prep sheets, and bulk multilingual ESL promo translations run asynchronously at 50% off."},{"id":"Q14","cat":"finops","q":"When scaling past 5,000+ stores, how should we combine PTU (Provisioned Throughput) with Global Standard PAYGO?","a":"Run a hybrid \"PTU base + PAYGO burst\" topology: size reserved PTUs for steady daily L1 Luna baseline traffic to guarantee deterministic P99 latency, and configure APIM to spill Black Friday / holiday 3-5x traffic spikes onto Global Standard PAYGO."},{"id":"Q15","cat":"webiq","q":"Legacy Bing Search API retired on Aug 11, 2025—why adopt Foundry Web IQ instead of custom scrapers or wrappers?","a":"DIY scrapers and third-party wrappers carry severe IP/compliance risk and >1.2s HTML parsing latency. First-party Foundry Web IQ delivers enterprise SLA indemnities, P95 164ms semantic chunk retrieval, GDSAT 79.05 accuracy, and predictable $7/1K billing."},{"id":"Q16","cat":"webiq","q":"How do we guarantee SmartAssist screens never cite web rumors, competitor smear posts, or fake discount codes?","a":"Enforce Web IQ Scopes domain allowlists server-side—locking retrieval strictly to trusted authorities (fda.gov, cpsc.gov, efsa.europa.eu, rapex.ec.europa.eu, and verified brand domains) so forums, affiliate sites, and poisoned SEO pages never enter the context window."},{"id":"Q17","cat":"webiq","q":"What if an external webpage embeds hidden Prompt Injection text attempting to authorize free items at POS?","a":"Dual defense-in-depth: (1) Azure AI Content Safety Prompt Shields scans external snippets for indirect injection attacks before LLM ingestion; (2) strict Read/Write privilege separation ensures web-grounded agents have read-only advisory scope—any POS markdown or refund requires deterministic POS rule validation and staff badge approval."},{"id":"Q18","cat":"webiq","q":"Would triggering Web IQ ($7 / 1,000 calls) on every casual shopper interaction inflate store operating costs?","a":"Web IQ is invoked selectively, not on every turn. 85% of routine store questions (stock, aisle location, local promos) close at zero search cost via L1 Luna + cached POS datasets; Web IQ triggers only on the 10%-15% of turns requiring live regulatory, recall, weather, or competitor verification."},{"id":"Q19","cat":"compliance","q":"How can headquarters view unified global store KPIs without violating EU Data Boundary sovereignty rules?","a":"Regional PII anonymization before aggregation: raw EU store logs remain 100% inside Sweden/Frankfurt OneLake storage, while Microsoft Purview strips PII so only store-level aggregate KPIs (SKU conversion, mean WER, stockout counts) surface on global executive dashboards."},{"id":"Q20","cat":"compliance","q":"Does running AI voice & copilot workflows on smart POS terminals affect PCI-DSS v4.0.1 payment certification?","a":"Strict hardware & scope isolation: cardholder data (PAN/CVV) executes inside the POS Secure Element / TEE payment enclave outside the AI application sandbox, while Azure cloud services maintain full PCI-DSS v4.0.1 Level 1 attestation."},{"id":"Q21","cat":"audio","q":"How do POS terminals degrade gracefully during a 30-second store Wi-Fi dead-spot or ISP micro-outage?","a":"Three-state edge resilience: (1) automatic exponential-backoff WSS reconnect reusing cached 10-min STS tokens when RTT spikes; (2) instant non-blocking fallback to local barcode/touch POS checkout so payment lanes never stall; (3) asynchronous telemetry flush upon link recovery."},{"id":"Q22","cat":"finops","q":"How does the companion serverless 3-Act Live Demo Workbench run on static pages—and are its metrics authentic?","a":"The companion workbench embeds 42 sanitized end-to-end execution snapshots captured from live US East 2 (omnipos-ai-us-east2) and EU Sweden Central (omnipos-ai-eu-sweden) Azure deployments plus 6 playable multi-accent .wav recordings—faithfully replaying verified 285ms/312ms STS latency, 2,249/2,252 (99.8%) cached tokens, and Web IQ citations 100% in-browser."}];
+
+      const ENGINE_LABELS = [{"name":"Azure Speech + Custom Speech + Phrase List","color":"var(--emerald)"},{"name":"Azure Speech + Phrase List 2.0 (0-Train)","color":"var(--ms-blue)"},{"name":"Azure Speech Base Multilingual","color":"var(--indigo)"},{"name":"Open-Source Whisper Large-v3 (Hallucination Risk)","color":"var(--amber)"},{"name":"Generic Unadapted Cloud ASR","color":"var(--rose)"}];
+
+      const RAM_DETAILS = ["Step 01 — TLS 1.3 In-Boundary Stream: Using the 10-minute regional STS JWT minted by DMP, the store POS opens a direct WSS stream to omnipos-ai-us-east2 (US) or omnipos-ai-eu-sweden (EUDB). Zero permanent Azure keys ever touch terminal flash storage.","Step 02 — Volatile-RAM Acoustic Decoding: PCM audio frames are decoded strictly in ephemeral container RAM into phoneme lattices. Zero speaker-identification voiceprint templates are extracted, keeping US stores outside Illinois BIPA biometric scope.","Step 03 — Sub-300ms JSON Transcript Emission: Partial and final transcripts stream back with PhraseList-boosted SKU accuracy while No-Audio-Log policies block any diagnostic audio capture on cloud storage.","Step 04 — Immediate Memory Overwrite: Decoded audio ring-buffers are immediately overwritten/freed upon utterance completion—0 bytes written to disk, 0 human review access, and 0 foundation model training reuse."];
+
+      // Theme toggle
+      const rootEl = document.documentElement;
+      const savedTheme = localStorage.getItem('omnipos_h5_theme');
+      if (savedTheme === 'dark' || savedTheme === 'light') rootEl.setAttribute('data-theme', savedTheme);
+      document.getElementById('themeToggleBtn').addEventListener('click', function () {
+        const next = rootEl.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        rootEl.setAttribute('data-theme', next);
+        try { localStorage.setItem('omnipos_h5_theme', next); } catch (_) {}
+      });
+
+      // Tabs
+      function activateH5Tab(target) {
+        if (!/^tab[1-4]$/.test(target)) return;
+        document.querySelectorAll('.tab-btn').forEach(function (b) {
+          const on = b.getAttribute('data-tab') === target;
+          b.classList.toggle('active', on);
+          b.setAttribute('aria-selected', on ? 'true' : 'false');
+        });
+        document.querySelectorAll('.tab-panel').forEach(function (p) {
+          p.classList.toggle('active', p.id === target);
+        });
+      }
+      document.querySelectorAll('.tab-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          activateH5Tab(btn.getAttribute('data-tab'));
+        });
+      });
+      if (location.hash) activateH5Tab(location.hash.slice(1));
+      window.addEventListener('hashchange', function () {
+        if (location.hash) activateH5Tab(location.hash.slice(1));
+      });
+
+      // Module 1A: WER Explorer
+      let curDevice = 'flagship';
+      let curSnr = 'clean';
+      function renderWer() {
+        const d = DEVICE_DATA[curDevice];
+        const scores = d.wer[curSnr];
+        document.getElementById('devMetaMic').textContent = d.mic;
+        document.getElementById('devMetaTitle').textContent = d.name;
+        document.getElementById('devMetaRec').textContent = d.rec;
+        const container = document.getElementById('werBarsContainer');
+        container.innerHTML = scores.map(function (val, idx) {
+          const pctWidth = Math.min(100, Math.round((val / 22) * 100));
+          return '<div class="wer-row">' +
+            '<div style="font-size:0.8rem;font-weight:700;">' + ENGINE_LABELS[idx].name + '</div>' +
+            '<div class="bar-track"><div class="bar-fill" style="width:' + pctWidth + '%;background:' + ENGINE_LABELS[idx].color + ';"></div></div>' +
+            '<div style="font-size:0.84rem;font-weight:800;text-align:right;">WER ' + val.toFixed(1) + '%</div>' +
+          '</div>';
+        }).join('');
+      }
+      document.querySelectorAll('#devicePills .choice-pill').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          curDevice = btn.getAttribute('data-device');
+          document.querySelectorAll('#devicePills .choice-pill').forEach(function (b) { b.classList.toggle('omnipos-active', b === btn); });
+          renderWer();
+        });
+      });
+      document.querySelectorAll('#snrPills .choice-pill').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          curSnr = btn.getAttribute('data-snr');
+          document.querySelectorAll('#snrPills .choice-pill').forEach(function (b) { b.classList.toggle('active', b === btn); });
+          renderWer();
+        });
+      });
+      renderWer();
+
+      // Module 1B: 7-City STS Simulator
+      let curCityIdx = 0;
+      const cityPillsEl = document.getElementById('cityPills');
+      cityPillsEl.innerHTML = CITIES_DATA.map(function (c, i) {
+        return '<button type="button" class="choice-pill' + (i === 0 ? ' active' : '') + '" data-cidx="' + i + '">' + c.city + '</button>';
+      }).join('');
+      function renderCity() {
+        const c = CITIES_DATA[curCityIdx];
+        const cutPct = (((c.proxyMs - c.directMs) / c.proxyMs) * 100).toFixed(1);
+        document.getElementById('stsCityName').textContent = c.city;
+        document.getElementById('stsRegionBadge').textContent = c.region + ' · ' + c.resource;
+        document.getElementById('stsDirectLabel').textContent = c.directMs + ' ms (-' + cutPct + '%)';
+        document.getElementById('stsProxyLabel').textContent = c.proxyMs + ' ms';
+        document.getElementById('stsDirectBar').style.width = Math.round((c.directMs / 750) * 100) + '%';
+        document.getElementById('stsProxyBar').style.width = Math.round((c.proxyMs / 750) * 100) + '%';
+        document.getElementById('stsCityNote').textContent = c.note;
+        document.getElementById('stsJurisdiction').textContent = "Sovereign Scope: " + c.jurisdiction;
+        document.getElementById('stsHandshakeCode').textContent =
+          '// Step 1: POS -> OmniPOS DMP (mTLS Hardware Cert, Zero Azure Key on POS)\n' +
+          'POST https://dmp-auth.omnipos-retail.example/v1/sts/speech-token\n' +
+          'Headers: { "X-OmniPOS-DeviceId": "OP-POS-98412", "X-Signature": "omnipos-dmp-ecdsa-p256" }\n\n' +
+          '// Step 2: DMP -> Azure Regional STS via Entra Managed Identity\n' +
+          'Bearer: OMNIPOS_SERVER_ENTRA_MANAGED_IDENTITY_TOKEN -> ' + c.resource + ' (TTL=600s)\n\n' +
+          '// Step 3: POS -> Direct Regional TLS 1.3 WebSocket (' + c.directMs + 'ms vs ' + c.proxyMs + 'ms proxy)\n' +
+          c.wss;
+      }
+      cityPillsEl.querySelectorAll('.choice-pill').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          curCityIdx = parseInt(btn.getAttribute('data-cidx'), 10);
+          cityPillsEl.querySelectorAll('.choice-pill').forEach(function (b) { b.classList.toggle('active', b === btn); });
+          renderCity();
+        });
+      });
+      renderCity();
+
+      // Module 1C: RAM Steps
+      const ramDetailEl = document.getElementById('ramStepDetail');
+      ramDetailEl.textContent = RAM_DETAILS[0];
+      document.querySelectorAll('#ramSteps .ram-step').forEach(function (stepEl) {
+        stepEl.addEventListener('click', function () {
+          const idx = parseInt(stepEl.getAttribute('data-step'), 10);
+          document.querySelectorAll('#ramSteps .ram-step').forEach(function (s) { s.classList.toggle('active', s === stepEl); });
+          ramDetailEl.textContent = RAM_DETAILS[idx];
+        });
+      });
+
+      // Module 2A: FinOps Calculator
+      const rngSpend = document.getElementById('rngSpend');
+      const rngLuna = document.getElementById('rngLuna');
+      const rngTerra = document.getElementById('rngTerra');
+      const rngCache = document.getElementById('rngCache');
+      const rngBatch = document.getElementById('rngBatch');
+
+      function updateFinops() {
+        const baseSpend = parseFloat(rngSpend.value);
+        let luna = parseInt(rngLuna.value, 10);
+        let terra = parseInt(rngTerra.value, 10);
+        if (luna + terra > 95) {
+          terra = 95 - luna;
+          rngTerra.value = String(terra);
+        }
+        const sol = 100 - luna - terra;
+        const cacheHit = parseInt(rngCache.value, 10) / 100;
+        const batchRatio = parseInt(rngBatch.value, 10) / 100;
+
+        document.getElementById('valSpend').textContent = '$' + baseSpend.toLocaleString();
+        document.getElementById('valLuna').textContent = luna + '%';
+        document.getElementById('valTerra').textContent = terra + '%';
+        document.getElementById('valCache').textContent = Math.round(cacheHit * 100) + '%';
+        document.getElementById('valBatch').textContent = Math.round(batchRatio * 100) + '%';
+
+        // Relative effective blended token cost vs monolithic $2.50/$10.00 baseline
+        const tierFactor = (luna / 100) * 0.14 + (terra / 100) * 0.42 + (sol / 100) * 1.05;
+        const afterRouting = baseSpend * tierFactor;
+        const inputShare = 0.68;
+        const afterCache = afterRouting * ((1 - inputShare) + inputShare * (1 - cacheHit * 0.90));
+        const finalSpend = Math.round(afterCache * (1 - batchRatio * 0.50 * 0.35));
+        const savePct = (((baseSpend - finalSpend) / baseSpend) * 100).toFixed(1);
+        const annualSave = Math.max(0, (baseSpend - finalSpend) * 12);
+        const mult = (baseSpend / Math.max(1, finalSpend)).toFixed(2);
+
+        document.getElementById('outOptSpend').textContent = '$' + finalSpend.toLocaleString();
+        document.getElementById('outSolShare').textContent = 'L3 Sol: ' + sol + '%';
+        document.getElementById('outSavePct').textContent = '-' + savePct + '%';
+        document.getElementById('outAnnualSave').textContent = 'Saves $' + annualSave.toLocaleString() + '/yr';
+        document.getElementById('outMultiplier').textContent = mult + 'x';
+
+        const rows = [
+          { label: "1. Legacy Single-Flagship", val: baseSpend, color: 'var(--rose)' },
+          { label: "2. After 3-Cup Tier Routing", val: Math.round(afterRouting), color: 'var(--indigo)' },
+          { label: "3. + Prompt Caching (-90%)", val: Math.round(afterCache), color: 'var(--ms-blue)' },
+          { label: "4. + Overnight Batch (-50%)", val: finalSpend, color: 'var(--emerald)' }
+        ];
+        document.getElementById('finopsWaterfall').innerHTML = rows.map(function (r) {
+          const w = Math.max(6, Math.round((r.val / baseSpend) * 100));
+          return '<div class="finops-wf-row">' +
+            '<div style="font-weight:700;">' + r.label + '</div>' +
+            '<div class="bar-track"><div class="bar-fill" style="width:' + w + '%;background:' + r.color + ';"></div></div>' +
+            '<div style="font-weight:800;text-align:right;">$' + r.val.toLocaleString() + '</div>' +
+          '</div>';
+        }).join('');
+      }
+      [rngSpend, rngLuna, rngTerra, rngCache, rngBatch].forEach(function (el) {
+        el.addEventListener('input', updateFinops);
+      });
+      const PRESETS = {
+        std: { s: 10000, l: 65, t: 25, c: 42, b: 25 },
+        diamond: { s: 10000, l: 60, t: 30, c: 99, b: 20 },
+        scale: { s: 50000, l: 65, t: 25, c: 85, b: 35 },
+        cons: { s: 10000, l: 50, t: 35, c: 60, b: 15 }
+      };
+      document.querySelectorAll('#finopsPresets .choice-pill').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          const p = PRESETS[btn.getAttribute('data-preset')];
+          rngSpend.value = p.s; rngLuna.value = p.l; rngTerra.value = p.t; rngCache.value = p.c; rngBatch.value = p.b;
+          document.querySelectorAll('#finopsPresets .choice-pill').forEach(function (b) { b.classList.toggle('active', b === btn); });
+          updateFinops();
+        });
+      });
+      PRESETS.std = { s: 10000, l: 65, t: 25, c: 42, b: 25 };
+      rngSpend.value = 10000; rngLuna.value = 65; rngTerra.value = 25; rngCache.value = 42; rngBatch.value = 25;
+      updateFinops();
+
+      // Module 3B: 8 Web IQ Cards & Retail Scopes Simulator
+      let curModIdx = 0;
+      const mod8Grid = document.getElementById('mod8Grid');
+      mod8Grid.innerHTML = WEBIQ_MODULES.map(function (m, i) {
+        return '<button type="button" class="mod8-card' + (i === 0 ? ' active' : '') + '" data-midx="' + i + '">' +
+          '<div style="font-size:0.69rem;font-weight:800;color:var(--ms-blue);">' + m.code + '</div>' +
+          '<div style="font-size:0.83rem;font-weight:700;margin-top:0.2rem;color:var(--text-primary);">' + m.title + '</div>' +
+        '</button>';
+      }).join('');
+      function renderMod8() {
+        const m = WEBIQ_MODULES[curModIdx];
+        document.getElementById('mod8Detail').innerHTML =
+          '<div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:0.5rem;margin-bottom:0.35rem;">' +
+            '<strong style="font-size:0.96rem;">' + m.title + '</strong>' +
+            '<span class="badge badge-emerald">' + m.metric + '</span>' +
+          '</div>' +
+          '<p style="margin:0;font-size:0.85rem;color:var(--text-secondary);">' + m.summary + '</p>';
+      }
+      mod8Grid.querySelectorAll('.mod8-card').forEach(function (card) {
+        card.addEventListener('click', function () {
+          curModIdx = parseInt(card.getAttribute('data-midx'), 10);
+          mod8Grid.querySelectorAll('.mod8-card').forEach(function (c) { c.classList.toggle('active', c === card); });
+          renderMod8();
+        });
+      });
+      renderMod8();
+
+      let curScen = 'smartassist';
+      let scopesOn = true;
+      function renderRetailScen() {
+        const s = RETAIL_SCENARIOS[curScen];
+        const btn = document.getElementById('scopesToggleBtn');
+        btn.classList.toggle('active', scopesOn);
+        btn.textContent = scopesOn
+          ? "🛡️ Scopes Allowlist Guard: ON"
+          : "⚠️ Scopes Allowlist Guard: OFF (Unfiltered)";
+        document.getElementById('retailScenOutput').innerHTML =
+          '<div style="font-weight:800;font-size:0.95rem;margin-bottom:0.35rem;">' + s.title + '</div>' +
+          '<div style="font-size:0.84rem;color:var(--text-secondary);margin-bottom:0.55rem;"><strong>' + "Store Query: " + '</strong>' + s.query + '</div>' +
+          '<div style="font-size:0.78rem;font-family:Consolas,monospace;margin-bottom:0.65rem;color:var(--ms-blue);">Scopes Allowlist = [' + (scopesOn ? s.scopesDomain : '* (UNRESTRICTED OPEN WEB)') + ']</div>' +
+          '<div style="padding:0.75rem;border-radius:10px;background:' + (scopesOn ? 'var(--emerald-soft)' : 'var(--rose-soft)') + ';font-size:0.85rem;font-weight:600;">' +
+            (scopesOn ? s.scopedSafe : s.unfilteredRisk) +
+          '</div>';
+      }
+      document.querySelectorAll('#retailScenPills .choice-pill').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          curScen = btn.getAttribute('data-scen');
+          document.querySelectorAll('#retailScenPills .choice-pill').forEach(function (b) { b.classList.toggle('omnipos-active', b === btn); });
+          renderRetailScen();
+        });
+      });
+      document.getElementById('scopesToggleBtn').addEventListener('click', function () {
+        scopesOn = !scopesOn;
+        renderRetailScen();
+      });
+      renderRetailScen();
+
+      // Module 4A: 14-Day Pilot Blueprint
+      let curPhase = 0;
+      const pilotGrid = document.getElementById('pilotGrid');
+      pilotGrid.innerHTML = PILOT_PHASES.map(function (p, i) {
+        return '<div class="pilot-card' + (i === 0 ? ' active' : '') + '" data-pidx="' + i + '">' +
+          '<div style="font-size:0.72rem;font-weight:800;color:var(--omnipos-orange);">' + p.days + '</div>' +
+          '<div style="font-size:0.88rem;font-weight:700;margin:0.25rem 0;">' + p.title + '</div>' +
+          '<div style="font-size:0.74rem;color:var(--emerald);font-weight:700;">' + p.kpi + '</div>' +
+        '</div>';
+      }).join('');
+      function renderPilot() {
+        const p = PILOT_PHASES[curPhase];
+        document.getElementById('pilotDetail').innerHTML =
+          '<div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:0.5rem;margin-bottom:0.4rem;">' +
+            '<strong>' + p.days + ' · ' + p.title + '</strong>' +
+            '<span class="badge badge-blue">' + p.owner + '</span>' +
+          '</div>' +
+          '<p style="margin:0;font-size:0.86rem;color:var(--text-secondary);">' + p.deliverables + '</p>';
+      }
+      pilotGrid.querySelectorAll('.pilot-card').forEach(function (el) {
+        el.addEventListener('click', function () {
+          curPhase = parseInt(el.getAttribute('data-pidx'), 10);
+          pilotGrid.querySelectorAll('.pilot-card').forEach(function (c) { c.classList.toggle('active', c === el); });
+          renderPilot();
+        });
+      });
+      renderPilot();
+
+      // Module 4B: 22 Architect FAQs
+      let curCat = 'all';
+      let expandAll = false;
+      const faqSearch = document.getElementById('faqSearch');
+      const faqList = document.getElementById('faqList');
+
+      function renderFaqs() {
+        const qText = faqSearch.value.trim().toLowerCase();
+        const filtered = FAQS.filter(function (item) {
+          const catOk = curCat === 'all' || item.cat === curCat;
+          const txtOk = !qText || item.q.toLowerCase().includes(qText) || item.a.toLowerCase().includes(qText) || item.id.toLowerCase().includes(qText);
+          return catOk && txtOk;
+        });
+        document.getElementById('faqCountBadge').textContent = filtered.length + ' / ' + FAQS.length;
+        faqList.innerHTML = filtered.map(function (item, idx) {
+          const isOpen = expandAll || idx < 2;
+          return '<div class="faq-item' + (isOpen ? ' open' : '') + '">' +
+            '<button type="button" class="faq-q">' +
+              '<span><span class="badge badge-blue" style="margin-right:0.45rem;">' + item.id + '</span>' + item.q + '</span>' +
+              '<span>▾</span>' +
+            '</button>' +
+            '<div class="faq-a">' +
+              '<div>' + item.a + '</div>' +
+              '<button type="button" class="copy-mini-btn" data-copy="' + encodeURIComponent(item.id + ' ' + item.q + '\n' + item.a) + '">' +
+                "Copy Architect Answer" +
+              '</button>' +
+            '</div>' +
+          '</div>';
+        }).join('');
+
+        faqList.querySelectorAll('.faq-q').forEach(function (qBtn) {
+          qBtn.addEventListener('click', function () {
+            qBtn.parentElement.classList.toggle('open');
+          });
+        });
+        faqList.querySelectorAll('.copy-mini-btn').forEach(function (cBtn) {
+          cBtn.addEventListener('click', function () {
+            const txt = decodeURIComponent(cBtn.getAttribute('data-copy'));
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+              navigator.clipboard.writeText(txt);
+            }
+            cBtn.textContent = "Copied ✓";
+            setTimeout(function () {
+              cBtn.textContent = "Copy Architect Answer";
+            }, 1400);
+          });
+        });
+      }
+
+      faqSearch.addEventListener('input', renderFaqs);
+      document.querySelectorAll('#faqCatPills .choice-pill').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          curCat = btn.getAttribute('data-cat');
+          document.querySelectorAll('#faqCatPills .choice-pill').forEach(function (b) { b.classList.toggle('active', b === btn); });
+          renderFaqs();
+        });
+      });
+      document.getElementById('faqExpandAllBtn').addEventListener('click', function () {
+        expandAll = !expandAll;
+        this.textContent = expandAll
+          ? "Collapse All"
+          : "Expand All";
+        renderFaqs();
+      });
+      renderFaqs();
+    })();
+  </script>
+</body>
+</html>

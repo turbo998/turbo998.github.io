@@ -12,6 +12,10 @@ const NATIVE_INLINE = new Set([
   'workshops/benchmarks/ai-infra-architect-workbench.en.html',
   'workshops/webiq-azure/index.html',
   'workshops/webiq-azure/index.en.html',
+  'workshops/diamond-demos/smart-retail-pos/index.html',
+  'workshops/diamond-demos/smart-retail-pos/index.en.html',
+  'workshops/diamond-demos/smart-retail-pos/live-demo.html',
+  'workshops/diamond-demos/smart-retail-pos/live-demo.en.html',
   'voice/voxcpm2-vs-azure-speech.html',
   'voice/voxcpm2-vs-azure-speech.en.html'
 ]);

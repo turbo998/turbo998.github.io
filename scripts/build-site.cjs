@@ -81,7 +81,11 @@ const diamondPages = [
   {path:'workshops/diamond-demos/databricks-fabric/index.en.html',role:'demo',title:'Zava Cold-Chain Retail × Azure Databricks & Microsoft Fabric · Zero-Copy Coexistence Console',tracks:['data-infra'],language:{declared:'en'},supplemental:true},
   {path:'workshops/diamond-demos/databricks-fabric/index.html',role:'demo',title:'Zava 全渠道生鲜冷链 × Azure Databricks & Microsoft Fabric · 零拷贝协同架构工作台',tracks:['data-infra'],language:{declared:'zh-CN'},supplemental:true},
   {path:'workshops/diamond-demos/travel-retail-ops/index.en.html',role:'demo',title:'Aether Global Travel & Retail × Azure Databricks · AI Operations Workbench',tracks:['data-infra'],language:{declared:'en'},supplemental:true},
-  {path:'workshops/diamond-demos/travel-retail-ops/index.html',role:'demo',title:'寰宇旅购 (Aether Global Travel & Retail) × Azure Databricks · 国际旅行零售 AI 运营工作台',tracks:['data-infra'],language:{declared:'zh-CN'},supplemental:true}
+  {path:'workshops/diamond-demos/travel-retail-ops/index.html',role:'demo',title:'寰宇旅购 (Aether Global Travel & Retail) × Azure Databricks · 国际旅行零售 AI 运营工作台',tracks:['data-infra'],language:{declared:'zh-CN'},supplemental:true},
+  {path:'workshops/diamond-demos/smart-retail-pos/index.en.html',role:'article',title:'OmniPOS Global Smart Retail × Azure AI Speech & Foundry · US & EU Store Terminal AI Architecture Portal',tracks:['data-infra','voice','commerce'],language:{declared:'en'},supplemental:true},
+  {path:'workshops/diamond-demos/smart-retail-pos/index.html',role:'article',title:'寰宇智店 (OmniPOS) × Azure AI Speech & Foundry · 美欧跨国智慧门店终端 AI 交互式方案门户',tracks:['data-infra','voice','commerce'],language:{declared:'zh-CN'},supplemental:true},
+  {path:'workshops/diamond-demos/smart-retail-pos/live-demo.en.html',role:'demo',title:'OmniPOS Global Smart Retail · 3-Act Serverless Live Demo Workbench (STS + Store FinOps + Web IQ)',tracks:['data-infra','voice','commerce'],language:{declared:'en'},supplemental:true},
+  {path:'workshops/diamond-demos/smart-retail-pos/live-demo.html',role:'demo',title:'寰宇智店 (OmniPOS) · 三幕无服务器智慧门店 AI 实测演示工作台 (STS + 门店 FinOps + Web IQ)',tracks:['data-infra','voice','commerce'],language:{declared:'zh-CN'},supplemental:true}
 ];
 const infraPages = [
   {path:'workshops/azure-agent-infra/benchmark-cards.en.html',role:'report',title:'Azure Agent Sandbox & Six-Runtime Hosting 7-Card Benchmark Report (EN)',tracks:['infra'],language:{declared:'en'},supplemental:true}

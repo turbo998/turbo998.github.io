@@ -49,6 +49,8 @@ function localeRegistry() {
     pairs.set(record.source,{en:record.en,zh:record.zh});
   }
   add('workshops/data-lab/index.en.html','workshops/data-lab/index.html');
+  add('workshops/diamond-demos/smart-retail-pos/index.en.html','workshops/diamond-demos/smart-retail-pos/index.html');
+  add('workshops/diamond-demos/smart-retail-pos/live-demo.en.html','workshops/diamond-demos/smart-retail-pos/live-demo.html');
   add('voice/voxcpm2-vs-azure-speech.en.html','voice/voxcpm2-vs-azure-speech.html');
   pairs.set('workshops/data-lab/live-demo.en.html',{en:'workshops/data-lab/index.en.html',zh:'workshops/data-lab/index.html'});
   pairs.set('workshops/data-lab/live-demo.html',{en:'workshops/data-lab/index.en.html',zh:'workshops/data-lab/index.html'});
@@ -92,7 +94,11 @@ function finalizeSite() {
   const phase179Owned=new Set(phase179Files);
   const titleLocked=new Set([
     ...reportOwned, ...phase179Owned, ...dedicatedOwned, ...camera4dFiles, ...radarFiles,
-    ...dataLabRel.map(f=>'workshops/data-lab/'+f), ...commerceTrendsFiles
+    ...dataLabRel.map(f=>'workshops/data-lab/'+f), ...commerceTrendsFiles,
+    'workshops/diamond-demos/smart-retail-pos/index.html',
+    'workshops/diamond-demos/smart-retail-pos/index.en.html',
+    'workshops/diamond-demos/smart-retail-pos/live-demo.html',
+    'workshops/diamond-demos/smart-retail-pos/live-demo.en.html'
   ]);
   const singleEditionSealed=new Set([
     'workshops/benchmarks/ai-cluster-optical-interconnect-selection-cards.html',

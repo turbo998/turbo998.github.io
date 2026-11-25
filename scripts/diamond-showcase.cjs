@@ -10,6 +10,8 @@ function diamondResources(zh) {
   const cePlaybookUrl = `workshops/diamond-demos/contoso-fabric/playbook${zh ? '' : '.en'}.html`;
   const dbxUrl = `workshops/diamond-demos/databricks-fabric/index${zh ? '' : '.en'}.html`;
   const gtrUrl = `workshops/diamond-demos/travel-retail-ops/index${zh ? '' : '.en'}.html`;
+  const posH5Url = `workshops/diamond-demos/smart-retail-pos/index${zh ? '' : '.en'}.html`;
+  const posLiveUrl = `workshops/diamond-demos/smart-retail-pos/live-demo${zh ? '' : '.en'}.html`;
   const hubUrl = zh ? 'zh-diamond.html' : 'diamond.html';
   return [
     {
@@ -19,22 +21,23 @@ function diamondResources(zh) {
       stages: ['architecture', 'evaluation', 'demos', 'resources'],
       badge: ['DIAMOND LIVE DEMO CENTER', 'DIAMOND 企业级参考架构演示中心'],
       title: [
-        'Diamond Enterprise Live Demos · Consumer Electronics Global Ops · Zava · Aether Travel & Retail · Fabric & Databricks',
-        'Diamond 企业级参考架构演示中心 · 消费电子全球运营 · Zava · 寰宇旅购（国际旅行零售） · Microsoft Fabric & Databricks'
+        'Diamond Enterprise Live Demos · Consumer Electronics · Zava · Aether Travel & Retail · OmniPOS Smart Retail',
+        'Diamond 企业级参考架构演示中心 · 消费电子全球运营 · Zava · 寰宇旅购 · 寰宇智店（跨国智慧门店终端）'
       ],
       finding: [
-        'Pre-integrated Entra ID OBO/B2B + M365 E5 + Fabric + Databricks · 3 Industry Reference Workbenches',
-        '预集成 Entra ID OBO/B2B + M365 E5 + Fabric + Databricks · 三大行业参考架构工作台'
+        'Pre-integrated Entra ID OBO/B2B + M365 E5 + Fabric + Databricks + Foundry Speech · 4 Industry Workbenches',
+        '预集成 Entra ID OBO/B2B + M365 E5 + Fabric + Databricks + Foundry 语音底座 · 四大行业参考架构工作台'
       ],
       description: [
-        'Solution Architect showcase combining the pre-provisioned Diamond enterprise tenant pattern with three end-to-end industry PoC workbenches (Consumer Electronics Global Operations on Fabric, Zava Cold-Chain on Databricks × Fabric, and Aether Global Travel & Retail AI Operations on Azure Databricks) plus a 10-dimension platform selection matrix.',
-        '面向解决方案架构师（SA）的企业级参考架构演示专区：拆解预集成的 Diamond 演示环境架构（统一身份透传/B2B 免无痕直连 + 协同办公 + 双湖仓底座），提供消费电子厂商全球业务运营 × Fabric、Zava × Databricks × Fabric 与寰宇旅购（国际旅行零售）× Databricks AI 智能运营工作台及双平台选型矩阵。'
+        'Solution Architect showcase combining the pre-provisioned Diamond enterprise tenant pattern with four end-to-end industry PoC workbenches (Consumer Electronics Global Operations on Fabric, Zava Cold-Chain on Databricks × Fabric, Aether Global Travel & Retail AI Operations on Azure Databricks, and OmniPOS US & EU Smart Retail Terminal AI on Azure AI Speech + 10m Regional STS + Multi-Tier Store FinOps + Web IQ) plus a 10-dimension platform selection matrix.',
+        '面向解决方案架构师（SA）的企业级参考架构演示专区：拆解预集成的 Diamond 演示环境架构（统一身份透传/B2B 免无痕直连 + 协同办公 + 双湖仓与 Foundry 智能体底座），提供消费电子厂商全球业务运营 × Fabric、Zava × Databricks × Fabric、寰宇旅购 × Databricks AI 与寰宇智店（OmniPOS 美欧跨国智慧门店终端 AI 门户 + 三幕实测台）四大工作台及选型矩阵。'
       ],
       links: [
         link(['Open Diamond Demo Center', '进入 Diamond 演示中心'], hubUrl),
         link(['Consumer Electronics × Fabric PoC', '消费电子全球运营 × Fabric 六阶段工作台'], ceUrl),
         link(['Databricks × Fabric PoC', 'Databricks × Fabric 四阶段控制台'], dbxUrl),
-        link(['Travel & Retail × Databricks AI PoC', '寰宇旅购（国际旅行零售）× Databricks AI 工作台'], gtrUrl)
+        link(['Travel & Retail × Databricks AI PoC', '寰宇旅购（国际旅行零售）× Databricks AI 工作台'], gtrUrl),
+        link(['Smart Retail POS AI (H5 + Live Demo)', '跨国智慧门店终端 AI（H5 + 三幕实测台）'], posH5Url)
       ]
     },
     {
@@ -110,6 +113,32 @@ function diamondResources(zh) {
         link(['Open 6-Scenario Travel Retail Workbench', '打开国际旅行零售 × Databricks 工作台'], gtrUrl),
         link(['Normal-Browser Live & Iframe Embed', '正常浏览器直连与页内嵌入'], `${gtrUrl}#act-live`),
         link(['Agent Bricks QA & Quota Promo Guardrail', 'Agent Bricks 质检与配额促收门禁'], `${gtrUrl}#act-3`)
+      ]
+    },
+    {
+      id: 'diamond-smart-retail-pos',
+      track: 'data-infra',
+      featured: true,
+      stages: ['architecture', 'evaluation', 'demos', 'resources'],
+      badge: ['DIAMOND POC 04 / AZURE AI SPEECH · 10M STS · STORE FINOPS · WEB IQ', 'DIAMOND 参考架构 04 / AZURE AI 语音 · 10 分钟 STS 直连 · 门店 FINOPS · WEB IQ'],
+      title: [
+        'OmniPOS Global Smart Retail × Azure AI Speech & Foundry · US & EU Store Terminal AI Landing Zone',
+        '寰宇智店 (OmniPOS Global Smart Retail) × Azure AI Speech & Foundry · 美欧跨国智慧门店终端 AI 门户与三幕实测台'
+      ],
+      finding: [
+        '590ms→285ms (-51.7%) 10m STS Direct · 1.7%–2.0% Clean / 5%–10% Noisy WER · 99.8% Prompt Cache (-63.2% Cost) · 42 Verified Snapshots',
+        '590ms→285ms (-51.7%) 10 分钟 STS 直连 · 1.7%–2.0% 安静 / 5%–10% 强噪 WER · 99.8% 缓存命中省 63.2% 成本 · 42 组双区实测快照'
+      ],
+      description: [
+        'Paired Solution Architect H5 Reference Portal and 100% serverless 3-Act Interactive Live Demo Workbench for multinational retail POS fleets (fictional entity: OmniPOS Global Smart Retail across Countertop All-in-One POS, Dual-Screen Flagship POS, Mobile Store Tablet POS, Self-Checkout Kiosk, and SmartAssist Screen): US East 2 (omnipos-ai-us-east2, Illinois BIPA zero-voiceprint volatile-RAM ASR) and EU Sweden Central (omnipos-ai-eu-sweden, EU Data Boundary GDPR Art. 9 zero-retention), playable 6-accent WAV audio with Phrase List 2.0 zero-training SKU boosting, L1/L2/L3 multi-tier store FinOps routing (2,249/2,252 cached_tokens = 99.8%), and Web IQ domain-allowlisted grounding blocking poisoned SEO recall/coupon traps.',
+        '配套交互式 H5 参考架构方案门户与 100% 无服务器三幕实测演示工作台（虚拟跨国参考企业：寰宇智店 OmniPOS，覆盖桌面全能收银机、旗舰双屏收银终端、手持移动店务终端、自助收银与称重终端及 AI 导购交互屏）：拆解美东（omnipos-ai-us-east2，纯内存零声纹提取豁免 BIPA）与欧盟瑞典中部（omnipos-ai-eu-sweden，EU Data Boundary 零留存满足 GDPR）双区主权架构、6 组多口音真实 WAV 播放与 Phrase List 2.0 动态热词纠偏、门店 L1/L2/L3 三杯型路由叠加 99.8% Prompt 缓存（2,249/2,252 tokens，总成本降 63.2%），以及 Web IQ 权威域名白名单（fda.gov / efsa.europa.eu / rapex.ec.europa.eu）拦截 SEO 投毒与伪造优惠券陷阱。'
+      ],
+      links: [
+        link(['Open H5 Architecture Portal', '打开智慧门店 H5 架构方案门户'], posH5Url),
+        link(['Open 3-Act Live Demo Workbench', '进入三幕无服务器实测工作台'], posLiveUrl),
+        link(['Act 1 · 10m STS & 6-Accent ASR', '第一幕 · 10 分钟 STS 直连与六口音 ASR'], `${posLiveUrl}#panel-act1`),
+        link(['Act 2 · Store POS 3-Tier FinOps', '第二幕 · 门店三杯型路由与 99.8% 缓存'], `${posLiveUrl}#panel-act2`),
+        link(['Act 3 · Web IQ Allowlist Guardrail', '第三幕 · Web IQ 权威信源防投毒护栏'], `${posLiveUrl}#panel-act3`)
       ]
     }
   ];
@@ -258,20 +287,23 @@ function renderDiamondPage(file, zh) {
   const ceUrl = `workshops/diamond-demos/contoso-fabric/index${zh ? '' : '.en'}.html`;
   const dbxUrl = `workshops/diamond-demos/databricks-fabric/index${zh ? '' : '.en'}.html`;
   const gtrUrl = `workshops/diamond-demos/travel-retail-ops/index${zh ? '' : '.en'}.html`;
+  const posH5Url = `workshops/diamond-demos/smart-retail-pos/index${zh ? '' : '.en'}.html`;
+  const posLiveUrl = `workshops/diamond-demos/smart-retail-pos/live-demo${zh ? '' : '.en'}.html`;
   const dataInfraUrl = `studio/${zh ? 'zh-' : ''}data-infra.html#diamond-showcase`;
   const dataLabUrl = `workshops/data-lab/index${zh ? '' : '.en'}.html?lang=${zh ? 'zh-CN' : 'en'}`;
 
   let body = ui.crumb(file, zh, t(zh, 'Diamond Live Demos', 'Diamond 架构演示'));
   body += `<section class="page-hero">
     <div>
-      <p class="eyebrow"><span class="status-dot" aria-hidden="true"></span>${t(zh, 'DIAMOND ENTERPRISE DEMO ENVIRONMENT · CONSUMER ELECTRONICS GLOBAL OPS · ZAVA · AETHER TRAVEL & RETAIL', 'DIAMOND 企业级参考架构演示环境 · 消费电子全球运营 · ZAVA · 寰宇旅购（国际旅行零售）')}</p>
+      <p class="eyebrow"><span class="status-dot" aria-hidden="true"></span>${t(zh, 'DIAMOND ENTERPRISE DEMO ENVIRONMENT · CONSUMER ELECTRONICS · ZAVA · AETHER TRAVEL & RETAIL · OMNIPOS SMART RETAIL', 'DIAMOND 企业级参考架构演示环境 · 消费电子全球运营 · ZAVA · 寰宇旅购 · 寰宇智店（跨国智慧门店终端）')}</p>
       <h1>${t(zh, 'Diamond Enterprise Live Demo Center', 'Diamond 企业级参考架构演示中心')}</h1>
-      <p class="lead">${t(zh, 'Interactive, strictly sanitized Solution Architect PoC workbenches built on the Diamond enterprise architecture: explore Consumer Electronics Global Operations on Microsoft Fabric (Contoso_Global_Channel_IQ), Zava Omnichannel Cold-Chain across Azure Databricks + Fabric OneLake Mirroring, and Aether Global Travel & Retail AI Operations on Azure Databricks (AI/BI + Genie + Agent Bricks with normal-browser B2B SSO & live embedding).', '面向云与 AI 解决方案架构师（SA）的企业级参考架构演示中心：基于严格脱敏的 Diamond 预集成企业环境，提供消费电子厂商全球业务运营（Microsoft Fabric 六阶段工作台）、Zava 全渠道生鲜冷链（Databricks × Fabric 零拷贝四阶段控制台）与寰宇旅购国际旅行零售 AI 智能运营工作台（Databricks AI/BI + Genie + Agent Bricks，支持正常浏览器免无痕直连与页内嵌入）及双平台选型矩阵。')}</p>
+      <p class="lead">${t(zh, 'Interactive, strictly sanitized Solution Architect PoC workbenches built on the Diamond enterprise architecture: explore Consumer Electronics Global Operations on Microsoft Fabric (Contoso_Global_Channel_IQ), Zava Omnichannel Cold-Chain across Azure Databricks + Fabric OneLake Mirroring, Aether Global Travel & Retail AI Operations on Azure Databricks (AI/BI + Genie + Agent Bricks), and OmniPOS US & EU Smart Retail Terminal AI on Azure AI Speech + 10m Regional STS + Multi-Tier Store FinOps + Web IQ.', '面向云与 AI 解决方案架构师（SA）的企业级参考架构演示中心：基于严格脱敏的 Diamond 预集成企业环境，提供消费电子厂商全球业务运营（Microsoft Fabric 六阶段工作台）、Zava 全渠道生鲜冷链（Databricks × Fabric 零拷贝四阶段控制台）、寰宇旅购国际旅行零售 AI 智能运营工作台（Databricks AI/BI + Genie + Agent Bricks）与寰宇智店美欧跨国智慧门店终端 AI 方案门户及三幕无服务器实测工作台（Azure AI Speech + 10m STS + 门店三杯型 FinOps + Web IQ）。')}</p>
       <div class="actions">
         <a class="button primary" href="${ui.href(file, ceUrl)}">${t(zh, 'Open PoC 1 · Consumer Electronics × Fabric', '打开演示 1 · 消费电子全球运营 × Fabric 六阶段工作台')} ↗</a>
         <a class="button diamond-cta" href="${ui.href(file, dbxUrl)}">${t(zh, 'Open PoC 2 · Databricks × Fabric', '打开演示 2 · Databricks × Fabric 四阶段控制台')} ↗</a>
         <a class="button primary" href="${ui.href(file, gtrUrl)}" style="background:linear-gradient(135deg,#9f1239 0%,#be123c 100%);border-color:#e11d48;color:#fff">${t(zh, 'Open PoC 3 · Travel & Retail × Databricks AI', '打开演示 3 · 国际旅行零售 × Databricks AI 工作台')} ↗</a>
-        <a class="button" href="${ui.href(file, `${gtrUrl}#act-live`)}" style="border-color:rgba(16,185,129,.55);background:rgba(16,185,129,.14);font-weight:600">${t(zh, 'Travel & Retail Normal-Browser Live & Embed', '国际旅行零售正常浏览器直连与嵌入')} ↗</a>
+        <a class="button primary" href="${ui.href(file, posH5Url)}" style="background:linear-gradient(135deg,#c2410c 0%,#ea580c 100%);border-color:#f97316;color:#fff">${t(zh, 'Open PoC 4 · Smart Retail POS AI Portal', '打开演示 4 · 智慧门店终端 AI 方案门户 (H5)')} ↗</a>
+        <a class="button" href="${ui.href(file, posLiveUrl)}" style="border-color:rgba(14,165,233,.55);background:rgba(14,165,233,.14);font-weight:600">${t(zh, '3-Act POS Serverless Live Demo', '三幕智慧门店无服务器实测台')} ↗</a>
         <a class="button" href="${ui.href(file, dataInfraUrl)}">${t(zh, 'Data & Infra Lab Track', '数据与云底座实验室专区')} ↗</a>
       </div>
     </div>
@@ -313,7 +345,7 @@ function renderDiamondPage(file, zh) {
   demoCards.push(
     ui.card(file, zh, {
       id: 'center-data-lab-workbench',
-      number: 'WORKBENCH-04',
+      number: 'WORKBENCH-05',
       badge: ['CROSS-CLOUD DATA BENCHMARK', '跨云数据平台对比工作台'],
       title: [
         'Enterprise Data Lab · Fabric IQ vs Databricks / Snowflake / BigQuery / Redshift',
@@ -324,8 +356,8 @@ function renderDiamondPage(file, zh) {
         'OneLake 存储经济学 · Direct Lake 时延 · 跨云治理与容灾选型'
       ],
       description: [
-        'Complement the three industry PoCs with interactive TCO & latency modeling across five cloud data platforms in the Data Lab workbench.',
-        '配合三大行业参考架构工作台，在 Data Lab 中交互推演五大云数据平台的存储成本、查询时延、流批一体与跨云容灾边界。'
+        'Complement the four industry PoCs with interactive TCO & latency modeling across five cloud data platforms in the Data Lab workbench.',
+        '配合四大行业参考架构工作台，在 Data Lab 中交互推演五大云数据平台的存储成本、查询时延、流批一体与跨云容灾边界。'
       ],
       url: dataLabUrl,
       links: [
@@ -338,8 +370,8 @@ function renderDiamondPage(file, zh) {
   body += ui.section(
     'live-cockpits',
     '02 / INTERACTIVE POC WORKBENCHES',
-    t(zh, 'Three Enterprise Industry PoC Workbenches (Consumer Electronics · Zava · Aether Travel & Retail)', '三大企业级参考架构工作台（消费电子全球运营 · Zava 生鲜冷链 · 寰宇旅购国际旅行零售）'),
-    t(zh, 'Open any standalone workbench to run step-by-step presenter cues, inspect live DAX / KQL / SQL queries, launch normal-browser cloud sessions, and simulate executive operational decisions.', '进入任一独立架构验证工作台，支持双屏提词引导、浏览器内真实数据行级 DAX/KQL/SQL 验算、正常浏览器免无痕云端直连，以及高管审批回写推演。'),
+    t(zh, 'Four Enterprise Industry PoC Workbenches (Consumer Electronics · Zava · Aether Travel & Retail · OmniPOS Smart Retail)', '四大企业级参考架构工作台（消费电子全球运营 · Zava 生鲜冷链 · 寰宇旅购 · 寰宇智店智慧门店终端）'),
+    t(zh, 'Open any standalone workbench to run step-by-step architecture walkthroughs, inspect live DAX / KQL / SQL / ASR / FinOps telemetry, launch normal-browser sessions, and simulate executive operational decisions.', '进入任一独立架构验证工作台，支持浏览器内真实数据行级 DAX/KQL/SQL 与多区域语音/FinOps 遥测核验、正常浏览器免无痕云端直连，以及高管审批回写推演。'),
     ui.grid(demoCards)
   );
 

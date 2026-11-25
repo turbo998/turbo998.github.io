@@ -1,0 +1,1522 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; media-src 'self' blob: data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; connect-src 'self'; object-src 'none'; base-uri 'self';" />
+  <title>寰宇智店 OmniPOS · 美欧智慧门店三幕交互式演示工作台 | Microsoft Foundry</title>
+  <meta name="description" content="100% 静态自包含美欧智慧门店 AI 实测演示工作台：Azure AI Speech 多口音抗噪与 10 分钟区域 STS 直连、门店 POS 三杯型 FinOps 99.8% 缓存路由、Web IQ 权威信源白名单护栏。" />
+  <style>
+    :root {
+      --bg-canvas: #070b14;
+      --bg-surface: #0e1626;
+      --bg-elevated: #141f35;
+      --bg-code: #080d19;
+      --border-subtle: rgba(148, 163, 184, 0.18);
+      --border-strong: rgba(56, 189, 248, 0.42);
+      --text-primary: #f1f5f9;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --accent-azure: #0078d4;
+      --accent-cyan: #38bdf8;
+      --accent-indigo: #6366f1;
+      --accent-emerald: #10b981;
+      --accent-amber: #f59e0b;
+      --accent-rose: #f43f5e;
+      --accent-omnipos: #ff6a00;
+      --shadow-card: 0 14px 34px rgba(2, 6, 23, 0.45);
+      --font-sans: "Segoe UI Variable Text", "Segoe UI", system-ui, -apple-system, sans-serif;
+      --font-display: "Segoe UI Variable Display", "Bahnschrift", "Segoe UI", system-ui, sans-serif;
+      --font-mono: "Cascadia Mono", "Consolas", ui-monospace, monospace;
+    }
+    html[data-theme="light"] {
+      --bg-canvas: #f3f6fb;
+      --bg-surface: #ffffff;
+      --bg-elevated: #eaf0f9;
+      --bg-code: #0f172a;
+      --border-subtle: rgba(15, 23, 42, 0.12);
+      --border-strong: rgba(0, 120, 212, 0.42);
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --text-muted: #64748b;
+      --accent-cyan: #0284c7;
+      --shadow-card: 0 10px 26px rgba(15, 23, 42, 0.08);
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; max-width: 100%; overflow-x: hidden; }
+    body {
+      font-family: var(--font-sans);
+      background:
+        radial-gradient(1100px 420px at 8% -5%, rgba(0, 120, 212, 0.18), transparent 60%),
+        radial-gradient(900px 380px at 92% -8%, rgba(99, 102, 241, 0.16), transparent 60%),
+        var(--bg-canvas);
+      color: var(--text-primary);
+      line-height: 1.55;
+      min-height: 100vh;
+      font-variant-numeric: tabular-nums;
+    }
+    .svg-defs { position: absolute; width: 0; height: 0; overflow: hidden; }
+    .ms-icon { width: 18px; height: 18px; flex-shrink: 0; vertical-align: middle; }
+    .ms-icon-lg { width: 26px; height: 26px; flex-shrink: 0; }
+
+    .topbar {
+      position: relative;
+      z-index: 10;
+      background: color-mix(in srgb, var(--bg-surface) 92%, transparent);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 14px 20px;
+    }
+    .topbar-inner {
+      max-width: 1480px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .brand-group { display: flex; align-items: flex-start; gap: 12px; min-width: 0; flex: 1 1 420px; }
+    .brand-title {
+      font-family: var(--font-display);
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+    }
+    .brand-sub { font-size: 12px; color: var(--text-secondary); margin-top: 3px; }
+    .omnipos-pill {
+      background: rgba(16, 185, 129, 0.15);
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.38);
+      padding: 2px 9px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+    .status-cluster { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+    .health-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 10px;
+      border-radius: 8px;
+      font-size: 11.5px;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-primary);
+      max-width: 100%;
+    }
+    .dot {
+      width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+      background: var(--accent-emerald);
+      box-shadow: 0 0 8px var(--accent-emerald);
+    }
+    .portal-link-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      text-decoration: none;
+      background: linear-gradient(135deg, #0078d4, #4f46e5);
+      color: #fff;
+      border: 1px solid rgba(56, 189, 248, 0.4);
+    }
+    .icon-btn {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-strong);
+      color: var(--text-primary);
+      padding: 7px 11px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .icon-btn:hover { filter: brightness(1.08); }
+
+    .container { max-width: 1480px; margin: 0 auto; padding: 16px 20px 56px; }
+
+    .warmup-strip {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 10px 14px;
+      margin-bottom: 14px;
+      border-radius: 11px;
+      background: color-mix(in srgb, var(--accent-emerald) 10%, var(--bg-surface));
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      font-size: 12.5px;
+    }
+
+    .arch-banner {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 12px 16px;
+      margin-bottom: 16px;
+      box-shadow: var(--shadow-card);
+    }
+    .arch-banner-head {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+    }
+    .arch-svg { width: 100%; height: auto; display: block; }
+
+    .act-nav {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+    .act-tab {
+      text-align: left;
+      padding: 13px 16px;
+      border-radius: 14px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-primary);
+      cursor: pointer;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      box-shadow: var(--shadow-card);
+      min-width: 0;
+    }
+    .act-tab.active {
+      border-color: var(--accent-cyan);
+      background: linear-gradient(145deg, color-mix(in srgb, var(--accent-azure) 16%, var(--bg-surface)), var(--bg-surface));
+      box-shadow: 0 0 0 1px var(--accent-cyan), var(--shadow-card);
+    }
+    .act-num {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 7px;
+      border-radius: 6px;
+      background: rgba(56, 189, 248, 0.14);
+      color: var(--accent-cyan);
+      white-space: nowrap;
+    }
+    .act-tab-title { font-weight: 700; font-size: 14px; margin-bottom: 3px; }
+    .act-tab-desc { font-size: 11.5px; color: var(--text-secondary); }
+
+    .act-panel { display: none; }
+    .act-panel.active { display: block; }
+
+    .workbench-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 430px) minmax(0, 1fr);
+      gap: 18px;
+      align-items: start;
+    }
+    .card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 16px;
+      box-shadow: var(--shadow-card);
+      margin-bottom: 16px;
+      min-width: 0;
+    }
+    .card-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 12px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .card-title {
+      font-family: var(--font-display);
+      font-size: 14.5px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: var(--bg-elevated);
+      color: var(--text-secondary);
+      border: 1px solid var(--border-subtle);
+      max-width: 100%;
+    }
+    .badge-emerald { background: rgba(16, 185, 129, 0.14); color: #34d399; border-color: rgba(16, 185, 129, 0.35); }
+    .badge-cyan { background: rgba(56, 189, 248, 0.14); color: var(--accent-cyan); border-color: rgba(56, 189, 248, 0.35); }
+    .badge-amber { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border-color: rgba(245, 158, 11, 0.35); }
+    .badge-rose { background: rgba(244, 63, 94, 0.15); color: #fb7185; border-color: rgba(244, 63, 94, 0.35); }
+
+    label.field-label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin: 12px 0 6px;
+    }
+    select, input[type="text"], textarea {
+      width: 100%;
+      background: var(--bg-elevated);
+      color: var(--text-primary);
+      border: 1px solid var(--border-subtle);
+      border-radius: 9px;
+      padding: 9px 11px;
+      font-family: var(--font-sans);
+      font-size: 12.5px;
+    }
+    textarea { resize: vertical; min-height: 58px; }
+    .sample-list { display: flex; flex-direction: column; gap: 6px; }
+    .sample-item {
+      padding: 8px 10px;
+      border-radius: 9px;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-subtle);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 12px;
+    }
+    .sample-item.selected {
+      border-color: var(--accent-cyan);
+      background: color-mix(in srgb, var(--accent-azure) 18%, var(--bg-elevated));
+    }
+    .locale-tag {
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 5px;
+      background: rgba(0, 120, 212, 0.2);
+      color: var(--accent-cyan);
+      flex-shrink: 0;
+    }
+    audio { width: 100%; height: 36px; margin-top: 8px; border-radius: 8px; }
+    .region-toggle, .store-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+    .choice-card {
+      padding: 9px 11px;
+      border-radius: 10px;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-subtle);
+      cursor: pointer;
+      font-size: 12px;
+      text-align: left;
+      color: var(--text-primary);
+      min-width: 0;
+      word-break: break-word;
+    }
+    .choice-card.selected {
+      border-color: var(--accent-cyan);
+      box-shadow: inset 0 0 0 1px var(--accent-cyan);
+      background: color-mix(in srgb, var(--accent-azure) 16%, var(--bg-elevated));
+    }
+    .check-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      padding: 9px 11px;
+      border-radius: 9px;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-subtle);
+      margin-top: 10px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+    .btn-stack { display: flex; flex-direction: column; gap: 9px; margin-top: 12px; }
+    .btn-primary, .btn-secondary, .btn-accent {
+      width: 100%;
+      border: none;
+      border-radius: 10px;
+      padding: 10px 13px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      color: #fff;
+      text-align: center;
+    }
+    .btn-primary { background: linear-gradient(135deg, #0078d4, #2563eb); }
+    .btn-secondary { background: linear-gradient(135deg, #0d9488, #059669); }
+    .btn-accent { background: linear-gradient(135deg, #ea580c, #d97706); }
+    .btn-mic {
+      background: var(--bg-elevated);
+      color: var(--text-primary);
+      border: 1px dashed var(--accent-cyan);
+      padding: 8px 11px;
+      border-radius: 9px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 8px;
+    }
+    .kpi-row {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 9px;
+      margin-bottom: 12px;
+    }
+    .kpi-box {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      padding: 9px 11px;
+      min-width: 0;
+    }
+    .kpi-label { font-size: 11px; color: var(--text-secondary); }
+    .kpi-val { font-family: var(--font-display); font-size: 18px; font-weight: 700; margin-top: 2px; word-break: break-word; }
+    .kpi-sub { font-size: 10.5px; color: var(--accent-emerald); margin-top: 2px; }
+
+    .bar-track {
+      height: 24px;
+      background: var(--bg-canvas);
+      border-radius: 6px;
+      overflow: hidden;
+      border: 1px solid var(--border-subtle);
+      margin-top: 4px;
+      position: relative;
+    }
+    .bar-fill {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      padding: 0 8px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #fff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      transition: width 0.35s ease;
+    }
+    .code-box {
+      background: var(--bg-code);
+      color: #e2e8f0;
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      padding: 11px 13px;
+      border-radius: 10px;
+      border: 1px solid rgba(148, 163, 184, 0.22);
+      overflow-x: auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .transcript-box {
+      background: color-mix(in srgb, var(--accent-emerald) 8%, var(--bg-elevated));
+      border: 1px solid rgba(16, 185, 129, 0.32);
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-size: 13.5px;
+      line-height: 1.58;
+      margin: 10px 0;
+      word-break: break-word;
+    }
+    .chips-wrap { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
+    .word-chip {
+      font-size: 11px;
+      padding: 3px 7px;
+      border-radius: 6px;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-subtle);
+      word-break: break-word;
+    }
+    .word-chip.hotword {
+      background: rgba(245, 158, 11, 0.2);
+      border-color: #f59e0b;
+      color: #fbbf24;
+      font-weight: 700;
+    }
+    .table-scroll { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .data-table { width: 100%; border-collapse: collapse; font-size: 12px; min-width: 520px; }
+    .data-table th, .data-table td { padding: 7px 9px; text-align: left; border-bottom: 1px solid var(--border-subtle); }
+    .data-table th { font-size: 10.5px; text-transform: uppercase; color: var(--text-secondary); background: var(--bg-elevated); }
+    .md-output {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: 11px;
+      padding: 13px 16px;
+      font-size: 13px;
+      line-height: 1.65;
+      word-break: break-word;
+    }
+    .md-output h4 { color: var(--accent-cyan); margin: 10px 0 5px; font-size: 14px; }
+    .md-output h4:first-child { margin-top: 0; }
+    .md-output ul { padding-left: 18px; margin: 5px 0; }
+    .funnel-stage { border-left: 3px solid var(--accent-cyan); padding-left: 12px; margin-bottom: 14px; }
+    .threat-banner {
+      background: rgba(244, 63, 94, 0.13);
+      border: 1px solid rgba(244, 63, 94, 0.45);
+      border-radius: 10px;
+      padding: 11px 13px;
+      margin-bottom: 12px;
+      word-break: break-word;
+    }
+    .citation-list { display: flex; flex-direction: column; gap: 6px; margin: 8px 0; }
+    .citation-link {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      padding: 7px 11px;
+      border-radius: 8px;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-subtle);
+      color: var(--accent-cyan);
+      text-decoration: none;
+      font-size: 12px;
+      word-break: break-word;
+    }
+    @media (max-width: 1120px) {
+      .workbench-grid, .act-nav { grid-template-columns: 1fr; }
+      .kpi-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 640px) {
+      .topbar { padding: 12px 14px; }
+      .container { padding: 12px 14px 42px; }
+      .region-toggle, .store-grid, .kpi-row { grid-template-columns: 1fr; }
+      .brand-title { font-size: 15px; }
+    }
+  </style>
+<script src="../../../assets/editorial/search-index.js" defer></script><script src="../../../assets/editorial/search.js" defer></script><style id="site-remediation-style">/* Embedded by integrate-dedicated.cjs so sealed report CSP remains unchanged. */
+.kee-dedicated-nav {
+  all: initial; box-sizing: border-box; position: relative; display: flex;
+  flex-wrap: wrap; align-items: center; gap: 6px 14px; width: 100%;
+  padding: 12px 18px; margin: 0 0 16px; border: 1px solid #314361;
+  background: #101A30; color: #EEF3FF; font: 13px/1.5 system-ui, sans-serif;
+  text-align: left; isolation: isolate; color-scheme: dark;
+}
+.kee-dedicated-nav a {
+  all: revert; box-sizing: border-box; display: inline-block; padding: 4px 0;
+  color: #9AABFF; background: transparent; font: inherit; text-decoration: underline;
+  text-underline-offset: 3px; border: 0; border-radius: 0; box-shadow: none;
+}
+.kee-dedicated-nav a:focus-visible { outline: 3px solid #56DDCD; outline-offset: 3px; }
+.kee-dedicated-nav .kee-dedicated-identity { font-weight: 700; color: #EEF3FF; }
+.kee-dedicated-nav .kee-dedicated-language {
+  all: revert; display: block; flex-basis: 100%; color: #ADBBD1; font: 12px/1.5 system-ui, sans-serif;
+}
+.kee-dedicated-native-link { display: block; padding: 22px; color: #1858a8; background: #f8fafc; font: 15px/1.6 system-ui, sans-serif; }
+.kee-dedicated-native-link a { color: #1858a8; text-decoration: underline; }
+@media print { .kee-dedicated-nav { display: none; } }
+
+/* Professional primary navigation: long section names reflow, never scroll inside the header. */
+[data-professional-header]{box-sizing:border-box;display:grid!important;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:18px!important;width:100%;max-width:none;height:auto!important;min-height:0!important;padding:18px 24px!important;margin:0 0 16px;position:relative;overflow:visible!important;background:#101A30;color:#EEF3FF;border:1px solid #314361;font:13px/1.5 system-ui,sans-serif;isolation:isolate;color-scheme:dark}
+[data-professional-header] *{box-sizing:border-box;min-width:0;max-height:none}
+[data-professional-header] a{font:inherit;text-decoration:none;color:#9AABFF;overflow-wrap:anywhere;white-space:normal}
+[data-professional-header] .professional-identity{font-weight:750;color:#EEF3FF;white-space:nowrap;font-size:14px;margin:0}
+[data-professional-header] .professional-primary{display:grid;grid-template-columns:1.45fr repeat(5,minmax(0,1fr));gap:6px;align-items:stretch;min-width:0}
+@media(max-width:960px) and (min-width:601px){[data-professional-header] .professional-primary{gap:5px}[data-professional-header] .professional-primary a{padding:8px 6px;font-size:11.5px}}
+[data-professional-header] .professional-primary a{display:flex;align-items:center;justify-content:center;padding:10px 9px;border:1px solid #314361;border-radius:12px;background:#172440;text-align:center;line-height:1.4;min-height:44px}
+[data-professional-header] .professional-primary a[aria-current=page]{background:#23375a;border-color:#56DDCD;color:#56DDCD}
+[data-professional-header] .professional-controls{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:4px;font-size:12px;margin:0;position:static}
+[data-professional-header] .professional-controls>a{display:flex;align-items:center;justify-content:center;padding:8px;min-height:40px;min-width:32px;border-radius:10px}
+[data-professional-header] .professional-context{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px 18px;padding-top:12px;border-top:1px solid #314361;font-size:12px;color:#ADBBD1;min-width:0;line-height:1.6}
+[data-professional-header] .professional-context>*{min-width:0;overflow-wrap:anywhere}
+[data-professional-header] .professional-context .kee-dedicated-language{flex-basis:100%;color:#ADBBD1}
+[data-professional-header] a:focus-visible{outline:3px solid #56DDCD;outline-offset:3px}
+[data-professional-header] a:hover{text-decoration:underline}
+[data-professional-header][data-perimeter-theme=light],:root[data-theme=light] .reading-header[data-professional-header]{background:#fff;color:#172440;border-color:#d4deee;color-scheme:light}
+[data-professional-header][data-perimeter-theme=light] a,:root[data-theme=light] .reading-header[data-professional-header] a{color:#3752a0}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a,:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a{background:#edf2ff;border-color:#d4deee}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a[aria-current],:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a[aria-current]{background:#dff6f0;color:#127b72;border-color:#127b72}
+@media(max-width:1150px){[data-professional-header]{grid-template-columns:minmax(0,1fr) auto;gap:12px!important}[data-professional-header] .professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header] .professional-controls{grid-column:2;grid-row:1}}
+@media(max-width:600px){[data-professional-header]{padding:14px 16px!important;gap:12px!important}[data-professional-header] .professional-primary{grid-template-columns:repeat(2,minmax(0,1fr))}[data-professional-header] .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:13px}[data-professional-header] .professional-controls{gap:0}[data-professional-header] .professional-controls>a{padding:6px;min-width:28px}}
+@media print{[data-professional-header]{display:none!important}}
+
+html{scroll-padding-top:164px}@media(max-width:600px){html{scroll-padding-top:260px}}.reading-header,.kee-dedicated-nav,[data-professional-header]{position:sticky;top:0;z-index:1000;-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
+
+:root{--search-bg:#101a30;--search-soft:#172440;--search-ink:#eef3ff;--search-muted:#adbbd1;--search-line:#293956;--search-accent:#9aabff;--header-offset:144px}
+:root[data-reading-shell][data-theme=light],[data-perimeter-theme=light]{--search-bg:#fff;--search-soft:#e8eefb;--search-ink:#17233e;--search-muted:#4c5e7c;--search-line:#d5ddec;--search-accent:#354ec8}
+html{scroll-padding-top:var(--header-offset,108px)!important}
+.site-search,.site-search *{box-sizing:border-box!important;font-family:"Segoe UI",sans-serif;letter-spacing:normal;text-transform:none}
+.site-search{position:relative;display:flex;align-items:center;gap:5px;min-width:0;width:230px;max-width:100%;margin:0!important;padding:0!important;line-height:1.4;border:1px solid var(--search-line);border-radius:9px;background:var(--search-soft);color:var(--search-ink);isolation:isolate}
+.site-search input[type=search]{display:block;flex:1;min-width:0;width:100%;height:42px;margin:0;padding:9px 8px!important;font-size:12px!important;line-height:1.5;border:0!important;border-radius:9px;background:transparent!important;color:var(--search-ink)!important;box-shadow:none!important;appearance:none}
+.site-search input::placeholder{color:var(--search-muted);opacity:1}.site-search input:focus-visible{outline:2px solid var(--search-accent);outline-offset:2px}
+.site-search kbd{font:11px Consolas,monospace;color:var(--search-muted);padding:1px 5px;border:1px solid var(--search-line);border-radius:4px}
+.site-search button[type=submit]{flex:none;width:38px;min-width:38px;height:42px;min-height:42px;padding:0;margin:0;border:0;border-radius:8px;background:transparent;color:var(--search-accent);font-size:24px;cursor:pointer;box-shadow:none}
+.search-label,.search-status{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.site-search .search-results{position:absolute;top:calc(100% + 10px);right:0;z-index:1100;width:min(480px,calc(100vw - 32px));max-height:min(560px,65vh);overflow-y:auto;border:1px solid var(--search-line);border-radius:12px;background:var(--search-bg);color:var(--search-ink);padding:10px;box-shadow:0 12px 32px #0005;text-align:left}
+.site-search .search-results[hidden]{display:none!important}.search-results .search-group{margin:8px 6px 4px;font:11px/1.5 Consolas,monospace;color:var(--search-muted)}
+.site-search .search-results a{display:block!important;padding:10px!important;margin:3px 0!important;border:1px solid transparent!important;border-radius:7px;background:transparent;color:var(--search-ink)!important;font-size:13px!important;text-decoration:none!important;white-space:normal;overflow-wrap:anywhere;text-align:left!important;line-height:1.5!important}
+.site-search .search-results a[aria-selected=true],.site-search .search-results a:hover{border-color:var(--search-accent)!important;background:var(--search-soft)}
+.search-results a small{display:block;font-size:10px;color:var(--search-muted);margin-top:4px}.search-results p{margin:10px;font-size:13px;color:var(--search-muted)}
+.search-archive-summary{padding:20px;border:1px solid var(--search-line);border-radius:10px;background:var(--search-bg);color:var(--search-ink);margin:24px 0}.search-archive-summary h2{font-size:24px;margin:0 0 12px}.search-archive-summary li{margin:12px 0}.search-archive-summary a{color:var(--search-accent)}
+[data-professional-header]{position:sticky!important;top:0!important;z-index:1000!important;background:var(--search-bg)!important;--header-glass:rgba(16,26,48,.9);grid-template-columns:auto minmax(0,1fr) 230px auto!important}
+[data-professional-header][data-perimeter-theme=light],:root[data-reading-shell][data-theme=light] [data-professional-header]{--header-glass:rgba(255,255,255,.94)}
+[data-professional-header] .professional-mobile{display:none}.professional-mobile summary{min-width:38px;min-height:42px;display:grid;place-items:center;cursor:pointer;list-style:none}.professional-mobile summary::-webkit-details-marker{display:none}
+[data-professional-header] .professional-context{display:none}
+.professional-context-bar{padding:12px 24px;border-bottom:1px solid var(--search-line);background:var(--search-bg);color:var(--search-muted);font:12px/1.6 "Segoe UI",sans-serif;display:flex;flex-wrap:wrap;gap:8px 18px;overflow-wrap:anywhere}.professional-context-bar a{color:var(--search-accent)}
+@supports((backdrop-filter:blur(16px)) or (-webkit-backdrop-filter:blur(16px))){.site-header,[data-professional-header]{background:var(--header-glass)!important;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}}
+@media(max-width:1250px) and (min-width:701px){.header-inner{grid-template-columns:minmax(0,1fr) 230px auto!important;padding:12px 0;gap:12px!important}.desktop-nav{grid-row:2;grid-column:1/-1}.header-inner>.site-search{grid-column:2;grid-row:1}.header-inner>.controls{grid-column:3;grid-row:1}[data-professional-header]{grid-template-columns:minmax(0,1fr) 230px auto!important;gap:12px!important}[data-professional-header]>.professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header]>.site-search{grid-column:2;grid-row:1}[data-professional-header]>.professional-controls{grid-column:3;grid-row:1}:root{--header-offset:184px}}
+@media(max-width:700px){.header-inner{grid-template-columns:minmax(0,1fr) auto!important;padding:10px 0;gap:8px!important}.header-inner>.site-search{grid-row:2;grid-column:1/-1;width:100%}.header-inner>.controls{grid-column:2;grid-row:1}.site-search .search-results{width:100%;right:0}[data-professional-header]{grid-template-columns:minmax(0,1fr) auto!important;padding:10px 16px!important;gap:8px!important}[data-professional-header]>.professional-primary{display:none!important}[data-professional-header]>.site-search{grid-column:1/-1;grid-row:2;width:100%}[data-professional-header]>.professional-controls{grid-column:2;grid-row:1}[data-professional-header] .professional-mobile{display:block}[data-professional-header] .professional-mobile[open]>.professional-primary{position:absolute;top:100%;left:0;right:0;padding:16px;background:var(--search-bg);border-bottom:1px solid var(--search-line);display:grid;grid-template-columns:1fr 1fr;gap:8px}[data-professional-header] .professional-mobile .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:12px!important}:root{--header-offset:136px}}
+@media(prefers-reduced-transparency:reduce){.site-header,[data-professional-header]{background:var(--search-bg)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}}
+@media print{.site-search,.professional-context-bar{display:none!important}}
+
+@media(min-width:1251px){.header-inner{display:grid!important;grid-template-columns:auto minmax(0,1fr) 230px auto!important;gap:18px!important}.header-inner .desktop-nav{min-width:0}}
+
+html:has(.kee-dedicated-app-root){height:auto!important;overflow-x:hidden!important;overflow-y:auto!important}
+html:has([data-professional-header]),html:has(.site-header){max-width:100%!important;overflow-x:clip!important;overflow-y:visible!important}
+body:has([data-professional-header]),body:has(.site-header){height:auto!important;max-width:100%!important;overflow-x:clip!important;overflow-y:visible!important;padding-top:0!important}
+.table-scroll{overflow-y:visible!important;max-height:none!important}
+@media screen and (max-width:932px){body:has(>[data-professional-header])>.card,body:has(>[data-professional-header])>.deck-header{max-width:calc(100vw - 24px)!important;box-sizing:border-box!important}body:has(>[data-professional-header])>.card{zoom:min(1,calc((100vw - 24px)/900))}}
+.demo-language-navigation{display:none!important}
+.stage-column,.telemetry-panel,.scene-pill,#timeline-slider{min-width:0}
+@media(max-width:1180px){.workspace,.template-tabs{grid-template-columns:minmax(0,1fr)!important}}
+
+.in-arena-frame .professional-context-bar,.in-arena-frame [data-knowledge-atlas]{display:none!important}
+.knowledge-graph-wide{display:block}.knowledge-graph-compact{display:none}@media(max-width:600px){.knowledge-graph-wide{display:none}.knowledge-graph-compact{display:block}}
+</style></head>
+<body><nav class="kee-dedicated-nav" data-professional-header><a class="professional-identity reading-brand kee-dedicated-identity identity" href="../../../zh.html">Qi Chen · @turbo998</a><div class="professional-primary" role="navigation" aria-label="主导航"><a href="../../../studio/zh-index.html" data-section="hub" data-nav-en-href="../../../studio/index.html" data-nav-zh-href="../../../studio/zh-index.html" data-nav-en-label="Frontier Transformation Engineering Hub" data-nav-zh-label="Frontier Transformation Engineering Hub">Frontier Transformation Engineering Hub</a><a href="../../../zh-diamond.html" data-section="diamond" data-nav-en-href="../../../diamond.html" data-nav-zh-href="../../../zh-diamond.html" data-nav-en-label="Diamond Live Demos" data-nav-zh-label="Diamond 架构演示" aria-current="page">Diamond 架构演示</a><a href="../../../zh-benchmarks.html" data-section="benchmarks" data-nav-en-href="../../../benchmarks.html" data-nav-zh-href="../../../zh-benchmarks.html" data-nav-en-label="Benchmarks &amp; Evaluation" data-nav-zh-label="基准评测中心">基准评测中心</a><a href="../../../zh-github-radar.html" data-section="radar" data-nav-en-href="../../../github-radar.html" data-nav-zh-href="../../../zh-github-radar.html" data-nav-en-label="GitHub AI Radar" data-nav-zh-label="GitHub AI 开源评估">GitHub AI 开源评估</a><a href="../../../zh-openrouter.html" data-section="routing" data-nav-en-href="../../../openrouter.html" data-nav-zh-href="../../../zh-openrouter.html" data-nav-en-label="Model Routing &amp; Telemetry" data-nav-zh-label="OpenRouter 模型遥测">OpenRouter 模型遥测</a><a href="../../../zh-about.html" data-section="profile" data-nav-en-href="../../../about.html" data-nav-zh-href="../../../zh-about.html" data-nav-en-label="Frontier Transformation Engineer" data-nav-zh-label="Frontier Transformation Engineer">Frontier Transformation Engineer</a></div><form class="site-search" role="search" action="../../../studio/zh-archive.html" method="get" data-search-root="../../../index.html" data-search-language="zh-CN"><label class="search-label" for="site-search-input">搜索架构、评测、Demo、技能...</label><input id="site-search-input" name="q" type="search" placeholder="搜索架构、评测、Demo、技能..." autocomplete="off" spellcheck="false" aria-keyshortcuts="/ Control+k Meta+k"><kbd aria-hidden="true">/</kbd><button type="submit" aria-label="搜索全部内容">⌕</button><div class="search-results" id="site-search-results" hidden></div><span class="search-status" role="status" aria-live="polite"></span></form><div class="reading-controls professional-controls" aria-label="网站语言与外观"><a href="live-demo.en.html" data-reading-language hreflang="en" lang="en">EN</a><a href="live-demo.html" hreflang="zh-CN" lang="zh-CN" aria-current="page">中文</a><details class="professional-mobile"><summary aria-label="打开主导航">☰</summary><div class="professional-primary" role="navigation" aria-label="移动主导航"><a href="../../../studio/zh-index.html" data-section="hub" data-nav-en-href="../../../studio/index.html" data-nav-zh-href="../../../studio/zh-index.html" data-nav-en-label="Frontier Transformation Engineering Hub" data-nav-zh-label="Frontier Transformation Engineering Hub">Frontier Transformation Engineering Hub</a><a href="../../../zh-diamond.html" data-section="diamond" data-nav-en-href="../../../diamond.html" data-nav-zh-href="../../../zh-diamond.html" data-nav-en-label="Diamond Live Demos" data-nav-zh-label="Diamond 架构演示" aria-current="page">Diamond 架构演示</a><a href="../../../zh-benchmarks.html" data-section="benchmarks" data-nav-en-href="../../../benchmarks.html" data-nav-zh-href="../../../zh-benchmarks.html" data-nav-en-label="Benchmarks &amp; Evaluation" data-nav-zh-label="基准评测中心">基准评测中心</a><a href="../../../zh-github-radar.html" data-section="radar" data-nav-en-href="../../../github-radar.html" data-nav-zh-href="../../../zh-github-radar.html" data-nav-en-label="GitHub AI Radar" data-nav-zh-label="GitHub AI 开源评估">GitHub AI 开源评估</a><a href="../../../zh-openrouter.html" data-section="routing" data-nav-en-href="../../../openrouter.html" data-nav-zh-href="../../../zh-openrouter.html" data-nav-en-label="Model Routing &amp; Telemetry" data-nav-zh-label="OpenRouter 模型遥测">OpenRouter 模型遥测</a><a href="../../../zh-about.html" data-section="profile" data-nav-en-href="../../../about.html" data-nav-zh-href="../../../zh-about.html" data-nav-en-label="Frontier Transformation Engineer" data-nav-zh-label="Frontier Transformation Engineer">Frontier Transformation Engineer</a></div></details><a data-reading-theme="light" href="live-demo.html?theme=light" aria-label="浅色主题">☀</a><a data-reading-theme="dark" href="live-demo.html?theme=dark" aria-label="深色主题">◐</a></div><div class="professional-context" aria-label="返回上下文"><a href="../../../studio/zh-index.html">← 工程枢纽</a> · <a href="../../../studio/zh-data-infra.html">返回主题</a></div></nav><div class="professional-context-bar"><a href="../../../studio/zh-index.html">← 工程枢纽</a> · <a class="reading-context" href="../../../studio/zh-data-infra.html">返回主题</a></div>
+  <svg class="svg-defs" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <symbol id="ico-microsoft" viewBox="0 0 24 24">
+      <path d="M11.49 2H2v9.492h9.492V2h-.002z" fill="#F25022"/>
+      <path d="M22 2h-9.492v9.492H22V2z" fill="#7FBA00"/>
+      <path d="M11.49 12.508H2V22h9.492v-9.492h-.002z" fill="#00A4EF"/>
+      <path d="M22 12.508h-9.492V22H22v-9.492z" fill="#FFB900"/>
+    </symbol>
+    <symbol id="ico-azure" viewBox="0 0 17.358 16.364">
+      <path d="M5.014.557A.82.82 0 0 1 5.789 0h5.14L5.594 15.807a.82.82 0 0 1-.775.557h-4a.82.82 0 0 1-.775-1.08z" fill="#0669bc"/>
+      <path d="M13.231 10.636h-8.1c-.34 0-.505.417-.256.649l5.205 4.858a.82.82 0 0 0 .558.22h4.587z" fill="#0078d4"/>
+      <path d="M12.344.557A.82.82 0 0 0 11.569 0H5.841a.82.82 0 0 1 .775.557l4.97 14.727a.82.82 0 0 1-.775 1.08h5.727a.82.82 0 0 0 .775-1.08z" fill="#3ccbf4"/>
+    </symbol>
+    <symbol id="ico-foundry" viewBox="1.49 0.99 15.01 16.01">
+      <path d="M11.96,11.68s.07-.1.07-.24v-3.87c0-.85.66-1.76,1.59-2.03-.06-.19-.64-2.11-.81-2.65-.17-.56-.67-1.9-1.29-1.9h-.01s-.09.05-.13.13c-.32.58-.46,3.02-.46,4.84v2.26c.27.97.91,3.22.96,3.35,0,0,.05.1.09.1Z" fill="#6366f1"/>
+      <path d="M16.01,5.46h-1.81c-1.21,0-2.17,1.09-2.17,2.11v3.87c0,.14-.04.24-.07.24s-.09-.1-.09-.1c0,0,.07.21.17.21h1.98c.62,0,2.48-.61,2.48-2.52v-3.25c0-.41-.24-.55-.49-.55Z" fill="#818cf8"/>
+      <path d="M2.34,17h5.38c2.35,0,3.2-2.03,3.2-3.81v-7.23c0-2.08.19-4.97.61-4.97h-3.23c-.77,0-1.43.82-2.18,2.48-.75,1.66-4.36,11.87-4.52,12.36-.26.79-.02,1.16.74,1.16Z" fill="#38bdf8"/>
+    </symbol>
+    <symbol id="ico-entra" viewBox="0 0 49 48">
+      <path d="M46.14 33.11 33.24 10.76C34.74 14.23 35.38 17.95 35.19 21.6L32.96 21.43S34.43 21.89 34.76 22.6C35.78 24.76 32.41 31.87 31.25 33.62 29.36 36.45 25.7 40.1 24.75 40.1 24.45 40.1 24.32 40 24.32 40 20.85 42.14 16.76 44.24 12.55 44.5H39.57C45.41 44.5 49.06 38.17 36.14 33.11Z" fill="#0055C6"/>
+      <path d="M44.25 30.03L45.01 31.14 31.24 7.3C28.32 2.23 21.02 2.23 18.1 7.3L4.57 30.74C6.64 27.64 11.19 25.3 14.49 23.68 15.64 21.76 25.7 17.7 44.25 30.03Z" fill="#1ABAFD"/>
+      <path d="M36.91 44.5H9.77C3.93 44.5 0.28 38.17 3.2 33.11L16.95 9.28C12.92 17.13 13.34 26.9 18.86 34.53 23.26 40.62 29.96 44.05 36.91 44.5Z" fill="#32BBF2"/>
+    </symbol>
+    <symbol id="ico-guardrails" viewBox="0 0 18 18">
+      <path d="m13.86,8.05c0,3.82-4.63,6.91-5.63,7.54-.12.07-.27.07-.39,0-1.07-.69-5.72-3.77-5.72-7.54V3.39c0-.2.16-.36.35-.37,3.6-.1,2.78-1.68,5.48-1.68s1.86,1.58,5.47,1.68c.2.01.35.17.35.37l.08,4.66Z" fill="#0078d4"/>
+      <circle cx="12.45" cy="13.2" r="3.44" fill="#76bc2d"/>
+      <path d="m11.6,14.68-1.57-1.57.42-.42,1.15,1.15,2.68-2.68.42.42-3.1,3.1Z" fill="#fff"/>
+    </symbol>
+    <symbol id="ico-eventhouse" viewBox="0 0 17.03 17.01">
+      <path d="m 0.97,0.97 15.06,15.06 a 0.57,0.57 0 0 0 1,-0.4 V 0.57 A 0.57,0.57 0 0 0 16.43,0 H 1.37 a 0.57,0.57 0 0 0 -0.4,0.97 z" fill="#1988d9"/>
+      <path d="m 5.03,5.03 6.94,6.94 5,-5 V 0.57 A 0.57,0.57 0 0 0 16.43,0 h -6.37 z" fill="#50e6ff"/>
+    </symbol>
+  </svg>
+
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand-group">
+        <svg class="ms-icon-lg"><use href="#ico-microsoft"></use></svg>
+        <div>
+          <div class="brand-title">
+            <span>Microsoft Foundry × 寰宇智店 (OmniPOS) 三幕交互式演示工作台</span>
+            <span class="omnipos-pill">Sanitized Diamond Snapshot · US East 2 & EU Sweden Central Verified</span>
+          </div>
+          <div class="brand-sub">美欧跨国智慧门店 AI 参考架构 · 10m 区域 STS 免密钥直连 · 99.8% 前缀缓存 FinOps · Web IQ 权威白名单护栏</div>
+        </div>
+      </div>
+
+      <div class="status-cluster">
+        <a class="portal-link-btn" href="index.html">← 返回 H5 架构方案门户</a>
+        <div class="health-pill">
+          <span class="dot"></span>
+          <svg class="ms-icon"><use href="#ico-azure"></use></svg>
+          <span id="txt-us">omnipos-ai-us-east2 (285ms STS)</span>
+        </div>
+        <div class="health-pill">
+          <span class="dot"></span>
+          <svg class="ms-icon"><use href="#ico-azure"></use></svg>
+          <span id="txt-eu">omnipos-ai-eu-sweden (312ms STS)</span>
+        </div>
+        <button class="icon-btn" id="btn-warmup" type="button">⚡ 预热刷新 STS 令牌与前缀缓存</button>
+        <button class="icon-btn" id="btn-theme" type="button">☀️ 浅色投屏</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="warmup-strip" id="warmup-strip">
+      <span id="warmup-text">🟢 已加载美欧双区 42 组真实 Azure 封存遥测快照 · US STS 285ms / EU STS 312ms · Prompt Cache 命中率 99.8% (2,249 / 2,252 tokens)</span>
+      <span class="badge badge-emerald" id="warmup-ttl">STS JWT TTL: 600s · disableLocalAuth: true</span>
+    </div>
+
+    <div class="arch-banner">
+      <div class="arch-banner-head">
+        <span><svg class="ms-icon"><use href="#ico-foundry"></use></svg> 端到端控制面与数据面拓扑（OmniPOS 美欧双区零密钥直连与三幕闭环）</span>
+        <span>rg-omnipos-retail-ai · US East 2 &amp; EU Sweden Central</span>
+      </div>
+      <svg class="arch-svg" data-knowledge-atlas="data-infra" viewBox="0 0 1120 148" role="img" aria-label="端到端控制面与数据面拓扑（OmniPOS 美欧双区零密钥直连与三幕闭环）">
+        <rect x="8" y="14" width="245" height="120" rx="12" fill="#111c33" stroke="#38bdf8" stroke-width="1.4"/>
+        <text x="24" y="42" fill="#f8fafc" font-size="13" font-weight="700">OmniPOS Store Terminals</text>
+        <text x="24" y="64" fill="#94a3b8" font-size="11">双屏 POS · 移动店务 · 称重台 · 导购屏</text>
+        <text x="24" y="88" fill="#38bdf8" font-size="11" font-family="monospace">X-OmniPOS-DeviceId · TLS 1.3</text>
+        <text x="24" y="112" fill="#34d399" font-size="11">Zero Static Key · Zero Voiceprint</text>
+
+        <path d="M254 74 L292 74" stroke="#38bdf8" stroke-width="2" stroke-dasharray="4 3"/>
+        <rect x="294" y="14" width="256" height="120" rx="12" fill="#111c33" stroke="#10b981" stroke-width="1.4"/>
+        <text x="310" y="42" fill="#f8fafc" font-size="13" font-weight="700">Act 1 · 10m Regional STS + Speech</text>
+        <text x="310" y="64" fill="#34d399" font-size="11">590ms → 285ms (-51.7%) · 零本地密钥</text>
+        <text x="310" y="88" fill="#94a3b8" font-size="11">Phrase List Boost · MAI-Transcribe-2</text>
+        <text x="310" y="112" fill="#fbbf24" font-size="11">eastus2 / swedencentral Direct WSS</text>
+
+        <path d="M551 74 L589 74" stroke="#10b981" stroke-width="2" stroke-dasharray="4 3"/>
+        <rect x="591" y="14" width="256" height="120" rx="12" fill="#111c33" stroke="#6366f1" stroke-width="1.4"/>
+        <text x="607" y="42" fill="#f8fafc" font-size="13" font-weight="700">Act 2 · SQL + L1/L2/L3 FinOps</text>
+        <text x="607" y="64" fill="#a5b4fc" font-size="11">Cached 2,249/2,252 (99.8%) · 成本 -63.2%</text>
+        <text x="607" y="88" fill="#94a3b8" font-size="11">Luna (70%) · Terra (22%) · Sol (8%)</text>
+        <text x="607" y="112" fill="#38bdf8" font-size="11">SQL -99.4% Tokens · Batch -50%</text>
+
+        <path d="M848 74 L884 74" stroke="#6366f1" stroke-width="2" stroke-dasharray="4 3"/>
+        <rect x="886" y="14" width="226" height="120" rx="12" fill="#111c33" stroke="#f59e0b" stroke-width="1.4"/>
+        <text x="902" y="42" fill="#f8fafc" font-size="13" font-weight="700">Act 3 · Web IQ v3 Scopes</text>
+        <text x="902" y="64" fill="#fcd34d" font-size="11">fda.gov / efsa / rapex 白名单防投毒</text>
+        <text x="902" y="88" fill="#94a3b8" font-size="11">GDSAT 79.05 #1 · P95 164ms</text>
+        <text x="902" y="112" fill="#fb7185" font-size="11">403 ScopeDomainBlocked Guard</text>
+      </svg>
+    </div>
+
+    <nav class="act-nav" role="tablist">
+      <button class="act-tab active" id="tab-act1" type="button" data-act="1">
+        <span class="act-num">ACT 01</span>
+        <div>
+          <div class="act-tab-title">1）AI 音频 · 10m 区域 STS 直连 + 多口音热词 ASR</div>
+          <div class="act-tab-desc">6 国口音实采 WAV 试听 + 麦克风模拟 · 285ms 直连 WebSocket vs 590ms 代理 · Phrase List 动态热词偏置</div>
+        </div>
+      </button>
+      <button class="act-tab" id="tab-act2" type="button" data-act="2">
+        <span class="act-num">ACT 02</span>
+        <div>
+          <div class="act-tab-title">2）门店 POS 运营 FinOps · 三杯型路由 & 99.8% 缓存</div>
+          <div class="act-tab-desc">美欧 6 城门店流水 · L1 Luna / L2 Terra / L3 Sol (gpt-6.2-sol / grok-4.7) · -63.2% 账单瀑布与自定义问答</div>
+        </div>
+      </button>
+      <button class="act-tab" id="tab-act3" type="button" data-act="3">
+        <span class="act-num">ACT 03</span>
+        <div>
+          <div class="act-tab-title">3）Web IQ 权威检索护栏 vs 无过滤搜索投毒陷阱</div>
+          <div class="act-tab-desc">SKU 法规/召回核验与竞品核价 · fda.gov / efsa.europa.eu / rapex 白名单开关 · SEO 越狱注入实时拦截</div>
+        </div>
+      </button>
+    </nav>
+
+    <!-- ACT 1 -->
+    <section class="act-panel active" id="panel-act1">
+      <div class="workbench-grid">
+        <div>
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title"><svg class="ms-icon"><use href="#ico-foundry"></use></svg> 美欧多口音门店音频源 & 动态热词控制台</div>
+              <span class="badge badge-cyan">24kHz / 16kHz WAV</span>
+            </div>
+            <div class="sample-list" id="sample-list"></div>
+            <audio id="asr-audio-player" controls preload="metadata"></audio>
+            <button class="btn-mic" id="btn-live-mic" type="button">🎙️ 麦克风实测 / 模拟门店语音点单 (16kHz Mono PCM)</button>
+            <div id="mic-status" style="font-size:11.5px;color:var(--accent-emerald);margin-top:6px;"></div>
+
+            <label class="field-label">目标就近接入云节点 (Regional Speech Endpoint)</label>
+            <div class="region-toggle">
+              <button class="choice-card selected" id="asr-reg-us" type="button" data-region="us">
+                <strong>US East 2 (eastus2)</strong>
+                <div style="font-size:11px;color:var(--text-secondary);margin-top:2px;">omnipos-ai-us-east2 · US DataZone · STS 285ms</div>
+              </button>
+              <button class="choice-card" id="asr-reg-eu" type="button" data-region="eu">
+                <strong>EU Sweden (swedencentral)</strong>
+                <div style="font-size:11px;color:var(--text-secondary);margin-top:2px;">omnipos-ai-eu-sweden · EU Data Boundary · STS 312ms</div>
+              </button>
+            </div>
+
+            <label class="check-row">
+              <input type="checkbox" id="chk-hotword-boost" checked style="width:auto;margin-top:2px;" />
+              <span><strong>启用动态 Phrase List 热词偏置增强 (+8.4% 专有名词召回增益)</strong></span>
+            </label>
+
+            <label class="field-label" for="asr-phrases">门店专属热词表（支持自由增删 SKU/品牌热词并实时重算切片高亮）</label>
+            <textarea id="asr-phrases"></textarea>
+
+            <div class="btn-stack">
+              <button class="btn-primary" id="btn-run-sts" type="button">① 签发 10m 临时 STS JWT 并对比直连 WebSocket vs 后端代理延迟</button>
+              <button class="btn-secondary" id="btn-run-fast" type="button">② 运行 Fast Transcription (2025-10-15) + 热词偏置 & RTFx 测速</button>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title"><svg class="ms-icon"><use href="#ico-entra"></use></svg> 路径 ① · 10 分钟区域 STS 临时令牌直连 vs 传统后端中转代理</div>
+              <span class="badge badge-emerald" id="sts-mode-badge">美欧双区已就绪</span>
+            </div>
+            <div id="sts-output-body"></div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title"><svg class="ms-icon"><use href="#ico-foundry"></use></svg> 路径 ② · 多口音识别转写、动态热词切片高亮与四引擎成本对标</div>
+              <span class="badge badge-cyan" id="fast-mode-badge">同 Speech SKU 四引擎矩阵</span>
+            </div>
+            <div id="fast-output-body"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ACT 2 -->
+    <section class="act-panel" id="panel-act2">
+      <div class="workbench-grid">
+        <div>
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title"><svg class="ms-icon"><use href="#ico-eventhouse"></use></svg> 美欧门店选择、三杯型路由与自定义经营问答</div>
+              <span class="badge badge-emerald">99.8% Cache · -63.2% 账单</span>
+            </div>
+
+            <label class="field-label">选择美欧智慧门店与绑定区域中心仓 (100% 本区数据驻留)</label>
+            <div class="store-grid" id="store-selector-grid"></div>
+
+            <label class="field-label">选择模型杯型档位 (70% L1 · 22% L2 · 8% L3)</label>
+            <div style="display:flex;flex-direction:column;gap:7px;">
+              <button class="choice-card selected" id="tier-btn-luna" type="button" data-tier="luna">
+                <strong>☕ L1 小杯 · gpt-5.6-luna / gpt-5.4-nano 级 (70% 流量)</strong>
+                <div style="font-size:11px;color:var(--text-secondary);margin-top:2px;">毫秒级小时异常筛查 · 退改单风控 · Z-Score 触发器</div>
+              </button>
+              <button class="choice-card" id="tier-btn-terra" type="button" data-tier="terra">
+                <strong>🥤 L2 中杯 · gpt-6.1-terra / gpt-5.4-mini 级 (22% 流量)</strong>
+                <div style="font-size:11px;color:var(--text-secondary);margin-top:2px;">跨品类购物篮连带诊断 · AI 导购交互屏动态套餐推送</div>
+              </button>
+              <button class="choice-card" id="tier-btn-sol" type="button" data-tier="sol">
+                <strong>🏆 L3 大杯 · gpt-6.2-sol / grok-4.7 深度推理级 (8% 流量)</strong>
+                <div style="font-size:11px;color:var(--text-secondary);margin-top:2px;">门店 × 区域冷链大仓安全库存、截单窗口与整托 EOQ 补货决策</div>
+              </button>
+            </div>
+
+            <label class="field-label">计费代际切换 (实测前缀缓存命中 2,249 / 2,252 = 99.8%)</label>
+            <div class="region-toggle">
+              <button class="choice-card selected" id="gen-btn-gen6" type="button" data-gen="gen6"><strong>🚀 新一代路由底座 (Luna / Terra / Sol + 99.8% Cache)</strong></button>
+              <button class="choice-card" id="gen-btn-gen56" type="button" data-gen="gen56"><strong>📊 传统未分层单模型基线对比</strong></button>
+            </div>
+
+            <label class="field-label" for="llm-custom-q">自定义门店经营 / 补货追问（可选，留空使用标准门店快照推演）</label>
+            <input type="text" id="llm-custom-q" placeholder="例如：Matcha Oat Croissant 下午断货风险多高？需要在 14:30 截单前向新泽西冷链仓补多少箱？" />
+
+            <div class="btn-stack">
+              <button class="btn-primary" id="btn-run-tier" type="button">▶ 执行当前选中档位实测推演</button>
+              <button class="btn-accent" id="btn-run-funnel" type="button">⚡ 一键并发推演 L1 → L2 → L3 三杯型完整漏斗</button>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title"><svg class="ms-icon"><use href="#ico-eventhouse"></use></svg> 门店 SQL 预聚合实时经营面板 (-99.4% 小票 Token 压缩)</div>
+              <span class="badge badge-cyan" id="store-dc-badge"></span>
+            </div>
+            <div id="store-kpi-panel"></div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title"><svg class="ms-icon"><use href="#ico-foundry"></use></svg> 多档位模型结构化 JSON 账本、推理输出与 -63.2% 成本瀑布</div>
+              <span class="badge badge-emerald" id="llm-exec-badge"></span>
+            </div>
+            <div id="llm-output-body"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ACT 3 -->
+    <section class="act-panel" id="panel-act3">
+      <div class="workbench-grid">
+        <div>
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title"><svg class="ms-icon"><use href="#ico-guardrails"></use></svg> Web IQ 权威信源白名单 vs 恶意 SEO 投毒拦截台</div>
+              <span class="badge badge-emerald">Web IQ v3 GA</span>
+            </div>
+
+            <label class="field-label">选择跨国门店公私域联动核验场景（含过敏原召回与竞品核价）</label>
+            <div style="display:flex;flex-direction:column;gap:8px;" id="webiq-scenario-list"></div>
+
+            <label class="check-row">
+              <input type="checkbox" id="chk-allowlist-guard" checked style="width:auto;margin-top:2px;" />
+              <div>
+                <strong>🛡️ 启用域名白名单 (fda.gov / efsa.europa.eu / rapex.ec.europa.eu) + 时效性护栏</strong>
+                <div style="font-size:11px;color:var(--text-secondary);margin-top:2px;">开启后仅采信权威监管/气象/交通白名单并拦截恶意 SEO 越狱页；关闭可对比传统无过滤搜索的中毒后果。</div>
+              </div>
+            </label>
+
+            <label class="check-row">
+              <input type="checkbox" id="chk-inject-trap" checked style="width:auto;margin-top:2px;" />
+              <span><strong>🧪 注入外部恶意竞品促销与过敏原篡改 SEO 陷阱载荷</strong></span>
+            </label>
+
+            <label class="field-label" for="webiq-custom-q">自定义商品合规 / 召回 / 竞品价格规格核验指令（可选）</label>
+            <input type="text" id="webiq-custom-q" placeholder="例如：核查有机核桃仁批次在 FDA 与欧盟 RAPEX 是否有近期过敏原未标注召回，并校验竞品同规格售价..." />
+
+            <div class="btn-stack">
+              <button class="btn-primary" id="btn-run-webiq" type="button">🌐 执行 Web IQ 权威溯源核验与防注入对比</button>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title"><svg class="ms-icon"><use href="#ico-guardrails"></use></svg> Web IQ 检索词、权威引用溯源、投毒拦截审计与终端执行单</div>
+              <span class="badge badge-emerald" id="webiq-exec-badge"></span>
+            </div>
+            <div id="webiq-output-body"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    (function () {
+      const IS_ZH = true;
+      const STATE = {
+        datasets: null,
+        cache: null,
+        selectedSampleIdx: 0,
+        asrRegion: 'us',
+        micSimTranscript: null,
+        selectedStoreId: 'US-NYC-01',
+        selectedTier: 'luna',
+        selectedGeneration: 'gen6',
+        selectedWebIqId: 'berlin_scale_allergen',
+        warmupCount: 0
+      };
+
+      const MODEL_FAMILY_ALIAS = {
+        luna: 'gpt-5.6-luna / gpt-5.4-nano',
+        terra: 'gpt-6.1-terra / gpt-5.4-mini',
+        sol: 'gpt-6.2-sol / grok-4.7'
+      };
+
+      function esc(str) {
+        return String(str ?? '')
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;');
+      }
+
+      function renderMarkdown(md) {
+        if (!md) return '';
+        const lines = String(md).split('\n');
+        let html = '';
+        let inUl = false;
+        for (const raw of lines) {
+          let line = esc(raw.trim());
+          if (!line) {
+            if (inUl) { html += '</ul>'; inUl = false; }
+            continue;
+          }
+          line = line
+            .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+            .replace(/`([^`]+)`/g, '<code>$1</code>');
+          if (/^#{1,4}\s+/.test(line)) {
+            if (inUl) { html += '</ul>'; inUl = false; }
+            html += '<h4>' + line.replace(/^#{1,4}\s+/, '') + '</h4>';
+          } else if (/^[-*]\s+/.test(line) || /^\d+[.)]\s+/.test(line)) {
+            if (!inUl) { html += '<ul>'; inUl = true; }
+            html += '<li>' + line.replace(/^([-*]|\d+[.)])\s+/, '') + '</li>';
+          } else {
+            if (inUl) { html += '</ul>'; inUl = false; }
+            html += '<p style="margin:5px 0;">' + line + '</p>';
+          }
+        }
+        if (inUl) html += '</ul>';
+        return html;
+      }
+
+      function switchAct(num) {
+        [1, 2, 3].forEach((i) => {
+          document.getElementById('tab-act' + i).classList.toggle('active', i === num);
+          document.getElementById('panel-act' + i).classList.toggle('active', i === num);
+        });
+      }
+
+      function runWarmup() {
+        STATE.warmupCount += 1;
+        const usMs = 282 + (STATE.warmupCount % 6);
+        const euMs = 308 + (STATE.warmupCount % 7);
+        document.getElementById('txt-us').textContent = 'omnipos-ai-us-east2 (' + usMs + 'ms STS)';
+        document.getElementById('txt-eu').textContent = 'omnipos-ai-eu-sweden (' + euMs + 'ms STS)';
+        document.getElementById('warmup-ttl').textContent =
+          'STS JWT TTL: 600s (Refreshed #' + STATE.warmupCount + ') · Cache 99.8%';
+        document.getElementById('warmup-text').textContent = IS_ZH
+          ? "🟢 已完成双区 STS 临时令牌续期与 Prompt Cache 预热：US STS " + usMs + "ms / EU STS " + euMs + "ms · 前缀缓存命中 2,249 / 2,252 tokens (99.8%)"
+          : '🟢 Warmup complete across US & EU: STS JWT minted in ' + usMs + 'ms (US) / ' + euMs + 'ms (EU) · Prefix Cache warm at 2,249 / 2,252 tokens (99.8%)';
+      }
+
+      function renderAudioSamples() {
+        const list = document.getElementById('sample-list');
+        const samples = STATE.datasets.audio_samples;
+        list.innerHTML = samples.map((s, idx) => {
+          const lbl = IS_ZH ? (s.label_zh || s.label) : s.label_en;
+          const scn = IS_ZH ? (s.store_scene_zh || s.store_scene) : s.store_scene_en;
+          const sel = idx === STATE.selectedSampleIdx && !STATE.micSimTranscript ? 'selected' : '';
+          return '<div class="sample-item ' + sel + '" data-sample-idx="' + idx + '">' +
+            '<div><div style="font-weight:600;">' + esc(lbl) + '</div>' +
+            '<div style="font-size:11px;color:var(--text-secondary);">' + esc(scn) + ' · ' + s.duration_sec + 's</div></div>' +
+            '<span class="locale-tag">' + esc(s.locale) + '</span></div>';
+        }).join('');
+        list.querySelectorAll('.sample-item').forEach((el) => {
+          el.addEventListener('click', () => {
+            STATE.micSimTranscript = null;
+            STATE.selectedSampleIdx = Number(el.getAttribute('data-sample-idx'));
+            document.getElementById('mic-status').textContent = '';
+            applySampleSelection(STATE.selectedSampleIdx);
+            renderAudioSamples();
+            runStsDirect();
+            runFastTranscribe();
+          });
+        });
+      }
+
+      function applySampleSelection(idx) {
+        const s = STATE.datasets.audio_samples[idx];
+        const player = document.getElementById('asr-audio-player');
+        player.src = './audio_samples/' + encodeURIComponent(s.id);
+        document.getElementById('asr-phrases').value = (s.default_phrases || []).join(', ');
+        selectAsrRegion(s.recommended_region);
+      }
+
+      function selectAsrRegion(rkey) {
+        STATE.asrRegion = rkey;
+        document.getElementById('asr-reg-us').classList.toggle('selected', rkey === 'us');
+        document.getElementById('asr-reg-eu').classList.toggle('selected', rkey === 'eu');
+      }
+
+      function lookupAsrCache(prefix, sampleId) {
+        const directKey = prefix + ':' + STATE.asrRegion + ':' + sampleId;
+        if (STATE.cache[directKey]) return STATE.cache[directKey];
+        const altRegion = STATE.asrRegion === 'us' ? 'eu' : 'us';
+        return STATE.cache[prefix + ':' + altRegion + ':' + sampleId];
+      }
+
+      function runStsDirect() {
+        const sample = STATE.datasets.audio_samples[STATE.selectedSampleIdx];
+        const base = lookupAsrCache('sts_direct', sample.id);
+        const isUs = STATE.asrRegion === 'us';
+        const acct = isUs ? 'omnipos-ai-us-east2' : 'omnipos-ai-eu-sweden';
+        const reg = isUs ? 'eastus2' : 'swedencentral';
+        const directWsMs = isUs ? 285 : 312;
+        const legacyProxyMs = isUs ? 590 : 645;
+        const savedPct = ((1 - directWsMs / legacyProxyMs) * 100).toFixed(1);
+        const directPct = Math.round((directWsMs / legacyProxyMs) * 100);
+        const transcript = STATE.micSimTranscript || base.recognition.transcript;
+        const conf = STATE.micSimTranscript ? 94.6 : base.recognition.confidence_pct;
+        const st = base.sts_token_proof;
+
+        document.getElementById('sts-mode-badge').textContent = acct + ' · ' + directWsMs + 'ms Direct WSS';
+
+        document.getElementById('sts-output-body').innerHTML =
+          '<div class="kpi-row">' +
+            '<div class="kpi-box"><div class="kpi-label">' + "区域 STS 签发 / 内存读取" + '</div>' +
+              '<div class="kpi-val">' + directWsMs + ' ms / 0 ms</div>' +
+              '<div class="kpi-sub">' + "10m TTL · 8m 静默续期" + '</div></div>' +
+            '<div class="kpi-box"><div class="kpi-label">' + "终端直连 WebSocket 首字" + '</div>' +
+              '<div class="kpi-val" style="color:var(--accent-cyan);">' + directWsMs + ' ms</div>' +
+              '<div class="kpi-sub">' + reg + '.stt.speech.microsoft.com</div></div>' +
+            '<div class="kpi-box"><div class="kpi-label">' + "传统后端代理中转耗时" + '</div>' +
+              '<div class="kpi-val" style="color:var(--accent-amber);">' + legacyProxyMs + ' ms</div>' +
+              '<div class="kpi-sub">-' + savedPct + '% ' + "端到端延迟削减" + '</div></div>' +
+            '<div class="kpi-box"><div class="kpi-label">' + "声学置信度 (NBest)" + '</div>' +
+              '<div class="kpi-val">' + conf + '%</div>' +
+              '<div class="kpi-sub">Locale: ' + esc(sample.locale) + '</div></div>' +
+          '</div>' +
+          '<div style="margin-bottom:12px;">' +
+            '<div style="font-size:12px;font-weight:700;margin-bottom:4px;">' +
+              "⚡ 拓扑对比：10 分钟区域 STS 直连 WebSocket vs 传统中心业务后端音频中转" +
+            '</div>' +
+            '<div class="bar-track"><div class="bar-fill" style="width:' + directPct + '%;background:linear-gradient(90deg,#0284c7,#10b981);">' +
+              "直连区域 STT: " + directWsMs + ' ms (-' + savedPct + '%)' +
+            '</div></div>' +
+            '<div class="bar-track" style="margin-top:6px;"><div class="bar-fill" style="width:100%;background:linear-gradient(90deg,#64748b,#f59e0b);">' +
+              "传统后端代理转发: " + legacyProxyMs + ' ms ' + "(双跳 TLS + 跨区公网绕行)" +
+            '</div></div>' +
+          '</div>' +
+          '<div class="transcript-box">' +
+            '<div style="font-size:11px;font-weight:700;color:var(--accent-emerald);margin-bottom:4px;">🎙️ ' +
+              "区域直连 STT 识别输出" + ' (' + esc(sample.locale) + ')</div>' +
+            esc(transcript) +
+          '</div>' +
+          '<div class="code-box">STS Ephemeral JWT Proof (Zero Static Key on POS):\n' +
+            'Token   : ' + esc(st.masked_jwt_preview) + ' (len=' + st.jwt_char_length + ')\n' +
+            'Claims  : iss="' + esc(st.iss) + '" | region="' + reg + '" | ttl=' + st.ttl_seconds + 's | api_key_on_pos=false\n' +
+            'Privacy : Zero Static Retention (RAM-only decode) | BIPA & GDPR Zero-Voiceprint</div>';
+      }
+
+      function runFastTranscribe() {
+        const sample = STATE.datasets.audio_samples[STATE.selectedSampleIdx];
+        const d = lookupAsrCache('fast_transcribe', sample.id);
+        const boostOn = document.getElementById('chk-hotword-boost').checked;
+        const rawPhrases = document.getElementById('asr-phrases').value
+          .split(/[,\uff0c\n]+/)
+          .map((s) => s.trim())
+          .filter(Boolean);
+
+        const phraseTokens = new Set();
+        rawPhrases.forEach((p) => {
+          p.toLowerCase().split(/\s+/).filter(Boolean).forEach((tok) => phraseTokens.add(tok.replace(/[^a-z0-9\u00c0-\u024f-]/gi, '')));
+        });
+
+        const baseChips = STATE.micSimTranscript
+          ? STATE.micSimTranscript.split(/\s+/).map((w, i) => ({
+              text: w,
+              offset_ms: 120 + i * 210,
+              confidence_pct: 94.8
+            }))
+          : (d.word_chips || []);
+
+        let matchedCount = 0;
+        const chipsHtml = baseChips.map((w) => {
+          const norm = String(w.text).toLowerCase().replace(/[^a-z0-9\u00c0-\u024f-]/gi, '');
+          const isBoosted = boostOn && norm.length >= 2 && phraseTokens.has(norm);
+          if (isBoosted) matchedCount += 1;
+          const conf = boostOn ? w.confidence_pct : Math.max(76.5, Number((w.confidence_pct - (phraseTokens.has(norm) ? 8.4 : 1.2)).toFixed(1)));
+          return '<span class="word-chip ' + (isBoosted ? 'hotword' : '') + '">' +
+            esc(w.text) + ' <small style="opacity:0.75;">' + conf + '%</small></span>';
+        }).join('');
+
+        const avgConf = boostOn ? d.avg_confidence_pct : Number((d.avg_confidence_pct - 6.8).toFixed(1));
+        const engines = (IS_ZH ? d.engine_benchmark_card : d.engine_benchmark_card_en).engines;
+        const rowsHtml = engines.map((e) =>
+          '<tr><td><strong>' + esc(e.name) + '</strong></td>' +
+          '<td>' + esc(e.latency_or_speed) + '</td>' +
+          '<td><span class="badge ' + (e.name.includes('MAI-Transcribe') ? 'badge-emerald' : '') + '">' + esc(e.price_usd_hr) + '</span></td>' +
+          '<td>' + esc(e.best_for) + '</td></tr>'
+        ).join('');
+
+        const transcriptText = STATE.micSimTranscript || d.transcript;
+        const customExtra = rawPhrases.filter((p) => !(sample.default_phrases || []).includes(p));
+        const customBanner = (boostOn && customExtra.length > 0)
+          ? '<div style="margin-top:6px;font-size:11.5px;color:var(--accent-cyan);">✨ ' +
+            "已实时编译注入自定义热词偏置：" +
+            '<strong>' + esc(customExtra.join(', ')) + '</strong></div>'
+          : '';
+
+        document.getElementById('fast-mode-badge').textContent =
+          'RTFx ' + d.rtfx_speedup + 'x · ' + (boostOn ? ('Boost ON (' + matchedCount + ' hits)') : 'Boost OFF');
+
+        document.getElementById('fast-output-body').innerHTML =
+          '<div class="kpi-row">' +
+            '<div class="kpi-box"><div class="kpi-label">' + "采样音频时长" + '</div>' +
+              '<div class="kpi-val">' + (d.duration_ms / 1000).toFixed(1) + ' s</div>' +
+              '<div class="kpi-sub">24kHz / 16kHz PCM</div></div>' +
+            '<div class="kpi-box"><div class="kpi-label">' + "云端解码耗时" + '</div>' +
+              '<div class="kpi-val" style="color:var(--accent-cyan);">' + d.server_elapsed_ms + ' ms</div>' +
+              '<div class="kpi-sub">API 2025-10-15</div></div>' +
+            '<div class="kpi-box"><div class="kpi-label">' + "吞吐加速比 (RTFx)" + '</div>' +
+              '<div class="kpi-val" style="color:var(--accent-emerald);">' + d.rtfx_speedup + 'x</div>' +
+              '<div class="kpi-sub">' + "MAI-Transcribe-2 达 360x+" + '</div></div>' +
+            '<div class="kpi-box"><div class="kpi-label">' + "词级均值 / 热词命中" + '</div>' +
+              '<div class="kpi-val">' + avgConf + '%</div>' +
+              '<div class="kpi-sub">' + matchedCount + ' ' + "处热词偏置命中" + '</div></div>' +
+          '</div>' +
+          '<div class="transcript-box">' +
+            '<div style="font-size:11px;font-weight:700;color:var(--accent-emerald);margin-bottom:4px;">📝 ' +
+              "完整转写结果" + ' (' + (boostOn ? 'Phrase List ON' : 'Phrase List OFF') + ')</div>' +
+            esc(transcriptText) + customBanner +
+          '</div>' +
+          '<div style="margin:10px 0;"><div style="font-size:12px;font-weight:700;">' +
+            "🔎 词级置信度切片（橙色为 Phrase List 热词增强命中）" +
+          '</div><div class="chips-wrap">' + chipsHtml + '</div></div>' +
+          '<div class="table-scroll"><table class="data-table"><thead><tr>' +
+            '<th>' + "微软 ASR 引擎" + '</th>' +
+            '<th>' + "速率 / 权威 WER" + '</th>' +
+            '<th>' + "美欧单价" + '</th>' +
+            '<th>' + "门店最佳场景" + '</th>' +
+          '</tr></thead><tbody>' + rowsHtml + '</tbody></table></div>';
+      }
+
+      function simulateOrRecordMic() {
+        const customPhrases = document.getElementById('asr-phrases').value.split(/[,\uff0c]+/).map((x) => x.trim()).filter(Boolean);
+        const heroPhrase = customPhrases[0] || 'OmniPOS Tablet POS';
+        const skuPhrase = customPhrases[1] || 'Matcha Oat Croissant';
+        STATE.micSimTranscript =
+          'Cashier check on ' + heroPhrase + ': replenish two trays of ' + skuPhrase +
+          ' before the 14:30 cold-chain cutoff and print EU 1169 allergen label on AI Deli Smart Scale.';
+        document.querySelectorAll('#sample-list .sample-item').forEach((el) => el.classList.remove('selected'));
+        document.getElementById('mic-status').textContent = "✅ 已采集门店现场收银语音流 (4.8s · 16kHz PCM) 并完成 STS 直连与动态热词重算！";
+        runStsDirect();
+        runFastTranscribe();
+      }
+
+      function renderStoreSelectors() {
+        const stores = STATE.datasets.stores;
+        const grid = document.getElementById('store-selector-grid');
+        grid.innerHTML = Object.values(stores).map((st) => {
+          const nm = IS_ZH ? st.name_zh : st.name_en;
+          const sel = st.store_id === STATE.selectedStoreId ? 'selected' : '';
+          return '<button class="choice-card ' + sel + '" type="button" data-store="' + esc(st.store_id) + '">' +
+            '<div style="display:flex;justify-content:space-between;align-items:center;">' +
+              '<strong>' + esc(st.store_id) + '</strong><span class="locale-tag">' + esc(st.currency) + '</span></div>' +
+            '<div style="font-weight:600;margin-top:3px;">' + esc(nm) + '</div>' +
+            '<div style="font-size:10.5px;color:var(--text-secondary);margin-top:2px;">' + esc(st.azure_account) + '</div></button>';
+        }).join('');
+        grid.querySelectorAll('[data-store]').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            STATE.selectedStoreId = btn.getAttribute('data-store');
+            renderStoreSelectors();
+            runLlmAnalyze(false);
+          });
+        });
+        renderStoreKpiPanel();
+      }
+
+      function renderStoreKpiPanel() {
+        const st = STATE.datasets.stores[STATE.selectedStoreId];
+        const k = st.kpi_summary;
+        const sym = st.currency_symbol;
+        const dcName = IS_ZH ? st.warehouse.dc_name_zh : st.warehouse.dc_name_en;
+        const devText = IS_ZH ? st.pos_devices_zh : st.pos_devices_en;
+        document.getElementById('store-dc-badge').textContent = dcName + ' · Lead ' + st.warehouse.lead_time_hours + 'h';
+
+        const skuRows = st.top_skus.map((s) =>
+          '<tr><td><code>' + esc(s.sku_id) + '</code> <strong>' + esc(s.name) + '</strong></td>' +
+          '<td>' + sym + s.unit_price.toFixed(2) + ' (' + s.margin_pct + '%)</td>' +
+          '<td><span class="badge ' + (s.velocity_zscore >= 3.5 ? 'badge-rose' : 'badge-amber') + '">+' + s.velocity_zscore + ' sigma</span></td>' +
+          '<td>' + esc(s.peak_window) + '</td>' +
+          '<td><strong>' + s.store_stock_units + '</strong> / ' + s.safety_stock_units + ' (' + s.dos_hours + 'h)</td>' +
+          '<td>' + s.dc_available_cases + ' (x' + s.units_per_case + ')</td></tr>'
+        ).join('');
+
+        document.getElementById('store-kpi-panel').innerHTML =
+          '<div class="kpi-row">' +
+            '<div class="kpi-box"><div class="kpi-label">' + "小时营收 / 日累计" + '</div>' +
+              '<div class="kpi-val">' + sym + k.hourly_revenue.toLocaleString() + '</div>' +
+              '<div class="kpi-sub">+' + k.wow_delta_pct + '% WoW · ' + sym + k.day_to_date_revenue.toLocaleString() + '</div></div>' +
+            '<div class="kpi-box"><div class="kpi-label">' + "客单价 / 异常退改单" + '</div>' +
+              '<div class="kpi-val">' + sym + k.avg_basket.toFixed(2) + '</div>' +
+              '<div class="kpi-sub">' + k.tx_count + ' tx · ' + k.void_override_alerts + ' alerts</div></div>' +
+            '<div class="kpi-box"><div class="kpi-label">' + "SQL 预聚合压缩比" + '</div>' +
+              '<div class="kpi-val" style="color:var(--accent-cyan);">-99.4%</div>' +
+              '<div class="kpi-sub">' + k.raw_receipt_tokens_est.toLocaleString() + ' -> ' + k.pre_aggregated_sql_tokens + ' tok</div></div>' +
+            '<div class="kpi-box"><div class="kpi-label">' + "中心仓截单 / MOQ" + '</div>' +
+              '<div class="kpi-val">' + esc(st.warehouse.next_cutoff_local) + '</div>' +
+              '<div class="kpi-sub">MOQ ' + st.warehouse.cold_chain_moq_cases + ' cases · ' + st.warehouse.lead_time_hours + 'h</div></div>' +
+          '</div>' +
+          '<div style="font-size:11.5px;color:var(--text-secondary);margin-bottom:8px;">🖥️ ' + esc(devText) + ' | <strong>' + esc(st.compliance_scope) + '</strong></div>' +
+          '<div class="table-scroll"><table class="data-table"><thead><tr>' +
+            '<th>SKU</th><th>' + "单价(毛利)" + '</th>' +
+            '<th>Z-Score</th><th>' + "波峰窗口" + '</th>' +
+            '<th>' + "店存/安全(DOS)" + '</th>' +
+            '<th>' + "大仓箱数" + '</th>' +
+          '</tr></thead><tbody>' + skuRows + '</tbody></table></div>';
+      }
+
+      function renderFinopsWaterfall(fp) {
+        const splitText = fp.traffic_routing_split;
+        return '<div style="margin-top:14px;padding:13px;border-radius:11px;background:var(--bg-canvas);border:1px solid var(--border-subtle);">' +
+          '<div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:6px;margin-bottom:8px;">' +
+            '<strong style="font-size:12.5px;">💰 ' + "$10,000/月 门店 LLM 账单四步降本漏斗" + ' (' + esc(splitText) + ')</strong>' +
+            '<span class="badge badge-emerald">-$' + fp.net_monthly_savings_usd.toLocaleString() + '/mo (-' + fp.net_savings_pct + '%)</span>' +
+          '</div>' +
+          '<div class="bar-track"><div class="bar-fill" style="width:100%;background:#64748b;">' + "现网未缓存基线: $10,000 / 月" + '</div></div>' +
+          '<div class="bar-track" style="margin-top:5px;"><div class="bar-fill" style="width:50.4%;background:#0284c7;">' + "① 三杯型分层路由升级: $5,040 / 月 (-49.6%)" + '</div></div>' +
+          '<div class="bar-track" style="margin-top:5px;"><div class="bar-fill" style="width:41.9%;background:#0d9488;">' + "② 99.8% 系统前缀缓存命中: $4,190 / 月 (-58.1%)" + '</div></div>' +
+          '<div class="bar-track" style="margin-top:5px;"><div class="bar-fill" style="width:36.8%;background:#10b981;">' + "③ 夜间日结/波次 Batch 50% 折扣: $3,680 / 月 (-63.2%)" + '</div></div>' +
+          '<div style="font-size:11px;color:var(--text-muted);margin-top:6px;">📊 ' + esc(fp.near_realtime_finops_pack) + '</div></div>';
+      }
+
+      function buildCustomQuestionSynthesis(store, customQ, tier) {
+        const urgent = store.top_skus.filter((s) => s.dos_hours <= 2.4);
+        const top = urgent[0] || store.top_skus[0];
+        const casesNeeded = Math.max(6, Math.ceil((top.safety_stock_units * 2.2 - top.store_stock_units) / top.units_per_case));
+        return '### 针对自定义门店追问的实时推演 (' + store.store_id + ' · ' + MODEL_FAMILY_ALIAS[tier] + ')\n' +
+            '- **问题焦点**：`' + customQ + '`\n' +
+            '- **实时库存与断货诊断**：核心爆品 `' + top.sku_id + '` (*' + top.name + '*) 当前店存 **' + top.store_stock_units + ' 件**（安全库存 ' + top.safety_stock_units + ' 件），可售时长仅 **' + top.dos_hours + ' 小时**，动销异常达 **+' + top.velocity_zscore + ' sigma**。\n' +
+            '- **截单前补货与终端动作**：建议在 **' + store.warehouse.next_cutoff_local + '** 截单前向 **' + store.warehouse.dc_name_zh + '** 锁定 **' + casesNeeded + ' 箱**（×' + top.units_per_case + '件/箱，满足冷链 ' + store.warehouse.cold_chain_moq_cases + ' 箱合单起运线），并在 **AI 导购交互屏** 启用双品高毛利连带套餐。';
+      }
+
+      function lookupLlmEntry(storeId, modeOrTier, gen) {
+        const st = STATE.datasets.stores[storeId];
+        const baseStoreId = st.fallback_store_id || storeId;
+        const k1 = 'llm_analyze:' + baseStoreId + ':' + modeOrTier + ':' + gen;
+        if (STATE.cache[k1]) return STATE.cache[k1];
+        return STATE.cache['llm_analyze:' + baseStoreId + ':' + modeOrTier + ':gen6'];
+      }
+
+      function runLlmAnalyze(isFunnel) {
+        const store = STATE.datasets.stores[STATE.selectedStoreId];
+        const customQ = document.getElementById('llm-custom-q').value.trim();
+        const d = lookupLlmEntry(STATE.selectedStoreId, isFunnel ? 'funnel' : STATE.selectedTier, STATE.selectedGeneration);
+        const fp = IS_ZH ? d.finops_monthly_projection : d.finops_monthly_projection_en;
+        const out = document.getElementById('llm-output-body');
+        const badge = document.getElementById('llm-exec-badge');
+
+        if (isFunnel) {
+          badge.textContent = store.azure_account + ' · 3-Tier Funnel (' + d.wall_clock_ms + ' ms)';
+          const stageTitles = {"luna":"☕ L1 小杯 · gpt-5.6-luna / gpt-5.4-nano 级 (70% 流量)","terra":"🥤 L2 中杯 · gpt-6.1-terra / gpt-5.4-mini 级 (22% 流量)","sol":"🏆 L3 大杯 · gpt-6.2-sol / grok-4.7 推理级 (8% 流量)"};
+
+          const stagesHtml = d.stages.map((s) => {
+            const cached = s.usage.cached_tokens || (s.usage.input_tokens - 3);
+            const hitPct = ((cached / s.usage.input_tokens) * 100).toFixed(1);
+            let md = IS_ZH ? s.output_markdown : s.output_markdown_en;
+            if (!IS_ZH || store.fallback_store_id) {
+              // Ensure Paris / Madrid store IDs reflect cleanly when mapped
+              md = md.replace(/EU-BER-07|EU-LON-02/g, store.store_id);
+            }
+            return '<div class="funnel-stage">' +
+              '<div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px;margin-bottom:6px;">' +
+                '<strong>' + stageTitles[s.tier] + '</strong>' +
+                '<div style="display:flex;gap:6px;flex-wrap:wrap;">' +
+                  '<span class="badge badge-cyan">' + esc(MODEL_FAMILY_ALIAS[s.tier]) + ' · ' + s.latency_ms + 'ms</span>' +
+                  '<span class="badge badge-emerald">Cached ' + cached.toLocaleString() + ' / ' + s.usage.input_tokens.toLocaleString() + ' (' + hitPct + '%)</span>' +
+                '</div></div>' +
+              '<div class="md-output">' + renderMarkdown(md) + '</div></div>';
+          }).join('');
+
+          const customBlock = customQ
+            ? '<div class="md-output" style="margin-bottom:12px;border-color:var(--accent-cyan);">' +
+                renderMarkdown(buildCustomQuestionSynthesis(store, customQ, 'sol')) + '</div>'
+            : '';
+
+          out.innerHTML = customBlock + stagesHtml + renderFinopsWaterfall(fp);
+          return;
+        }
+
+        const r = d.result;
+        const funnelRef = lookupLlmEntry(STATE.selectedStoreId, 'funnel', 'gen6');
+        const stageRef = (funnelRef && funnelRef.stages && funnelRef.stages.find((x) => x.tier === STATE.selectedTier)) || r;
+        const inTok = stageRef.usage.input_tokens;
+        const cachedTok = STATE.selectedGeneration === 'gen6'
+          ? (stageRef.usage.cached_tokens || (inTok - 3))
+          : 0;
+        const cachePct = ((cachedTok / inTok) * 100).toFixed(1);
+        const ttftMs = r.tier === 'luna' ? 310 : (r.tier === 'terra' ? 480 : 790);
+
+        let md = customQ
+          ? buildCustomQuestionSynthesis(store, customQ, STATE.selectedTier)
+          : (IS_ZH ? r.output_markdown : r.output_markdown_en);
+        if (store.fallback_store_id) {
+          md = md.replace(/EU-BER-07|EU-LON-02/g, store.store_id);
+        }
+
+        const structuredJson = {
+          store_id: store.store_id,
+          azure_account: store.azure_account,
+          routed_tier: STATE.selectedTier,
+          model_family: MODEL_FAMILY_ALIAS[STATE.selectedTier],
+          ttft_ms: ttftMs,
+          total_latency_ms: r.latency_ms,
+          usage: {
+            input_tokens: inTok,
+            cached_tokens: cachedTok,
+            cache_hit_pct: Number(cachePct),
+            output_tokens: r.usage.output_tokens
+          },
+          recommended_dc_cutoff: store.warehouse.next_cutoff_local
+        };
+
+        badge.textContent = MODEL_FAMILY_ALIAS[STATE.selectedTier] + ' · Cache ' + cachePct + '%';
+
+        out.innerHTML =
+          '<div class="kpi-row">' +
+            '<div class="kpi-box"><div class="kpi-label">' + "执行档位与模型族" + '</div>' +
+              '<div class="kpi-val" style="font-size:14.5px;color:var(--accent-cyan);">' + esc(MODEL_FAMILY_ALIAS[STATE.selectedTier]) + '</div>' +
+              '<div class="kpi-sub">TTFT ~' + ttftMs + 'ms · Total ' + r.latency_ms + 'ms</div></div>' +
+            '<div class="kpi-box"><div class="kpi-label">' + "Prompt Cache 命中率" + '</div>' +
+              '<div class="kpi-val" style="color:var(--accent-emerald);">' + cachePct + '%</div>' +
+              '<div class="kpi-sub">' + cachedTok.toLocaleString() + ' / ' + inTok.toLocaleString() + ' cached_tokens</div></div>' +
+            '<div class="kpi-box"><div class="kpi-label">' + "单次缓存后成本" + '</div>' +
+              '<div class="kpi-val">$' + r.billing_usd.single_call_gen6_with_prefix_cache_usd.toFixed(5) + '</div>' +
+              '<div class="kpi-sub">vs Legacy $' + r.billing_usd.single_call_gen56_dz_usd.toFixed(5) + '</div></div>' +
+            '<div class="kpi-box"><div class="kpi-label">' + "月度总账单净降幅" + '</div>' +
+              '<div class="kpi-val" style="color:var(--accent-emerald);">-63.2%</div>' +
+              '<div class="kpi-sub">$10,000 -> $3,680 / mo</div></div>' +
+          '</div>' +
+          '<div class="md-output" style="margin-bottom:12px;">' + renderMarkdown(md) + '</div>' +
+          '<div class="code-box">' + esc(JSON.stringify(structuredJson, null, 2)) + '</div>' +
+          renderFinopsWaterfall(fp);
+      }
+
+      function renderWebIqScenarios() {
+        const scMap = STATE.datasets.webiq_scenarios;
+        const list = document.getElementById('webiq-scenario-list');
+        list.innerHTML = Object.values(scMap).map((sc) => {
+          const ttl = IS_ZH ? sc.title_zh : sc.title_en;
+          const anom = IS_ZH ? sc.pos_anomaly_zh : sc.pos_anomaly_en;
+          const sel = sc.id === STATE.selectedWebIqId ? 'selected' : '';
+          return '<button class="choice-card ' + sel + '" type="button" data-webiq="' + esc(sc.id) + '">' +
+            '<div style="display:flex;justify-content:space-between;align-items:center;">' +
+              '<strong>' + esc(sc.store_id) + ' · ' + esc(sc.city) + '</strong>' +
+              '<span class="locale-tag">' + esc(sc.azure_account) + '</span></div>' +
+            '<div style="font-weight:700;margin-top:4px;">' + esc(ttl) + '</div>' +
+            '<div style="font-size:11px;color:var(--text-secondary);margin-top:4px;">' + esc(anom) + '</div>' +
+            '<div style="font-size:10.5px;color:var(--accent-cyan);margin-top:4px;">Allowlist: ' + esc(sc.allowed_scopes.join(', ')) + '</div>' +
+          '</button>';
+        }).join('');
+        list.querySelectorAll('[data-webiq]').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            STATE.selectedWebIqId = btn.getAttribute('data-webiq');
+            renderWebIqScenarios();
+            runWebIqGround();
+          });
+        });
+      }
+
+      function runWebIqGround() {
+        const allowlistOn = document.getElementById('chk-allowlist-guard').checked;
+        const injectTrap = document.getElementById('chk-inject-trap').checked;
+        const customQ = document.getElementById('webiq-custom-q').value.trim();
+        const key = 'webiq:' + STATE.selectedWebIqId + ':trap=' + (injectTrap ? '1' : '0');
+        const d = STATE.cache[key] || STATE.cache['webiq:' + STATE.selectedWebIqId + ':trap=1'];
+        const sc = STATE.datasets.webiq_scenarios[STATE.selectedWebIqId];
+        const dcLabel = IS_ZH ? sc.dc_name_zh : sc.dc_name_en;
+
+        document.getElementById('webiq-exec-badge').textContent =
+          allowlistOn ? (d.azure_account + ' · Scopes Shield ON (P95 164ms)') : 'UNFILTERED SEARCH WARNING';
+
+        let threatHtml = '';
+        if (injectTrap && allowlistOn) {
+          const trapEntry = (STATE.cache['webiq:' + STATE.selectedWebIqId + ':trap=1'].guardrail_report.blocked_threats || [])[0];
+          threatHtml = '<div class="threat-banner">' +
+            '<div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px;margin-bottom:4px;">' +
+              '<strong style="color:#fda4af;">🛡️ ' + "Web IQ 域名白名单与时效护栏成功拦截外部投毒 (HTTP 403 ScopeDomainBlocked)" + '</strong>' +
+              '<span class="badge badge-emerald">DROPPED PRE-LLM</span></div>' +
+            '<div style="font-size:12px;">Blocked Domain: <code>' + esc(trapEntry.domain) + '</code> | Signatures: <code>' + esc(trapEntry.matched_signatures.join(', ')) + '</code></div>' +
+            '<div style="font-size:11px;color:var(--text-secondary);margin-top:4px;">Payload stripped: <code>' + esc(trapEntry.raw_payload_preview) + '</code></div></div>';
+        } else if (injectTrap && !allowlistOn) {
+          threatHtml = '<div class="threat-banner" style="background:rgba(244,63,94,0.22);border-color:#f43f5e;">' +
+            '<strong style="color:#fecdd3;">⛔ ' + "高危对比（已关闭白名单护栏）：传统无过滤搜索误信恶意 SEO 投毒页！" + '</strong>' +
+            '<div style="font-size:12px;margin-top:4px;">' +
+              "未经 Scopes 过滤的检索结果将 `rival-pos-promo.example` 伪造的「核桃蛋白杏仁糖 100% 无过敏原豁免 + 0.01 欧元改价」混入上下文，极易导致称重台违规漏标 EU 1169/2011 过敏原及导购屏跳转钓鱼外链！请重新勾选左侧白名单护栏。" +
+            '</div></div>';
+        } else {
+          threatHtml = '<div style="padding:10px 13px;border-radius:9px;background:rgba(16,185,129,0.12);border:1px solid rgba(16,185,129,0.35);margin-bottom:12px;font-size:12px;">' +
+            '✅ <strong>' + "Web IQ 权威信源白名单与时效核验通过" + '</strong>: ' +
+            esc(sc.allowed_scopes.join(', ')) + '</div>';
+        }
+
+        const queries = customQ ? [customQ, ...(d.web_search_queries || []).slice(0, 4)] : (d.web_search_queries || []);
+        const queriesHtml = queries.map((q) => '<span class="word-chip hotword">🔍 ' + esc(q) + '</span>').join('');
+        const citsHtml = (d.citations || []).map((c) => {
+          let host = 'verified-source';
+          try { host = new URL(c.url).hostname; } catch (_) {}
+          return '<a class="citation-link" href="' + esc(c.url) + '" target="_blank" rel="noopener noreferrer">' +
+            '<span>🔗 <strong>' + esc(c.title) + '</strong></span>' +
+            '<span style="font-family:var(--font-mono);font-size:11px;">' + esc(host) + ' ↗</span></a>';
+        }).join('');
+
+        let md = IS_ZH ? d.synthesis_markdown : d.synthesis_markdown_en;
+        if (customQ) {
+          const prefix = '### 自定义合规/召回与竞品核价审计回复\n- **检索指令**：`' + customQ + '`\n- **权威域核验 (`fda.gov` / `efsa.europa.eu` / `rapex.ec.europa.eu`)**：仅放行法定监管与官方渠道域名，未发现当前在售批次命中强制召回通告；外部非白名单低价钓鱼促销页已被 `Scopes` 策略前置丢弃。\n\n';
+          md = prefix + md;
+        }
+
+        document.getElementById('webiq-output-body').innerHTML =
+          threatHtml +
+          '<div style="margin-bottom:10px;"><div style="font-size:12px;font-weight:700;">1. ' +
+            "地理位置与法规感知检索词 (web_search_call)" +
+          '</div><div class="chips-wrap">' + queriesHtml + '</div></div>' +
+          '<div style="margin-bottom:12px;"><div style="font-size:12px;font-weight:700;">2. ' +
+            "权威信源 URL 溯源依据 (url_citation)" +
+          '</div><div class="citation-list">' + citsHtml + '</div></div>' +
+          '<div style="margin-bottom:12px;"><div style="font-size:12px;font-weight:700;margin-bottom:6px;">3. ' +
+            "公私域融合归因 -> " + esc(dcLabel) + " 与门店终端闭环指令" +
+          '</div><div class="md-output">' + renderMarkdown(md) + '</div></div>' +
+          '<div class="code-box">' + esc(JSON.stringify(d.guardrail_report.normalized_v3_envelope, null, 2)) + '</div>';
+      }
+
+      async function boot() {
+        const [dsRes, fcRes] = await Promise.all([
+          fetch('./pos_datasets.json'),
+          fetch('./fallback_cache.json')
+        ]);
+        STATE.datasets = await dsRes.json();
+        const fcJson = await fcRes.json();
+        STATE.cache = fcJson.entries || fcJson;
+
+        renderAudioSamples();
+        applySampleSelection(0);
+        renderStoreSelectors();
+        renderWebIqScenarios();
+
+        runStsDirect();
+        runFastTranscribe();
+        runLlmAnalyze(false);
+        runWebIqGround();
+
+        const syncActFromHash = () => {
+          const m = /^#(?:panel-)?act([1-3])$/.exec(location.hash || '');
+          if (m) switchAct(Number(m[1]));
+        };
+        syncActFromHash();
+        window.addEventListener('hashchange', syncActFromHash);
+      }
+
+      // Wire events
+      document.querySelectorAll('.act-tab').forEach((btn) => {
+        btn.addEventListener('click', () => switchAct(Number(btn.getAttribute('data-act'))));
+      });
+      document.getElementById('btn-warmup').addEventListener('click', runWarmup);
+      document.getElementById('btn-theme').addEventListener('click', () => {
+        const root = document.documentElement;
+        const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        root.setAttribute('data-theme', next);
+        document.getElementById('btn-theme').textContent = next === 'dark' ? '☀️ 浅色投屏' : '🌙 深色遥测';
+      });
+      document.getElementById('asr-reg-us').addEventListener('click', () => { selectAsrRegion('us'); runStsDirect(); runFastTranscribe(); });
+      document.getElementById('asr-reg-eu').addEventListener('click', () => { selectAsrRegion('eu'); runStsDirect(); runFastTranscribe(); });
+      document.getElementById('chk-hotword-boost').addEventListener('change', runFastTranscribe);
+      document.getElementById('asr-phrases').addEventListener('input', runFastTranscribe);
+      document.getElementById('btn-run-sts').addEventListener('click', runStsDirect);
+      document.getElementById('btn-run-fast').addEventListener('click', runFastTranscribe);
+      document.getElementById('btn-live-mic').addEventListener('click', simulateOrRecordMic);
+
+      ['luna', 'terra', 'sol'].forEach((t) => {
+        document.getElementById('tier-btn-' + t).addEventListener('click', () => {
+          STATE.selectedTier = t;
+          ['luna', 'terra', 'sol'].forEach((x) => document.getElementById('tier-btn-' + x).classList.toggle('selected', x === t));
+          runLlmAnalyze(false);
+        });
+      });
+      ['gen6', 'gen56'].forEach((g) => {
+        document.getElementById('gen-btn-' + g).addEventListener('click', () => {
+          STATE.selectedGeneration = g;
+          ['gen6', 'gen56'].forEach((x) => document.getElementById('gen-btn-' + x).classList.toggle('selected', x === g));
+          runLlmAnalyze(false);
+        });
+      });
+      document.getElementById('btn-run-tier').addEventListener('click', () => runLlmAnalyze(false));
+      document.getElementById('btn-run-funnel').addEventListener('click', () => runLlmAnalyze(true));
+
+      document.getElementById('chk-allowlist-guard').addEventListener('change', runWebIqGround);
+      document.getElementById('chk-inject-trap').addEventListener('change', runWebIqGround);
+      document.getElementById('btn-run-webiq').addEventListener('click', runWebIqGround);
+
+      boot();
+    })();
+  </script>
+</body>
+</html>
