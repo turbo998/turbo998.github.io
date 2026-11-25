@@ -10827,6 +10827,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r916File),'utf8');
       assert.ok(txt.includes('4,920.00')&&txt.includes('4,500.00')&&txt.includes('9,420.00')&&txt.includes('60.00')&&txt.includes('240.00')&&txt.includes('300.00')&&txt.includes('9,120.00')&&txt.includes('96.82%')&&txt.includes('not_measured'),r916File+': contains exact 11-25 R34 R916 openworkflow+rebuild+bytechef+reachai closed-form parameters');
     }
+    // 2026-11-25 Night Round 35 (R917: apache/doris + OneUptime/oneuptime + apache/hertzbeat + GreptimeTeam/greptimedb) verification
+    const r917PathA=5560.00+48.0*100.00;
+    assert.equal(r917PathA.toFixed(2),'10360.00','11-25 R35 R917 Path A total');
+    const r917PathC=90.00+2.4*100.00;
+    assert.equal(r917PathC.toFixed(2),'330.00','11-25 R35 R917 Path C total');
+    assert.equal((r917PathA-r917PathC).toFixed(2),'10030.00','11-25 R35 R917 savings vs Path A');
+    assert.equal(((r917PathA-r917PathC)/r917PathA*100).toFixed(2),'96.81','11-25 R35 R917 pct savings vs Path A');
+    for(const r917File of ['workshops/github-trending-radar/docs/apache-doris-oneuptime-hertzbeat-greptimedb-selection-faq.md','workshops/github-trending-radar/docs/apache-doris-oneuptime-hertzbeat-greptimedb-selection-faq.en.md','assets/github-ai-radar-2026-11-25-r35-r917-doris-oneuptime-hertzbeat-greptimedb.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-25-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r917File),'utf8');
+      assert.ok(txt.includes('5,560.00')&&txt.includes('4,800.00')&&txt.includes('10,360.00')&&txt.includes('90.00')&&txt.includes('240.00')&&txt.includes('330.00')&&txt.includes('10,030.00')&&txt.includes('96.81%')&&txt.includes('not_measured'),r917File+': contains exact 11-25 R35 R917 doris+oneuptime+hertzbeat+greptimedb closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
