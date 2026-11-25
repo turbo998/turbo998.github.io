@@ -29,7 +29,7 @@ function extractH5LabSpec(file, zh, html = '') {
   if (f === 'docs/h5/index.html') {
     return zh ? {
       topic: 'infra',
-      title: 'AI Infra 交互式定容与架构选型中心（120 套沙盘 · #001–#507）',
+      title: 'AI Infra 交互式定容与架构选型中心（281 套沙盘 · #001–#668）',
       concepts: [
         {role: '算力与网络层', title: 'GPU 容量 · PD 分离 · RDMA', detail: 'Little 定律三道水位线、NVLink/IB/RoCEv2 busbw 与 NVL72 液冷边界', relation: '硬件吞吐基线'},
         {role: '推理与显存层', title: 'vLLM/SGLang · 分层 KV · 并行', detail: 'TP/PP/EP 切分、128K–1M MLA/Hybrid KV 卸载与 <think> 预算门控', relation: 'TTFT/TPOT 约束'},
@@ -39,7 +39,7 @@ function extractH5LabSpec(file, zh, html = '') {
       takeaways: [
         {head: '容量先行', body: '所有选型从 RPS、上下文长度与 P99 TTFT/TPOT 反推显存、带宽与卡数'},
         {head: '托管与自建拐点', body: '结合硬件租金、利用率与 SRE 人力全口径对比 PAYGO、PTU 与自建 K8s'},
-        {head: '离线可复核', body: '120 套交互沙盘均支持零外链环境下实时拖动滑块复核公式与成本曲线'}
+        {head: '离线可复核', body: '281 套交互沙盘均支持零外链环境下实时拖动滑块复核公式与成本曲线'}
       ]
     } : null;
   }

@@ -41,7 +41,7 @@
 
   const CATEGORY_MAP = {
     "Azure-Infra-Lab": "infra",
-    "ai-infra-research": "云与 AI 基础设施解决方案架构师（SA）双语选型与定容知识库（624 篇双语指南 #001–#622 · 235 套交互式 H5 沙盘 · 1,237 套 Sizer/7-Card · 630 套 Python 模型）：涵盖 PD 分离（Dynamo + Mooncake）、TP/PP/DP/EP 并行、IB vs RoCEv2 网络、GPU 三水位与 TPM/TPS/PTU 定容及二十大垂直行业神经符号架构。",
+    "ai-infra-research": "云与 AI 基础设施解决方案架构师（SA）双语选型与定容知识库（670 篇双语指南 #001–#668 · 281 套交互式 H5 沙盘 · 1,329 套 Sizer/7-Card · 676 套 Python 模型）：涵盖 PD 分离（Dynamo + Mooncake）、TP/PP/DP/EP 并行、IB vs RoCEv2/UEC 网络、GPU 三水位与 TPM/TPS/PTU 定容及 100 分评审/PoC 反作弊 SOP。",
     "ai-infra-lab": "infra",
     "azure-usage-realtime-analytics": "infra",
     "azure-openai-faq": "infra",
@@ -99,7 +99,7 @@
 
   const ZH_DESC = {
     "Azure-Infra-Lab": "Azure 基础设施工程化与 AI Agent Infra 实战实验室：收录《AKSClaw × E2B 10万沙箱 H5 仿真套件》《Azure VM 现代化与 FinOps 伙伴工作坊》及 41 套 Bicep/K8s 蓝图。",
-    "ai-infra-research": "云与 AI 基础设施解决方案架构师（SA）双语选型与定容知识库（624 篇双语指南 #001–#622 · 235 套交互式 H5 沙盘 · 1,237 套 Sizer/7-Card · 630 套 Python 模型）：涵盖 PD 分离（Dynamo + Mooncake）、TP/PP/DP/EP 并行、IB vs RoCEv2 网络、GPU 三水位与 TPM/TPS/PTU 定容及二十大垂直行业神经符号架构。",
+    "ai-infra-research": "云与 AI 基础设施解决方案架构师（SA）双语选型与定容知识库（670 篇双语指南 #001–#668 · 281 套交互式 H5 沙盘 · 1,329 套 Sizer/7-Card · 676 套 Python 模型）：涵盖 PD 分离（Dynamo + Mooncake）、TP/PP/DP/EP 并行、IB vs RoCEv2/UEC 网络、GPU 三水位与 TPM/TPS/PTU 定容及 100 分评审/PoC 反作弊 SOP。",
     "ai-infra-lab": "AI 基础设施架构、六大运行时光谱评测、E2B Firecracker / AKSClaw Kata 密度模型与跨区域 3.67s 热备容灾蓝图库。",
     "azure-usage-realtime-analytics": "Azure 实时用量分析与 FinOps 账单对账架构：结合流式事件处理、成本分摊归因与异常消费实时熔断告警。",
     "benchmark-harness-engineering": "7-Card 4:5 模型评测报告标准与可复现评测引擎：内置 HTML/SVG 卡片生成器、选项翻转鲁棒性检验与 Decision-1 路由基准。",
