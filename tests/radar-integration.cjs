@@ -10662,6 +10662,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r901File),'utf8');
       assert.ok(txt.includes('4,920.00')&&txt.includes('4,700.00')&&txt.includes('9,620.00')&&txt.includes('75.00')&&txt.includes('240.00')&&txt.includes('315.00')&&txt.includes('9,305.00')&&txt.includes('96.73%')&&txt.includes('not_measured'),r901File+': contains exact 11-25 R19 R901 cua+gptresearcher+repomix+skyvern closed-form parameters');
     }
+    // 2026-11-25 Night Round 20 (R902: pingcap/tidb + SigNoz/signoz + microsoft/semantic-kernel + vercel/ai) verification
+    const r902PathA=5320.00+48.0*100.00;
+    assert.equal(r902PathA.toFixed(2),'10120.00','11-25 R20 R902 Path A total');
+    const r902PathC=90.00+2.4*100.00;
+    assert.equal(r902PathC.toFixed(2),'330.00','11-25 R20 R902 Path C total');
+    assert.equal((r902PathA-r902PathC).toFixed(2),'9790.00','11-25 R20 R902 savings vs Path A');
+    assert.equal(((r902PathA-r902PathC)/r902PathA*100).toFixed(2),'96.74','11-25 R20 R902 pct savings vs Path A');
+    for(const r902File of ['workshops/github-trending-radar/docs/tidb-signoz-semantic-kernel-vercel-ai-selection-faq.md','workshops/github-trending-radar/docs/tidb-signoz-semantic-kernel-vercel-ai-selection-faq.en.md','assets/github-ai-radar-2026-11-25-r20-r902-tidb-signoz-semantickernel-vercelai.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-25-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r902File),'utf8');
+      assert.ok(txt.includes('5,320.00')&&txt.includes('4,800.00')&&txt.includes('10,120.00')&&txt.includes('90.00')&&txt.includes('240.00')&&txt.includes('330.00')&&txt.includes('9,790.00')&&txt.includes('96.74%')&&txt.includes('not_measured'),r902File+': contains exact 11-25 R20 R902 tidb+signoz+semantickernel+vercelai closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
