@@ -10772,6 +10772,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r911File),'utf8');
       assert.ok(txt.includes('4,940.00')&&txt.includes('4,600.00')&&txt.includes('9,540.00')&&txt.includes('70.00')&&txt.includes('240.00')&&txt.includes('310.00')&&txt.includes('9,230.00')&&txt.includes('96.75%')&&txt.includes('not_measured'),r911File+': contains exact 11-25 R29 R911 openswe+beacon+lmnr+memmachine closed-form parameters');
     }
+    // 2026-11-25 Night Round 30 (R912: trustgraph-ai/trustgraph + fabio-rovai/open-ontologies + UnicomAI/wanwu + raphaelmansuy/edgequake) verification
+    const r912PathA=5280.00+48.0*100.00;
+    assert.equal(r912PathA.toFixed(2),'10080.00','11-25 R30 R912 Path A total');
+    const r912PathC=75.00+2.4*100.00;
+    assert.equal(r912PathC.toFixed(2),'315.00','11-25 R30 R912 Path C total');
+    assert.equal((r912PathA-r912PathC).toFixed(2),'9765.00','11-25 R30 R912 savings vs Path A');
+    assert.equal(((r912PathA-r912PathC)/r912PathA*100).toFixed(2),'96.88','11-25 R30 R912 pct savings vs Path A');
+    for(const r912File of ['workshops/github-trending-radar/docs/trustgraph-open-ontologies-unicom-wanwu-edgequake-selection-faq.md','workshops/github-trending-radar/docs/trustgraph-open-ontologies-unicom-wanwu-edgequake-selection-faq.en.md','assets/github-ai-radar-2026-11-25-r30-r912-trustgraph-openontologies-wanwu-edgequake.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-25-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r912File),'utf8');
+      assert.ok(txt.includes('5,280.00')&&txt.includes('4,800.00')&&txt.includes('10,080.00')&&txt.includes('75.00')&&txt.includes('240.00')&&txt.includes('315.00')&&txt.includes('9,765.00')&&txt.includes('96.88%')&&txt.includes('not_measured'),r912File+': contains exact 11-25 R30 R912 trustgraph+openontologies+wanwu+edgequake closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
