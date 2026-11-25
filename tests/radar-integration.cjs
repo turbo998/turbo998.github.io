@@ -10728,6 +10728,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r907File),'utf8');
       assert.ok(txt.includes('5,050.00')&&txt.includes('4,800.00')&&txt.includes('9,850.00')&&txt.includes('80.00')&&txt.includes('240.00')&&txt.includes('320.00')&&txt.includes('9,530.00')&&txt.includes('96.75%')&&txt.includes('not_measured'),r907File+': contains exact 11-25 R25 R907 langchain4j+falkordb+potpie+codegraphrag closed-form parameters');
     }
+    // 2026-11-25 Night Round 26 (R908: Arize-ai/phoenix + FailproofAI/failproofai + OpenCoworkAI/open-codesign + pipeshub-ai/pipeshub-ai) verification
+    const r908PathA=5240.00+48.0*100.00;
+    assert.equal(r908PathA.toFixed(2),'10040.00','11-25 R26 R908 Path A total');
+    const r908PathC=80.00+2.4*100.00;
+    assert.equal(r908PathC.toFixed(2),'320.00','11-25 R26 R908 Path C total');
+    assert.equal((r908PathA-r908PathC).toFixed(2),'9720.00','11-25 R26 R908 savings vs Path A');
+    assert.equal(((r908PathA-r908PathC)/r908PathA*100).toFixed(2),'96.81','11-25 R26 R908 pct savings vs Path A');
+    for(const r908File of ['workshops/github-trending-radar/docs/arize-phoenix-failproofai-open-codesign-pipeshub-selection-faq.md','workshops/github-trending-radar/docs/arize-phoenix-failproofai-open-codesign-pipeshub-selection-faq.en.md','assets/github-ai-radar-2026-11-25-r26-r908-phoenix-failproofai-opencodesign-pipeshub.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-25-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r908File),'utf8');
+      assert.ok(txt.includes('5,240.00')&&txt.includes('4,800.00')&&txt.includes('10,040.00')&&txt.includes('80.00')&&txt.includes('240.00')&&txt.includes('320.00')&&txt.includes('9,720.00')&&txt.includes('96.81%')&&txt.includes('not_measured'),r908File+': contains exact 11-25 R26 R908 phoenix+failproofai+opencodesign+pipeshub closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
