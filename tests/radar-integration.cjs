@@ -10805,6 +10805,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r914File),'utf8');
       assert.ok(txt.includes('4,790.00')&&txt.includes('4,500.00')&&txt.includes('9,290.00')&&txt.includes('55.00')&&txt.includes('240.00')&&txt.includes('295.00')&&txt.includes('8,995.00')&&txt.includes('96.82%')&&txt.includes('not_measured'),r914File+': contains exact 11-25 R32 R914 agencyorchestrator+langgraph4j+gortex+mex closed-form parameters');
     }
+    // 2026-11-25 Night Round 33 (R915 Milestone: SamurAIGPT/llm-wiki-agent + ModernRelay/omnigraph + axoviq-ai/synthadoc + iwe-org/iwe) verification
+    const r915PathA=4740.00+45.0*100.00;
+    assert.equal(r915PathA.toFixed(2),'9240.00','11-25 R33 R915 Path A total');
+    const r915PathC=50.00+2.4*100.00;
+    assert.equal(r915PathC.toFixed(2),'290.00','11-25 R33 R915 Path C total');
+    assert.equal((r915PathA-r915PathC).toFixed(2),'8950.00','11-25 R33 R915 savings vs Path A');
+    assert.equal(((r915PathA-r915PathC)/r915PathA*100).toFixed(2),'96.86','11-25 R33 R915 pct savings vs Path A');
+    for(const r915File of ['workshops/github-trending-radar/docs/llm-wiki-agent-omnigraph-synthadoc-iwe-selection-faq.md','workshops/github-trending-radar/docs/llm-wiki-agent-omnigraph-synthadoc-iwe-selection-faq.en.md','assets/github-ai-radar-2026-11-25-r33-r915-llmwikiagent-omnigraph-synthadoc-iwe.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-25-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r915File),'utf8');
+      assert.ok(txt.includes('4,740.00')&&txt.includes('4,500.00')&&txt.includes('9,240.00')&&txt.includes('50.00')&&txt.includes('240.00')&&txt.includes('290.00')&&txt.includes('8,950.00')&&txt.includes('96.86%')&&txt.includes('not_measured'),r915File+': contains exact 11-25 R33 R915 llmwikiagent+omnigraph+synthadoc+iwe closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
