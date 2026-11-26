@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>游戏与动作电影“双人武打/处决动作设计（Combat Choreography）”：接触点 IK 硬锁、顿帧预演与 UE5 AnimMontage 导出工作台</title>
+  <script type="module" crossorigin src="../../assets/enterpriseGameCombatStuntChoreographyRootmotionPreviz-Cx6g0_Pi.js"></script>
+  <link rel="modulepreload" crossorigin href="../../assets/modulepreload-polyfill-B5Qt9EMX.js">
+  <link rel="stylesheet" crossorigin href="../../assets/ecommerceEyewearPrescriptionGlassesSunglassesLensRefractionTryon-BFUo6KM-.css">
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <span class="eyebrow">DOMAIN 4 · PAIRED COMBAT CHOREOGRAPHY, CONTACT IK LOCK &amp; UE5 ANIMMONTAGE PREVIZ · WORKBENCH #368</span>
+      <h1>游戏与动作电影双人武打/处决预演（Combat Previz）：刀刃接触点 IK 硬锁、顿帧（Hit-Stop）与 UE5 根运动导出工作台</h1>
+      <p class="subtitle">双人骨骼接触图与足底防滑步 IK 硬锁 (z:0) + 双角色 Regional B-LoRA 与 Depth/Pose 视频换肤 (z:4) + UE5 AnimMontage 攻击判定帧导出 (z:8)</p>
+    </div>
+    <div class="badge-group">
+      <span class="pill pill-accent">99.7% 刀刃格挡与擒拿零穿模</span>
+      <span class="pill pill-emerald">0.0mm 足底滑步 · 100% UE5 动作复用</span>
+      <span class="pill pill-amber">$18/招式 vs 动捕棚 $1,850 · 年省 +$3.96M</span>
+    </div>
+  </header>
+
+  <main class="workbench-grid">
+    <section class="panel controls-panel" aria-label="武打处决招式预设与帧窗口参数">
+      <h2>1. 双人交互招式与打击感参数</h2>
+      <label class="field">
+        <span>3A 动作游戏与武指分镜预设 (Paired Combat Choreography)</span>
+        <select id="choreo-select">
+          <option value="soulslike-parry-riposte-finisher">魂系弹反处决双人动作（刀盾接触点 IK 锁 + 3帧顿帧 Hit-Stop + Motion Warping）</option>
+          <option value="wuxia-dual-blade-clash-vault">武侠借力踏肩腾空连招（足踏肩部接触锚定 + 360° 威亚环绕运镜）</option>
+          <option value="tactical-cqc-disarm-takedown">战术近身格斗（CQC）夺械擒拿（手腕关节防穿模 + 第19帧武器父子关系交接）</option>
+          <option value="mecha-colossus-grapple-throw">巨型机甲与怪兽角力投技（双体型重心动量锁 + 砸地震屏帧窗口导出）</option>
+        </select>
+      </label>
+
+      <div class="mode-toggle" role="group" aria-label="武打预演生成架构切换">
+        <button type="button" id="mode-clean" class="mode-btn active">
+          ✅ 双人接触骨 IK 硬锁 + Depth/Pose 视频换肤 + UE5 AnimMontage 导出 (推荐)
+        </button>
+        <button type="button" id="mode-naive" class="mode-btn">
+          ⛔ 纯文生视频盲生成打斗 (73.6% 刀剑穿模变魔术、脚底溜冰 42cm 且 0% 引擎可用)
+        </button>
+      </div>
+
+      <label class="field">
+        <span>兵器交锋/重击顿帧帧数 (Impact Hit-Stop Freeze Frames): <strong id="hitstop-val">3</strong> 帧</span>
+        <input type="range" id="hitstop-slider" min="0" max="6" step="1" value="3" />
+      </label>
+
+      <label class="field">
+        <span>动作电影快门角度动态模糊 (Action Shutter Angle): <strong id="shutter-val">90</strong>°</span>
+        <input type="range" id="shutter-slider" min="45" max="180" step="45" value="90" />
+      </label>
+
+      <div class="architecture-stack">
+        <h3>三阶可玩武打预演与蒙太奇编译栈 (3-Stage Combat Stack)</h3>
+        <ul class="stage-list" id="combat-breakdown"></ul>
+      </div>
+    </section>
+
+    <section class="panel stage-panel" aria-label="双人接触骨骼 IK、Hit-Stop 打击帧窗口与 UE5 Root-Motion 预览画布">
+      <div class="stage-header">
+        <div>
+          <span class="stage-eyebrow" id="stage-ik-label">Blade_Socket_A ↔ Shield_Socket_B (0.0mm Penetration) · Foot-Plant IK Lock</span>
+          <h2 id="stage-choreo-title">魂系弹反处决双人交互动作（3帧 Hit-Stop 顿帧 + 100% UE5 复用）</h2>
+        </div>
+        <span class="status-pill" id="stage-status-pill">READY</span>
+      </div>
+
+      <div class="canvas-wrapper">
+        <canvas id="combat-canvas" width="820" height="460"></canvas>
+      </div>
+
+      <div class="stage-footer">
+        <span id="window-readout">Frames 14–16: 3-Frame Hit-Stop · Frames 18–26: Invulnerability Window</span>
+        <span id="export-readout">Native .fbx/.usd Paired Root-Motion + UE5 AnimNotify HitBox JSON</span>
+      </div>
+    </section>
+
+    <section class="panel metrics-panel" aria-label="接触点精度、防滑步误差与武指 FinOps 指标">
+      <h2>2. 兵器接触精度与动捕棚替代 FinOps</h2>
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <span class="kpi-label">兵器格挡/关节擒拿零穿模率</span>
+          <strong class="kpi-value" id="kpi-contact">99.7%</strong>
+          <span class="kpi-sub">双人 Interaction Graph 约束</span>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-label">地面支撑脚滑步误差 (Skating)</span>
+          <strong class="kpi-value" id="kpi-skating">0.0 mm</strong>
+          <span class="kpi-sub">对比纯 AI 视频 420 mm 溜冰</span>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-label">UE5 AnimMontage 直接复用率</span>
+          <strong class="kpi-value" id="kpi-reuse">100.0%</strong>
+          <span class="kpi-sub">含 Motion Warping 对齐点</span>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-label">单套招式成本 / 工作室年省</span>
+          <strong class="kpi-value" id="kpi-cost">$18.00</strong>
+          <span class="kpi-sub" id="kpi-savings">对比双人动捕棚 $1,850 · 年省 +$3.96M</span>
+        </div>
+      </div>
+
+      <div class="decision-box">
+        <h3>SA 架构选型结论</h3>
+        <p id="decision-summary"></p>
+      </div>
+    </section>
+  </main>
+
+</body>
+</html>

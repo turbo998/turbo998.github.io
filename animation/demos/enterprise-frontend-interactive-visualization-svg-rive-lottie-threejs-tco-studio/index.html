@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Web 交互可视化四大技术栈横向选型总台（SVG 矢量 vs Rive 状态机 vs Lottie JSON vs Three.js 轻量 3D） | Generative Visual Lab</title>
+  <script type="module" crossorigin src="../../assets/enterpriseFrontendInteractiveVisualizationSvgRiveLottieThreejsTco-DvhHQ09-.js"></script>
+  <link rel="modulepreload" crossorigin href="../../assets/modulepreload-polyfill-B5Qt9EMX.js">
+  <link rel="stylesheet" crossorigin href="../../assets/enterpriseFrontendInteractiveVisualizationSvgRiveLottieThreejsTco-DbtmR1hz.css">
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <span class="eyebrow">Round 550 · 339th Workbench · 66th in Domain 5 (#domain-architecture)</span>
+      <h1>Web 交互可视化四大技术栈横向选型总台：SVG 矢量 vs Canvas 2D vs Rive 状态机 vs Three.js 轻量 3D 性能与成本模拟器</h1>
+      <p>Enterprise Web Interactive Visualization Stack Selector Studio: Native SVG vs Rive (.riv) State Machine vs Lottie JSON vs Three.js/R3F Performance &amp; TCO</p>
+    </div>
+    <div class="topbar-actions">
+      <a class="ghost-btn" href="../../index.html">← 返回实验室门户</a>
+      <a class="ghost-btn" href="../../research/enterprise-frontend-interactive-visualization-svg-rive-lottie-threejs-tco-faq.html">架构选型指南 (ZH)</a>
+      <a class="ghost-btn" href="../../research/enterprise-frontend-interactive-visualization-svg-rive-lottie-threejs-tco-faq.en.html">Architecture Guide (EN)</a>
+    </div>
+  </header>
+
+  <main class="workspace">
+    <section class="control-panel" aria-label="Web交互可视化技术栈选型控制面板">
+      <h2>1. 交互视觉场景、前端渲染策略与移动端性能预算</h2>
+
+      <label class="control-group">
+        <span>选择企业级 Web 交互视觉典型场景 (Interactive Visualization Workload)</span>
+        <select id="usecase-select" data-testid="usecase-select">
+          <option value="cloud_ai_topology_dataflow">云与 AI 架构动态流向图 (&lt;300 节点 · 要求 Ctrl+F 可搜索与多语种 i18n)</option>
+          <option value="interactive_copilot_orb_avatar">AI 助手多状态交互动效徽标 (思考/聆听/跟随鼠标状态机实时混合)</option>
+          <option value="high_density_10k_node_telemetry">高密度万级节点实时遥测粒子流 / 火焰图 (&gt;10,000 动态图元)</option>
+          <option value="product_3d_spatial_hero_inspect">旗舰硬件 360° 空间拆解与 PBR 材质检视 (6DoF 旋转与 HDRI 光影)</option>
+        </select>
+      </label>
+
+      <label class="control-group">
+        <span>选择前端可视化工程架构策略 (Frontend Rendering Strategy)</span>
+        <select id="strategy-select" data-testid="strategy-select">
+          <option value="workload_routed_svg_rive_canvas2d_r3f">按图元密度与交互维度四栈精准匹配 (SVG + Rive .riv + Canvas2D + 按需 R3F) [推荐]</option>
+          <option value="bloated_lottie_json_everywhere">反例 A：全站滥用巨型 Lottie JSON (1.4MB 主线程解析阻塞 · 移动端掉帧至 28fps)</option>
+          <option value="unoptimized_heavy_webgl_on_2d_ui">反例 B：用 12MB 重型 WebGL/Unity 渲染普通 2D 架构图 (4.8s LCP · 无法搜索文字)</option>
+        </select>
+      </label>
+
+      <label class="control-group">
+        <span>选择目标终端设备与浏览器功耗等级 (Target Client Device Tier)</span>
+        <select id="device-select" data-testid="device-select">
+          <option value="midrange_android_webview">中端 Android 企微/钉钉/微信内嵌 WebView (严格受限主线程 CPU)</option>
+          <option value="ios_safari_low_power">iOS Safari 低电量模式 (限制 WebGL 显存与帧率节能)</option>
+          <option value="desktop_4k_chrome">桌面端 4K 高刷显示器 Chrome / Edge (支持 WebGPU)</option>
+        </select>
+      </label>
+
+      <div class="toggle-row">
+        <label>
+          <input type="checkbox" id="rive-toggle" data-testid="rive-toggle" checked />
+          将 >100KB 的交互动画从 Lottie JSON 迁移至 Rive .riv 二进制状态机 (-97% 体积)
+        </label>
+      </div>
+
+      <div class="toggle-row">
+        <label>
+          <input type="checkbox" id="motion-toggle" data-testid="motion-toggle" checked />
+          启用 WCAG 2.2 prefers-reduced-motion 与离屏 IntersectionObserver 自动暂停节能
+        </label>
+      </div>
+
+      <div class="preset-bar">
+        <button type="button" id="preset-recommended" data-testid="preset-recommended" class="primary-btn">
+          加载推荐：四栈按需精准匹配 (60fps · 首屏 &lt;700ms LCP)
+        </button>
+        <button type="button" id="preset-naive" data-testid="preset-naive" class="warn-btn">
+          对比反例：全站塞满 1.4MB Lottie JSON (主线程卡死 28fps)
+        </button>
+      </div>
+
+      <div class="spec-card" id="usecase-spec-card"></div>
+    </section>
+
+    <section class="stage-panel" aria-label="Web交互可视化四栈选型决策象限与LCP帧率遥测画布">
+      <div class="stage-header">
+        <div>
+          <h2>2. SVG 矢量 vs Rive (.riv) 状态机 vs Canvas 2D vs Three.js/R3F 选型决策画布</h2>
+          <p id="stage-subtitle"></p>
+        </div>
+        <span class="verdict-pill" id="verdict-pill" data-testid="verdict-pill">CWV_60FPS_OPTIMAL_STACK_PASS</span>
+      </div>
+
+      <canvas id="stack-canvas" data-testid="stack-canvas" width="820" height="440"></canvas>
+
+      <div class="kpi-strip">
+        <div class="kpi-box">
+          <span class="kpi-label">移动端 P95 稳定帧率</span>
+          <strong id="kpi-fps" data-testid="kpi-fps">60 fps</strong>
+          <small>零主线程 JSON 解析卡顿</small>
+        </div>
+        <div class="kpi-box">
+          <span class="kpi-label">首屏动效总包体积</span>
+          <strong id="kpi-payload" data-testid="kpi-payload">14 KB</strong>
+          <small>Gzipped 资产 + 运行时</small>
+        </div>
+        <div class="kpi-box">
+          <span class="kpi-label">Core Web Vitals LCP</span>
+          <strong id="kpi-lcp" data-testid="kpi-lcp">680 ms</strong>
+          <small>远优于 Google 2500ms 门禁</small>
+        </div>
+        <div class="kpi-box">
+          <span class="kpi-label">跳出率下降 / 年省研发</span>
+          <strong id="kpi-cost-savings" data-testid="kpi-cost-savings">-48.6% / +$2.96M</strong>
+          <small>40 条企业产品线矩阵</small>
+        </div>
+      </div>
+
+      <div class="notes-card">
+        <h3>3. 架构师护栏诊断与 Core Web Vitals / WCAG 2.2 前端治理日志 (SA Audit Log)</h3>
+        <ul id="audit-notes" data-testid="audit-notes"></ul>
+      </div>
+    </section>
+  </main>
+
+</body>
+</html>

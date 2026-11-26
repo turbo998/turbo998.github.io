@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>游戏与影视硬表面武器/载具/机甲：可动部件拆解、内腔补全与 OpenUSD 机械骨骼绑定工作台 | Hard-Surface Part-Gen &amp; USD Rig Studio</title>
+  <script type="module" crossorigin src="../../assets/enterpriseGameWeaponVehicleHardSurfaceRigArticulationUv-Biky81RJ.js"></script>
+  <link rel="modulepreload" crossorigin href="../../assets/modulepreload-polyfill-B5Qt9EMX.js">
+  <link rel="stylesheet" crossorigin href="../../assets/ecommerceEyewearPrescriptionGlassesSunglassesLensRefractionTryon-BFUo6KM-.css">
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <span class="eyebrow">DOMAIN 4 · HARD-SURFACE PART-AWARE 3D, CREASE QUAD-RETOPO &amp; USD MECHANICAL RIG · WORKBENCH #363</span>
+      <h1>游戏与影视硬表面资产（武器/载具/机甲）：可动部件拆解、折痕四边面重拓扑与 OpenUSD 机械铰链绑定工作台</h1>
+      <p class="subtitle">Stage 1 拆解弹匣/拉机柄/车门可动子网格与内腔补全 (z:0) + Stage 2 折痕保护四边面与去高光 PBR (z:4) + Stage 3 1.0 刚体权重与 USD 滑轨/铰链导出 (z:8)</p>
+    </div>
+    <div class="badge-group">
+      <span class="pill pill-accent">100% 换弹/开门/转向部件独立可动</span>
+      <span class="pill pill-emerald">0.0% 金属装甲软蒙皮橡皮泥拉扯</span>
+      <span class="pill pill-amber">$16.50/件 vs 手工 $1,280 · 年省 +$3.68M</span>
+    </div>
+  </header>
+
+  <main class="workbench-grid">
+    <section class="panel controls-panel" aria-label="硬表面资产类别与机械关节参数">
+      <h2>1. 硬表面机械资产与关节行程控制</h2>
+      <label class="field">
+        <span>3A 游戏与影视硬表面机械资产预设 (Hard-Surface Asset Category)</span>
+        <select id="category-select">
+          <option value="modular-tactical-carbine-weapon">模块化战术武器与科幻步枪（9个可动子件：拉机柄 / 弹匣插拔 / 21.2mm 导轨槽）</option>
+          <option value="cyberpunk-gullwing-supercar">赛博超跑载具（12个独立构件：72° 鸥翼门铰链 / 轮毂与固定刹车卡钳分离）</option>
+          <option value="bipedal-mecha-hydraulic-arm">重装机甲液压臂与肩炮（14个刚体骨骼：液压缸伸缩 LookAt 约束 + 0% 拉伸）</option>
+          <option value="aerospace-vtol-landing-gear">近未来倾转旋翼机 VTOL（10个构件：90° 短舱倾转 + 起落架内舱壁补全）</option>
+        </select>
+      </label>
+
+      <div class="mode-toggle" role="group" aria-label="硬表面生成管线切换">
+        <button type="button" id="mode-clean" class="mode-btn active">
+          ✅ 部件级分件 3D 生成 (HoloPart/PartGen) + 折痕四边面 + USD 刚体铰链 (推荐)
+        </button>
+        <button type="button" id="mode-naive" class="mode-btn">
+          ⛔ 整枪/整车单块死雕像生成 + 自动软蒙皮 (74.2% 弹匣车门焊死, 金属像橡胶弯曲)
+        </button>
+      </div>
+
+      <label class="field">
+        <span>硬表面倒角折痕保护阈值 (Hard-Edge Crease Threshold): <strong id="crease-val">35</strong>°</span>
+        <input type="range" id="crease-slider" min="20" max="60" step="5" value="35" />
+      </label>
+
+      <label class="field">
+        <span>机械关节换弹/开门行程测试 (Kinematic Joint Stroke Test): <strong id="stroke-val">80</strong>%</span>
+        <input type="range" id="stroke-slider" min="0" max="100" step="10" value="80" />
+      </label>
+
+      <div class="architecture-stack">
+        <h3>三阶可动硬表面工业管线 (3-Stage Mechanical Stack)</h3>
+        <ul class="stage-list" id="rig-breakdown"></ul>
+      </div>
+    </section>
+
+    <section class="panel stage-panel" aria-label="可动子网格爆炸图、机械轴心与 OpenUSD 关节绑定实时画布">
+      <div class="stage-header">
+        <div>
+          <span class="stage-eyebrow" id="stage-parts-label">Receiver_Root · Slide_Bolt (Linear Z) · Magazine (Detach) · 21.2mm Rail Socket</span>
+          <h2 id="stage-asset-title">模块化战术武器与科幻步枪（9 个独立闭合子网格 · 100% 换弹可动）</h2>
+        </div>
+        <span class="status-pill" id="stage-status-pill">READY</span>
+      </div>
+
+      <div class="canvas-wrapper">
+        <canvas id="rig-canvas" width="820" height="460"></canvas>
+      </div>
+
+      <div class="stage-footer">
+        <span id="joint-readout">3× PrismaticJoint (Bolt/Mag/Stock) + 4× RevoluteJoint (Trigger/Safety/Sights)</span>
+        <span id="skin-readout">100% Rigid Bone Weight (w = 1.00) · De-Lit Metallic/Roughness PBR Ready</span>
+      </div>
+    </section>
+
+    <section class="panel metrics-panel" aria-label="机械可动率、倒角平整度与 FinOps 指标">
+      <h2>2. 机械可动率、倒角精度与美术 FinOps</h2>
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <span class="kpi-label">换弹/开门/转向部件可动率</span>
+          <strong class="kpi-value" id="kpi-articulation">100.0%</strong>
+          <span class="kpi-sub">独立流形子网格 + 内腔补全</span>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-label">硬表面装甲倒角平面平整度</span>
+          <strong class="kpi-value" id="kpi-bevel">99.6%</strong>
+          <span class="kpi-sub">Crease-Locked 四边面重拓扑</span>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-label">金属护板软蒙皮橡皮泥畸变</span>
+          <strong class="kpi-value" id="kpi-stretch">0.0%</strong>
+          <span class="kpi-sub">1.0 刚体关节替代人体软权重</span>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-label">单件可动资产成本 / 年省</span>
+          <strong class="kpi-value" id="kpi-cost">$16.50</strong>
+          <span class="kpi-sub" id="kpi-savings">对比手工 $1,280 · 年省 +$3.68M</span>
+        </div>
+      </div>
+
+      <div class="decision-box">
+        <h3>SA 架构选型结论</h3>
+        <p id="decision-summary"></p>
+      </div>
+    </section>
+  </main>
+
+</body>
+</html>

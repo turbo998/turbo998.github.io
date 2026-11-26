@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>上市公司业绩路演（Investor Roadshow）、IPO 招股书与董事会财报动态交互微站及 Remotion 编译器工作台 | Generative Visual Lab</title>
+  <script type="module" crossorigin src="../../assets/enterpriseInvestorRoadshowIpoFinancialDeckScrollytellingRemotion-B7C6s2zb.js"></script>
+  <link rel="modulepreload" crossorigin href="../../assets/modulepreload-polyfill-B5Qt9EMX.js">
+  <link rel="stylesheet" crossorigin href="../../assets/enterpriseInvestorRoadshowIpoFinancialDeckScrollytellingRemotion-Bgu4Ykbm.css">
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <span class="eyebrow">Round 540 · 329th Workbench · 64th in Domain 5 (#domain-architecture)</span>
+      <h1>上市公司业绩路演（Investor Roadshow）、IPO 招股书与董事会财报动态交互微站及 Remotion 视频编译工作台</h1>
+      <p>Enterprise Investor Roadshow, IPO Prospectus &amp; Earnings Scrollytelling + Remotion Compiler Studio: SEC/IFRS iXBRL Number AST Lock &amp; Hybrid AI B-Roll</p>
+    </div>
+    <div class="topbar-actions">
+      <a class="ghost-btn" href="../../index.html">← 返回实验室门户</a>
+      <a class="ghost-btn" href="../../research/enterprise-investor-roadshow-ipo-financial-deck-scrollytelling-remotion-faq.html">架构选型指南 (ZH)</a>
+      <a class="ghost-btn" href="../../research/enterprise-investor-roadshow-ipo-financial-deck-scrollytelling-remotion-faq.en.html">Architecture Guide (EN)</a>
+    </div>
+  </header>
+
+  <main class="workspace">
+    <section class="control-panel" aria-label="业绩路演与财报可视化编译控制面板">
+      <h2>1. 财报路演场景、渲染技术栈与 SEC/IFRS 审计门禁</h2>
+
+      <label class="control-group">
+        <span>选择 IPO 招股书 / 季报业绩路演核心章节 (Roadshow Scenario)</span>
+        <select id="scenario-select" data-testid="scenario-select">
+          <option value="saas_arr_nrr_cohort">B2B AI SaaS 招股路演：ARR $482.4M 与 134% NRR 净留存队列桥</option>
+          <option value="ai_infra_gross_margin_bridge">AI 算力与云业务季报：Token 降本与毛利率 (61%→74.2%) 跃迁桥</option>
+          <option value="global_gmv_segment_waterfall">全球零售集团财报：恒定汇率 GMV $14.8B 与区域利润归因瀑布</option>
+          <option value="esg_capex_r_and_d_allocation">董事会资本配置：AI CapEx 5年折旧、ROIC 28.4% 与绿电算力路线</option>
+        </select>
+      </label>
+
+      <label class="control-group">
+        <span>选择动态财报与路演视频生成架构 (Visualization &amp; Video Stack)</span>
+        <select id="stack-select" data-testid="stack-select">
+          <option value="ixbrl_ast_d3_scrollytelling_remotion_hybrid">iXBRL 审计数字 AST 硬锁 + D3/SVG 交互瀑布 + Remotion 60fps 编译 + AI 实景背景层 (推荐)</option>
+          <option value="unconstrained_ai_video_chart_gen">纯 AI 视频大模型直出财报图表 (Sora/Veo · 64.8% 数字篡改与柱高失真)</option>
+          <option value="legacy_static_pdf_agency_motion">传统财经公关外包手工 AE 动画 + 90页静态 PDF ($450/支 · 10天交付)</option>
+        </select>
+      </label>
+
+      <label class="control-group">
+        <span>选择证券监管与审计合规辖区 (Regulatory Regime)</span>
+        <select id="regime-select" data-testid="regime-select">
+          <option value="sec_reg_fd_gaap">美国 SEC Reg FD / Reg G &amp; S-1 US-GAAP 披露规范</option>
+          <option value="ifrs_hkex_eu">港交所 HKEX / 欧盟 IFRS 国际财务报告准则</option>
+          <option value="board_audit_committee">一级市场 Series-D / 董事会审计委员会 (Audit Committee) 内控</option>
+        </select>
+      </label>
+
+      <div class="toggle-row">
+        <label>
+          <input type="checkbox" id="ast-toggle" data-testid="ast-toggle" checked />
+          强制 ERP / iXBRL 经审计财务数字 SHA-256 哈希与柱高比例硬锁 (100% GAAP AST Lock)
+        </label>
+      </div>
+
+      <div class="toggle-row">
+        <label>
+          <input type="checkbox" id="safeharbor-toggle" data-testid="safeharbor-toggle" checked />
+          自动压印前瞻性安全港声明与 Non-GAAP 对账脚注 (Safe-Harbor Vector Stamp)
+        </label>
+      </div>
+
+      <div class="preset-bar">
+        <button type="button" id="preset-recommended" data-testid="preset-recommended" class="primary-btn">
+          加载推荐：iXBRL 数字 AST 硬锁 + D3/Remotion 双端同源编译
+        </button>
+        <button type="button" id="preset-naive" data-testid="preset-naive" class="warn-btn">
+          对比反例：让 AI 视频大模型直接画财报图表 (数字篡改/柱高失真)
+        </button>
+      </div>
+
+      <div class="spec-card" id="scenario-spec-card"></div>
+    </section>
+
+    <section class="stage-panel" aria-label="上市公司业绩路演交互瀑布与 Remotion 视频合成舞台">
+      <div class="stage-header">
+        <div>
+          <h2>2. 经审计 iXBRL 矢量瀑布图层 (z-index:10) + 隔离 AI 实景背景层 (z-index:-1) 画布</h2>
+          <p id="stage-subtitle"></p>
+        </div>
+        <span class="verdict-pill" id="verdict-pill" data-testid="verdict-pill">SEC_IXBRL_AST_LOCKED_PASS</span>
+      </div>
+
+      <canvas id="roadshow-canvas" data-testid="roadshow-canvas" width="820" height="440"></canvas>
+
+      <div class="kpi-strip">
+        <div class="kpi-box">
+          <span class="kpi-label">经审计财务数字锁死率</span>
+          <strong id="kpi-gaap-lock" data-testid="kpi-gaap-lock">100.0%</strong>
+          <small>ERP / iXBRL SHA-256 绑定</small>
+        </div>
+        <div class="kpi-box">
+          <span class="kpi-label">图表柱高几何比例保真度</span>
+          <strong id="kpi-scale-truth" data-testid="kpi-scale-truth">100.0%</strong>
+          <small>D3 确定性线性比例尺</small>
+        </div>
+        <div class="kpi-box">
+          <span class="kpi-label">机构投资者路演完读率提升</span>
+          <strong id="kpi-investor-lift" data-testid="kpi-investor-lift">+65.2%</strong>
+          <small>对比 90 页静态 PDF 招股书</small>
+        </div>
+        <div class="kpi-box">
+          <span class="kpi-label">单支成本 / 年省 IR 费用</span>
+          <strong id="kpi-cost-savings" data-testid="kpi-cost-savings">$0.038 / +$2.88M</strong>
+          <small>6,000 支/年多语种路演切片</small>
+        </div>
+      </div>
+
+      <div class="notes-card">
+        <h3>3. 架构师护栏诊断与 SEC Reg-FD 证券合规审计日志 (SA Audit Log)</h3>
+        <ul id="audit-notes" data-testid="audit-notes"></ul>
+      </div>
+    </section>
+  </main>
+
+</body>
+</html>

@@ -2,7 +2,7 @@
 
 > 🌐 **Language / 语言**: **中文** | [English (`asset-taxonomy.en.md`)](asset-taxonomy.en.md)
 
-本索引以 **云与 AI 解决方案架构师（Cloud & AI Solution Architect）** 视角，对 `turbo998/generative-visual-lab` 中的 **328 项交互式视觉演示、Blender 4.5 LTS MCP 建模管线、科学数据集、中英双语架构选型指南与自动化验证资产** 进行全景归档。仓库严格聚焦生成式视觉、多模态音画、3D/4D 世界模型与企业级 AIGC 生产架构，不含任何非 AI 范畴的经典物理或机械传感器参数实验台。
+本索引以 **云与 AI 解决方案架构师（Cloud & AI Solution Architect）** 视角，对 `turbo998/generative-visual-lab` 中的 **390 项交互式视觉演示、Blender 4.5 LTS MCP 建模管线、科学数据集、中英双语架构选型指南与自动化验证资产** 进行全景归档。仓库严格聚焦生成式视觉、多模态音画、3D/4D 世界模型与企业级 AIGC 生产架构，不含任何非 AI 范畴的经典物理或机械传感器参数实验台。
 
 ---
 
@@ -12,9 +12,9 @@
 | --- | --- | --- | --- |
 | **1. 实时程序造景与科学可视化** | `demos/feitian/` · `demos/astra-planet/` · `demos/rocket-launch/` | **3 项核心应用**：Canvas 2D / Three.js 实时渲染、Blender Cycles 离线烘焙与 NASA MOLA 实测地形融合 | MIT 原创代码 + NASA PDS 公共领域数据 |
 | **2. 前沿多模态、4D 运镜与 3D 世界模型导演台** | `demos/*-director/` · `demos/*-studio/` · `demos/pelican-bicycle-arena/` | **7 套前沿工作室**：AI 工程套件评测、可编程知识动画、4DGS 相机控制、双流音画拟音、物理世界模型、神经重打光与可玩世界记忆 | MIT 原创架构工作台 |
-| **3. 企业级 AIGC 生产管线与 FinOps 工作台** | `demos/*-workbench/` · `demos/*-studio/` · `demos/*-pipeline/` | **318 套企业架构沙盘**：覆盖商业地产与高端住宅空房 AI 虚拟软装工厂（第 328 项）、全球校招与社招视频化 JD 批量工厂（第 327 项）与餐饮连锁外卖平台菜品视觉标准化工作台（第 326 项） | MIT 原创代码 + 7-Card 视觉评测卡 |
+| **3. 企业级 AIGC 生产管线与 FinOps 工作台** | `demos/*-workbench/` · `demos/*-studio/` · `demos/*-pipeline/` | **380 套企业架构沙盘**：覆盖第 390 项暨 780 篇双语指南里程碑（76×5 均衡矩阵）主流图像与视频大模型选型总控台（第 390 项）、企业 CTO AI 算力网关（P65 PTU 预留 + Pay-Go 溢出）动态沙盘（第 389 项 / 第 600 轮里程碑）与游戏可破坏场景道具（Voronoi / UE5 Chaos）工作台（第 388 项） | MIT 原创代码 + 7-Card 视觉评测卡 |
 | **4. Blender 4.5 LTS MCP 无头管线与二进制资产** | `scripts/blender/` · `demos/*/assets/` · `demos/astra-planet/public/data/` | 无头 JSON-RPC 守护进程、确定性建模烘焙脚本、`.glb` 硬表面套件、微表面法线贴图与火星测高数据包 | MIT 原创脚本与烘焙产物 |
-| **5. 双语深度研究与架构师选型 FAQ** | `docs/*.md` · `docs/*.en.md`（编译至 `dist/research/*.html`） | **9 组深度专题报告 + 318 组企业 AIGC 选型 FAQ**（中英双语共 656+ 篇文档） | MIT 原创双语技术文档 |
+| **5. 双语深度研究与架构师选型 FAQ** | `docs/*.md` · `docs/*.en.md`（编译至 `dist/research/*.html`） | **9 组深度专题报告 + 380 组企业 AIGC 选型 FAQ**（中英双语共 780+ 篇文档） | MIT 原创双语技术文档 |
 | **6. 视觉总结图集与自动化测试门禁** | `docs/evidence/` · `docs/benchmarks/` · `tests/` | 架构信息图 SVG、Blender Cycles 光追渲染图、Vitest 单元测试与 Playwright 多视口 E2E 视觉预算门禁 | 实测与架构验证产物 |
 
 ---

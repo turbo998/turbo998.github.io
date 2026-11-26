@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>影视剧集、短剧出海与院线广告“多语种视觉配音（Visual Dubbing / vDub）”工作台：3D FLAME下颌驱动 + 手杯/麦克风深度遮挡回贴 | Generative Visual Lab</title>
+  <script type="module" crossorigin src="../../assets/enterpriseFilmVisualDubbing3dJawVisemeOcclusionRelight-B_HMlJ2Q.js"></script>
+  <link rel="modulepreload" crossorigin href="../../assets/modulepreload-polyfill-B5Qt9EMX.js">
+  <link rel="stylesheet" crossorigin href="../../assets/enterpriseFilmVisualDubbing3dJawVisemeOcclusionRelight-B5c_-hti.css">
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <span class="eyebrow">Round 549 · 338th Workbench · 66th in Domain 4 (#domain-spatial)</span>
+      <h1>影视剧集与短剧出海“多语种视觉配音（Visual Dubbing / vDub）”后期工厂：3D 下颌驱动 + 手杯/话筒深度遮挡回贴工作台</h1>
+      <p>Enterprise Film, Drama &amp; Commercial Visual Dubbing (vDub) Studio: 3D FLAME Jaw/Lip Viseme Mesh, SAM-2 Foreground Occlusion Holdout &amp; Intrinsic Relighting</p>
+    </div>
+    <div class="topbar-actions">
+      <a class="ghost-btn" href="../../index.html">← 返回实验室门户</a>
+      <a class="ghost-btn" href="../../research/enterprise-film-visual-dubbing-3d-jaw-viseme-occlusion-relight-faq.html">架构选型指南 (ZH)</a>
+      <a class="ghost-btn" href="../../research/enterprise-film-visual-dubbing-3d-jaw-viseme-occlusion-relight-faq.en.html">Architecture Guide (EN)</a>
+    </div>
+  </header>
+
+  <main class="workspace">
+    <section class="control-panel" aria-label="影视视觉配音与遮挡重绘控制面板">
+      <h2>1. 实拍复杂遮挡镜头、视觉配音架构与目标译制语种</h2>
+
+      <label class="control-group">
+        <span>选择实拍高难度遮挡/大侧脸/动态光影镜头 (Cinema Occlusion Shot)</span>
+        <select id="shot-select" data-testid="shot-select">
+          <option value="hand_gesture_coffee_cup_pass">都市短剧特写：端陶瓷咖啡杯喝水 + 手指横穿唇部 (25° Yaw)</option>
+          <option value="neon_rain_75deg_profile_monologue">赛博夜雨长镜头：75° 极限侧脸下颌运动 + 红蓝霓虹扫光</option>
+          <option value="thick_beard_cigar_interrogation">悬疑审讯室：浓密上唇络腮胡遮挡 + 雪茄与上升烟雾 (40° Yaw)</option>
+          <option value="podcast_shure_sm7b_close_mic">高管纪录片访谈：Shure SM7B 近讲防喷罩遮挡左下颌 35%</option>
+        </select>
+      </label>
+
+      <label class="control-group">
+        <span>选择多语种口型重绘与后期合成管线 (Visual Dubbing Stack)</span>
+        <select id="stack-select" data-testid="stack-select">
+          <option value="flame3d_viseme_sam2_holdout_intrinsic_relight">3D FLAME 下颌网格 + SAM-2 前景遮挡回贴 + 本征光照锁 + 真牙库 (推荐)</option>
+          <option value="naive_2d_bbox_wav2lip_inpaint">传统 2D 矩形框口型重绘 (64.6% 把幽灵嘴巴画在咖啡杯/手指/话筒上!)</option>
+          <option value="manual_nuke_roto_3d_face_replacement">传统影视后期人工 Nuke 逐帧 Roto 抠像修片 ($420/分钟 · 5天交付)</option>
+        </select>
+      </label>
+
+      <label class="control-group">
+        <span>选择出海译制目标语言与音素节奏 (Target Dubbing Language)</span>
+        <select id="lang-select" data-testid="lang-select">
+          <option value="spanish_latam">拉美西班牙语 (es-419 · 高频开音节大幅度下颌开合)</option>
+          <option value="german_dach">德语区 (de-DE · 密集双唇塞音 B/P/M 闭口锁定)</option>
+          <option value="japanese_tokyo">日语 (ja-JP · 拍音等时微幅唇齿音同步)</option>
+        </select>
+      </label>
+
+      <div class="toggle-row">
+        <label>
+          <input type="checkbox" id="holdout-toggle" data-testid="holdout-toggle" checked />
+          启用 SAM-2 + 深度前景遮挡层（咖啡杯/手指/话筒/上唇胡须）100% 置顶回贴 (Foreground Holdout Matte)
+        </label>
+      </div>
+
+      <div class="toggle-row">
+        <label>
+          <input type="checkbox" id="shading-toggle" data-testid="shading-toggle" checked />
+          锁定原片本征光照通道（Intrinsic Shading）与 ACES 调色空间霓虹高光反射
+        </label>
+      </div>
+
+      <div class="preset-bar">
+        <button type="button" id="preset-recommended" data-testid="preset-recommended" class="primary-btn">
+          加载推荐：3D 下颌驱动 + 手杯前景遮挡回贴 + 本征光影锁
+        </button>
+        <button type="button" id="preset-naive" data-testid="preset-naive" class="warn-btn">
+          对比反例：传统 2D 口型重绘 (幽灵嘴巴浮在咖啡杯/手指表面!)
+        </button>
+      </div>
+
+      <div class="spec-card" id="shot-spec-card"></div>
+    </section>
+
+    <section class="stage-panel" aria-label="影视视觉配音3D下颌与前景遮挡分层合成画布">
+      <div class="stage-header">
+        <div>
+          <h2>2. 3D FLAME 下颌网格 (底层) + SAM-2 前景手杯/话筒遮挡掩码 (顶层) 合成画布</h2>
+          <p id="stage-subtitle"></p>
+        </div>
+        <span class="verdict-pill" id="verdict-pill" data-testid="verdict-pill">VDUB_3D_OCCLUSION_LOCKED_PASS</span>
+      </div>
+
+      <canvas id="vdub-canvas" data-testid="vdub-canvas" width="820" height="440"></canvas>
+
+      <div class="kpi-strip">
+        <div class="kpi-box">
+          <span class="kpi-label">前景手杯/话筒遮挡保持率</span>
+          <strong id="kpi-holdout" data-testid="kpi-holdout">100.0%</strong>
+          <small>SAM-2 Z-Depth 置顶回贴</small>
+        </div>
+        <div class="kpi-box">
+          <span class="kpi-label">75° 大侧脸下颌轮廓锁死</span>
+          <strong id="kpi-profile-lock" data-testid="kpi-profile-lock">99.6%</strong>
+          <small>3D FLAME 骨骼音素联动</small>
+        </div>
+        <div class="kpi-box">
+          <span class="kpi-label">杯面幽灵嘴穿帮率</span>
+          <strong id="kpi-ghost-risk" data-testid="kpi-ghost-risk">0.0%</strong>
+          <small>对比 2D 重绘的 64.6%</small>
+        </div>
+        <div class="kpi-box">
+          <span class="kpi-label">单分钟成本 / 年省 VFX 费</span>
+          <strong id="kpi-cost-savings" data-testid="kpi-cost-savings">$0.045 / +$3.22M</strong>
+          <small>4 万分钟/年出海剧集译制</small>
+        </div>
+      </div>
+
+      <div class="notes-card">
+        <h3>3. 架构师护栏诊断与影视后期 ACES / Nuke 工业化管线审计日志 (SA Audit Log)</h3>
+        <ul id="audit-notes" data-testid="audit-notes"></ul>
+      </div>
+    </section>
+  </main>
+
+</body>
+</html>

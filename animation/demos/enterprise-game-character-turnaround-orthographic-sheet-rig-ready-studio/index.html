@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>游戏与番剧“多视角角色正交三视图设定集（Character Turnaround Sheet）、披风/长发分层剥离与 3D 绑定就绪”工作台 | Generative Visual Lab</title>
+  <script type="module" crossorigin src="../../assets/enterpriseGameCharacterTurnaroundOrthographicSheetRigReady-ClAYNMSN.js"></script>
+  <link rel="modulepreload" crossorigin href="../../assets/modulepreload-polyfill-B5Qt9EMX.js">
+  <link rel="stylesheet" crossorigin href="../../assets/enterpriseGameCharacterTurnaroundOrthographicSheetRigReady-CFHy5OoC.css">
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <span class="eyebrow">Round 544 · 333rd Workbench · 65th in Domain 4 (#domain-spatial)</span>
+      <h1>游戏与番剧“多视角角色正交三视图设定集”工厂：零透视标尺硬锁 + 不对称护肩镜像校准 + 披风剥离 3D 绑定工作台</h1>
+      <p>Enterprise Game &amp; Animation Character Orthographic Turnaround Sheet Studio: Zero-FOV A-Pose Ruler Lock, Cross-View Asymmetry &amp; Cape X-Ray Layer</p>
+    </div>
+    <div class="topbar-actions">
+      <a class="ghost-btn" href="../../index.html">← 返回实验室门户</a>
+      <a class="ghost-btn" href="../../research/enterprise-game-character-turnaround-orthographic-sheet-rig-ready-faq.html">架构选型指南 (ZH)</a>
+      <a class="ghost-btn" href="../../research/enterprise-game-character-turnaround-orthographic-sheet-rig-ready-faq.en.html">Architecture Guide (EN)</a>
+    </div>
+  </header>
+
+  <main class="workspace">
+    <section class="control-panel" aria-label="角色正交三视图与3D建模管线控制">
+      <h2>1. 角色设定原型、正交生成管线与下游 3D 绑定目标</h2>
+
+      <label class="control-group">
+        <span>选择游戏/番剧角色设定与复杂穿戴结构 (Character Archetype)</span>
+        <select id="archetype-select" data-testid="archetype-select">
+          <option value="valkyrie_asymmetric_pauldron_cape">暗黑奇幻女武神（左肩单侧狮头重甲 + 落地皇家披风遮挡后背）</option>
+          <option value="cyber_samurai_mecha_scabbard">赛博机甲武士（左腰双刀鞘 + 背部可拆推进器背包 + 45° A-Pose）</option>
+          <option value="cel_shaded_anime_mage_long_hair">二次元三渲二魔导师（及膝双马尾遮挡后背 + 法杖独立拆件）</option>
+          <option value="tactical_operator_modular_rig">写实战术特勤干员（不对称 MOLLE 弹匣包 + 夜视仪头盔四视图）</option>
+        </select>
+      </label>
+
+      <label class="control-group">
+        <span>选择多视角三视图生成与对齐管线 (Turnaround Pipeline)</span>
+        <select id="pipeline-select" data-testid="pipeline-select">
+          <option value="ortho_zero_fov_apose_cross_attn_cape_layer">零透视正交 OpenPose A-Pose 标尺锁 + 跨视图共享注意力 + 披风剥离层 (推荐)</option>
+          <option value="single_prompt_midjourney_flux_sheet">单句提示词直出多视图 (67.5% 高低肩透视错位 / 左右护肩方向画反 / 披风挡死后背)</option>
+          <option value="manual_2d_concept_art_outsourcing">传统游戏美术外包手绘正交三视图 ($1,400/套 · 7天交付)</option>
+        </select>
+      </label>
+
+      <label class="control-group">
+        <span>选择下游 3D 建模与自动骨骼绑定引擎 (Downstream 3D / Rig Target)</span>
+        <select id="rig-select" data-testid="rig-select">
+          <option value="hunyuan3d_trellis_i23d">Hunyuan3D-2 / Trellis 多视图正交重建 + 四边面重拓扑</option>
+          <option value="maya_hik_accurig_fbx">Maya HIK / AccuRIG 自动骨骼权重绑定 (要求 45° A-Pose 腋下净空)</option>
+          <option value="unreal_metahuman_cloth">Unreal Engine 5 Chaos Cloth 多层服装解算</option>
+        </select>
+      </label>
+
+      <div class="toggle-row">
+        <label>
+          <input type="checkbox" id="ortho-toggle" data-testid="ortho-toggle" checked />
+          强制 0° FOV 正交相机投影与头顶/肩线/裆部/脚踝水平标尺对齐 (Zero-FOV Ruler Lock)
+        </label>
+      </div>
+
+      <div class="toggle-row">
+        <label>
+          <input type="checkbox" id="xray-toggle" data-testid="xray-toggle" checked />
+          同步导出“剥离披风/长发”背部内层护甲正交结构图 (Unoccluded Back-Armor X-Ray Pass)
+        </label>
+      </div>
+
+      <div class="preset-bar">
+        <button type="button" id="preset-recommended" data-testid="preset-recommended" class="primary-btn">
+          加载推荐：0° 正交标尺锁 + 不对称护肩校准 + 披风剥离层
+        </button>
+        <button type="button" id="preset-naive" data-testid="preset-naive" class="warn-btn">
+          对比反例：单句提示词直出 (高低肩错位 / 护肩方向画反 / 挡死后背)
+        </button>
+      </div>
+
+      <div class="spec-card" id="archetype-spec-card"></div>
+    </section>
+
+    <section class="stage-panel" aria-label="角色正交四视图标尺对齐与不对称部件校验画布">
+      <div class="stage-header">
+        <div>
+          <h2>2. 0° FOV 正交四视图（正/侧/背/剥离披风层）+ 水平比例标尺 + 45° A-Pose 骨架画布</h2>
+          <p id="stage-subtitle"></p>
+        </div>
+        <span class="verdict-pill" id="verdict-pill" data-testid="verdict-pill">ORTHO_RIG_READY_SHEET_PASS</span>
+      </div>
+
+      <canvas id="turnaround-canvas" data-testid="turnaround-canvas" width="820" height="440"></canvas>
+
+      <div class="kpi-strip">
+        <div class="kpi-box">
+          <span class="kpi-label">正交水平标尺对齐率</span>
+          <strong id="kpi-ortho-align" data-testid="kpi-ortho-align">100.0%</strong>
+          <small>0.0px 跨视图身高漂移</small>
+        </div>
+        <div class="kpi-box">
+          <span class="kpi-label">跨视图不对称装备一致率</span>
+          <strong id="kpi-asymmetry" data-testid="kpi-asymmetry">99.5%</strong>
+          <small>左肩护甲背面正确居中偏右</small>
+        </div>
+        <div class="kpi-box">
+          <span class="kpi-label">3D 自动绑骨一次通过率</span>
+          <strong id="kpi-rig-pass" data-testid="kpi-rig-pass">99.6%</strong>
+          <small>45° 标准 A-Pose 零粘连</small>
+        </div>
+        <div class="kpi-box">
+          <span class="kpi-label">单套成本 / 年省外包费</span>
+          <strong id="kpi-cost-savings" data-testid="kpi-cost-savings">$0.026 / +$3.34M</strong>
+          <small>2,400 套角色/皮肤/NPC</small>
+        </div>
+      </div>
+
+      <div class="notes-card">
+        <h3>3. 架构师护栏诊断与 3D 美术工业化管线审计日志 (SA Audit Log)</h3>
+        <ul id="audit-notes" data-testid="audit-notes"></ul>
+      </div>
+    </section>
+  </main>
+
+</body>
+</html>

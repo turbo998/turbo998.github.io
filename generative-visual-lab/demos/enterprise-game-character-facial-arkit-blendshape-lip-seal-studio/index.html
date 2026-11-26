@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>游戏与 3D 动画角色“面部表情捕捉与 52 ARKit Blendshape 口型闭唇硬锁”工作台 | Facial ARKit Blendshape &amp; Lip-Seal Studio</title>
+  <script type="module" crossorigin src="../../assets/enterpriseGameCharacterFacialArkitBlendshapeLipSeal-DBXD-InX.js"></script>
+  <link rel="modulepreload" crossorigin href="../../assets/modulepreload-polyfill-B5Qt9EMX.js">
+  <link rel="stylesheet" crossorigin href="../../assets/ecommerceEyewearPrescriptionGlassesSunglassesLensRefractionTryon-BFUo6KM-.css">
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <span class="eyebrow">DOMAIN 4 · 3D FACIAL ARKIT BLENDSHAPE SOLVER, BILABIAL LIP-SEAL LOCK &amp; METAHUMAN USD · WORKBENCH #373</span>
+      <h1>游戏与 3D 动画角色面部表演：52 ARKit / FACS 权重解算、双唇音（/p/ /b/ /m/）零缝隙闭唇硬锁与 UE5 导出工作台</h1>
+      <p class="subtitle">Stage 1 音素级双唇爆破音 0.0mm 闭唇与防穿牙硬约束 (z:0) + Stage 2 上下半脸解耦与 4K 动态皱纹张力贴图 (z:4) + Stage 3 UE5 MetaHuman .usd 曲线导出 (z:8)</p>
+    </div>
+    <div class="badge-group">
+      <span class="pill pill-accent">100% 双唇音 (/p/ /b/ /m/) 严密闭唇</span>
+      <span class="pill pill-emerald">0.0% 门牙穿透下唇恐怖谷伪影</span>
+      <span class="pill pill-amber">$0.08/句 vs 动画师手K $42 · 年省 +$4.35M</span>
+    </div>
+  </header>
+
+  <main class="workbench-grid">
+    <section class="panel controls-panel" aria-label="角色面部绑定预设与口型平滑参数">
+      <h2>1. 角色面部绑定类型与口型解算参数</h2>
+      <label class="field">
+        <span>3A 游戏与 3D 动画角色面部表演预设 (Facial Performance Archetype)</span>
+        <select id="archetype-select">
+          <option value="aaa-rpg-metahuman-close-up">3A 剧情 RPG 角色特写对话（/p/ /b/ /m/ 双唇 0.0mm 紧闭锁 + 52 ARKit 直通 UE5）</option>
+          <option value="stylized-anime-cel-shaded-hero">二次元三渲二（Cel-Shaded）游戏主角口型（12FPS 抽帧阶跃曲线 + 元音轮廓锁）</option>
+          <option value="multilingual-dubbing-retarget-15lang">全球 15 语种游戏本地化重演（100% 保留原演员眉眼情绪 + 仅替换下半脸口型）</option>
+          <option value="boss-cinematic-roar-wrinkle-map">过场高情绪咆哮与微表情（4K 法线皱纹张力贴图 + 舌尖齿龈音 /t/ /d/ 接触锁）</option>
+        </select>
+      </label>
+
+      <div class="mode-toggle" role="group" aria-label="面部解算管线切换">
+        <button type="button" id="mode-clean" class="mode-btn active">
+          ✅ IPA 双唇闭唇硬约束 + 上下半脸解耦 52 ARKit + UE5 SkelAnimation (推荐)
+        </button>
+        <button type="button" id="mode-naive" class="mode-btn">
+          ⛔ 无约束音频转权重 / 2D 视频换脸 (66.4% 发 /p/ /b/ /m/ 嘴合不上、门牙穿下唇)
+        </button>
+      </div>
+
+      <label class="field">
+        <span>Savitzky-Golay 帧间防抖平滑窗口 (Temporal Jitter Filter Window): <strong id="smooth-val">5</strong> 帧</span>
+        <input type="range" id="smooth-slider" min="3" max="9" step="2" value="5" />
+      </label>
+
+      <label class="field">
+        <span>上半脸眉眼情绪与动态皱纹增益 (Upper-Face Emotion &amp; Wrinkle Gain): <strong id="emo-val">85</strong>%</span>
+        <input type="range" id="emo-slider" min="40" max="100" step="5" value="85" />
+      </label>
+
+      <div class="architecture-stack">
+        <h3>三阶 3D 面部捕捉与防恐怖谷栈 (3-Stage Facial Stack)</h3>
+        <ul class="stage-list" id="facial-breakdown"></ul>
+      </div>
+    </section>
+
+    <section class="panel stage-panel" aria-label="IPA 双唇闭唇锚定、52 ARKit 权重曲线与上下半脸解耦画布">
+      <div class="stage-header">
+        <div>
+          <span class="stage-eyebrow" id="stage-ipa-label">IPA /p/ /b/ /m/ → mouthClose=1.00 (0.0mm Gap) · Jaw-Teeth Collision Clamp</span>
+          <h2 id="stage-facial-title">3A 剧情 RPG 角色特写对话（100% 双唇闭合零漏风 · 52 ARKit 曲线）</h2>
+        </div>
+        <span class="status-pill" id="stage-status-pill">READY</span>
+      </div>
+
+      <div class="canvas-wrapper">
+        <canvas id="facial-canvas" width="820" height="460"></canvas>
+      </div>
+
+      <div class="stage-footer">
+        <span id="rig-readout">52 ARKit + 140 FACS Rig · Upper/Lower Face Decoupled · 60FPS Savitzky-Golay</span>
+        <span id="usd-readout">Native UE5 MetaHuman .anim / .usd SkelAnimation + 4K Wrinkle Tension Map</span>
+      </div>
+    </section>
+
+    <section class="panel metrics-panel" aria-label="闭唇准确率、防穿牙率与台词本地化 FinOps 指标">
+      <h2>2. 口型闭唇精度与十万句台词 FinOps</h2>
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <span class="kpi-label">双唇音 (/p/ /b/ /m/) 闭唇准确率</span>
+          <strong class="kpi-value" id="kpi-seal">100.0%</strong>
+          <span class="kpi-sub">mouthClose=1.0 硬边界锚定</span>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-label">门牙穿透下唇恐怖谷伪影率</span>
+          <strong class="kpi-value" id="kpi-teeth">0.0%</strong>
+          <span class="kpi-sub">下颌骨旋转角与下唇碰撞钳位</span>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-label">UE5 MetaHuman 骨骼动画复用率</span>
+          <strong class="kpi-value" id="kpi-reuse">100.0%</strong>
+          <span class="kpi-sub">对比 2D 视频数字人 0.0%</span>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-label">单句台词成本 / 工作室年省</span>
+          <strong class="kpi-value" id="kpi-cost">$0.08</strong>
+          <span class="kpi-sub" id="kpi-savings">对比动画师手调 $42 · 年省 +$3.88M</span>
+        </div>
+      </div>
+
+      <div class="decision-box">
+        <h3>SA 架构选型结论</h3>
+        <p id="decision-summary"></p>
+      </div>
+    </section>
+  </main>
+
+</body>
+</html>

@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>383rd Workbench · Enterprise Game Creature & Quadruped Locomotion, Hildebrand Gait Phase & 4-Limb Terrain IK USD Studio</title>
+    <script type="module" crossorigin src="../../assets/enterpriseGameCreatureQuadrupedLocomotionTerrainIkUsd-F5odfC4-.js"></script>
+    <link rel="modulepreload" crossorigin href="../../assets/modulepreload-polyfill-B5Qt9EMX.js">
+    <link rel="stylesheet" crossorigin href="../../assets/enterpriseGameCreatureQuadrupedLocomotionTerrainIkUsd-Cmkur7p0.css">
+  </head>
+  <body>
+    <main class="studio-shell" data-studio="creature-quadruped-locomotion-usd">
+      <header class="studio-header">
+        <div>
+          <span class="eyebrow">Domain 4 · Game, 3D & Film Previz (#75 in Domain 4 · 383rd Workbench & 766th Bilingual Guide)</span>
+          <h1>Enterprise Game Creature & Quadruped Locomotion: Hildebrand Gait Phase, 4-Limb Terrain Raycast IK & OpenUSD Studio</h1>
+          <p>
+            Eliminates 78.4% backward hock-joint inversions and 64.8mm/frame hoof skating in unconstrained AI video-to-motion by enforcing Hildebrand 4-limb gait phase graphs (`z:0`), 4-hoof raycast heightfield IK on 30° slopes (`z:4`), and UE5 PoseSearch `UsdSkel` export (`z:8`).
+          </p>
+        </div>
+        <div class="preset-bar">
+          <button id="preset-locked" class="preset-btn active" type="button">
+            ✅ Hildebrand Gait Phase + 4-Limb Raycast IK + USD
+          </button>
+          <button id="preset-naive" class="preset-btn" type="button">
+            ⚠️ Unconstrained AI Video-to-Motion (64.8mm Slip)
+          </button>
+          <button id="preset-climb" class="preset-btn" type="button">
+            ⛰️ 30° Steep Rock-Slope Prowl & Spine Pitch
+          </button>
+        </div>
+      </header>
+
+      <section class="kpi-strip">
+        <article class="kpi-card">
+          <div class="kpi-label">Hildebrand Gait Integrity</div>
+          <div class="kpi-value" id="kpi-gait-acc">100.0%</div>
+          <div class="kpi-sub">FL/FR/RL/RR Phase & Hock Lock</div>
+        </article>
+        <article class="kpi-card">
+          <div class="kpi-label">Stance Hoof / Paw Slip</div>
+          <div class="kpi-value" id="kpi-slip-mm">0.0 mm</div>
+          <div class="kpi-sub">vs 64.8 mm Unconstrained AI</div>
+        </article>
+        <article class="kpi-card">
+          <div class="kpi-label">30° Slope Pitch Match</div>
+          <div class="kpi-value" id="kpi-slope-acc">99.7%</div>
+          <div class="kpi-sub">4-Limb Raycast Heightfield IK</div>
+        </article>
+        <article class="kpi-card">
+          <div class="kpi-label">UE5 PoseSearch Ready</div>
+          <div class="kpi-value" id="kpi-ue5-ready">100.0%</div>
+          <div class="kpi-sub">4-Foot Sync Markers & Trajectory</div>
+        </article>
+        <article class="kpi-card">
+          <div class="kpi-label">Unit Cost Per Clip</div>
+          <div class="kpi-value" id="kpi-clip-cost">$16.00</div>
+          <div class="kpi-sub">vs $4,200 Live Animal MoCap</div>
+        </article>
+        <article class="kpi-card">
+          <div class="kpi-label">Annual Studio Savings</div>
+          <div class="kpi-value" id="kpi-savings">$4.39M/yr</div>
+          <div class="kpi-sub">Across 1,050 Creature Clips/Yr</div>
+        </article>
+      </section>
+
+      <section class="studio-grid">
+        <aside class="control-panel">
+          <div class="control-group">
+            <label for="select-pipeline">Quadruped Locomotion Solver</label>
+            <select id="select-pipeline">
+              <option value="hildebrand-gait-4limb-raycast-ik-usd">Hildebrand Gait Graph + 4-Limb Raycast IK + USD</option>
+              <option value="unconstrained-video-to-motion-regression">Unconstrained AI Video-to-Motion Regression</option>
+            </select>
+          </div>
+
+          <div class="control-group">
+            <label for="select-gait">Creature Gait & Terrain Archetype</label>
+            <select id="select-gait">
+              <option value="diagonal-trot-2beat">2-Beat Diagonal Trot ([FL+RR] vs [FR+RL])</option>
+              <option value="rotary-gallop-lead-switch">Rotary Gallop + Dynamic Lead-Foot Switch</option>
+              <option value="steep-30deg-rock-climb-prowl">30° Uphill Rock Climb + Spine Pitch Alignment</option>
+            </select>
+          </div>
+
+          <div class="control-group">
+            <label for="range-clips">
+              <span>Annual Creature & Mount Clips</span>
+              <span id="label-clips">1,050 clips/yr</span>
+            </label>
+            <input id="range-clips" type="range" min="200" max="2500" step="50" value="1050" />
+          </div>
+
+          <div class="toggle-list">
+            <label class="toggle-item">
+              <input id="toggle-phase" type="checkbox" checked />
+              <span>Enforce Hildebrand 4-Limb Phase & Hock Hinge Limits (`z:0`)</span>
+            </label>
+            <label class="toggle-item">
+              <input id="toggle-ik" type="checkbox" checked />
+              <span>Lock 4-Hoof Raycast Terrain IK & Spine Pitch (`0.0mm` Slip)</span>
+            </label>
+            <label class="toggle-item">
+              <input id="toggle-ue5" type="checkbox" checked />
+              <span>Bake UE5 `PoseSearch` Trajectory & 4-Foot Sync Markers (`z:8`)</span>
+            </label>
+          </div>
+
+          <div id="verdict-banner" class="verdict-box"></div>
+        </aside>
+
+        <section class="stage-panel">
+          <div class="canvas-wrap">
+            <canvas id="quadruped-canvas" width="980" height="360"></canvas>
+          </div>
+
+          <table class="spec-table">
+            <thead>
+              <tr>
+                <th>Quadruped Kinematic Chain</th>
+                <th>Hildebrand Phase & Duty Spec</th>
+                <th>Foot Slip</th>
+                <th>Joint & Terrain Status</th>
+                <th>Gate</th>
+              </tr>
+            </thead>
+            <tbody id="spec-tbody"></tbody>
+          </table>
+        </section>
+      </section>
+    </main>
+  </body>
+</html>

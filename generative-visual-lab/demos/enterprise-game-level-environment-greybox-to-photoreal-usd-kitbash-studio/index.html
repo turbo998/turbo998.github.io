@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>游戏关卡与影视场景“白模灰盒（Greybox）→ 写实换肤 → OpenUSD 模块化拼装”工作台 | Game Level Greybox &amp; USD Kitbash Studio</title>
+  <script type="module" crossorigin src="../../assets/enterpriseGameLevelEnvironmentGreyboxToPhotorealUsdKitbash-Bbc7pHrq.js"></script>
+  <link rel="modulepreload" crossorigin href="../../assets/modulepreload-polyfill-B5Qt9EMX.js">
+  <link rel="stylesheet" crossorigin href="../../assets/ecommerceEyewearPrescriptionGlassesSunglassesLensRefractionTryon-BFUo6KM-.css">
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <span class="eyebrow">DOMAIN 4 · GAME LEVEL GREYBOX, MULTI-CONTROLNET SKINNING &amp; OPENUSD KITBASH · WORKBENCH #358</span>
+      <h1>游戏关卡与虚拟制片场景：3D 灰盒（Greybox）尺度硬锁、多路 ControlNet 换肤与 OpenUSD 模块化资产拼装工作台</h1>
+      <p class="subtitle">Stage 1 锁定角色通行 NavMesh 与掩体尺度 (z:0) + Stage 2 Depth/Normal/M-LSD 写实概念换肤 (z:4) + Stage 3 OpenUSD PointInstancer 模块化资产库拼装进 UE5 (z:8)</p>
+    </div>
+    <div class="badge-group">
+      <span class="pill pill-accent">100% 关卡寻路网格 (NavMesh) 可玩</span>
+      <span class="pill pill-emerald">-92.5% 显存占用 (PointInstancer)</span>
+      <span class="pill pill-amber">$24.60/关卡段 · 年省 +$3.84M</span>
+    </div>
+  </header>
+
+  <main class="workbench-grid">
+    <section class="panel controls-panel" aria-label="关卡白模尺度与 OpenUSD 模块化拼装参数">
+      <h2>1. 关卡场景预设与三维管线策略</h2>
+      <label class="field">
+        <span>3A 游戏关卡 / 虚拟制片场景预设 (Environment Biome Preset)</span>
+        <select id="biome-select">
+          <option value="cyberpunk-shinjuku-alley">赛博朋克霓虹街区（220cm 门洞 / 110cm 掩体矮墙 / USD 广告牌套件）</option>
+          <option value="gothic-cathedral-boss-arena">暗黑哥特大教堂 Boss 竞技场（28m 翻滚半径 / 飞扶壁拱柱复用）</option>
+          <option value="orbital-space-station-hangar">近地轨道空间站机甲机库（4.5m 机甲通行净高 / 硬表面四边面套件）</option>
+          <option value="ancient-silkroad-oasis-bazaar">丝路绿洲古城开放世界街区（跑酷房檐间距 ≤2.8m / 夯土拱廊套件）</option>
+        </select>
+      </label>
+
+      <div class="mode-toggle" role="group" aria-label="关卡生产管线切换">
+        <button type="button" id="mode-clean" class="mode-btn active">
+          ✅ 3D 灰盒 NavMesh 硬锁 + ControlNet 换肤 + OpenUSD 模块化拼装 (推荐)
+        </button>
+        <button type="button" id="mode-naive" class="mode-btn">
+          ⛔ 纯 2D 概念图手搭 / 整屋单张图转 3D 泥巴网格 (71.4% 碰撞卡死)
+        </button>
+      </div>
+
+      <label class="field">
+        <span>OpenUSD 模块化网格吸附模数 (Modular Snap Grid): <strong id="grid-val">50</strong> cm</span>
+        <input type="range" id="grid-slider" min="25" max="100" step="25" value="50" />
+      </label>
+
+      <label class="field">
+        <span>ControlNet 氛围/天气光影探索变体数 (Mood Variations): <strong id="mood-val">4</strong> 套</span>
+        <input type="range" id="mood-slider" min="1" max="12" step="1" value="4" />
+      </label>
+
+      <div class="architecture-stack">
+        <h3>三阶可玩关卡与模块化生成栈 (3-Stage Level Stack)</h3>
+        <ul class="stage-list" id="level-breakdown"></ul>
+      </div>
+    </section>
+
+    <section class="panel stage-panel" aria-label="3D 灰盒 NavMesh 与 OpenUSD 模块化拼装实时对比画布">
+      <div class="stage-header">
+        <div>
+          <span class="stage-eyebrow" id="stage-metrics-label">Doorway: 220×120cm · High/Low Cover: 180cm/110cm · NavMesh Slope ≤ 32°</span>
+          <h2 id="stage-biome-title">赛博朋克霓虹街区关卡（38 件标准资产 → 420 个 GPU 实例）</h2>
+        </div>
+        <span class="status-pill" id="stage-status-pill">READY</span>
+      </div>
+
+      <div class="canvas-wrapper">
+        <canvas id="level-canvas" width="820" height="460"></canvas>
+      </div>
+
+      <div class="stage-footer">
+        <span id="kit-readout">OpenUSD Kitbash: 38 Unique PBR Assets → 420 PointInstancer Nodes (138MB VRAM)</span>
+        <span id="pipeline-readout">UE5 Sequencer / World Partition Ready · 100% Collision Capsule Verified</span>
+      </div>
+    </section>
+
+    <section class="panel metrics-panel" aria-label="关卡可玩率、显存占用与美术 FinOps 指标">
+      <h2>2. 关卡可玩性、显存预算与美术 FinOps</h2>
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <span class="kpi-label">角色寻路与掩体碰撞合规率</span>
+          <strong class="kpi-value" id="kpi-navmesh">100.0%</strong>
+          <span class="kpi-sub">Recast NavMesh 零卡死通过</span>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-label">UE5 模块化资产二次编辑复用率</span>
+          <strong class="kpi-value" id="kpi-reuse">99.4%</strong>
+          <span class="kpi-sub">OpenUSD PointInstancer 解耦</span>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-label">单街区运行时显存占用 (VRAM)</span>
+          <strong class="kpi-value" id="kpi-vram">138 MB</strong>
+          <span class="kpi-sub">对比整屋泥巴网格 1,840 MB</span>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-label">单关卡段成本 / 工作室年省</span>
+          <strong class="kpi-value" id="kpi-cost">$24.60</strong>
+          <span class="kpi-sub" id="kpi-savings">对比纯手工 $1,650 · 年省 +$3.84M</span>
+        </div>
+      </div>
+
+      <div class="decision-box">
+        <h3>SA 架构选型结论</h3>
+        <p id="decision-summary"></p>
+      </div>
+    </section>
+  </main>
+
+</body>
+</html>

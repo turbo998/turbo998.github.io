@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>企业虚拟制片 (ICVFX) LED 巨幕视锥追踪与色彩校准工作台 | LED Volume Frustum &amp; LUT Sync Studio</title>
+  <script type="module" crossorigin src="../../assets/enterpriseVirtualProductionLedWallCameraFrustumColorLutSync-BljUpgVW.js"></script>
+  <link rel="modulepreload" crossorigin href="../../assets/modulepreload-polyfill-B5Qt9EMX.js">
+  <link rel="stylesheet" crossorigin href="../../assets/ecommerceEyewearPrescriptionGlassesSunglassesLensRefractionTryon-BFUo6KM-.css">
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <span class="eyebrow">DOMAIN 4 · PREVIS, ICVFX VIRTUAL PRODUCTION &amp; SPATIAL COMPUTING · WORKBENCH #348</span>
+      <h1>企业虚拟制片（ICVFX）LED 弧形巨幕：机内视锥追踪、摩尔纹抑制与 ACEScg 色彩校准工作台</h1>
+      <p class="subtitle">3DGS + UE5 双视锥实时渲染 (Inner/Outer Frustum) + Genlock 亚帧同步 (&lt;3.4ms) + 焦深安全距离摩尔纹门控 vs 传统绿幕溢色返工对比</p>
+    </div>
+    <div class="badge-group">
+      <span class="pill pill-accent">99.6% 车漆/玻璃真实高光反射</span>
+      <span class="pill pill-emerald">99.8% 零摩尔纹安全焦深</span>
+      <span class="pill pill-amber">$38/镜头 · 年省 +$4.22M</span>
+    </div>
+  </header>
+
+  <main class="workbench-grid">
+    <section class="panel controls-panel" aria-label="虚拟影棚规格与摄影机追踪参数">
+      <h2>1. 虚拟影棚规格与视锥同步配置</h2>
+      <label class="field">
+        <span>企业虚拟制片影棚预设 (ICVFX LED Volume Preset)</span>
+        <select id="preset-select">
+          <option value="automotive-specular-stage">豪华汽车整车虚拟影棚（P1.5 弧形屏 + 顶棚天幕反射灯箱 + 车漆高光闭环）</option>
+          <option value="luxury-watch-macro-stage">高奢腕表与珠宝微距影棚（P0.9 MicroLED + 蓝宝石表镜光线追踪）</option>
+          <option value="executive-broadcast-stage">企业全球演播室多机位 XR 舞台（P1.9 折角屏 + 双机位视锥分时复用）</option>
+          <option value="sci-fi-glass-helmet-stage">影视透明宇航头盔/玻璃道具实拍（P1.2 环幕 + 3DGS 实景视差绑定）</option>
+        </select>
+      </label>
+
+      <div class="mode-toggle" role="group" aria-label="虚拟制片校准模式切换">
+        <button type="button" id="mode-clean" class="mode-btn active">
+          ✅ Genlock 视锥同步 + 3DGS/UE5 天幕反射 + ACEScg 3D LUT 闭环
+        </button>
+        <button type="button" id="mode-naive" class="mode-btn">
+          ⛔ 传统绿幕抠像 / 未同步 LED 屏 (61.6% 绿幕溢色 + 视锥撕裂 + 摩尔纹)
+        </button>
+      </div>
+
+      <label class="field">
+        <span>摄影机镜头焦距 (Camera Lens Focal Length): <strong id="focal-val">50</strong> mm</span>
+        <input type="range" id="focal-slider" min="24" max="100" step="2" value="50" />
+      </label>
+
+      <label class="field">
+        <span>镜头光圈景深门控 (Aperture T-Stop Moiré Gate): T<strong id="aperture-val">2.8</strong></span>
+        <input type="range" id="aperture-slider" min="1.4" max="8.0" step="0.2" value="2.8" />
+      </label>
+
+      <div class="architecture-stack">
+        <h3>ICVFX 机内最终像素管线 (In-Camera Final Pixel Stack)</h3>
+        <ul class="stage-list" id="icvfx-breakdown"></ul>
+      </div>
+    </section>
+
+    <section class="panel stage-panel" aria-label="LED 弧形巨幕机内视锥与反射实时画布">
+      <div class="stage-header">
+        <div>
+          <span class="stage-eyebrow" id="stage-preset-label">Automotive Specular Volume (P1.5)</span>
+          <h2 id="stage-color-title">ACEScg 16-bit Linear · Brompton Tessera 3D LUT</h2>
+        </div>
+        <span class="status-pill" id="stage-status-pill">READY</span>
+      </div>
+
+      <div class="canvas-wrapper">
+        <canvas id="icvfx-canvas" width="820" height="460"></canvas>
+      </div>
+
+      <div class="stage-footer">
+        <span id="latency-readout">Tracker-to-Photon Latency: 3.4 ms (240Hz Genlock)</span>
+        <span id="surface-readout">Target Surface: Metallic Clear-Coat Hood + Windshield</span>
+      </div>
+    </section>
+
+    <section class="panel metrics-panel" aria-label="反射保真度、摩尔纹抑制与 FinOps 指标">
+      <h2>2. 机内成片质量与后期节省</h2>
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <span class="kpi-label">车漆/玻璃真实光线反射保真度</span>
+          <strong class="kpi-value" id="kpi-reflection">99.6%</strong>
+          <span class="kpi-sub">零绿幕溢色 (Zero Green Spill)</span>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-label">LED 晶格摩尔纹抑制率</span>
+          <strong class="kpi-value" id="kpi-moire">99.8%</strong>
+          <span class="kpi-sub">P1.5 点间距 + 焦深弥散圆门控</span>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-label">机内视锥 (Inner Frustum) 同步率</span>
+          <strong class="kpi-value" id="kpi-frustum">99.8%</strong>
+          <span class="kpi-sub">&lt;3.4ms 亚帧锁相环无黑边撕裂</span>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-label">单镜头综合成本 / 年节省</span>
+          <strong class="kpi-value" id="kpi-cost">$38.00</strong>
+          <span class="kpi-sub" id="kpi-savings">年省 +$4.22M vs 绿幕人工擦威亚/Roto</span>
+        </div>
+      </div>
+
+      <div class="decision-box">
+        <h3>SA 架构选型结论</h3>
+        <p id="decision-summary"></p>
+      </div>
+    </section>
+  </main>
+
+</body>
+</html>

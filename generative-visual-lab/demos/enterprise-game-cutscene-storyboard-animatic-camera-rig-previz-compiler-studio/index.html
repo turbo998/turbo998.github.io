@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>游戏与影视过场动画（Cutscene）分镜动态预演与 USD 运镜导出工作台 | Cutscene Animatic Previz Studio</title>
+  <script type="module" crossorigin src="../../assets/enterpriseGameCutsceneStoryboardAnimaticCameraRigPrevizCompiler-Q68ANLkE.js"></script>
+  <link rel="modulepreload" crossorigin href="../../assets/modulepreload-polyfill-B5Qt9EMX.js">
+  <link rel="stylesheet" crossorigin href="../../assets/ecommerceEyewearPrescriptionGlassesSunglassesLensRefractionTryon-BFUo6KM-.css">
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <span class="eyebrow">DOMAIN 4 · GAME/FILM PREVIS, OPENUSD CAMERA RIGS &amp; CHARACTER CONSISTENCY · WORKBENCH #353</span>
+      <h1>游戏与影视过场动画（Cutscene）分镜动态预演：180° 轴线硬锁、角色 LoRA 与 OpenUSD 运镜导出工作台</h1>
+      <p class="subtitle">三维白模运镜与 180° 轴线规则硬锁 (z:0, 原生导出 .usd/.fbx 至 UE5 Sequencer) + Depth/Pose 引导角色 LoRA 重绘 (z:5) vs 纯文生视频跳轴废片</p>
+    </div>
+    <div class="badge-group">
+      <span class="pill pill-accent">100% 180° 摄影轴线连续性</span>
+      <span class="pill pill-emerald">100% 导出 UE5/Blender 相机轨迹</span>
+      <span class="pill pill-amber">$14/镜头 · 年省 +$3.73M</span>
+    </div>
+  </header>
+
+  <main class="workbench-grid">
+    <section class="panel controls-panel" aria-label="过场动画分镜序列与运镜参数">
+      <h2>1. 过场动画分镜序列与运镜架构</h2>
+      <label class="field">
+        <span>游戏/影视经典过场分镜序列 (Cutscene Previz Sequence)</span>
+        <select id="sequence-select">
+          <option value="ots-dialogue-duel">双人过肩对话与拔剑对峙（50mm OTS 正反打 · 180° 轴线硬锁）</option>
+          <option value="boss-arena-reveal">魂系 Boss 登场低角度环绕推轨（35mm Crane 升轨 + 4.2m 体型锁）</option>
+          <option value="mecha-hangar-launch">机甲整备格纳库弹射出击（200mm 甩镜跟拍 + UNIT-04 编号硬锁）</option>
+          <option value="squad-breach-tactical">四人战术小队破门一镜到底预演（18s Steadicam 穿门 + 4角色分轨）</option>
+        </select>
+      </label>
+
+      <div class="mode-toggle" role="group" aria-label="预演生成管线切换">
+        <button type="button" id="mode-clean" class="mode-btn active">
+          ✅ 3D 白模 180° 轴线相机轨 (.usd) + Depth/Pose 角色 LoRA 渲染 (推荐)
+        </button>
+        <button type="button" id="mode-naive" class="mode-btn">
+          ⛔ 纯文生视频直出分镜 (64.8% 跨镜头跳轴/角色换脸/0% 相机轨迹可复用)
+        </button>
+      </div>
+
+      <label class="field">
+        <span>单场连续分镜切镜数 (Shots in Cutscene Sequence): <strong id="shots-val">8</strong> 镜</span>
+        <input type="range" id="shots-slider" min="4" max="16" step="2" value="8" />
+      </label>
+
+      <div class="architecture-stack">
+        <h3>游戏引擎双向打通预演栈 (Engine-Ready Previz Stack)</h3>
+        <ul class="stage-list" id="previz-breakdown"></ul>
+      </div>
+    </section>
+
+    <section class="panel stage-panel" aria-label="180度摄影轴线与多分镜预演实时画布">
+      <div class="stage-header">
+        <div>
+          <span class="stage-eyebrow" id="stage-usd-label">OpenUSD CameraRig (.usd) + UE5 LevelSequence (.uasset)</span>
+          <h2 id="stage-sequence-title">Over-the-Shoulder Dialogue Duel (50mm OTS Reverse-Angle Pair)</h2>
+        </div>
+        <span class="status-pill" id="stage-status-pill">READY</span>
+      </div>
+
+      <div class="canvas-wrapper">
+        <canvas id="previz-canvas" width="820" height="460"></canvas>
+      </div>
+
+      <div class="stage-footer">
+        <span id="shotlist-readout">Shot 1: Est. 24mm → Shot 2: 50mm OTS-A → Shot 3: 50mm OTS-B → Shot 4: 85mm ECU</span>
+        <span id="lora-readout">Anchor: Dual-Character IP-Adapter + Bone-ControlNet + Armor UV LoRA</span>
+      </div>
+    </section>
+
+    <section class="panel metrics-panel" aria-label="轴线连续性、引擎复用与 FinOps 指标">
+      <h2>2. 导演视听连续性与管线复用率</h2>
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <span class="kpi-label">180° 摄影轴线合规率</span>
+          <strong class="kpi-value" id="kpi-axis">100.0%</strong>
+          <span class="kpi-sub">正反打视线方向 0% 跳轴错乱</span>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-label">跨镜头角色装甲/服装一致性</span>
+          <strong class="kpi-value" id="kpi-char">99.2%</strong>
+          <span class="kpi-sub">3D 白模 Depth + 角色专属 LoRA</span>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-label">UE5 / Blender 相机轨迹复用率</span>
+          <strong class="kpi-value" id="kpi-spline">100.0%</strong>
+          <span class="kpi-sub">直接导出 6DoF .usd/.fbx 运镜曲线</span>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-label">单镜头预演成本 / 年节省</span>
+          <strong class="kpi-value" id="kpi-cost">$14.00</strong>
+          <span class="kpi-sub" id="kpi-savings">年省 +$3.73M vs 传统手工 3D Previz</span>
+        </div>
+      </div>
+
+      <div class="decision-box">
+        <h3>SA 架构选型结论</h3>
+        <p id="decision-summary"></p>
+      </div>
+    </section>
+  </main>
+
+</body>
+</html>

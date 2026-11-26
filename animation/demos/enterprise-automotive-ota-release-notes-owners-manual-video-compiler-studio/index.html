@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>智能汽车“OTA 升级日志与多语种车载视频说明书（Digital Owner's Manual）”自动编译工厂 | Generative Visual Lab</title>
+  <script type="module" crossorigin src="../../assets/enterpriseAutomotiveOtaReleaseNotesOwnersManualVideoCompiler-Be17MSZP.js"></script>
+  <link rel="modulepreload" crossorigin href="../../assets/modulepreload-polyfill-B5Qt9EMX.js">
+  <link rel="stylesheet" crossorigin href="../../assets/enterpriseAutomotiveOtaReleaseNotesOwnersManualVideoCompiler-CPqPg-x3.css">
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <span class="eyebrow">Round 553 · 342nd Workbench · 67th in Domain 3 (#domain-production)</span>
+      <h1>智能汽车“OTA 升级日志与多语种车载视频说明书”工厂：VIN 年款拨杆/滚轮硬件锁 + 车机 HMI 录屏 + L2 安全横幅编译工作台</h1>
+      <p>Enterprise Automotive OTA Release-Notes &amp; Digital Owner's Manual Video Compiler Studio: VIN Trim Hardware Lock, HMI Capture &amp; UNECE ADAS Safety Gate</p>
+    </div>
+    <div class="topbar-actions">
+      <a class="ghost-btn" href="../../index.html">← 返回实验室门户</a>
+      <a class="ghost-btn" href="../../research/enterprise-automotive-ota-release-notes-owners-manual-video-compiler-faq.html">架构选型指南 (ZH)</a>
+      <a class="ghost-btn" href="../../research/enterprise-automotive-ota-release-notes-owners-manual-video-compiler-faq.en.html">Architecture Guide (EN)</a>
+    </div>
+  </header>
+
+  <main class="workspace">
+    <section class="control-panel" aria-label="车载OTA视频说明书编译控制面板">
+      <h2>1. OTA 新功能特性、视频编译架构与车主 VIN 年款配置</h2>
+
+      <label class="control-group">
+        <span>选择车载 OTA 固件升级核心功能章节 (OTA Release Feature)</span>
+        <select id="feature-select" data-testid="feature-select">
+          <option value="urban_noa_roundabout_engage">OTA v6.4 城区领航辅助 (Urban NOA)：方向盘激活手势与环岛通行</option>
+          <option value="automated_valet_parking_avp">OTA v6.4 跨层记忆泊车 (AVP)：P挡中控选位与手机 App 离车泊入</option>
+          <option value="winter_battery_preconditioning">OTA v6.4 极寒 800V 超充预热：导航途经点联动热泵脉冲加热</option>
+          <option value="child_presence_detection_cpd">OTA v6.4 舱内 60GHz 毫米波生命监测 (CPD) 与宠物模式空调保活</option>
+        </select>
+      </label>
+
+      <label class="control-group">
+        <span>选择车载视频说明书生成与合成管线 (OTA Video Compiler Stack)</span>
+        <select id="stack-select" data-testid="stack-select">
+          <option value="vin_trim_hmi_lock_twin_trajectory_remotion_adas_gate">VIN 年款硬件锁 + 车机模拟器 HMI 录屏 + 3D 智驾轨迹 + Remotion 安全横幅 (推荐)</option>
+          <option value="unconstrained_t2v_car_tutorial_gen">无约束文生视频直出教程 (65.8% 在无拨杆车型画怀挡杆 / 菜单乱码 / 漏 L2 警告)</option>
+          <option value="legacy_text_release_notes_manual_shoot">传统 3,000 字纯文本日志 + 人工实拍单款视频 ($650/支 · 滞后2周)</option>
+        </select>
+      </label>
+
+      <label class="control-group">
+        <span>选择目标车主 VIN 硬件年款与左右舵区域 (Vehicle VIN Hardware Trim)</span>
+        <select id="trim-select" data-testid="trim-select">
+          <option value="stalkless_scroll_wheel_2026">2026 焕新款（无怀挡拨杆 · 方向盘右滚轮按下激活 + 屏幕换挡）</option>
+          <option value="column_stalk_classic_2024">2024 经典款（保留右侧物理怀挡杆 · 向下连拨两次激活）</option>
+          <option value="rhd_uk_japan_export">英国/日本/澳新右舵出口版 (RHD · 镜像座舱布局与本地语言 HMI)</option>
+        </select>
+      </label>
+
+      <div class="toggle-row">
+        <label>
+          <input type="checkbox" id="vin-toggle" data-testid="vin-toggle" checked />
+          强制根据车辆 VIN 码匹配对应年款方向盘按键/拨杆 CAD 教程镜头 (100% VIN Hardware Lock)
+        </label>
+      </div>
+
+      <div class="toggle-row">
+        <label>
+          <input type="checkbox" id="safety-toggle" data-testid="safety-toggle" checked />
+          强制压印 NHTSA / UNECE R156 智驾 L2 手握方向盘法定安全横幅 (Mandatory ADAS Safety Gate)
+        </label>
+      </div>
+
+      <div class="preset-bar">
+        <button type="button" id="preset-recommended" data-testid="preset-recommended" class="primary-btn">
+          加载推荐：VIN 硬件锁 + 真机 HMI 录屏 + 法定 L2 安全横幅
+        </button>
+        <button type="button" id="preset-naive" data-testid="preset-naive" class="warn-btn">
+          对比反例：无约束文生视频 (无拨杆车画出怀挡杆 / 漏掉 L2 警告)
+        </button>
+      </div>
+
+      <div class="spec-card" id="feature-spec-card"></div>
+    </section>
+
+    <section class="stage-panel" aria-label="车载OTA视频说明书VIN硬件锁定与HMI分屏合成画布">
+      <div class="stage-header">
+        <div>
+          <h2>2. VIN 专属方向盘按键特写 (左) + 车机原生 HMI &amp; 3D SR 轨迹 (右) + L2 法定安全横幅</h2>
+          <p id="stage-subtitle"></p>
+        </div>
+        <span class="verdict-pill" id="verdict-pill" data-testid="verdict-pill">VIN_HMI_AND_ADAS_SAFETY_LOCKED_PASS</span>
+      </div>
+
+      <canvas id="ota-canvas" data-testid="ota-canvas" width="820" height="440"></canvas>
+
+      <div class="kpi-strip">
+        <div class="kpi-box">
+          <span class="kpi-label">VIN 方向盘/拨杆匹配率</span>
+          <strong id="kpi-vin-match" data-testid="kpi-vin-match">100.0%</strong>
+          <small>严禁跨年款播错激活方式</small>
+        </div>
+        <div class="kpi-box">
+          <span class="kpi-label">车机 HMI 菜单路径准确率</span>
+          <strong id="kpi-hmi-accuracy" data-testid="kpi-hmi-accuracy">100.0%</strong>
+          <small>车载模拟器原生 60fps 录屏</small>
+        </div>
+        <div class="kpi-box">
+          <span class="kpi-label">OTA 新功能开启率提升</span>
+          <strong id="kpi-adoption-lift" data-testid="kpi-adoption-lift">+66.0%</strong>
+          <small>对比 3,000 字纯文本更新说明</small>
+        </div>
+        <div class="kpi-box">
+          <span class="kpi-label">单支成本 / 年省制作费</span>
+          <strong id="kpi-cost-savings" data-testid="kpi-cost-savings">$0.029 / +$2.86M</strong>
+          <small>10,000 支/年多国多车型切片</small>
+        </div>
+      </div>
+
+      <div class="notes-card">
+        <h3>3. 架构师护栏诊断与 UNECE R156 / NHTSA 智驾合规审计日志 (SA Audit Log)</h3>
+        <ul id="audit-notes" data-testid="audit-notes"></ul>
+      </div>
+    </section>
+  </main>
+
+</body>
+</html>

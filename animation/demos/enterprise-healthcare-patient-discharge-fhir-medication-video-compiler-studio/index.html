@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>医疗健康与三甲医院“患者出院医嘱及术前准备（HL7 FHIR）”千人千面视频工作台 | Healthcare Patient Discharge Video Compiler Studio</title>
+  <script type="module" crossorigin src="../../assets/enterpriseHealthcarePatientDischargeFhirMedicationVideoCompiler-GD446j33.js"></script>
+  <link rel="modulepreload" crossorigin href="../../assets/modulepreload-polyfill-B5Qt9EMX.js">
+  <link rel="stylesheet" crossorigin href="../../assets/ecommerceEyewearPrescriptionGlassesSunglassesLensRefractionTryon-BFUo6KM-.css">
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <span class="eyebrow">DOMAIN 3 · HL7 FHIR R4 MEDICATION LOCK, 22-LANG PHYSICIAN AVATAR &amp; READMISSION GUARD · WORKBENCH #372</span>
+      <h1>三甲医院与医疗集团“患者出院医嘱及术前宣教（HL7 FHIR）”千人千面视频：用药剂量硬锁与主治医师数字人工作台</h1>
+      <p class="subtitle">Epic/HIS HL7 FHIR R4 医嘱毫克剂量只读绑定 Remotion 药盒日历 (z:2) + 22语种主治医师数字人画中画 (z:6) + 复述确认 (Teach-Back) 防再入院门禁 (z:8)</p>
+    </div>
+    <div class="badge-group">
+      <span class="pill pill-accent">100.00% 药品毫克剂量与频次零误差</span>
+      <span class="pill pill-emerald">-41.8% 30天非计划再入院率</span>
+      <span class="pill pill-amber">$0.024/患者 · 医疗集团年省 +$4.62M</span>
+    </div>
+  </header>
+
+  <main class="workbench-grid">
+    <section class="panel controls-panel" aria-label="临床出院宣教专科与多语种参数">
+      <h2>1. 临床专科医嘱与通俗化语言门禁</h2>
+      <label class="field">
+        <span>住院出院医嘱与术前准备临床路径预设 (Clinical Discharge Pathway)</span>
+        <select id="pathway-select">
+          <option value="cardiac-cabg-anticoagulant-discharge">心外科术后抗凝出院医嘱（FHIR 阿哌沙班 5mg 早晚锁 + 水肿体重红线预警）</option>
+          <option value="orthopedic-tka-rehab-pain-taper">骨科全膝置换（TKA）镇痛递减与康复（14天阶梯减药日历 + 90° 屈膝量角器）</option>
+          <option value="colonoscopy-bowel-prep-countdown">消化内镜肠镜术前分次清肠倒计时（检查钟点锚定 T-14h/T-6h 饮水 + 停药提醒）</option>
+          <option value="pediatric-asthma-spacer-action-plan">儿科哮喘绿/黄/红三区行动计划（储雾罐 10秒屏气动画 + 家属一键转发）</option>
+        </select>
+      </label>
+
+      <div class="mode-toggle" role="group" aria-label="医嘱视频生成架构切换">
+        <button type="button" id="mode-clean" class="mode-btn active">
+          ✅ HL7 FHIR 医嘱账本绑定 Remotion 药盒日历 + 22语种医师数字人 (推荐)
+        </button>
+        <button type="button" id="mode-naive" class="mode-btn">
+          ⛔ 18页晦涩黑白出院小结打印单 / 纯 AI 视频生成剂量 (68.4% 剂量算错医疗事故风险)
+        </button>
+      </div>
+
+      <label class="field">
+        <span>患者与老年家属方言/多语种覆盖数 (Patient &amp; Caregiver Languages): <strong id="lang-val">22</strong> 种语言</span>
+        <input type="range" id="lang-slider" min="4" max="28" step="2" value="22" />
+      </label>
+
+      <label class="field">
+        <span>健康素养通俗化阅读难度等级上限 (Health Literacy Grade Cap): <strong id="grade-val">6</strong> 年级水平</span>
+        <input type="range" id="grade-slider" min="4" max="10" step="1" value="6" />
+      </label>
+
+      <div class="architecture-stack">
+        <h3>三轨医疗合规与防再入院栈 (3-Track Clinical Stack)</h3>
+        <ul class="stage-list" id="clinical-breakdown"></ul>
+      </div>
+    </section>
+
+    <section class="panel stage-panel" aria-label="HL7 FHIR 早晚药盒可视化日历、红线症状警示与医师数字人画中画">
+      <div class="stage-header">
+        <div>
+          <span class="stage-eyebrow" id="stage-fhir-label">FHIR R4 MedicationRequest (RxNorm #855332 Apixaban 5mg BID) · HIPAA BAA Enclave</span>
+          <h2 id="stage-pathway-title">心外科术后抗凝出院医嘱视频（100% 锁定早8点/晚8点 5mg 剂量）</h2>
+        </div>
+        <span class="status-pill" id="stage-status-pill">READY</span>
+      </div>
+
+      <div class="canvas-wrapper">
+        <canvas id="clinical-canvas" width="820" height="460"></canvas>
+      </div>
+
+      <div class="stage-footer">
+        <span id="calendar-readout">08:00 AM (5mg) + 08:00 PM (5mg) Pill-Box Visual · Red-Flag: +2.0 lbs/24h Weight Gain</span>
+        <span id="hipaa-readout">HIPAA Zero-Retention Ephemeral Token · 96.4% Teach-Back Pass · Caregiver Link</span>
+      </div>
+    </section>
+
+    <section class="panel metrics-panel" aria-label="医嘱准确率、再入院降幅与医院 FinOps 指标">
+      <h2>2. 用药安全零差错与防再入院 FinOps</h2>
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <span class="kpi-label">药品毫克剂量与时间轴准确率</span>
+          <strong class="kpi-value" id="kpi-dosage">100.0%</strong>
+          <span class="kpi-sub">HL7 FHIR R4 结构化字段直驱</span>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-label">患者与家属医嘱复述掌握率</span>
+          <strong class="kpi-value" id="kpi-teachback">96.4%</strong>
+          <span class="kpi-sub">对比 18页黑白打印单 35.2%</span>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-label">30天可避免再入院率降幅</span>
+          <strong class="kpi-value" id="kpi-readm">-41.8%</strong>
+          <span class="kpi-sub">免除 $14,200/例医保拒付罚金</span>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-label">单患者视频成本 / 院方年省</span>
+          <strong class="kpi-value" id="kpi-cost">$0.024</strong>
+          <span class="kpi-sub" id="kpi-savings">减少弃检与再入院 · 年省 +$4.62M</span>
+        </div>
+      </div>
+
+      <div class="decision-box">
+        <h3>SA 架构选型结论</h3>
+        <p id="decision-summary"></p>
+      </div>
+    </section>
+  </main>
+
+</body>
+</html>
