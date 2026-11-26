@@ -718,6 +718,28 @@
     activeVideoId: "ch0"
   };
 
+  const DEMO_BROKER_URL = "https://ca-gtr-demo-broker.thankfulpond-615509df.southeastasia.azurecontainerapps.io";
+  const DEMO_TOKEN_STORAGE_KEY = "gtr_customer_demo_token_v1";
+
+  const CUSTOMER_GENIE_STARTERS = [
+    {
+      zh: "按机场门店统计总营收前 3 名",
+      en: "Top 3 airport retail stores by total revenue"
+    },
+    {
+      zh: "列出目前各套餐净营收 NOR 排名与扣减率",
+      en: "Rank travel packages by Net Operating Revenue (NOR) and deduction rate"
+    },
+    {
+      zh: "哪个渠道获客 ROI 最高、退单率最低？",
+      en: "Which acquisition channel has the highest Net ROI and lowest refund rate?"
+    },
+    {
+      zh: "查看临期未售库存促收工单中待执行的建议方案",
+      en: "Show pending near-departure inventory promo workorders"
+    }
+  ];
+
   const liveState = {
     unlocked: false,
     busy: false,
@@ -729,6 +751,21 @@
     authMode: "corp_b2b",
     activeEmbedKey: "norEmbed",
     embedMounted: false,
+    customerToken: "",
+    customerSession: null,
+    customerActiveTab: "nor",
+    aibiInstance: null,
+    aibiMountedKey: "",
+    genieConversationId: "",
+    genieMessages: [],
+    genieBusy: false,
+    catalogTables: [],
+    catalogLoading: false,
+    catalogError: "",
+    catalogSelected: null,
+    catalogPreview: null,
+    catalogPreviewLoading: false,
+    countdownTimer: null,
     probes: {
       oidc: { status: "idle", ms: null, detail: "" },
       aadAuth: { status: "idle", ms: null, detail: "" },
@@ -863,6 +900,460 @@
           "Passcode verification failed (PBKDF2-SHA256 + AES-256-GCM auth tag mismatch). Please check your passcode."
         )
       );
+    }
+  }
+
+  async function exchangeCustomerDemoToken(rawToken) {
+    const token = String(rawToken || "").trim();
+    const resp = await fetch(`${DEMO_BROKER_URL}/api/session/exchange`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Demo-Token": token
+      },
+      body: JSON.stringify({ token })
+    });
+    const data = await resp.json().catch(() => ({}));
+    if (!resp.ok || !data.ok) {
+      throw new Error(
+        data.error ||
+          t(
+            `临时演示令牌校验失败 (HTTP ${resp.status})，请确认令牌未过期且复制完整。`,
+            `Temporary demo token validation failed (HTTP ${resp.status}). Please verify the token is valid and unexpired.`
+          )
+      );
+    }
+    return data;
+  }
+
+  function destroyAibiInstance() {
+    if (liveState.aibiInstance && typeof liveState.aibiInstance.destroy === "function") {
+      try {
+        liveState.aibiInstance.destroy();
+      } catch (_e) {}
+    }
+    liveState.aibiInstance = null;
+    liveState.aibiMountedKey = "";
+  }
+
+  function stopCountdownTimer() {
+    if (liveState.countdownTimer) {
+      clearInterval(liveState.countdownTimer);
+      liveState.countdownTimer = null;
+    }
+  }
+
+  function formatRemainingTime(expiresAtSec) {
+    const rem = Math.max(0, Math.floor(expiresAtSec - Date.now() / 1000));
+    const h = Math.floor(rem / 3600);
+    const m = Math.floor((rem % 3600) / 60);
+    const s = rem % 60;
+    const pad = (n) => String(n).padStart(2, "0");
+    return h > 0 ? `${h}:${pad(m)}:${pad(s)}` : `${pad(m)}:${pad(s)}`;
+  }
+
+  async function mountCustomerAibiDashboard(containerId, dashKey) {
+    const containerEl = document.getElementById(containerId);
+    const cs = liveState.customerSession;
+    if (!containerEl || !cs || !cs.databricks || !cs.databricks.dashboards || !cs.databricks.dashboards[dashKey]) {
+      return;
+    }
+    destroyAibiInstance();
+    containerEl.innerHTML = `<div class="embed-placeholder">${escapeHtml(
+      t("正在通过 Databricks 官方 External Embed SDK 加载实机看板（免微软登录）…", "Loading live Azure Databricks AI/BI dashboard via official External Embed SDK (Zero Entra Login)…")
+    )}</div>`;
+    try {
+      const mod = await import("./vendor/aibi-client.mjs");
+      const DatabricksDashboard = mod.DatabricksDashboard;
+      const dashInfo = cs.databricks.dashboards[dashKey];
+      containerEl.innerHTML = "";
+      const instance = new DatabricksDashboard({
+        instanceUrl: cs.databricks.instanceUrl,
+        workspaceId: cs.databricks.workspaceId,
+        dashboardId: dashInfo.dashboardId,
+        token: dashInfo.token,
+        container: containerEl,
+        getNewToken: async () => {
+          const refreshed = await exchangeCustomerDemoToken(liveState.customerToken);
+          liveState.customerSession = refreshed;
+          return refreshed.databricks.dashboards[dashKey].token;
+        }
+      });
+      instance.initialize();
+      liveState.aibiInstance = instance;
+      liveState.aibiMountedKey = dashKey;
+    } catch (err) {
+      containerEl.innerHTML = `<div class="live-alert live-alert-error" style="margin:16px;">${escapeHtml(
+        t("AI/BI 实机看板挂载失败：", "Failed to mount live AI/BI dashboard: ") + (err && err.message ? err.message : String(err))
+      )}</div>`;
+    }
+  }
+
+  async function loadCustomerCatalogTables() {
+    if (!liveState.customerToken || liveState.catalogLoading) return;
+    liveState.catalogLoading = true;
+    liveState.catalogError = "";
+    renderLiveGate();
+    try {
+      const resp = await fetch(`${DEMO_BROKER_URL}/api/catalog/tables`, {
+        method: "GET",
+        headers: { "X-Demo-Token": liveState.customerToken }
+      });
+      const data = await resp.json().catch(() => ({}));
+      if (!resp.ok || !data.ok) {
+        throw new Error(data.error || `HTTP ${resp.status}`);
+      }
+      liveState.catalogTables = (data.rows || []).map((r) => ({
+        schema: r[0],
+        table: r[1],
+        type: r[2],
+        comment: r[3] || ""
+      }));
+      liveState.catalogLoading = false;
+      renderLiveGate();
+      if (liveState.catalogTables.length && !liveState.catalogSelected) {
+        const first = liveState.catalogTables[0];
+        loadCustomerTablePreview(first.schema, first.table);
+      }
+    } catch (err) {
+      liveState.catalogLoading = false;
+      liveState.catalogError = err && err.message ? err.message : String(err);
+      renderLiveGate();
+    }
+  }
+
+  async function loadCustomerTablePreview(schema, table) {
+    if (!liveState.customerToken) return;
+    liveState.catalogSelected = { schema, table };
+    liveState.catalogPreviewLoading = true;
+    liveState.catalogPreview = null;
+    renderLiveGate();
+    try {
+      const resp = await fetch(`${DEMO_BROKER_URL}/api/catalog/preview`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Demo-Token": liveState.customerToken
+        },
+        body: JSON.stringify({ schema, table })
+      });
+      const data = await resp.json().catch(() => ({}));
+      if (!resp.ok || !data.ok) {
+        throw new Error(data.error || `HTTP ${resp.status}`);
+      }
+      liveState.catalogPreview = data;
+      liveState.catalogPreviewLoading = false;
+      renderLiveGate();
+    } catch (err) {
+      liveState.catalogPreviewLoading = false;
+      liveState.catalogPreview = { error: err && err.message ? err.message : String(err) };
+      renderLiveGate();
+    }
+  }
+
+  async function askCustomerGenie(question) {
+    const q = String(question || "").trim();
+    if (!q || !liveState.customerToken || liveState.genieBusy) return;
+    liveState.genieBusy = true;
+    liveState.genieMessages.push({ role: "user", text: q });
+    renderLiveGate();
+    try {
+      const resp = await fetch(`${DEMO_BROKER_URL}/api/genie/ask`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Demo-Token": liveState.customerToken
+        },
+        body: JSON.stringify({
+          question: q,
+          conversationId: liveState.genieConversationId || undefined
+        })
+      });
+      const data = await resp.json().catch(() => ({}));
+      if (!resp.ok || !data.ok) {
+        throw new Error(data.error || `HTTP ${resp.status}`);
+      }
+      if (data.conversationId) liveState.genieConversationId = data.conversationId;
+      liveState.genieMessages.push({
+        role: "assistant",
+        text: data.text || t("Genie 已完成实时查询。", "Genie query completed."),
+        sql: data.sql || "",
+        columns: data.columns || [],
+        rows: data.rows || [],
+        status: data.status || "COMPLETED"
+      });
+    } catch (err) {
+      liveState.genieMessages.push({
+        role: "assistant",
+        error: true,
+        text: (err && err.message) || String(err)
+      });
+    } finally {
+      liveState.genieBusy = false;
+      renderLiveGate();
+    }
+  }
+
+  function renderCustomerLiveStudio(mount) {
+    const cs = liveState.customerSession;
+    const sess = cs.session || {};
+    const dbx = cs.databricks || {};
+    const tab = liveState.customerActiveTab;
+
+    let stageHtml = "";
+    if (tab === "nor" || tab === "roi") {
+      const title =
+        tab === "nor"
+          ? t("实机 Azure Databricks AI/BI · 寰宇旅购全域净营收 (NOR) 驾驶舱", "Live Azure Databricks AI/BI · Global Net Operating Revenue (NOR) Cockpit")
+          : t("实机 Azure Databricks AI/BI · 全渠道净 ROI 与礼宾转化漏斗看板", "Live Azure Databricks AI/BI · Omnichannel Net ROI & Concierge Funnel");
+      stageHtml = `
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px;">
+          <div style="font-size:13.5px;font-weight:800;">📊 ${escapeHtml(title)}</div>
+          <span class="pill-tag tag-green mono">External Scoped OAuth · Live SQL</span>
+        </div>
+        <div id="customerAibiMount" class="aibi-sdk-mount"></div>`;
+    } else if (tab === "genie") {
+      stageHtml = `
+        <div class="live-genie-shell">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;">
+            <div>
+              <div style="font-size:14px;font-weight:800;">✨ ${escapeHtml(t("Azure Databricks Genie 实机自然语言问数室（直连 travel_retail_ops）", "Live Azure Databricks Genie Conversational Room (travel_retail_ops)"))}</div>
+              <div style="font-size:12px;color:var(--text-secondary);">${escapeHtml(t("您输入的每个问题都会实时发往 Azure Databricks Genie 生成 Spark SQL 并在 Serverless SQL Warehouse 上返回真实数据。", "Every prompt executes live against Azure Databricks Genie and returns real Spark SQL + rows from Serverless SQL Warehouse."))}</div>
+            </div>
+            ${
+              liveState.genieMessages.length
+                ? `<button type="button" id="btnResetGenie" class="btn btn-sm">${escapeHtml(t("↻ 开启新会话", "↻ New Conversation"))}</button>`
+                : ""
+            }
+          </div>
+
+          <div class="live-genie-starters">
+            ${CUSTOMER_GENIE_STARTERS.map(
+              (s) => `<button type="button" class="filter-chip" data-genie-starter="${escapeHtml(t(s.zh, s.en))}" ${liveState.genieBusy ? "disabled" : ""}>💬 ${escapeHtml(t(s.zh, s.en))}</button>`
+            ).join("")}
+          </div>
+
+          <div class="live-genie-messages" id="liveGenieMessages">
+            ${
+              liveState.genieMessages.length === 0
+                ? `<div class="embed-placeholder">${escapeHtml(t("点击上方快捷业务问题，或在下方输入任意关于营收、扣减、渠道 ROI、客诉质检或库存工单的问题，立即体验 Azure Databricks 实机 Genie 问数。", "Click a starter prompt above or type any business question below to query live Azure Databricks Genie."))}</div>`
+                : liveState.genieMessages
+                    .map((msg) => {
+                      if (msg.role === "user") {
+                        return `<div class="live-genie-msg user"><strong>${escapeHtml(t("提问：", "You:"))}</strong> ${escapeHtml(msg.text)}</div>`;
+                      }
+                      const tableHtml =
+                        msg.columns && msg.columns.length && msg.rows && msg.rows.length
+                          ? `<div class="table-wrap" style="margin-top:8px;"><table><thead><tr>${msg.columns
+                              .map((c) => `<th>${escapeHtml(c)}</th>`)
+                              .join("")}</tr></thead><tbody>${msg.rows
+                              .map((row) => `<tr>${row.map((cell) => `<td>${escapeHtml(cell == null ? "" : cell)}</td>`).join("")}</tr>`)
+                              .join("")}</tbody></table></div>`
+                          : "";
+                      const sqlHtml = msg.sql
+                        ? `<details class="live-genie-sql-details"><summary>${escapeHtml(t("查看 Genie 实时生成的 Spark SQL", "View Live Spark SQL Generated by Genie"))}</summary><pre class="code-block" style="margin-top:6px;">${escapeHtml(msg.sql)}</pre></details>`
+                        : "";
+                      return `<div class="live-genie-msg assistant ${msg.error ? "live-alert-error" : ""}">
+                        <div style="font-weight:700;margin-bottom:4px;">🤖 Databricks Genie ${msg.status ? `<span class="pill-tag tag-blue mono" style="margin-left:6px;">${escapeHtml(msg.status)}</span>` : ""}</div>
+                        <div style="white-space:pre-wrap;">${escapeHtml(msg.text)}</div>
+                        ${tableHtml}
+                        ${sqlHtml}
+                      </div>`;
+                    })
+                    .join("")
+            }
+            ${
+              liveState.genieBusy
+                ? `<div class="live-genie-msg assistant">⏳ ${escapeHtml(t("正在调用 Azure Databricks Genie 实时生成 SQL 并查询湖仓数据（约 5~15 秒）…", "Querying live Azure Databricks Genie & Serverless SQL Warehouse (~5-15s)…"))}</div>`
+                : ""
+            }
+          </div>
+
+          <form id="liveGenieForm" class="live-input-row" autocomplete="off">
+            <input
+              id="liveGenieInput"
+              type="text"
+              style="flex:1 1 320px;min-height:40px;"
+              placeholder="${escapeHtml(t("输入业务问题，例如：按机场门店统计总营收前 3 名…", "Ask a live business question, e.g., Top 3 airport stores by revenue…"))}"
+              ${liveState.genieBusy ? "disabled" : ""}
+              required
+            />
+            <button type="submit" class="btn btn-gtr" ${liveState.genieBusy ? "disabled" : ""}>
+              ${escapeHtml(liveState.genieBusy ? t("Genie 思考中…", "Running…") : t("⚡ 发送给实机 Genie", "⚡ Ask Live Genie"))}
+            </button>
+          </form>
+        </div>`;
+    } else if (tab === "catalog") {
+      const sel = liveState.catalogSelected;
+      let prevHtml = `<div class="embed-placeholder">${escapeHtml(t("请在左侧选择任意 Unity Catalog 表查看实时前 20 行脱敏数据。", "Select any table on the left to preview live top 20 pseudonymized rows."))}</div>`;
+      if (liveState.catalogPreviewLoading) {
+        prevHtml = `<div class="embed-placeholder">⏳ ${escapeHtml(t("正在通过 Serverless SQL Warehouse 读取实机表数据…", "Fetching live rows from Serverless SQL Warehouse…"))}</div>`;
+      } else if (liveState.catalogPreview && liveState.catalogPreview.error) {
+        prevHtml = `<div class="live-alert live-alert-error">${escapeHtml(liveState.catalogPreview.error)}</div>`;
+      } else if (liveState.catalogPreview && liveState.catalogPreview.columns) {
+        const pv = liveState.catalogPreview;
+        prevHtml = `
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;">
+            <strong class="mono" style="font-size:13px;">${escapeHtml(pv.fullName)}</strong>
+            <span class="pill-tag tag-green mono">LIVE · ${pv.rowCount} rows × ${pv.columns.length} cols</span>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr>${pv.columns.map((c) => `<th>${escapeHtml(c)}</th>`).join("")}</tr></thead>
+              <tbody>${(pv.rows || [])
+                .map((row) => `<tr>${row.map((cell) => `<td>${escapeHtml(cell == null ? "" : cell)}</td>`).join("")}</tr>`)
+                .join("")}</tbody>
+            </table>
+          </div>`;
+      }
+
+      stageHtml = `
+        <div class="live-uc-layout">
+          <div class="live-uc-list">
+            <div style="font-size:12.5px;font-weight:800;margin-bottom:4px;">
+              🗂 Unity Catalog: <span class="mono">${escapeHtml(dbx.catalog || "travel_retail_ops")}</span>
+            </div>
+            ${
+              liveState.catalogLoading
+                ? `<div class="embed-placeholder">${escapeHtml(t("正在加载实时表清单…", "Loading live table inventory…"))}</div>`
+                : liveState.catalogError
+                ? `<div class="live-alert live-alert-error">${escapeHtml(liveState.catalogError)}</div>`
+                : liveState.catalogTables
+                    .map((tbl) => {
+                      const active = sel && sel.schema === tbl.schema && sel.table === tbl.table;
+                      return `<button type="button" class="live-uc-table-btn ${active ? "active" : ""}" data-uc-schema="${escapeHtml(tbl.schema)}" data-uc-table="${escapeHtml(tbl.table)}">
+                        <span class="pill-tag tag-blue mono" style="width:fit-content;">${escapeHtml(tbl.schema)}</span>
+                        <strong class="mono" style="font-size:12px;">${escapeHtml(tbl.table)}</strong>
+                        ${tbl.comment ? `<span style="font-size:11px;color:var(--text-secondary);">${escapeHtml(tbl.comment.slice(0, 80))}</span>` : ""}
+                      </button>`;
+                    })
+                    .join("")
+            }
+          </div>
+          <div class="live-uc-preview">${prevHtml}</div>
+        </div>`;
+    }
+
+    mount.innerHTML = `
+      <div class="live-unlocked-banner">
+        <div>
+          <div style="font-size:14.5px;font-weight:800;color:var(--status-green);">
+            ✅ ${escapeHtml(t("客户临时免登录演示环境已连接 · 零微软账号 / 零 MFA / 只读隔离", "Live Customer Demo Session Active · Zero Microsoft Login / Read-Only Isolated"))}
+          </div>
+          <div class="mono" style="font-size:12px;color:var(--text-secondary);margin-top:3px;">
+            ${escapeHtml(t("访客标识", "Guest"))}: ${escapeHtml(sess.customer || "guest")} · JTI: ${escapeHtml(sess.jti || "-")} · Catalog: ${escapeHtml(dbx.catalog || "travel_retail_ops")} · ${escapeHtml(t("剩余有效期", "Remaining"))}: <strong id="customerTokenCountdown">${escapeHtml(formatRemainingTime(sess.expiresAt || 0))}</strong>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button type="button" id="btnRefreshCustomerSession" class="btn btn-sm">${escapeHtml(t("↻ 刷新实时会话", "↻ Refresh Live Session"))}</button>
+          <button type="button" id="btnLogoutCustomerSession" class="btn btn-sm">${escapeHtml(t("🔒 退出演示会话", "🔒 End Demo Session"))}</button>
+        </div>
+      </div>
+
+      <div class="embed-viewer-shell">
+        <div class="customer-studio-tabs">
+          <button type="button" class="filter-chip ${tab === "nor" ? "active" : ""}" data-customer-tab="nor">
+            ${escapeHtml(t("① 实机 AI/BI 全域净营收 (NOR) 驾驶舱", "1. Live AI/BI Global NOR Cockpit"))}
+          </button>
+          <button type="button" class="filter-chip ${tab === "roi" ? "active" : ""}" data-customer-tab="roi">
+            ${escapeHtml(t("② 实机 AI/BI 渠道净 ROI 与礼宾漏斗", "2. Live AI/BI Net ROI & Funnel"))}
+          </button>
+          <button type="button" class="filter-chip ${tab === "genie" ? "active" : ""}" data-customer-tab="genie">
+            ${escapeHtml(t("③ 实机 Genie 自然语言问数室", "3. Live Genie Q&A Room"))}
+          </button>
+          <button type="button" class="filter-chip ${tab === "catalog" ? "active" : ""}" data-customer-tab="catalog">
+            ${escapeHtml(t("④ 实机 Unity Catalog 数据只读浏览", "4. Live Unity Catalog Explorer"))}
+          </button>
+        </div>
+        <div class="embed-stage">${stageHtml}</div>
+      </div>`;
+
+    stopCountdownTimer();
+    liveState.countdownTimer = setInterval(() => {
+      const el = document.getElementById("customerTokenCountdown");
+      if (el && liveState.customerSession && liveState.customerSession.session) {
+        el.textContent = formatRemainingTime(liveState.customerSession.session.expiresAt);
+      }
+    }, 1000);
+
+    const btnLogout = document.getElementById("btnLogoutCustomerSession");
+    if (btnLogout) {
+      btnLogout.addEventListener("click", () => {
+        destroyAibiInstance();
+        stopCountdownTimer();
+        try {
+          sessionStorage.removeItem(DEMO_TOKEN_STORAGE_KEY);
+        } catch (_e) {}
+        liveState.customerToken = "";
+        liveState.customerSession = null;
+        liveState.genieMessages = [];
+        liveState.genieConversationId = "";
+        liveState.catalogTables = [];
+        liveState.catalogSelected = null;
+        liveState.catalogPreview = null;
+        liveState.infoMsg = t("已安全退出临时演示会话。", "Temporary demo session ended.");
+        renderLiveGate();
+      });
+    }
+
+    const btnRefresh = document.getElementById("btnRefreshCustomerSession");
+    if (btnRefresh) {
+      btnRefresh.addEventListener("click", async () => {
+        await handleUnlockSubmit(liveState.customerToken, false);
+      });
+    }
+
+    mount.querySelectorAll("button[data-customer-tab]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const nextTab = btn.getAttribute("data-customer-tab");
+        if (nextTab === liveState.customerActiveTab) return;
+        destroyAibiInstance();
+        liveState.customerActiveTab = nextTab;
+        renderLiveGate();
+        if (nextTab === "catalog" && liveState.catalogTables.length === 0) {
+          loadCustomerCatalogTables();
+        }
+      });
+    });
+
+    if (tab === "nor" || tab === "roi") {
+      mountCustomerAibiDashboard("customerAibiMount", tab);
+    }
+
+    if (tab === "genie") {
+      const form = document.getElementById("liveGenieForm");
+      const input = document.getElementById("liveGenieInput");
+      if (form && input) {
+        form.addEventListener("submit", (ev) => {
+          ev.preventDefault();
+          const q = input.value;
+          input.value = "";
+          askCustomerGenie(q);
+        });
+      }
+      mount.querySelectorAll("button[data-genie-starter]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          askCustomerGenie(btn.getAttribute("data-genie-starter"));
+        });
+      });
+      const btnReset = document.getElementById("btnResetGenie");
+      if (btnReset) {
+        btnReset.addEventListener("click", () => {
+          liveState.genieConversationId = "";
+          liveState.genieMessages = [];
+          renderLiveGate();
+        });
+      }
+      const msgBox = document.getElementById("liveGenieMessages");
+      if (msgBox) msgBox.scrollTop = msgBox.scrollHeight;
+    }
+
+    if (tab === "catalog") {
+      mount.querySelectorAll("button[data-uc-table]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          loadCustomerTablePreview(btn.getAttribute("data-uc-schema"), btn.getAttribute("data-uc-table"));
+        });
+      });
     }
   }
 
@@ -1512,24 +2003,29 @@
     const mount = document.getElementById("liveGateMount");
     if (!mount) return;
 
+    if (liveState.customerSession) {
+      renderCustomerLiveStudio(mount);
+      return;
+    }
+
     if (!liveState.unlocked || !liveState.manifest) {
       mount.innerHTML = `
         <div class="live-gate-form">
           <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;">
             <div>
               <div style="font-size:15px;font-weight:800;">
-                🔒 ${escapeHtml(t("输入演示通行口令 · 解锁普通浏览器零无痕直连与页内实机看板", "Enter Demo Passcode · Unlock Normal-Browser SSO & Embedded Live Views"))}
+                🔑 ${escapeHtml(t("输入客户临时演示令牌 (GTR-...) 或内部顾问口令 · 立即进入 Azure Databricks 实机环境", "Enter Customer Temporary Token (GTR-...) or Advisor Passcode · Launch Live Databricks"))}
               </div>
               <div style="font-size:12.5px;color:var(--text-secondary);margin-top:3px;">
                 ${escapeHtml(
                   t(
-                    "静态仓库仅存储 PBKDF2-SHA256 (210,000 次迭代) + AES-256-GCM 密文载荷，零明文租户/工作区地址泄露；口令在浏览器本地内存实时派生密钥解密。",
-                    "Only PBKDF2-SHA256 (210,000 iter) + AES-256-GCM ciphertext is stored in the public repo. Decryption runs 100% client-side via WebCrypto."
+                    "客户试用：粘贴顾问签发的 GTR-... 临时令牌（无需微软账号/MFA），即可在下方直接交互操作实机 AI/BI 驾驶舱、Genie 问数与 Unity Catalog 只读表；内部顾问：输入演示口令可解锁企业 B2B SSO 工作区直连。",
+                    "Customers: paste your advisor-issued GTR-... temporary token (zero Microsoft login / MFA) to interact with live AI/BI dashboards, Genie Q&A, and Unity Catalog. Advisors: enter internal passcode for Corporate B2B SSO."
                   )
                 )}
               </div>
             </div>
-            <span class="pill-tag tag-purple mono">PBKDF2-SHA256 · AES-256-GCM</span>
+            <span class="pill-tag tag-green mono">Zero Entra Login · HMAC-SHA256 / WebCrypto</span>
           </div>
 
           ${liveState.errorMsg ? `<div class="live-alert live-alert-error" role="alert">${escapeHtml(liveState.errorMsg)}</div>` : ""}
@@ -1540,8 +2036,8 @@
               <input
                 id="livePasscodeInput"
                 type="${liveState.showPasscode ? "text" : "password"}"
-                placeholder="${escapeHtml(t("请输入实机演示口令（支持 #unlock=口令 免输直达）", "Enter live demo passcode (or use #unlock=<passcode>)"))}"
-                aria-label="${escapeHtml(t("实机演示通行口令", "Live demo passcode"))}"
+                placeholder="${escapeHtml(t("粘贴客户临时令牌 (GTR-...) 或输入顾问口令（支持 #demo_token= 免输直达）", "Paste customer temporary token (GTR-...) or advisor passcode"))}"
+                aria-label="${escapeHtml(t("临时演示令牌或通行口令", "Temporary demo token or passcode"))}"
                 required
               />
               <button type="button" id="btnTogglePassVis" class="btn btn-sm">
@@ -1549,7 +2045,7 @@
               </button>
             </div>
             <button type="submit" class="btn btn-gtr" ${liveState.busy ? "disabled" : ""}>
-              ${escapeHtml(liveState.busy ? t("正在解密…", "Decrypting…") : t("🔓 解锁实机入口与内嵌看板", "🔓 Unlock Live Workspace & Embeds"))}
+              ${escapeHtml(liveState.busy ? t("正在安全验证并连接实机…", "Authenticating & Connecting…") : t("🚀 验证并进入 Databricks 实机演示", "🚀 Connect to Live Databricks Demo"))}
             </button>
           </form>
 
@@ -1904,17 +2400,44 @@
   }
 
   async function handleUnlockSubmit(rawPasscode, fromAutoHash) {
+    const trimmed = String(rawPasscode || "").trim();
     liveState.busy = true;
     liveState.errorMsg = "";
     liveState.infoMsg = "";
     renderLiveGate();
 
+    // Path A: Customer Temporary Demo Token (GTR-...) -> Zero Entra Login Studio
+    if (/^GTR-/i.test(trimmed)) {
+      try {
+        const sessionData = await exchangeCustomerDemoToken(trimmed);
+        liveState.customerToken = trimmed;
+        liveState.customerSession = sessionData;
+        liveState.customerActiveTab = liveState.customerActiveTab || "nor";
+        liveState.busy = false;
+        try {
+          sessionStorage.setItem(DEMO_TOKEN_STORAGE_KEY, trimmed);
+        } catch (_e) {}
+        renderLiveGate();
+        if (fromAutoHash) {
+          const liveSec = document.getElementById("act-live");
+          if (liveSec) liveSec.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      } catch (err) {
+        liveState.busy = false;
+        liveState.customerSession = null;
+        liveState.errorMsg = err && err.message ? err.message : String(err);
+        renderLiveGate();
+      }
+      return;
+    }
+
+    // Path B: Internal Consultant Passcode -> WebCrypto Corporate B2B SSO Gateway
     try {
-      const manifest = await decryptLiveOrFixture(rawPasscode);
+      const manifest = await decryptLiveOrFixture(trimmed);
       liveState.manifest = manifest;
       liveState.unlocked = true;
       liveState.busy = false;
-      if (liveState.remember && String(rawPasscode).trim() !== "unit-test-fixture-only") {
+      if (liveState.remember && trimmed !== "unit-test-fixture-only") {
         saveCachedSession(manifest);
       }
       renderLiveGate();
@@ -2053,16 +2576,22 @@
   }
 
   async function bootstrapLiveSession() {
-    // 1. Check cached 30-day session first
-    const cached = loadCachedSession();
-    if (cached && cached.manifest) {
-      liveState.manifest = cached.manifest;
-      liveState.authMode = cached.authMode || "corp_b2b";
-      liveState.unlocked = true;
+    // 1. Check #demo_token=<GTR-...> or ?demo_token=<GTR-...> first (immediately scrubbed from URL bar)
+    const rawHash = window.location.hash || "";
+    const rawSearch = window.location.search || "";
+    const demoTokenMatch =
+      rawHash.match(/(?:^|[#&?])demo_token=([^&]+)/i) ||
+      rawSearch.match(/(?:^|[?&])demo_token=([^&]+)/i);
+    if (demoTokenMatch && demoTokenMatch[1]) {
+      const demoToken = decodeURIComponent(demoTokenMatch[1]);
+      if (window.history && typeof window.history.replaceState === "function") {
+        window.history.replaceState(null, "", window.location.pathname);
+      }
+      await handleUnlockSubmit(demoToken, true);
+      return;
     }
 
     // 2. Check #unlock=<passcode> in URL hash (never sent over HTTP; immediately scrubbed from URL bar)
-    const rawHash = window.location.hash || "";
     const unlockMatch = rawHash.match(/(?:^|[#&?])unlock=([^&]+)/i);
     if (unlockMatch && unlockMatch[1]) {
       const secret = decodeURIComponent(unlockMatch[1]);
@@ -2071,6 +2600,23 @@
       }
       await handleUnlockSubmit(secret, true);
       return;
+    }
+
+    // 3. Restore active customer temporary demo token from sessionStorage (same tab refresh)
+    try {
+      const savedDemoToken = sessionStorage.getItem(DEMO_TOKEN_STORAGE_KEY);
+      if (savedDemoToken && /^GTR-/i.test(savedDemoToken)) {
+        await handleUnlockSubmit(savedDemoToken, false);
+        return;
+      }
+    } catch (_e) {}
+
+    // 4. Check cached 30-day advisor session
+    const cached = loadCachedSession();
+    if (cached && cached.manifest) {
+      liveState.manifest = cached.manifest;
+      liveState.authMode = cached.authMode || "corp_b2b";
+      liveState.unlocked = true;
     }
 
     renderLiveGate();
@@ -2099,7 +2645,7 @@
     bootstrapLiveSession();
 
     window.addEventListener("hashchange", () => {
-      if (/(?:^|[#&?])unlock=([^&]+)/i.test(window.location.hash || "")) {
+      if (/(?:^|[#&?])(unlock|demo_token)=([^&]+)/i.test(window.location.hash || "")) {
         bootstrapLiveSession();
       }
     });
